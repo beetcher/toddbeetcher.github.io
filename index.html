@@ -42,9 +42,41 @@
       margin-top: 12px;
       letter-spacing: 1px;
     }
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+    .photo-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 80px 40px;
+    }
+    .photo-section img {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .photo-caption {
+      font-size: 1.4rem;
+      color: #f5c518;
+      text-align: center;
+      font-style: italic;
+    }
+    .photo-caption span {
+      display: block;
+      font-size: 1rem;
+      color: #aaaaaa;
+      margin-top: 8px;
+      font-style: normal;
+    }
   </style>
 </head>
 <body>
+
   <div class="hero">
     <img src="hero.jpg" alt="Todd Beetcher in front of Boulder Valley School District bus">
     <div class="hero-text">
@@ -52,5 +84,14 @@
       <p>CDL · School Bus Endorsement · Mountain Certified</p>
     </div>
   </div>
+
+  <div class="photo-section">
+    <img src="bus-boulder.jpg" alt="Bus 5501 with Flatirons in background">
+    <div class="photo-caption">
+      Todd's Red Carpet Treatment.
+      <span>Bus 5501 · Boulder, Colorado · Flatirons backdrop · Every trip, every time.</span>
+    </div>
+  </div>
+
 </body>
 </html>
