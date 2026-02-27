@@ -2,32 +2,55 @@
 <html>
 <head>
   <title>Todd Drives</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #1a1a2e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
       font-family: Georgia, serif;
+      background: #1a1a2e;
+      color: white;
     }
-    h1 {
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 60px;
+    }
+    .hero img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.6;
+    }
+    .hero-text {
+      position: relative;
+      text-align: center;
+      z-index: 2;
+    }
+    .hero-text h1 {
+      font-size: 4rem;
       color: #f5c518;
-      font-size: 3rem;
-      text-align: center;
+      letter-spacing: 2px;
     }
-    p {
+    .hero-text p {
+      font-size: 1.3rem;
       color: #ffffff;
-      text-align: center;
-      font-size: 1.2rem;
+      margin-top: 12px;
+      letter-spacing: 1px;
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Todd Drives.</h1>
-    <p>Something remarkable is coming.</p>
+  <div class="hero">
+    <img src="hero.jpg" alt="Todd Beetcher in front of Boulder Valley School District bus">
+    <div class="hero-text">
+      <h1>Todd Drives.</h1>
+      <p>CDL · School Bus Endorsement · Mountain Certified</p>
+    </div>
   </div>
 </body>
 </html>
