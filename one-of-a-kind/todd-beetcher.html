@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todd Beetcher — Commercial Driver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0d0e0f;
+    --bg-warm: #111210;
+    --amber: #c8933a;
+    --amber-light: #e0a84a;
+    --amber-dim: #8a6128;
+    --cream: #e8e0d0;
+    --cream-dim: #a89f90;
+    --white: #f5f0e8;
+    --rule: rgba(200,147,58,0.25);
+    --serif: 'Playfair Display', Georgia, serif;
+    --mono: 'DM Mono', 'Courier New', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── UTILITY ─── */
+  .amber { color: var(--amber); }
+  .dim { color: var(--cream-dim); }
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 6vw 8vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 30%, rgba(200,147,58,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, rgba(200,147,58,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Topographic lines */
+  #hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 55%;
+    height: 100%;
+    background-image:
+      repeating-linear-gradient(
+        -12deg,
+        transparent,
+        transparent 38px,
+        rgba(200,147,58,0.04) 38px,
+        rgba(200,147,58,0.04) 39px
+      );
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--white);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .hero-credential {
+    font-family: var(--mono);
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.6s;
+  }
+
+  .hero-hook {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-style: italic;
+    color: var(--cream);
+    max-width: 680px;
+    line-height: 1.5;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.8s;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3vh;
+    right: 6vw;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+
+  .hero-year {
+    position: absolute;
+    top: 6vh;
+    right: 6vw;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1s;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ─── SECTION WRAPPER ─── */
+  section {
+    padding: 10vh 6vw;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    max-width: 200px;
+  }
+
+  /* ─── ROUTE MAP ─── */
+  #route {
+    background: var(--bg-warm);
+    max-width: 100%;
+    padding: 10vh 6vw;
+  }
+
+  #route > .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .route-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+
+  @media (max-width: 700px) {
+    .route-header { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .route-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  .route-desc {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--cream-dim);
+    line-height: 1.8;
+  }
+
+  /* SVG Route Map */
+  .map-container {
+    position: relative;
+    width: 100%;
+    background: #0a0b0a;
+    border: 1px solid rgba(200,147,58,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .map-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Elevation profile */
+  .elevation-container {
+    margin-top: 2rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+  }
+
+  .elevation-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+    margin-bottom: 0.75rem;
+  }
+
+  .elevation-container svg {
+    width: 100%;
+    height: 80px;
+    display: block;
+  }
+
+  /* ─── NUMBERS ─── */
+  #numbers {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  @media (max-width: 700px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .stat-item {
+    padding: 3rem 2rem;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat-item:nth-child(3n) { border-right: none; }
+  .stat-item:nth-last-child(-n+3) { border-bottom: none; }
+
+  @media (max-width: 700px) {
+    .stat-item:nth-child(2n) { border-right: none; }
+    .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+    .stat-item:nth-last-child(1) { border-bottom: none; }
+  }
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-unit {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--amber-dim);
+    margin-left: 0.25rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    line-height: 1.6;
+  }
+
+  /* ─── STORY ─── */
+  #story .story-intro {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--white);
+    max-width: 800px;
+    margin-bottom: 5rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 2rem;
+  }
+
+  .story-block {
+    max-width: 680px;
+    margin-bottom: 4rem;
+  }
+
+  .story-block h3 {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+
+  .story-block p {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--cream);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+
+  .story-block p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .story-callout {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--amber-light);
+    max-width: 680px;
+    margin: 4rem 0;
+    line-height: 1.5;
+  }
+
+  /* ─── PROOF ─── */
+  #proof {
+    background: var(--bg-warm);
+    max-width: 100%;
+    padding: 12vh 6vw;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  #proof > .inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .quote-mark {
+    font-family: var(--serif);
+    font-size: 8rem;
+    line-height: 0.5;
+    color: var(--amber);
+    opacity: 0.3;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .quote-text {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--white);
+    max-width: 900px;
+    margin-bottom: 3rem;
+  }
+
+  .quote-text em {
+    font-style: italic;
+    color: var(--amber-light);
+  }
+
+  .quote-attribution {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--cream-dim);
+  }
+
+  .quote-attribution strong {
+    color: var(--cream);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Proof stats row */
+  .proof-stats {
+    display: flex;
+    gap: 4rem;
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+
+  .proof-stat {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .proof-stat-number {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .proof-stat-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* ─── CREDENTIALS ─── */
+  #credentials .cred-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    max-width: 800px;
+  }
+
+  @media (max-width: 600px) {
+    #credentials .cred-grid { grid-template-columns: 1fr; }
+  }
+
+  .cred-item {
+    padding: 2rem;
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .cred-item::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--amber);
+  }
+
+  .cred-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .cred-sub {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--cream-dim);
+    line-height: 1.6;
+  }
+
+  /* ─── CONNECT ─── */
+  #connect {
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .connect-heading {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    line-height: 1.2;
+  }
+
+  .connect-sub {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--cream-dim);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .connect-link {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--amber);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .connect-link:hover {
+    background: var(--amber-light);
+  }
+
+  .connect-request {
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px solid var(--rule);
+    max-width: 560px;
+    text-align: left;
+  }
+
+  .connect-request h4 {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1rem;
+  }
+
+  .connect-request p {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    line-height: 1.8;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 3rem 6vw;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--cream-dim);
+  }
+
+  .footer-links {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+  }
+
+  .footer-links a {
+    color: var(--amber);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: var(--amber-light);
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<div id="hero">
+  <div class="hero-year">Summer 2025</div>
+
+  <p class="hero-eyebrow">Commercial Driver &nbsp;·&nbsp; CDL &nbsp;·&nbsp; Mountain Certified</p>
+
+  <h1 class="hero-name">Todd<br><em>Beetcher</em></h1>
+
+  <p class="hero-credential">
+    CDL &nbsp;·&nbsp; School Bus Endorsement &nbsp;·&nbsp; Mountain Certification &nbsp;·&nbsp; Boulder Valley School District
+  </p>
+
+  <p class="hero-hook">
+    There is exactly one place in the United States where a school bus driver
+    does what I did last summer. One city. One route. One person.
+  </p>
+
+  <span class="hero-scroll">Scroll</span>
+</div>
+
+<hr class="rule">
+
+<!-- ══════════════════════════════════════════════
+     THE ROUTE
+══════════════════════════════════════════════ -->
+<div id="route">
+  <div class="inner">
+    <p class="section-label">The Route</p>
+
+    <div class="route-header">
+      <h2 class="route-title">Denver to the Rockies<br>and back. Every week.</h2>
+      <p class="route-desc">
+        Boys &amp; Girls Club of Metro Denver — Summer 2025.<br>
+        Tuesday, Wednesday, Thursday. June through August.<br><br>
+        Boulder → Lakewood depot → Denver pickup → Boulder rush hour
+        → Left Hand Canyon (17 miles) → Ward, Colorado (8,500 ft) → reverse.
+        Approximately 150–180 miles per operating day.
+      </p>
+    </div>
+
+    <!-- ROUTE MAP SVG -->
+    <div class="map-container reveal">
+      <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" aria-label="Route map from Denver to Ward, Colorado via Left Hand Canyon">
+
+        <!-- Background grid -->
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(200,147,58,0.06)" stroke-width="0.5"/>
+          </pattern>
+          <!-- Amber glow filter -->
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- Route path for animation -->
+          <path id="routePath"
+            d="M 580,320 C 540,300 500,285 450,275
+               L 380,268 C 340,265 310,260 270,255
+               C 240,252 220,248 190,242
+               C 160,238 140,230 120,215
+               C 100,200 85,180 75,155
+               C 65,130 62,105 68,80"
+            fill="none"/>
+        </defs>
+
+        <rect width="900" height="420" fill="#080908"/>
+        <rect width="900" height="420" fill="url(#grid)"/>
+
+        <!-- Terrain suggestion — mountain shape right side -->
+        <polygon
+          points="720,420 760,280 790,320 820,250 860,300 900,240 900,420"
+          fill="rgba(200,147,58,0.04)" stroke="rgba(200,147,58,0.12)" stroke-width="0.5"/>
+        <polygon
+          points="760,420 800,300 830,340 860,270 900,310 900,420"
+          fill="rgba(200,147,58,0.03)"/>
+
+        <!-- Mountain label area -->
+        <text x="820" y="200" font-family="DM Mono, monospace" font-size="9"
+          fill="rgba(200,147,58,0.4)" letter-spacing="2" text-anchor="middle">ROCKIES</text>
+
+        <!-- I-25 / US-36 corridor subtle line -->
+        <path d="M 580,320 L 200,260" stroke="rgba(255,255,255,0.05)" stroke-width="8" stroke-linecap="round"/>
+
+        <!-- Route line — main -->
+        <path d="M 580,320 C 540,300 500,285 450,275
+                 L 380,268 C 340,265 310,260 270,255
+                 C 240,252 220,248 190,242
+                 C 160,238 140,230 120,215
+                 C 100,200 85,180 75,155
+                 C 65,130 62,105 68,80"
+          fill="none"
+          stroke="rgba(200,147,58,0.25)"
+          stroke-width="3"
+          stroke-dasharray="6,4"/>
+
+        <!-- Route line — glowing amber on top -->
+        <path d="M 580,320 C 540,300 500,285 450,275
+                 L 380,268 C 340,265 310,260 270,255
+                 C 240,252 220,248 190,242
+                 C 160,238 140,230 120,215
+                 C 100,200 85,180 75,155
+                 C 65,130 62,105 68,80"
+          fill="none"
+          stroke="rgba(200,147,58,0.8)"
+          stroke-width="1.5"
+          filter="url(#glow)"/>
+
+        <!-- STOP: Lakewood Depot -->
+        <circle cx="580" cy="320" r="6" fill="#0a0b0a" stroke="#c8933a" stroke-width="1.5"/>
+        <circle cx="580" cy="320" r="2" fill="#c8933a"/>
+        <text x="580" y="344" font-family="DM Mono, monospace" font-size="9.5"
+          fill="#c8933a" letter-spacing="1" text-anchor="middle">LAKEWOOD DEPOT</text>
+        <text x="580" y="356" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.5)" text-anchor="middle">Start of shift</text>
+
+        <!-- STOP: Denver Pickup -->
+        <circle cx="450" cy="275" r="6" fill="#0a0b0a" stroke="#c8933a" stroke-width="1.5"/>
+        <circle cx="450" cy="275" r="2" fill="#c8933a"/>
+        <text x="450" y="299" font-family="DM Mono, monospace" font-size="9.5"
+          fill="#c8933a" letter-spacing="1" text-anchor="middle">DENVER</text>
+        <text x="450" y="311" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.5)" text-anchor="middle">Boys &amp; Girls Club pickup</text>
+
+        <!-- Rush hour band: Denver -->
+        <rect x="390" y="250" width="120" height="8" rx="2"
+          fill="rgba(200,147,58,0.08)" stroke="none"/>
+        <text x="450" y="247" font-family="DM Mono, monospace" font-size="7.5"
+          fill="rgba(200,147,58,0.45)" text-anchor="middle" letter-spacing="1">RUSH HOUR ×2</text>
+
+        <!-- STOP: Boulder -->
+        <circle cx="270" cy="255" r="7" fill="#0a0b0a" stroke="#c8933a" stroke-width="2"/>
+        <circle cx="270" cy="255" r="3" fill="#c8933a"/>
+        <text x="270" y="236" font-family="DM Mono, monospace" font-size="9.5"
+          fill="#c8933a" letter-spacing="1" text-anchor="middle">BOULDER</text>
+        <text x="270" y="225" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.5)" text-anchor="middle">Secondary rush hour</text>
+
+        <!-- Canyon annotation -->
+        <line x1="160" y1="218" x2="160" y2="175" stroke="rgba(200,147,58,0.3)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <text x="148" y="170" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.6)" text-anchor="middle" letter-spacing="0.5">LEFT HAND</text>
+        <text x="148" y="160" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.6)" text-anchor="middle" letter-spacing="0.5">CANYON</text>
+        <text x="148" y="150" font-family="DM Mono, monospace" font-size="7"
+          fill="rgba(200,147,58,0.35)" text-anchor="middle">17 miles</text>
+
+        <!-- STOP: Ward -->
+        <circle cx="68" cy="80" r="8" fill="rgba(200,147,58,0.15)" stroke="#c8933a" stroke-width="2"/>
+        <circle cx="68" cy="80" r="3" fill="#c8933a"/>
+        <text x="68" y="60" font-family="DM Mono, monospace" font-size="10"
+          fill="#c8933a" letter-spacing="1" text-anchor="middle" font-weight="500">WARD, CO</text>
+        <text x="68" y="48" font-family="DM Mono, monospace" font-size="8"
+          fill="rgba(200,147,58,0.6)" text-anchor="middle">8,500 ft elevation</text>
+        <text x="68" y="38" font-family="DM Mono, monospace" font-size="7.5"
+          fill="rgba(200,147,58,0.4)" text-anchor="middle">Day camp destination</text>
+
+        <!-- Directional arrows on route -->
+        <!-- Arrow 1: near Denver -->
+        <polygon points="425,272 418,268 418,276" fill="rgba(200,147,58,0.6)"/>
+        <!-- Arrow 2: in canyon -->
+        <polygon points="118,208 112,204 112,212" fill="rgba(200,147,58,0.6)"/>
+
+        <!-- US-36 label -->
+        <rect x="340" y="264" width="40" height="13" rx="2" fill="rgba(200,147,58,0.1)" stroke="rgba(200,147,58,0.3)" stroke-width="0.5"/>
+        <text x="360" y="274" font-family="DM Mono, monospace" font-size="7.5"
+          fill="rgba(200,147,58,0.8)" text-anchor="middle">US-36</text>
+
+        <!-- Compass rose -->
+        <g transform="translate(856, 38)">
+          <circle r="14" fill="rgba(0,0,0,0.4)" stroke="rgba(200,147,58,0.2)" stroke-width="0.5"/>
+          <text y="-4" font-family="DM Mono, monospace" font-size="8" fill="rgba(200,147,58,0.7)" text-anchor="middle">N</text>
+          <line y1="2" y2="10" stroke="rgba(200,147,58,0.4)" stroke-width="0.5"/>
+          <line y1="-2" y2="-10" stroke="rgba(200,147,58,0.7)" stroke-width="1"/>
+        </g>
+
+        <!-- Scale legend -->
+        <g transform="translate(750, 390)">
+          <line x1="0" y1="0" x2="60" y2="0" stroke="rgba(200,147,58,0.4)" stroke-width="1"/>
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="rgba(200,147,58,0.4)" stroke-width="1"/>
+          <line x1="60" y1="-3" x2="60" y2="3" stroke="rgba(200,147,58,0.4)" stroke-width="1"/>
+          <text x="30" y="-6" font-family="DM Mono, monospace" font-size="7.5"
+            fill="rgba(200,147,58,0.5)" text-anchor="middle">~30 miles</text>
+        </g>
+
+      </svg>
+
+      <!-- Elevation Profile -->
+      <div class="elevation-container">
+        <p class="elevation-label">Elevation profile — canyon approach &amp; summit</p>
+        <svg viewBox="0 0 900 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(200,147,58,0.4)"/>
+              <stop offset="100%" stop-color="rgba(200,147,58,0.02)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Grid lines -->
+          <line x1="0" y1="20" x2="900" y2="20" stroke="rgba(200,147,58,0.06)" stroke-width="0.5"/>
+          <line x1="0" y1="40" x2="900" y2="40" stroke="rgba(200,147,58,0.06)" stroke-width="0.5"/>
+          <line x1="0" y1="60" x2="900" y2="60" stroke="rgba(200,147,58,0.06)" stroke-width="0.5"/>
+
+          <!-- Elevation fill -->
+          <path d="M0,72 L80,70 L200,68 L320,65 L420,65 L520,62
+                   L580,56 L640,42 L700,28 L760,14 L820,8 L900,5
+                   L900,78 L0,78 Z"
+            fill="url(#elevGrad)"/>
+
+          <!-- Elevation line -->
+          <path d="M0,72 L80,70 L200,68 L320,65 L420,65 L520,62
+                   L580,56 L640,42 L700,28 L760,14 L820,8 L900,5"
+            fill="none" stroke="#c8933a" stroke-width="1.5"/>
+
+          <!-- Key labels -->
+          <text x="10" y="76" font-family="DM Mono, monospace" font-size="7"
+            fill="rgba(200,147,58,0.5)">Denver 5,280 ft</text>
+          <text x="400" y="76" font-family="DM Mono, monospace" font-size="7"
+            fill="rgba(200,147,58,0.5)" text-anchor="middle">Boulder 5,430 ft</text>
+          <text x="640" y="38" font-family="DM Mono, monospace" font-size="7"
+            fill="rgba(200,147,58,0.5)">Canyon mouth</text>
+          <text x="860" y="12" font-family="DM Mono, monospace" font-size="7"
+            fill="rgba(200,147,58,0.9)" text-anchor="middle">Ward</text>
+          <text x="860" y="22" font-family="DM Mono, monospace" font-size="7"
+            fill="rgba(200,147,58,0.6)" text-anchor="middle">8,500 ft</text>
+
+          <!-- No retarder warning marker -->
+          <line x1="640" y1="0" x2="640" y2="80" stroke="rgba(200,147,58,0.15)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     THE NUMBERS
+══════════════════════════════════════════════ -->
+<section id="numbers">
+  <p class="section-label reveal">By the numbers</p>
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number">150<span class="stat-unit">–180</span></div>
+      <div class="stat-label">Miles driven<br>per operating day</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Rush hours navigated<br>per day</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">70</div>
+      <div class="stat-label">Children on board<br>each trip</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">3,500<span class="stat-unit">ft</span></div>
+      <div class="stat-label">Elevation gain and loss<br>through Left Hand Canyon</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">17</div>
+      <div class="stat-label">Canyon miles<br>on service brakes alone</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Other US cities where<br>this route is possible</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     THE STORY
+══════════════════════════════════════════════ -->
+<section id="story">
+  <p class="section-label reveal">The Story</p>
+
+  <p class="story-intro reveal">
+    "There is exactly one place in the United States where a school bus driver
+    does what I did last summer. One city. One route. One person.
+    I know this because I've looked, and because the geography makes it
+    mathematically impossible anywhere else."
+  </p>
+
+  <div class="story-block reveal">
+    <h3>Pre-dawn — Boulder to Lakewood</h3>
+    <p>
+      My day started before the kids ever saw a bus. I live in Boulder.
+      The depot is in Lakewood — on the west side of Denver — which means
+      my morning begins with an hour of personal driving just to get to the bus.
+      I'm already in the car before most people have turned off their alarm.
+    </p>
+    <p>
+      I arrive at the depot. I prep the bus. A full-size 70-passenger school bus.
+      I check it, walk it, make sure everything is right. Then I pull out of Lakewood
+      and into what is already becoming Denver's morning rush hour.
+    </p>
+  </div>
+
+  <div class="story-block reveal">
+    <h3>Rush Hour × 2 — Into the City and Out</h3>
+    <p>
+      You almost never see school buses on the freeway. They run suburban routes,
+      neighborhood streets, predictable loops. They are not typically threading
+      through downtown Denver interchanges in morning rush hour with 60 kids on board.
+    </p>
+    <p>
+      I was out there every Tuesday, Wednesday, and Thursday. Denver to Boulder is
+      roughly 30 miles on US-36 but in morning rush hour it runs long.
+      <strong>I've got 70 kids behind me. I've got a magnetic phone mount on the windshield
+      running a playlist. I've got a Bluetooth speaker system strung through the cabin.</strong>
+      We are not sitting in silence. We are running a show.
+    </p>
+  </div>
+
+  <p class="story-callout reveal">
+    "Nursery rhymes for the little ones. Pop music. Call and response.
+    By the time we clear Boulder traffic the bus is already a dance party."
+  </p>
+
+  <div class="story-block reveal">
+    <h3>The Canyon</h3>
+    <p>
+      We clear Boulder and turn north. Left Hand Canyon Road. This is where
+      the drive changes character entirely. It is narrow in places. It winds.
+      The elevation gain is continuous and significant — you're going from roughly
+      5,400 feet at the canyon mouth to over 9,000 feet near Ward. The road follows
+      Left Hand Creek. There are no wide shoulders. There are no second chances.
+    </p>
+    <p>
+      I am driving a full-size 70-passenger school bus up this road.
+      <strong>With 70 kids. And no retarder.</strong>
+    </p>
+  </div>
+
+  <div class="story-block reveal">
+    <h3>The Retarder Problem</h3>
+    <p>
+      A retarder is a braking system designed specifically for large vehicles on
+      mountain grades. It uses engine compression or electromagnetic resistance to
+      slow the vehicle without depending entirely on the service brakes. In Colorado,
+      mountain bus routes are supposed to have them. They are standard equipment for
+      a reason — descending a loaded bus down 17 miles of canyon road on brakes alone
+      generates dangerous heat and wear.
+    </p>
+    <p>
+      My bus didn't have one. The Boys &amp; Girls Club had purchased a bus that was
+      not spec'd for mountain driving. And so I — a certified mountain driver, CDL with
+      school bus endorsement and mountain certification — drove that bus up and down
+      Left Hand Canyon all summer on service brakes and skill alone.
+      <strong>Nobody else on that route had my certification.
+      Nobody else was doing what I was doing.</strong>
+    </p>
+  </div>
+
+  <div class="story-block reveal">
+    <h3>Why This Route Exists Nowhere Else</h3>
+    <p>
+      The combination of factors that makes this route one of a kind is not subjective.
+      It is geographic and logistical. You need a major metro with significant rush hour
+      congestion — Denver qualifies. You need a secondary city with its own rush hour
+      between the metro and the mountains — Boulder qualifies, and almost nothing else does.
+      You need a mountain destination close enough for a day trip. You need the canyon road
+      itself — narrow, gaining thousands of feet, demanding mountain certification.
+    </p>
+    <p>
+      Los Angeles has the traffic but the mountains are too far. San Francisco has traffic
+      and mountains but the geography doesn't stack the same way.
+      <strong>Denver to Boulder to Left Hand Canyon to Ward is the only place in the country
+      where all of it stacks.</strong> I was the only driver doing it.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     THE PROOF
+══════════════════════════════════════════════ -->
+<div id="proof">
+  <div class="inner">
+    <p class="section-label reveal">The Proof</p>
+
+    <span class="quote-mark reveal">"</span>
+
+    <p class="quote-text reveal">
+      In his years of service, he had never received calls specifically
+      requesting a driver by name. He received
+      <em>multiple calls per day</em> for Todd.
+    </p>
+
+    <p class="quote-attribution reveal">
+      <strong>Shane Julias — Transportation Supervisor, Boulder Valley School District</strong>
+      Dispatcher on the Boys &amp; Girls Club of Metro Denver route, Summer 2025
+    </p>
+
+    <div class="proof-stats reveal">
+      <div class="proof-stat">
+        <div class="proof-stat-number">0×</div>
+        <div class="proof-stat-label">Times in his career Shane had received<br>driver requests before Todd</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-number">∞+</div>
+        <div class="proof-stat-label">Calls per day requesting<br>Todd specifically</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-number">Tips</div>
+        <div class="proof-stat-label">Received. As a school<br>bus driver.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     CREDENTIALS
+══════════════════════════════════════════════ -->
+<section id="credentials">
+  <p class="section-label reveal">Credentials</p>
+
+  <div class="cred-grid">
+    <div class="cred-item reveal">
+      <div class="cred-title">Commercial Driver's License</div>
+      <div class="cred-sub">CDL — State of Colorado<br>Full commercial driving authorization</div>
+    </div>
+    <div class="cred-item reveal reveal-delay-1">
+      <div class="cred-title">School Bus Endorsement</div>
+      <div class="cred-sub">Authorized for school bus operations<br>Passenger transport, children</div>
+    </div>
+    <div class="cred-item reveal reveal-delay-2">
+      <div class="cred-title">Mountain Certification</div>
+      <div class="cred-sub">Colorado mountain driving certification<br>Canyon and high-altitude routes</div>
+    </div>
+    <div class="cred-item reveal reveal-delay-3">
+      <div class="cred-title">BVSD Experience</div>
+      <div class="cred-sub">Boulder Valley School District<br>Field trips, sports routes, special assignments</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CONNECT
+══════════════════════════════════════════════ -->
+<section id="connect">
+  <p class="section-label reveal" style="align-self:flex-start">Request Todd</p>
+
+  <h2 class="connect-heading reveal">
+    If you want to know more,<br>you know where to find me.
+  </h2>
+
+  <p class="connect-sub reveal">
+    Parents in the Boulder/Denver metro area can request a specific driver
+    through their school district's transportation dispatcher. Ask for Todd Beetcher.
+    Dispatchers confirm it's allowed — it's just never been done before.
+  </p>
+
+  <a href="https://linkedin.com/in/beeetcher" class="connect-link reveal" target="_blank" rel="noopener">
+    Find Todd on LinkedIn
+  </a>
+
+  <div class="connect-request reveal">
+    <h4>How to request a specific driver</h4>
+    <p>
+      Contact your school district's transportation department directly.
+      Mention the driver's name when scheduling your field trip or sports route.
+      At Boulder Valley School District, dispatcher confirmation is the standard
+      process — this site gives you the language to make that call.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer>
+  <p class="footer-name">Todd Beetcher — Commercial Driver</p>
+  <p class="footer-links">
+    <a href="https://linkedin.com/in/beeetcher" target="_blank" rel="noopener">LinkedIn</a>
+    &nbsp;·&nbsp; Summer 2025 &nbsp;·&nbsp; Boulder, Colorado
+  </p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
