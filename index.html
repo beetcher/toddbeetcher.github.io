@@ -3,91 +3,7 @@
 <head>
   <title>Todd Drives</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Georgia, serif;
-      background: #1a1a2e;
-      color: white;
-    }
-    .hero {
-      position: relative;
-      height: 100vh;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 60px;
-    }
-    .hero img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
-      opacity: 0.6;
-    }
-    .hero-text {
-      position: relative;
-      text-align: center;
-      z-index: 2;
-    }
-    .hero-text h1 {
-      font-size: 4rem;
-      color: #f5c518;
-      letter-spacing: 2px;
-    }
-    .hero-text p {
-      font-size: 1.3rem;
-      color: #ffffff;
-      margin-top: 12px;
-      letter-spacing: 1px;
-    }
-    .section {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 80px 40px;
-    }
-    .photo-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding: 80px 40px;
-    }
-    .photo-section img {
-      width: 100%;
-      max-width: 800px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-    .photo-caption {
-      font-size: 1.4rem;
-      color: #f5c518;
-      text-align: center;
-      font-style: italic;
-    }
-    .photo-caption span {
-      display: block;
-      font-size: 1rem;
-      color: #aaaaaa;
-      margin-top: 8px;
-      font-style: normal;
-    }
-    .easter-egg {
-      position: fixed;
-      top: 16px;
-      left: 20px;
-      z-index: 100;
-      color: rgba(255,255,255,0.18);
-      font-size: 1.1rem;
-      text-decoration: none;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-    .easter-egg:hover {
-      color: rgba(245,197,24,0.7);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -101,13 +17,33 @@
     </div>
   </div>
 
-  <div class="photo-section">
-    <img src="bus-boulder.jpg" alt="Bus 5501 with Flatirons in background">
-    <div class="photo-caption">
-      Todd's Red Carpet Treatment.
-      <span>Bus 5501 · Boulder, Colorado · Flatirons backdrop · Every trip, every time.</span>
-    </div>
-  </div>
+  <!-- LAYER 2 — Field Trips Are My Specialty -->
+  <section class="layer" id="layer-2">
+    <p class="layer-label">Layer 2 · Field Trips Are My Specialty</p>
+    <h2 class="layer-heading">Field Trips Are My Specialty</h2>
+    <p class="layer-placeholder">Placeholder — horizontal swipe cards: confirmation email, red carpet, music playlists, follow-through.</p>
+  </section>
+
+  <!-- LAYER 3 — Raising the Brand -->
+  <section class="layer" id="layer-3">
+    <p class="layer-label">Layer 3 · Raising the Brand</p>
+    <h2 class="layer-heading">Raising the Brand</h2>
+    <p class="layer-placeholder">Placeholder — two columns: coworkers (Christmas parade, donuts, wedding cake) and families & schools (good mornings, instruments, holiday jokes).</p>
+  </section>
+
+  <!-- LAYER 4 — The Proof -->
+  <section class="layer" id="layer-4">
+    <p class="layer-label">Layer 4 · The Proof</p>
+    <h2 class="layer-heading">The Proof</h2>
+    <p class="layer-placeholder">Placeholder — Shane's quote (pending public use confirmation) and supporting proof points: tips received, multiple daily name requests, families seeking him out directly.</p>
+  </section>
+
+  <!-- LAYER 5 — Available Now -->
+  <section class="layer" id="layer-5">
+    <p class="layer-label">Layer 5 · Available Now</p>
+    <h2 class="layer-heading">Available Now.</h2>
+    <p class="layer-placeholder">Placeholder — contact form or email link, LinkedIn profile, AI widget (Firebase + Claude API, build last).</p>
+  </section>
 
 </body>
 </html>
