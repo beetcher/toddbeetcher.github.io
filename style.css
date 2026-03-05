@@ -36,36 +36,35 @@ body {
   margin-top: 12px;
   letter-spacing: 1px;
 }
-.section {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 80px 40px;
-}
-.photo-section {
+/* ── SKELETON LAYERS 2–5 ── */
+.layer {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 80px 40px;
+  justify-content: center;
+  padding: 60px 40px;
+  border-top: 1px solid rgba(245, 197, 24, 0.2);
 }
-.photo-section img {
-  width: 100%;
-  max-width: 800px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-.photo-caption {
-  font-size: 1.4rem;
+.layer-label {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: #f5c518;
-  text-align: center;
-  font-style: italic;
+  margin-bottom: 24px;
+  opacity: 0.6;
 }
-.photo-caption span {
-  display: block;
+.layer-heading {
+  font-size: 2.8rem;
+  color: #f5c518;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+.layer-placeholder {
   font-size: 1rem;
-  color: #aaaaaa;
-  margin-top: 8px;
-  font-style: normal;
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+  max-width: 600px;
+  line-height: 1.7;
 }
 .easter-egg {
   position: fixed;
