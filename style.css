@@ -217,6 +217,24 @@ body {
 .thumb-6 { left: 107px; top: 503px; }
 .thumb-7 { left:  25px; top: 305px; }
 .thumb-8 { left: 107px; top: 107px; }
+/* TEMPORARY — number labels for identification */
+.wheel-thumb::after {
+  position: absolute;
+  top: 94px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+}
+.thumb-1::after { content: "1"; }
+.thumb-2::after { content: "2"; }
+.thumb-3::after { content: "3"; }
+.thumb-4::after { content: "4"; }
+.thumb-5::after { content: "5"; }
+.thumb-6::after { content: "6"; }
+.thumb-7::after { content: "7"; }
+.thumb-8::after { content: "8"; }
 
 /* ── SKELETON LAYERS 2–5 ── */
 .layer {
