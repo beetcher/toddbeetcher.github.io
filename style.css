@@ -112,6 +112,58 @@ body {
   line-height: 1;
 }
 
+/* ── IMAGE LIGHTBOX ── */
+#img-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#img-lightbox.open {
+  display: flex;
+}
+@keyframes lightbox-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+#img-lightbox.open #img-lightbox-inner {
+  animation: lightbox-enter 500ms ease-out forwards;
+}
+#img-lightbox-inner {
+  position: relative;
+  width: 66vw;
+  max-width: 66vw;
+}
+#img-lightbox-img {
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+}
+#img-lightbox-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 18px;
+  line-height: 1.5;
+  border-radius: 0 0 4px 4px;
+}
+
 /* ── LAYER 2 — WHEEL ── */
 #layer-2 {
   position: relative;

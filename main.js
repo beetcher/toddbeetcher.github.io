@@ -22,5 +22,36 @@ lightbox.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'Escape') {
+    closeLightbox();
+    closeImgLightbox();
+  }
+});
+
+// ── IMAGE LIGHTBOX ──
+const imgLightbox = document.getElementById('img-lightbox');
+const imgLightboxInner = document.getElementById('img-lightbox-inner');
+const imgLightboxImg = document.getElementById('img-lightbox-img');
+const imgLightboxCaption = document.getElementById('img-lightbox-caption');
+
+function openImgLightbox(src, caption) {
+  imgLightboxImg.src = src;
+  imgLightboxCaption.textContent = caption;
+  imgLightbox.classList.add('open');
+}
+
+function closeImgLightbox() {
+  imgLightbox.classList.remove('open');
+  imgLightboxImg.src = '';
+  imgLightboxCaption.textContent = '';
+}
+
+document.querySelectorAll('.wheel-thumb').forEach((thumb) => {
+  thumb.addEventListener('click', () => {
+    openImgLightbox(thumb.dataset.src, thumb.dataset.caption);
+  });
+});
+
+imgLightbox.addEventListener('click', (e) => {
+  if (!imgLightboxInner.contains(e.target)) closeImgLightbox();
 });
