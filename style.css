@@ -154,6 +154,7 @@ body {
   width: 700px;
   height: 700px;
   flex-shrink: 0;
+  transform: translate(23px, -52px);
 }
 .wheel-hub {
   position: absolute;
