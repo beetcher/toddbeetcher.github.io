@@ -96,8 +96,10 @@ body {
   display: flex;
 }
 #lightbox-video {
-  width: 90%;
-  max-width: 900px;
+  max-height: 90vh;
+  max-width: 90vw;
+  width: auto;
+  height: auto;
   border-radius: 4px;
 }
 .lightbox-close {
