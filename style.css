@@ -194,6 +194,12 @@ body {
 }
 #layer-2 .layer-label {
   margin-bottom: 16px;
+  font-size: 4rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: none;
+  opacity: 1;
+  text-align: left;
 }
 .wheel-subhead {
   font-size: 1.4rem;
@@ -336,19 +342,19 @@ body {
   max-width: 1100px;
 }
 .l3-title {
-  font-size: 1.6rem;
+  font-size: 4rem;
   color: #f5c518;
-  text-align: center;
+  text-align: left;
   font-family: Georgia, serif;
-  font-weight: normal;
-  letter-spacing: 0.5px;
+  font-weight: bold;
+  letter-spacing: 2px;
   margin-bottom: 32px;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 .l3-top-row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 24px;
   margin-bottom: 48px;
   flex-wrap: wrap;
@@ -356,10 +362,11 @@ body {
 .l3-video-wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 16px;
 }
 .l3-video-btn {
+  position: relative;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -369,15 +376,30 @@ body {
   justify-content: center;
   text-decoration: none;
   flex-shrink: 0;
+  animation: ring 2.4s ease-out infinite 0s;
+}
+.l3-video-btn::before,
+.l3-video-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.l3-video-btn::before {
+  animation: ring 2.4s ease-out infinite 0.8s;
+}
+.l3-video-btn::after {
+  animation: ring 2.4s ease-out infinite 1.6s;
 }
 .l3-video-btn svg {
   margin-left: 3px;
 }
 .l3-video-label {
-  font-size: 0.75rem;
-  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #f5c518;
   font-family: Georgia, serif;
-  text-align: center;
+  text-align: left;
 }
 .l3-pdf-link {
   font-size: 0.8rem;
