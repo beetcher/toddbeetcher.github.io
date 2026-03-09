@@ -320,6 +320,139 @@ body {
   max-width: 600px;
   line-height: 1.7;
 }
+/* ── LAYER 3 ── */
+#layer-3 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a2e;
+  border-top: 1px solid rgba(245, 197, 24, 0.2);
+  padding: 60px 40px;
+  font-family: Georgia, serif;
+}
+.l3-inner {
+  width: 100%;
+  max-width: 1100px;
+}
+.l3-title {
+  font-size: 1.6rem;
+  color: #f5c518;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  margin-bottom: 32px;
+  line-height: 1.4;
+}
+.l3-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+.l3-video-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.l3-video-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #c0392b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.l3-video-btn svg {
+  margin-left: 3px;
+}
+.l3-video-label {
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-family: Georgia, serif;
+  text-align: center;
+}
+.l3-pdf-link {
+  font-size: 0.8rem;
+  color: #f5c518;
+  border: 1px solid #f5c518;
+  border-radius: 20px;
+  padding: 6px 18px;
+  text-decoration: none;
+  font-family: Georgia, serif;
+  transition: background 0.2s;
+}
+.l3-pdf-link:hover {
+  background: rgba(245, 197, 24, 0.1);
+}
+.l3-columns {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+.l3-legend {
+  flex: 0 0 300px;
+}
+.l3-legend-label {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #f5c518;
+  opacity: 0.6;
+  margin-bottom: 28px;
+  font-family: Georgia, serif;
+}
+.l3-legend-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 28px;
+  align-items: flex-start;
+}
+.l3-legend-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.l3-legend-text strong {
+  display: block;
+  color: #ffffff;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.l3-legend-text em {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.88rem;
+  font-family: Georgia, serif;
+  line-height: 1.5;
+}
+.l3-map-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.l3-map-frame {
+  position: relative;
+  width: 100%;
+  border: 2px solid #f5c518;
+  box-shadow: 0 0 24px rgba(245, 197, 24, 0.18);
+}
+.l3-map-frame img {
+  width: 100%;
+  display: block;
+}
+.l3-stop {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
 .easter-egg {
   position: fixed;
   top: 16px;
