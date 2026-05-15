@@ -344,7 +344,7 @@ body {
 .l3-title {
   font-size: 4rem;
   color: #f5c518;
-  text-align: left;
+  text-align: center;
   font-family: Georgia, serif;
   font-weight: bold;
   letter-spacing: 2px;
@@ -403,7 +403,7 @@ body {
 }
 .l3-pdf-link {
   font-size: 0.8rem;
-  color: #f5c518;
+  color: #ffffff;
   border: 1px solid #f5c518;
   border-radius: 20px;
   padding: 6px 18px;
@@ -414,10 +414,18 @@ body {
 .l3-pdf-link:hover {
   background: rgba(245, 197, 24, 0.1);
 }
+.l3-video-wrap + .l3-pdf-link {
+  margin-left: auto;
+}
 .l3-columns {
   display: flex;
   gap: 48px;
   align-items: center;
+}
+.l3-title-sub {
+  display: block;
+  font-size: 55%;
+  color: #ffffff;
 }
 .l3-legend {
   flex: 0 0 300px;
