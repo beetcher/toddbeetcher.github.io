@@ -147,13 +147,15 @@ body {
 }
 #img-lightbox-inner {
   position: relative;
-  width: 66vw;
-  max-width: 66vw;
 }
 #img-lightbox-img {
-  width: 100%;
+  width: auto;
+  height: auto;
   display: block;
   border-radius: 4px;
+  max-width: 66vw;
+  max-height: 90vh;
+  object-fit: contain;
 }
 #img-lightbox-caption {
   position: absolute;
