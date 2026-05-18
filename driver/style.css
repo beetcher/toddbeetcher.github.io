@@ -83,7 +83,8 @@ body {
 }
 
 /* ── LIGHTBOX ── */
-#lightbox {
+#lightbox,
+#l3-lightbox {
   display: none;
   position: fixed;
   inset: 0;
@@ -92,10 +93,12 @@ body {
   align-items: center;
   justify-content: center;
 }
-#lightbox.open {
+#lightbox.open,
+#l3-lightbox.open {
   display: flex;
 }
-#lightbox-video {
+#lightbox-video,
+#l3-lightbox-video {
   max-height: 90vh;
   max-width: 90vw;
   width: auto;

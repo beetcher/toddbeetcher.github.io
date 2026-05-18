@@ -55,3 +55,36 @@ document.querySelectorAll('.wheel-thumb').forEach((thumb) => {
 imgLightbox.addEventListener('click', (e) => {
   if (!imgLightboxInner.contains(e.target)) closeImgLightbox();
 });
+
+// ── LAYER 3 VIDEO LIGHTBOX ──
+const l3VideoBtn = document.querySelector('.l3-video-btn');
+const l3Lightbox = document.getElementById('l3-lightbox');
+const l3LightboxVideo = document.getElementById('l3-lightbox-video');
+const l3CloseBtn = l3Lightbox.querySelector('.lightbox-close');
+
+function openL3Lightbox() {
+  l3Lightbox.classList.add('open');
+  l3LightboxVideo.play();
+}
+
+function closeL3Lightbox() {
+  l3Lightbox.classList.remove('open');
+  l3LightboxVideo.pause();
+  l3LightboxVideo.currentTime = 0;
+}
+
+l3VideoBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  openL3Lightbox();
+});
+l3CloseBtn.addEventListener('click', closeL3Lightbox);
+
+l3Lightbox.addEventListener('click', (e) => {
+  if (e.target === l3Lightbox) closeL3Lightbox();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && l3Lightbox.classList.contains('open')) {
+    closeL3Lightbox();
+  }
+});
