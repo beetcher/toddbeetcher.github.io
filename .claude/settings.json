@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(file /Users/nddev/nd/bd/toddbeetcher.github.io/driver/assets/top_shots/[1245].jpg)",
+      "Bash(python3)",
+      "Bash(git status *)",
+      "Bash(grep -E \"\\\\.\\(html|js|css\\)$\")",
+      "Bash(awk '/^#img-lightbox-img/,/^#img-lightbox-caption/' /Users/nddev/nd/bd/toddbeetcher.github.io/driver/style.css)"
+    ]
+  }
+}
