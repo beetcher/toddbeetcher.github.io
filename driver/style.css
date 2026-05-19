@@ -498,9 +498,22 @@ body {
   text-decoration: none;
   transition: color 0.3s;
   cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
 }
 .easter-egg:hover {
   color: rgba(245,197,24,0.7);
+}
+.easter-egg-image {
+  width: 2.2rem;
+  height: 2.2rem;
+  object-fit: contain;
+  display: block;
+  opacity: 0.18;
+  transition: opacity 0.3s;
+}
+.easter-egg:hover .easter-egg-image {
+  opacity: 0.7;
 }
 
 /* ── LAYER 5 — CONTACT STYLING ── */
