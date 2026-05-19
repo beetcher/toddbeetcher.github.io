@@ -1,4 +1,8 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
   font-family: Georgia, serif;
   background: #1a1a2e;
@@ -14,8 +18,10 @@ body {
 }
 .hero img {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   opacity: 0.6;
@@ -63,7 +69,7 @@ body {
 }
 .play-btn::before,
 .play-btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -78,8 +84,12 @@ body {
   margin-left: 4px;
 }
 @keyframes ring {
-  0%   { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.6); }
-  100% { box-shadow: 0 0 0 24px rgba(192, 57, 43, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 24px rgba(192, 57, 43, 0);
+  }
 }
 
 /* ── LIGHTBOX ── */
@@ -180,13 +190,13 @@ body {
   align-items: center;
   justify-content: center;
   padding: 60px 40px;
-  background-image: url('assets/wheel_bg.png');
+  background-image: url("assets/wheel_bg.png");
   background-size: cover;
   background-position: center;
   overflow: hidden;
 }
 #layer-2::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
@@ -253,8 +263,12 @@ body {
   font-family: Georgia, serif;
 }
 @keyframes scroll-up {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
 .wheel-thumb {
   position: absolute;
@@ -274,14 +288,38 @@ body {
 .wheel-thumb img:hover {
   filter: grayscale(0%);
 }
-.thumb-1 { left: 305px; top:  25px; }
-.thumb-2 { left: 503px; top: 107px; }
-.thumb-3 { left: 585px; top: 305px; }
-.thumb-4 { left: 503px; top: 503px; }
-.thumb-5 { left: 305px; top: 585px; }
-.thumb-6 { left: 107px; top: 503px; }
-.thumb-7 { left:  25px; top: 305px; }
-.thumb-8 { left: 107px; top: 107px; }
+.thumb-1 {
+  left: 305px;
+  top: 25px;
+}
+.thumb-2 {
+  left: 503px;
+  top: 107px;
+}
+.thumb-3 {
+  left: 585px;
+  top: 305px;
+}
+.thumb-4 {
+  left: 503px;
+  top: 503px;
+}
+.thumb-5 {
+  left: 305px;
+  top: 585px;
+}
+.thumb-6 {
+  left: 107px;
+  top: 503px;
+}
+.thumb-7 {
+  left: 25px;
+  top: 305px;
+}
+.thumb-8 {
+  left: 107px;
+  top: 107px;
+}
 /* TEMPORARY — number labels for identification */
 .wheel-thumb::after {
   position: absolute;
@@ -292,14 +330,30 @@ body {
   color: white;
   font-size: 12px;
 }
-.thumb-1::after { content: "1"; }
-.thumb-2::after { content: "2"; }
-.thumb-3::after { content: "3"; }
-.thumb-4::after { content: "4"; }
-.thumb-5::after { content: "5"; }
-.thumb-6::after { content: "6"; }
-.thumb-7::after { content: "7"; }
-.thumb-8::after { content: "8"; }
+.thumb-1::after {
+  content: "1";
+}
+.thumb-2::after {
+  content: "2";
+}
+.thumb-3::after {
+  content: "3";
+}
+.thumb-4::after {
+  content: "4";
+}
+.thumb-5::after {
+  content: "5";
+}
+.thumb-6::after {
+  content: "6";
+}
+.thumb-7::after {
+  content: "7";
+}
+.thumb-8::after {
+  content: "8";
+}
 
 /* ── SKELETON LAYERS 2–5 ── */
 .layer {
@@ -385,7 +439,7 @@ body {
 }
 .l3-video-btn::before,
 .l3-video-btn::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -493,7 +547,7 @@ body {
   top: 16px;
   left: 20px;
   z-index: 100;
-  color: rgba(255,255,255,0.18);
+  color: rgba(255, 255, 255, 0.18);
   font-size: 1.1rem;
   text-decoration: none;
   transition: color 0.3s;
@@ -502,7 +556,7 @@ body {
   height: 2.2rem;
 }
 .easter-egg:hover {
-  color: rgba(245,197,24,0.7);
+  color: rgba(245, 197, 24, 0.7);
 }
 .easter-egg-image {
   width: 2.2rem;
