@@ -35,18 +35,14 @@ function unlockMissionAudio() {
   if (missionAudioUnlocked) return;
   missionAudioUnlocked = true;
   if (!missionTypeSound) initMissionAudio();
-
-  // Restart typewriter to play sounds during typing
-  const typewriterEl = document.getElementById('mission-typewriter');
-  if (typewriterEl) {
-    clearMissionTypewriterTimeouts();
-    typewriterEl.textContent = '';
-    restartMissionTypewriter();
-  }
 }
 
-// Unlock audio on first click anywhere on page
-document.addEventListener('click', unlockMissionAudio, { once: false });
+// Unlock audio on first click anywhere on page (except gateway button)
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.mission-gateway-button')) {
+    unlockMissionAudio();
+  }
+}, { once: false });
 
 // Mission typewriter
 const missionMessage = `MISSION: GET THE KIDS TO HIGH-ALTITUDE MOUNTAIN CAMP.
@@ -103,16 +99,49 @@ function restartMissionTypewriter() {
   startMissionTyping();
 }
 
+function startMissionSequence() {
+  // Unlock audio
+  unlockMissionAudio();
+
+  // Clear any pending timeouts
+  clearMissionTypewriterTimeouts();
+
+  // Clear typewriter and reset state
+  const typewriterEl = document.getElementById('mission-typewriter');
+  if (typewriterEl) {
+    typewriterEl.textContent = '';
+  }
+
+  // Start typewriter from character 0
+  startMissionTyping();
+}
+
 function initMissionTypewriter() {
   if (window.__missionInitialized) return;
   window.__missionInitialized = true;
 
-  const typewriterEl = document.getElementById('mission-typewriter');
-  if (!typewriterEl) return;
+  const gateway = document.querySelector('.mission-gateway');
+  const gatewayBtn = document.querySelector('.mission-gateway-button');
 
-  // Start typewriter after initial delay
-  const initialTimeoutId = setTimeout(startMissionTyping, initialDelay);
-  missionTypewriterTimeouts.push(initialTimeoutId);
+  // Setup gateway button click to start mission
+  if (gatewayBtn && gateway) {
+    let gatewayClicked = false;
+
+    gatewayBtn.addEventListener('click', () => {
+      if (gatewayClicked) return; // Guard against double-clicks
+      gatewayClicked = true;
+      gatewayBtn.disabled = true;
+
+      // Start mission sequence
+      startMissionSequence();
+
+      // Fade out and remove gateway
+      gateway.classList.add('is-hidden');
+      setTimeout(() => {
+        gateway.remove();
+      }, 200);
+    });
+  }
 
   // Also unlock audio on ACCEPT MISSION click
   const acceptBtn = document.querySelector('.mission-accept-button');

@@ -692,3 +692,47 @@ footer {
     padding: 0.75rem 2rem;
   }
 }
+
+/* ─── MISSION GATEWAY ─── */
+.mission-gateway {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: all;
+}
+
+.mission-gateway.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.mission-gateway-button {
+  font-family: var(--mono);
+  font-size: clamp(12px, 1.2vw, 16px);
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #ff2a2a;
+  background: transparent;
+  border: 2px solid #ff2a2a;
+  padding: 0.85rem 2.5rem;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(255, 42, 42, 0.4);
+  transition: all 0.3s ease;
+}
+
+.mission-gateway-button:hover {
+  background: rgba(255, 42, 42, 0.1);
+  box-shadow: 0 0 20px rgba(255, 42, 42, 0.7);
+  color: #ff5555;
+}
+
+.mission-gateway-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
