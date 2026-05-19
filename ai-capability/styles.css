@@ -1,0 +1,223 @@
+/* CSS Variables */
+:root {
+    --color-frame-1: #000000;
+    --color-frame-2: #0f1419;
+    --color-frame-3: #1a2f4a;
+    --color-frame-4: #2d3e47;
+    --color-frame-5: #1a1a2e;
+    --color-frame-6: #2c1a3e;
+    --color-frame-7: #1a2e2e;
+    --color-frame-8: #3e1a1a;
+    --color-frame-9: #000000;
+
+    --text-color: #ffffff;
+    --text-muted: #cccccc;
+
+    --font-family: Georgia, serif;
+    --font-size-base: 16px;
+    --font-size-title-large: 3.5rem;
+    --font-size-title: 2.5rem;
+    --font-size-takeaway: 1.25rem;
+    --font-size-number: 2rem;
+
+    --spacing-large: 3rem;
+    --transition-smooth: all 0.6s ease-out;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: var(--font-size-base);
+    background: #000;
+}
+
+/* Main Layout */
+main {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    z-index: 999;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+#current-frame {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* Frame Base Styles */
+.frame {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-large);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame-content {
+    text-align: center;
+    max-width: 80%;
+    opacity: 1;
+    transform: none;
+}
+
+/* Individual Frame Background Colors */
+.frame-1 {
+    background-color: var(--color-frame-1);
+}
+
+.frame-2 {
+    background-color: var(--color-frame-2);
+}
+
+.frame-3 {
+    background-color: var(--color-frame-3);
+}
+
+.frame-4 {
+    background-color: var(--color-frame-4);
+}
+
+.frame-5 {
+    background-color: var(--color-frame-5);
+}
+
+.frame-6 {
+    background-color: var(--color-frame-6);
+}
+
+.frame-7 {
+    background-color: var(--color-frame-7);
+}
+
+.frame-8 {
+    background-color: var(--color-frame-8);
+}
+
+.frame-9 {
+    background-color: var(--color-frame-9);
+}
+
+/* Frame Content Elements */
+.frame-number {
+    font-size: var(--font-size-number);
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+}
+
+.frame-title {
+    font-size: var(--font-size-title);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+}
+
+.frame-1 .frame-title,
+.frame-9 .frame-title {
+    font-size: var(--font-size-title-large);
+}
+
+.frame-takeaway {
+    font-size: var(--font-size-takeaway);
+    color: var(--text-muted);
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    :root {
+        --font-size-title-large: 2.5rem;
+        --font-size-title: 2rem;
+        --font-size-takeaway: 1.125rem;
+        --font-size-number: 1.75rem;
+        --spacing-large: 2rem;
+    }
+
+    .progress-indicator {
+        top: 1.5rem;
+        right: 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --font-size-title-large: 2rem;
+        --font-size-title: 1.75rem;
+        --font-size-takeaway: 1rem;
+        --font-size-number: 1.5rem;
+        --spacing-large: 1.5rem;
+    }
+
+    .frame {
+        padding: var(--spacing-large);
+    }
+
+    .frame-content {
+        max-width: 95%;
+    }
+
+    .progress-indicator {
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --font-size-title-large: 1.5rem;
+        --font-size-title: 1.375rem;
+        --font-size-takeaway: 0.9375rem;
+        --font-size-number: 1.25rem;
+        --spacing-large: 1rem;
+    }
+
+    .frame {
+        padding: var(--spacing-large);
+    }
+
+    .frame-content {
+        max-width: 100%;
+    }
+
+    .progress-indicator {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .frame-title {
+        margin-bottom: 1.5rem;
+    }
+}
