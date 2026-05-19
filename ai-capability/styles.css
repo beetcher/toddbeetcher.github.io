@@ -83,7 +83,29 @@ main {
     max-width: 80%;
     opacity: 1;
     transform: none;
+    animation: softFadeUp 600ms ease-out both;
 }
+
+@keyframes softFadeUp {
+    from {
+        opacity: 0.2;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.frame[data-frame="1"] .frame-content { animation-delay: 0ms; }
+.frame[data-frame="2"] .frame-content { animation-delay: 40ms; }
+.frame[data-frame="3"] .frame-content { animation-delay: 80ms; }
+.frame[data-frame="4"] .frame-content { animation-delay: 120ms; }
+.frame[data-frame="5"] .frame-content { animation-delay: 160ms; }
+.frame[data-frame="6"] .frame-content { animation-delay: 200ms; }
+.frame[data-frame="7"] .frame-content { animation-delay: 240ms; }
+.frame[data-frame="8"] .frame-content { animation-delay: 280ms; }
+.frame[data-frame="9"] .frame-content { animation-delay: 320ms; }
 
 /* Individual Frame Background Colors */
 .frame-1 {
@@ -219,5 +241,17 @@ main {
 
     .frame-title {
         margin-bottom: 1.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .frame-content {
+        animation: none;
+        opacity: 1;
+        transform: none;
     }
 }
