@@ -224,6 +224,100 @@ main {
     color: #f5c518;
 }
 
+/* ===================================================================
+   Frame 2 — "The New Reality" (The Stream)
+   A single accumulating column of short fragments. The shift from
+   Frame 1: air -> compression, two calm blocks -> many tight lines.
+   Hierarchy: title size, then color-alpha tiers fading down the stream.
+   Motion (one idea): a staggered top-down fade-in, so the column reads
+   as if it is still filling. Fail-safe: dimming uses color alpha, never
+   opacity, so every line stays visible/readable without any animation.
+   =================================================================== */
+
+/* Narrow, left-aligned column — a feed, not Frame 1's wide editorial
+   column. The shared .frame-content fade is disabled; the only motion
+   is the per-element stagger defined below (one animation concept). */
+.frame-2 .frame-content {
+    animation: none;
+    text-align: left;
+    max-width: min(92%, 26rem);
+}
+
+/* "02" — small and quiet; sets the column's left edge.
+   Joins the cascade first (no delay). */
+.frame-2 .frame-number {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.6rem;
+    opacity: 1; /* fail-safe resting state */
+    animation: softFadeUp 600ms ease-out 0ms both;
+}
+
+/* Title still carries weight, but sits tighter to its content than
+   Frame 1 — the compression starts here. */
+.frame-2 .frame-title {
+    font-size: clamp(1.9rem, 6vw, 2.6rem);
+    margin-bottom: 1.4rem;
+    opacity: 1; /* fail-safe resting state */
+    animation: softFadeUp 600ms ease-out 80ms both;
+}
+
+/* The stream — stacked fragments with compressed but intentional
+   spacing. No bullets: order and rhythm carry the meaning. */
+.frame-2 .stream {
+    display: flex;
+    flex-direction: column;
+}
+
+.frame-2 .stream-line {
+    font-size: 1.05rem;
+    line-height: 1.34;
+    margin: 0.14rem 0;
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 1; /* fail-safe resting state — visible with or without motion */
+    animation: softFadeUp 600ms ease-out both;
+}
+
+/* The numbers carry a gold "beat", tying back to Frame 1's accent. */
+.frame-2 .count {
+    color: #f5c518;
+}
+
+/* Dimming tiers — the stream fades downward, implying it never ends.
+   Driven by color alpha (not opacity) so motion never owns visibility. */
+.frame-2 .stream-line-dim-1 { color: rgba(255, 255, 255, 0.68); }
+.frame-2 .stream-line-dim-2 { color: rgba(255, 255, 255, 0.5); }
+.frame-2 .stream-line-dim-3 { color: rgba(255, 255, 255, 0.4); }
+
+/* Closing punch — brightest line, set apart by a hairline rule.
+   Reuses the existing .frame-takeaway element/role. */
+.frame-2 .stream-close {
+    font-size: 1.35rem;
+    line-height: 1.4;
+    color: var(--text-color);
+    text-align: left;
+    max-width: none;
+    margin: 1.15rem 0 0;
+    padding-top: 1.05rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    opacity: 1; /* fail-safe resting state */
+    animation: softFadeUp 600ms ease-out 970ms both;
+}
+
+/* Staggered accumulation — ~80ms steps make the column feel like it is
+   still filling as the eye runs down it. This is the one motion idea. */
+.frame-2 .stream-line:nth-child(1)  { animation-delay: 170ms; }
+.frame-2 .stream-line:nth-child(2)  { animation-delay: 250ms; }
+.frame-2 .stream-line:nth-child(3)  { animation-delay: 330ms; }
+.frame-2 .stream-line:nth-child(4)  { animation-delay: 410ms; }
+.frame-2 .stream-line:nth-child(5)  { animation-delay: 490ms; }
+.frame-2 .stream-line:nth-child(6)  { animation-delay: 570ms; }
+.frame-2 .stream-line:nth-child(7)  { animation-delay: 650ms; }
+.frame-2 .stream-line:nth-child(8)  { animation-delay: 730ms; }
+.frame-2 .stream-line:nth-child(9)  { animation-delay: 810ms; }
+.frame-2 .stream-line:nth-child(10) { animation-delay: 890ms; }
+
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
     :root {
@@ -307,6 +401,17 @@ main {
     /* Frame 1 staggered blocks — drop motion, keep full visibility */
     .frame-1 .reframe-discard,
     .frame-1 .reframe-keep {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Frame 2 stream cascade — drop motion, keep full visibility.
+       Dimming is color alpha, so the designed hierarchy still holds. */
+    .frame-2 .frame-number,
+    .frame-2 .frame-title,
+    .frame-2 .stream-line,
+    .frame-2 .stream-close {
         animation: none;
         opacity: 1;
         transform: none;

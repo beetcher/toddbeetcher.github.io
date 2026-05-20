@@ -32,12 +32,35 @@
             </div>
         </section>
 
-        <!-- Frame 2 — The New Reality -->
+        <!-- Frame 2 — The New Reality
+             "The Stream": a single accumulating column of short content
+             fragments that dim toward the bottom, implying an endless feed.
+             Fail-safe: every line rests at opacity 1; the staggered fade-in
+             only enhances. Designed dimming uses color alpha (never opacity),
+             so reduced-motion / failed animation still shows all text. -->
         <section class="frame frame-2" data-frame="2">
             <div class="frame-content">
                 <p class="frame-number">02</p>
                 <h2 class="frame-title">The New Reality</h2>
-                <p class="frame-takeaway">AI tools, content, and updates are accelerating rapidly.</p>
+
+                <!-- The stream: stacked fragments, no bullets. Order is the
+                     rhythm — concrete items, then an escalating "More". -->
+                <div class="stream">
+                    <p class="stream-line"><span class="count">18</span> new videos today.</p>
+                    <p class="stream-line"><span class="count">4</span> newsletters before lunch.</p>
+                    <p class="stream-line">A model shipped overnight.</p>
+                    <p class="stream-line">A framework you haven't learned.</p>
+                    <p class="stream-line">A thread you haven't read.</p>
+                    <p class="stream-line">A tool you haven't tried.</p>
+                    <p class="stream-line">A breakthrough you already missed.</p>
+                    <p class="stream-line stream-line-dim-1">More videos. More threads. More tools.</p>
+                    <p class="stream-line stream-line-dim-2">More. More. More.</p>
+                    <p class="stream-line stream-line-dim-3">More.</p>
+                </div>
+
+                <!-- Closing punch — kept on the existing .frame-takeaway
+                     class; it is the frame's takeaway. -->
+                <p class="frame-takeaway stream-close">More tomorrow.</p>
             </div>
         </section>
 
