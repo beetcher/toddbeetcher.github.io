@@ -175,6 +175,55 @@ main {
     line-height: 1.8;
 }
 
+/* ===================================================================
+   Frame 1 — "The Reframe" (Opening)
+   Asymmetric weighted contrast: the discarded idea recedes while the
+   new idea dominates, so the type hierarchy performs the argument.
+   Fail-safe: all text rests at opacity 1; animation only enhances it.
+   =================================================================== */
+
+/* Left-aligned editorial column — overrides the global centered content.
+   The shared .frame-content fade is disabled here so the only motion is
+   the inner-block stagger below (one animation concept, no layering). */
+.frame-1 .frame-content {
+    text-align: left;
+    max-width: min(90%, 60rem);
+    animation: none;
+}
+
+.frame-1 .frame-title {
+    margin-bottom: 0;
+}
+
+/* Discarded idea — small, dim, receding */
+.frame-1 .reframe-discard {
+    display: block;
+    font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: clamp(1.75rem, 4vw, 3rem);
+    opacity: 1; /* fail-safe resting state */
+    animation: softFadeUp 850ms ease-out both;
+}
+
+/* New idea — large, bright, dominant */
+.frame-1 .reframe-keep {
+    display: block;
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--text-color);
+    opacity: 1; /* fail-safe resting state */
+    /* 220ms delay lifts the dominant block just after the discarded line */
+    animation: softFadeUp 850ms ease-out 220ms both;
+}
+
+/* Gold accent — marks the pivot, on the verbs only */
+.frame-1 .reframe-verb {
+    color: #f5c518;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
     :root {
@@ -250,6 +299,14 @@ main {
     }
 
     .frame-content {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Frame 1 staggered blocks — drop motion, keep full visibility */
+    .frame-1 .reframe-discard,
+    .frame-1 .reframe-keep {
         animation: none;
         opacity: 1;
         transform: none;
