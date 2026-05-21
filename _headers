@@ -1,0 +1,6 @@
+/driver/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/driver/assets/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/one-of-a-kind/*
+  X-Robots-Tag: noindex, nofollow, noarchive
