@@ -64,12 +64,44 @@
             </div>
         </section>
 
-        <!-- Frame 3 — The Structural Shift -->
+        <!-- Frame 3 — The Structural Shift
+             "The Compression Stack": Frame 2's single undifferentiated
+             stream resolves into structure — two named, stacked zones.
+             "Losing value" is a small, dim, tightly compressed cluster;
+             "Gaining value" is a large, bright, open block. The density
+             jump between them shows compression without explaining it;
+             the eye runs top -> bottom, old -> new.
+             Fail-safe: every line rests at opacity 1 and dimming uses
+             color alpha (never opacity). The one motion is a reveal of
+             the dominant zone — it enhances visibility, never controls it. -->
         <section class="frame frame-3" data-frame="3">
             <div class="frame-content">
                 <p class="frame-number">03</p>
                 <h2 class="frame-title">The Structural Shift</h2>
-                <p class="frame-takeaway">The ecosystem now rewards system-level understanding.</p>
+
+                <!-- Losing value — compressed cluster: small, dim, lines
+                     almost touching. Static; this work has already settled. -->
+                <div class="shift-zone shift-old">
+                    <p class="shift-label shift-label-old">Losing value</p>
+                    <p class="shift-term-old">component-level work</p>
+                    <p class="shift-term-old">implementation details</p>
+                    <p class="shift-term-old">surface-level output</p>
+                </div>
+
+                <!-- The structural break — a hairline pivot. The short
+                     gold segment marks where value moves. -->
+                <div class="shift-break" aria-hidden="true"></div>
+
+                <!-- Gaining value — the dominant zone: large, bright, open.
+                     This is the one block that animates (reveal on load). -->
+                <div class="shift-zone shift-new">
+                    <p class="shift-label shift-label-new">Gaining value</p>
+                    <p class="shift-term-new shift-term-lead">System-level thinking</p>
+                    <p class="shift-term-new">Architecture over implementation</p>
+                    <p class="shift-term-new">End-to-end system ownership</p>
+                </div>
+
+                <p class="frame-takeaway">Surface-level work is being compressed. Only system-level contributors keep their value.</p>
             </div>
         </section>
 

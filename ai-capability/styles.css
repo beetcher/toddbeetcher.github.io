@@ -318,6 +318,124 @@ main {
 .frame-2 .stream-line:nth-child(9)  { animation-delay: 810ms; }
 .frame-2 .stream-line:nth-child(10) { animation-delay: 890ms; }
 
+/* ===================================================================
+   Frame 3 — "The Structural Shift" (Compression Stack)
+   Frame 2's single dimming stream resolves into structure: two named
+   zones stacked old -> new. The "Losing value" cluster is small, dim
+   and tightly compressed; the "Gaining value" block is large, bright
+   and open. The density jump *is* the argument — compression shown,
+   not explained. Hierarchy: scale + whitespace + color alpha.
+   Motion (one idea): a single reveal of the dominant (new) zone.
+   Fail-safe: every line rests at opacity 1; dimming uses color alpha,
+   never opacity, so all text is readable with or without motion/JS.
+   =================================================================== */
+
+/* Left-aligned column — wider than Frame 2's feed so the new zone can
+   breathe. The shared .frame-content fade is disabled; the only motion
+   is the new-zone reveal defined below (one animation concept). */
+.frame-3 .frame-content {
+    animation: none;
+    text-align: left;
+    max-width: min(92%, 34rem);
+}
+
+/* "03" — small and quiet, matching Frame 2's frame-number. */
+.frame-3 .frame-number {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.6rem;
+}
+
+/* Title — weighted, sits tight to the zones below. */
+.frame-3 .frame-title {
+    font-size: clamp(1.9rem, 6vw, 2.6rem);
+    margin-bottom: 1.6rem;
+}
+
+/* Shared zone label — small, wide-tracked, uppercase. */
+.frame-3 .shift-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Losing value: the compressed zone ---------------------------- */
+.frame-3 .shift-old {
+    margin-bottom: 1.4rem;
+}
+
+.frame-3 .shift-label-old {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Old terms — small, low-alpha, lines almost touching: the cluster
+   reads as physically squeezed. Dimming via color alpha (fail-safe). */
+.frame-3 .shift-term-old {
+    font-size: 1rem;
+    line-height: 1.12;
+    letter-spacing: -0.005em;
+    color: rgba(255, 255, 255, 0.38);
+    margin: 0.04rem 0;
+}
+
+/* --- The structural break ----------------------------------------- */
+/* A hairline pivot. The short gold segment marks where value moves —
+   the gold accent ties back to Frames 1 and 2. */
+.frame-3 .shift-break {
+    position: relative;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 0 0 1.4rem;
+}
+
+.frame-3 .shift-break::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2.5rem;
+    height: 1px;
+    background: #f5c518;
+}
+
+/* --- Gaining value: the dominant zone ----------------------------- */
+/* Large, bright, open. This is the one block that animates.
+   Fail-safe: rests at opacity 1; softFadeUp only enhances the reveal. */
+.frame-3 .shift-new {
+    opacity: 1;
+    animation: softFadeUp 700ms ease-out 160ms both;
+}
+
+.frame-3 .shift-label-new {
+    color: #f5c518;
+}
+
+/* New terms — large, bright, generously spaced. Scale + whitespace
+   carry the priority; the lead term is biggest, so the eye lands there. */
+.frame-3 .shift-term-new {
+    font-size: clamp(1.5rem, 4.6vw, 2.15rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text-color);
+    margin: 0.5rem 0;
+}
+
+.frame-3 .shift-term-lead {
+    font-size: clamp(1.85rem, 6vw, 2.85rem);
+}
+
+/* Takeaway — closing structural conclusion, left-aligned to the column
+   and set apart by a hairline rule (echoes Frame 2's stream-close). */
+.frame-3 .frame-takeaway {
+    text-align: left;
+    max-width: none;
+    margin: 1.6rem 0 0;
+    padding-top: 1.05rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
     :root {
@@ -412,6 +530,14 @@ main {
     .frame-2 .frame-title,
     .frame-2 .stream-line,
     .frame-2 .stream-close {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Frame 3 new-zone reveal — drop motion, keep full visibility.
+       The compression hierarchy is static (scale/alpha), so it holds. */
+    .frame-3 .shift-new {
         animation: none;
         opacity: 1;
         transform: none;
