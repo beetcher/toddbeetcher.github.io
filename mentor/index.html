@@ -368,6 +368,33 @@
   }
   .ps figure { margin: 0; }
 
+  /* ---------- FRAME — COWBOY BREAK (visual only) ---------- */
+  .frame-cowboy-break {
+    position: relative;
+    min-height: 70vh;
+    background-image: url('assets/images/cowboy-aerial.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: #1A1208;
+  }
+  .cowboy-break-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #F5ECD7;
+    font-size: 2rem;
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  }
+  @media (max-width: 768px) {
+    .cowboy-break-caption { font-size: 1.5rem; }
+  }
+
   /* ---------- FRAME 7 ---------- */
   .frame-7 {
     position: relative;
@@ -616,6 +643,11 @@
     <p class="reframe-beat reveal">You don't need to speak a programming language anymore. You need to think at the system level. That's the skill that transfers everywhere — whether you're building a company, designing a product, fixing a problem in your community, or figuring out your place in a world that's moving fast.</p>
     <p class="reframe-beat reveal">AI is here. It's everywhere. It's only growing. The ones who embrace it first won't just survive the change. They'll define it.</p>
   </div>
+</section>
+
+<!-- FRAME — Cowboy Aerial visual break -->
+<section class="frame-cowboy-break">
+  <p class="cowboy-break-caption">Don't be this cowboy.</p>
 </section>
 
 <!-- FRAME 4 — What This Experience Is -->
