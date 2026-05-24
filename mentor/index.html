@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Shared Moment of Growth — Todd Beetcher</title>
+<meta name="description" content="A Shared Moment of Growth — project-based, experiential, collaborative. From friction to prototype. From problem to product.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤠</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700;1,900&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1A1208;
+    --text: #F5ECD7;
+    --accent: #C7783A;
+    --secondary: #8B5E3C;
+    --divider: #2E1F0E;
+    --display: 'Playfair Display', Georgia, serif;
+    --body: 'DM Sans', system-ui, sans-serif;
+    --bar-height: 52px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    padding-top: var(--bar-height);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ---------- STICKY NAV BAR ---------- */
+  .sticky-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    min-height: var(--bar-height);
+    background: #1A1208;
+    border-bottom: 1px solid #C7783A;
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    line-height: 1.2;
+  }
+  .sticky-bar .bar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Rye', Georgia, serif;
+    color: #C7783A;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-tagline {
+    font-family: var(--body);
+    color: #F5ECD7;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-cta {
+    font-family: var(--body);
+    color: #F5ECD7;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-cta .bar-date {
+    display: inline;
+  }
+  .sticky-bar .bar-cta a {
+    color: #C7783A;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .sticky-bar .bar-cta a:hover {
+    color: #E8924A;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media (max-width: 768px) {
+    .sticky-bar .bar-tagline { display: none; }
+    .sticky-bar .bar-cta .bar-date { display: none; }
+  }
+
+  img { max-width: 100%; display: block; }
+
+  .frame {
+    padding: 80px 24px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- FRAME 1 ---------- */
+  .frame-1 {
+    min-height: calc(100vh - var(--bar-height));
+    min-height: calc(100svh - var(--bar-height));
+    padding: 3rem 24px 64px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .letter {
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #F5ECD7;
+  }
+  .letter p {
+    margin: 0 0 1.25rem;
+  }
+  .letter .signature {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+  }
+  .frame-1 .hero {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background-color: #1A1208;
+    display: block;
+  }
+  .letter .hero-mobile {
+    margin: 2rem 0;
+    max-height: 70vh;
+  }
+  .frame-1 .hero-desktop {
+    display: none;
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .scroll-indicator svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.55; transform: translate(-50%, 0); }
+    50% { opacity: 1; transform: translate(-50%, 8px); }
+  }
+
+  /* ---------- FRAME 2 ---------- */
+  .eyebrow {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 32px;
+  }
+  .question-card {
+    border-left: 2px solid var(--accent);
+    padding: 14px 0 14px 20px;
+    margin: 0 0 28px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .closer {
+    font-style: italic;
+    color: var(--text);
+    margin-top: 40px;
+    font-size: 17px;
+  }
+
+  /* ---------- FRAME 3 ---------- */
+  .frame-3 {
+    background: var(--bg);
+  }
+  .reframe-headline {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1.1;
+    text-align: center;
+    margin: 0 0 48px;
+  }
+  .reframe-beat {
+    margin: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  .gift {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.15em;
+  }
+
+  /* ---------- FRAME 4 ---------- */
+  .section-headline {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 1.1;
+    text-align: center;
+    margin: 0 0 40px;
+  }
+  .arc {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .arc-step {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 999px;
+  }
+  .arc-line {
+    width: 2px;
+    height: 18px;
+    background: var(--secondary);
+  }
+
+  /* ---------- FRAME 5 ---------- */
+  .frame-5 {
+    background: var(--bg);
+  }
+  .walkaway-item {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.3;
+    margin: 0 0 36px;
+  }
+  .walkaway-final {
+    font-family: var(--display);
+    font-weight: 900;
+    font-style: italic;
+    font-size: 30px;
+    line-height: 1.25;
+    color: var(--accent);
+    margin-top: 56px;
+    text-align: center;
+  }
+
+  /* ---------- FRAME 6 ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+  .about-photo {
+    width: 100%;
+    height: auto;
+    filter: sepia(15%) contrast(105%);
+  }
+  .about-copy p {
+    margin: 0 0 20px;
+    font-size: 16.5px;
+    line-height: 1.7;
+  }
+  .ps {
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--divider);
+    color: var(--secondary);
+    font-size: 14.5px;
+  }
+  .ps p {
+    margin: 0 0 16px;
+    font-style: italic;
+  }
+  .ps img {
+    filter: sepia(20%) contrast(102%);
+    margin: 16px 0 12px;
+  }
+  .ps figcaption {
+    font-size: 13px;
+    color: var(--secondary);
+    font-style: italic;
+  }
+  .ps figure { margin: 0; }
+
+  /* ---------- FRAME 7 ---------- */
+  .frame-7 {
+    position: relative;
+    padding: 100px 24px;
+    background-image:
+      linear-gradient(to bottom, rgba(26,18,8,0.3) 0%, rgba(26,18,8,0.75) 100%),
+      url('assets/images/cowboy-aerial.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: var(--bg);
+  }
+  .manifesto {
+    max-width: 680px;
+    margin: 0 auto;
+    color: var(--text);
+    text-align: left;
+  }
+  .manifesto h2 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.05;
+    margin: 0 0 32px;
+    text-align: center;
+  }
+  .manifesto p {
+    margin: 0 0 20px;
+    font-size: 17px;
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .manifesto p.tag {
+    margin-top: 40px;
+    font-family: var(--display);
+    font-weight: 700;
+    font-style: normal;
+    font-size: 22px;
+    text-align: center;
+    color: var(--accent);
+  }
+
+  /* ---------- FRAME 8 ---------- */
+  .frame-8 {
+    background: var(--bg);
+    padding: 120px 24px;
+    text-align: center;
+  }
+  .cta-headline {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+  .cta-button {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--text);
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 22px 44px;
+    border: none;
+    border-radius: 0;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .cta-button:hover {
+    background: #d8884a;
+    transform: translateY(-1px);
+  }
+  .cta-subtext {
+    margin-top: 32px;
+    color: var(--secondary);
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--divider);
+    padding: 32px 24px;
+    color: var(--secondary);
+    font-size: 13px;
+  }
+  .footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .footer-links a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-sep { color: var(--divider); }
+
+  /* ---------- DESKTOP ---------- */
+  @media (min-width: 768px) {
+    .frame-1 {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 4rem;
+      padding: 3rem 40px 64px;
+    }
+    .letter {
+      flex: 1 1 50%;
+      min-width: 0;
+    }
+    .letter .hero-mobile {
+      display: none;
+    }
+    .frame-1 .hero-desktop {
+      display: block;
+      flex: 1 1 50%;
+      min-width: 0;
+      max-height: 80vh;
+      height: auto;
+      align-self: flex-start;
+    }
+
+    .frame { padding: 120px 40px; }
+    .question-card { font-size: 32px; padding-left: 28px; }
+    .reframe-headline { font-size: 56px; }
+    .section-headline { font-size: 52px; }
+    .reframe-beat, .about-copy p { font-size: 18px; }
+    .walkaway-item { font-size: 32px; }
+    .walkaway-final { font-size: 38px; }
+    .manifesto h2 { font-size: 56px; }
+    .manifesto p { font-size: 18px; }
+    .cta-headline { font-size: 52px; }
+
+    .arc {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+    }
+    .arc-line {
+      width: 28px;
+      height: 2px;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .scroll-indicator { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV BAR -->
+<nav class="sticky-bar" aria-label="The Roundup site bar">
+  <span class="bar-brand"><span aria-hidden="true">🤠</span><span>The Roundup</span></span>
+  <span class="bar-tagline">not your average 👢⛺</span>
+  <span class="bar-cta"><span class="bar-date">July 15, 2026 · University of Colorado · </span><a href="mailto:todd@beetcher.com">Register Now</a></span>
+</nav>
+
+<!-- FRAME 1 — Opening letter and image -->
+<section class="frame frame-1" aria-label="Opening letter and image">
+  <div class="letter">
+    <p class="reveal">That's me. Thirty seconds after the father-of-the-bride speech at my first daughter's wedding — my soccer player — being hoisted up by her husband's groomsmen.</p>
+    <p class="reveal">Not a pose. That's what it looks like when your kid chooses exactly the right person and you know it.</p>
+    <img class="hero hero-mobile" src="assets/images/opening-lift.jpg" alt="Todd Beetcher lifted by groomsmen at his daughter's wedding, arms raised in joy">
+    <p class="reveal">I've watched every new wave in technology terrify the people who didn't lean into it first. It was never a threat. It was always a gift — to the ones who moved toward it, and to everyone who came after.</p>
+    <p class="reveal">But AI? AI is different. This is the biggest gift to human productivity in two hundred years. If you embrace it — truly embrace it — you can build a life that nobody in your position has ever been able to build before. The amplification of what one human mind can do right now is unlike anything we've ever seen. This is not hyperbole. This is the moment.</p>
+    <p class="reveal">And the friction you're feeling right now about it? That gap is exactly where your opportunity lives. That discomfort is the signal. It means you're standing right at the edge of something.</p>
+    <p class="reveal">I've spent my career finding that gap and putting the right technology into it. I want to help you find yours.</p>
+    <p class="reveal">I'm not here to explain AI to you. I'm here to help you go native in it.</p>
+    <p class="reveal">That's what this is. That's why I showed up.</p>
+    <p class="signature reveal">— Todd</p>
+  </div>
+  <img class="hero hero-desktop" src="assets/images/opening-lift.jpg" alt="Todd Beetcher lifted by groomsmen at his daughter's wedding, arms raised in joy">
+  <div class="scroll-indicator" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</section>
+
+<!-- FRAME 2 — Hook questions -->
+<section class="frame frame-2">
+  <div class="container">
+    <p class="eyebrow reveal">A few questions. Answer honestly.</p>
+    <div class="question-card reveal">Does AI feel like an opportunity to you yet?</div>
+    <div class="question-card reveal">Do you notice inefficiencies and frustrations all around you — and have a sense there's a better way — but have no idea how to act on it?</div>
+    <div class="question-card reveal">Do you have ideas but no clue how to actually build something?</div>
+    <div class="question-card reveal">Do you want to work with others to build something real — not just talk about it?</div>
+    <div class="question-card reveal">Do you want to walk out of a room having gone from idea to prototype?</div>
+    <p class="closer reveal"><em>If any of these hit home — keep reading.</em></p>
+  </div>
+</section>
+
+<!-- FRAME 3 — The Reframe -->
+<section class="frame frame-3">
+  <div class="container">
+    <h2 class="reframe-headline reveal">This isn't what you think it is.</h2>
+    <p class="reframe-beat reveal">This isn't a coding class.</p>
+    <p class="reframe-beat reveal">It isn't an entrepreneurship class.</p>
+    <p class="reframe-beat reveal">It isn't an engineering class.</p>
+    <p class="reframe-beat reveal">It's about learning to coexist with the most powerful productivity tool ever handed to a generation — before everyone else figures out they have to.</p>
+    <p class="reframe-beat reveal">Not knowing Python isn't a weakness. <span class="gift">It's a gift.</span></p>
+    <p class="reframe-beat reveal">You don't need to speak a programming language anymore. You need to think at the system level. That's the skill that transfers everywhere — whether you're building a company, designing a product, fixing a problem in your community, or figuring out your place in a world that's moving fast.</p>
+    <p class="reframe-beat reveal">AI is here. It's everywhere. It's only growing. The ones who embrace it first won't just survive the change. They'll define it.</p>
+  </div>
+</section>
+
+<!-- FRAME 4 — What This Experience Is -->
+<section class="frame frame-4">
+  <div class="container">
+    <h2 class="section-headline reveal">A Shared Moment of Growth</h2>
+    <p class="reframe-beat reveal">Project-based. Experiential. Collaborative.</p>
+    <p class="reframe-beat reveal">You'll come into a room with other people who have ideas and ambition but don't know where to start.</p>
+    <p class="reframe-beat reveal">Together you'll identify real friction — problems you actually see in the world.</p>
+    <p class="reframe-beat reveal">You'll learn to think about the ecosystem around that problem.</p>
+    <p class="reframe-beat reveal">You'll architect a real solution.</p>
+    <p class="reframe-beat reveal">You'll build a real prototype — together, as a team.</p>
+    <p class="reframe-beat reveal">This is system-level thinking from the very first moment to the last.</p>
+    <p class="reframe-beat reveal">No silos. No solo coding. No theory without practice.</p>
+    <p class="reframe-beat reveal">At the end, you'll have something real. Something you built. Something you can show anyone.</p>
+
+    <div class="arc reveal" aria-label="Process arc">
+      <span class="arc-step">Friction</span>
+      <span class="arc-line" aria-hidden="true"></span>
+      <span class="arc-step">Idea</span>
+      <span class="arc-line" aria-hidden="true"></span>
+      <span class="arc-step">Ecosystem</span>
+      <span class="arc-line" aria-hidden="true"></span>
+      <span class="arc-step">Architecture</span>
+      <span class="arc-line" aria-hidden="true"></span>
+      <span class="arc-step">MVP</span>
+    </div>
+  </div>
+</section>
+
+<!-- FRAME 5 — What You Walk Away With -->
+<section class="frame frame-5">
+  <div class="container">
+    <p class="walkaway-item reveal">The ability to see a problem and know what to do with it.</p>
+    <p class="walkaway-item reveal">Experience going from friction to prototype — start to finish.</p>
+    <p class="walkaway-item reveal">The confidence of a system-level thinker.</p>
+    <p class="walkaway-item reveal">Something you built with your own hands and your own mind.</p>
+    <p class="walkaway-final reveal">"From problem to product. That's the new résumé."</p>
+  </div>
+</section>
+
+<!-- FRAME 6 — About Todd -->
+<section class="frame frame-6">
+  <div class="container">
+    <div class="about-grid">
+      <img class="about-photo reveal" src="assets/images/todd-mic-drop.jpg" alt="Todd Beetcher in a tuxedo, microphone raised, drink in hand, daughter laughing behind him" loading="lazy">
+      <div class="about-copy">
+        <p class="reveal"><em>My name is Todd Beetcher. I married my high school sweetheart in 1984. We're going on a date tonight.</em></p>
+        <p class="reveal"><em>We raised two daughters.</em></p>
+        <p class="reveal"><em>Both were state champions. Both earned Division I full-ride athletic scholarships. Both became doctors — one in physical therapy, one in law. Both are prom queens. Both are homecoming queens. Both are in healthy, committed relationships.</em></p>
+        <p class="reveal"><em>One is moving to Michigan. She asked us to come live near her.</em></p>
+        <p class="reveal"><em>The other is 26, billing 200 hours a month, and still comes to Sunday dinners.</em></p>
+        <p class="reveal"><em>Half my peers are divorced. Half their kids didn't make it through.</em></p>
+        <p class="reveal"><em>I'm not telling you this to brag. I'm telling you this because if you're going to trust someone to stand at the front of a room with your kid — or if you're a kid deciding whose room to walk into — you deserve to know who's standing there.</em></p>
+        <p class="reveal"><em>I have spent my career in business development, sales, and building — in rooms where ideas become products. I've been part of building things before the world knew it needed them. I know how to walk people from the beginning of something all the way to the end. That's what I do. That's what I've always done.</em></p>
+        <p class="reveal"><em>My kids are my proof. Not what I built — what I raised.</em></p>
+      </div>
+    </div>
+
+    <div class="ps">
+      <p class="reveal">If you're wondering who to thank for that iPad in your pocket — you're welcome.</p>
+      <figure class="reveal">
+        <img src="assets/images/webpad-team.jpg" alt="Cyrix WebPAD Conceptual Products Group team photo, Longmont Colorado" loading="lazy">
+        <figcaption>Cyrix WebPAD Conceptual Products Group, Longmont Colorado. Todd Beetcher, second from left.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- FRAME 7 — The Manifesto -->
+<section class="frame frame-7">
+  <div class="manifesto">
+    <h2 class="reveal">The Cowboy</h2>
+    <p class="reveal">There's nothing wrong with the cowboy.</p>
+    <p class="reveal">He was the original get-shit-done contributor. Not for himself — for his family, his community, the people who counted on him to show up. That was the cowboy spirit. And it still is.</p>
+    <p class="reveal">The world built highways around him. Not because he failed. Because he stopped picking up new tools.</p>
+    <p class="reveal">AI is the next tool. And it's not coming — it's here. Everywhere. All the time. Growing.</p>
+    <p class="reveal">The cowboys and cowgirls who thrive in this moment won't be the ones who learned to write Python. They'll be the ones who learned to think at the system level — who can look at a problem, understand the whole ecosystem around it, and build something real from that.</p>
+    <p class="reveal">That's the new cowboy skill. That's what nobody is teaching.</p>
+    <p class="reveal">We're not here to make you an engineer. We're not here to make you an entrepreneur. We're here to give you the confidence and the identity to pick up the most powerful tool ever handed to a generation — and use it to contribute. To your community. To your family. To the world you're about to help build.</p>
+    <p class="reveal">You can still be a cowboy. But you have to pick up the new tools.</p>
+    <p class="tag reveal">Don't tend your fire alone.</p>
+  </div>
+</section>
+
+<!-- FRAME 8 — CTA -->
+<section class="frame frame-8">
+  <div class="container">
+    <h2 class="cta-headline reveal">This is the moment. Come grow with us.</h2>
+    <a class="cta-button reveal" href="mailto:todd@beetcher.com">[ Get In Touch ]</a>
+    <p class="cta-subtext reveal">A Shared Moment of Growth — todd.beetcher.com/mentor</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>© 2025 Todd Beetcher</div>
+    <div>todd.beetcher.com</div>
+    <div class="footer-links">
+      <a href="https://todd.beetcher.com/driver">todd.beetcher.com/driver</a>
+      <span class="footer-sep">|</span>
+      <a href="https://todd.beetcher.com/builder">todd.beetcher.com/builder</a>
+      <span class="footer-sep">|</span>
+      <a href="https://todd.beetcher.com/mentor">todd.beetcher.com/mentor</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reveals = document.querySelectorAll('.reveal');
+
+    var frames = document.querySelectorAll('.frame');
+    frames.forEach(function (frame) {
+      var kids = frame.querySelectorAll('.reveal');
+      kids.forEach(function (el, i) {
+        el.style.transitionDelay = (i * 0.1) + 's';
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      reveals.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
