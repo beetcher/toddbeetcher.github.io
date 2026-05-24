@@ -212,6 +212,45 @@
     font-size: 17px;
   }
 
+  /* ---------- FRAME — THE ROUNDUP ROOM ---------- */
+  .frame-roundup {
+    padding: 0 0 4rem;
+    background: var(--bg);
+  }
+  .frame-roundup .roundup-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  .frame-roundup .roundup-copy {
+    background: #1A1208;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .frame-roundup .roundup-headline {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #F5ECD7;
+    margin: 0 0 1.5rem;
+  }
+  .frame-roundup .roundup-body {
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #F5ECD7;
+    margin: 0 0 1.25rem;
+  }
+  .frame-roundup .roundup-close {
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #C7783A;
+    margin: 0;
+  }
+
   /* ---------- FRAME 3 ---------- */
   .frame-3 {
     background: var(--bg);
@@ -464,6 +503,10 @@
     }
 
     .frame { padding: 120px 40px; }
+    .frame-roundup { padding: 0 0 4rem; }
+    .frame-roundup .roundup-image { max-height: 70vh; }
+    .frame-roundup .roundup-copy { padding: 3rem 2rem; }
+    .frame-roundup .roundup-headline { font-size: 2.5rem; }
     .question-card { font-size: 32px; padding-left: 28px; }
     .reframe-headline { font-size: 56px; }
     .section-headline { font-size: 52px; }
@@ -547,6 +590,17 @@
     <div class="question-card reveal">Do you have ideas but no clue how to actually build something?</div>
     <div class="question-card reveal">Do you want to walk out of a room having gone from idea to prototype?</div>
     <p class="closer reveal"><em>If any of these hit home — keep reading.</em></p>
+  </div>
+</section>
+
+<!-- FRAME — The Roundup Room -->
+<section class="frame frame-roundup" aria-label="The Roundup Room">
+  <img class="roundup-image" src="assets/images/roundup-room.jpg" alt="The Roundup Room" loading="lazy">
+  <div class="roundup-copy">
+    <h2 class="roundup-headline reveal">Join The Roundup.</h2>
+    <p class="roundup-body reveal">A collaborative experience where young builders and mentors come together to develop the most valuable skill of your generation — system-level thinking.</p>
+    <p class="roundup-body reveal">You'll work alongside peers and mentors to identify real friction, architect real solutions, and build real artifacts together. You walk out with something you made.</p>
+    <p class="roundup-close reveal">And a skill that will define your value in a world where AI is everywhere, all the time — propelling you ahead of your peers and positioning you to become the mentor to the next one through the door.</p>
   </div>
 </section>
 
