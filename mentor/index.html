@@ -491,6 +491,30 @@
     font-style: italic;
   }
 
+  /* ---------- FRAME — WANTED POSTER ---------- */
+  .frame-wanted-poster {
+    width: 100%;
+    background: #1A1208;
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .frame-wanted-poster img {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @media (max-width: 768px) {
+    .frame-wanted-poster {
+      padding: 2rem 1rem;
+    }
+    .frame-wanted-poster img {
+      width: 100%;
+    }
+  }
+
   /* ---------- FOOTER ---------- */
   footer {
     background: var(--bg);
@@ -760,6 +784,13 @@
     <a class="cta-button reveal" href="mailto:todd@beetcher.com">[ Get In Touch ]</a>
     <p class="cta-subtext reveal">A Shared Moment of Growth — todd.beetcher.com/mentor</p>
   </div>
+</section>
+
+<!-- FRAME — Wanted Poster -->
+<section class="frame-wanted-poster">
+  <a href="mailto:todd@beetcher.com" title="Join The Roundup">
+    <img src="assets/images/wanted-poster.png" alt="Wanted: A Young Builder — The Roundup, July 15 2026, University of Colorado" loading="lazy">
+  </a>
 </section>
 
 <footer>
