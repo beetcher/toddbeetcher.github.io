@@ -123,6 +123,54 @@
     transform: translateY(0);
   }
 
+  /* ---------- FRAME 0 ---------- */
+  .frame-zero {
+    background: #1A1208;
+    min-height: calc(100svh - var(--bar-height));
+    padding-top: calc(var(--bar-height) + 2rem);
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  .frame-zero-content {
+    transform: translateY(-8%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .frame-zero .zero-headline {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: #4A9B8E;
+    max-width: 700px;
+    margin: 0 0 2rem;
+  }
+  .frame-zero .zero-subhead {
+    font-family: var(--body);
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #C7783A;
+    max-width: 700px;
+    margin: 0;
+  }
+  .frame-zero p.reveal:nth-of-type(1) { transition-delay: 0s; }
+  .frame-zero p.reveal:nth-of-type(2) { transition-delay: 0.1s; }
+  .frame-zero p.reveal:nth-of-type(3) { transition-delay: 0.3s; }
+  .sienna { color: #C7783A; }
+  @media (min-width: 768px) {
+    .frame-zero .zero-headline { font-size: 2rem; margin-bottom: 2.5rem; }
+    .frame-zero .zero-subhead { font-size: 1.1rem; }
+  }
+
   /* ---------- FRAME 1 ---------- */
   .frame-1 {
     min-height: calc(100vh - var(--bar-height));
@@ -662,6 +710,20 @@
   <span class="bar-tagline">not your average 👢⛺</span>
   <span class="bar-cta"><span class="bar-date">July 15, 2026 · University of Colorado · </span><a href="mailto:todd@beetcher.com">Register Now</a></span>
 </nav>
+
+<!-- FRAME 0 — Opening hook -->
+<section class="frame-zero" aria-label="Opening hook">
+  <div class="frame-zero-content">
+    <p class="zero-headline reveal">Curious what skill it takes to thrive as one of the newest members of the <span class="sienna">AI generation</span>.</p>
+    <p class="zero-headline reveal"><span class="sienna">System-level thinking</span> is the most important skill you can develop to <span class="sienna">thrive with AI</span>.</p>
+    <p class="zero-subhead reveal">Let's build together.</p>
+  </div>
+  <div class="scroll-indicator" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</section>
 
 <!-- FRAME 1 — Opening letter and image -->
 <section class="frame frame-1" aria-label="Opening letter and image">
