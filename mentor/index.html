@@ -323,6 +323,39 @@
     background: var(--secondary);
   }
 
+  /* ---------- FRAME — ROUNDUP COMPLETE ---------- */
+  .frame-complete {
+    padding: 0 0 4rem;
+    background-color: #1A1208;
+  }
+  .frame-complete .complete-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    background-color: #1A1208;
+  }
+  .frame-complete .complete-copy {
+    background: #1A1208;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .frame-complete .complete-body {
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #F5ECD7;
+    margin: 0 0 1rem;
+  }
+  .frame-complete .complete-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #4A9B8E;
+    margin: 0;
+  }
+
   /* ---------- FRAME 5 ---------- */
   .frame-5 {
     background: var(--bg);
@@ -580,6 +613,10 @@
     .reframe-beat, .about-copy p { font-size: 18px; }
     .reframe-close { font-size: 1.25rem; }
     .frame-roundup .roundup-tagline { font-size: 1.5rem; }
+    .frame-complete { padding: 0 0 4rem; }
+    .frame-complete .complete-image { max-height: 70vh; }
+    .frame-complete .complete-copy { padding: 3rem 2rem; }
+    .frame-complete .complete-tagline { font-size: 1.25rem; }
     .walkaway-item { font-size: 32px; }
     .walkaway-final { font-size: 38px; }
     .manifesto h2 { font-size: 56px; }
@@ -719,6 +756,15 @@
       <span class="arc-line" aria-hidden="true"></span>
       <span class="arc-step">MVP</span>
     </div>
+  </div>
+</section>
+
+<!-- FRAME — Roundup Complete -->
+<section class="frame frame-complete" aria-label="What The Roundup Produces">
+  <img class="complete-image" src="assets/images/roundup-complete.jpg" alt="The Roundup — cowboys and cowgirls building something real" loading="lazy">
+  <div class="complete-copy">
+    <p class="complete-body reveal">Working together, these cowboys and cowgirls used their system-level thinking to build something real.</p>
+    <p class="complete-tagline reveal">This is what The Roundup produces. ⭐</p>
   </div>
 </section>
 

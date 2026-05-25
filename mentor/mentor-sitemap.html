@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Roundup — Site Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;600&family=Rye&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #1A1208;
+    --cream: #F5ECD7;
+    --sienna: #C7783A;
+    --teal: #4A9B8E;
+    --saddle: #8B5E3C;
+    --walnut: #2E1F0E;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header .eyebrow {
+    font-family: 'Rye', serif;
+    color: var(--sienna);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--cream);
+  }
+
+  header p {
+    color: var(--saddle);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  /* MAIN FUNNEL */
+  .funnel {
+    max-width: 380px;
+    margin: 0 auto 3rem;
+    position: relative;
+  }
+
+  .funnel-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--sienna);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .frame-card {
+    background: var(--walnut);
+    border: 1px solid var(--saddle);
+    border-left: 3px solid var(--sienna);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .frame-card:hover {
+    border-left-color: var(--teal);
+  }
+
+  .frame-number {
+    font-family: 'Rye', serif;
+    color: var(--sienna);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .frame-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--cream);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .frame-purpose {
+    font-size: 0.75rem;
+    color: var(--saddle);
+    line-height: 1.4;
+  }
+
+  .frame-purpose em {
+    color: var(--teal);
+    font-style: normal;
+  }
+
+  /* Arrow connector */
+  .arrow {
+    text-align: center;
+    color: var(--saddle);
+    font-size: 1rem;
+    line-height: 1.2;
+    padding: 0.15rem 0;
+  }
+
+  /* Satellite section */
+  .satellites-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .satellites-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--sienna);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.05em;
+  }
+
+  .satellites-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 600px) {
+    .satellites-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .satellite-card {
+    background: var(--walnut);
+    border: 1px solid var(--saddle);
+    border-top: 3px solid var(--teal);
+    border-radius: 4px;
+    padding: 0.85rem 0.85rem;
+    text-align: center;
+  }
+
+  .satellite-icon {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .satellite-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: var(--cream);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .satellite-url {
+    font-size: 0.65rem;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 0.4rem;
+    font-family: monospace;
+  }
+
+  .satellite-purpose {
+    font-size: 0.72rem;
+    color: var(--saddle);
+    line-height: 1.4;
+  }
+
+  /* Connector line from funnel to satellites */
+  .connector {
+    text-align: center;
+    padding: 1rem 0 0.5rem;
+    color: var(--saddle);
+    font-size: 0.75rem;
+    position: relative;
+  }
+
+  .connector::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 20px;
+    background: var(--saddle);
+    margin: 0 auto 0.3rem;
+  }
+
+  .connector-line {
+    width: 60%;
+    height: 1px;
+    background: var(--saddle);
+    margin: 0.3rem auto 0;
+    position: relative;
+  }
+
+  .connector-line::before,
+  .connector-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 16px;
+    background: var(--saddle);
+  }
+
+  .connector-line::before { left: 0; }
+  .connector-line::after { right: 0; }
+
+  /* JOIN button indicator */
+  .join-indicator {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--sienna);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 16px rgba(199,120,58,0.4);
+  }
+
+  .legend {
+    max-width: 380px;
+    margin: 2rem auto 0;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--saddle);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+  }
+
+  .legend-dot.main { background: var(--sienna); }
+  .legend-dot.satellite { background: var(--teal); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">🤠 The Roundup</div>
+  <h1>Site Architecture</h1>
+  <p>todd.beetcher.com/mentor</p>
+</header>
+
+<!-- MAIN FUNNEL -->
+<div class="funnel">
+  <div class="funnel-label">— Main Page: Conversion Funnel —</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 0</span>
+    <span class="frame-name">The Hook</span>
+    <span class="frame-purpose">Curious what skill it takes to thrive... <em>Filter + invite</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 1</span>
+    <span class="frame-name">Todd's Letter</span>
+    <span class="frame-purpose">Who is this guy? Wedding lift photo + origin letter. <em>Trust + intrigue</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 2</span>
+    <span class="frame-name">The Questions</span>
+    <span class="frame-purpose">6 questions. AI opportunity. System thinking. <em>Self-selection</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 3</span>
+    <span class="frame-name">Join The Roundup</span>
+    <span class="frame-purpose">Roundup room image. What it is. Cowboy spirit. <em>Vision</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 4</span>
+    <span class="frame-name">This Isn't What You Think</span>
+    <span class="frame-purpose">Not a coding class. AI is a gift. Cowboys defined. <em>Reframe</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 5</span>
+    <span class="frame-name">Don't Be This Cowboy</span>
+    <span class="frame-purpose">Aerial cowboy image. Lone. City around him. <em>Contrast</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 6</span>
+    <span class="frame-name">A Shared Moment of Growth</span>
+    <span class="frame-purpose">Process. Collaborative. Project-based. Friction→MVP. <em>Experience</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 7</span>
+    <span class="frame-name">The Completion</span>
+    <span class="frame-purpose">RecRoom team photo. Cowboys built something real. <em>Proof</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 8</span>
+    <span class="frame-name">What You Walk Away With</span>
+    <span class="frame-purpose">From problem to product. System-level identity. <em>Outcome</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 9</span>
+    <span class="frame-name">About Todd</span>
+    <span class="frame-purpose">Mic-drop photo. Family proof. WebPAD PS. CDL P license. <em>Credibility</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 10</span>
+    <span class="frame-name">The Manifesto</span>
+    <span class="frame-purpose">Cowboy letter. Don't tend your fire alone. <em>Philosophy</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 11</span>
+    <span class="frame-name">Show Up</span>
+    <span class="frame-purpose">CTA. Come grow with us. JOIN button. <em>Convert</em></span>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="frame-card">
+    <span class="frame-number">FRAME 12</span>
+    <span class="frame-name">Wanted Poster</span>
+    <span class="frame-purpose">Shareable asset. Instagram ready. Links to register. <em>Viral</em></span>
+  </div>
+
+</div>
+
+<!-- CONNECTOR -->
+<div class="connector">
+  <span>satellite pages</span>
+  <div class="connector-line"></div>
+</div>
+
+<!-- SATELLITES -->
+<div class="satellites-wrapper">
+  <div class="satellites-label">— Linked From Main Page — Additional Info On Demand —</div>
+  <div class="satellites-grid">
+
+    <div class="satellite-card">
+      <span class="satellite-icon">🤠</span>
+      <span class="satellite-name">Todd's Origin Story</span>
+      <span class="satellite-url">/mentor/origin</span>
+      <span class="satellite-purpose">Semi-retired. AI arrived. Renaissance man. Why I showed up.</span>
+    </div>
+
+    <div class="satellite-card">
+      <span class="satellite-icon">📋</span>
+      <span class="satellite-name">Program Details</span>
+      <span class="satellite-url">/mentor/program</span>
+      <span class="satellite-purpose">Date, location, cost, duration, what to bring, logistics.</span>
+    </div>
+
+    <div class="satellite-card">
+      <span class="satellite-icon">🗺️</span>
+      <span class="satellite-name">Curriculum</span>
+      <span class="satellite-url">/mentor/curriculum</span>
+      <span class="satellite-purpose">Session by session. Friction to MVP. What happens in the room.</span>
+    </div>
+
+    <div class="satellite-card">
+      <span class="satellite-icon">❓</span>
+      <span class="satellite-name">FAQ</span>
+      <span class="satellite-url">/mentor/faq</span>
+      <span class="satellite-purpose">Parent questions. Safety. Vetting. CDL P license. Who else attends.</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot main"></div>
+    <span>Main funnel</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot satellite"></div>
+    <span>Satellite pages</span>
+  </div>
+</div>
+
+<!-- Floating JOIN -->
+<div class="join-indicator">JOIN</div>
+
+</body>
+</html>
