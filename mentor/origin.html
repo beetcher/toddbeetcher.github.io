@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why I Showed Up — Todd Beetcher</title>
+<meta name="description" content="The honest story of a guy who was on a glide path — and then AI arrived.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤠</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700;1,900&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1A1208;
+    --text: #F5ECD7;
+    --accent: #C7783A;
+    --secondary: #8B5E3C;
+    --teal: #4A9B8E;
+    --display: 'Playfair Display', Georgia, serif;
+    --body: 'DM Sans', system-ui, sans-serif;
+    --bar-height: 52px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ---------- STICKY NAV BAR ---------- */
+  .sticky-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    min-height: var(--bar-height);
+    background: #1A1208;
+    border-bottom: 1px solid #C7783A;
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    line-height: 1.2;
+  }
+  .sticky-bar .bar-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Rye', Georgia, serif;
+    color: #C7783A;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-tagline {
+    font-family: var(--body);
+    color: #F5ECD7;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-cta {
+    font-family: var(--body);
+    color: #F5ECD7;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .sticky-bar .bar-cta .bar-date {
+    display: inline;
+  }
+  .sticky-bar .bar-cta a {
+    color: #C7783A;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .sticky-bar .bar-cta a:hover {
+    color: #E8924A;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media (max-width: 768px) {
+    .sticky-bar .bar-tagline { display: none; }
+    .sticky-bar .bar-cta .bar-date { display: none; }
+  }
+
+  /* ---------- UTILITY ---------- */
+  .sienna { color: #C7783A; }
+  .teal { color: #4A9B8E; }
+  .muted { color: #8B5E3C; }
+
+  /* ---------- PAGE LAYOUT ---------- */
+  .page {
+    min-height: 100vh;
+    background: #1A1208;
+    padding: calc(52px + 2rem) 2rem 3rem;
+  }
+  .page-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .headline {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #F5ECD7;
+    margin: 0 0 2rem;
+    line-height: 1.2;
+  }
+
+  .subhead {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #4A9B8E;
+    margin: 0 0 3rem;
+    line-height: 1.4;
+  }
+
+  .body-copy {
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #F5ECD7;
+    margin: 0 0 1.5rem;
+  }
+
+  .closing-line {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #4A9B8E;
+    margin: 2rem 0 3rem;
+    line-height: 1.4;
+  }
+
+  .join-question {
+    font-family: var(--body);
+    font-size: 1rem;
+    color: #8B5E3C;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .join-link {
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 1rem;
+    color: #C7783A;
+    text-decoration: none;
+    display: block;
+  }
+  .join-link:hover {
+    text-decoration: underline;
+  }
+
+  .back-link {
+    font-family: var(--body);
+    font-size: 0.9rem;
+    color: #4A9B8E;
+    text-decoration: none;
+    margin-top: 3rem;
+    display: block;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 769px) {
+    .page {
+      padding: calc(52px + 4rem) 2rem 4rem;
+    }
+    .headline {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV BAR -->
+<nav class="sticky-bar" aria-label="The Roundup site bar">
+  <span class="bar-brand"><span aria-hidden="true">🤠</span><span>The Roundup</span></span>
+  <span class="bar-tagline">not your average 👢⛺</span>
+  <span class="bar-cta"><span class="bar-date">July 15, 2026 · University of Colorado · </span><a href="join.html">Register Now</a></span>
+</nav>
+
+<main class="page">
+  <div class="page-inner">
+    <h1 class="headline">Why I Showed Up.</h1>
+
+    <p class="subhead">The honest story of a guy who was on a glide path — and then AI arrived.</p>
+
+    <p class="body-copy">I'll be honest. By 2022 I was coasting. Twenty-five years of building things, raising a family, contributing to my community. I had earned the right to coast. And I was. Quietly. Comfortably. On a glide path.</p>
+
+    <p class="body-copy">Then AI arrived. And instead of feeling threatened, I felt something I hadn't felt in years: possibility. I leaned in. Deeply. What happened next surprised even me.</p>
+
+    <!-- PLACEHOLDER: Replace with Todd's full origin story -->
+    <p class="body-copy">[Todd's full origin story goes here — the renaissance, the reawakening, the moment he realized the only thing left to do was hold the door open for the next generation.]</p>
+
+    <p class="closing-line">That's why I'm here. That's why The Roundup exists. ⭐</p>
+
+    <span class="join-question">Ready to be part of it?</span>
+    <a class="join-link" href="join.html">→ Join The Roundup</a>
+
+    <a class="back-link" href="index.html">← Back to The Roundup</a>
+  </div>
+</main>
+
+</body>
+</html>
