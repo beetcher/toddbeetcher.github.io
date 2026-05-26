@@ -488,6 +488,40 @@
     text-decoration: underline;
   }
 
+  .wagon-divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.25rem 0;
+    background: #1A1208;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wagon-divider img {
+    width: 72px;
+    height: auto;
+    opacity: 0.72;
+    display: block;
+  }
+
+  /* Desktop scaling */
+  @media (min-width: 768px) {
+    .wagon-divider {
+      padding: 3.25rem 0;
+    }
+
+    .wagon-divider img {
+      width: 110px;
+      opacity: 0.76;
+    }
+  }
+
+  /* Graceful fallback if image fails */
+  .wagon-divider img:not([src]) {
+    min-height: 24px;
+  }
+
   /* ---------- FRAME — COWBOY BREAK (visual only) ---------- */
   .frame-cowboy-break {
     position: relative;
@@ -823,6 +857,10 @@
   </div>
 </section>
 
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
+
 <!-- FRAME — The Roundup Room -->
 <section class="frame frame-roundup" aria-label="The Roundup Room">
   <img class="roundup-image" src="assets/images/roundup-room.jpg" alt="The Roundup Room" loading="lazy">
@@ -834,6 +872,10 @@
     <p class="roundup-tagline reveal">Around here, we call that the cowboy spirit. ⭐</p>
   </div>
 </section>
+
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
 
 <!-- FRAME 3 — The Reframe -->
 <section class="frame frame-3">
@@ -854,6 +896,10 @@
 <section class="frame-cowboy-break">
   <p class="cowboy-break-caption">Don't be this cowboy.</p>
 </section>
+
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
 
 <!-- FRAME 4 — What This Experience Is -->
 <section class="frame frame-4">
@@ -883,6 +929,10 @@
   </div>
 </section>
 
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
+
 <!-- FRAME — Roundup Complete -->
 <section class="frame frame-complete" aria-label="What The Roundup Produces">
   <img class="complete-image" src="assets/images/roundup-complete.jpg" alt="The Roundup — cowboys and cowgirls building something real" loading="lazy">
@@ -891,6 +941,10 @@
     <p class="complete-tagline reveal">This is what The Roundup produces. ⭐</p>
   </div>
 </section>
+
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
 
 <!-- FRAME 5 — What You Walk Away With -->
 <section class="frame frame-5">
@@ -902,6 +956,10 @@
     <p class="walkaway-final reveal">"From problem to product. That's the new résumé."</p>
   </div>
 </section>
+
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
 
 <!-- FRAME 6 — About Todd -->
 <section class="frame frame-6">
@@ -933,6 +991,10 @@
   </div>
 </section>
 
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
+
 <!-- FRAME 7 — The Manifesto -->
 <section class="frame frame-7">
   <div class="manifesto">
@@ -948,6 +1010,10 @@
     <p class="tag reveal">Don't tend your fire alone.</p>
   </div>
 </section>
+
+<div class="wagon-divider reveal" aria-hidden="true">
+  <img src="assets/images/wagon-wheel-transparent.png" alt="" loading="lazy">
+</div>
 
 <!-- FRAME 8 — CTA -->
 <section class="frame frame-8">
