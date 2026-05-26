@@ -324,6 +324,13 @@
     font-size: 17px;
     line-height: 1.7;
   }
+  .ai-moment-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem 0 2rem;
+    border-radius: 0;
+  }
   .gift {
     color: var(--accent);
     font-weight: 700;
@@ -336,6 +343,11 @@
     line-height: 1.8;
     color: #C7783A;
     margin: 2rem 0;
+  }
+  @media (min-width: 768px) {
+    .ai-moment-image {
+      margin: 2rem 0 2.5rem;
+    }
   }
 
   /* ---------- FRAME 4 ---------- */
@@ -847,12 +859,13 @@
 <section class="frame frame-ai-moment" aria-label="The AI Moment">
   <div class="container">
     <p class="eyebrow reveal">The moment we're in</p>
+    <img class="ai-moment-image reveal"
+         src="assets/images/cowboy-tractor.jpg"
+         alt="Be First."
+         loading="lazy">
     <p class="reframe-beat reveal">Every generation has its moment — when something new arrives and people split into two camps: those who fear it, and those who move toward it.</p>
     <p class="reframe-beat reveal">That moment is happening right now.</p>
-    <p class="reframe-beat reveal">Across college campuses, you can hear it — students booing AI at commencement speeches. The discomfort is real.</p>
-    <p class="reframe-beat reveal">But it’s misplaced.</p>
     <p class="reframe-beat reveal">AI doesn’t diminish what a person can do. It amplifies it.</p>
-    <p class="reframe-beat reveal">The one who learns to think at the system level — and uses AI to contribute across that system — becomes the most capable, most valuable person in any room they walk into.</p>
     <p class="reframe-close reveal">That’s not a threat to who you are. That’s a gift. And it’s exactly what we’re here to help you pick up.</p>
   </div>
 </section>
