@@ -275,6 +275,43 @@
   .origin-inheritance-summary {
     margin-top: 1.5rem;
   }
+
+/* ---------- FLOATING JOIN BUTTON ---------- */
+.join-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #C7783A;
+  color: #F5ECD7;
+  font-family: var(--body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  z-index: 999;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(199,120,58,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.join-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(199,120,58,0.6);
+}
+@media (max-width: 768px) {
+  .join-float {
+    width: 48px;
+    height: 48px;
+  }
+}
+@media (max-width: 374px) {
+  .join-float { display: none; }
+}
 </style>
 </head>
 <body>
@@ -371,6 +408,6 @@
     <a class="back-link" href="index.html">← Back to The Roundup</a>
   </div>
 </main>
-
+<a class="join-float" href="join.html" title="Join The Roundup">JOIN</a>
 </body>
 </html>
