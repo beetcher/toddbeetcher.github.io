@@ -337,6 +337,77 @@
     <hr class="origin-divider">
 
     <p class="body-copy">I spent thirty years in technology, logged a million miles by the time I was thirty, and did everything I could to support the growth of two daughters. I watched Savannah play soccer in twenty-five different states before she graduated high school. I watched Brittney swim in thirty. Then COVID came and I had a moment — like a lot of people did — to stop and ask what the next chapter should be.</p>
+
+<p class="body-copy" style="text-align:center; font-style:italic; color:#8B5E3C; margin-top:0.5rem;">39 states. Two kids. A mom and a dad who showed up every time.</p>
+
+<div id="map-wrap" style="width:100%; min-height:380px; display:flex; align-items:center; justify-content:center; margin:1.5rem 0;">
+  <span style="color:#8B5E3C; font-size:13px;">Loading map…</span>
+</div>
+
+<div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:2rem; font-size:13px; justify-content:center;">
+  <span style="display:flex; align-items:center; gap:6px;">
+    <span style="width:12px; height:12px; border-radius:2px; background:#C7783A; display:inline-block;"></span>
+    <span style="color:#8B5E3C;">Savannah · soccer · 25 states</span>
+  </span>
+  <span style="display:flex; align-items:center; gap:6px;">
+    <span style="width:12px; height:12px; border-radius:2px; background:#4A9B8E; display:inline-block;"></span>
+    <span style="color:#8B5E3C;">Brittney · swimming · 30 states</span>
+  </span>
+  <span style="display:flex; align-items:center; gap:6px;">
+    <span style="display:flex; align-items:center;">
+      <span style="width:10px; height:12px; border-radius:2px 0 0 2px; background:#C7783A; display:inline-block;"></span>
+      <span style="width:10px; height:12px; border-radius:0 2px 2px 0; background:#4A9B8E; display:inline-block;"></span>
+    </span>
+    <span style="color:#8B5E3C;">both</span>
+  </span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(function() {
+  const NO_COLOR = new Set(['Hawaii','Alaska','Maine','New Hampshire','Mississippi','Alabama','Louisiana','Rhode Island','Connecticut','New Jersey','South Carolina']);
+  const DUAL = new Set(['Arizona','California','Colorado','Idaho','Montana','Nevada','New Mexico','Oregon','Utah','Washington','Wyoming','Texas','Minnesota']);
+  const TEAL_ONLY = new Set(['Delaware','Massachusetts','Maryland','Michigan','Nebraska','New York','North Carolina','North Dakota','Ohio','Oklahoma','Pennsylvania','South Dakota','Tennessee','Virginia','Wisconsin','Vermont']);
+  const SIENNA = '#C7783A', TEAL = '#4A9B8E';
+
+  function stateColor(name) {
+    if (NO_COLOR.has(name)) return 'EMPTY';
+    if (DUAL.has(name)) return 'url(#stripe)';
+    if (TEAL_ONLY.has(name)) return TEAL;
+    return SIENNA;
+  }
+
+  const W = 680, H = 420;
+  const wrap = document.getElementById('map-wrap');
+
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+    wrap.innerHTML = '';
+    const svg = d3.select('#map-wrap').append('svg')
+      .attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('width', '100%');
+    const defs = svg.append('defs');
+    const pat = defs.append('pattern')
+      .attr('id','stripe').attr('patternUnits','userSpaceOnUse')
+      .attr('width',8).attr('height',8)
+      .attr('patternTransform','rotate(45 0 0)');
+    pat.append('rect').attr('width',4).attr('height',8).attr('fill',SIENNA);
+    pat.append('rect').attr('x',4).attr('width',4).attr('height',8).attr('fill',TEAL);
+    const proj = d3.geoAlbersUsa().scale(860).translate([W/2, H/2]);
+    const path = d3.geoPath(proj);
+    svg.selectAll('path')
+      .data(topojson.feature(us, us.objects.states).features)
+      .join('path')
+      .attr('d', path)
+      .attr('fill', d => {
+        const c = stateColor(d.properties.name);
+        return c === 'EMPTY' ? 'rgba(120,90,60,0.18)' : c;
+      })
+      .attr('stroke','rgba(200,170,140,0.25)')
+      .attr('stroke-width', 0.75);
+  });
+})();
+</script>
     <p class="body-copy">I knew I had at least one or two significant ones left. The question was what they should be worth.</p>
     <p class="body-copy">I wanted the next one to connect the things that have always defined me: system-level thinking, a technology background, and a genuine belief that showing up for young people is the highest-leverage thing a person can do.</p>
     <p class="body-copy">Then AI arrived. And I want to be specific about what happened next — because this is the whole point.</p>
