@@ -1,0 +1,14 @@
+{
+  "name": "testphone-tests",
+  "private": true,
+  "scripts": {
+    "postinstall": "playwright install chromium",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright test --reporter=html && playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "http-server": "^14.1.1"
+  }
+}

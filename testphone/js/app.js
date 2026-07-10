@@ -55,7 +55,7 @@
     clearStatus();
 
     const msgs = storage.loadConversation(normalized);
-    conversation.load(msgs);
+    conversation.load(msgs, 'No messages yet.');
   });
 
   myNumberInput.addEventListener('keydown', (e) => {
