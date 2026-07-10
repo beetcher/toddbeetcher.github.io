@@ -30,14 +30,12 @@ test('conversation survives page reload', async ({ page }) => {
   await page.waitForSelector('.message.outgoing');
   await expect(page.locator('.message.outgoing .message-body')).toHaveText('Persist me!');
 
-  // Reload WITHOUT clearing localStorage
+  // Reload without clearing localStorage
   await page.reload();
 
-  // Re-enter the same number to load history
-  await page.fill('#my-number', '5551234567');
-  await page.press('#my-number', 'Tab');
+  // Pre-fill now restores both fields automatically — no need to re-enter
   await expect(page.locator('#my-number')).toHaveValue('(555) 123-4567');
-
+  await expect(page.locator('#dest-number')).toHaveValue('(555) 987-6543');
   await expect(page.locator('.message.outgoing')).toHaveCount(1);
   await expect(page.locator('.message.outgoing .message-body')).toHaveText('Persist me!');
 });

@@ -8,6 +8,7 @@
 
   let myNumber = null;
   let statusTimer = null;
+  const lastNumbers = { my: null, dest: null };
 
   conversation.init(convContainer);
   conversation.load([], 'Enter My Phone Number to get started.');
@@ -39,6 +40,8 @@
       myNumberInput.value = '';
       conversation.load([], 'Enter My Phone Number to get started.');
       clearStatus();
+      lastNumbers.my = null;
+      storage.saveLastNumbers(lastNumbers);
       return;
     }
 
@@ -53,6 +56,8 @@
     myNumber = normalized;
     myNumberInput.value = phoneNumber.formatForDisplay(normalized);
     clearStatus();
+    lastNumbers.my = normalized;
+    storage.saveLastNumbers(lastNumbers);
 
     const msgs = storage.loadConversation(normalized);
     conversation.load(msgs, 'No messages yet.');
@@ -66,10 +71,16 @@
 
   destNumberInput.addEventListener('blur', () => {
     const raw = destNumberInput.value.trim();
-    if (!raw) return;
+    if (!raw) {
+      lastNumbers.dest = null;
+      storage.saveLastNumbers(lastNumbers);
+      return;
+    }
     const normalized = phoneNumber.normalize(raw);
     if (normalized) {
       destNumberInput.value = phoneNumber.formatForDisplay(normalized);
+      lastNumbers.dest = normalized;
+      storage.saveLastNumbers(lastNumbers);
     }
   });
 
@@ -153,4 +164,18 @@
       configEditor.open();
     }
   });
+
+  // ── Pre-fill from last session ────────────────────────────────────────────
+  const saved = storage.loadLastNumbers();
+  if (saved.my) {
+    myNumber = saved.my;
+    lastNumbers.my = saved.my;
+    myNumberInput.value = phoneNumber.formatForDisplay(saved.my);
+    const msgs = storage.loadConversation(saved.my);
+    conversation.load(msgs, 'No messages yet.');
+  }
+  if (saved.dest) {
+    lastNumbers.dest = saved.dest;
+    destNumberInput.value = phoneNumber.formatForDisplay(saved.dest);
+  }
 })();

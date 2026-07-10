@@ -68,6 +68,58 @@ test('empty send shows validation error and does not add a message', async ({ pa
   await expect(page.locator('.message')).toHaveCount(0);
 });
 
+// ── Last-used number persistence ─────────────────────────────────────────────
+
+test('pre-fills both fields and restores conversation on reload', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_routing_table', JSON.stringify([
+      { phoneNumber: '+15559876543', webhookUrl: 'https://example.com/sms' },
+    ]));
+  });
+
+  await page.fill('#my-number', '5551234567');
+  await page.press('#my-number', 'Tab');
+  await expect(page.locator('#my-number')).toHaveValue('(555) 123-4567');
+
+  await page.fill('#dest-number', '5559876543');
+  await page.press('#dest-number', 'Tab');
+  await expect(page.locator('#dest-number')).toHaveValue('(555) 987-6543');
+
+  await page.fill('#message-input', 'Remember this');
+  await page.click('#send-btn');
+  await page.waitForSelector('.message.outgoing');
+
+  // Reload without clearing localStorage
+  await page.reload();
+
+  await expect(page.locator('#my-number')).toHaveValue('(555) 123-4567');
+  await expect(page.locator('#dest-number')).toHaveValue('(555) 987-6543');
+  await expect(page.locator('.message.outgoing .message-body')).toHaveText('Remember this');
+});
+
+test('clearing a field to empty removes it from stored values', async ({ page }) => {
+  // Set both numbers
+  await page.fill('#my-number', '5551234567');
+  await page.press('#my-number', 'Tab');
+  await expect(page.locator('#my-number')).toHaveValue('(555) 123-4567');
+
+  await page.fill('#dest-number', '5559876543');
+  await page.press('#dest-number', 'Tab');
+  await expect(page.locator('#dest-number')).toHaveValue('(555) 987-6543');
+
+  // Clear my-number explicitly
+  await page.fill('#my-number', '');
+  await page.press('#my-number', 'Tab');
+
+  // Reload — my-number was cleared so should not reappear; dest was not cleared
+  await page.reload();
+
+  await expect(page.locator('#my-number')).toHaveValue('');
+  await expect(page.locator('#dest-number')).toHaveValue('(555) 987-6543');
+  await expect(page.locator('.conversation-empty'))
+    .toHaveText('Enter My Phone Number to get started.');
+});
+
 // ── Send / receive ────────────────────────────────────────────────────────────
 // These tests require a routing entry. Writing it directly to localStorage
 // (routerClient reads it on every call, so no reload is needed).
