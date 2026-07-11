@@ -54,7 +54,7 @@ const configEditor = (() => {
   }
 
   function _addRow() {
-    pendingRows.push({ phoneNumber: '', webhookUrl: '' });
+    pendingRows.push({ phoneNumber: '', webhookUrl: '', name: '' });
     dirty = true;
     _render();
     const phoneInputs = tableBodyEl.querySelectorAll('input[data-field="phoneNumber"]');
@@ -75,7 +75,7 @@ const configEditor = (() => {
       const tr = document.createElement('tr');
       tr.className = 'config-empty-row';
       const td = document.createElement('td');
-      td.colSpan = 3;
+      td.colSpan = 4;
       td.textContent = 'No entries. Add a routing entry below.';
       tr.appendChild(td);
       tableBodyEl.appendChild(tr);
@@ -137,9 +137,28 @@ const configEditor = (() => {
         tdUrl.appendChild(span);
       }
 
+      // App Name cell (Task 2)
+      const tdName = document.createElement('td');
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'config-input';
+      nameInput.value = row.name || '';
+      nameInput.placeholder = 'Echo, My App…';
+      nameInput.dataset.field = 'name';
+      nameInput.dataset.row = i;
+      nameInput.autocomplete = 'off';
+      nameInput.spellcheck = false;
+      nameInput.addEventListener('input', () => {
+        pendingRows[i].name = nameInput.value;
+        dirty = true;
+      });
+      nameInput.addEventListener('keydown', (e) => _onCellKeydown(e, i, 'name'));
+      tdName.appendChild(nameInput);
+
       // Delete button cell
       const tdDel = document.createElement('td');
       const delBtn = document.createElement('button');
+      delBtn.type = 'button';
       delBtn.className = 'delete-row-btn';
       delBtn.title = 'Delete row';
       delBtn.innerHTML = '&times;';
@@ -148,6 +167,7 @@ const configEditor = (() => {
 
       tr.appendChild(tdPhone);
       tr.appendChild(tdUrl);
+      tr.appendChild(tdName);
       tr.appendChild(tdDel);
       tableBodyEl.appendChild(tr);
     });
@@ -160,6 +180,9 @@ const configEditor = (() => {
     if (field === 'phoneNumber') {
       const urlInputs = tableBodyEl.querySelectorAll('input[data-field="webhookUrl"]');
       if (urlInputs[rowIndex]) urlInputs[rowIndex].focus();
+    } else if (field === 'webhookUrl') {
+      const nameInputs = tableBodyEl.querySelectorAll('input[data-field="name"]');
+      if (nameInputs[rowIndex]) nameInputs[rowIndex].focus();
     } else {
       const nextPhoneInputs = tableBodyEl.querySelectorAll('input[data-field="phoneNumber"]');
       if (nextPhoneInputs[rowIndex + 1]) {

@@ -17,8 +17,13 @@
           <div class="phone-speaker"></div>
         </div>
         <div class="phone-screen">
+          <!-- Task 2: Contact name / app name header -->
+          <div id="phone-contact-header" class="phone-contact-header"></div>
           <div id="conversation" class="conversation"></div>
           <div class="compose-area">
+            <!-- Task 3 & 4: Download + Reset tool buttons -->
+            <button id="download-btn" class="tool-btn" aria-label="Download conversation" title="Download conversation">&#8595;</button>
+            <button id="reset-btn" class="tool-btn" aria-label="Reset conversation" title="Reset conversation">&#8635;</button>
             <textarea id="message-input" class="message-input" placeholder="Message" rows="1"></textarea>
             <button id="send-btn" class="send-btn" aria-label="Send">&#8593;</button>
           </div>
@@ -29,28 +34,43 @@
       </div>
     </div>
 
-    <!-- Right: Developer Controls -->
-    <div class="controls-col">
-      <div class="controls-header">
-        <div class="controls-title">Test Phone</div>
-        <div class="controls-subtitle">developer console</div>
-        <button type="button" id="settings-gear-btn" class="settings-gear-btn" aria-label="Open routing configuration" title="Routing Configuration">&#9881;</button>
-      </div>
+    <!-- Task 6: Panel wrapper with collapse toggle -->
+    <div class="panel-area">
+      <button id="panel-toggle-btn" class="panel-toggle-btn" aria-label="Collapse developer controls" title="Toggle developer controls">&#8250;</button>
 
-      <div class="control-group">
-        <label for="my-number" class="control-label">My Phone Number</label>
-        <input type="tel" id="my-number" class="control-input" placeholder="+1 (555) 000-0000" autocomplete="off" spellcheck="false">
-      </div>
+      <!-- Right: Developer Controls -->
+      <div class="controls-col" id="controls-col">
+        <div class="controls-header">
+          <div class="controls-title">Test Phone</div>
+          <div class="controls-subtitle">developer console</div>
+          <!-- Task 1: Byline -->
+          <div class="controls-byline">Nebagamon Development</div>
+          <button type="button" id="settings-gear-btn" class="settings-gear-btn" aria-label="Open routing configuration" title="Routing Configuration">&#9881;</button>
+        </div>
 
-      <div class="control-group">
-        <label for="dest-number" class="control-label">Destination Phone Number</label>
-        <input type="tel" id="dest-number" class="control-input" placeholder="+1 (555) 000-0000" autocomplete="off" spellcheck="false">
-      </div>
+        <!-- Task 5: My Phone Number with history dropdown -->
+        <div class="control-group">
+          <label for="my-number" class="control-label">My Phone Number</label>
+          <div class="combo-field">
+            <input type="tel" id="my-number" class="control-input" placeholder="+1 (555) 000-0000" autocomplete="off" spellcheck="false">
+            <div id="my-number-dropdown" class="number-dropdown" hidden></div>
+          </div>
+        </div>
 
-      <div id="status-area" class="status-area" aria-live="polite"></div>
+        <!-- Task 5: Destination Phone Number with history dropdown -->
+        <div class="control-group">
+          <label for="dest-number" class="control-label">Destination Phone Number</label>
+          <div class="combo-field">
+            <input type="tel" id="dest-number" class="control-input" placeholder="+1 (555) 000-0000" autocomplete="off" spellcheck="false">
+            <div id="dest-number-dropdown" class="number-dropdown" hidden></div>
+          </div>
+        </div>
 
-      <div class="controls-footer">
-        <span class="hint-text">Ctrl+Shift+C &mdash; routing config</span>
+        <div id="status-area" class="status-area" aria-live="polite"></div>
+
+        <div class="controls-footer">
+          <span class="hint-text">Ctrl+Shift+C &mdash; routing config</span>
+        </div>
       </div>
     </div>
   </div>
@@ -68,6 +88,8 @@
             <tr>
               <th>Fake Twilio Phone Number</th>
               <th>Application Webhook Endpoint</th>
+              <!-- Task 2: App Name column -->
+              <th>App Name</th>
               <th></th>
             </tr>
           </thead>

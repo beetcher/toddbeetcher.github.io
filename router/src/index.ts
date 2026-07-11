@@ -200,7 +200,10 @@ app.get('/config', async (_req, res): Promise<void> => {
   const snapshot = await db.collection(ROUTING_COLLECTION).get();
   const table: object[] = [];
   snapshot.forEach(doc => {
-    table.push({ phoneNumber: doc.id, webhookUrl: doc.data().webhookUrl });
+    const d = doc.data();
+    const entry: Record<string, string> = { phoneNumber: doc.id, webhookUrl: d.webhookUrl };
+    if (d.name) entry.name = d.name;
+    table.push(entry);
   });
   logEvent('config_read', { endpoint: 'config' });
   res.status(200).json(table);
@@ -214,10 +217,10 @@ async function handleConfigSave(req: express.Request, res: express.Response): Pr
     return;
   }
 
-  const table = req.body as Array<{ phoneNumber: string; webhookUrl: string }>;
+  const table = req.body as Array<{ phoneNumber: string; webhookUrl: string; name?: string }>;
   const errors: Array<{ row: number; field: string; category: string; message: string }> = [];
   const seenNumbers = new Set<string>();
-  const validRows: Array<{ phoneNumber: string; webhookUrl: string }> = [];
+  const validRows: Array<{ phoneNumber: string; webhookUrl: string; name?: string }> = [];
 
   table.forEach((row, i) => {
     const rawPhone = String(row.phoneNumber ?? '');
@@ -245,7 +248,10 @@ async function handleConfigSave(req: express.Request, res: express.Response): Pr
     }
 
     if (phoneOk && urlOk) {
-      validRows.push({ phoneNumber: phone!, webhookUrl: rawUrl });
+      const entry: { phoneNumber: string; webhookUrl: string; name?: string } = { phoneNumber: phone!, webhookUrl: rawUrl };
+      const rawName = typeof row.name === 'string' ? row.name.trim() : '';
+      if (rawName) entry.name = rawName;
+      validRows.push(entry);
     }
   });
 
@@ -257,8 +263,10 @@ async function handleConfigSave(req: express.Request, res: express.Response): Pr
   const batch = db.batch();
   const existing = await db.collection(ROUTING_COLLECTION).get();
   existing.forEach(doc => batch.delete(doc.ref));
-  validRows.forEach(({ phoneNumber, webhookUrl }) => {
-    batch.set(db.collection(ROUTING_COLLECTION).doc(phoneNumber), { webhookUrl });
+  validRows.forEach(({ phoneNumber, webhookUrl, name }) => {
+    const data: Record<string, string> = { webhookUrl };
+    if (name) data.name = name;
+    batch.set(db.collection(ROUTING_COLLECTION).doc(phoneNumber), data);
   });
   await batch.commit();
 

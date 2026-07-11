@@ -555,6 +555,130 @@ body {
 
 .btn-secondary:hover { color: var(--text); border-color: #444; }
 
+/* ── Task 1: Byline ── */
+
+.controls-byline {
+  font-size: 9px;
+  color: #2e2e2e;
+  letter-spacing: 0.04em;
+}
+
+/* ── Task 2: Phone screen contact/app name header ── */
+
+.phone-contact-header {
+  flex-shrink: 0;
+  padding: 5px 10px 4px;
+  text-align: center;
+  border-bottom: 1px solid #181818;
+  background: #0c0c0c;
+  display: none;
+}
+
+.phone-contact-header.has-contact {
+  display: block;
+}
+
+.phone-contact-name {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.phone-contact-sub {
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+
+/* ── Task 3 & 4: Compose-area tool buttons (Download, Reset) ── */
+
+.tool-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.tool-btn:hover { border-color: var(--border-focus); color: var(--text-muted); }
+
+/* ── Task 5: Combo field (number history dropdown) ── */
+
+.combo-field {
+  position: relative;
+}
+
+.number-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-top: 2px;
+  z-index: 50;
+  max-height: 180px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
+}
+
+.number-dropdown-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: background 0.1s;
+}
+
+.number-dropdown-item:hover { background: #2a2a2a; }
+
+/* ── Task 6: Collapsible panel ── */
+
+.panel-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.panel-toggle-btn {
+  background: none;
+  border: none;
+  color: #2e2e2e;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 2px;
+  line-height: 1;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+  align-self: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.panel-toggle-btn:hover { color: var(--text-dim); background: #1a1a1a; }
+
+.controls-col.panel-collapsed { display: none; }
+
+/* ── Task 2: Third column in config table (App Name) ── */
+
+.config-table th:nth-child(3) {
+  width: 140px;
+}
+
 /* ── Router Endpoints Popup ── */
 
 .endpoints-popup-overlay {

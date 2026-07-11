@@ -90,10 +90,17 @@ test('Enter in phone field moves focus to URL field in same row', async ({ page 
   expect(urlFocused).toBe(true);
 });
 
-test('Enter in last URL field appends a new row', async ({ page }) => {
+test('Enter in last name field appends a new row (phone → url → name → new row)', async ({ page }) => {
   await openModal(page);
   await page.click('#add-row-btn');
+  // Enter in URL moves to name field (new Task-2 tab order)
   await page.press('input[data-field="webhookUrl"]', 'Enter');
+  const nameFocused = await page.evaluate(() =>
+    document.activeElement === document.querySelector('input[data-field="name"]')
+  );
+  expect(nameFocused).toBe(true);
+  // Enter in name (last row) appends a second row
+  await page.press('input[data-field="name"]', 'Enter');
   await expect(page.locator('input[data-field="phoneNumber"]')).toHaveCount(2);
 });
 
@@ -212,4 +219,271 @@ test('Close button with unsaved changes shows discard dialog', async ({ page }) 
   await page.waitForTimeout(200);
 
   expect(dialogSeen).toBe(true);
+});
+
+// ── Task 1: Tagline ───────────────────────────────────────────────────────────
+
+test('tagline "Nebagamon Development" is visible in controls header', async ({ page }) => {
+  await expect(page.locator('.controls-byline')).toHaveText('Nebagamon Development');
+});
+
+// ── Task 2: App Name column in config editor ──────────────────────────────────
+
+test('config table header has App Name column', async ({ page }) => {
+  await openModal(page);
+  const headers = page.locator('.config-table th');
+  await expect(headers).toContainText(['App Name']);
+});
+
+test('Add Row creates a row with phone, webhook, and name inputs', async ({ page }) => {
+  await openModal(page);
+  await page.click('#add-row-btn');
+  await expect(page.locator('input[data-field="phoneNumber"]')).toHaveCount(1);
+  await expect(page.locator('input[data-field="webhookUrl"]')).toHaveCount(1);
+  await expect(page.locator('input[data-field="name"]')).toHaveCount(1);
+});
+
+test('Enter in webhook URL field moves focus to name field', async ({ page }) => {
+  await openModal(page);
+  await page.click('#add-row-btn');
+  await page.fill('input[data-field="webhookUrl"]', 'https://example.com/sms');
+  await page.press('input[data-field="webhookUrl"]', 'Enter');
+
+  const nameFocused = await page.evaluate(() =>
+    document.activeElement === document.querySelector('input[data-field="name"]')
+  );
+  expect(nameFocused).toBe(true);
+});
+
+test('config editor saves entry with name and recalls it on reopen', async ({ page }) => {
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
+  await openModal(page);
+  await page.click('#add-row-btn');
+  await page.fill('input[data-field="phoneNumber"]', '5551239999');
+  await page.fill('input[data-field="webhookUrl"]', 'https://example.com/sms');
+  await page.fill('input[data-field="name"]', 'My Test App');
+  await page.click('#config-save-btn');
+  await expect(page.locator('#config-modal')).not.toHaveClass(/open/);
+
+  // Reopen and verify name was stored and returned by router
+  await openModal(page);
+  const nameInput = page.locator('input[data-field="name"]').first();
+  await expect(nameInput).toHaveValue('My Test App');
+});
+
+// ── Task 3: Download button ───────────────────────────────────────────────────
+
+test('download button is present in compose area', async ({ page }) => {
+  await expect(page.locator('#download-btn')).toBeVisible();
+});
+
+test('download exports conversation JSON with required fields', async ({ page }) => {
+  // Set up a conversation in localStorage then reload so app picks it up
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_conv_+15559990001', JSON.stringify([
+      { direction: 'outgoing', body: 'Hello export', timestamp: 1700000000000 },
+      { direction: 'incoming', from: '+15550000001', body: 'Reply', timestamp: 1700000001000 },
+    ]));
+    localStorage.setItem('testphone_last_numbers', JSON.stringify({ my: '+15559990001', dest: null }));
+  });
+  await page.reload();
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.click('#download-btn');
+  const download = await downloadPromise;
+
+  const fs = require('fs').promises;
+  const content = await fs.readFile(await download.path(), 'utf8');
+  const data = JSON.parse(content);
+
+  expect(data.myPhoneNumber).toBe('+15559990001');
+  expect(data.messages).toHaveLength(2);
+  expect(data.messages[0]).toMatchObject({ direction: 'outgoing', sender: '+15559990001', body: 'Hello export' });
+  expect(data.messages[1]).toMatchObject({ direction: 'incoming', sender: '+15550000001', body: 'Reply' });
+  expect(data.messages[0].timestamp).toBeDefined();
+});
+
+test('download succeeds with raw phone numbers when router is unavailable', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_conv_+15559990002', JSON.stringify([
+      { direction: 'outgoing', body: 'Offline msg', timestamp: 1700000000000 },
+      { direction: 'incoming', from: '+15550000001', body: 'Offline reply', timestamp: 1700000001000 },
+    ]));
+    localStorage.setItem('testphone_last_numbers', JSON.stringify({ my: '+15559990002', dest: null }));
+  });
+  await page.reload();
+
+  // Block all router /config calls to simulate router being unreachable
+  await page.route('**\/config**', route => route.abort());
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.click('#download-btn');
+  const download = await downloadPromise;
+
+  const fs = require('fs').promises;
+  const content = await fs.readFile(await download.path(), 'utf8');
+  const data = JSON.parse(content);
+
+  // Download must succeed even without router
+  expect(data.myPhoneNumber).toBe('+15559990002');
+  expect(data.messages).toHaveLength(2);
+  // Incoming message counterpart falls back to raw phone number
+  expect(data.messages[1].resolvedApplicationName).toBe('+15550000001');
+});
+
+// ── Task 4: Reset button ──────────────────────────────────────────────────────
+
+test('reset button is present in compose area', async ({ page }) => {
+  await expect(page.locator('#reset-btn')).toBeVisible();
+});
+
+test('reset archives conversation and starts fresh without clearing other settings', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_conv_+15559990003', JSON.stringify([
+      { direction: 'outgoing', body: 'To be reset', timestamp: 1700000000000 },
+    ]));
+    localStorage.setItem('testphone_last_numbers', JSON.stringify({ my: '+15559990003', dest: '+15559997000' }));
+    localStorage.setItem('testphone_number_history', JSON.stringify({ my: ['+15559990003'], dest: ['+15559997000'] }));
+    localStorage.setItem('testphone_panel_collapsed', 'false');
+  });
+  await page.reload();
+
+  // Conversation should be loaded
+  await expect(page.locator('.message')).toHaveCount(1);
+
+  // Accept the confirm dialog
+  page.once('dialog', dialog => dialog.accept());
+  await page.click('#reset-btn');
+
+  // Conversation should be cleared
+  await expect(page.locator('.conversation-empty')).toBeVisible();
+  await expect(page.locator('.message')).toHaveCount(0);
+
+  // An archive key should exist
+  const archiveKeys = await page.evaluate(() =>
+    Object.keys(localStorage).filter(k => k.startsWith('testphone_archive_'))
+  );
+  expect(archiveKeys.length).toBeGreaterThan(0);
+
+  // Conversation storage should now be empty array
+  const convRaw = await page.evaluate(() => localStorage.getItem('testphone_conv_+15559990003'));
+  expect(JSON.parse(convRaw)).toEqual([]);
+
+  // Other settings must be untouched
+  const lastNums = await page.evaluate(() => localStorage.getItem('testphone_last_numbers'));
+  expect(JSON.parse(lastNums)).toMatchObject({ my: '+15559990003' });
+
+  const history = await page.evaluate(() => localStorage.getItem('testphone_number_history'));
+  expect(history).not.toBeNull();
+
+  const panelState = await page.evaluate(() => localStorage.getItem('testphone_panel_collapsed'));
+  expect(panelState).toBe('false');
+});
+
+test('reset confirm cancel keeps conversation intact', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_conv_+15559990004', JSON.stringify([
+      { direction: 'outgoing', body: 'Keep me', timestamp: 1700000000000 },
+    ]));
+    localStorage.setItem('testphone_last_numbers', JSON.stringify({ my: '+15559990004', dest: null }));
+  });
+  await page.reload();
+
+  await expect(page.locator('.message')).toHaveCount(1);
+
+  page.once('dialog', dialog => dialog.dismiss()); // Cancel
+  await page.click('#reset-btn');
+
+  // Conversation must still be there
+  await expect(page.locator('.message')).toHaveCount(1);
+});
+
+// ── Task 5: Number history combo box ─────────────────────────────────────────
+
+test('number history dropdown appears after a number has been used', async ({ page }) => {
+  // Pre-populate history
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_number_history', JSON.stringify({
+      my: ['+15559991234'],
+      dest: [],
+    }));
+  });
+  await page.reload();
+
+  // Focus my-number — dropdown should appear
+  await page.click('#my-number');
+  await expect(page.locator('#my-number-dropdown')).toBeVisible();
+  await expect(page.locator('#my-number-dropdown .number-dropdown-item').first())
+    .toContainText('(555) 999-1234');
+});
+
+test('selecting from history dropdown populates the field', async ({ page }) => {
+  await page.evaluate(() => {
+    localStorage.setItem('testphone_number_history', JSON.stringify({
+      my: ['+15559991234'],
+      dest: [],
+    }));
+  });
+  await page.reload();
+
+  await page.click('#my-number');
+  await expect(page.locator('#my-number-dropdown')).toBeVisible();
+  await page.locator('#my-number-dropdown .number-dropdown-item').first().click();
+
+  await expect(page.locator('#my-number')).toHaveValue('(555) 999-1234');
+});
+
+test('entering a new number adds it to history for next time', async ({ page }) => {
+  await page.fill('#my-number', '5558887766');
+  await page.press('#my-number', 'Tab');
+
+  const history = await page.evaluate(() => {
+    const raw = localStorage.getItem('testphone_number_history');
+    return raw ? JSON.parse(raw) : {};
+  });
+  expect(history.my).toContain('+15558887766');
+});
+
+// ── Task 6: Collapsible panel ─────────────────────────────────────────────────
+
+test('panel toggle collapses and expands developer controls', async ({ page }) => {
+  await expect(page.locator('#controls-col')).toBeVisible();
+
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeHidden();
+
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeVisible();
+});
+
+test('panel collapsed state persists across reloads', async ({ page }) => {
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeHidden();
+
+  await page.reload();
+  await expect(page.locator('#controls-col')).toBeHidden();
+
+  // Clean up: restore to expanded for other tests
+  await page.click('#panel-toggle-btn');
+  await page.reload();
+  await expect(page.locator('#controls-col')).toBeVisible();
+});
+
+test('panel toggle button remains visible when panel is collapsed', async ({ page }) => {
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeHidden();
+
+  // Toggle button must still be visible as the way back in
+  await expect(page.locator('#panel-toggle-btn')).toBeVisible();
+});
+
+test('clicking panel toggle when collapsed restores settings gear access', async ({ page }) => {
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeHidden();
+  await expect(page.locator('#settings-gear-btn')).toBeHidden();
+
+  // Restore via toggle
+  await page.click('#panel-toggle-btn');
+  await expect(page.locator('#controls-col')).toBeVisible();
+  await expect(page.locator('#settings-gear-btn')).toBeVisible();
 });
