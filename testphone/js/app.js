@@ -13,7 +13,10 @@
 
   conversation.init(convContainer);
   conversation.load([], 'Enter My Phone Number to get started.');
+  routerEndpoints.init();
   configEditor.init();
+
+  document.getElementById('settings-gear-btn').addEventListener('click', () => configEditor.open());
 
   // ── Status display ────────────────────────────────────────────────────────
 

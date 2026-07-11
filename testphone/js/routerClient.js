@@ -2,7 +2,7 @@ const routerClient = (() => {
 
   async function getConfig() {
     try {
-      const res = await fetch(`${ROUTER_BASE_URL}/config`);
+      const res = await fetch(`${getRouterBaseUrl()}/config`);
       if (!res.ok) return [];
       return res.json();
     } catch {
@@ -13,7 +13,7 @@ const routerClient = (() => {
   async function saveConfig(routingTable) {
     let res, data;
     try {
-      res = await fetch(`${ROUTER_BASE_URL}/config`, {
+      res = await fetch(`${getRouterBaseUrl()}/config`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(routingTable),
@@ -30,7 +30,7 @@ const routerClient = (() => {
     const params = new URLSearchParams({ From: from, To: to, Body: body });
     let res, data;
     try {
-      res = await fetch(`${ROUTER_BASE_URL}/incoming`, {
+      res = await fetch(`${getRouterBaseUrl()}/incoming`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: params.toString(),
@@ -53,7 +53,7 @@ const routerClient = (() => {
   async function pollForMessages(myNumber) {
     let res, data;
     try {
-      res = await fetch(`${ROUTER_BASE_URL}/poll?phoneNumber=${encodeURIComponent(myNumber)}`);
+      res = await fetch(`${getRouterBaseUrl()}/poll?phoneNumber=${encodeURIComponent(myNumber)}`);
       data = await res.json();
     } catch {
       return [];

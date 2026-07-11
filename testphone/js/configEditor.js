@@ -1,20 +1,22 @@
 const configEditor = (() => {
-  let modalEl, tableBodyEl, addRowBtn, saveBtnEl, cancelBtnEl, closeBtnEl;
+  let modalEl, tableBodyEl, addRowBtn, saveBtnEl, cancelBtnEl, closeBtnEl, endpointsGearEl;
   let pendingRows = [];
   let dirty = false;
 
   function init() {
-    modalEl     = document.getElementById('config-modal');
-    tableBodyEl = document.getElementById('config-table-body');
-    addRowBtn   = document.getElementById('add-row-btn');
-    saveBtnEl   = document.getElementById('config-save-btn');
-    cancelBtnEl = document.getElementById('config-cancel-btn');
-    closeBtnEl  = document.getElementById('modal-close');
+    modalEl         = document.getElementById('config-modal');
+    tableBodyEl     = document.getElementById('config-table-body');
+    addRowBtn       = document.getElementById('add-row-btn');
+    saveBtnEl       = document.getElementById('config-save-btn');
+    cancelBtnEl     = document.getElementById('config-cancel-btn');
+    closeBtnEl      = document.getElementById('modal-close');
+    endpointsGearEl = document.getElementById('endpoints-gear-btn');
 
     addRowBtn.addEventListener('click', _addRow);
     saveBtnEl.addEventListener('click', _save);
     cancelBtnEl.addEventListener('click', () => _attemptClose());
     closeBtnEl.addEventListener('click', () => _attemptClose());
+    endpointsGearEl.addEventListener('click', () => routerEndpoints.open());
 
     modalEl.addEventListener('click', (e) => {
       if (e.target === modalEl) _attemptClose();
