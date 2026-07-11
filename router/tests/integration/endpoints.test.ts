@@ -69,9 +69,19 @@ describe('POST /incoming', () => {
   });
 
   test('normalizes common US phone formats before lookup', async () => {
-    // Seed routing table directly to avoid SSRF guard on localhost webhook
+    // Use a local webhook server — same fix applied to emulator.spec.js.
+    // The SSRF guard only applies to PUT /config; direct Firestore seeds allow localhost.
+    const webhookServer = await new Promise<http.Server>(resolve => {
+      const s = http.createServer((_req, res) => {
+        res.writeHead(200, { 'Content-Type': 'text/xml' });
+        res.end('<Response></Response>');
+      });
+      s.listen(0, '127.0.0.1', () => resolve(s));
+    });
+    const { port } = webhookServer.address() as net.AddressInfo;
+
     await db.collection('routing_table').doc('+13035552222').set({
-      webhookUrl: 'https://httpstat.us/200',
+      webhookUrl: `http://127.0.0.1:${port}/webhook`,
     });
 
     const res = await axios.post(
@@ -79,8 +89,10 @@ describe('POST /incoming', () => {
       new URLSearchParams({ From: '(303) 555-1111', To: '303-555-2222', Body: 'Hi' }).toString(),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, validateStatus: () => true }
     );
-    // 200 = forwarded, 502 = forwarding failed (external URL may reject) — either means routing worked
-    expect([200, 502]).toContain(res.status);
+
+    await new Promise<void>(resolve => webhookServer.close(() => resolve()));
+
+    expect(res.status).toBe(200);
   });
 
   test('returns FORWARD_FAILED after one retry when webhook returns non-OK response', async () => {

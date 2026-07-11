@@ -8,6 +8,7 @@ import { buildInboundPayload, buildOutboundAcceptance } from './twilioPayload';
 import { generateMessageSid } from './generateSid';
 import { isUnsafeWebhookTarget } from './ssrfGuard';
 import { logEvent, logError } from './logger';
+import { ensureSeeded } from './seedConfig';
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -27,6 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.post('/incoming', async (req, res): Promise<void> => {
   logEvent('endpoint_hit', { endpoint: 'incoming' });
+
+  await ensureSeeded(db);
 
   validateRequest('', req.headers['x-twilio-signature'] as string ?? '', req.url, req.body);
 
@@ -192,6 +195,8 @@ app.get('/poll', async (req, res): Promise<void> => {
 // ── GET /config ────────────────────────────────────────────────────────────────
 
 app.get('/config', async (_req, res): Promise<void> => {
+  await ensureSeeded(db);
+
   const snapshot = await db.collection(ROUTING_COLLECTION).get();
   const table: object[] = [];
   snapshot.forEach(doc => {
@@ -295,6 +300,38 @@ async function forwardWithRetry(
   return { ok: false };
 }
 
-// ── Export ─────────────────────────────────────────────────────────────────────
+// ── Test-only: direct Firestore seed endpoint ──────────────────────────────────
+// Only registered when running in the emulator (FUNCTIONS_EMULATOR is set by Firebase).
+// Bypasses the SSRF guard so integration tests can configure localhost webhook URLs.
+// Dead code in production — the route is never registered there.
+
+if (process.env.FUNCTIONS_EMULATOR) {
+  app.put('/test/direct-seed', async (req, res): Promise<void> => {
+    if (!Array.isArray(req.body)) {
+      res.status(400).json({ error: 'INVALID_JSON', message: 'Request body must be a JSON array' });
+      return;
+    }
+    const table = req.body as Array<{ phoneNumber: string; webhookUrl: string }>;
+    const batch = db.batch();
+    // Replace routing table with the supplied entries (no SSRF guard — emulator only).
+    const existingRouting = await db.collection(ROUTING_COLLECTION).get();
+    existingRouting.forEach(doc => batch.delete(doc.ref));
+    for (const row of table) {
+      const phone = normalizePhoneNumber(String(row.phoneNumber ?? ''));
+      if (phone && row.webhookUrl) {
+        batch.set(db.collection(ROUTING_COLLECTION).doc(phone), { webhookUrl: String(row.webhookUrl) });
+      }
+    }
+    // Also clear pending_messages so stale replies from prior tests don't leak into the next test.
+    const existingMessages = await db.collection(MESSAGES_COLLECTION).get();
+    existingMessages.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    res.status(200).json({ success: true });
+  });
+}
+
+// ── Exports ────────────────────────────────────────────────────────────────────
 
 export const router = onRequest({ region: REGION }, app);
+
+export { echo, randomresponse, randomjoke } from './referenceApps';

@@ -97,6 +97,10 @@ test('full round-trip: seed route → inbound → app replies → poll receives 
   expect(reply.body).toContain('[mock-reply] Got: Hello app');
   expect(reply.messageSid).toMatch(/^SM[0-9A-F]{32}$/);
 
+  // Poll responds before committing retrieved status (at-least-once guarantee).
+  // Give the async Firestore commit a moment to land before the second poll.
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
   // Second poll should return nothing (messages marked retrieved)
   const pollRes2 = await axios.get(
     `${BASE_URL}/poll?phoneNumber=${encodeURIComponent(testPhoneNumber)}`
