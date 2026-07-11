@@ -20,11 +20,12 @@ async function routerAvailable(page) {
 }
 
 async function seedRouting(page) {
+  // Use direct-seed to bypass the SSRF guard for the localhost mock webhook.
   await page.evaluate(async (url) => {
-    await fetch(`${url}/config`, {
+    await fetch(`${url}/test/direct-seed`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'http://127.0.0.1:3099/webhook' }]),
     });
   }, ROUTER_URL);
 }

@@ -8,6 +8,7 @@ const { defineConfig } = require('@playwright/test');
 const useRouter = !!process.env.USE_ROUTER;
 
 module.exports = defineConfig({
+  globalSetup: useRouter ? './tests/globalSetup.js' : undefined,
   testDir: './tests',
   testIgnore: useRouter ? [] : ['**/router.spec.js'],
   // Sequential — tests share a browser context and must not race on localStorage

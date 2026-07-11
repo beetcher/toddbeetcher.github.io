@@ -27,10 +27,27 @@ async function openModal(page) {
   await expect(page.locator('#config-modal')).toHaveClass(/open/);
 }
 
+// Clear the routing table before each test so the Config Editor always opens
+// to a known-empty state regardless of seed data or prior test state.
+async function clearRouter(page) {
+  await page.evaluate(async (url) => {
+    try {
+      await fetch(`${url}/config`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: '[]',
+      });
+    } catch {
+      // Router not running — Config Editor falls back to empty state automatically
+    }
+  }, ROUTER_URL);
+}
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
+  await clearRouter(page);
 });
 
 // ── Open / close ──────────────────────────────────────────────────────────────

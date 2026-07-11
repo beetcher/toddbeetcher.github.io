@@ -89,12 +89,12 @@ test('empty send shows validation error and does not add a message', async ({ pa
 test('pre-fills both fields and restores conversation on reload', async ({ page }) => {
   test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
 
-  // Seed routing table via Router API (localStorage routing is no longer read by routerClient)
+  // Seed routing table directly (bypasses SSRF guard — localhost webhook requires direct-seed).
   await page.evaluate(async (url) => {
-    await fetch(`${url}/config`, {
+    await fetch(`${url}/test/direct-seed`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'http://127.0.0.1:3099/webhook' }]),
     });
   }, ROUTER_URL);
 
@@ -147,14 +147,14 @@ test('clearing a field to empty removes it from stored values', async ({ page })
 
 test.describe('with routing configured', () => {
   test.beforeEach(async ({ page }) => {
-    // Seed routing via Router API — silently skips if Router is not running;
-    // individual tests check routerAvailable() and skip themselves if needed.
+    // Seed routing directly (bypasses SSRF guard — localhost webhook for auto-reply support).
+    // Silently skips if Router is not running; individual tests check routerAvailable().
     await page.evaluate(async (url) => {
       try {
-        await fetch(`${url}/config`, {
+        await fetch(`${url}/test/direct-seed`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+          body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'http://127.0.0.1:3099/webhook' }]),
         });
       } catch {
         // Router not running
