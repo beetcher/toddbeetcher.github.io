@@ -1,12 +1,33 @@
 // persistence.spec.js
 // Conversation history and routing table survive page reload.
 // Phone number identity: each number has its own isolated conversation.
+// Tests that send messages or read the routing table require the Fake Twilio Router.
+// Without it, those tests are skipped. To run: cd router && npm run serve
 
 const { test, expect } = require('@playwright/test');
 
-const ROUTING = JSON.stringify([
-  { phoneNumber: '+15559876543', webhookUrl: 'https://example.com/sms' },
-]);
+const ROUTER_URL = 'http://127.0.0.1:5001/test-phone-router/us-central1/router';
+
+async function routerAvailable(page) {
+  try {
+    return await page.evaluate(async (url) => {
+      const r = await fetch(`${url}/config`, { signal: AbortSignal.timeout(2000) });
+      return r.ok;
+    }, ROUTER_URL);
+  } catch {
+    return false;
+  }
+}
+
+async function seedRouting(page) {
+  await page.evaluate(async (url) => {
+    await fetch(`${url}/config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+    });
+  }, ROUTER_URL);
+}
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -15,8 +36,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('conversation survives page reload', async ({ page }) => {
-  // Set routing so the send can succeed
-  await page.evaluate((r) => localStorage.setItem('testphone_routing_table', r), ROUTING);
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
+  // Seed routing via Router API
+  await seedRouting(page);
 
   await page.fill('#my-number', '5551234567');
   await page.press('#my-number', 'Tab');
@@ -41,7 +63,9 @@ test('conversation survives page reload', async ({ page }) => {
 });
 
 test('each phone number has its own isolated conversation', async ({ page }) => {
-  await page.evaluate((r) => localStorage.setItem('testphone_routing_table', r), ROUTING);
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
+  // Seed routing via Router API
+  await seedRouting(page);
 
   // Phone A sends a message
   await page.fill('#my-number', '5551111111');
@@ -70,13 +94,20 @@ test('each phone number has its own isolated conversation', async ({ page }) => 
 });
 
 test('routing table survives page reload', async ({ page }) => {
-  // Write routing table to localStorage
-  await page.evaluate((r) => localStorage.setItem('testphone_routing_table', r), ROUTING);
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
+  // Seed routing via Router API — localStorage routing is no longer read by routerClient
+  await page.evaluate(async (url) => {
+    await fetch(`${url}/config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://example.com/sms' }]),
+    });
+  }, ROUTER_URL);
 
-  // Reload without clearing
+  // Reload — getConfig() reads from Router, not localStorage
   await page.reload();
 
-  // Open config editor and verify the entry was restored
+  // Open config editor and verify the entry was restored from the Router
   await page.keyboard.down('Control');
   await page.keyboard.down('Shift');
   await page.keyboard.press('C');

@@ -12,7 +12,8 @@
       "Bash(curl -s http://localhost:8000/one-of-a-kind/story.html)",
       "Bash(curl -s http://localhost:8000/one-of-a-kind/style.css)",
       "Bash(curl -s http://localhost:8000/one-of-a-kind/main.js)",
-      "Bash(pkill -f \"python3 -m http.server\")"
+      "Bash(pkill -f \"python3 -m http.server\")",
+      "Bash(USE_ROUTER=1 npx playwright test)"
     ],
     "additionalDirectories": [
       "/private/tmp"

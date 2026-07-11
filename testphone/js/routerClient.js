@@ -1,104 +1,71 @@
 const routerClient = (() => {
-  const ROUTING_KEY = 'testphone_routing_table';
-  const INBOX_PREFIX = 'testphone_inbox_';
-
-  // ── MOCK ECHO ─────────────────────────────────────────────────────────────
-  // Simulates an auto-reply from the destination so the receive path can be
-  // tested without a real application server. Delete this block (and the
-  // _mockEcho call in sendInbound) when the real Router exists.
-  function _mockEcho(toNumber, fromNumber) {
-    setTimeout(() => {
-      const inbox = _readInbox(toNumber);
-      inbox.push({
-        from: fromNumber,
-        to: toNumber,
-        body: '[Mock] Auto-reply: your message was received.',
-        messageSid: 'SM_ECHO_' + Math.random().toString(36).slice(2, 18).toUpperCase(),
-        timestamp: Date.now(),
-      });
-      _writeInbox(toNumber, inbox);
-    }, 1500);
-  }
-
-  function _readInbox(number) {
-    try {
-      return JSON.parse(localStorage.getItem(INBOX_PREFIX + number) || '[]');
-    } catch {
-      return [];
-    }
-  }
-
-  function _writeInbox(number, messages) {
-    localStorage.setItem(INBOX_PREFIX + number, JSON.stringify(messages));
-  }
-  // ── end mock echo ──────────────────────────────────────────────────────────
 
   async function getConfig() {
     try {
-      const raw = localStorage.getItem(ROUTING_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const res = await fetch(`${ROUTER_BASE_URL}/config`);
+      if (!res.ok) return [];
+      return res.json();
     } catch {
       return [];
     }
   }
 
   async function saveConfig(routingTable) {
-    const errors = [];
-    const seenNumbers = new Set();
-
-    routingTable.forEach((row, i) => {
-      const normalized = phoneNumber.normalize(row.phoneNumber);
-      if (!normalized) {
-        errors.push({ row: i, field: 'phoneNumber', category: 'INVALID_PHONE', message: 'Invalid phone number format' });
-      } else if (seenNumbers.has(normalized)) {
-        errors.push({ row: i, field: 'phoneNumber', category: 'DUPLICATE_PHONE', message: 'Duplicate phone number' });
-      } else {
-        seenNumbers.add(normalized);
-      }
-
-      const url = (row.webhookUrl || '').trim();
-      if (!url || !/^https?:\/\/.+/.test(url)) {
-        errors.push({ row: i, field: 'webhookUrl', category: 'INVALID_URL', message: 'Must start with http:// or https://' });
-      }
-    });
-
-    if (errors.length > 0) return { success: false, errors };
-
-    const normalized = routingTable.map(row => ({
-      phoneNumber: phoneNumber.normalize(row.phoneNumber),
-      webhookUrl: row.webhookUrl.trim(),
-    }));
-    localStorage.setItem(ROUTING_KEY, JSON.stringify(normalized));
-    return { success: true, errors: [] };
+    let res, data;
+    try {
+      res = await fetch(`${ROUTER_BASE_URL}/config`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(routingTable),
+      });
+      data = await res.json();
+    } catch {
+      return { success: false, errors: [{ row: 0, field: 'phoneNumber', category: 'NETWORK_ERROR', message: 'Could not reach Router. Is the emulator running?' }] };
+    }
+    if (!res.ok) return { success: false, errors: data.errors || [] };
+    return data;
   }
 
   async function sendInbound({ from, to, body }) {
-    const table = await getConfig();
-    const entry = table.find(r => r.phoneNumber === to);
-
-    if (!entry) {
-      return {
-        success: false,
-        error: {
-          category: 'ROUTING_NOT_FOUND',
-          message: `No routing entry for ${to}. Open config (Ctrl+Shift+C) to add one.`,
-        },
-      };
+    const params = new URLSearchParams({ From: from, To: to, Body: body });
+    let res, data;
+    try {
+      res = await fetch(`${ROUTER_BASE_URL}/incoming`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      });
+      data = await res.json();
+    } catch (err) {
+      return { success: false, error: { category: 'NETWORK_ERROR', message: 'Could not reach Router. Is the emulator running?' } };
     }
 
-    const messageSid = 'SM' + Math.random().toString(36).slice(2, 34).toUpperCase();
+    if (!res.ok) {
+      const message = data.error === 'ROUTING_NOT_FOUND'
+        ? `No routing entry for ${to}. Open config (Ctrl+Shift+C) to add one.`
+        : data.message || 'Unknown error';
+      return { success: false, error: { category: data.error, message } };
+    }
 
-    _mockEcho(from, to); // remove when real Router exists
-
-    return { success: true, messageSid };
+    return { success: true, messageSid: data.messageSid };
   }
 
   async function pollForMessages(myNumber) {
-    const messages = _readInbox(myNumber);
-    if (messages.length > 0) {
-      localStorage.removeItem(INBOX_PREFIX + myNumber);
+    let res, data;
+    try {
+      res = await fetch(`${ROUTER_BASE_URL}/poll?phoneNumber=${encodeURIComponent(myNumber)}`);
+      data = await res.json();
+    } catch {
+      return [];
     }
-    return messages;
+    if (!res.ok || !Array.isArray(data.messages)) return [];
+    return data.messages.map(m => ({
+      from: m.from,
+      to: m.to,
+      body: m.body,
+      messageSid: m.messageSid,
+      timestamp: new Date(m.createdAt).getTime(),
+    }));
   }
 
   return { getConfig, saveConfig, sendInbound, pollForMessages };

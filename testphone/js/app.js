@@ -9,6 +9,7 @@
   let myNumber = null;
   let statusTimer = null;
   const lastNumbers = { my: null, dest: null };
+  const seenMessageSids = new Set();
 
   conversation.init(convContainer);
   conversation.load([], 'Enter My Phone Number to get started.');
@@ -38,6 +39,7 @@
     if (!raw) {
       myNumber = null;
       myNumberInput.value = '';
+      seenMessageSids.clear();
       conversation.load([], 'Enter My Phone Number to get started.');
       clearStatus();
       lastNumbers.my = null;
@@ -55,6 +57,7 @@
 
     myNumber = normalized;
     myNumberInput.value = phoneNumber.formatForDisplay(normalized);
+    seenMessageSids.clear();
     clearStatus();
     lastNumbers.my = normalized;
     storage.saveLastNumbers(lastNumbers);
@@ -150,10 +153,14 @@
     if (!myNumber) return;
     const incoming = await routerClient.pollForMessages(myNumber);
     if (incoming.length === 0) return;
+    let added = false;
     for (const msg of incoming) {
+      if (msg.messageSid && seenMessageSids.has(msg.messageSid)) continue;
+      if (msg.messageSid) seenMessageSids.add(msg.messageSid);
       conversation.addIncoming(msg.from, msg.body, msg.timestamp);
+      added = true;
     }
-    storage.saveConversation(myNumber, conversation.getMessages());
+    if (added) storage.saveConversation(myNumber, conversation.getMessages());
   }, 1000);
 
   // ── Easter egg: Ctrl+Shift+C / Cmd+Shift+C ───────────────────────────────

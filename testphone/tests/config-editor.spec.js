@@ -1,7 +1,22 @@
 // config-editor.spec.js
 // Modal open/close, CRUD, save validation, unsaved-changes guard.
+// Save/validation tests require the Fake Twilio Router (Firebase Emulator).
+// Without it, those tests are skipped. To run: cd router && npm run serve
 
 const { test, expect } = require('@playwright/test');
+
+const ROUTER_URL = 'http://127.0.0.1:5001/test-phone-router/us-central1/router';
+
+async function routerAvailable(page) {
+  try {
+    return await page.evaluate(async (url) => {
+      const r = await fetch(`${url}/config`, { signal: AbortSignal.timeout(2000) });
+      return r.ok;
+    }, ROUTER_URL);
+  } catch {
+    return false;
+  }
+}
 
 async function openModal(page) {
   await page.keyboard.down('Control');
@@ -77,6 +92,7 @@ test('Delete row button removes that row', async ({ page }) => {
 // ── Save ─────────────────────────────────────────────────────────────────────
 
 test('Save closes modal and persists valid routing entry', async ({ page }) => {
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
   await openModal(page);
   await page.click('#add-row-btn');
   await page.fill('input[data-field="phoneNumber"]', '5551234567');
@@ -84,12 +100,18 @@ test('Save closes modal and persists valid routing entry', async ({ page }) => {
   await page.click('#config-save-btn');
 
   await expect(page.locator('#config-modal')).not.toHaveClass(/open/);
-  const stored = await page.evaluate(() => localStorage.getItem('testphone_routing_table'));
-  expect(stored).toContain('+15551234567');
-  expect(stored).toContain('https://example.com/sms');
+  // Routing table is now stored in Firestore via the Router — verify by reading back
+  const config = await page.evaluate(async (url) => {
+    const r = await fetch(`${url}/config`);
+    return r.json();
+  }, ROUTER_URL);
+  const entry = config.find(e => e.phoneNumber === '+15551234567');
+  expect(entry).toBeDefined();
+  expect(entry.webhookUrl).toBe('https://example.com/sms');
 });
 
 test('Save shows inline error for invalid phone number', async ({ page }) => {
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
   await openModal(page);
   await page.click('#add-row-btn');
   await page.fill('input[data-field="phoneNumber"]', 'not-a-phone');
@@ -102,6 +124,7 @@ test('Save shows inline error for invalid phone number', async ({ page }) => {
 });
 
 test('Save shows inline error for invalid webhook URL', async ({ page }) => {
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
   await openModal(page);
   await page.click('#add-row-btn');
   await page.fill('input[data-field="phoneNumber"]', '5551234567');
@@ -114,6 +137,7 @@ test('Save shows inline error for invalid webhook URL', async ({ page }) => {
 });
 
 test('Save shows inline error for duplicate phone number', async ({ page }) => {
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
   await openModal(page);
   // Row 0
   await page.click('#add-row-btn');

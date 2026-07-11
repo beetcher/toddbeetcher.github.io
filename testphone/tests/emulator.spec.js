@@ -1,7 +1,23 @@
 // emulator.spec.js
 // Layout, phone identity, display formatting, send/receive, auto-reply, flash, empty-send validation.
+// Tests in the "with routing configured" block and some others require the Fake Twilio Router
+// (Firebase Emulator). Without it, those tests are skipped.
+// To run all: cd router && npm run serve, then USE_ROUTER=1 npx playwright test
 
 const { test, expect } = require('@playwright/test');
+
+const ROUTER_URL = 'http://127.0.0.1:5001/test-phone-router/us-central1/router';
+
+async function routerAvailable(page) {
+  try {
+    return await page.evaluate(async (url) => {
+      const r = await fetch(`${url}/config`, { signal: AbortSignal.timeout(2000) });
+      return r.ok;
+    }, ROUTER_URL);
+  } catch {
+    return false;
+  }
+}
 
 // Each test gets a clean localStorage so it starts from a known state.
 // A reload after clearing ensures the app initialises from scratch.
@@ -71,11 +87,16 @@ test('empty send shows validation error and does not add a message', async ({ pa
 // ── Last-used number persistence ─────────────────────────────────────────────
 
 test('pre-fills both fields and restores conversation on reload', async ({ page }) => {
-  await page.evaluate(() => {
-    localStorage.setItem('testphone_routing_table', JSON.stringify([
-      { phoneNumber: '+15559876543', webhookUrl: 'https://example.com/sms' },
-    ]));
-  });
+  test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
+
+  // Seed routing table via Router API (localStorage routing is no longer read by routerClient)
+  await page.evaluate(async (url) => {
+    await fetch(`${url}/config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+    });
+  }, ROUTER_URL);
 
   await page.fill('#my-number', '5551234567');
   await page.press('#my-number', 'Tab');
@@ -121,16 +142,25 @@ test('clearing a field to empty removes it from stored values', async ({ page })
 });
 
 // ── Send / receive ────────────────────────────────────────────────────────────
-// These tests require a routing entry. Writing it directly to localStorage
-// (routerClient reads it on every call, so no reload is needed).
+// These tests require the Router (Firebase Emulator) to be running.
+// routerClient now calls the Router instead of reading localStorage for routing.
 
 test.describe('with routing configured', () => {
   test.beforeEach(async ({ page }) => {
-    await page.evaluate(() => {
-      localStorage.setItem('testphone_routing_table', JSON.stringify([
-        { phoneNumber: '+15559876543', webhookUrl: 'https://example.com/sms' },
-      ]));
-    });
+    // Seed routing via Router API — silently skips if Router is not running;
+    // individual tests check routerAvailable() and skip themselves if needed.
+    await page.evaluate(async (url) => {
+      try {
+        await fetch(`${url}/config`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([{ phoneNumber: '+15559876543', webhookUrl: 'https://httpstat.us/200' }]),
+        });
+      } catch {
+        // Router not running
+      }
+    }, ROUTER_URL);
+
     await page.fill('#my-number', '5551234567');
     await page.press('#my-number', 'Tab');
     await expect(page.locator('#my-number')).toHaveValue('(555) 123-4567');
@@ -140,6 +170,7 @@ test.describe('with routing configured', () => {
   });
 
   test('send shows Sent status and outgoing bubble', async ({ page }) => {
+    test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
     await page.fill('#message-input', 'Hello from emulator test');
     await page.click('#send-btn');
 
@@ -151,6 +182,7 @@ test.describe('with routing configured', () => {
   });
 
   test('auto-reply arrives as an incoming message', async ({ page }) => {
+    test.skip(!await routerAvailable(page), 'Requires Router + webhook: see router.spec.js for full round-trip');
     await page.fill('#message-input', 'Ping');
     await page.click('#send-btn');
 
@@ -160,6 +192,7 @@ test.describe('with routing configured', () => {
   });
 
   test('incoming message sender displays in (xxx) xxx-xxxx format', async ({ page }) => {
+    test.skip(!await routerAvailable(page), 'Requires Router: cd router && npm run serve');
     await page.fill('#message-input', 'Ping');
     await page.click('#send-btn');
 
