@@ -851,3 +851,95 @@ body {
   color: var(--error);
   min-height: 13px;
 }
+
+/* ── Help button (controls panel header) ── */
+
+.help-btn {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 3px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.help-btn:hover { color: var(--text-muted); }
+
+/* ── Help Modal ── */
+
+.help-modal-box {
+  width: 520px;
+}
+
+.help-modal-body {
+  gap: 0;
+}
+
+.help-topic-item {
+  padding: 7px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.1s, color 0.1s;
+}
+
+.help-topic-item:hover {
+  background: #1e1e1e;
+  color: var(--text);
+}
+
+.help-group {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+
+.help-group-header {
+  font-size: 9.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: normal;
+  padding: 0 8px 6px;
+}
+
+.help-back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 18px;
+  display: inline-block;
+  transition: color 0.15s;
+}
+
+.help-back-btn:hover { color: var(--text); }
+
+.help-blurb-text {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.help-icon-list {
+  list-style: disc;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

@@ -24,8 +24,10 @@
   conversation.load([], 'Enter My Phone Number to get started.');
   routerEndpoints.init();
   configEditor.init();
+  help.init();
 
   document.getElementById('settings-gear-btn').addEventListener('click', () => configEditor.open());
+  document.getElementById('help-btn').addEventListener('click', () => help.open());
 
   // ── Status display ────────────────────────────────────────────────────────
 
