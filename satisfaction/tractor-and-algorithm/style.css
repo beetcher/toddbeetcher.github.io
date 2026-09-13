@@ -88,17 +88,11 @@ ul, ol { list-style: none; }
 }
 
 /* ------- Version banner ------- */
-.version-banner {
-  display: flex; align-items: center; gap: var(--sp-md);
-  background: var(--color-accent); color: #fff;
-  padding: var(--sp-sm) var(--sp-md);
-  font-family: var(--font-heading); font-size: var(--type-small);
-}
-.version-banner__link { color: #fff; }
-.version-banner__dismiss {
-  margin-left: auto; background: none; border: none;
-  color: #fff; cursor: pointer; font-size: var(--type-body);
-}
+.version-banner { display: none; align-items: center; gap: var(--sp-sm); padding: var(--sp-sm) var(--sp-md); background: var(--color-bg-surface); border-bottom: 2px solid var(--color-accent); font-family: var(--font-heading); font-size: var(--type-small); color: var(--color-text-secondary); flex-wrap: wrap; }
+.version-banner__text { flex: 1; }
+.version-banner__link { color: var(--color-accent); font-weight: 500; white-space: nowrap; }
+.version-banner__dismiss { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); font-size: 14px; padding: 0 var(--sp-xs); line-height: 1; font-family: var(--font-heading); }
+.version-banner__dismiss:hover { color: var(--color-text); }
 
 /* ------- Panels ------- */
 .panel { padding: var(--sp-xl) 0; }
