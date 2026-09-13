@@ -1051,7 +1051,7 @@ Placed after the final content panel and the delivery placeholder section on eve
 ```html
 <div class="doc-end-nav__closing">
   <p class="doc-end-nav__closing-text">You've read the full curriculum. A response is being designed. If you have the leverage to help build it, Todd would welcome that conversation.</p>
-  <a href="mailto:todd@beetcher.com" class="btn--primary">todd@beetcher.com</a>
+  <a href="mailto:toddbeetcher17@gmail.com" class="btn--primary">toddbeetcher17@gmail.com</a>
 </div>
 <a href="../" class="btn--secondary doc-end-nav__back">← Back to curriculum</a>
 ```
@@ -1087,7 +1087,7 @@ Panel 5 renders as a curriculum list:
     <a href="the-full-essay/" class="btn--primary curriculum-hub__cta">Start with the essay →</a>
     <div class="curriculum-hub__contact">
       <p>A response is being designed. If you have the leverage to help build it, I would welcome that conversation.</p>
-      <p><strong>Todd Beetcher</strong> | <a href="mailto:todd@beetcher.com">todd@beetcher.com</a> | <a href="https://linkedin.com/in/beeetcher" rel="noopener">linkedin.com/in/beeetcher</a></p>
+      <p><strong>Todd Beetcher</strong> | <a href="mailto:toddbeetcher17@gmail.com">toddbeetcher17@gmail.com</a> | <a href="https://linkedin.com/in/beeetcher" rel="noopener">linkedin.com/in/beeetcher</a></p>
     </div>
   </div>
 </section>
