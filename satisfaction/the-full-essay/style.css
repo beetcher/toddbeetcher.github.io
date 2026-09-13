@@ -285,7 +285,18 @@ a:hover {
   padding: 0 var(--content-padding);
 }
 
-.panel + .panel .panel__content { border-top: 1px solid var(--color-border); }
+.panel + .panel { position: relative; }
+.panel + .panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--content-width);
+  padding: 0 var(--content-padding);
+  border-top: 1px solid var(--color-border);
+}
 
 .panel--hero-full {
   position: relative;
