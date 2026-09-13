@@ -101,7 +101,7 @@ ul, ol { list-style: none; }
   margin: 0 auto;
   padding: 0 var(--content-padding);
 }
-.panel + .panel { border-top: 1px solid var(--color-border); }
+.panel + .panel .panel__content { border-top: 1px solid var(--color-border); }
 
 /* ------- Typography within panels ------- */
 .panel__content p { margin-bottom: var(--sp-md); }

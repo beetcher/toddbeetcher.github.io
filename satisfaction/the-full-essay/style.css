@@ -285,7 +285,7 @@ a:hover {
   padding: 0 var(--content-padding);
 }
 
-.panel + .panel { border-top: 1px solid var(--color-border); }
+.panel + .panel .panel__content { border-top: 1px solid var(--color-border); }
 
 .panel--hero-full {
   position: relative;

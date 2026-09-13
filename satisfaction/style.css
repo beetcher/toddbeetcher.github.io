@@ -305,7 +305,7 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   padding: 0 var(--content-padding);
 }
 
-.panel + .panel { border-top: 1px solid var(--color-border); }
+.panel + .panel .panel__content { border-top: 1px solid var(--color-border); }
 
 /* ============================================================
    TYPE 1a — HERO FULL (teaser)
