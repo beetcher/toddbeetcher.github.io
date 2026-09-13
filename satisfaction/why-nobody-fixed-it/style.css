@@ -103,6 +103,7 @@ a:hover { text-decoration: underline; }
 .pause-figure--primary { flex: 0 0 65%; overflow: hidden; margin: 0; }
 .pause-figure--secondary { flex: 0 0 calc(35% - var(--sp-xs)); overflow: hidden; margin: 0; }
 .panel--visual-pause-duo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pause-figure--secondary img { object-fit: contain; }
 
 .divider--triptych { max-width: var(--content-width); margin: var(--sp-sm) auto; padding: 0 var(--content-padding); }
 .divider--triptych img { width: 100%; height: auto; display: block; }
