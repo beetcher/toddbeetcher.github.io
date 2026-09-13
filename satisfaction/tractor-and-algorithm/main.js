@@ -150,6 +150,10 @@ function initRootPage() {
   if (CURRENT_DOC !== null) return;
 }
 
+function initProgressResetEgg() {
+  if (CURRENT_DOC !== null) return;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   updateNavDots();
   initReadProgress();
@@ -157,4 +161,5 @@ document.addEventListener('DOMContentLoaded', () => {
   recordVisit();
   initCompletionDetection();
   initRootPage();
+  initProgressResetEgg();
 });

@@ -200,6 +200,30 @@ function initRootPage() {
 }
 
 // ============================================================
+// EASTER EGG — click the "S" mark 3x quickly to reset your
+// reading progress (root page only)
+// ============================================================
+function initProgressResetEgg() {
+  if (CURRENT_DOC !== null) return;
+  const mark = document.querySelector('.curriculum-nav__home-mark');
+  if (!mark) return;
+  let clicks = 0;
+  let resetTimer = null;
+  mark.addEventListener('click', () => {
+    clicks++;
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => { clicks = 0; }, 2000);
+    if (clicks >= 3) {
+      clicks = 0;
+      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.clear();
+      console.log('%cProgress cleared.', 'color:#1e4c8a;font-weight:bold;font-family:sans-serif;');
+      location.reload();
+    }
+  });
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -209,4 +233,5 @@ document.addEventListener('DOMContentLoaded', () => {
   recordVisit();
   initCompletionDetection();
   initRootPage();
+  initProgressResetEgg();
 });

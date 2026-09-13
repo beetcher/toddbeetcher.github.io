@@ -173,6 +173,13 @@ function initRootPage() {
 }
 
 // ============================================================
+// EASTER EGG (no-op on document pages)
+// ============================================================
+function initProgressResetEgg() {
+  if (CURRENT_DOC !== null) return;
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -182,4 +189,5 @@ document.addEventListener('DOMContentLoaded', () => {
   recordVisit();
   initCompletionDetection();
   initRootPage();
+  initProgressResetEgg();
 });
