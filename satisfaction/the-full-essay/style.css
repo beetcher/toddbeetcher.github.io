@@ -495,6 +495,10 @@ a:hover {
   display: block;
 }
 
+.pause-figure--secondary img {
+  object-fit: contain;
+}
+
 .divider--triptych {
   max-width: var(--content-width);
   margin: var(--sp-sm) auto;
