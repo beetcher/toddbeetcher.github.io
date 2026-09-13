@@ -14,11 +14,12 @@ The consequence is not hunger or homelessness. It is a generation that cannot la
 
 Youth unemployment for ages 16 to 24 has risen for three consecutive years. The Bureau of Labor Statistics says the reasons are not clear.
 
-They are clear. The full case is in the three documents below, best read in this order:
+They are clear. The full case is in the four documents below, best read in this order:
 
 - **Are We Automating Away Our Children's Path to Satisfying Lives?** — Start here.
-- **The Disappearing First Job** — The commercial evidence. Read second.
-- **The Tractor and the Algorithm** — The AI implications. Read third.
+- **Why Nobody Fixed It** — The diagnostic. Read second.
+- **The Disappearing First Job** — The commercial evidence. Read third.
+- **The Tractor and the Algorithm** — The AI implications. Read fourth.
 
 A response is being designed. If you have the leverage to help build it, I would welcome that conversation.
 
