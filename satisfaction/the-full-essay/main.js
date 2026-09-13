@@ -11,7 +11,7 @@ const CURRICULUM = [
   { slug: 'the-full-essay',         title: 'Are We Automating Away Our Children\'s Path to Satisfying Lives?', shortTitle: 'Essay' },
   { slug: 'why-nobody-fixed-it',    title: 'Why Nobody Fixed It',               shortTitle: 'Diagnostic' },
   { slug: 'disappearing-first-job', title: 'The Disappearing First Job',         shortTitle: 'Ledger' },
-  { slug: 'tractor-and-algorithm',  title: 'The Tractor and the Algorithm',      shortTitle: 'Addendum' },
+  { slug: 'tractor-and-algorithm',  title: 'The Tractor and the Algorithm',      shortTitle: 'Parallel' },
 ];
 const STORAGE_KEY = 'satisfaction';
 // ============================================================
