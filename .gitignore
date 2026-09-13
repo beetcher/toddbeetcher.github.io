@@ -9,3 +9,6 @@ assets/Videos/Joy_CDL/Joy_CDL_04_1080p_caption.mp4
 assets/Videos/Joy_CDL/Joy_CDL_2_1080p_caption.mp4
 Bumpered_Intro_Video.mp4
 firestore-debug.log
+
+# Claude Code local settings (machine-specific, not shared)
+.claude/settings.local.json
