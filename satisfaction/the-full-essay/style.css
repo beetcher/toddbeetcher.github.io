@@ -40,9 +40,6 @@
   --content-padding: var(--sp-md);
 }
 
-/* ============================================================
-   RESET AND BASE
-   ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -68,9 +65,6 @@ img {
   height: auto;
 }
 
-/* ============================================================
-   TYPOGRAPHY
-   ============================================================ */
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   font-weight: 600;
@@ -123,9 +117,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* ============================================================
-   FIXED CURRICULUM NAV
-   ============================================================ */
 .curriculum-nav {
   position: fixed;
   top: 0;
@@ -163,11 +154,6 @@ a:hover {
   font-size: 18px;
   color: var(--color-accent);
   line-height: 1;
-  cursor: default;
-}
-
-a.curriculum-nav__home .curriculum-nav__home-mark {
-  cursor: pointer;
 }
 
 .curriculum-nav__docs {
@@ -251,9 +237,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   transition: width 0.1s linear;
 }
 
-/* ============================================================
-   VERSION BANNER
-   ============================================================ */
 .version-banner {
   display: none;
   align-items: center;
@@ -292,9 +275,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   color: var(--color-text);
 }
 
-/* ============================================================
-   PANEL BASE
-   ============================================================ */
 .panel {
   padding: var(--sp-xl) 0;
 }
@@ -305,9 +285,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   padding: 0 var(--content-padding);
 }
 
-/* ============================================================
-   TYPE 1a — HERO FULL (teaser)
-   ============================================================ */
 .panel--hero-full {
   position: relative;
   min-height: 100svh;
@@ -387,9 +364,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   50% { transform: translateY(8px); opacity: 1; }
 }
 
-/* ============================================================
-   TYPE 1b — HERO DOC (document title panel)
-   ============================================================ */
 .panel--hero-doc {
   position: relative;
   height: 480px;
@@ -460,9 +434,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   line-height: var(--lh-tight);
 }
 
-/* ============================================================
-   TYPE 2 — TEXT + IMAGE PANEL
-   ============================================================ */
 .panel--text-image .panel__text {
   margin-bottom: var(--sp-lg);
 }
@@ -493,9 +464,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   color: var(--color-text);
 }
 
-/* ============================================================
-   TYPE 4 — VISUAL PAUSE PANEL (duo)
-   ============================================================ */
 .panel--visual-pause {
   padding: 0;
 }
@@ -527,9 +495,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   display: block;
 }
 
-/* ============================================================
-   TYPE 5 — TRIPTYCH DIVIDER
-   ============================================================ */
 .divider--triptych {
   max-width: var(--content-width);
   margin: var(--sp-sm) auto;
@@ -542,9 +507,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   display: block;
 }
 
-/* ============================================================
-   TYPE 6 — LEDGER TABLE PANEL
-   ============================================================ */
 .panel--ledger .ledger-table-wrapper {
   overflow-x: auto;
   margin: var(--sp-lg) 0;
@@ -587,9 +549,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   border-bottom: none;
 }
 
-/* ============================================================
-   LEDGER CATEGORY HEADERS (Document 3)
-   ============================================================ */
 .ledger-category-header {
   background: var(--color-bg-ledger);
   padding: var(--sp-md) 0;
@@ -618,9 +577,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   margin-bottom: 0;
 }
 
-/* ============================================================
-   SECTION RULE
-   ============================================================ */
 .section-rule {
   height: 1px;
   background: var(--color-border);
@@ -631,9 +587,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   display: block;
 }
 
-/* ============================================================
-   PULL QUOTE
-   ============================================================ */
 .pullquote {
   border-left: 3px solid var(--color-accent-warm);
   padding-left: var(--sp-md);
@@ -649,9 +602,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   margin: 0;
 }
 
-/* ============================================================
-   CLOSING LINE
-   ============================================================ */
 .closing-rule {
   width: 40px;
   height: 1px;
@@ -670,9 +620,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   margin-bottom: 0;
 }
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
 .btn--primary {
   display: inline-block;
   background: var(--color-accent);
@@ -710,9 +657,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   text-decoration: none;
 }
 
-/* ============================================================
-   DELIVERY OPTIONS
-   ============================================================ */
 .delivery-options {
   padding: var(--sp-xl) 0;
   border-top: 1px solid var(--color-border);
@@ -766,9 +710,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   line-height: var(--lh-tight);
 }
 
-/* ============================================================
-   END-OF-DOCUMENT NAVIGATION
-   ============================================================ */
 .doc-end-nav {
   padding: var(--sp-2xl) 0;
   border-top: 1px solid var(--color-border);
@@ -812,9 +753,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   max-width: 560px;
 }
 
-/* ============================================================
-   CURRICULUM HUB (root page)
-   ============================================================ */
 .curriculum-hub__intro {
   font-family: var(--font-body);
   font-size: var(--type-body);
@@ -936,9 +874,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
   margin-bottom: 0;
 }
 
-/* ============================================================
-   RESPONSIVE — MOBILE (≤ 767px)
-   ============================================================ */
 @media (max-width: 767px) {
   :root {
     --type-display: 2rem;
@@ -998,7 +933,6 @@ a.curriculum-nav__home .curriculum-nav__home-mark {
     object-fit: contain;
   }
 
-  /* Table to cards */
   .ledger-table thead tr {
     position: absolute;
     top: -9999px;

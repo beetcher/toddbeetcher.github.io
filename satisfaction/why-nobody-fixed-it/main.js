@@ -16,13 +16,12 @@ const CURRICULUM = [
 const STORAGE_KEY = 'satisfaction';
 // ============================================================
 
-// PAGE-SPECIFIC — set per file (use let, not const, to allow assignment without redeclaration)
-let CURRENT_DOC = null;   // null on root; set to slug on document pages
-let DOC_VERSION = null;   // null on root; set to '1.0' on document pages
+let CURRENT_DOC = null;
+let DOC_VERSION = null;
 
-// ============================================================
-// STORAGE UTILITIES
-// ============================================================
+CURRENT_DOC = 'why-nobody-fixed-it';
+DOC_VERSION = '1.0';
+
 function getProgress() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -54,9 +53,6 @@ function getOrInitProgress() {
   return fresh;
 }
 
-// ============================================================
-// CURRICULUM NAV DOTS
-// ============================================================
 function updateNavDots() {
   const progress = getProgress();
   const dots = document.querySelectorAll('.curriculum-nav__doc');
@@ -72,9 +68,6 @@ function updateNavDots() {
   });
 }
 
-// ============================================================
-// READ PROGRESS BAR (document pages only)
-// ============================================================
 function initReadProgress() {
   if (!CURRENT_DOC) return;
   const fill = document.querySelector('.read-progress__fill');
@@ -94,9 +87,6 @@ function initReadProgress() {
   });
 }
 
-// ============================================================
-// VISIT RECORDING (document pages only)
-// ============================================================
 function recordVisit() {
   if (!CURRENT_DOC) return;
   const progress = getOrInitProgress();
@@ -105,9 +95,6 @@ function recordVisit() {
   setProgress(progress);
 }
 
-// ============================================================
-// COMPLETION DETECTION (document pages only)
-// ============================================================
 function markCompleted() {
   const progress = getOrInitProgress();
   if (!progress.docs[CURRENT_DOC].completed) {
@@ -135,9 +122,6 @@ function initCompletionDetection() {
   observer.observe(endNav);
 }
 
-// ============================================================
-// VERSION BANNER (document pages only)
-// ============================================================
 function initVersionBanner() {
   if (!CURRENT_DOC || !DOC_VERSION) return;
   const progress = getProgress();
@@ -150,7 +134,6 @@ function initVersionBanner() {
     const banner = document.querySelector('.version-banner');
     if (banner) {
       banner.style.display = 'flex';
-      // Hide changelog link if no #changelog element exists
       const changelogLink = banner.querySelector('.version-banner__link');
       if (changelogLink && !document.getElementById('changelog')) {
         changelogLink.style.display = 'none';
@@ -163,45 +146,10 @@ function initVersionBanner() {
   }
 }
 
-// ============================================================
-// ROOT PAGE — FIRST-TIME AND RETURNING VISITOR STATES
-// ============================================================
 function initRootPage() {
   if (CURRENT_DOC !== null) return;
-  const progress = getProgress();
-  if (!progress) return;
-
-  let firstIncomplete = null;
-  CURRICULUM.forEach(doc => {
-    const item = document.querySelector('.curriculum-hub__item[data-slug="' + doc.slug + '"]');
-    if (!item) return;
-    const docData = progress.docs[doc.slug];
-    if (!docData) return;
-    if (docData.completed) {
-      item.classList.add('--completed');
-      const versionAttr = item.dataset.docVersion;
-      if (versionAttr && docData.version_seen && docData.version_seen < versionAttr) {
-        item.classList.add('--updated');
-      }
-    }
-    if (!firstIncomplete && !docData.completed) {
-      firstIncomplete = doc;
-    }
-  });
-
-  const cta = document.querySelector('.curriculum-hub__cta');
-  if (cta && firstIncomplete) {
-    cta.textContent = 'Continue →';
-    cta.href = firstIncomplete.slug + '/';
-  } else if (cta && !firstIncomplete) {
-    cta.textContent = 'Read again →';
-    cta.href = 'the-full-essay/';
-  }
 }
 
-// ============================================================
-// INIT
-// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   updateNavDots();
   initReadProgress();

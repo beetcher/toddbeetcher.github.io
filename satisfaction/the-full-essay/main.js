@@ -20,6 +20,9 @@ const STORAGE_KEY = 'satisfaction';
 let CURRENT_DOC = null;   // null on root; set to slug on document pages
 let DOC_VERSION = null;   // null on root; set to '1.0' on document pages
 
+CURRENT_DOC = 'the-full-essay';
+DOC_VERSION = '1.0';
+
 // ============================================================
 // STORAGE UTILITIES
 // ============================================================
@@ -73,7 +76,7 @@ function updateNavDots() {
 }
 
 // ============================================================
-// READ PROGRESS BAR (document pages only)
+// READ PROGRESS BAR
 // ============================================================
 function initReadProgress() {
   if (!CURRENT_DOC) return;
@@ -95,7 +98,7 @@ function initReadProgress() {
 }
 
 // ============================================================
-// VISIT RECORDING (document pages only)
+// VISIT RECORDING
 // ============================================================
 function recordVisit() {
   if (!CURRENT_DOC) return;
@@ -106,7 +109,7 @@ function recordVisit() {
 }
 
 // ============================================================
-// COMPLETION DETECTION (document pages only)
+// COMPLETION DETECTION
 // ============================================================
 function markCompleted() {
   const progress = getOrInitProgress();
@@ -136,7 +139,7 @@ function initCompletionDetection() {
 }
 
 // ============================================================
-// VERSION BANNER (document pages only)
+// VERSION BANNER
 // ============================================================
 function initVersionBanner() {
   if (!CURRENT_DOC || !DOC_VERSION) return;
@@ -150,7 +153,6 @@ function initVersionBanner() {
     const banner = document.querySelector('.version-banner');
     if (banner) {
       banner.style.display = 'flex';
-      // Hide changelog link if no #changelog element exists
       const changelogLink = banner.querySelector('.version-banner__link');
       if (changelogLink && !document.getElementById('changelog')) {
         changelogLink.style.display = 'none';
@@ -164,39 +166,10 @@ function initVersionBanner() {
 }
 
 // ============================================================
-// ROOT PAGE — FIRST-TIME AND RETURNING VISITOR STATES
+// ROOT PAGE (no-op on document pages)
 // ============================================================
 function initRootPage() {
   if (CURRENT_DOC !== null) return;
-  const progress = getProgress();
-  if (!progress) return;
-
-  let firstIncomplete = null;
-  CURRICULUM.forEach(doc => {
-    const item = document.querySelector('.curriculum-hub__item[data-slug="' + doc.slug + '"]');
-    if (!item) return;
-    const docData = progress.docs[doc.slug];
-    if (!docData) return;
-    if (docData.completed) {
-      item.classList.add('--completed');
-      const versionAttr = item.dataset.docVersion;
-      if (versionAttr && docData.version_seen && docData.version_seen < versionAttr) {
-        item.classList.add('--updated');
-      }
-    }
-    if (!firstIncomplete && !docData.completed) {
-      firstIncomplete = doc;
-    }
-  });
-
-  const cta = document.querySelector('.curriculum-hub__cta');
-  if (cta && firstIncomplete) {
-    cta.textContent = 'Continue →';
-    cta.href = firstIncomplete.slug + '/';
-  } else if (cta && !firstIncomplete) {
-    cta.textContent = 'Read again →';
-    cta.href = 'the-full-essay/';
-  }
 }
 
 // ============================================================
