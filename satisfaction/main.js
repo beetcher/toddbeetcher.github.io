@@ -1,0 +1,1 @@
+// satisfaction/main.js — placeholder
