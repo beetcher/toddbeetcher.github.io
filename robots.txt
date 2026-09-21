@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /driver/assets/
 Disallow: /one-of-a-kind/
+Disallow: /bfn/
