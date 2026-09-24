@@ -6,3 +6,5 @@
   X-Robots-Tag: noindex, nofollow, noarchive
 /bfn/*
   X-Robots-Tag: noindex, nofollow, noarchive
+/cert/*
+  X-Robots-Tag: noindex, nofollow, noarchive

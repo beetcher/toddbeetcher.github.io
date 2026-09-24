@@ -12,3 +12,8 @@ firestore-debug.log
 
 # Claude Code local settings (machine-specific, not shared)
 .claude/settings.local.json
+
+# cert/ — source docs, full-size originals, email draft (not published)
+cert/doc/
+# Word lock files
+~$*
