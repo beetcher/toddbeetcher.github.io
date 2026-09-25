@@ -1,0 +1,138 @@
+/* ============================================================
+   walk/style.css
+   Standalone article. Tokens and type match satisfaction/style.css.
+   ============================================================ */
+
+/* ------- Design tokens ------- */
+:root {
+  --color-bg: #f8f4ef; --color-bg-surface: #ffffff;
+  --color-text: #1c1914; --color-text-secondary: #6a635d;
+  --color-accent: #1e4c8a; --color-accent-warm: #8c3420; --color-border: #ddd7cf;
+  --font-heading: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-body: 'Lora', 'Georgia', 'Times New Roman', serif;
+  --type-display: 3rem; --type-section: 1.625rem;
+  --type-body: 1.125rem; --type-pullquote: 1.375rem; --type-small: 0.875rem;
+  --lh-heading: 1.2; --lh-body: 1.75; --lh-pullquote: 1.6; --lh-tight: 1.4;
+  --sp-xs: 8px; --sp-sm: 16px; --sp-md: 24px; --sp-lg: 40px;
+  --sp-xl: 64px; --sp-2xl: 96px;
+  --content-width: 700px; --wide-width: 1100px; --content-padding: var(--sp-md);
+}
+
+/* ------- Reset ------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--lh-body);
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--color-accent); }
+
+/* ------- Read progress ------- */
+.read-progress {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 3px; background: var(--color-border);
+}
+.read-progress__fill {
+  height: 100%; width: 0; background: var(--color-accent);
+  transition: width 0.1s linear;
+}
+
+/* ------- Header ------- */
+.article-header {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--sp-2xl) var(--content-padding) var(--sp-lg);
+}
+.article-header h1 {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: var(--type-display); line-height: var(--lh-heading);
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  margin-top: var(--sp-sm);
+  font-style: italic; font-size: var(--type-pullquote);
+  color: var(--color-text-secondary);
+}
+
+/* ------- Article body ------- */
+.article {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--sp-lg) var(--content-padding) var(--sp-xl);
+}
+.article p { margin-bottom: var(--sp-md); }
+.article h2 {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: var(--type-section); line-height: var(--lh-heading);
+  margin: var(--sp-xl) 0 var(--sp-md);
+}
+.lede {
+  font-size: var(--type-pullquote); line-height: var(--lh-pullquote);
+}
+.closing-line {
+  margin-top: var(--sp-lg);
+  padding-top: var(--sp-lg);
+  border-top: 1px solid var(--color-accent-warm);
+  font-size: var(--type-pullquote); font-style: italic;
+  line-height: var(--lh-pullquote);
+}
+
+/* ------- Figures ------- */
+.figure { margin: var(--sp-lg) 0; }
+.figure img { width: 100%; border-radius: 4px; }
+.figure figcaption {
+  margin-top: var(--sp-xs);
+  font-family: var(--font-heading); font-size: var(--type-small);
+  line-height: var(--lh-tight); color: var(--color-text-secondary);
+}
+
+/* Hero: full width of the wide column, never cropped, so all four pairs stay in frame */
+.figure--hero {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+}
+
+/* Same hour: two equal squares side by side, stacked under 640px */
+.figure--pair__images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-sm);
+}
+
+/* Infographic: breaks out to the wide column */
+.figure--infographic {
+  width: min(var(--wide-width), 100vw - 2 * var(--content-padding));
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: var(--sp-xl);
+  margin-bottom: 0;
+}
+.figure--infographic a { display: block; }
+.figure--infographic a:hover img { opacity: 0.92; }
+
+/* ------- Footer ------- */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--sp-lg) var(--content-padding);
+  text-align: center;
+  font-family: var(--font-heading); font-size: var(--type-small);
+  color: var(--color-text-secondary);
+}
+
+/* ------- Mobile ------- */
+@media (max-width: 767px) {
+  :root {
+    --type-display: 2rem; --type-section: 1.375rem;
+    --type-body: 1rem; --type-pullquote: 1.25rem;
+    --content-padding: var(--sp-sm);
+  }
+  .article-header { padding-top: var(--sp-xl); }
+}
+@media (max-width: 640px) {
+  .figure--pair__images { grid-template-columns: 1fr; }
+}
