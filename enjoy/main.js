@@ -49,7 +49,7 @@ const STORIES = [
     id: 'brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
-    line: 'Our friend Diana and her daughters, Kate and Melissa, came over for brisket. It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
+    line: 'I asked AI how to cook a brisket, and our friend Diana and her daughters, Kate and Melissa, came over to eat it. It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
     promptLabel: 'See how I asked',
     prompt: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI. The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
     steps: [
@@ -58,7 +58,7 @@ const STORIES = [
       'Is there anything I\u2019m at risk of getting wrong?',
       'Go look on the internet for more information, then give me a roadmap.',
     ],
-    payoff: 'A tool of chaos became a source of capability. Doing something that good for people I care about, and having them still talking about it years later, is exactly the empowerment I mean. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
+    payoff: 'It was very gratifying to watch everyone crowd around and carve it up, knowing I made that for people I care about. A tool of chaos had become a source of capability, and that was very empowering. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
     colors: ['#7c4dff', '#ff3d6e'],
     photos: [
       { src: 'assets/brisket-sticker.webp', kind: 'cutout', rot: -5, alt: 'A brisket smoking on a pellet grill with temperature probes.' },
