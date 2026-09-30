@@ -1,5 +1,5 @@
 /* ============================================================
-   enjoy/style.css — "I Can Do That"
+   enjoy/clinic/style.css (copy of ../style.css: one CSS file per HTML file. Keep in sync.)
    Same structure and token names as /walk and /satisfaction,
    deliberately different palette: bright, playful, big color.
    ============================================================ */
@@ -147,3 +147,17 @@ a.fab { display: inline-block; text-decoration: none; }
 .chips li { background: var(--color-text); color: #fff; font-weight: 700; padding: 8px 16px; border-radius: var(--radius); font-size: 1rem; }
 .letter p { margin-bottom: var(--sp-md); }
 .letter .sign { font: 800 1.5rem/1.2 var(--font-heading); margin-top: var(--sp-lg); }
+
+/* ------- Ways to join ------- */
+.ways { max-width: 960px; margin: 0 auto; padding: var(--sp-2xl) var(--content-padding) var(--sp-xl); text-align: center; }
+.ways__title { font: 800 var(--type-section)/var(--lh-heading) var(--font-heading); letter-spacing: -0.02em; margin-bottom: var(--sp-sm); }
+.ways__sub { max-width: 40ch; margin: 0 auto var(--sp-lg); color: var(--color-text-secondary); font-size: var(--type-pullquote); }
+.ways__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-md); text-align: left; }
+.way { display: block; background: var(--color-bg-surface); border-radius: 24px; padding: var(--sp-md); border-top: 10px solid var(--c, var(--color-accent)); color: var(--color-text); text-decoration: none; box-shadow: 0 6px 0 rgba(27,19,64,.08); transition: transform .12s ease; }
+.way:hover { transform: translateY(-3px); }
+.way:focus-visible { outline: 3px solid var(--color-text); outline-offset: 3px; }
+.way h3 { font: 800 1.35rem/1.2 var(--font-heading); margin-bottom: var(--sp-xs); }
+.way p { margin: 0; font-size: 1rem; }
+.ways__more { margin-top: var(--sp-lg); font-weight: 500; }
+.empty { background: var(--color-bg-surface); border: 2px dashed var(--color-border); border-radius: 24px; padding: var(--sp-lg) var(--sp-md); text-align: center; margin: var(--sp-lg) 0; }
+.empty p:first-child { font: 800 1.5rem/1.2 var(--font-heading); margin-bottom: var(--sp-sm); }
