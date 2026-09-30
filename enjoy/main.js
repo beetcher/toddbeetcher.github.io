@@ -214,7 +214,7 @@ function initSignup() {
     try {
       await saveSignup({ name, email, comfort, want });
       form.reset();
-      say('You’re on the list. We’ll be in touch soon.', 'ok');
+      say('Thanks! We have noted your interest. We will email you the date and place as soon as they are set.', 'ok');
     } catch (err) {
       const mailto = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Register me for the clinic') +
         '&body=' + encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nComfort with AI (1-5): ' + comfort + '\nWhat I’d love to do: ' + want);

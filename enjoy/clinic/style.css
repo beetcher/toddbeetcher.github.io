@@ -1,5 +1,5 @@
 /* ============================================================
-   enjoy/clinic/style.css (copy of ../style.css: one CSS file per HTML file. Keep in sync.) — "I Can Do That"
+   enjoy/style.css — "I Can Do That"
    Same structure and token names as /walk and /satisfaction,
    deliberately different palette: bright, playful, big color.
    ============================================================ */
@@ -121,3 +121,29 @@ a { color: var(--color-accent); }
 
 a.btn { display: inline-block; text-decoration: none; }
 a.fab { display: inline-block; text-decoration: none; }
+.register__note { background: var(--color-bg); border-radius: 14px; padding: 12px 14px; font-size: 1rem; }
+
+/* ------- Sub-page nav + FAQ ------- */
+.page-top { display: flex; flex-wrap: wrap; gap: var(--sp-xs) var(--sp-md); align-items: center; justify-content: space-between; max-width: 960px; margin: 0 auto; }
+.page-top__links { display: flex; flex-wrap: wrap; gap: var(--sp-xs) var(--sp-md); }
+.page-top__links a { font-weight: 500; }
+.faq { max-width: var(--content-width); margin: 0 auto; padding: var(--sp-md) var(--content-padding) var(--sp-2xl); display: grid; gap: var(--sp-sm); }
+.faq details { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 18px; padding: 0; }
+.faq details[open] { border-color: var(--color-accent); }
+.faq summary { cursor: pointer; list-style: none; font: 700 1.125rem/1.35 var(--font-heading); padding: 18px 22px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; float: right; color: var(--color-accent); font-size: 1.5rem; line-height: 1; }
+.faq details[open] summary::after { content: '\2212'; }
+.faq summary:focus-visible { outline: 3px solid var(--color-text); outline-offset: 2px; border-radius: 18px; }
+.faq__a { padding: 0 22px 20px; }
+.faq__a p { margin-bottom: var(--sp-sm); }
+.faq__a p:last-child { margin-bottom: 0; }
+.blocks { display: grid; gap: var(--sp-md); margin: var(--sp-lg) 0; }
+.block { background: var(--color-bg-surface); border-radius: 22px; padding: var(--sp-md); border-left: 10px solid var(--c, var(--color-accent)); }
+.block__n { font: 800 var(--type-small)/1 var(--font-heading); letter-spacing: .12em; text-transform: uppercase; color: var(--c, var(--color-accent)); }
+.block h3 { font: 800 1.5rem/1.15 var(--font-heading); margin: 6px 0 var(--sp-xs); letter-spacing: -0.01em; }
+.block p { margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin: var(--sp-md) 0; list-style: none; }
+.chips li { background: var(--color-text); color: #fff; font-weight: 700; padding: 8px 16px; border-radius: var(--radius); font-size: 1rem; }
+.letter p { margin-bottom: var(--sp-md); }
+.letter .sign { font: 800 1.5rem/1.2 var(--font-heading); margin-top: var(--sp-lg); }
