@@ -229,3 +229,21 @@ a.fab { display: inline-block; text-decoration: none; }
   .moment--collage .moment__body { margin: 0; max-width: 560px; padding-left: max(var(--content-padding), calc((100vw - 960px) / 2)); }
   .moment--collage .moment__photos { position: absolute; right: max(3%, calc((100vw - 1100px) / 2)); top: 50%; transform: translateY(-50%); width: min(46vw, 560px); margin: 0; }
 }
+
+/* ------- Easter egg: the period after the hero line is a door to /agora/ ------- */
+.egg { display: inline-block; padding: .35em .3em; margin: -.35em -.3em; color: inherit; text-decoration: none; cursor: text; transition: color .25s ease, text-shadow .25s ease, transform .25s ease; }
+.egg:hover { cursor: pointer; color: var(--color-accent-warm); text-shadow: 0 0 14px rgba(255,200,61,.9); transform: scale(1.4); }
+
+/* ------- Agora page (hidden) ------- */
+.agora-page { background: #1b1340; color: #fff8ec; }
+.agora-page a { color: var(--color-accent-warm); }
+.agora-page .page-top a { color: #fff8ec; }
+.agora { max-width: var(--content-width); margin: 0 auto; padding: var(--sp-2xl) var(--content-padding) var(--sp-2xl); }
+.agora__whisper { font-style: italic; color: rgba(255,248,236,.7); margin-bottom: var(--sp-md); }
+.agora h1 { font: 800 clamp(2.5rem, 9vw, 5rem)/1.02 var(--font-heading); letter-spacing: -0.03em; color: var(--color-accent-warm); text-shadow: 0 0 40px rgba(255,200,61,.35); margin-bottom: var(--sp-sm); }
+.agora__sub { font-size: var(--type-pullquote); font-style: italic; margin-bottom: var(--sp-lg); color: rgba(255,248,236,.85); }
+.agora p { margin-bottom: var(--sp-md); }
+.agora h2 { font: 800 1.5rem/1.2 var(--font-heading); margin: var(--sp-xl) 0 var(--sp-sm); }
+.nugget { background: rgba(255,248,236,.08); border: 2px dashed rgba(255,248,236,.35); border-radius: 22px; padding: var(--sp-md); margin: var(--sp-md) 0; }
+.nugget__tag { display: inline-block; font: 700 var(--type-small)/1 var(--font-heading); letter-spacing: .1em; text-transform: uppercase; color: var(--color-accent-warm); margin-bottom: var(--sp-xs); }
+.nugget p:last-child { margin-bottom: 0; }
