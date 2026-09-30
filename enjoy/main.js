@@ -46,7 +46,7 @@ const STORIES = [
       'Go look on the internet for more information, then give me a roadmap.',
     ],
     payoff: 'It was very gratifying to watch everyone crowd around and carve it up, knowing I made that for people I care about. A tool of chaos had become a source of capability, and that was very empowering. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
-    colors: ['#7c4dff', '#ff3d6e'],
+    colors: ['#c98536', '#6f3518'],
     photos: [
       { src: 'assets/brisket-sticker.webp', kind: 'cutout', rot: -5, alt: 'A brisket smoking on a pellet grill with temperature probes.' },
       { src: 'assets/todd-brisket.webp', kind: 'print', rot: 5, hold: 'magnet', alt: 'Todd smiling in a Beetcher\u2019s Brisket T-shirt.' },
