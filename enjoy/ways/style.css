@@ -238,6 +238,17 @@ a.fab { display: inline-block; text-decoration: none; }
 .sticker:nth-child(2) { right: 0; bottom: 0; width: 42%; z-index: 2; }
 .sticker:only-child { left: 8%; top: 18%; width: 84%; }
 .moment--collage .moment__body { padding-top: var(--sp-lg); }
+/* Sticky note on the collage board */
+.sticker--note { background: #fff6a8; color: #2a1a3a; padding: 14px 16px 18px; border-radius: 4px; box-shadow: 0 12px 24px rgba(20,8,40,.4); font: 700 1.5rem/1.12 'Caveat', 'Comic Sans MS', cursive; }
+.sticker--note:nth-child(3) { left: 0; bottom: 0; width: 58%; z-index: 3; }
+.sticker--note p { margin: 0; }
+.moment--note .moment__photos { aspect-ratio: 1 / 1.25; }
+.moment--note .sticker--note { font-size: 1.25rem; width: 56%; }
+.moment--note .moment__photos { aspect-ratio: 1 / 1.35; }
+.moment--note .sticker:nth-child(1) { width: 68%; }
+.moment--note .sticker:nth-child(2) { width: 62%; bottom: 0; }
+.moment--note .sticker--note:nth-child(3) { bottom: auto; top: 44%; left: 0; }
+
 /* Pair layout: two landscape prints of similar weight */
 .moment--pair .moment__photos { aspect-ratio: 1 / 1.1; width: min(92%, 460px); }
 .moment--pair .sticker:nth-child(1) { left: 0; top: 0; width: 76%; }
@@ -247,6 +258,11 @@ a.fab { display: inline-block; text-decoration: none; }
   .moment--collage .moment__body { margin: 0; max-width: 560px; padding-left: max(var(--content-padding), calc((100vw - 960px) / 2)); }
   .moment--collage .moment__photos { position: absolute; right: max(3%, calc((100vw - 1100px) / 2)); top: 50%; transform: translateY(-50%); width: min(46vw, 560px); margin: 0; }
   .moment--pair .moment__photos { aspect-ratio: 1 / 1.05; width: min(48vw, 600px); }
+  .moment--note .moment__photos { aspect-ratio: 1 / 1; }
+  .moment--note .sticker--note { font-size: 1.5rem; width: 58%; }
+  .moment--note .sticker:nth-child(1) { width: 66%; }
+  .moment--note .sticker:nth-child(2) { width: 52%; }
+  .moment--note .sticker--note:nth-child(3) { top: auto; bottom: 0; width: 50%; }
 }
 
 /* ------- Easter egg: the period after the hero line is a door to /agora/ ------- */

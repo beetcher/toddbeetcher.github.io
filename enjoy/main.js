@@ -26,6 +26,7 @@ const ASK_ENDPOINT = '';
 // colors: two-stop gradient used when there is no image, and as the tint over one.
 // Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
+// note: optional sticky note stuck on the collage board (text that belongs with the photos).
 // collage: 'pair' gives two landscape photos equal weight (default layout favors one large print and one small sticker).
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
@@ -49,7 +50,8 @@ const STORIES = [
     id: 'brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
-    line: 'I asked AI how to cook a brisket, and our friend Diana and her daughters, Kate and Melissa, came over to eat it. It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
+    line: 'It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
+    note: 'I asked Doc how to cook a brisket, and our friend Diana and her daughters, Kate and Melissa, came over to eat it.',
     promptLabel: 'See how I asked',
     prompt: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI. The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
     steps: [
@@ -181,6 +183,12 @@ function renderStories() {
         fig.appendChild(im);
         board.appendChild(fig);
       });
+      if (story.note) {
+        panel.classList.add('moment--note');
+        const note = el('figure', 'sticker sticker--note');
+        note.appendChild(el('p', '', story.note));
+        board.appendChild(note);
+      }
       panel.appendChild(board);
     }
 
