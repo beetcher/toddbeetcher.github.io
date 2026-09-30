@@ -47,12 +47,25 @@ a { color: var(--color-accent); }
 
 /* ------- Hero ------- */
 .hero {
-  position: relative; min-height: 100svh; display: grid; place-items: center; text-align: center;
+  position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr; place-items: center; text-align: center;
   padding: var(--sp-xl) var(--content-padding); color: #fff;
-  background: radial-gradient(circle at 15% 20%, #ffc83d 0, transparent 38%), radial-gradient(circle at 85% 80%, #2bb8ff 0, transparent 40%), linear-gradient(135deg, #ff3d6e, #7c4dff);
+  background:
+    linear-gradient(to bottom, rgba(20,12,40,.45) 0, rgba(20,12,40,0) 28%, rgba(20,12,40,0) 40%, rgba(20,12,40,.82) 100%),
+    url("assets/hero-workshop.webp") center 35% / cover no-repeat,
+    linear-gradient(135deg, #ff3d6e, #7c4dff);
+}
+/* Workshop photo: title sits in the sky, sentence and buttons in a low band. */
+.hero__content { align-self: stretch; display: flex; flex-direction: column; align-items: center; padding: var(--sp-lg) 0 56px; }
+.hero__pitch { text-shadow: 0 2px 12px rgba(0,0,0,.6), 0 0 3px rgba(0,0,0,.5); }
+@media (min-width: 900px) { .hero .hero__pitch { max-width: 46em; } }
+.hero__title { text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+@media (max-width: 700px) {
+  .hero { background-image:
+    linear-gradient(to bottom, rgba(20,12,40,.4) 0, rgba(20,12,40,0) 26%, rgba(20,12,40,0) 40%, rgba(20,12,40,.82) 100%),
+    url("assets/hero-workshop-mobile.webp"); background-position: center, center 30%, center; }
 }
 .hero__title { font: 800 var(--type-display)/var(--lh-heading) var(--font-heading); letter-spacing: -0.03em; text-wrap: balance; }
-.hero__pitch { margin: var(--sp-md) auto var(--sp-lg); max-width: 30em; font-size: clamp(1.2rem, 3.2vw, 1.75rem); font-weight: 500; line-height: 1.4; text-wrap: balance; }
+.hero__pitch { margin: auto auto var(--sp-lg); max-width: 30em; font-size: clamp(1.2rem, 3.2vw, 1.75rem); font-weight: 500; line-height: 1.4; text-wrap: balance; }
 .hero__sub { margin: var(--sp-md) 0 var(--sp-lg); font-size: clamp(1.4rem, 4vw, 2.25rem); font-weight: 500; font-style: italic; }
 .hero__more { display: block; margin-top: var(--sp-md); color: #fff; font-weight: 500; }
 .hero__scroll { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 2rem; text-decoration: none; }
