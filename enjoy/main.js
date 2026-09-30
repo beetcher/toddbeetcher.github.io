@@ -26,6 +26,7 @@ const ASK_ENDPOINT = '';
 // colors: two-stop gradient used when there is no image, and as the tint over one.
 // Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
+// collage: 'pair' gives two landscape photos equal weight (default layout favors one large print and one small sticker).
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
 const STORIES = [
@@ -36,10 +37,12 @@ const STORIES = [
     line: 'Suzanne was so absorbed in the story of the valley that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
     promptLabel: 'See how I asked',
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
-    payoff: 'My capability made her enjoy the trip more, and that was very gratifying. The same road, suddenly full of story.',
+    payoff: 'My capability made her enjoy the trip more, and that was very empowering. The same road, suddenly full of story.',
     colors: ['#ff3d6e', '#ff9a3d'],
+    collage: 'pair',
     photos: [
       { src: 'assets/san-luis-valley.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'Sunrise through the windshield of a car driving south toward the snowy Sangre de Cristo mountains in the San Luis Valley, Colorado.' },
+      { src: 'assets/mesa-verde-doc.webp', kind: 'print', rot: 3, hold: 'pin', alt: 'Todd and Suzanne smiling in front of the cliff dwellings at Mesa Verde, with a speech bubble from Suzanne: Hey, Doc, tell me a story about a 12-year-old girl who used to live in these ruins. What was her day like?' },
     ],
   },
   {
@@ -55,7 +58,7 @@ const STORIES = [
       'Is there anything I\u2019m at risk of getting wrong?',
       'Go look on the internet for more information, then give me a roadmap.',
     ],
-    payoff: 'That\u2019s the feeling: being able to do something for people you care about, and having them still talking about it years later. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
+    payoff: 'A tool of chaos became a source of capability. Doing something that good for people I care about, and having them still talking about it years later, is exactly the empowerment I mean. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
     colors: ['#7c4dff', '#ff3d6e'],
     photos: [
       { src: 'assets/brisket-sticker.webp', kind: 'cutout', rot: -5, alt: 'A brisket smoking on a pellet grill with temperature probes.' },
@@ -104,7 +107,7 @@ const STORIES = [
     line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
     promptLabel: 'See how I asked',
     prompt: 'The gist of what I typed: \u201cI just squeezed lemons and limes for margaritas. Is there anything cool I can make with the leftover pulp?\u201d',
-    payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and it suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and I got to do that for my family.',
+    payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and it suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and this thing I learned from a tool that used to feel like chaos let me do that for my family.',
     colors: ['#19c37d', '#ffc83d'],
   },
   {
@@ -149,6 +152,7 @@ function renderStories() {
   if (!host) return;
   STORIES.forEach((story, i) => {
     const panel = el('section', story.layout === 'split' ? 'moment moment--split' : 'moment');
+    if (story.collage === 'pair') panel.classList.add('moment--pair');
     panel.id = story.id;
     panel.style.setProperty('--c1', story.colors[0]);
     panel.style.setProperty('--c2', story.colors[1]);

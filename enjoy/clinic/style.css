@@ -237,10 +237,15 @@ a.fab { display: inline-block; text-decoration: none; }
 .sticker:nth-child(2) { right: 0; bottom: 0; width: 42%; z-index: 2; }
 .sticker:only-child { left: 8%; top: 18%; width: 84%; }
 .moment--collage .moment__body { padding-top: var(--sp-lg); }
+/* Pair layout: two landscape prints of similar weight */
+.moment--pair .moment__photos { aspect-ratio: 1 / 1.1; width: min(92%, 460px); }
+.moment--pair .sticker:nth-child(1) { left: 0; top: 0; width: 76%; }
+.moment--pair .sticker:nth-child(2) { right: 0; bottom: 0; width: 84%; }
 @media (min-width: 900px) {
   .moment--collage { flex-direction: row; align-items: flex-end; justify-content: flex-start; }
   .moment--collage .moment__body { margin: 0; max-width: 560px; padding-left: max(var(--content-padding), calc((100vw - 960px) / 2)); }
   .moment--collage .moment__photos { position: absolute; right: max(3%, calc((100vw - 1100px) / 2)); top: 50%; transform: translateY(-50%); width: min(46vw, 560px); margin: 0; }
+  .moment--pair .moment__photos { aspect-ratio: 1 / 1.05; width: min(48vw, 600px); }
 }
 
 /* ------- Easter egg: the period after the hero line is a door to /agora/ ------- */
