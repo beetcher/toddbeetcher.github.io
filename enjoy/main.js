@@ -224,10 +224,12 @@ function renderStories() {
     panel.appendChild(body);
     host.appendChild(panel);
   });
-  // The intro (letter-style block) sits after the first example, not before it.
-  const intro = document.getElementById('intro');
-  const firstPanel = host.querySelector('.moment');
-  if (intro && firstPanel) firstPanel.after(intro);
+  // The intro text is cut into bundles; each sits after the panel named in its data-after.
+  // "scroll down and you'll see" (bundle 3) now follows two examples, so check wording on review.
+  document.querySelectorAll('.intro[data-after]').forEach((sec) => {
+    const target = document.getElementById(sec.dataset.after);
+    if (target) target.after(sec);
+  });
 }
 
 function initReveal() {
