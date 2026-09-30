@@ -36,8 +36,9 @@ const STORIES = [
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
     payoff: 'The same road, suddenly full of story.',
     colors: ['#ff3d6e', '#ff9a3d'],
-    image: '',
-    alt: '',
+    photos: [
+      { src: 'assets/san-luis-valley.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'Sunrise through the windshield of a car driving south toward the snowy Sangre de Cristo mountains in the San Luis Valley, Colorado.' },
+    ],
   },
   {
     id: 'brisket',
