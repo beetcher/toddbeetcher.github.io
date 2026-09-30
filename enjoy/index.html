@@ -56,6 +56,7 @@
     <p class="footer__small"><a href="faq/">FAQ</a> &middot; <a href="curriculum/">Curriculum</a> &middot; <a href="ways/">Ways to join</a> &middot; <a href="testimonials/">Testimonials</a> &middot; <a href="about/">About Todd</a> &middot; <a href="clinic/">The clinic</a> &middot; <a href="mailto:toddbeetcher17@gmail.com">Say hello</a></p>
   </footer>
 
+  <button type="button" class="fab fab--ask" data-open-ask aria-haspopup="dialog">Ask Todd</button>
   <button type="button" class="fab" data-open-register aria-haspopup="dialog">Register</button>
 
   <dialog class="register" id="register" aria-labelledby="register-title">
@@ -92,6 +93,20 @@
       <label class="hp" aria-hidden="true">Leave blank <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       <button type="submit" class="btn btn--block" id="signup-submit">Count me in</button>
       <p class="signup__status" id="signup-status" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+
+  <dialog class="ask" id="ask" aria-labelledby="ask-title">
+    <form method="dialog" class="register__close-form">
+      <button class="register__close" aria-label="Close">&times;</button>
+    </form>
+    <h2 id="ask-title" class="register__title">Ask Todd</h2>
+    <div class="ask__log" id="ask-log" role="log" aria-live="polite"></div>
+    <form id="ask-form" class="ask__form" autocomplete="off">
+      <label class="sr-only" for="ask-input">Your question</label>
+      <input id="ask-input" type="text" maxlength="500" placeholder="Ask a question&hellip;">
+      <button type="submit" class="btn" id="ask-send">Send</button>
     </form>
   </dialog>
 

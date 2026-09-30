@@ -16,6 +16,10 @@ const FIREBASE_CONFIG = {
 const SIGNUPS_COLLECTION = 'enjoy_signups';
 const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
 const CONTACT_EMAIL = 'toddbeetcher17@gmail.com';
+// "Ask Todd" chat companion. Leave empty until the endpoint exists; the widget then
+// says it isn't switched on yet and offers an email instead. When set, the page POSTs
+// JSON { question } and expects JSON { answer } back.
+const ASK_ENDPOINT = '';
 
 // ---- Stories ----
 // image: optional path like 'assets/san-luis-valley.webp' (shown behind the gradient).
@@ -88,6 +92,20 @@ const STORIES = [
     image: '',
     alt: '',
   },
+  {
+    id: 'this-website',
+    category: 'Building something',
+    title: 'Build the website you\u2019re looking at',
+    line: 'You\u2019re on it right now. An idea on a golf course, a conversation with AI, and a real page with a sign-up form that works.',
+    promptLabel: 'See what I asked for',
+    prompt: 'The gist of what I typed: \u201cI want a fun one-page website for a clinic that teaches busy adults to use AI. Bright and playful. One big picture panel for each everyday moment, with a short title and a line about the story. A Register button that floats on the screen and opens a pop-up that explains the clinic, with a sign-up form. Keep the word AI out of the headline. Make it easy for me to add new stories later.\u201d',
+    payoff: 'A live site with working sign-ups, the same day. A little irony, too: a productivity tool, used to show people this was never about productivity.',
+    link: { href: 'built/', text: 'How this was built \u2192' },
+    colors: ['#ff3d6e', '#7c4dff'],
+    image: 'assets/this-website.webp',
+    layout: 'split',
+    alt: 'A phone showing a chat conversation beside a colorful web page that it produced.',
+  },
 ];
 
 // ============================================================
@@ -104,7 +122,7 @@ function renderStories() {
   const host = document.getElementById('moments');
   if (!host) return;
   STORIES.forEach((story, i) => {
-    const panel = el('section', 'moment');
+    const panel = el('section', story.layout === 'split' ? 'moment moment--split' : 'moment');
     panel.id = story.id;
     panel.style.setProperty('--c1', story.colors[0]);
     panel.style.setProperty('--c2', story.colors[1]);
@@ -113,6 +131,7 @@ function renderStories() {
       const img = el('img', 'moment__img');
       img.src = story.image;
       img.alt = story.alt || '';
+      if (story.imagePosition) img.style.objectPosition = story.imagePosition;
       img.loading = i === 0 ? 'eager' : 'lazy';
       img.decoding = 'async';
       panel.appendChild(img);
@@ -124,12 +143,18 @@ function renderStories() {
     body.appendChild(el('p', 'moment__line', story.line));
 
     const more = el('details', 'moment__more');
-    more.appendChild(el('summary', '', 'See the exact prompt'));
+    more.appendChild(el('summary', '', story.promptLabel || 'See the exact prompt'));
     const inner = el('div', 'moment__more-body');
     inner.appendChild(el('p', 'moment__prompt', story.prompt));
     inner.appendChild(el('p', 'moment__payoff', story.payoff));
     more.appendChild(inner);
     body.appendChild(more);
+
+    if (story.link) {
+      const more2 = el('a', 'moment__link', story.link.text);
+      more2.href = story.link.href;
+      body.appendChild(more2);
+    }
 
     panel.appendChild(body);
     host.appendChild(panel);
@@ -234,9 +259,84 @@ function initSignup() {
   });
 }
 
+
+// ============================================================
+// ASK TODD (chat companion stub)
+// Real endpoint later: set ASK_ENDPOINT above. Until then it is honest about it.
+// ============================================================
+function initAsk() {
+  const dlg = document.getElementById('ask');
+  if (!dlg) return;
+  const log = document.getElementById('ask-log');
+  const form = document.getElementById('ask-form');
+  const input = document.getElementById('ask-input');
+  const send = document.getElementById('ask-send');
+
+  const bubble = (who, text) => {
+    const b = el('div', 'bubble bubble--' + who);
+    b.appendChild(document.createTextNode(text));
+    log.appendChild(b);
+    log.scrollTop = log.scrollHeight;
+    return b;
+  };
+
+  let greeted = false;
+  const open = () => {
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    if (!greeted) {
+      greeted = true;
+      bubble('bot', 'Hi, I\u2019m Todd\u2019s chat companion. Ask me anything about the clinic: who it\u2019s for, what we\u2019ll do, how it works.');
+    }
+    input.focus();
+  };
+  document.querySelectorAll('[data-open-ask]').forEach((b) => b.addEventListener('click', open));
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  if (location.hash === '#ask') open();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    bubble('me', q);
+
+    if (!ASK_ENDPOINT) {
+      const b = bubble('bot', 'I\u2019m not switched on yet, so I can\u2019t answer that one. ');
+      const a = el('a', '', 'Email Todd your question');
+      a.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A question about the clinic') + '&body=' + encodeURIComponent(q);
+      b.appendChild(a);
+      b.appendChild(document.createTextNode(' and he\u2019ll write back. Or check the '));
+      const f = el('a', '', 'FAQ');
+      f.href = 'faq/';
+      b.appendChild(f);
+      b.appendChild(document.createTextNode('.'));
+      return;
+    }
+
+    send.disabled = true;
+    const wait = bubble('bot', '\u2026');
+    try {
+      const res = await fetch(ASK_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q }),
+      });
+      if (!res.ok) throw new Error('bad status');
+      const data = await res.json();
+      wait.textContent = String(data.answer || 'Sorry, I don\u2019t have an answer for that yet.');
+    } catch (err) {
+      wait.textContent = 'Sorry, something went wrong. Please try again, or email ' + CONTACT_EMAIL + '.';
+    } finally {
+      send.disabled = false;
+      log.scrollTop = log.scrollHeight;
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   initReveal();
   initRegister();
   initSignup();
+  initAsk();
 });
