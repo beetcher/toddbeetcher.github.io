@@ -25,6 +25,8 @@ const ASK_ENDPOINT = '';
 // image: optional path like 'assets/san-luis-valley.webp' (shown behind the gradient).
 // colors: two-stop gradient used when there is no image, and as the tint over one.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
+// photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
+// Like photos on a fridge: each one can be held up its own way.
 const STORIES = [
   {
     id: 'san-luis-valley',
@@ -41,13 +43,24 @@ const STORIES = [
     id: 'brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
-    line: 'Timing, temperatures and what to do when it stalls, all in plain words.',
-    prompt: 'I’m cooking a 12-pound brisket for eight people tonight. Walk me through it like a patient friend, and tell me what to do if it stalls.',
-    payoff: 'Dinner on time and a very happy table.',
+    line: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI, and learned to make meat candy.',
+    promptLabel: 'See how I asked',
+    prompt: 'The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
+    steps: [
+      'Pretend you\u2019re a master chef who has been smoking meat for 30 years. Give me the tips and tricks you\u2019d tell a junior apprentice.',
+      'What am I not asking that a professional would tell me?',
+      'Is there anything I\u2019m at risk of getting wrong?',
+      'Go look on the internet for more information, then give me a roadmap.',
+    ],
+    payoff: 'Meat candy. It never made it from the counter to the table: everyone stood around and carved it up. Friends have been talking about it for years. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
     colors: ['#7c4dff', '#ff3d6e'],
-    image: '',
-    alt: '',
+    photos: [
+      { src: 'assets/brisket-sticker.webp', kind: 'cutout', rot: -5, alt: 'A brisket smoking on a pellet grill with temperature probes.' },
+      { src: 'assets/todd-brisket.webp', kind: 'print', rot: 5, hold: 'magnet', alt: 'Todd smiling in a Beetcher\u2019s Brisket T-shirt.' },
+    ],
   },
+
+
   {
     id: 'light-bulb',
     category: 'Fixing',
@@ -101,10 +114,10 @@ const STORIES = [
     prompt: 'The gist of what I typed: \u201cI want a fun one-page website for a clinic that teaches busy adults to use AI. Bright and playful. One big picture panel for each everyday moment, with a short title and a line about the story. A Register button that floats on the screen and opens a pop-up that explains the clinic, with a sign-up form. Keep the word AI out of the headline. Make it easy for me to add new stories later.\u201d',
     payoff: 'A live site with working sign-ups, the same day. A little irony, too: a productivity tool, used to show people this was never about productivity.',
     link: { href: 'built/', text: 'How this was built \u2192' },
-    colors: ['#ff3d6e', '#7c4dff'],
-    image: 'assets/this-website.webp',
-    layout: 'split',
-    alt: 'A phone showing a chat conversation beside a colorful web page that it produced.',
+    colors: ['#2bb8ff', '#7c4dff'],
+    photos: [
+      { src: 'assets/this-website.webp', kind: 'print', rot: -3, hold: 'pin', alt: 'A phone showing a chat conversation beside a colorful web page that it produced.' },
+    ],
   },
 ];
 
@@ -137,6 +150,23 @@ function renderStories() {
       panel.appendChild(img);
     }
 
+    if (story.photos && story.photos.length) {
+      panel.classList.add('moment--collage');
+      const board = el('div', 'moment__photos');
+      story.photos.forEach((ph) => {
+        const fig = el('figure', 'sticker sticker--' + (ph.kind || 'print') + ' hold-' + (ph.hold || 'tape'));
+        fig.style.setProperty('--rot', (ph.rot || 0) + 'deg');
+        const im = el('img');
+        im.src = ph.src;
+        im.alt = ph.alt || '';
+        im.loading = 'lazy';
+        im.decoding = 'async';
+        fig.appendChild(im);
+        board.appendChild(fig);
+      });
+      panel.appendChild(board);
+    }
+
     const body = el('div', 'moment__body');
     body.appendChild(el('p', 'moment__cat', story.category));
     body.appendChild(el('h2', 'moment__title', story.title));
@@ -146,6 +176,11 @@ function renderStories() {
     more.appendChild(el('summary', '', story.promptLabel || 'See the exact prompt'));
     const inner = el('div', 'moment__more-body');
     inner.appendChild(el('p', 'moment__prompt', story.prompt));
+    if (story.steps) {
+      const ol = el('ol', 'moment__steps');
+      story.steps.forEach((t) => ol.appendChild(el('li', '', '\u201c' + t + '\u201d')));
+      inner.appendChild(ol);
+    }
     inner.appendChild(el('p', 'moment__payoff', story.payoff));
     more.appendChild(inner);
     body.appendChild(more);
