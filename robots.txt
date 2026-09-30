@@ -1,5 +1,8 @@
 User-agent: *
 Disallow: /driver/assets/
-Disallow: /one-of-a-kind/
+Disallow: /one-of-a-kind/todd-beetcher.html
+Disallow: /one-of-a-kind/OG_index.html
+Disallow: /one-of-a-kind/index_og.html
+Disallow: /one-of-a-kind/inspection-report.md
 Disallow: /bfn/
 Disallow: /cert/

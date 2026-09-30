@@ -193,3 +193,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .moment--split::after { display: none; }
 .moment--split .moment__img { position: relative; inset: auto; height: auto; width: min(calc(100% - 2 * var(--content-padding)), 880px); aspect-ratio: 16 / 10; object-fit: cover; margin: 0 auto; border-radius: 28px; box-shadow: 0 24px 60px rgba(27,19,64,.4); }
 .moment--split .moment__body { padding-top: var(--sp-lg); }
+
+/* ------- About: link shelves ------- */
+.shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-md); margin: var(--sp-md) 0 var(--sp-lg); }
+.shelf .way { height: 100%; }
