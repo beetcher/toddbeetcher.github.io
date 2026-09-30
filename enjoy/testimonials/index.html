@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Testimonials — I Can Do That</title>
-  <meta name="description" content="What people say after learning with Todd. The first ones are coming.">
+  <meta name="description" content="Ask others: hear from people who have been there. Real voices are coming.">
   <meta property="og:title" content="Testimonials — I Can Do That">
-  <meta property="og:description" content="What people say after learning with Todd. The first ones are coming.">
+  <meta property="og:description" content="Ask others: hear from people who have been there. Real voices are coming.">
   <meta property="og:image" content="https://beetcher.com/enjoy/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -28,19 +28,37 @@
     <span class="page-top__links"><a href="../faq/">FAQ</a><a href="../curriculum/">Curriculum</a><a href="../ways/">Ways to join</a><a href="../testimonials/">Testimonials</a><a href="../about/">About</a></span>
   </nav>
   <main>
-    <header class="clinic-header">
-      <h1>What people say</h1>
-      <p class="subtitle">In their own words, once there are words to share.</p>
+    <header class="clinic-header wall__header">
+      <h1>Ask others</h1>
+      <p class="subtitle">Tap a face. Hear what happened.</p>
+      <div class="wall__stripes" aria-hidden="true"></div>
     </header>
-    <article class="article">
-      <div class="empty">
-        <p>The first sessions are still ahead.</p>
-        <p>This page will fill with what people actually say after they&rsquo;ve learned with us: real people, real moments, in their own words. Nothing here is made up.</p>
+
+    <section class="wall" aria-label="Voices from people who have been there">
+      <div class="wall__frame">
+        <div class="wall__grid" id="wall"></div>
       </div>
-      <p>Want to be one of the first voices? <a href="../#register">Register</a> and come try it.</p>
-      <p class="cta"><a class="btn" href="../#register">Register for our clinic</a></p>
+      <p class="wall__hint">Hover or tap a face to bring it forward. These faces are stand-ins until real people say yes.</p>
+    </section>
+
+    <article class="article">
+      <p class="cta"><a class="btn" href="../#register">Register for the workshop</a></p>
     </article>
   </main>
+
+  <dialog class="voice" id="voice" aria-labelledby="voice-name">
+    <form method="dialog" class="register__close-form">
+      <button class="register__close" aria-label="Close">&times;</button>
+    </form>
+    <div class="voice__stage" id="voice-stage"></div>
+    <p class="voice__sample" id="voice-sample">Sample voice. A real person&rsquo;s video or words will go here.</p>
+    <h2 class="voice__name" id="voice-name"></h2>
+    <p class="voice__quote" id="voice-quote"></p>
+    <div class="voice__nav">
+      <button type="button" class="btn btn--ghost" id="voice-prev">&larr; Back</button>
+      <button type="button" class="btn btn--ghost" id="voice-next">Next &rarr;</button>
+    </div>
+  </dialog>
 
   <a class="fab" href="../#register">Register</a>
 
