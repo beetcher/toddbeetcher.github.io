@@ -344,3 +344,9 @@ a.fab { display: inline-block; text-decoration: none; }
 .priv-hero__line { margin: auto auto var(--sp-lg); max-width: 26em; font-size: clamp(1.2rem, 3.2vw, 1.75rem); font-weight: 500; line-height: 1.4; text-shadow: 0 2px 12px rgba(0,0,0,.6), 0 0 3px rgba(0,0,0,.5); text-wrap: balance; }
 @media (max-width: 700px) { .priv-hero { min-height: calc(100svh - 158px); } .priv-hero__content { padding-bottom: 24px; } }
 @media (min-width: 900px) { .priv-hero__content { align-items: flex-start; text-align: left; padding-left: 5vw; } .priv-hero__title { text-align: left; } .priv-hero__line { margin-left: 0; max-width: 12em; } }
+
+/* Doc: live "Who's Doc?" links (hero row, panels) */
+.hero__links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-xs) var(--sp-lg); margin-top: var(--sp-md); }
+.hero__links .hero__more { margin-top: 0; }
+.moment__doc { display: inline-block; margin-top: var(--sp-sm); color: #fff; font-weight: 500; font-size: .95rem; text-decoration: underline; }
+.doc-name { font-weight: 800; font-size: var(--type-pullquote); text-align: center; margin-top: var(--sp-xl); }

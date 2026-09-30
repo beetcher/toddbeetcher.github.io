@@ -37,7 +37,7 @@ const STORIES = [
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
     line: 'Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
-    promptLabel: 'See how I asked',
+    promptLabel: 'See how I asked Doc',
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
     payoff: 'My capability made her enjoy the trip more, and that was very empowering.',
     colors: ['#ff3d6e', '#ff9a3d'],
@@ -54,7 +54,7 @@ const STORIES = [
     line: 'It was very gratifying to watch that happen, knowing I made it for people I care about. A tool of chaos had become a source of capability, and that was very empowering.',
     note: 'I asked Doc how to cook a brisket, and our friend Diana and her daughters, Kate and Melissa, came over to eat it.',
     callout: 'It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
-    promptLabel: 'See how I asked',
+    promptLabel: 'See how I asked Doc',
     prompt: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI. The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
     steps: [
       'Pretend you\u2019re a master chef who has been smoking meat for 30 years. Give me the tips and tricks you\u2019d tell a junior apprentice.',
@@ -107,7 +107,7 @@ const STORIES = [
     category: 'Cooking',
     title: 'From margaritas to pancakes',
     line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
-    promptLabel: 'See how I asked',
+    promptLabel: 'See how I asked Doc',
     prompt: 'The gist of what I typed: \u201cI just squeezed lemons and limes for margaritas. Is there anything cool I can make with the leftover pulp?\u201d',
     payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and it suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and this thing I learned from a tool that used to feel like chaos let me do that for my family.',
     colors: ['#19c37d', '#ffc83d'],
@@ -128,7 +128,7 @@ const STORIES = [
     category: 'Building something',
     title: 'Build the website you\u2019re looking at',
     line: 'You\u2019re on it right now. An idea on a golf course, a conversation with AI, and a real page with a sign-up form that works.',
-    promptLabel: 'See what I asked for',
+    promptLabel: 'See what I asked Doc for',
     prompt: 'The gist of what I typed: \u201cI want a fun one-page website for a clinic that teaches busy adults to use AI. Bright and playful. One big picture panel for each everyday moment, with a short title and a line about the story. A Register button that floats on the screen and opens a pop-up that explains the clinic, with a sign-up form. Keep the word AI out of the headline. Make it easy for me to add new stories later.\u201d',
     payoff: 'A live site with working sign-ups, the same day. A little irony, too: a productivity tool, used to show people this was never about productivity.',
     link: { href: 'built/', text: 'How this was built \u2192' },
@@ -204,7 +204,7 @@ function renderStories() {
     if (story.payoff) body.appendChild(el('p', 'moment__payoff', story.payoff));
 
     const more = el('details', 'moment__more');
-    more.appendChild(el('summary', '', story.promptLabel || 'See the exact prompt'));
+    more.appendChild(el('summary', '', story.promptLabel || 'See how I asked Doc'));
     const inner = el('div', 'moment__more-body');
     inner.appendChild(el('p', 'moment__prompt', story.prompt));
     if (story.steps) {
@@ -214,6 +214,10 @@ function renderStories() {
     }
     more.appendChild(inner);
     body.appendChild(more);
+
+    const who = el('a', 'moment__doc', 'Who\u2019s Doc?');
+    who.href = 'doc/';
+    body.appendChild(who);
 
     if (story.link) {
       const more2 = el('a', 'moment__link', story.link.text);
