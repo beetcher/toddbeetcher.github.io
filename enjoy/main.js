@@ -34,10 +34,10 @@ const STORIES = [
     id: 'san-luis-valley',
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
-    line: 'Suzanne was so absorbed in the story of the valley that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
+    line: 'Driving through the San Luis Valley, I asked Doc, my AI, to tell us its history like a storyteller. Suzanne was so absorbed that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
     promptLabel: 'See how I asked',
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
-    payoff: 'My capability made her enjoy the trip more, and that was very empowering. The same road, suddenly full of story.',
+    payoff: 'My capability made her enjoy the trip more, and that was very empowering.',
     colors: ['#ff3d6e', '#ff9a3d'],
     collage: 'pair',
     photos: [
@@ -188,6 +188,7 @@ function renderStories() {
     body.appendChild(el('p', 'moment__cat', story.category));
     body.appendChild(el('h2', 'moment__title', story.title));
     body.appendChild(el('p', 'moment__line', story.line));
+    if (story.payoff) body.appendChild(el('p', 'moment__payoff', story.payoff));
 
     const more = el('details', 'moment__more');
     more.appendChild(el('summary', '', story.promptLabel || 'See the exact prompt'));
@@ -198,7 +199,6 @@ function renderStories() {
       story.steps.forEach((t) => ol.appendChild(el('li', '', '\u201c' + t + '\u201d')));
       inner.appendChild(ol);
     }
-    inner.appendChild(el('p', 'moment__payoff', story.payoff));
     more.appendChild(inner);
     body.appendChild(more);
 

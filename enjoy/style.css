@@ -86,7 +86,8 @@ a { color: var(--color-accent); }
 .moment__more summary:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .moment__more-body { margin-top: var(--sp-sm); background: rgba(20,10,50,.55); padding: var(--sp-md); border-radius: 20px; backdrop-filter: blur(8px); }
 .moment__prompt { font-style: italic; }
-.moment__payoff { margin-top: var(--sp-sm); font-weight: 700; }
+.moment__payoff { margin-top: var(--sp-sm); font-weight: 700; max-width: 34ch; }
+.moment__more-body .moment__payoff { max-width: none; }
 .will-reveal .moment__body { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .will-reveal.is-in .moment__body { opacity: 1; transform: none; }
 
