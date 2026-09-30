@@ -1,6 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Public sign-ups for /enjoy: create-only, validated, never readable from the web.
+    match /enjoy_signups/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name','email','comfort','want','source','createdAt'])
+        && request.resource.data.keys().hasAll(['name','email','comfort','createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.matches('.+@.+\\..+') && request.resource.data.email.size() <= 200
+        && request.resource.data.comfort is int && request.resource.data.comfort >= 1 && request.resource.data.comfort <= 5
+        && request.resource.data.want is string && request.resource.data.want.size() <= 500
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

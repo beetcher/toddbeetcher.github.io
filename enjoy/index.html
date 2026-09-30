@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Can Do That — Spotting everyday moments</title>
+  <meta name="description" content="A fun, hands-on clinic for busy people who are curious about AI and not sure where to start. Little moments, big enjoyment.">
+  <meta property="og:title" content="I Can Do That — Spotting everyday moments">
+  <meta property="og:description" content="A fun, hands-on clinic for busy people who are curious about AI and not sure where to start.">
+  <meta property="og:image" content="https://beetcher.com/enjoy/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="I Can Do That. Spotting everyday moments.">
+  <meta property="og:url" content="https://beetcher.com/enjoy/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://beetcher.com/enjoy/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero__content">
+      <h1 class="hero__title">I Can Do That</h1>
+      <p class="hero__sub">Spotting everyday moments.</p>
+      <button type="button" class="btn btn--hero" data-open-register>Register for our clinic</button>
+      <a class="hero__more" href="clinic/">Learn more about the clinic</a>
+    </div>
+    <a class="hero__scroll" href="#moments" aria-label="See the moments">&darr;</a>
+  </header>
+
+  <main id="moments">
+    <!-- Panels are rendered from the STORIES array at the top of main.js -->
+    <noscript><p class="noscript">Turn on JavaScript to scroll through the moments.</p></noscript>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__line">Little moments, big enjoyment &mdash; and the one tool that helps you notice them.</p>
+    <button type="button" class="btn" data-open-register>Register for our clinic</button>
+    <p class="footer__small"><a href="clinic/">About the clinic</a> &middot; <a href="mailto:toddbeetcher17@gmail.com">Say hello</a></p>
+  </footer>
+
+  <button type="button" class="fab" data-open-register aria-haspopup="dialog">Register</button>
+
+  <dialog class="register" id="register" aria-labelledby="register-title">
+    <form method="dialog" class="register__close-form">
+      <button class="register__close" aria-label="Close">&times;</button>
+    </form>
+    <h2 id="register-title" class="register__title">Come play.</h2>
+    <p>Join others like you who aren&rsquo;t sure how to use AI, at a fun, relaxed event. You&rsquo;ll hear how other people are really using it, and you&rsquo;ll find out whether it&rsquo;s for you.</p>
+    <p>Two questions we&rsquo;ll answer together: <em>how are others using AI, and should I?</em> and <em>how can I use it to make things more fun?</em></p>
+    <p class="register__link"><a href="clinic/">More about the clinic &rarr;</a></p>
+
+    <form id="signup" class="signup" novalidate>
+      <label class="field">Your name
+        <input type="text" name="name" autocomplete="name" maxlength="100" required>
+      </label>
+      <label class="field">Email
+        <input type="email" name="email" autocomplete="email" maxlength="200" required>
+      </label>
+      <label class="field">How comfortable are you with AI today?
+        <select name="comfort" required>
+          <option value="">Choose one</option>
+          <option value="1">1 &ndash; Never tried it</option>
+          <option value="2">2 &ndash; Tried it once or twice</option>
+          <option value="3">3 &ndash; Use it sometimes</option>
+          <option value="4">4 &ndash; Use it most weeks</option>
+          <option value="5">5 &ndash; Use it daily</option>
+        </select>
+      </label>
+      <label class="field">What would you love to do with it?
+        <textarea name="want" rows="3" maxlength="500" placeholder="Plan a trip, write a great note, fix something&hellip;"></textarea>
+      </label>
+      <!-- honeypot: real people never see or fill this -->
+      <label class="hp" aria-hidden="true">Leave blank <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <button type="submit" class="btn btn--block" id="signup-submit">Save my spot</button>
+      <p class="signup__status" id="signup-status" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <script src="main.js"></script>
+</body>
+</html>

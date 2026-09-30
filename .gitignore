@@ -17,3 +17,6 @@ firestore-debug.log
 cert/doc/
 # Word lock files
 ~$*
+
+# Claude working output (not published)
+Claude outputs/
