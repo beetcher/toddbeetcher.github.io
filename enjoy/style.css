@@ -120,3 +120,4 @@ a { color: var(--color-accent); }
 .article .cta { margin-top: var(--sp-xl); text-align: center; }
 
 a.btn { display: inline-block; text-decoration: none; }
+a.fab { display: inline-block; text-decoration: none; }
