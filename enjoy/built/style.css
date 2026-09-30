@@ -329,3 +329,8 @@ a.fab { display: inline-block; text-decoration: none; }
 .voice__name { font: 800 1.75rem/1.1 var(--font-heading); letter-spacing: -0.01em; margin-bottom: var(--sp-xs); }
 .voice__quote { font-size: 1.5rem; line-height: 1.35; font-weight: 500; margin-bottom: var(--sp-md); text-wrap: balance; }
 .voice__nav { display: flex; gap: var(--sp-sm); justify-content: center; }
+@media (max-width: 700px) {
+  .fab { padding: 11px 16px; font-size: .95rem; }
+  .fab--ask { bottom: 68px; }
+  .fab--others { bottom: 20px; }
+}
