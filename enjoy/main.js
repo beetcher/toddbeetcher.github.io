@@ -24,6 +24,7 @@ const ASK_ENDPOINT = '';
 // ---- Stories ----
 // image: optional path like 'assets/san-luis-valley.webp' (shown behind the gradient).
 // colors: two-stop gradient used when there is no image, and as the tint over one.
+// Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
@@ -32,9 +33,10 @@ const STORIES = [
     id: 'san-luis-valley',
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
-    line: 'A deep, gravelly storyteller narrated ten minutes of the valley’s history, right from the driver’s seat.',
+    line: 'Suzanne was so absorbed in the story of the valley that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
+    promptLabel: 'See how I asked',
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
-    payoff: 'The same road, suddenly full of story.',
+    payoff: 'My capability made her enjoy the trip more, and that was very gratifying. The same road, suddenly full of story.',
     colors: ['#ff3d6e', '#ff9a3d'],
     photos: [
       { src: 'assets/san-luis-valley.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'Sunrise through the windshield of a car driving south toward the snowy Sangre de Cristo mountains in the San Luis Valley, Colorado.' },
@@ -44,16 +46,16 @@ const STORIES = [
     id: 'brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
-    line: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI, and learned to make meat candy.',
+    line: 'Our friend Diana and her daughters, Kate and Melissa, came over for brisket. It never made it from the counter to the table: everyone stood around and carved it up. Meat candy. Friends have been talking about it for years.',
     promptLabel: 'See how I asked',
-    prompt: 'The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
+    prompt: 'For thirty years I let my wife cook the burgers and the chicken and pretended I didn\u2019t know the grill. Then I asked AI. The trick wasn\u2019t \u201chow do I cook a brisket?\u201d It was learning to ask like this, step by step:',
     steps: [
       'Pretend you\u2019re a master chef who has been smoking meat for 30 years. Give me the tips and tricks you\u2019d tell a junior apprentice.',
       'What am I not asking that a professional would tell me?',
       'Is there anything I\u2019m at risk of getting wrong?',
       'Go look on the internet for more information, then give me a roadmap.',
     ],
-    payoff: 'Meat candy. It never made it from the counter to the table: everyone stood around and carved it up. Friends have been talking about it for years. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
+    payoff: 'That\u2019s the feeling: being able to do something for people you care about, and having them still talking about it years later. Now I smoke all kinds of meat, and I use AI to buy the supplies too.',
     colors: ['#7c4dff', '#ff3d6e'],
     photos: [
       { src: 'assets/brisket-sticker.webp', kind: 'cutout', rot: -5, alt: 'A brisket smoking on a pellet grill with temperature probes.' },
@@ -94,6 +96,16 @@ const STORIES = [
     colors: ['#2bb8ff', '#7c4dff'],
     image: '',
     alt: '',
+  },
+  {
+    id: 'margarita-pancakes',
+    category: 'Cooking',
+    title: 'From margaritas to pancakes',
+    line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
+    promptLabel: 'See how I asked',
+    prompt: 'The gist of what I typed: \u201cI just squeezed lemons and limes for margaritas. Is there anything cool I can make with the leftover pulp?\u201d',
+    payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and it suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and I got to do that for my family.',
+    colors: ['#19c37d', '#ffc83d'],
   },
   {
     id: 'hassle',

@@ -52,9 +52,22 @@ a { color: var(--color-accent); }
   background: radial-gradient(circle at 15% 20%, #ffc83d 0, transparent 38%), radial-gradient(circle at 85% 80%, #2bb8ff 0, transparent 40%), linear-gradient(135deg, #ff3d6e, #7c4dff);
 }
 .hero__title { font: 800 var(--type-display)/var(--lh-heading) var(--font-heading); letter-spacing: -0.03em; text-wrap: balance; }
+.hero__pitch { margin: var(--sp-md) auto 0; max-width: 18em; font-size: clamp(1.5rem, 4.6vw, 2.6rem); font-weight: 700; line-height: 1.2; text-wrap: balance; }
 .hero__sub { margin: var(--sp-md) 0 var(--sp-lg); font-size: clamp(1.4rem, 4vw, 2.25rem); font-weight: 500; font-style: italic; }
 .hero__more { display: block; margin-top: var(--sp-md); color: #fff; font-weight: 500; }
 .hero__scroll { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 2rem; text-decoration: none; }
+
+/* ------- Intro: what this is, for whom, and what it is not ------- */
+.intro { max-width: 720px; margin: 0 auto; padding: var(--sp-2xl) var(--content-padding) var(--sp-xl); text-align: center; font-size: 1.2rem; line-height: 1.6; }
+.intro p { margin-bottom: var(--sp-md); }
+.intro__lead { font-size: clamp(1.3rem, 3.4vw, 1.7rem); font-weight: 700; line-height: 1.3; text-wrap: balance; }
+.intro__crux { font-size: 1.3rem; font-weight: 500; }
+.intro__crux strong { color: var(--color-accent); font-weight: 800; }
+.intro__title { font-size: 1.3rem; font-weight: 800; }
+.intro__close { font-size: 1.4rem; font-weight: 800; color: var(--color-accent); }
+.intro__fence { font-style: italic; opacity: 0.8; }
+.intro__cta { margin-top: var(--sp-lg); }
+.intro__link { margin-left: var(--sp-md); font-weight: 500; }
 
 /* ------- Moment panels ------- */
 .moment {
