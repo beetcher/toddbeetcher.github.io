@@ -32,21 +32,6 @@ const ASK_ENDPOINT = '';
 // Like photos on a fridge: each one can be held up its own way.
 const STORIES = [
   {
-    id: 'san-luis-valley',
-    category: 'Driving',
-    title: 'Drive through the San Luis Valley',
-    line: 'Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
-    promptLabel: 'See how I asked',
-    prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
-    payoff: 'My capability made her enjoy the trip more, and that was very empowering.',
-    colors: ['#ff3d6e', '#ff9a3d'],
-    collage: 'pair',
-    photos: [
-      { src: 'assets/san-luis-valley.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'Sunrise through the windshield of a car driving south toward the snowy Sangre de Cristo mountains in the San Luis Valley, Colorado. Caption: Driving through the San Luis Valley, I asked Doc to tell us its history like a storyteller.' },
-      { src: 'assets/mesa-verde-doc.webp', kind: 'print', rot: 3, hold: 'pin', alt: 'Todd and Suzanne smiling in front of the cliff dwellings at Mesa Verde, with a speech bubble from Suzanne: Hey, Doc, tell me a story about a 12-year-old girl who used to live in these ruins. What was her day like?' },
-    ],
-  },
-  {
     id: 'brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
@@ -67,8 +52,21 @@ const STORIES = [
       { src: 'assets/todd-brisket.webp', kind: 'print', rot: 5, hold: 'magnet', alt: 'Todd smiling in a Beetcher\u2019s Brisket T-shirt.' },
     ],
   },
-
-
+  {
+    id: 'san-luis-valley',
+    category: 'Driving',
+    title: 'Drive through the San Luis Valley',
+    line: 'Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
+    promptLabel: 'See how I asked',
+    prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
+    payoff: 'My capability made her enjoy the trip more, and that was very empowering.',
+    colors: ['#ff3d6e', '#ff9a3d'],
+    collage: 'pair',
+    photos: [
+      { src: 'assets/san-luis-valley.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'Sunrise through the windshield of a car driving south toward the snowy Sangre de Cristo mountains in the San Luis Valley, Colorado. Caption: Driving through the San Luis Valley, I asked Doc to tell us its history like a storyteller.' },
+      { src: 'assets/mesa-verde-doc.webp', kind: 'print', rot: 3, hold: 'pin', alt: 'Todd and Suzanne smiling in front of the cliff dwellings at Mesa Verde, with a speech bubble from Suzanne: Hey, Doc, tell me a story about a 12-year-old girl who used to live in these ruins. What was her day like?' },
+    ],
+  },
   {
     id: 'light-bulb',
     category: 'Fixing',
@@ -219,6 +217,10 @@ function renderStories() {
     panel.appendChild(body);
     host.appendChild(panel);
   });
+  // The intro (letter-style block) sits after the first example, not before it.
+  const intro = document.getElementById('intro');
+  const firstPanel = host.querySelector('.moment');
+  if (intro && firstPanel) firstPanel.after(intro);
 }
 
 function initReveal() {
