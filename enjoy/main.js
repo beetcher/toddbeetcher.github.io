@@ -8,10 +8,10 @@
 
 // ---- Firebase web config (Firebase console > Project settings > Your apps > Web) ----
 const FIREBASE_CONFIG = {
-  apiKey: 'REPLACE_ME',
-  authDomain: 'REPLACE_ME',
-  projectId: 'REPLACE_ME',
-  appId: 'REPLACE_ME',
+  apiKey: 'AIzaSyDM6TE1NpirV-jwLy1wTAU7C-Id9-aXFxI',
+  authDomain: 'test-phone-router.firebaseapp.com',
+  projectId: 'test-phone-router',
+  appId: '1:112367027974:web:e37d5a51a547ae443d4087',
 };
 const SIGNUPS_COLLECTION = 'enjoy_signups';
 const FIREBASE_SDK = 'https://www.gstatic.com/firebasejs/10.14.1/';
