@@ -103,7 +103,8 @@ const STORIES = [
     headline: 'From freeze-up to refrigerator beast. Doc is my 30-year-old AC\u2019s fountain of youth.',
     category: 'Fixing',
     title: 'From freeze-up to refrigerator beast',
-    line: 'First summer, it started rattling. The bearing was shot in the motor. A new motor and capacitor, about $30. That would have been thousands. The next summer it wasn\u2019t getting cold and kept freezing up. It was low on refrigerant. So I charged it, cleaned it, and built a tent to shade it.',
+    line: 'It started rattling. A new motor and capacitor, about $30. It wasn\u2019t getting cold and kept freezing up. It was low on refrigerant. So I charged it, cleaned it, and built a tent to shade it.',
+    tag: '2 Summers, 1 Doc',
     badge: { label: 'DELTA T', nums: '17 \u2192 30', sub: 'the difference in temperature', shout: 'BEAST MODE!!!!' },
     note: 'The air conditioner lives between two houses in a bit of a hot box.',
     callout: 'Electric bill: $346 in July, $180 in August.',
@@ -301,6 +302,7 @@ function renderStories() {
       body.appendChild(el('h2', 'moment__title', story.title));
     }
     body.appendChild(el('p', 'moment__line', story.line));
+    if (story.tag) body.appendChild(el('p', 'moment__tag', story.tag));
     if (story.payoff) body.appendChild(el('p', story.payoffBig ? 'moment__payoff moment__payoff--big' : 'moment__payoff', story.payoff));
     if (story.bigLine) body.appendChild(el('p', 'moment__payoff moment__payoff--big moment__payoff--long', story.bigLine));
 

@@ -497,3 +497,5 @@ a.fab { display: inline-block; text-decoration: none; }
 .zero__amp-over { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 14px 12px; text-align: center; background: linear-gradient(to top, rgba(10,6,40,.88), rgba(10,6,40,0)); color: #fff; }
 .zero__amp-small { display: block; font: 700 clamp(.85rem, 2.4vw, 1.15rem)/1.2 var(--font-heading); text-shadow: 0 2px 8px rgba(0,0,0,.6); }
 .zero__amp-big { display: block; font: 800 clamp(1.8rem, 8vw, 3.4rem)/1.05 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); text-shadow: 0 2px 10px rgba(0,0,0,.55); }
+
+.moment__tag { margin: var(--sp-sm) 0 0; font: 800 clamp(1.25rem, 3.6vw, 1.6rem)/1.15 var(--font-heading); letter-spacing: -0.01em; color: #fff; text-shadow: 0 2px 10px rgba(20,8,40,.35); }
