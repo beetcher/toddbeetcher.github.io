@@ -414,4 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegister();
   initSignup();
   initAsk();
+  // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
+  const target = location.hash.length > 1 && document.querySelector('.moment' + location.hash);
+  if (target) setTimeout(() => target.scrollIntoView(), 50);
 });
