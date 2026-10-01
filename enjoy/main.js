@@ -27,6 +27,7 @@ const ASK_ENDPOINT = '';
 // Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
 // headline: the cheeky title across the top of the panel, always tied to Doc. Todd's words: valley, brisket. Claude's drafts (flagged, tune freely): light-bulb, margarita-pancakes. PLACEHOLDERS until Todd gives the real moment: birthday-card, cocktail, hassle, this-website.
+// bigLine: optional second payoff line shown large and pink after the payoff.
 // callout: optional kraft-paper scrap (a second, different callout) beside the photos.
 // note: optional sticky note stuck on the collage board (text that belongs with the photos).
 // collage: 'three' lays out sticky note, three prints and a kraft callout. payoffBig: true makes the payoff line large and pink.
@@ -94,6 +95,26 @@ const STORIES = [
       { src: 'assets/honda-dome-light.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'The overhead light assembly in the front of a 2005 Honda Pilot, with the dead dome and map lights and three buttons.' },
       { src: 'assets/honda-bulb.webp', kind: 'print', rot: 4, hold: 'pin', alt: 'A small glass festoon bulb with silver ends, the kind that goes in the dome light.' },
       { src: 'assets/honda-pilot.webp', kind: 'print', rot: -3, hold: 'magnet', alt: 'Todd\u2019s black 2005 Honda Pilot parked in the driveway under a tree.' },
+    ],
+  },
+  {
+    id: 'air-conditioner',
+    headline: 'From freeze-up to refrigerator beast. Doc is my 30-year-old AC\u2019s fountain of youth.',
+    category: 'Fixing',
+    title: 'From freeze-up to refrigerator beast',
+    line: 'First summer, it started rattling. The bearing was shot in the motor. A new motor and capacitor, about $30. That would have been thousands. The next summer it wasn\u2019t getting cold and kept freezing up. It was low on refrigerant. So I charged it, cleaned it, and built a tent to shade it. Delta T went from 17 to 30.',
+    note: 'The air conditioner lives between two houses in a bit of a hot box.',
+    callout: 'Electric bill: $346 in July, $180 in August.',
+    promptLabel: 'See how I asked Doc',
+    prompt: '\u201cThe only thing I\u2019m thinking about is the air conditioner lives between two houses in a bit of a hot box. I\u2019m sure that the air temperature around the air conditioner is very hot. I could put a fan outside on the 100-degree day to try and move some cooler air into that pocket so that it\u2019s, you know, not just stagnant air. Think about the hot air being rejected from the air conditioner is coming back down and staying in that hot box around the air conditioner. So it\u2019s kind of warming the external area around it instead of cool air moving past it.\u201d',
+    payoff: 'A new air conditioner would have cost thousands. I did it for about $30 in parts, about $100 in tools, and my chat subscription.',
+    bigLine: 'It\u2019s really %#@&! amazing.',
+    colors: ['#2bb8ff', '#19c37d'],
+    collage: 'three',
+    photos: [
+      { src: 'assets/ac-tent.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'A white PVC-pipe frame with shade cloth over the outdoor air conditioner, with a square opening cut around the fan so the hot air can leave straight up.' },
+      { src: 'assets/ac-valves.webp', kind: 'print', rot: 4, hold: 'pin', alt: 'Brass charging fittings with blue and red handles on the refrigerant service ports of the outdoor unit.' },
+      { src: 'assets/ac-capacitor.webp', kind: 'print', rot: -3, hold: 'magnet', alt: 'Inside the outdoor unit: the new dual run capacitor with a handwritten install date, a blue hard-start capacitor, and a red DANGER electrical shock warning label.' },
     ],
   },
   {
@@ -231,6 +252,7 @@ function renderStories() {
     }
     body.appendChild(el('p', 'moment__line', story.line));
     if (story.payoff) body.appendChild(el('p', story.payoffBig ? 'moment__payoff moment__payoff--big' : 'moment__payoff', story.payoff));
+    if (story.bigLine) body.appendChild(el('p', 'moment__payoff moment__payoff--big moment__payoff--long', story.bigLine));
 
     const more = el('details', 'moment__more');
     const summary = el('summary', '', story.promptLabel || 'See how I asked Doc');

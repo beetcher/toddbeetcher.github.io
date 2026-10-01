@@ -297,6 +297,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .moment--three.moment--note .sticker:nth-child(3) { top: 52%; left: 0; right: auto; bottom: auto; width: 58%; z-index: 2; }
 .moment--three.moment--note .sticker--kraft { left: 14%; bottom: 0; width: 80%; }
 .moment__payoff--big { font: 800 clamp(2.4rem, 8vw, 3.75rem)/1.02 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); max-width: none; text-shadow: 0 2px 0 rgba(255,255,255,.55); }
+.moment__payoff--big.moment__payoff--long { font-size: clamp(2rem, 6.2vw, 2.9rem); margin-top: var(--sp-xs); }
 @media (min-width: 900px) {
   .moment--three.moment--note .moment__photos { aspect-ratio: 1 / 1.1; }
   .moment--three.moment--note .sticker--note { top: 6%; left: auto; right: 0; width: 40%; font-size: 1.5rem; }
