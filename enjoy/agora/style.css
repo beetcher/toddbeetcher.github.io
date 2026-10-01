@@ -284,6 +284,24 @@ a.fab { display: inline-block; text-decoration: none; }
   .moment--note .sticker--kraft p { font-size: 1.45rem; }
 }
 
+/* Three-print board (Honda): sticky note, three prints, kraft callout */
+.moment--three.moment--note .moment__photos { aspect-ratio: 1 / 1.75; }
+.moment--three.moment--note .sticker--note { top: 0; left: 0; width: 60%; font-size: 1.25rem; z-index: 3; }
+.moment--three.moment--note .sticker:nth-child(1) { top: 24%; left: auto; right: 0; width: 80%; }
+.moment--three.moment--note .sticker:nth-child(2) { top: 58%; right: 2%; bottom: auto; width: 40%; z-index: 3; }
+.moment--three.moment--note .sticker:nth-child(3) { top: 52%; left: 0; right: auto; bottom: auto; width: 58%; z-index: 2; }
+.moment--three.moment--note .sticker--kraft { left: 14%; bottom: 0; width: 80%; }
+.moment__payoff--big { font: 800 clamp(2.4rem, 8vw, 3.75rem)/1.02 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); max-width: none; text-shadow: 0 2px 0 rgba(255,255,255,.55); }
+@media (min-width: 900px) {
+  .moment--three.moment--note .moment__photos { aspect-ratio: 1 / 1.1; }
+  .moment--three.moment--note .sticker--note { top: 6%; left: auto; right: 0; width: 40%; font-size: 1.5rem; }
+  .moment--three.moment--note .sticker:nth-child(1) { top: 0; left: 0; right: auto; width: 60%; }
+  .moment--three.moment--note .sticker:nth-child(2) { top: 46%; right: 4%; width: 42%; }
+  .moment--three.moment--note .sticker:nth-child(3) { top: 40%; left: 0; width: 54%; }
+  .moment--three.moment--note .sticker--kraft { left: 8%; bottom: 0; width: 66%; }
+  .moment--three.moment--note .sticker--kraft p { font-size: 1.45rem; }
+}
+
 /* ------- Easter egg: the period after the hero line is a door to /agora/ ------- */
 .egg { display: inline-block; padding: .35em .3em; margin: -.35em -.3em; color: inherit; text-decoration: none; cursor: text; transition: color .25s ease, text-shadow .25s ease, transform .25s ease; }
 .egg:hover { cursor: pointer; color: var(--color-accent-warm); text-shadow: 0 0 14px rgba(255,200,61,.9); transform: scale(1.4); }

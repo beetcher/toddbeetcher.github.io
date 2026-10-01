@@ -28,6 +28,7 @@ const ASK_ENDPOINT = '';
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
 // callout: optional kraft-paper scrap (a second, different callout) beside the photos.
 // note: optional sticky note stuck on the collage board (text that belongs with the photos).
+// collage: 'three' lays out sticky note, three prints and a kraft callout. payoffBig: true makes the payoff line large and pink.
 // collage: 'pair' gives two landscape photos equal weight (default layout favors one large print and one small sticker).
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
@@ -79,13 +80,20 @@ const STORIES = [
     zero: 'from zero to a lit dome light',
     category: 'Fixing',
     title: 'The dome lights that were out for years',
-    line: 'The dome lights in my 2005 Honda had been out for years. I took a picture and asked Doc. It told me to buy two bulbs on Amazon, about $5, and gave me the link. I\u2019d need a screwdriver to pop the covers off.',
+    line: 'My kid went through high school, college, law school with one of those lights out. Then another one blanked a couple years ago. Then one day I was like, wait, WTF. What does Doc have to say about this?',
+    note: 'Interior lights in front are both dead. 2005 Honda Pilot. I want to replace them myself. What do I buy, and how do I install them?',
+    callout: '$5. 5 minute repair.',
     promptLabel: 'See how I asked Doc',
-    prompt: 'I took a picture of the dome light in my 2005 Honda and asked Doc what was wrong and what to do.',
-    payoff: 'Two bulbs, about $5, and a screwdriver. I took the covers off, ordered the parts, and the dome lights work.',
+    prompt: '\u201cThe interior lights in front are both dead. I can take a picture of the assembly. This is the 2005 Honda Pilot. I want to see if there\u2019s a way that I can get those replaced, my do-it-myself thing. So I would need to know what I need to buy, and I would need to know what the installation instructions are.\u201d',
+    payoff: 'I\u2019m empowered!',
+    payoffBig: true,
     colors: ['#ffc83d', '#ff7a3d'],
-    image: '',
-    alt: '',
+    collage: 'three',
+    photos: [
+      { src: 'assets/honda-dome-light.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'The overhead light assembly in the front of a 2005 Honda Pilot, with the dead dome and map lights and three buttons.' },
+      { src: 'assets/honda-bulb.webp', kind: 'print', rot: 4, hold: 'pin', alt: 'A small glass festoon bulb with silver ends, the kind that goes in the dome light.' },
+      { src: 'assets/honda-pilot.webp', kind: 'print', rot: -3, hold: 'magnet', alt: 'Todd\u2019s black 2005 Honda Pilot parked in the driveway under a tree.' },
+    ],
   },
   {
     id: 'birthday-card',
@@ -167,6 +175,7 @@ function renderStories() {
   STORIES.forEach((story, i) => {
     const panel = el('section', story.layout === 'split' ? 'moment moment--split' : 'moment');
     if (story.collage === 'pair') panel.classList.add('moment--pair');
+    if (story.collage === 'three') panel.classList.add('moment--three');
     panel.id = story.id;
     panel.style.setProperty('--c1', story.colors[0]);
     panel.style.setProperty('--c2', story.colors[1]);
@@ -214,7 +223,7 @@ function renderStories() {
     body.appendChild(el('p', 'moment__cat', story.category));
     body.appendChild(el('h2', 'moment__title', story.title));
     body.appendChild(el('p', 'moment__line', story.line));
-    if (story.payoff) body.appendChild(el('p', 'moment__payoff', story.payoff));
+    if (story.payoff) body.appendChild(el('p', story.payoffBig ? 'moment__payoff moment__payoff--big' : 'moment__payoff', story.payoff));
 
     const more = el('details', 'moment__more');
     const summary = el('summary', '', story.promptLabel || 'See how I asked Doc');
