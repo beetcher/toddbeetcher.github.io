@@ -322,10 +322,6 @@ function renderStories() {
       story.steps.forEach((t) => ol.appendChild(el('li', '', '\u201c' + t + '\u201d')));
       inner.appendChild(ol);
     }
-    // Live "Meet Doc" button appears when the panel opens (Todd's call: label stays plain text).
-    const meet = el('a', 'moment__meetdoc', 'Meet Doc');
-    meet.href = 'doc/';
-    inner.appendChild(meet);
     more.appendChild(inner);
     body.appendChild(more);
 
@@ -346,31 +342,23 @@ function renderStories() {
   });
 }
 
-// A soft ring pulses a few times on the "See how I asked Doc" button of the panel on screen.
-// It stops for good once the visitor hovers or opens any of them, and never runs with reduced motion.
+// A soft ring pulses on each "See how I asked Doc" button for about 9.6 seconds once it is on screen.
+// Hovering, focusing or opening a button stops only that button's pulse. Never runs with reduced motion.
 function initDocPulse() {
   if (!('IntersectionObserver' in window)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const summaries = [...document.querySelectorAll('.moment__more summary')];
-  let off = false;
-  const stop = () => {
-    off = true;
-    io.disconnect();
-    summaries.forEach((s) => s.classList.remove('is-pulsing'));
-  };
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
-      if (!e.isIntersecting || off) return;
+      if (!e.isIntersecting) return;
       const s = e.target;
       io.unobserve(s);
       s.classList.add('is-pulsing');
-      s.addEventListener('animationend', () => s.classList.remove('is-pulsing'), { once: true });
+      const stop = () => s.classList.remove('is-pulsing');
+      s.addEventListener('animationend', stop, { once: true });
+      ['mouseenter', 'focus', 'click'].forEach((ev) => s.addEventListener(ev, stop, { once: true }));
     });
-  }, { threshold: 0.9 });
-  summaries.forEach((s) => {
-    io.observe(s);
-    ['mouseenter', 'focus', 'click'].forEach((ev) => s.addEventListener(ev, stop, { once: true }));
-  });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.moment__more summary').forEach((s) => io.observe(s));
 }
 
 function initReveal() {
