@@ -27,6 +27,7 @@ const ASK_ENDPOINT = '';
 // Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
 // headline: the cheeky title across the top of the panel, always tied to Doc. Todd's words: valley, brisket. Claude's drafts (flagged, tune freely): light-bulb, margarita-pancakes. PLACEHOLDERS until Todd gives the real moment: birthday-card, cocktail, hassle, this-website.
+// badge: optional sticker { label, nums, sub, shout } stuck on the lower-left of the first photo, with a marker arrow to the callout (three-print layout).
 // bigLine: optional second payoff line shown large and pink after the payoff.
 // callout: optional kraft-paper scrap (a second, different callout) beside the photos.
 // note: optional sticky note stuck on the collage board (text that belongs with the photos).
@@ -102,7 +103,8 @@ const STORIES = [
     headline: 'From freeze-up to refrigerator beast. Doc is my 30-year-old AC\u2019s fountain of youth.',
     category: 'Fixing',
     title: 'From freeze-up to refrigerator beast',
-    line: 'First summer, it started rattling. The bearing was shot in the motor. A new motor and capacitor, about $30. That would have been thousands. The next summer it wasn\u2019t getting cold and kept freezing up. It was low on refrigerant. So I charged it, cleaned it, and built a tent to shade it. Delta T went from 17 to 30.',
+    line: 'First summer, it started rattling. The bearing was shot in the motor. A new motor and capacitor, about $30. That would have been thousands. The next summer it wasn\u2019t getting cold and kept freezing up. It was low on refrigerant. So I charged it, cleaned it, and built a tent to shade it.',
+    badge: { label: 'DELTA T', nums: '17 \u2192 30', sub: 'the difference in temperature', shout: 'BEAST MODE!!!!' },
     note: 'The air conditioner lives between two houses in a bit of a hot box.',
     callout: 'Electric bill: $346 in July, $180 in August.',
     promptLabel: 'See how I asked Doc',
@@ -191,6 +193,24 @@ function el(tag, className, text) {
   return node;
 }
 
+// A crude black marker line with an arrowhead, from the badge down to the savings callout. Two drawings, one per layout (phone / wide).
+function sharpieArrow(kind) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'board-arrow board-arrow--' + kind);
+  svg.setAttribute('viewBox', kind === 'm' ? '0 0 100 175' : '0 0 100 110');
+  svg.setAttribute('aria-hidden', 'true');
+  const paths = kind === 'm'
+    ? ['M 12 120 C 3 127, 1 141, 10 153', 'M 10 153 L 4 147', 'M 10 153 L 17 150']
+    : ['M 8 48 C -1 62, -1 82, 12 95', 'M 12 95 L 7 94', 'M 12 95 L 11 90'];
+  paths.forEach((d) => {
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', d);
+    svg.appendChild(path);
+  });
+  return svg;
+}
+
 function renderStories() {
   const host = document.getElementById('moments');
   if (!host) return;
@@ -241,6 +261,16 @@ function renderStories() {
         const call = el('figure', 'sticker sticker--kraft');
         call.appendChild(el('p', '', story.callout));
         board.appendChild(call);
+      }
+      if (story.badge) {
+        const badge = el('figure', 'sticker sticker--badge');
+        badge.appendChild(el('p', 'badge__label', story.badge.label));
+        badge.appendChild(el('p', 'badge__nums', story.badge.nums));
+        badge.appendChild(el('p', 'badge__sub', story.badge.sub));
+        badge.appendChild(el('p', 'badge__shout', story.badge.shout));
+        board.appendChild(badge);
+        board.appendChild(sharpieArrow('m'));
+        board.appendChild(sharpieArrow('d'));
       }
       panel.appendChild(board);
     }
