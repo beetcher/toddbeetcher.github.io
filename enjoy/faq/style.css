@@ -489,3 +489,4 @@ a.fab { display: inline-block; text-decoration: none; }
   .moment--headline.moment--lead.moment--collage { align-content: flex-start; }
   .moment__lead { flex: 0 0 100%; width: auto; max-width: none; margin: 0; padding: 30px calc(100% - 320px - max(var(--content-padding), calc((100vw - 960px) / 2))) 20px max(var(--content-padding), calc((100vw - 960px) / 2)); box-sizing: border-box; }
 }
+.zero__because u { text-decoration-thickness: 3px; text-underline-offset: 4px; text-decoration-color: var(--color-accent); }
