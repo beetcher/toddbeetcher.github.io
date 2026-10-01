@@ -342,23 +342,30 @@ function renderStories() {
   });
 }
 
-// A soft ring pulses on each "See how I asked Doc" button for about 9.6 seconds once it is on screen.
-// Hovering, focusing or opening a button stops only that button's pulse. Never runs with reduced motion.
+// A soft ring pulses on each "See how I asked Doc" button for about 9.6 seconds every time it scrolls into view.
+// Hovering, focusing or opening a button stops that button's pulse for good. Never runs with reduced motion.
 function initDocPulse() {
   if (!('IntersectionObserver' in window)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const done = new WeakSet();
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
-      if (!e.isIntersecting) return;
       const s = e.target;
-      io.unobserve(s);
-      s.classList.add('is-pulsing');
-      const stop = () => s.classList.remove('is-pulsing');
-      s.addEventListener('animationend', stop, { once: true });
-      ['mouseenter', 'focus', 'click'].forEach((ev) => s.addEventListener(ev, stop, { once: true }));
+      if (done.has(s)) return;
+      if (e.intersectionRatio >= 0.6) {
+        s.classList.remove('is-pulsing');
+        void s.offsetWidth;                      // restart the animation from the first beat
+        s.classList.add('is-pulsing');
+      } else {
+        s.classList.remove('is-pulsing');
+      }
     });
-  }, { threshold: 0.6 });
-  document.querySelectorAll('.moment__more summary').forEach((s) => io.observe(s));
+  }, { threshold: [0, 0.6] });  // callback at 0 and at 0.6; "in view" means 60% showing
+  document.querySelectorAll('.moment__more summary').forEach((s) => {
+    io.observe(s);
+    s.addEventListener('animationend', () => s.classList.remove('is-pulsing'));
+    ['mouseenter', 'focus', 'click'].forEach((ev) => s.addEventListener(ev, () => { done.add(s); s.classList.remove('is-pulsing'); io.unobserve(s); }, { once: true }));
+  });
 }
 
 function initReveal() {
