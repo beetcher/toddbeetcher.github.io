@@ -464,8 +464,25 @@ function initAsk() {
   });
 }
 
+// One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
+function addPanelArrows() {
+  const panels = [document.getElementById('zero-state')]
+    .concat(Array.from(document.querySelectorAll('#moments > section')))
+    .concat([document.getElementById('ways')])
+    .filter(Boolean);
+  panels.forEach((panel, i) => {
+    const next = panels[i + 1];
+    const a = el('a', 'panel-next', next ? '\u2193' : '\u2191');
+    a.href = next && next.id ? '#' + next.id : '#top';
+    a.setAttribute('aria-label', next ? 'Next panel' : 'Back to the top');
+    panel.classList.add('has-next');
+    panel.appendChild(a);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
+  addPanelArrows();
   initReveal();
   initDocPulse();
   initRegister();

@@ -71,7 +71,12 @@ a { color: var(--color-accent); }
 .hero__pitch { margin: auto auto var(--sp-lg); max-width: 30em; font-size: clamp(1.2rem, 3.2vw, 1.75rem); font-weight: 500; line-height: 1.4; text-wrap: balance; }
 .hero__sub { margin: var(--sp-md) 0 var(--sp-lg); font-size: clamp(1.4rem, 4vw, 2.25rem); font-weight: 500; font-style: italic; }
 .hero__more { display: block; margin-top: var(--sp-md); color: #fff; font-weight: 500; font-size: 1.35rem; }
-.hero__scroll { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--color-nav); font-size: 2rem; text-decoration: none; }
+/* One arrow, same everywhere: white chip, burnt-orange arrow, bottom center of the panel */
+.hero__scroll, .panel-next { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 5; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: #fff; color: var(--color-nav); font-size: 1.6rem; line-height: 1; text-decoration: none; box-shadow: 0 6px 16px rgba(20,8,40,.3); transition: transform .2s ease; }
+.hero__scroll:hover, .panel-next:hover { transform: translateX(-50%) translateY(3px); }
+.has-next { position: relative; }
+.intro.has-next, .ways.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
+.zero.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
 
 /* ------- Intro: what this is, for whom, and what it is not ------- */
 .intro { max-width: 720px; margin: 0 auto; padding: var(--sp-2xl) var(--content-padding) var(--sp-xl); text-align: center; font-size: 1.2rem; line-height: 1.6; }
