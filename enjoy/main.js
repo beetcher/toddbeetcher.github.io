@@ -41,7 +41,7 @@ const STORIES = [
     zero: 'from zero to a road trip story',
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
-    line: 'Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
+    line: 'I asked Doc to tell us the valley\u2019s history like a storyteller. Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
     promptLabel: 'See how I asked Doc',
     prompt: 'Be a storyteller with a deep, gravelly voice in the style of a Star Wars narrator. Tell me a 10-minute history and origins story of the San Luis Valley, framed for right now as I drive through it.',
     payoff: 'My capability made her enjoy the trip more, and that was very empowering.',
@@ -127,7 +127,7 @@ const STORIES = [
     line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
     promptLabel: 'See how I asked Doc',
     prompt: 'The gist of what I typed: \u201cI just squeezed lemons and limes for margaritas. Is there anything cool I can make with the leftover pulp?\u201d',
-    payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and it suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and this thing I learned from a tool that used to feel like chaos let me do that for my family.',
+    payoff: 'I squeezed a pile of lemons and limes for margaritas, asked what to do with the pulp, and Doc suggested lemon-blueberry pancakes. I never would have thought of it. The kids really appreciated them. One good night turned into a better morning, and what I learned from a tool that used to feel like chaos let me do that for my family.',
     colors: ['#19c37d', '#ffc83d'],
   },
   {
