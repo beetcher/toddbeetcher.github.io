@@ -92,12 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  if (hero && 'IntersectionObserver' in window && !preview) {
-    new IntersectionObserver((entries) => {
-      heroVisible = entries[entries.length - 1].isIntersecting;
-      if (heroVisible) { clearTimeout(timer); if (current) current.stop(); }
-      else if (!current) schedule(FIRST_DELAY);
-    }).observe(hero);
+  // Hero check: a plain scroll listener (the hero counts as gone once none of it is on screen).
+  const heroOnScreen = () => { const r = hero.getBoundingClientRect(); return r.bottom > 1 && r.top < window.innerHeight; };
+  const checkHero = () => {
+    const v = heroOnScreen();
+    if (v === heroVisible) return;
+    heroVisible = v;
+    if (v) { clearTimeout(timer); if (current) current.stop(); }
+    else if (!current) schedule(FIRST_DELAY);
+  };
+  if (hero && !preview) {
+    heroVisible = heroOnScreen();
+    if (!heroVisible) schedule(FIRST_DELAY);
+    window.addEventListener('scroll', checkHero, { passive: true });
+    window.addEventListener('resize', checkHero);
   } else {
     heroVisible = false;
     schedule(FIRST_DELAY);
