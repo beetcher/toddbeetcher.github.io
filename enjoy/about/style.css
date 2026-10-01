@@ -478,3 +478,14 @@ a.fab { display: inline-block; text-decoration: none; }
 .llm--claude { color: #D97757; }
 .llm--grok { color: #000; }
 .llm--copilot { color: #7B61FF; }
+
+/* Lead print: a stand-alone "money shot" at the top of a panel, with its own sticky note */
+.moment__lead { position: relative; z-index: 2; width: min(78%, 340px); margin: var(--sp-md) auto 64px; }
+.lead__print { position: relative; margin: 0; transform: rotate(-2deg); }
+.lead__print img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.lead__note { position: absolute; right: -8%; bottom: -20%; width: 62%; margin: 0; transform: rotate(5deg); background: #fff6a8; color: #2a1a3a; padding: 10px 12px 12px; border-radius: 4px; box-shadow: 0 12px 24px rgba(20,8,40,.4); font: 700 1.3rem/1.1 'Caveat', 'Comic Sans MS', cursive; z-index: 3; }
+.lead__note p { margin: 0; }
+@media (min-width: 900px) {
+  .moment--headline.moment--lead.moment--collage { align-content: flex-start; }
+  .moment__lead { flex: 0 0 100%; width: auto; max-width: none; margin: 0; padding: 30px calc(100% - 320px - max(var(--content-padding), calc((100vw - 960px) / 2))) 20px max(var(--content-padding), calc((100vw - 960px) / 2)); box-sizing: border-box; }
+}

@@ -113,6 +113,7 @@ const STORIES = [
     bigLine: 'It\u2019s really %#@&! amazing.',
     colors: ['#2bb8ff', '#19c37d'],
     collage: 'three',
+    lead: { src: 'assets/ac-iced-evaporator.webp', note: 'I knew something was wrong. Very wrong. DOC, HELP!!!!', alt: 'The inside of the air conditioner with the evaporator coil frozen into a solid block of ice.' },
     photos: [
       { src: 'assets/ac-tent.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'A white PVC-pipe frame with shade cloth over the outdoor air conditioner, with a square opening cut around the fan so the hot air can leave straight up.' },
       { src: 'assets/ac-valves.webp', kind: 'print', rot: 4, hold: 'pin', alt: 'Brass charging fittings with blue and red handles on the refrigerant service ports of the outdoor unit.' },
@@ -235,6 +236,25 @@ function renderStories() {
     if (story.headline) {
       panel.classList.add('moment--headline');
       panel.appendChild(el('h2', 'moment__headline', story.headline));
+    }
+
+    if (story.lead) {
+      panel.classList.add('moment--lead');
+      const lead = el('div', 'moment__lead');
+      const print = el('figure', 'lead__print sticker--print hold-tape');
+      const im = el('img');
+      im.src = story.lead.src;
+      im.alt = story.lead.alt || '';
+      im.loading = 'lazy';
+      im.decoding = 'async';
+      print.appendChild(im);
+      if (story.lead.note) {
+        const ln = el('div', 'lead__note');
+        ln.appendChild(el('p', '', story.lead.note));
+        print.appendChild(ln);
+      }
+      lead.appendChild(print);
+      panel.appendChild(lead);
     }
 
     if (story.photos && story.photos.length) {
