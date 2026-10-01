@@ -405,3 +405,4 @@ a.fab { display: inline-block; text-decoration: none; }
 .zero__txt { font-weight: 700; font-size: 1.2rem; line-height: 1.3; max-width: 14em; text-wrap: balance; }
 .zero__inner > .zero__promise { font-weight: 700; font-size: clamp(1.25rem, 3.2vw, 1.6rem); line-height: 1.4; margin-top: var(--sp-lg); text-wrap: balance; }
 .moment__zero { display: inline-block; margin-bottom: var(--sp-xs); padding: 4px 12px; border-radius: var(--radius); background: rgba(255,255,255,.25); font: 700 var(--type-small)/1.3 var(--font-heading); letter-spacing: .04em; }
+.zero__inner > .zero__promise--2 { margin-top: 0; font-weight: 500; }
