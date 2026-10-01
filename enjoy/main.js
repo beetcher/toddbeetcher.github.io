@@ -31,6 +31,9 @@ const ASK_ENDPOINT = '';
 // collage: 'pair' gives two landscape photos equal weight (default layout favors one large print and one small sticker).
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
+// Text of the hover callout on every "See how I asked Doc" button. Edit freely.
+const DOC_TIP = 'This is exactly what I typed to the AI to get the result you just read about.';
+
 const STORIES = [
   {
     id: 'san-luis-valley',
@@ -204,7 +207,14 @@ function renderStories() {
     if (story.payoff) body.appendChild(el('p', 'moment__payoff', story.payoff));
 
     const more = el('details', 'moment__more');
-    more.appendChild(el('summary', '', story.promptLabel || 'See how I asked Doc'));
+    const summary = el('summary', '', story.promptLabel || 'See how I asked Doc');
+    const tip = el('span', 'moment__tip', DOC_TIP);
+    tip.id = 'tip-' + story.id;
+    tip.setAttribute('role', 'tooltip');
+    tip.setAttribute('aria-hidden', 'true'); // keeps it out of the button's name; aria-describedby still reads it
+    summary.setAttribute('aria-describedby', tip.id);
+    summary.appendChild(tip);
+    more.appendChild(summary);
     const inner = el('div', 'moment__more-body');
     inner.appendChild(el('p', 'moment__prompt', story.prompt));
     if (story.steps) {
@@ -233,6 +243,33 @@ function renderStories() {
   document.querySelectorAll('.intro[data-after]').forEach((sec) => {
     const target = document.getElementById(sec.dataset.after);
     if (target) target.after(sec);
+  });
+}
+
+// A soft ring pulses a few times on the "See how I asked Doc" button of the panel on screen.
+// It stops for good once the visitor hovers or opens any of them, and never runs with reduced motion.
+function initDocPulse() {
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const summaries = [...document.querySelectorAll('.moment__more summary')];
+  let off = false;
+  const stop = () => {
+    off = true;
+    io.disconnect();
+    summaries.forEach((s) => s.classList.remove('is-pulsing'));
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting || off) return;
+      const s = e.target;
+      io.unobserve(s);
+      s.classList.add('is-pulsing');
+      s.addEventListener('animationend', () => s.classList.remove('is-pulsing'), { once: true });
+    });
+  }, { threshold: 0.9 });
+  summaries.forEach((s) => {
+    io.observe(s);
+    ['mouseenter', 'focus', 'click'].forEach((ev) => s.addEventListener(ev, stop, { once: true }));
   });
 }
 
@@ -411,6 +448,7 @@ function initAsk() {
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   initReveal();
+  initDocPulse();
   initRegister();
   initSignup();
   initAsk();
