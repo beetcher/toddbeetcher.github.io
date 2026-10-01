@@ -345,9 +345,6 @@ a.fab { display: inline-block; text-decoration: none; }
 @media (max-width: 700px) { .priv-hero { min-height: calc(100svh - 158px); } .priv-hero__content { padding-bottom: 24px; } }
 @media (min-width: 900px) { .priv-hero__content { align-items: flex-start; text-align: left; padding-left: 5vw; } .priv-hero__title { text-align: left; } .priv-hero__line { margin-left: 0; max-width: 12em; } }
 
-/* Doc: live link in panel labels; looks like a link, not plain text */
-.doc-link { color: var(--color-accent-warm); font-weight: 800; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; background: rgba(20,10,50,.45); padding: 0 .4em; border-radius: 8px; }
-.doc-link:hover, .doc-link:focus-visible { background: #fff; color: var(--color-text); }
 .doc-name { font-weight: 800; font-size: var(--type-pullquote); text-align: center; margin-top: var(--sp-xl); }
 
 /* Meet Doc button (about, faq, ways): quiet white pill like Ask Todd, pink dot */
@@ -355,3 +352,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .fab--doc::before { content: ""; display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--color-accent); margin-right: .55em; vertical-align: .05em; }
 .fab--doc:hover { background: var(--color-accent); color: #fff; }
 .fab--doc:hover::before { background: #fff; }
+
+/* Meet Doc button inside the opened panel prompt (replaces the old inline doc-link) */
+.moment__meetdoc { display: inline-block; text-decoration: none; margin-top: var(--sp-md); background: #fff; color: var(--color-text); font-weight: 800; padding: 10px 20px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+.moment__meetdoc:hover, .moment__meetdoc:focus-visible { background: var(--color-accent-warm); }
