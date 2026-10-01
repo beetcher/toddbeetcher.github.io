@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       toast.className = 'doc-toast'; toast.setAttribute('role', 'status');
       toast.textContent = 'Doc forgot you. He\u2019ll peek again.';
       document.body.appendChild(toast); void toast.offsetWidth; toast.classList.add('is-in');
-      setTimeout(() => { toast.classList.remove('is-in'); setTimeout(() => toast.remove(), 400); }, 3000);
+      setTimeout(() => { toast.classList.remove('is-in'); setTimeout(() => toast.remove(), 400); }, 3500);
     });
   }
   document.querySelectorAll('[data-open-register]').forEach((b) => b.addEventListener('click', () => { location.href = '../#register'; }));

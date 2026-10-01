@@ -537,6 +537,6 @@ a.fab { display: inline-block; text-decoration: none; }
 @media print { .doc-peek { display: none; } }
 /* Meet Doc page: portrait (3 clicks on it = hidden reset) and its toast */
 .doc-portrait { display: block; width: clamp(150px, 30vw, 230px); height: auto; margin: var(--sp-md) auto; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .25)); -webkit-tap-highlight-color: transparent; user-select: none; }
-.doc-toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); z-index: 70; background: var(--color-text); color: #fff; font-weight: 700; padding: 12px 20px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); opacity: 0; transition: opacity .3s ease; pointer-events: none; text-align: center; }
+.doc-toast { position: fixed; left: 50%; top: 72px; transform: translateX(-50%); z-index: 1000; max-width: calc(100vw - 32px); background: var(--color-text); color: #fff; font-weight: 800; font-size: 1.15rem; padding: 16px 28px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); opacity: 0; transition: opacity .3s ease; pointer-events: none; text-align: center; }
 .doc-toast.is-in { opacity: 1; }
 /* ==== PEEKER END ==== */
