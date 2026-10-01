@@ -37,6 +37,7 @@ const DOC_TIP = 'This is exactly what I typed to the AI to get the result you ju
 const STORIES = [
   {
     id: 'san-luis-valley',
+    zero: 'from zero to a road trip story',
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
     line: 'Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
@@ -52,6 +53,7 @@ const STORIES = [
   },
   {
     id: 'brisket',
+    zero: 'from zero to brisket',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
     line: 'It was very gratifying to watch that happen, knowing I made it for people I care about. A tool of chaos had become a source of capability, and that was very empowering.',
@@ -74,17 +76,20 @@ const STORIES = [
   },
   {
     id: 'light-bulb',
+    zero: 'from zero to a lit dome light',
     category: 'Fixing',
-    title: 'The light that was broken for 10 years',
-    line: 'One question, one minute, one fixed fixture.',
-    prompt: 'Here is what my light fixture looks like and what it does. What’s wrong and how do I fix it?',
-    payoff: 'Ten years of “I’ll get to it” ended in a minute.',
+    title: 'The dome lights that were out for years',
+    line: 'The dome lights in my 2005 Honda had been out for years. I took a picture and asked Doc. It told me to buy two bulbs on Amazon, about $5, and gave me the link. I\u2019d need a screwdriver to pop the covers off.',
+    promptLabel: 'See how I asked Doc',
+    prompt: 'I took a picture of the dome light in my 2005 Honda and asked Doc what was wrong and what to do.',
+    payoff: 'Two bulbs, about $5, and a screwdriver. I took the covers off, ordered the parts, and the dome lights work.',
     colors: ['#ffc83d', '#ff7a3d'],
     image: '',
     alt: '',
   },
   {
     id: 'birthday-card',
+    zero: 'from zero to a birthday card',
     category: 'Writing to people you love',
     title: 'Write a birthday card that sounds like you',
     line: 'Not a greeting-card line, your actual voice, with the right inside joke.',
@@ -96,6 +101,7 @@ const STORIES = [
   },
   {
     id: 'cocktail',
+    zero: 'from zero to my own cocktail',
     category: 'Hosting',
     title: 'Invent a cocktail for dinner with friends',
     line: 'A drink nobody has had before, with a name and a story.',
@@ -107,6 +113,7 @@ const STORIES = [
   },
   {
     id: 'margarita-pancakes',
+    zero: 'from zero to pancakes',
     category: 'Cooking',
     title: 'From margaritas to pancakes',
     line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
@@ -117,6 +124,7 @@ const STORIES = [
   },
   {
     id: 'hassle',
+    zero: 'from zero to knowing the part',
     category: 'Getting out of a hassle',
     title: 'Skip the repairman call',
     line: 'Figure out the part, order it, and know when to call a professional instead.',
@@ -128,6 +136,7 @@ const STORIES = [
   },
   {
     id: 'this-website',
+    zero: 'from zero to a live website',
     category: 'Building something',
     title: 'Build the website you\u2019re looking at',
     line: 'You\u2019re on it right now. An idea on a golf course, a conversation with AI, and a real page with a sign-up form that works.',
@@ -201,6 +210,7 @@ function renderStories() {
     }
 
     const body = el('div', 'moment__body');
+    if (story.zero) body.appendChild(el('p', 'moment__zero', story.zero));
     body.appendChild(el('p', 'moment__cat', story.category));
     body.appendChild(el('h2', 'moment__title', story.title));
     body.appendChild(el('p', 'moment__line', story.line));
