@@ -15,6 +15,7 @@
   --sp-xs: 8px; --sp-sm: 16px; --sp-md: 24px; --sp-lg: 40px; --sp-xl: 64px; --sp-2xl: 96px;
   --content-width: 720px; --content-padding: var(--sp-md);
   --radius: 999px;
+  --color-nav: #BF5700; /* navigation cue: always means "this takes you somewhere" */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,8 +34,9 @@ a { color: var(--color-accent); }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 0 rgba(27,19,64,.18); }
 .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(27,19,64,.18); }
 .btn:focus-visible, .fab:focus-visible, .register__close:focus-visible { outline: 3px solid var(--color-text); outline-offset: 3px; }
-.btn--hero { background: #fff; color: var(--color-accent); font-size: clamp(0.95rem, 4.2vw, 1.25rem); padding: 20px 30px; white-space: nowrap; }
+.btn--hero { background: var(--color-text); color: #fff; font-size: clamp(0.95rem, 4.2vw, 1.25rem); padding: 20px 30px; white-space: nowrap; }
 .btn--block { width: 100%; }
+.btn--hero:hover { background: var(--color-accent); }
 .btn:disabled { opacity: .6; cursor: progress; }
 
 .fab {
@@ -58,7 +60,8 @@ a { color: var(--color-accent); }
 .hero__content { align-self: stretch; display: flex; flex-direction: column; align-items: center; padding: var(--sp-lg) 0 56px; }
 .hero__pitch { text-shadow: 0 2px 12px rgba(0,0,0,.6), 0 0 3px rgba(0,0,0,.5); }
 @media (min-width: 900px) { .hero .hero__pitch { max-width: 46em; } }
-.hero__title { text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+.hero__title { text-shadow: 0 2px 18px rgba(0,0,0,.35); color: var(--color-accent); }
+.hero__pink { color: var(--color-accent); font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,.75), 0 2px 12px rgba(0,0,0,.6); }
 @media (max-width: 700px) {
   .hero { background-image:
     linear-gradient(to bottom, rgba(20,12,40,.4) 0, rgba(20,12,40,0) 26%, rgba(20,12,40,0) 40%, rgba(20,12,40,.82) 100%),
@@ -67,8 +70,8 @@ a { color: var(--color-accent); }
 .hero__title { font: 800 var(--type-display)/var(--lh-heading) var(--font-heading); letter-spacing: -0.03em; text-wrap: balance; }
 .hero__pitch { margin: auto auto var(--sp-lg); max-width: 30em; font-size: clamp(1.2rem, 3.2vw, 1.75rem); font-weight: 500; line-height: 1.4; text-wrap: balance; }
 .hero__sub { margin: var(--sp-md) 0 var(--sp-lg); font-size: clamp(1.4rem, 4vw, 2.25rem); font-weight: 500; font-style: italic; }
-.hero__more { display: block; margin-top: var(--sp-md); color: #fff; font-weight: 500; }
-.hero__scroll { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 2rem; text-decoration: none; }
+.hero__more { display: block; margin-top: var(--sp-md); color: #fff; font-weight: 500; font-size: 1.35rem; }
+.hero__scroll { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--color-nav); font-size: 2rem; text-decoration: none; }
 
 /* ------- Intro: what this is, for whom, and what it is not ------- */
 .intro { max-width: 720px; margin: 0 auto; padding: var(--sp-2xl) var(--content-padding) var(--sp-xl); text-align: center; font-size: 1.2rem; line-height: 1.6; }
@@ -356,10 +359,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .done-list__item:has(a):hover { border-color: var(--color-accent); }
 
 /* "What do I get out of this?": floating button on every page, and the page itself */
-.fab--get { right: auto; left: 20px; background: #fff; color: var(--color-text); box-shadow: 0 8px 24px rgba(27,19,64,.25); border: 2px solid var(--color-accent); }
-.fab--get::before { content: ""; display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--color-accent); margin-right: .55em; vertical-align: .05em; }
-.fab--get:hover { background: var(--color-accent); color: #fff; }
-.fab--get:hover::before { background: #fff; }
+.fab--get { right: auto; left: 20px; }
 .get-list { list-style: none; padding: 0; margin: 0 0 var(--sp-lg); display: grid; gap: var(--sp-md); }
 .get-list__item { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 22px; padding: var(--sp-md) var(--sp-lg); }
 .get-list__item h2 { font: 800 1.35rem/1.25 var(--font-heading); letter-spacing: -0.01em; margin: 0 0 var(--sp-xs); color: var(--color-accent); }
@@ -367,7 +367,6 @@ a.fab { display: inline-block; text-decoration: none; }
 .get-more { text-align: center; margin-top: var(--sp-lg); }
 .fab__short { display: none; }
 @media (max-width: 700px) { .fab__long { display: none; } .fab__short { display: inline; } }
-@media (max-width: 700px) { .fab--get::before { display: none; } }
 .priv-hero__content { padding-bottom: 84px; }  /* keeps "Questions? Start here" clear of the floating button */
 
 /* "See how I asked Doc": hover callout (desktop only for now) and gentle pulse */
@@ -405,4 +404,11 @@ a.fab { display: inline-block; text-decoration: none; }
 .zero__txt { font-weight: 700; font-size: 1.2rem; line-height: 1.3; max-width: 14em; text-wrap: balance; }
 .zero__inner > .zero__promise { font-weight: 700; font-size: clamp(1.25rem, 3.2vw, 1.6rem); line-height: 1.4; margin-top: var(--sp-lg); text-wrap: balance; }
 .moment__zero { display: inline-block; margin-bottom: var(--sp-xs); padding: 4px 12px; border-radius: var(--radius); background: rgba(255,255,255,.25); font: 700 var(--type-small)/1.3 var(--font-heading); letter-spacing: .04em; }
-.zero__inner > .zero__promise--2 { margin-top: 0; font-weight: 500; }
+
+.zero__inner > .zero__proof { font-weight: 700; color: var(--color-text); margin-bottom: 0; }
+
+/* Short phones: keep the FAQ link clear of the two floating buttons */
+@media (max-width: 700px) and (max-height: 700px) { .hero__content { padding-bottom: 96px; } .hero .hero__pitch { font-size: 1.05rem; } }
+
+.zero__inner > .zero__crescendo { font: 800 clamp(2rem, 6.5vw, 3.5rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); margin: var(--sp-lg) auto var(--sp-md); text-wrap: balance; }
+.zero__inner > .zero__because { font-weight: 500; color: var(--color-text-secondary); }
