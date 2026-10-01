@@ -2,6 +2,23 @@
 // Static page. Register buttons use data-open-register, which opens the sign-up dialog on the main page via ../#register.
 document.addEventListener('DOMContentLoaded', () => {
   document.documentElement.classList.add('js');
+  // Hidden reset for testing: three quick clicks on Doc's picture make this device forget it ever met him.
+  const portrait = document.getElementById('doc-portrait');
+  if (portrait) {
+    let clicks = 0, timer = null;
+    portrait.addEventListener('click', () => {
+      clicks += 1; clearTimeout(timer); timer = setTimeout(() => { clicks = 0; }, 2000);
+      if (clicks < 3) return;
+      clicks = 0;
+      try { localStorage.removeItem('icdt-met-doc'); } catch (e) { /* storage blocked */ }
+      try { sessionStorage.removeItem('icdt-doc-hidden'); sessionStorage.setItem('icdt-doc-reset', '1'); } catch (e) { /* storage blocked */ }
+      const toast = document.createElement('div');
+      toast.className = 'doc-toast'; toast.setAttribute('role', 'status');
+      toast.textContent = 'Doc forgot you. He\u2019ll peek again.';
+      document.body.appendChild(toast); void toast.offsetWidth; toast.classList.add('is-in');
+      setTimeout(() => { toast.classList.remove('is-in'); setTimeout(() => toast.remove(), 400); }, 3000);
+    });
+  }
   document.querySelectorAll('[data-open-register]').forEach((b) => b.addEventListener('click', () => { location.href = '../#register'; }));
 });
 
@@ -11,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // Preview any time: add ?peek to the URL (or ?peek=left|right|top|bottom to force an edge).
 // To add a behavior (drift-by, banner plane...): add a function to DOC_BEHAVIORS and its name to DOC_ACTIVE.
 (() => {
-  const MET_KEY = 'icdt-met-doc', HIDE_KEY = 'icdt-doc-hidden';
+  const MET_KEY = 'icdt-met-doc', HIDE_KEY = 'icdt-doc-hidden', RESET_KEY = 'icdt-doc-reset';
   const read = (kind, k) => { try { return window[kind].getItem(k); } catch (e) { return null; } };
   const write = (kind, k) => { try { window[kind].setItem(k, '1'); } catch (e) { /* storage blocked: fine */ } };
   const m = location.pathname.match(/\/enjoy\/(.*)$/);
   const parts = m ? m[1].split('/').filter((p) => p && !/\.html?$/i.test(p)) : [];
   const base = '../'.repeat(parts.length);
-  if (parts[0] === 'doc') { write('localStorage', MET_KEY); return; }
+  if (parts[0] === 'doc') { if (!read('sessionStorage', RESET_KEY)) write('localStorage', MET_KEY); return; }  // easter egg on that page (3 clicks on Doc) clears the memory
   const preview = /[?&]peek(=|&|$)/.test(location.search);
   const forced = (location.search.match(/[?&]peek=(top|bottom|left|right)/) || [])[1];
   if (!preview && (read('localStorage', MET_KEY) || read('sessionStorage', HIDE_KEY))) return;

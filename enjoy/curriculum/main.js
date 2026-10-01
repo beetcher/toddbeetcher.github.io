@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // Preview any time: add ?peek to the URL (or ?peek=left|right|top|bottom to force an edge).
 // To add a behavior (drift-by, banner plane...): add a function to DOC_BEHAVIORS and its name to DOC_ACTIVE.
 (() => {
-  const MET_KEY = 'icdt-met-doc', HIDE_KEY = 'icdt-doc-hidden';
+  const MET_KEY = 'icdt-met-doc', HIDE_KEY = 'icdt-doc-hidden', RESET_KEY = 'icdt-doc-reset';
   const read = (kind, k) => { try { return window[kind].getItem(k); } catch (e) { return null; } };
   const write = (kind, k) => { try { window[kind].setItem(k, '1'); } catch (e) { /* storage blocked: fine */ } };
   const m = location.pathname.match(/\/enjoy\/(.*)$/);
   const parts = m ? m[1].split('/').filter((p) => p && !/\.html?$/i.test(p)) : [];
   const base = '../'.repeat(parts.length);
-  if (parts[0] === 'doc') { write('localStorage', MET_KEY); return; }
+  if (parts[0] === 'doc') { if (!read('sessionStorage', RESET_KEY)) write('localStorage', MET_KEY); return; }  // easter egg on that page (3 clicks on Doc) clears the memory
   const preview = /[?&]peek(=|&|$)/.test(location.search);
   const forced = (location.search.match(/[?&]peek=(top|bottom|left|right)/) || [])[1];
   if (!preview && (read('localStorage', MET_KEY) || read('sessionStorage', HIDE_KEY))) return;
