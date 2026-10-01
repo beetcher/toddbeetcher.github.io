@@ -204,7 +204,17 @@ function renderStories() {
     if (story.payoff) body.appendChild(el('p', 'moment__payoff', story.payoff));
 
     const more = el('details', 'moment__more');
-    more.appendChild(el('summary', '', story.promptLabel || 'See how I asked Doc'));
+    // "Doc" in the label is a live link to the Meet Doc page.
+    const summary = el('summary', '');
+    const label = story.promptLabel || 'See how I asked Doc';
+    const di = label.indexOf('Doc');
+    summary.appendChild(document.createTextNode(label.slice(0, di)));
+    const docLink = el('a', 'doc-link', 'Doc');
+    docLink.href = 'doc/';
+    docLink.title = 'Who\u2019s Doc? Tap to meet Doc';
+    summary.appendChild(docLink);
+    summary.appendChild(document.createTextNode(label.slice(di + 3)));
+    more.appendChild(summary);
     const inner = el('div', 'moment__more-body');
     inner.appendChild(el('p', 'moment__prompt', story.prompt));
     if (story.steps) {
@@ -214,10 +224,6 @@ function renderStories() {
     }
     more.appendChild(inner);
     body.appendChild(more);
-
-    const who = el('a', 'moment__doc', 'Who\u2019s Doc?');
-    who.href = 'doc/';
-    body.appendChild(who);
 
     if (story.link) {
       const more2 = el('a', 'moment__link', story.link.text);
