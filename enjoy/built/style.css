@@ -416,3 +416,11 @@ a.fab { display: inline-block; text-decoration: none; }
 /* The pivot: the most important line on the page, in a color used nowhere else (deep teal) */
 .zero__inner > .zero__pivot { font-weight: 800; font-size: clamp(1.25rem, 3.2vw, 1.6rem); line-height: 1.35; color: #0B8F8A; text-wrap: balance; }
 .zero__def { text-wrap: balance; }
+
+/* LLM names in their brand colors (Zero State captions) */
+.llm { font-weight: 800; }
+.llm--chatgpt { color: #1FA463; }
+.llm--gemini { color: #4285F4; }
+.llm--claude { color: #D97757; }
+.llm--grok { color: #000; }
+.llm--copilot { color: #7B61FF; }
