@@ -301,8 +301,6 @@ a.fab { display: inline-block; text-decoration: none; }
 
 /* ------- Ask others: Brady Bunch wall of voices ------- */
 .fab--ask { bottom: 82px; }
-.fab--others { right: auto; left: 20px; background: var(--color-accent-warm); color: var(--color-text); box-shadow: 0 8px 24px rgba(27,19,64,.3); }
-.fab--others:hover { background: #fff; }
 .wall__header { text-align: center; }
 .wall__header h1 { color: #b4531a; }
 .wall__stripes { height: 18px; width: min(320px, 70%); margin: var(--sp-md) auto 0; background: linear-gradient(to bottom, #e8a317 0 33%, #d2601a 33% 66%, #7a3b1d 66% 100%); border-radius: 9px; }
@@ -332,7 +330,6 @@ a.fab { display: inline-block; text-decoration: none; }
 @media (max-width: 700px) {
   .fab { padding: 11px 16px; font-size: .95rem; }
   .fab--ask { bottom: 68px; }
-  .fab--others { bottom: 20px; }
 }
 
 /* ------- Private session page ------- */
@@ -347,12 +344,6 @@ a.fab { display: inline-block; text-decoration: none; }
 
 .doc-name { font-weight: 800; font-size: var(--type-pullquote); text-align: center; margin-top: var(--sp-xl); }
 
-/* Meet Doc button (about, faq, ways): quiet white pill like Ask Todd, pink dot */
-.fab--doc { right: auto; left: 20px; background: #fff; color: var(--color-text); box-shadow: 0 8px 24px rgba(27,19,64,.25); border: 2px solid var(--color-accent); }
-.fab--doc::before { content: ""; display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--color-accent); margin-right: .55em; vertical-align: .05em; }
-.fab--doc:hover { background: var(--color-accent); color: #fff; }
-.fab--doc:hover::before { background: #fff; }
-
 /* Meet Doc button inside the opened panel prompt (replaces the old inline doc-link) */
 .moment__meetdoc { display: inline-block; text-decoration: none; margin-top: var(--sp-md); background: #fff; color: var(--color-text); font-weight: 800; padding: 10px 20px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
 .moment__meetdoc:hover, .moment__meetdoc:focus-visible { background: var(--color-accent-warm); }
@@ -364,22 +355,17 @@ a.fab { display: inline-block; text-decoration: none; }
 .done-list__see { color: var(--color-accent); font-weight: 800; white-space: nowrap; }
 .done-list__item:has(a):hover { border-color: var(--color-accent); }
 
-/* "What do I get out of this?": floating button on every page, hero button, and the page itself */
+/* "What do I get out of this?": floating button on every page, and the page itself */
 .fab--get { right: auto; left: 20px; background: #fff; color: var(--color-text); box-shadow: 0 8px 24px rgba(27,19,64,.25); border: 2px solid var(--color-accent); }
 .fab--get::before { content: ""; display: inline-block; width: .6em; height: .6em; border-radius: 50%; background: var(--color-accent); margin-right: .55em; vertical-align: .05em; }
 .fab--get:hover { background: var(--color-accent); color: #fff; }
 .fab--get:hover::before { background: #fff; }
-.hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-sm) var(--sp-md); }
-.btn--hero-alt { background: rgba(20,10,50,.55); color: #fff; border: 2px solid #fff; backdrop-filter: blur(4px); }
-.btn--hero-alt:hover { background: #fff; color: var(--color-accent); }
 .get-list { list-style: none; padding: 0; margin: 0 0 var(--sp-lg); display: grid; gap: var(--sp-md); }
 .get-list__item { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 22px; padding: var(--sp-md) var(--sp-lg); }
 .get-list__item h2 { font: 800 1.35rem/1.25 var(--font-heading); letter-spacing: -0.01em; margin: 0 0 var(--sp-xs); color: var(--color-accent); }
 .get-list__item p { margin: 0; font-size: 1.1rem; }
 .get-more { text-align: center; margin-top: var(--sp-lg); }
 .fab__short { display: none; }
-@media (max-width: 700px) { .fab__long { display: none; } .fab__short { display: inline; } .btn--hero-alt { padding: 14px 24px; } .hero__actions { gap: 10px; } }
+@media (max-width: 700px) { .fab__long { display: none; } .fab__short { display: inline; } }
 @media (max-width: 700px) { .fab--get::before { display: none; } }
-@media (max-width: 700px) and (max-height: 700px) { a.btn--hero-alt { display: none; } }
-@media (max-width: 700px) { .priv-hero__content { padding-bottom: 84px; } }
-@media (max-width: 700px) and (max-height: 700px) { .hero__content { padding-bottom: 104px; } }
+.priv-hero__content { padding-bottom: 84px; }  /* keeps "Questions? Start here" clear of the floating button */

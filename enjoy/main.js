@@ -316,7 +316,7 @@ function initSignup() {
       form.reset();
       say('Thanks! We have noted your interest. We will email you the date and place as soon as they are set.', 'ok');
     } catch (err) {
-      const mailto = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Register me for the clinic') +
+      const mailto = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Register me for the workshop') +
         '&body=' + encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nComfort with AI (1-5): ' + comfort + '\nWhat I’d love to do: ' + want);
       status.textContent = '';
       status.dataset.kind = 'error';
@@ -360,7 +360,7 @@ function initAsk() {
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
     if (!greeted) {
       greeted = true;
-      bubble('bot', 'Hi, I\u2019m Todd\u2019s chat companion. Ask me anything about the clinic: who it\u2019s for, what we\u2019ll do, how it works.');
+      bubble('bot', 'Hi, I\u2019m Todd\u2019s chat companion. Ask me anything about the workshop: who it\u2019s for, what we\u2019ll do, how it works.');
     }
     input.focus();
   };
@@ -378,7 +378,7 @@ function initAsk() {
     if (!ASK_ENDPOINT) {
       const b = bubble('bot', 'I\u2019m not switched on yet, so I can\u2019t answer that one. ');
       const a = el('a', '', 'Email Todd your question');
-      a.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A question about the clinic') + '&body=' + encodeURIComponent(q);
+      a.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('A question about the workshop') + '&body=' + encodeURIComponent(q);
       b.appendChild(a);
       b.appendChild(document.createTextNode(' and he\u2019ll write back. Or check the '));
       const f = el('a', '', 'FAQ');
