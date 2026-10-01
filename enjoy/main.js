@@ -26,6 +26,7 @@ const ASK_ENDPOINT = '';
 // colors: two-stop gradient used when there is no image, and as the tint over one.
 // Each panel leads with the human result (what happened to someone Todd cares about), then the story, then how he asked.
 // NOTE: prompts and payoffs below are PLACEHOLDER sample content until Todd supplies real ones.
+// headline: the cheeky title across the top of the panel, always tied to Doc. Todd's words: valley, brisket. Claude's drafts (flagged, tune freely): light-bulb, margarita-pancakes. PLACEHOLDERS until Todd gives the real moment: birthday-card, cocktail, hassle, this-website.
 // callout: optional kraft-paper scrap (a second, different callout) beside the photos.
 // note: optional sticky note stuck on the collage board (text that belongs with the photos).
 // collage: 'three' lays out sticky note, three prints and a kraft callout. payoffBig: true makes the payoff line large and pink.
@@ -38,7 +39,7 @@ const DOC_TIP = 'This is exactly what I typed to the AI to get the result you ju
 const STORIES = [
   {
     id: 'san-luis-valley',
-    zero: 'from zero to a road trip story',
+    headline: 'Doc tells stories on road trips. Wife wants more stories.',
     category: 'Driving',
     title: 'Drive through the San Luis Valley',
     line: 'I asked Doc to tell us the valley\u2019s history like a storyteller. Suzanne was so absorbed in the story that when it ended she said, \u201cWow, that was really cool. Let\u2019s do that again.\u201d We did, valley after valley, the rest of the trip.',
@@ -54,7 +55,7 @@ const STORIES = [
   },
   {
     id: 'brisket',
-    zero: 'from zero to brisket',
+    headline: 'Doc told me the stall is where the magic happens. Everyone wants more meat candy.',
     category: 'Cooking',
     title: 'Cook a brisket without the panic',
     line: 'It was very gratifying to watch that happen, knowing I made it for people I care about. A tool of chaos had become a source of capability, and that was very empowering.',
@@ -77,7 +78,7 @@ const STORIES = [
   },
   {
     id: 'light-bulb',
-    zero: 'from zero to a lit dome light',
+    headline: 'Dome lights dead through law school. Doc fixed them for $5.',
     category: 'Fixing',
     title: 'The dome lights that were out for years',
     line: 'My kid went through high school, college, law school with one of those lights out. Then another one blanked a couple years ago. Then one day I was like, wait, WTF. What does Doc have to say about this?',
@@ -97,7 +98,7 @@ const STORIES = [
   },
   {
     id: 'birthday-card',
-    zero: 'from zero to a birthday card',
+    headline: 'Doc helped me write a birthday card that sounds like me.',
     category: 'Writing to people you love',
     title: 'Write a birthday card that sounds like you',
     line: 'Not a greeting-card line, your actual voice, with the right inside joke.',
@@ -109,7 +110,7 @@ const STORIES = [
   },
   {
     id: 'cocktail',
-    zero: 'from zero to my own cocktail',
+    headline: 'Doc invented a cocktail nobody has had before.',
     category: 'Hosting',
     title: 'Invent a cocktail for dinner with friends',
     line: 'A drink nobody has had before, with a name and a story.',
@@ -121,7 +122,7 @@ const STORIES = [
   },
   {
     id: 'margarita-pancakes',
-    zero: 'from zero to pancakes',
+    headline: 'Doc turned my margarita pulp into pancakes.',
     category: 'Cooking',
     title: 'From margaritas to pancakes',
     line: 'My wife said my margaritas were the best ever, better than any restaurant she\u2019s had. The next morning, the leftover pulp became lemon-blueberry pancakes for the kids. Same result.',
@@ -132,7 +133,7 @@ const STORIES = [
   },
   {
     id: 'hassle',
-    zero: 'from zero to knowing the part',
+    headline: 'Doc told me which part to order. No repairman.',
     category: 'Getting out of a hassle',
     title: 'Skip the repairman call',
     line: 'Figure out the part, order it, and know when to call a professional instead.',
@@ -144,7 +145,7 @@ const STORIES = [
   },
   {
     id: 'this-website',
-    zero: 'from zero to a live website',
+    headline: 'Doc and I built the website you\u2019re looking at.',
     category: 'Building something',
     title: 'Build the website you\u2019re looking at',
     line: 'You\u2019re on it right now. An idea on a golf course, a conversation with AI, and a real page with a sign-up form that works.',
@@ -190,6 +191,11 @@ function renderStories() {
       panel.appendChild(img);
     }
 
+    if (story.headline) {
+      panel.classList.add('moment--headline');
+      panel.appendChild(el('h2', 'moment__headline', story.headline));
+    }
+
     if (story.photos && story.photos.length) {
       panel.classList.add('moment--collage');
       const board = el('div', 'moment__photos');
@@ -219,9 +225,10 @@ function renderStories() {
     }
 
     const body = el('div', 'moment__body');
-    if (story.zero) body.appendChild(el('p', 'moment__zero', story.zero));
-    body.appendChild(el('p', 'moment__cat', story.category));
-    body.appendChild(el('h2', 'moment__title', story.title));
+    if (!story.headline) {
+      body.appendChild(el('p', 'moment__cat', story.category));
+      body.appendChild(el('h2', 'moment__title', story.title));
+    }
     body.appendChild(el('p', 'moment__line', story.line));
     if (story.payoff) body.appendChild(el('p', story.payoffBig ? 'moment__payoff moment__payoff--big' : 'moment__payoff', story.payoff));
 
