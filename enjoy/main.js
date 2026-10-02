@@ -464,7 +464,7 @@ function initTrialLetter() {
 // TRIAL PLANE (door 2): Todd in a biplane flies into the hero, a callout invites people to the free trial.
 // Homepage only. It owns the hero and leaves when the visitor scrolls past it, so it never meets the Doc peeker.
 // Remembers on the device once clicked or closed (localStorage key icdt-trial-plane, in try/catch).
-// Swap the picture: assets/trial-plane.webp (transparent, nose pointing right). Callout words are Todd's, compressed.
+// Swap the picture: assets/trial-plane.webp (transparent, nose pointing LEFT: it flies in from the right and leaves to the left). Callout words are Todd's, compressed.
 // ============================================================
 const TRIAL_PLANE_KEY = 'icdt-trial-plane';
 const TRIAL_PLANE_TEXT = 'I’m ready to trial this free hands-on starter AI workshop. Click the plane to become one of my first trial members.';

@@ -602,9 +602,9 @@ a.fab { display: inline-block; text-decoration: none; }
 .trial-done__sign { font-style: italic; font-weight: 700; margin: 0 !important; }
 
 /* ------- Free trial: the plane (door 2) ------- */
-.trial-plane { position: fixed; left: 50%; top: 56%; z-index: 55; width: clamp(250px, 36vw, 460px); pointer-events: none; transform: translate(calc(-50% - 120vw), -50%); transition: transform 2.2s cubic-bezier(.2, .8, .25, 1); }
+.trial-plane { position: fixed; left: 50%; top: 56%; z-index: 55; width: clamp(250px, 36vw, 460px); pointer-events: none; transform: translate(calc(-50% + 120vw), -50%); transition: transform 2.2s cubic-bezier(.2, .8, .25, 1); }
 .trial-plane.is-in { transform: translate(-50%, -50%); }
-.trial-plane.is-out { transform: translate(calc(-50% + 130vw), -50%); transition: transform 1.8s cubic-bezier(.6, 0, .9, .5); }
+.trial-plane.is-out { transform: translate(calc(-50% - 130vw), -50%); transition: transform 1.8s cubic-bezier(.6, 0, .9, .5); }
 .trial-plane__craft { display: block; pointer-events: auto; border-radius: 12px; }
 .trial-plane__craft img { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 24px rgba(0,0,0,.35)); animation: plane-bob 3.2s ease-in-out infinite; transition: transform .2s ease; }
 .trial-plane__craft:hover img { transform: scale(1.04); }
