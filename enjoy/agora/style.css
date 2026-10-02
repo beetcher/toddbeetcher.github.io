@@ -62,7 +62,8 @@ a { color: var(--color-accent); }
 @media (min-width: 900px) { .hero .hero__pitch { max-width: 46em; } }
 .hero__title { text-shadow: 0 2px 18px rgba(0,0,0,.35); color: var(--color-accent); }
 .hero__pink { color: var(--color-accent); font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,.75), 0 2px 12px rgba(0,0,0,.6); }
-.hero__term { color: var(--color-accent-warm); font-weight: 800; font-style: italic; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,.75), 0 2px 12px rgba(0,0,0,.6); }
+/* "Zero State" the term: one look everywhere (hero, panel 2). Yellow bold italic with a thin dark outline so it reads on dark and white. */
+.term { color: var(--color-accent-warm); font-weight: 800; font-style: italic; white-space: nowrap; -webkit-text-stroke: .17em #1b1340; paint-order: stroke fill; text-shadow: 0 1px 3px rgba(0,0,0,.45); }
 @media (max-width: 700px) {
   .hero { background-image:
     linear-gradient(to bottom, rgba(20,12,40,.4) 0, rgba(20,12,40,0) 26%, rgba(20,12,40,0) 40%, rgba(20,12,40,.82) 100%),
