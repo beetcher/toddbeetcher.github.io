@@ -636,3 +636,10 @@ a.fab { display: inline-block; text-decoration: none; }
   .letter__photo--left, .letter__photo--right { float: none; width: min(300px, 78vw); margin: var(--sp-lg) auto; }
   .letter__photo .print__label--left { left: -6px; }
 }
+
+/* About page: a pair of prints side by side */
+.letter__pair { display: flex; gap: var(--sp-md); align-items: center; justify-content: center; margin: var(--sp-lg) 0; clear: both; }
+.letter__pair .letter__photo { float: none; margin: 14px 0; width: auto; flex: 1 1 0; min-width: 0; }
+.letter__pair .letter__photo--a { transform: rotate(-3deg); max-width: 320px; }
+.letter__pair .letter__photo--b { transform: rotate(2deg); max-width: 270px; }
+@media (max-width: 640px) { .letter__pair { gap: var(--sp-sm); } .letter__pair .letter__photo { padding: 6px; } .letter__pair .print__label { font-size: 1.1rem; } }
