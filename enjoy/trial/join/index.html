@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be one of my first — I Can Do That</title>
+  <meta name="description" content="A free hands-on starter AI workshop. I&rsquo;m trying it out and I&rsquo;d like you to be one of my first.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Be one of my first">
+  <meta property="og:description" content="A free hands-on starter AI workshop.">
+  <meta property="og:image" content="https://beetcher.com/enjoy/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="I Can Do That.">
+  <meta property="og:url" content="https://beetcher.com/enjoy/trial/join/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://beetcher.com/enjoy/trial/join/">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../../favicon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="page-top" aria-label="Site">
+    <a href="../../">&larr; I Can Do That</a>
+    <span class="page-top__links"><a href="../../faq/">FAQ</a><a href="../../curriculum/">Curriculum</a><a href="../../about/">About</a></span>
+  </nav>
+  <main>
+    <header class="clinic-header">
+      <h1>Be one of my first.</h1>
+      <p class="subtitle">A free hands-on starter AI workshop.</p>
+    </header>
+    <article class="article">
+      <ul class="trial-terms">
+        <li>It&rsquo;s free.</li>
+        <li>It&rsquo;s a prototype. I&rsquo;m practicing too.</li>
+        <li>A testimonial is welcome, never required.</li>
+        <li>No sales pitch.</li>
+      </ul>
+
+      <h2>The session</h2>
+      <p>Let&rsquo;s pick a time and place where you&rsquo;re comfortable working together for an hour or so. Just your phone, or your laptop if you prefer. One on one, or with a couple of friends.</p>
+      <p>By the end you&rsquo;ll have made something and sent it to someone.</p>
+
+      <h2>Who it&rsquo;s for</h2>
+      <p>If you&rsquo;ve never opened an AI app, or opened one and didn&rsquo;t know what to do next, this is for you.</p>
+      <p class="trial-links"><a href="../../about/">Read my letter</a> &middot; <a href="../../curriculum/">What we&rsquo;ll cover</a></p>
+
+      <form id="trial-form" class="signup trial-form" novalidate>
+        <h2>Count me in</h2>
+        <label class="field">Your name
+          <input type="text" name="name" autocomplete="name" maxlength="100" required>
+        </label>
+        <p class="trial-form__lead">Leave a phone number, an email, or both. I&rsquo;ll use whatever&rsquo;s easiest for you.</p>
+        <label class="field">Phone
+          <input type="tel" name="phone" autocomplete="tel" maxlength="40">
+        </label>
+        <label class="field">Email
+          <input type="email" name="email" autocomplete="email" maxlength="200">
+        </label>
+        <label class="field">Have you used AI before?
+          <select name="used">
+            <option value="">Choose one (optional)</option>
+            <option value="never">Never opened it</option>
+            <option value="stuck">Opened it and got stuck</option>
+            <option value="sometimes">Use it sometimes</option>
+          </select>
+        </label>
+        <label class="field">Bringing a friend or two? Their names (optional)
+          <input type="text" name="friends" maxlength="200">
+        </label>
+        <!-- honeypot: real people never see or fill this -->
+        <label class="hp" aria-hidden="true">Leave blank <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        <button type="submit" class="btn btn--block" id="trial-submit">Count me in</button>
+        <p class="trial-form__consent">I&rsquo;ll only use this to set up your session.</p>
+        <p class="signup__status" id="trial-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="trial-done" id="trial-done" hidden tabindex="-1">
+        <h2>You&rsquo;re in.</h2>
+        <p>I&rsquo;ll be in touch to find a time. Thank you.</p>
+        <p class="trial-done__sign">&mdash; Todd</p>
+      </div>
+    </article>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

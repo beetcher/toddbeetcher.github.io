@@ -36,6 +36,12 @@ const ASK_ENDPOINT = '';
 // photos: [{ src, alt, kind: 'print' | 'cutout', rot: degrees, hold: 'tape' | 'corners' | 'magnet' | 'pin' | 'clip' | 'none' }]
 // Like photos on a fridge: each one can be held up its own way.
 // Text of the hover callout on every "See how I asked Doc" button. Edit freely.
+// ---- Free trial layer (the OFF SWITCH) ----
+// true: the letter overlay (?trial) and, once built, the plane are active.
+// false: neither shows. To retire the trial completely, also delete the enjoy/trial/ folder.
+const TRIAL_ON = true;
+const TRIAL_JOIN_URL = 'trial/join/';
+
 const DOC_TIP = 'This is exactly what I typed to the AI to get the result you just read about.';
 
 const STORIES = [
@@ -397,6 +403,64 @@ function initReveal() {
 }
 
 // ============================================================
+// TRIAL LETTER (door 1): Todd's letter over the real homepage when the link has ?trial
+// Letter text is Todd's draft (2026-10-02), compressed from his dictation. {term} = the shared "Zero State" style.
+// Button labels ("Join the free trial", "Tell me more" wording per Todd) and the sign-off are Claude's bridging.
+// ============================================================
+const TRIAL_LETTER = [
+  'Hi. I’m sincerely excited to share my journey and discovery of how AI has made me more capable. And I want to share that with others.',
+  'You probably know me, or you know somebody who does. Thank you for taking a moment to read this.',
+  'A couple of years ago I dove into AI and arrived at a place I find extremely satisfying. It has changed how much I can do for the people around me and for myself.',
+  'The start wasn’t smooth. People just said “use AI.” I didn’t know what a language model was or who made one, and I downloaded a knockoff with a name something like “G Chat PT.” It tried to trick me with the name and looked like the real site. Then I figured it out, got ChatGPT and Claude downloaded, and started using them. But every one of them puts a white screen in front of you and says, here, use AI. I stared at a white screen with no idea what to do. As technical as I am, I know that moment. I call it {term}.',
+  'Now I can’t imagine living without it every day. Not all day. Like your phone, your TV, the toilet. It’s just there. I’ve made the most amazing meat candy brisket, learned how to charge my air conditioner, saving us thousands of dollars, and collaborated on a beautiful father of the bride speech.',
+  'One thing I want to say plainly: this isn’t like the social media time suck. Yes, you download an app and log in, but it isn’t a feed and it doesn’t want your time. It becomes an assistant that’s always there, ready to help amplify your capabilities and your responsibilities. It’s about capability, not productivity.',
+  'I want to show people the way out of {term}, so I’ve built a workshop, and I need to practice. If you’ve never opened it, or opened it and didn’t know what to do next, this is for you. By the end you’ll have made something and sent it to someone.',
+  'I’d like to trial it with a few people, one on one or with a couple of friends, free. About an hour at a coffee shop or a local establishment. Just bring your phone. No sales pitch. If it goes well, maybe I can get a testimonial. If not, I got great practice.',
+  'To join the trial, click the trial button. To learn more first, click “Tell me more” and go through the site.',
+];
+
+function initTrialLetter() {
+  if (!TRIAL_ON || !/[?&]trial(=|&|$)/.test(location.search)) return;
+  const dlg = document.createElement('dialog');
+  dlg.className = 'trial-letter';
+  dlg.setAttribute('aria-label', 'A note from Todd');
+  const card = el('div', 'trial-letter__card');
+  card.tabIndex = -1;
+  TRIAL_LETTER.forEach((t) => {
+    const p = el('p');
+    p.innerHTML = t.replace(/\{term\}/g, '<span class="term">Zero State</span>');
+    card.appendChild(p);
+  });
+  card.appendChild(el('p', 'trial-letter__sign', 'Todd'));
+  const bar = el('div', 'trial-letter__bar');
+  const join = el('a', 'btn btn--hero', 'Join the free trial');
+  join.href = TRIAL_JOIN_URL;
+  const more = el('button', 'btn btn--ghost', 'Tell me more');
+  more.type = 'button';
+  bar.appendChild(join);
+  bar.appendChild(more);
+  dlg.appendChild(card);
+  dlg.appendChild(bar);
+  document.body.appendChild(dlg);
+
+  // "Washes away" into the homepage; Esc does the same as "Tell me more".
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let leaving = false;
+  const dismiss = () => {
+    if (leaving) return;
+    leaving = true;
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) { /* fine */ }
+    if (reduce) { dlg.close(); dlg.remove(); return; }
+    dlg.classList.add('is-leaving');
+    setTimeout(() => { dlg.close(); dlg.remove(); }, 700);
+  };
+  more.addEventListener('click', dismiss);
+  dlg.addEventListener('cancel', (e) => { e.preventDefault(); dismiss(); });
+  if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  card.focus({ preventScroll: true });
+}
+
+// ============================================================
 // REGISTER DIALOG
 // ============================================================
 function initRegister() {
@@ -581,6 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegister();
   initSignup();
   initAsk();
+  initTrialLetter();
   // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
   const target = location.hash.length > 1 && document.querySelector('.moment' + location.hash);
   if (target) setTimeout(() => target.scrollIntoView(), 50);
