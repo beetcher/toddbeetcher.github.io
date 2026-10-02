@@ -487,7 +487,7 @@ function initTrialPlane() {
   x.setAttribute('aria-label', 'Close');
   bubble.appendChild(x);
   const craft = el('a', 'trial-plane__craft');
-  craft.href = TRIAL_JOIN_URL;
+  craft.href = TRIAL_JOIN_URL + '?letter';   // the join page then shows Todd's letter over itself
   const img = el('img');
   img.src = 'assets/trial-plane.webp';
   img.alt = 'Todd flying a yellow and navy biplane. Click to join the free trial.';

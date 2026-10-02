@@ -617,3 +617,9 @@ a.fab { display: inline-block; text-decoration: none; }
 .trial-plane__x:hover { color: var(--color-accent); }
 @keyframes plane-bob { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-9px) rotate(1deg); } }
 @media (max-width: 700px) { .trial-plane { width: 76vw; max-width: 380px; } .trial-plane__bubble p { font-size: 1rem; } }
+
+/* About page: Todd's portrait, a print floated beside the opening of the letter */
+.letter__portrait { float: right; width: min(300px, 38%); margin: 6px 0 var(--sp-md) var(--sp-lg); background: #fff; padding: 10px; border-radius: 10px; box-shadow: 0 14px 30px rgba(20,8,40,.28); transform: rotate(2deg); }
+.letter__portrait img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.letter h2 { clear: both; }
+@media (max-width: 640px) { .letter__portrait { float: none; width: min(300px, 78vw); margin: 0 auto var(--sp-lg); } }
