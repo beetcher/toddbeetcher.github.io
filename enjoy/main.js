@@ -94,9 +94,11 @@ const STORIES = [
     collage: 'three',
     photos: [
       { src: 'assets/honda-dome-light.webp', kind: 'print', rot: -2, hold: 'tape', alt: 'The overhead light assembly in the front of a 2005 Honda Pilot, with the dead dome and map lights and three buttons.' },
-      { src: 'assets/honda-bulb.webp', kind: 'print', rot: 4, hold: 'pin', alt: 'A small glass festoon bulb with silver ends, the kind that goes in the dome light.' },
+      { src: 'assets/honda-bulb.webp', kind: 'print', rot: 4, hold: 'pin', cls: 'sticker--oldbulb', alt: 'The old, burned-out glass festoon bulb with silver ends, the kind that goes in the dome light.' },
       { src: 'assets/honda-pilot.webp', kind: 'print', rot: -3, hold: 'magnet', alt: 'Todd\u2019s black 2005 Honda Pilot parked in the driveway under a tree.' },
+      { src: 'assets/honda-bulb-pack.webp', kind: 'print', rot: 3, hold: 'tape', cls: 'sticker--newpack', label: 'Ordered on Amazon', alt: 'The new pack of two Hella DE3175 miniature bulbs, ordered from Amazon.' },
     ],
+    swap: { note: 'Thx Doc! Correct bulbs ordered < 5 min! :)' },
   },
   {
     id: 'air-conditioner',
@@ -200,11 +202,17 @@ function sharpieArrow(kind) {
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('class', 'board-arrow board-arrow--' + kind);
-  svg.setAttribute('viewBox', kind === 'm' ? '0 0 100 175' : '0 0 100 110');
+  const BOX = { m: '0 0 100 175', d: '0 0 100 110', sm: '0 0 100 220', sd: '0 0 100 130' };
+  svg.setAttribute('viewBox', BOX[kind]);
   svg.setAttribute('aria-hidden', 'true');
-  const paths = kind === 'm'
-    ? ['M 12 120 C 3 127, 1 141, 10 153', 'M 10 153 L 4 147', 'M 10 153 L 17 150']
-    : ['M 8 48 C -1 62, -1 82, 12 95', 'M 12 95 L 7 94', 'M 12 95 L 11 90'];
+  // m, d: AC badge to the savings callout. sm, sd: Honda old bulb to the new pack.
+  const PATHS = {
+    m: ['M 12 120 C 3 127, 1 141, 10 153', 'M 10 153 L 4 147', 'M 10 153 L 17 150'],
+    d: ['M 8 48 C -1 62, -1 82, 12 95', 'M 12 95 L 7 94', 'M 12 95 L 11 90'],
+    sm: ['M 38 160 C 44 152, 50 150, 56 154', 'M 56 154 L 50 149', 'M 56 154 L 49 158'],
+    sd: ['M 31 100 C 40 92, 52 90, 61 94', 'M 61 94 L 55 89', 'M 61 94 L 54 98'],
+  };
+  const paths = PATHS[kind];
   paths.forEach((d) => {
     const path = document.createElementNS(NS, 'path');
     path.setAttribute('d', d);
@@ -262,7 +270,7 @@ function renderStories() {
       panel.classList.add('moment--collage');
       const board = el('div', 'moment__photos');
       story.photos.forEach((ph) => {
-        const fig = el('figure', 'sticker sticker--' + (ph.kind || 'print') + ' hold-' + (ph.hold || 'tape'));
+        const fig = el('figure', 'sticker sticker--' + (ph.kind || 'print') + ' hold-' + (ph.hold || 'tape') + (ph.cls ? ' ' + ph.cls : ''));
         fig.style.setProperty('--rot', (ph.rot || 0) + 'deg');
         const im = el('img');
         im.src = ph.src;
@@ -270,6 +278,7 @@ function renderStories() {
         im.loading = 'lazy';
         im.decoding = 'async';
         fig.appendChild(im);
+        if (ph.label) fig.appendChild(el('span', 'print__label', ph.label));
         board.appendChild(fig);
       });
       if (story.note) {
@@ -282,6 +291,14 @@ function renderStories() {
         const call = el('figure', 'sticker sticker--kraft');
         call.appendChild(el('p', '', story.callout));
         board.appendChild(call);
+      }
+      if (story.swap) {
+        panel.classList.add('moment--swap');
+        const note2 = el('figure', 'sticker sticker--note sticker--note2');
+        note2.appendChild(el('p', '', story.swap.note));
+        board.appendChild(note2);
+        board.appendChild(sharpieArrow('sm'));
+        board.appendChild(sharpieArrow('sd'));
       }
       if (story.badge) {
         const badge = el('figure', 'sticker sticker--badge');
