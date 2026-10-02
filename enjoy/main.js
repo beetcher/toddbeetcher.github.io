@@ -461,6 +461,70 @@ function initTrialLetter() {
 }
 
 // ============================================================
+// TRIAL PLANE (door 2): Todd in a biplane flies into the hero, a callout invites people to the free trial.
+// Homepage only. It owns the hero and leaves when the visitor scrolls past it, so it never meets the Doc peeker.
+// Remembers on the device once clicked or closed (localStorage key icdt-trial-plane, in try/catch).
+// Swap the picture: assets/trial-plane.webp (transparent, nose pointing right). Callout words are Todd's, compressed.
+// ============================================================
+const TRIAL_PLANE_KEY = 'icdt-trial-plane';
+const TRIAL_PLANE_TEXT = 'I’m ready to trial this free hands-on starter AI workshop. Click the plane to become one of my first trial members.';
+
+function initTrialPlane() {
+  const hero = document.querySelector('header.hero');
+  if (!TRIAL_ON || !hero || /[?&]trial(=|&|$)/.test(location.search)) return;
+  const preview = /[?&]plane(=|&|$)/.test(location.search);   // ?plane previews it even after it was dismissed
+  const read = () => { try { return localStorage.getItem(TRIAL_PLANE_KEY); } catch (e) { return null; } };
+  const remember = () => { try { localStorage.setItem(TRIAL_PLANE_KEY, '1'); } catch (e) { /* storage blocked: fine */ } };
+  if (!preview && read()) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const box = el('aside', 'trial-plane');
+  box.setAttribute('aria-label', 'Join the free trial');
+  const bubble = el('div', 'trial-plane__bubble');
+  bubble.appendChild(el('p', '', TRIAL_PLANE_TEXT));
+  const x = el('button', 'trial-plane__x', '×');
+  x.type = 'button';
+  x.setAttribute('aria-label', 'Close');
+  bubble.appendChild(x);
+  const craft = el('a', 'trial-plane__craft');
+  craft.href = TRIAL_JOIN_URL;
+  const img = el('img');
+  img.src = 'assets/trial-plane.webp';
+  img.alt = 'Todd flying a yellow and navy biplane. Click to join the free trial.';
+  img.decoding = 'async';
+  craft.appendChild(img);
+  box.appendChild(bubble);
+  box.appendChild(craft);
+
+  let state = 'idle', timers = [];
+  const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); };
+  const heroGone = () => hero.getBoundingClientRect().bottom < window.innerHeight * 0.35;
+  const leave = () => {
+    if (state === 'out') return;
+    state = 'out';
+    timers.forEach(clearTimeout);
+    box.classList.remove('is-landed');
+    box.classList.add('is-out');
+    later(() => { box.remove(); window.removeEventListener('scroll', onScroll); }, reduce ? 400 : 2000);
+  };
+  const onScroll = () => { if (state !== 'idle' && heroGone()) leave(); };
+  craft.addEventListener('click', remember);
+  x.addEventListener('click', () => { remember(); leave(); });
+
+  const start = () => {
+    if (state !== 'idle' || document.hidden || heroGone() || document.querySelector('dialog[open]')) { later(start, 3000); return; }
+    document.body.appendChild(box);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('is-in')));
+    state = 'in';
+    later(() => { box.classList.add('is-landed'); }, reduce ? 200 : 2300);
+    later(leave, 22000);
+  };
+  const go = () => later(start, preview ? 600 : 2000);
+  if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go);
+}
+
+// ============================================================
 // REGISTER DIALOG
 // ============================================================
 function initRegister() {
@@ -646,6 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSignup();
   initAsk();
   initTrialLetter();
+  initTrialPlane();
   // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
   const target = location.hash.length > 1 && document.querySelector('.moment' + location.hash);
   if (target) setTimeout(() => target.scrollIntoView(), 50);
