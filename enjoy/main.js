@@ -202,15 +202,15 @@ function sharpieArrow(kind) {
   const NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('class', 'board-arrow board-arrow--' + kind);
-  const BOX = { m: '0 0 100 175', d: '0 0 100 110', sm: '0 0 100 220', sd: '0 0 100 130' };
+  const BOX = { m: '0 0 100 175', d: '0 0 100 110', sm: '0 0 100 210', sd: '0 0 100 120' };
   svg.setAttribute('viewBox', BOX[kind]);
   svg.setAttribute('aria-hidden', 'true');
   // m, d: AC badge to the savings callout. sm, sd: Honda old bulb to the new pack.
   const PATHS = {
     m: ['M 12 120 C 3 127, 1 141, 10 153', 'M 10 153 L 4 147', 'M 10 153 L 17 150'],
     d: ['M 8 48 C -1 62, -1 82, 12 95', 'M 12 95 L 7 94', 'M 12 95 L 11 90'],
-    sm: ['M 38 160 C 44 152, 50 150, 56 154', 'M 56 154 L 50 149', 'M 56 154 L 49 158'],
-    sd: ['M 31 100 C 40 92, 52 90, 61 94', 'M 61 94 L 55 89', 'M 61 94 L 54 98'],
+    sm: ['M 38 150 C 44 142, 50 140, 56 144', 'M 56 144 L 50 139', 'M 56 144 L 49 148'],
+    sd: ['M 31 87 C 40 79, 52 77, 61 82', 'M 61 82 L 55 77', 'M 61 82 L 54 86'],
   };
   const paths = PATHS[kind];
   paths.forEach((d) => {
