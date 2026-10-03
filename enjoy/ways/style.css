@@ -714,7 +714,7 @@ a.fab { display: inline-block; text-decoration: none; }
 @media (max-width: 640px) { .letter__pair { gap: var(--sp-sm); } .letter__pair .letter__photo { padding: 6px; } .letter__pair .print__label { font-size: 1.1rem; } }
 
 /* Price panel: $500 per session, three group sizes */
-.price { background: var(--color-bg); color: var(--color-text); padding: var(--sp-2xl) var(--content-padding); text-align: center; }
+.price { background: var(--color-bg); color: var(--color-text); padding: var(--sp-lg) var(--content-padding) var(--sp-2xl); text-align: center; }
 .price__inner { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); }
 .price__lead { margin: 0 auto; max-width: 640px; font-weight: 700; font-size: clamp(1.2rem, 3.4vw, 1.6rem); line-height: 1.3; text-wrap: balance; }
 .price .price__what { margin: var(--sp-xs) auto 0; max-width: 620px; font: 800 clamp(1.3rem, 4vw, 1.9rem)/1.2 var(--font-heading); letter-spacing: -0.01em; text-wrap: balance; }
