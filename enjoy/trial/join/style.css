@@ -479,7 +479,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello__name a { color: var(--color-nav); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 .hello__aside { display: block; margin-top: var(--sp-xs); font-size: .72em; font-weight: 500; font-style: italic; color: var(--color-text-secondary); }
 .hello__aside--inline { display: inline; margin: 0; }
-.hello .hello__turn { margin: var(--sp-lg) auto 0; max-width: 720px; font: 800 clamp(1.9rem, 6vw, 3rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); text-wrap: balance; }
+.hello .hello__turn { grid-column: 1 / -1; text-align: center; margin: calc(var(--sp-sm) * -1) 0 0; max-width: none; white-space: nowrap; font: 800 clamp(1.05rem, 4.9vw, 3rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); }
 /* The fridge board: three prints, same pieces as the story panels (sticker, print, tape/corners/pin, label) */
 .hello__board { position: relative; width: min(88%, 420px); aspect-ratio: 1 / 1.2; margin: 0 auto; }
 .hello .hello__board .hello__p1 { left: 0; top: 0; right: auto; bottom: auto; width: 60%; z-index: 1; }
@@ -490,7 +490,7 @@ a.fab { display: inline-block; text-decoration: none; }
   .hello__text { margin: 0; text-align: left; }
   .hello__board { width: min(100%, 440px); }
 }
-.hello.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
+.hello.has-next { padding-bottom: calc(var(--sp-md) + 64px); }
 
 /* ------- Zero State: plain white panel under the hero ------- */
 .zero { background: #fff; color: var(--color-text); padding: var(--sp-2xl) var(--content-padding); }
