@@ -687,7 +687,7 @@ function initAsk() {
 
 // One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
 function addPanelArrows() {
-  const panels = [document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('zero-tractor'), document.getElementById('zero-2')]
+  const panels = [document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('zero-tractor'), document.getElementById('zero-2'), document.getElementById('zero-sixteen'), document.getElementById('zero-3')]
     .concat(Array.from(document.querySelectorAll('#moments > section')))
     .concat([document.getElementById('ways'), document.getElementById('about-todd')])
     .filter(Boolean);

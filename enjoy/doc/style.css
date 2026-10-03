@@ -444,6 +444,8 @@ a.fab { display: inline-block; text-decoration: none; }
 .metaphor__text > .metaphor__tag { font: 800 clamp(1.7rem, 5vw, 2.4rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); margin-top: var(--sp-sm); }
 .metaphor__text > .metaphor__small { font-weight: 500; font-size: 1rem; color: var(--color-text-secondary); }
 @media (min-width: 900px) { .metaphor__inner { grid-template-columns: 1.1fr 1fr; } .metaphor__text { margin: 0; text-align: left; } }
+@media (min-width: 900px) { .metaphor--flip .metaphor__inner { grid-template-columns: 1fr 1.1fr; } .metaphor--flip .metaphor__photo { order: 2; } }
+#zero-3 .zero__pivot { margin-top: 0; }
 .metaphor.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
 #zero-2 .zero__title--sm { margin-top: 0; }
 
