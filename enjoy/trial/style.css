@@ -747,3 +747,12 @@ a.fab { display: inline-block; text-decoration: none; }
 .zero__inner > p.zero__entry { max-width: 26em; margin-bottom: var(--sp-lg); font: 800 clamp(1.4rem, 4.4vw, 2.1rem)/1.22 var(--font-heading); letter-spacing: -0.015em; text-wrap: balance; }
 .zero__inner > p.zero__exit { max-width: 28em; margin-top: var(--sp-md); font-weight: 700; font-size: clamp(1.2rem, 3.6vw, 1.6rem); line-height: 1.3; text-wrap: balance; }
 .zero__exit strong { font-weight: 900; color: var(--color-accent); }
+
+/* Phone screenshots: the app name sits ABOVE each phone */
+.zero__fig { display: flex; flex-direction: column-reverse; }
+.zero__fig figcaption { margin: 0 0 var(--sp-xs); text-align: center; font-size: 1.1rem; }
+.zero__fig .zero__bubble { top: calc(2.4rem + 4%); }
+.zero__phones { row-gap: var(--sp-lg); }
+
+/* Phones panel: less space above the top */
+#zero-state.zero { padding-top: 40px; }
