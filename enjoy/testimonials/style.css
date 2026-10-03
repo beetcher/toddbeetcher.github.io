@@ -728,3 +728,16 @@ a.fab { display: inline-block; text-decoration: none; }
 .price__cta { margin: var(--sp-md) 0 0; }
 #zero-state.has-next, .price.has-next { padding-bottom: 88px; }
 @media (min-width: 900px) { .price__cards { gap: var(--sp-lg); } }
+
+.price__cta { display: flex; flex-wrap: wrap; gap: var(--sp-xs) var(--sp-sm); justify-content: center; }
+.price__cta .btn { padding: 9px 16px; font-size: .95rem; }
+/* Skeleton (placeholder) panels: testimonials, what we will do, what you get */
+.skel { background: #fff; color: var(--color-text); padding: var(--sp-xl) var(--content-padding); text-align: center; }
+.skel--alt { background: var(--color-bg); }
+.skel__inner { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); }
+.skel__title { margin: 0; font: 800 clamp(2rem, 6vw, 3rem)/1.08 var(--font-heading); letter-spacing: -0.02em; }
+.skel__note { margin: 0; padding: 14px 18px; border: 2px dashed var(--color-text-secondary); border-radius: 12px; font-size: 1.05rem; font-weight: 600; color: var(--color-text-secondary); }
+.skel__slots { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-sm); }
+.skel__slots li { padding: 28px 10px; border: 2px dashed var(--color-text-secondary); border-radius: 12px; font-weight: 700; font-size: clamp(.85rem, 3vw, 1.1rem); color: var(--color-text-secondary); }
+.skel__cta { margin: 0; }
+.skel.has-next { padding-bottom: 88px; }
