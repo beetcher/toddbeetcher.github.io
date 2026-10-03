@@ -701,9 +701,53 @@ function addPanelArrows() {
   });
 }
 
+// Zero State: the five phone screenshots each say their line in a speech bubble.
+// Desktop: hover or keyboard focus. Touch: tap to show, tap again (or elsewhere) to hide.
+// Idle: while the panel is on screen, one bubble at a time fades in and out in random order.
+function initPhoneBubbles() {
+  const wrap = document.querySelector('.zero__phones');
+  if (!wrap) return;
+  const figs = Array.from(wrap.querySelectorAll('.zero__fig'));
+  if (!figs.length) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current = -1, timer = null, resume = null, held = -1, onScreen = false, lastType = 'mouse';
+  const show = (i) => { figs.forEach((f, j) => f.classList.toggle('is-on', j === i)); current = i; };
+  const stop = () => { clearTimeout(timer); clearTimeout(resume); };
+  const tick = () => {
+    if (!onScreen || held >= 0 || document.hidden) return;
+    let i;
+    do { i = Math.floor(Math.random() * figs.length); } while (i === current && figs.length > 1);
+    show(i);
+    timer = setTimeout(tick, 2200 + Math.random() * 900);
+  };
+  const start = (delay) => { if (reduce) return; stop(); resume = setTimeout(tick, delay); };
+  const hold = (i) => { stop(); held = i; show(i); };
+  const release = (delay) => { held = -1; show(-1); start(delay); };
+  figs.forEach((f, i) => {
+    f.addEventListener('pointerdown', (e) => { lastType = e.pointerType; });
+    f.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hold(i); });
+    f.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && held === i) release(3000); });
+    f.addEventListener('focus', () => { if (f.matches(':focus-visible')) hold(i); });
+    f.addEventListener('blur', () => { if (held === i && lastType === 'mouse') release(3000); });
+    f.addEventListener('click', () => {
+      if (lastType === 'mouse') return;
+      if (held === i) release(3000); else hold(i);
+    });
+  });
+  document.addEventListener('click', (e) => { if (held >= 0 && !wrap.contains(e.target)) release(1500); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); } else if (onScreen && held < 0) { start(500); } });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      onScreen = entries[0].isIntersecting;
+      if (onScreen) { if (held < 0) start(1000); } else { stop(); held = -1; show(-1); }
+    }, { threshold: 0.35 }).observe(wrap);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   addPanelArrows();
+  initPhoneBubbles();
   initReveal();
   initDocPulse();
   initRegister();

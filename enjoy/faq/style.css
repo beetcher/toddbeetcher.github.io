@@ -490,6 +490,14 @@ a.fab { display: inline-block; text-decoration: none; }
   .zero__phones li:last-child { grid-column: auto; justify-self: stretch; width: auto; }
 }
 .zero__fig img { width: 100%; height: auto; }
+/* Zero State phone bubbles: each screenshot "says" its line */
+.zero__fig { position: relative; -webkit-tap-highlight-color: transparent; }
+.zero__fig:focus-visible { outline: 3px solid var(--color-nav); outline-offset: 4px; border-radius: 10px; }
+.zero__fig figcaption .llm { font-weight: 800; }
+.zero__bubble { position: absolute; left: 50%; top: 5%; z-index: 3; width: max-content; max-width: 92%; padding: 9px 12px 10px; border-radius: 14px; background: #ffe14d; color: var(--color-text); font: 800 clamp(.95rem, 2.4vw, 1.1rem)/1.2 var(--font-heading); box-shadow: 0 10px 22px rgba(20,8,40,.38); opacity: 0; transform: translate(-50%, 8px) scale(.96); transition: opacity .9s ease, transform .9s ease; pointer-events: none; }
+.zero__bubble::after { content: ''; position: absolute; left: 50%; bottom: -8px; width: 16px; height: 16px; margin-left: -8px; background: #ffe14d; transform: rotate(45deg); border-radius: 0 0 4px 0; }
+.zero__fig.is-on .zero__bubble { opacity: 1; transform: translate(-50%, 0) scale(1); }
+@media (prefers-reduced-motion: reduce) { .zero__bubble { transition: none; } }
 .zero__fig figcaption { margin-top: var(--sp-xs); font-size: 1rem; line-height: 1.35; color: var(--color-text-secondary); }
 .zero__big { font-weight: 800; font-size: clamp(1.4rem, 3.6vw, 1.9rem) !important; line-height: 1.25; text-wrap: balance; }
 .zero__def { font-weight: 500; color: var(--color-text-secondary); }
