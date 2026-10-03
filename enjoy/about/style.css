@@ -446,6 +446,12 @@ a.fab { display: inline-block; text-decoration: none; }
 @media (min-width: 900px) { .metaphor__inner { grid-template-columns: 1.1fr 1fr; } .metaphor__text { margin: 0; text-align: left; } }
 @media (min-width: 900px) { .metaphor--flip .metaphor__inner { grid-template-columns: 1fr 1.1fr; } .metaphor--flip .metaphor__photo { order: 2; } }
 #zero-3 .zero__pivot { margin-top: 0; }
+.metaphor__not { position: relative; margin: var(--sp-xs) auto; max-width: 440px; }
+.metaphor__not img { display: block; width: 100%; height: auto; filter: grayscale(.35) drop-shadow(0 8px 10px rgba(20,8,40,.25)); }
+.metaphor__not::after { content: ''; position: absolute; left: -2%; right: -2%; top: 50%; height: 6px; margin-top: -3px; background: var(--color-accent); border-radius: 3px; transform: rotate(-4deg); box-shadow: 0 2px 4px rgba(20,8,40,.3); }
+.metaphor__not figcaption { margin-top: var(--sp-xs); font: 700 1.3rem/1.1 'Caveat', 'Comic Sans MS', cursive; color: var(--color-text-secondary); }
+@media (min-width: 900px) { .metaphor__not { margin-left: 0; } }
+.metaphor__inner > .metaphor__lead { grid-column: 1 / -1; margin: var(--sp-lg) auto 0; max-width: 24em; font: 800 clamp(1.5rem, 4.2vw, 2.25rem)/1.2 var(--font-heading); letter-spacing: -0.01em; text-wrap: balance; }
 .metaphor.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
 #zero-2 .zero__title--sm { margin-top: 0; }
 
