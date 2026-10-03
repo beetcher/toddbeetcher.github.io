@@ -712,3 +712,19 @@ a.fab { display: inline-block; text-decoration: none; }
 .letter__pair .letter__photo--a { transform: rotate(-3deg); max-width: 320px; }
 .letter__pair .letter__photo--b { transform: rotate(2deg); max-width: 270px; }
 @media (max-width: 640px) { .letter__pair { gap: var(--sp-sm); } .letter__pair .letter__photo { padding: 6px; } .letter__pair .print__label { font-size: 1.1rem; } }
+
+/* Price panel: $500 per session, three group sizes */
+.price { background: var(--color-bg); color: var(--color-text); padding: var(--sp-2xl) var(--content-padding); text-align: center; }
+.price__inner { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: var(--sp-md); }
+.price__lead { margin: 0 auto; max-width: 640px; font-weight: 700; font-size: clamp(1.2rem, 3.4vw, 1.6rem); line-height: 1.3; text-wrap: balance; }
+.price__amount { margin: var(--sp-sm) 0 0; font: 800 clamp(2.6rem, 10vw, 5rem)/1 var(--font-heading); letter-spacing: -0.03em; color: var(--color-accent); }
+.price__sub { margin: 0; font: 800 clamp(1.3rem, 4.4vw, 2rem)/1.15 var(--font-heading); letter-spacing: -0.01em; }
+.price__cards { list-style: none; margin: var(--sp-lg) 0 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-sm); }
+.price__cards li { margin: 0; }
+.price .price__cards figure.price__card { position: relative; left: auto; right: auto; top: auto; bottom: auto; margin: 0; padding: 6px 6px 0; border-radius: 8px; box-shadow: 0 10px 20px rgba(20,8,40,.3); }
+.price .price__cards figure.price__card::before { width: 56px; height: 16px; top: -9px; }
+.price__card img { border-radius: 3px; }
+.price__card figcaption { padding: 8px 2px 10px; font: 800 clamp(.9rem, 3.4vw, 1.35rem)/1.1 var(--font-heading); letter-spacing: -0.01em; min-height: 2.3em; display: flex; align-items: center; justify-content: center; }
+.price__cta { margin: var(--sp-md) 0 0; }
+.price.has-next { padding-bottom: calc(var(--sp-xl) + 64px); }
+@media (min-width: 900px) { .price__cards { gap: var(--sp-lg); } }
