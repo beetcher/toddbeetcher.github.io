@@ -808,6 +808,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .price__cta .btn { padding: 9px 16px; font-size: .95rem; }
 /* Personal message panel (between the hero and "I'm Todd Beetcher") */
 .msg { background: var(--color-text); color: #fff; padding: var(--sp-lg) var(--content-padding); text-align: center; }
+.msg .msg__dot { color: var(--color-accent); font-weight: 800; }
 .msg.has-next { padding-bottom: calc(var(--sp-md) + 64px); }
 .msg__inner { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-md); }
 .msg__title { margin: 0; font: 800 clamp(2rem, 6.4vw, 3.2rem)/1.08 var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; color: var(--color-accent-warm); }
