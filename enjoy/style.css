@@ -512,6 +512,8 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello .hello__board .hello__p5 { left: auto; top: 63%; right: 1%; bottom: auto; width: 44%; z-index: 2; --rot: 3deg; }
 .hello__p1 .hello__cap, .hello__p5 .hello__cap { padding-top: 6px; }
 .hello__p1 .hello__cap span, .hello__p5 .hello__cap span { font-size: clamp(.95rem, 3.3vw, 1.15rem); }
+.hello .hello__li { margin: var(--sp-xs) 0 0; font-size: .95rem; font-weight: 600; }
+.hello .hello__li a { color: var(--color-nav); text-decoration: underline; text-underline-offset: 3px; }
 .hello .hello__text .hello__family { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: min(100%, 470px); margin: var(--sp-xs) auto 0; }
 .hello__family .hello__cap span { font-size: clamp(1.15rem, 4.4vw, 1.5rem); }
 .hello__p4 .hello__cap, .webpad .hello__cap { padding-top: 6px; }
