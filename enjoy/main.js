@@ -427,6 +427,13 @@ function initPriceTips() {
     tip.style.setProperty('--tail', Math.max(24, Math.min(t.width - 24, r.left + r.width / 2 - t.left)) + 'px');
     tip.classList.add('is-open');
     cards.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.setAttribute('aria-expanded', j === i ? 'true' : 'false'); });
+    // On phones the chosen print grows; re-aim the callout tail once it has settled.
+    clearTimeout(show.t);
+    show.t = setTimeout(() => {
+      if (!cards[i].classList.contains('is-active')) return;
+      const r2 = cards[i].getBoundingClientRect(), t2 = tip.getBoundingClientRect();
+      tip.style.setProperty('--tail', Math.max(24, Math.min(t2.width - 24, r2.left + r2.width / 2 - t2.left)) + 'px');
+    }, 360);
   };
   const hide = () => {
     tip.textContent = '';
