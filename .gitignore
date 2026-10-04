@@ -20,3 +20,6 @@ cert/doc/
 
 # Claude working output (not published)
 Claude outputs/
+
+# Big originals parked for Claude to convert (never published)
+enjoy/assets/gitignore/
