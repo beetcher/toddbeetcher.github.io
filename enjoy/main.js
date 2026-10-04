@@ -391,6 +391,50 @@ function initDocPulse() {
   });
 }
 
+function initPriceTips() {
+  const tip = document.getElementById('price-tip');
+  const cards = Array.from(document.querySelectorAll('.price__card[data-tip]'));
+  if (!tip || !cards.length) return;
+  const hint = tip.textContent;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pinned = -1, lastType = 'mouse', touched = false;
+  const stopPulse = () => { touched = true; cards.forEach((c) => c.classList.remove('is-pulsing')); };
+  const show = (i) => {
+    const r = cards[i].getBoundingClientRect(), t = tip.getBoundingClientRect();
+    tip.textContent = cards[i].dataset.tip;
+    tip.style.setProperty('--tail', Math.max(24, Math.min(t.width - 24, r.left + r.width / 2 - t.left)) + 'px');
+    tip.classList.add('is-open');
+    cards.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.setAttribute('aria-expanded', j === i ? 'true' : 'false'); });
+  };
+  const hide = () => {
+    tip.textContent = hint;
+    tip.classList.remove('is-open');
+    cards.forEach((c) => { c.classList.remove('is-active'); c.setAttribute('aria-expanded', 'false'); });
+  };
+  const clear = () => { pinned = -1; hide(); };
+  const toggle = (i) => { stopPulse(); pinned = pinned === i ? -1 : i; if (pinned >= 0) show(i); else if (lastType !== 'mouse') hide(); };
+  cards.forEach((c, i) => {
+    c.addEventListener('pointerdown', (e) => { lastType = e.pointerType; });
+    c.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { stopPulse(); show(i); } });
+    c.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { if (pinned >= 0) show(pinned); else hide(); } });
+    c.addEventListener('focus', () => { if (c.matches(':focus-visible')) { stopPulse(); show(i); } });
+    c.addEventListener('blur', () => { if (pinned < 0 && lastType === 'mouse') hide(); });
+    c.addEventListener('click', () => toggle(i));
+    c.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastType = 'key'; toggle(i); } });
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.price__cards') && !e.target.closest('#price-tip')) clear(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') clear(); });
+  if (!reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      if (touched) return;
+      cards.forEach((c) => {
+        c.classList.remove('is-pulsing');
+        if (entries[0].intersectionRatio >= 0.6) { void c.offsetWidth; c.classList.add('is-pulsing'); }
+      });
+    }, { threshold: [0, 0.6] }).observe(document.querySelector('.price__cards'));
+  }
+}
+
 function initReveal() {
   if (!('IntersectionObserver' in window)) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -748,6 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   addPanelArrows();
   initPhoneBubbles();
+  initPriceTips();
   initReveal();
   initDocPulse();
   initRegister();
