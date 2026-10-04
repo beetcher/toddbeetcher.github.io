@@ -604,6 +604,7 @@ function initTrialLetter() {
 // Swap the picture: assets/trial-plane.webp (transparent, nose pointing LEFT: it flies in from the right and leaves to the left). Callout words are Todd's, compressed.
 // ============================================================
 const TRIAL_PLANE_KEY = 'icdt-trial-plane';
+const TRIAL_PLANE_TEASER = 'Hi there! I’m going to be right back to offer you a trial.';
 const TRIAL_PLANE_TEXT = 'I’m ready to trial this free hands-on starter AI workshop. Click the plane to become one of my first trial members.';
 
 function initTrialPlane() {
@@ -633,29 +634,54 @@ function initTrialPlane() {
   box.appendChild(bubble);
   box.appendChild(craft);
 
-  let state = 'idle', timers = [];
+  // Two passes: a short "be right back" tease, then (about 17s later) the real offer.
+  // Reduced motion skips the tease and shows the offer once.
+  let state = 'idle', timers = [], pass = reduce ? 2 : 1;
   const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); };
   const heroGone = () => hero.getBoundingClientRect().bottom < window.innerHeight * 0.35;
-  const leave = () => {
+  const busy = () => document.hidden || document.querySelector('dialog[open]');
+  const bubbleText = bubble.querySelector('p');
+  const onScroll = () => { if (state !== 'out' && heroGone()) finish(); };
+  const finish = () => {
     if (state === 'out') return;
     state = 'out';
     timers.forEach(clearTimeout);
     box.classList.remove('is-landed');
     box.classList.add('is-out');
-    later(() => { box.remove(); window.removeEventListener('scroll', onScroll); }, reduce ? 400 : 2000);
+    window.removeEventListener('scroll', onScroll);
+    setTimeout(() => box.remove(), reduce ? 400 : 2000);
   };
-  const onScroll = () => { if (state !== 'idle' && heroGone()) leave(); };
-  craft.addEventListener('click', remember);
-  x.addEventListener('click', () => { remember(); leave(); });
-
-  const start = () => {
-    if (state !== 'idle' || document.hidden || heroGone() || document.querySelector('dialog[open]')) { later(start, 3000); return; }
-    document.body.appendChild(box);
-    window.addEventListener('scroll', onScroll, { passive: true });
+  const fly = () => {
+    bubbleText.textContent = pass === 1 ? TRIAL_PLANE_TEASER : TRIAL_PLANE_TEXT;
+    box.classList.remove('is-in', 'is-landed', 'is-out');
+    if (!box.isConnected) document.body.appendChild(box);
+    void box.offsetWidth;
     requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('is-in')));
     state = 'in';
-    later(() => { box.classList.add('is-landed'); }, reduce ? 200 : 2300);
-    later(leave, 22000);
+    later(() => box.classList.add('is-landed'), reduce ? 200 : 2300);
+    later(pass === 1 ? awayForNow : finish, pass === 1 ? 7000 : 22000);
+  };
+  const awayForNow = () => {
+    state = 'away';
+    box.classList.remove('is-landed');
+    box.classList.add('is-out');
+    later(() => box.remove(), 2000);
+    later(comeBack, 17000);
+  };
+  const comeBack = () => {
+    if (state === 'out') return;
+    if (heroGone()) { finish(); return; }
+    if (busy()) { later(comeBack, 3000); return; }
+    pass = 2;
+    fly();
+  };
+  craft.addEventListener('click', remember);
+  x.addEventListener('click', () => { remember(); finish(); });
+
+  const start = () => {
+    if (state !== 'idle' || busy() || heroGone()) { later(start, 3000); return; }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    fly();
   };
   const go = () => later(start, preview ? 600 : 2000);
   if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go);
