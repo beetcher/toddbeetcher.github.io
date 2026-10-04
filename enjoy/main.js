@@ -930,6 +930,79 @@ function initPhoneBubbles() {
   }
 }
 
+// ============================================================
+// DOC HI: one pop-in on the Todd panel. Doc (same picture as the peeker) slides in from the right edge at mid-screen,
+// a short pause, then a bubble says hello for 7 seconds, then he slides out. The X (or Esc) cancels it any time.
+// Once per visit (sessionStorage, try/catch). While it is up, body.doc-hi-on fades the peeker out (CSS only; the peeker code is untouched).
+// Homepage only. Words are Todd's, with "Hi," added.
+// ============================================================
+const DOC_HI_KEY = 'icdt-doc-hi';
+const DOC_HI_TEXT = 'Hi, I’m Doc, Todd’s name for AI. I help him every day!';
+
+function initDocHi() {
+  const sec = document.getElementById('hello');
+  if (!sec || !('IntersectionObserver' in window)) return;
+  try { if (sessionStorage.getItem(DOC_HI_KEY)) return; } catch (e) { /* storage blocked: plays once per load */ }
+  let fired = false;
+  const io = new IntersectionObserver((entries) => {
+    if (fired || !entries[0].isIntersecting) return;
+    fired = true;
+    io.disconnect();
+    try { sessionStorage.setItem(DOC_HI_KEY, '1'); } catch (e) { /* fine */ }
+    play();
+  }, { rootMargin: '0px 0px -40% 0px', threshold: 0 });
+  io.observe(sec);
+
+  function play() {
+    const box = document.createElement('div');
+    box.className = 'doc-hi';
+    box.setAttribute('role', 'status');
+    const img = document.createElement('img');
+    img.className = 'doc-hi__img';
+    img.src = 'assets/doc-peek.webp';
+    img.alt = '';
+    img.width = 480; img.height = 476;
+    const bubble = document.createElement('div');
+    bubble.className = 'doc-hi__bubble';
+    const p = document.createElement('p');
+    p.textContent = DOC_HI_TEXT;
+    bubble.appendChild(p);
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'doc-hi__x';
+    x.setAttribute('aria-label', 'Close Doc');
+    x.textContent = '×';
+    box.append(img, bubble, x);
+
+    let talkTimer = null, endTimer = null, outTimer = null, over = false;
+    const leave = () => {
+      if (over) return;
+      over = true;
+      clearTimeout(talkTimer); clearTimeout(endTimer);
+      document.removeEventListener('keydown', onKey);
+      box.classList.remove('is-talking');
+      box.classList.remove('is-in');
+      outTimer = setTimeout(() => { box.remove(); document.body.classList.remove('doc-hi-on'); }, 900);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') leave(); };
+    x.addEventListener('click', leave);
+    document.addEventListener('keydown', onKey);
+    const start = () => {
+      if (over) return;
+      document.body.classList.add('doc-hi-on');
+      document.body.appendChild(box);
+      void box.offsetWidth;
+      box.classList.add('is-in');
+      talkTimer = setTimeout(() => {
+        box.classList.add('is-talking');
+        endTimer = setTimeout(leave, 7000);
+      }, 1300);
+    };
+    if (img.complete && img.naturalWidth) start();
+    else { img.addEventListener('load', start, { once: true }); img.addEventListener('error', () => { over = true; document.removeEventListener('keydown', onKey); }, { once: true }); }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   addPanelArrows();
@@ -944,6 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAsk();
   initTrialLetter();
   initTrialPlane();
+  initDocHi();
   // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
   const target = location.hash.length > 1 && document.querySelector('.moment' + location.hash);
   if (target) setTimeout(() => target.scrollIntoView(), 50);
