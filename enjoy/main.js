@@ -779,6 +779,38 @@ function initSignup() {
 // ASK TODD (chat companion stub)
 // Real endpoint later: set ASK_ENDPOINT above. Until then it is honest about it.
 // ============================================================
+// More info: the floating button opens a vertical stack of links that scroll to panels on this page.
+// Closes after a choice, on a tap outside, or on Esc (focus returns to the button).
+function initMoreMenu() {
+  const wrap = document.getElementById('more');
+  if (!wrap) return;
+  const btn = wrap.querySelector('.more__btn');
+  const stack = wrap.querySelector('.more__stack');
+  const label = wrap.querySelector('.more__label');
+  if (!btn || !stack || !label) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t = null;
+  const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
+  const setOpen = (open, focusBtn) => {
+    clearTimeout(t);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    label.textContent = open ? 'Close' : 'More info';
+    if (open) { stack.hidden = false; void stack.offsetWidth; wrap.classList.add('is-open'); }
+    else { wrap.classList.remove('is-open'); t = setTimeout(() => { stack.hidden = true; }, reduce ? 0 : 260); }
+    if (focusBtn) btn.focus();
+  };
+  btn.addEventListener('click', () => setOpen(!isOpen()));
+  stack.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const target = document.getElementById((a.getAttribute('href') || '').slice(1));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+    setOpen(false);
+  });
+  document.addEventListener('click', (e) => { if (isOpen() && !wrap.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) setOpen(false, true); });
+}
+
 // The "As easy as turning on the radio" pill on the leave-with panel opens a scrollable storyboard.
 function initStory() {
   const dlg = document.getElementById('story');
@@ -1023,6 +1055,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDocPulse();
   initRegister();
   initSignup();
+  initMoreMenu();
   initStory();
   initAsk();
   initTrialLetter();
