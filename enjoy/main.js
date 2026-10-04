@@ -781,6 +781,28 @@ function initSignup() {
 // ============================================================
 // More info: the floating button opens a vertical stack of links that scroll to panels on this page.
 // Closes after a choice, on a tap outside, or on Esc (focus returns to the button).
+// Floating buttons flip to white over dark panels (hero, navy message panel, brisket) so they never vanish into a same-colored background.
+function initFabFlip() {
+  const ids = ['top', 'message', 'brisket'];
+  let ticking = false;
+  function check() {
+    ticking = false;
+    const y = window.innerHeight - 45;
+    let dark = false;
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top <= y && r.bottom >= y) { dark = true; break; }
+    }
+    document.body.classList.toggle('fab-on-dark', dark);
+  }
+  function queue() { if (!ticking) { ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  check();
+}
+
 function initMoreMenu() {
   const wrap = document.getElementById('more');
   if (!wrap) return;
@@ -1056,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegister();
   initSignup();
   initMoreMenu();
+  initFabFlip();
   initStory();
   initAsk();
   initTrialLetter();
