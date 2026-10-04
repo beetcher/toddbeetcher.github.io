@@ -762,6 +762,10 @@ a.fab { display: inline-block; text-decoration: none; }
 .msg__inner { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-md); }
 .msg__title { margin: 0; font: 800 clamp(2rem, 6.4vw, 3.2rem)/1.08 var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; color: var(--color-accent-warm); }
 .msg__inner > p { margin: 0; font-weight: 700; font-size: clamp(1.2rem, 3.4vw, 1.65rem); line-height: 1.32; text-wrap: balance; }
+.msg__body { display: flow-root; text-align: left; }
+.msg__body > p { margin: 0 0 var(--sp-md); font-weight: 700; font-size: clamp(1.1rem, 3.2vw, 1.5rem); line-height: 1.32; }
+.msg__body > p:last-child { margin-bottom: 0; }
+.msg .msg__body .msg__photo { position: relative; left: auto; right: auto; top: auto; bottom: auto; float: right; width: clamp(130px, 34%, 220px); margin: 6px 4px var(--sp-sm) var(--sp-md); }
 .msg .msg__turn { margin-top: var(--sp-xs); font: 800 clamp(1.4rem, 4.4vw, 2.2rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); }
 
 /* Testimonials panel: three real voices */
