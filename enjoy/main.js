@@ -861,7 +861,7 @@ function initAsk() {
 function addPanelArrows() {
   const panels = [document.getElementById('message'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get'), document.getElementById('zero-bridge'), document.getElementById('zero-tractor'), document.getElementById('zero-2'), document.getElementById('zero-sixteen'), document.getElementById('zero-3'), document.getElementById('zero-town')]
     .concat(Array.from(document.querySelectorAll('#moments > section')))
-    .concat([document.getElementById('ways'), document.getElementById('about-todd')])
+    .concat([document.getElementById('ways'), document.getElementById('faq'), document.getElementById('about-todd')])
     .filter(Boolean);
   panels.forEach((panel, i) => {
     const next = panels[i + 1];

@@ -825,6 +825,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .skel__slots { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-sm); }
 .skel__slots li { padding: 28px 10px; border: 2px dashed var(--color-text-secondary); border-radius: 12px; font-weight: 700; font-size: clamp(.85rem, 3vw, 1.1rem); color: var(--color-text-secondary); }
 .skel__cta { margin: 0; }
+.skel .skel__inner .faq { width: 100%; max-width: none; margin: 0; padding: 0; text-align: left; }
 .skel .skel__inner--lanes { max-width: 960px; }
 .skel__lead { margin: 0; font: 800 clamp(1.3rem, 4vw, 1.9rem)/1.2 var(--font-heading); letter-spacing: -0.01em; text-wrap: balance; }
 .skel .skel__inner .lanes { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: min(100%, 900px); margin: var(--sp-xs) auto 0; cursor: zoom-in; }
