@@ -391,6 +391,29 @@ function initDocPulse() {
   });
 }
 
+function initLightbox() {
+  const box = document.getElementById('lightbox');
+  if (!box || typeof box.showModal !== 'function') return;
+  const img = box.querySelector('.lightbox__img');
+  let opener = null;
+  function open(fig) {
+    const src = fig.dataset.zoom;
+    img.src = src;
+    img.alt = (fig.querySelector('img') || {}).alt || '';
+    opener = fig;
+    box.showModal();
+    box.scrollTop = 0;
+    const mid = () => { box.scrollLeft = Math.max(0, (box.scrollWidth - box.clientWidth) / 2); };
+    mid(); img.onload = mid;
+  }
+  document.querySelectorAll('[data-zoom]').forEach(fig => {
+    fig.addEventListener('click', () => open(fig));
+    fig.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(fig); } });
+  });
+  box.addEventListener('click', e => { if (e.target === box || e.target.closest('.lightbox__close') || e.target === img) box.close(); });
+  box.addEventListener('close', () => { img.removeAttribute('src'); if (opener) opener.focus({ preventScroll: true }); });
+}
+
 function initPriceTips() {
   const tip = document.getElementById('price-tip');
   const cards = Array.from(document.querySelectorAll('.price__card[data-tip]'));
@@ -859,6 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhoneCarousel();
   initPhoneBubbles();
   initPriceTips();
+  initLightbox();
   initReveal();
   initDocPulse();
   initRegister();
