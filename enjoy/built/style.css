@@ -535,6 +535,15 @@ a.fab { display: inline-block; text-decoration: none; }
   .hello__text { margin: 0; text-align: left; }
   .hello__board { width: min(100%, 440px); }
 }
+.hello .hello__bio { font-weight: 700; }
+.hello .hello__more { margin-top: var(--sp-xs); }
+/* Phones: the photo board becomes a compact two-column stack so the closing line is not a screen away */
+@media (max-width: 899px) {
+  .hello .hello__board { aspect-ratio: auto; width: min(94%, 440px); height: auto; column-count: 3; column-gap: 10px; }
+  .hello .hello__board figure.sticker { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: 100%; margin: 0 0 12px; break-inside: avoid; }
+  .hello .hello__board .hello__cap span { font-size: clamp(.78rem, 3vw, .95rem); }
+  .hello .hello__board .hello__cap small { font-size: .7rem; }
+}
 .hello.has-next { padding-bottom: calc(var(--sp-md) + 64px); }
 
 /* ------- Zero State: plain white panel under the hero ------- */
