@@ -395,7 +395,6 @@ function initPriceTips() {
   const tip = document.getElementById('price-tip');
   const cards = Array.from(document.querySelectorAll('.price__card[data-tip]'));
   if (!tip || !cards.length) return;
-  const hint = tip.textContent;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let pinned = -1, lastType = 'mouse', touched = false;
   const stopPulse = () => { touched = true; cards.forEach((c) => c.classList.remove('is-pulsing')); };
@@ -407,7 +406,7 @@ function initPriceTips() {
     cards.forEach((c, j) => { c.classList.toggle('is-active', j === i); c.setAttribute('aria-expanded', j === i ? 'true' : 'false'); });
   };
   const hide = () => {
-    tip.textContent = hint;
+    tip.textContent = '';
     tip.classList.remove('is-open');
     cards.forEach((c) => { c.classList.remove('is-active'); c.setAttribute('aria-expanded', 'false'); });
   };
@@ -433,6 +432,70 @@ function initPriceTips() {
       });
     }, { threshold: [0, 0.6] }).observe(document.querySelector('.price__cards'));
   }
+}
+
+function initPhoneCarousel() {
+  const root = document.getElementById('zero-carousel');
+  if (!root) return;
+  const list = root.querySelector('.zero__phones');
+  const slides = Array.from(list.children);
+  const dots = Array.from(root.querySelectorAll('.zero__dots button'));
+  const n = slides.length;
+  const mql = window.matchMedia('(max-width: 899px)');
+  const dur = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? '0s' : '.35s';
+  let i = 0, busy = false, sx = 0, sy = 0, swiped = false;
+  const setDots = () => dots.forEach((d, k) => { d.classList.toggle('is-on', k === i); d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+  const announce = () => { list.dataset.index = i; list.dispatchEvent(new CustomEvent('zero:slide')); };
+  const enable = () => {
+    list.classList.add('is-carousel');
+    slides.forEach((s, k) => {
+      const img = s.querySelector('img'); if (img) img.loading = 'eager';
+      s.style.transition = 'none';
+      s.style.transform = k === i ? 'translateX(0)' : 'translateX(100%)';
+      s.style.visibility = k === i ? 'visible' : 'hidden';
+      s.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    setDots(); announce();
+  };
+  const disable = () => {
+    list.classList.remove('is-carousel');
+    slides.forEach((s) => { s.removeAttribute('style'); s.removeAttribute('aria-hidden'); });
+    announce();
+  };
+  const go = (to, dir) => {
+    if (busy || to === i) return;
+    const cur = slides[i], nxt = slides[to];
+    busy = true;
+    nxt.style.transition = 'none';
+    nxt.style.transform = 'translateX(' + dir * 100 + '%)';
+    nxt.style.visibility = 'visible';
+    nxt.setAttribute('aria-hidden', 'false');
+    void nxt.offsetWidth;
+    cur.style.transition = nxt.style.transition = 'transform ' + dur + ' ease';
+    cur.style.transform = 'translateX(' + (-dir * 100) + '%)';
+    nxt.style.transform = 'translateX(0)';
+    setTimeout(() => { cur.style.visibility = 'hidden'; cur.style.transition = 'none'; cur.setAttribute('aria-hidden', 'true'); busy = false; }, dur === '0s' ? 0 : 360);
+    i = to; setDots(); announce();
+  };
+  const step = (dir) => go((i + dir + n) % n, dir);
+  root.querySelector('.zero__nav--prev').addEventListener('click', () => step(-1));
+  root.querySelector('.zero__nav--next').addEventListener('click', () => step(1));
+  dots.forEach((d, k) => d.addEventListener('click', () => { const diff = (k - i + n) % n; go(k, diff <= n / 2 ? 1 : -1); }));
+  const vp = root.querySelector('.zero__viewport');
+  vp.addEventListener('pointerdown', (e) => { sx = e.clientX; sy = e.clientY; swiped = false; });
+  vp.addEventListener('pointerup', (e) => {
+    if (!mql.matches) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) { swiped = true; step(dx < 0 ? 1 : -1); }
+  });
+  root.addEventListener('click', (e) => { if (swiped) { e.stopPropagation(); e.preventDefault(); swiped = false; } }, true);
+  root.addEventListener('keydown', (e) => {
+    if (!mql.matches) return;
+    if (e.key === 'ArrowLeft') { step(-1); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { step(1); e.preventDefault(); }
+  });
+  mql.addEventListener('change', (e) => { if (e.matches) enable(); else disable(); });
+  if (mql.matches) enable();
 }
 
 function initReveal() {
@@ -760,7 +823,8 @@ function initPhoneBubbles() {
   const tick = () => {
     if (!onScreen || held >= 0 || document.hidden) return;
     let i;
-    do { i = Math.floor(Math.random() * figs.length); } while (i === current && figs.length > 1);
+    if (wrap.classList.contains('is-carousel')) { const here = Number(wrap.dataset.index || 0); i = current === here ? -1 : here; }
+    else { do { i = Math.floor(Math.random() * figs.length); } while (i === current && figs.length > 1); }
     show(i);
     timer = setTimeout(tick, 2200 + Math.random() * 900);
   };
@@ -779,6 +843,7 @@ function initPhoneBubbles() {
     });
   });
   document.addEventListener('click', (e) => { if (held >= 0 && !wrap.contains(e.target)) release(1500); });
+  wrap.addEventListener('zero:slide', () => { stop(); held = -1; show(-1); if (onScreen) start(1200); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); } else if (onScreen && held < 0) { start(500); } });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver((entries) => {
@@ -791,6 +856,7 @@ function initPhoneBubbles() {
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   addPanelArrows();
+  initPhoneCarousel();
   initPhoneBubbles();
   initPriceTips();
   initReveal();
