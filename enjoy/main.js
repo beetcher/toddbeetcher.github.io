@@ -867,6 +867,14 @@ function addPanelArrows() {
 // Zero State: the five phone screenshots each say their line in a speech bubble.
 // Desktop: hover or keyboard focus. Touch: tap to show, tap again (or elsewhere) to hide.
 // Idle: while the panel is on screen, one bubble at a time fades in and out in random order.
+// Zero State phone call-outs: three lines per phone, one drawn at random each time the bubble shows. `start` = the line written in the HTML.
+const ZERO_POOLS = {
+  chatgpt: { start: 1, lines: ['Chat or Work? Which one is mine?', 'Connect Drive? Notion? I haven\u2019t even said hello. Zero instructions, thanks.', 'Two tabs, two Connect buttons, zero instructions. Cool.'] },
+  gemini: { start: 2, lines: ['Ask you what, exactly?', 'The keyboard\u2019s up and the screen\u2019s empty. So I just\u2026 type?', ['Ask Gemini? Great. Ask it WHAT?', 'Useless.']] },
+  claude: { start: 1, lines: ['Good morning to you too. Now what?', 'Chat about what? Nobody said. Is this a help line?', 'It\u2019s friendly. It\u2019s also useless. Where do I start?'] },
+  grok: { start: 0, lines: [['Here\u2019s a coupon?', 'Coupon for what? I came here for answers, not 20% off a pizza.'], 'A free upgrade to a thing I don\u2019t understand yet. Thanks?', 'SuperGrok for $0.00? I haven\u2019t figured out regular Grok.'] },
+  copilot: { start: 2, lines: ['Search. That\u2019s it. That\u2019s the whole screen.', 'Search for what? There is literally nothing here.', 'Totally blank. Is it broken, or is this the product?'] },
+};
 function initPhoneBubbles() {
   const wrap = document.querySelector('.zero__phones');
   if (!wrap) return;
@@ -874,7 +882,20 @@ function initPhoneBubbles() {
   if (!figs.length) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current = -1, timer = null, resume = null, held = -1, onScreen = false, lastType = 'mouse';
-  const show = (i) => { figs.forEach((f, j) => f.classList.toggle('is-on', j === i)); current = i; };
+  // Each phone has a pool of three lines; every time its bubble appears it draws one at random (never the same line twice in a row).
+  const last = {};
+  figs.forEach((f) => { const b = f.querySelector('.zero__bubble'); const k = b && b.id.replace('zb-', ''); if (k && ZERO_POOLS[k]) last[k] = ZERO_POOLS[k].start; });
+  const reroll = (f) => {
+    const b = f.querySelector('.zero__bubble'); const k = b && b.id.replace('zb-', '');
+    const pool = k && ZERO_POOLS[k]; if (!pool) return;
+    let n; do { n = Math.floor(Math.random() * pool.lines.length); } while (n === last[k] && pool.lines.length > 1);
+    last[k] = n;
+    const line = pool.lines[n];
+    const main = Array.isArray(line) ? line[0] : line, sub = Array.isArray(line) ? line[1] : '';
+    b.textContent = '\u201c' + main + '\u201d';
+    if (sub) { const sp = document.createElement('span'); sp.className = 'zero__bubble-sub'; sp.textContent = sub; b.appendChild(sp); }
+  };
+  const show = (i) => { figs.forEach((f, j) => { const on = j === i; if (on && !f.classList.contains('is-on')) reroll(f); f.classList.toggle('is-on', on); }); current = i; };
   const stop = () => { clearTimeout(timer); clearTimeout(resume); };
   const tick = () => {
     if (!onScreen || held >= 0 || document.hidden) return;
