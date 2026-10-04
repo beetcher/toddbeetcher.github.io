@@ -779,6 +779,15 @@ function initSignup() {
 // ASK TODD (chat companion stub)
 // Real endpoint later: set ASK_ENDPOINT above. Until then it is honest about it.
 // ============================================================
+// The "As easy as turning on the radio" pill on the leave-with panel opens a scrollable storyboard.
+function initStory() {
+  const dlg = document.getElementById('story');
+  if (!dlg) return;
+  const open = () => { if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', ''); dlg.scrollTop = 0; };
+  document.querySelectorAll('[data-open-story]').forEach((b) => b.addEventListener('click', open));
+  dlg.addEventListener('click', (e) => { if (e.target === dlg && typeof dlg.close === 'function') dlg.close(); });
+}
+
 function initAsk() {
   const dlg = document.getElementById('ask');
   if (!dlg) return;
@@ -1014,6 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDocPulse();
   initRegister();
   initSignup();
+  initStory();
   initAsk();
   initTrialLetter();
   initTrialPlane();
