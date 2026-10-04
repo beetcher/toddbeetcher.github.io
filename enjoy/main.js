@@ -666,7 +666,7 @@ function initTrialPlane() {
     box.classList.remove('is-landed');
     box.classList.add('is-out');
     later(() => box.remove(), 2000);
-    later(comeBack, 17000);
+    later(comeBack, 12000);
   };
   const comeBack = () => {
     if (state === 'out') return;
