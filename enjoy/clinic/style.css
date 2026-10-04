@@ -767,6 +767,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .price__tip { position: relative; width: 100%; max-width: 640px; margin: var(--sp-sm) auto 0; padding: 10px 16px; display: none; align-items: center; justify-content: center; border-radius: 14px; text-align: center; }
 .price__tip.is-open { display: flex; background: #ffe14d; color: var(--color-text); font: 800 clamp(1.05rem, 3.4vw, 1.3rem)/1.25 var(--font-heading); box-shadow: 0 10px 22px rgba(20,8,40,.3); }
 .price__tip.is-open::before { content: ''; position: absolute; top: -8px; left: var(--tail, 50%); width: 16px; height: 16px; margin-left: -8px; background: #ffe14d; transform: rotate(45deg); border-radius: 4px 0 0 0; }
+.price .price__goal { width: 100%; max-width: none; margin: var(--sp-xs) 0 0; font: 800 clamp(1.25rem, 3.6vw, 2.1rem)/1.25 var(--font-heading); letter-spacing: -0.01em; text-wrap: balance; }
 .price__cta { margin: var(--sp-md) 0 0; }
 #zero-state.has-next, .price.has-next { padding-bottom: 88px; }
 @media (max-width: 899px) {
