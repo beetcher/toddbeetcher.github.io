@@ -504,7 +504,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello__cap span { display: block; font-weight: 700; font-size: clamp(1.1rem, 4.2vw, 1.45rem); line-height: 1.05; }
 .hello__cap small { display: block; margin-top: 3px; font-weight: 600; font-size: clamp(.9rem, 3.2vw, 1.1rem); line-height: 1; color: var(--color-text-secondary); }
 @media (min-width: 900px) {
-  .hello__inner { grid-template-columns: 1.15fr 1fr; align-items: center; gap: var(--sp-xl); }
+  .hello__inner { grid-template-columns: 1.15fr 1fr; align-items: start; gap: var(--sp-xl); }
   .hello__text { margin: 0; text-align: left; }
   .hello__board { width: min(100%, 440px); }
 }
