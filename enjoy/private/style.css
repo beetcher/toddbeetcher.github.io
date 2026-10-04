@@ -772,6 +772,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .price__lead { margin: 0 auto; max-width: 640px; font-weight: 700; font-size: clamp(1.2rem, 3.4vw, 1.6rem); line-height: 1.3; text-wrap: balance; }
 .price .price__what { margin: var(--sp-xs) auto 0; max-width: 620px; font: 800 clamp(1.3rem, 4vw, 1.9rem)/1.2 var(--font-heading); letter-spacing: -0.01em; text-wrap: balance; }
 .price__amount { margin: var(--sp-sm) 0 0; font: 800 clamp(2.6rem, 10vw, 5rem)/1 var(--font-heading); letter-spacing: -0.03em; color: var(--color-accent); }
+.price .price__title { margin: 0; font: 800 clamp(2rem, 6vw, 3rem)/1.08 var(--font-heading); letter-spacing: -0.02em; }
 .price__sub { margin: var(--sp-sm) 0 0; font: 800 clamp(.975rem, 3.3vw, 1.5rem)/1.15 var(--font-heading); letter-spacing: -0.01em; color: var(--color-accent); }
 .price__cards { list-style: none; margin: var(--sp-lg) 0 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-sm); }
 .price__cards li { margin: 0; }
