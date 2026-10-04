@@ -489,6 +489,8 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello .hello__board .hello__p2 { left: auto; top: 19.4%; right: 1%; bottom: auto; width: 38%; z-index: 1; --rot: -3deg; }
 .hello .hello__board .hello__p3 { left: auto; top: 35.6%; right: 3%; bottom: auto; width: 31%; z-index: 1; --rot: 3deg; }
 .hello .hello__board .hello__p4 { left: 2%; top: 56.7%; right: auto; bottom: auto; width: 50%; z-index: 2; --rot: -3deg; }
+.hello .hello__text .hello__family { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: min(100%, 470px); margin: var(--sp-xs) auto 0; }
+.hello__family .hello__cap span { font-size: clamp(1.15rem, 4.4vw, 1.5rem); }
 .hello__p4 .hello__cap, .webpad .hello__cap { padding-top: 6px; }
 .hello__p4 .hello__cap span, .webpad .hello__cap span { font-size: clamp(1rem, 3.6vw, 1.25rem); }
 .intro .webpad.sticker { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: min(78%, 300px); margin: 0 auto var(--sp-lg); }
