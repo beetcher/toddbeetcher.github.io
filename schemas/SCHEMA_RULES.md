@@ -22,7 +22,7 @@ every build session reads these rules first.
 - Every schema enforces this with a field-name pattern `^[a-z][a-z0-9_]*$`.
   A name like `createdAt` fails validation.
 - Suffixes: `_at` timestamps, `_id` references to other documents,
-  `_count` counts. Booleans start with `is_`. Arrays are plural.
+  `_count` counts. Booleans start with `is_`, or with `has_`, `allows_` or `requires_` when that reads better (for example `has_wifi`, `allows_minors`, `requires_insurance`). Arrays are plural.
 - Slug (optional): lowercase letters, digits and underscores. Unique within
   its collection. Never changes once set. The UUID is the real identity.
 - A reference to another document stores its UUID, as in `venue_id`.

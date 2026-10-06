@@ -158,7 +158,7 @@ Claude's proposals not yet confirmed by Todd: `presented_cost_basis` (per_sessio
 - Scale for proficiency (1 to 10 versus the old 1 to 5).
 - Boolean naming: the rules say `is_`, the schema also uses `has_` and `consent_to_contact`; amend the rules.
 - Where the endpoint lives (the existing project is a test project) and its language.
-- The class list endpoint, and the venue, instructor, review, attendance and promotion schemas the class points to.
+- The class list endpoint, and the instructor, review, attendance and promotion schemas the class points to (the venue schema is written; see `VENUE_GUIDE.md`).
 - Whether the old direct-write sign-up (`enjoy_signups`) is retired when the web surface switches.
 - Confirm Firestore rules are deployed, and that `/schemas/` serves as static files on Cloudflare Pages.
 

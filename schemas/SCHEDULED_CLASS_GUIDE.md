@@ -10,7 +10,7 @@ Written October 6, 2026 from the class design conversation (thread 11).
 
 A workshop that people can ask to join. A class is created by the organizer (Todd) from the dashboard, never by a public page. It may exist long before it has a date: a class can begin as an idea built from demand (people who said "none of your classes fit").
 
-The class record stays light. It holds **references** (venue, instructors, promotions) and **summary numbers** (registered, waitlist, attended, reviews). The bigger things are their own collections, each with its own schema, not yet written: venues, instructors (identities and contact details live in a person schema), reviews, attendance and promotions.
+The class record stays light. It holds **references** (venue, instructors, promotions) and **summary numbers** (registered, waitlist, attended, reviews). The bigger things are their own collections, each with its own schema: venues (written, see `VENUE_GUIDE.md`) and, not yet written, instructors (identities and contact details live in a person schema), reviews, attendance and promotions.
 
 Registration requests point at a class with `scheduled_class_id`. The class does not store its requests; "all requests for this class" is a lookup.
 
@@ -32,7 +32,8 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 - `starts_at` (UTC), `time_zone` (an IANA name such as `America/Denver`), `duration_minutes`. Empty while a class is only an idea.
 
 ### Where
-- `venue_id`: the UUID of a venue record. The venue record holds the address, the venue contact, the backup contact, and standing details such as parking and the physical accessibility facts. Todd: venue contact details and a backup contact exist; they belong with the venue so every class there reuses them **(proposal, confirmed in discussion)**.
+- `venue_id`: the UUID of a venue record. The venue record (`schemas/venue.schema.json`, `VENUE_GUIDE.md`) holds the address, the venue contact, the backup contact, its rooms, and standing details such as parking and the physical accessibility facts. Todd: venue contact details and a backup contact exist; they belong with the venue so every class there reuses them **(proposal, confirmed in discussion)**.
+- `venue_room_label`: the label of a room in that venue's `rooms` list (Todd: the class points at the venue plus a room label). The room must exist, and `capacity_max` should not be above its `max_occupancy`.
 - `is_venue_confirmed`: venue chosen versus venue confirmed.
 - `venue_notes`: anything specific to this class at this venue (for example, "use the side entrance"). Not for standing venue details.
 - `accessibility_notes`: anything about accessibility specific to this class **(proposal)**. The physical facts live on the venue record. Use the words "accessible" and "accessibility" in field names and visitor wording.
@@ -73,7 +74,7 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 
 ## 5. Open items
 
-- The venue, instructor (person), review, attendance and promotion schemas.
+- The instructor (person), review, attendance and promotion schemas (the venue schema is written).
 - Retention (`x_retention` is "undecided").
 - Which fields the public class list may expose.
 - Whether a private class (`is_public` false) is reachable by a direct link.

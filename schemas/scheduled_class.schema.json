@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/scheduled_class.schema.json",
   "title": "scheduled_class",
-  "description": "A workshop class people can ask to join. It carries references (venue, instructors, promotions) and summary numbers (registered, waitlist, attended, reviews). Venues, instructors, reviews, attendance and promotions are their own collections. Fields marked readOnly are set by the server only. Cross-field rules the schema cannot express are endpoint rules: capacity_minimum <= capacity_target <= capacity_max. Only a class in status enrolling accepts registration requests.",
+  "description": "A workshop class people can ask to join. It carries references (venue, instructors, promotions) and summary numbers (registered, waitlist, attended, reviews). Venues, instructors, reviews, attendance and promotions are their own collections. Fields marked readOnly are set by the server only. Cross-field rules the schema cannot express are endpoint rules: capacity_minimum <= capacity_target <= capacity_max; venue_room_label names a room in the venue's rooms list, and capacity_max is not above that room's max_occupancy. Only a class in status enrolling accepts registration requests.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -66,6 +66,11 @@
     "venue_id": {
       "type": "string",
       "format": "uuid"
+    },
+    "venue_room_label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
     },
     "is_venue_confirmed": {
       "type": "boolean"

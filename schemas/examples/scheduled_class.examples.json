@@ -57,7 +57,8 @@
       "price_basis": "per_person",
       "promotion_ids": [
         "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
-      ]
+      ],
+      "venue_room_label": "Main room"
     },
     "completed": {
       "title": "Intro workshop, Nov 20",

@@ -16,6 +16,14 @@
       "guide": "SCHEDULED_CLASS_GUIDE.md",
       "examples": "examples/scheduled_class.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "venue",
+      "collection": "venues",
+      "schema": "venue.schema.json",
+      "guide": "VENUE_GUIDE.md",
+      "examples": "examples/venue.examples.json",
+      "schema_version": 1
     }
   ]
 }
