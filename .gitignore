@@ -23,3 +23,7 @@ Claude outputs/
 
 # Big originals parked for Claude to convert (never published)
 enjoy/assets/gitignore/
+
+# Python
+__pycache__/
+*.pyc

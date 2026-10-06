@@ -14,11 +14,13 @@ Verifies, for every type in schemas/registry.json:
     names and references resolve, expected error codes are known, and no two
     different tests share an idempotency key; seed classes are valid scheduled_class
     records, and snapshot, class_closed and over_capacity expectations match them;
+    setup.now parses (the clock the endpoint runner uses);
     seed venues are valid venue records, every seed class points at a seed venue, names a room that
     exists there, and its capacity_max is not above that room's max_occupancy
 Passing means the schema, guide, examples and test records agree. Needs: pip install jsonschema
 """
 import json, re, sys, pathlib
+from datetime import datetime
 try:
     from jsonschema import Draft202012Validator as V, FormatChecker
 except ImportError:
@@ -127,6 +129,10 @@ for e in REG:
                     b.pop(k, None)
                 return b
             return dict(c["request"])
+        try:
+            datetime.fromisoformat(tr["setup"]["now"].replace("Z", "+00:00"))
+        except (KeyError, ValueError):
+            fails.append(f"{name}: test records need setup.now (UTC, for example 2026-10-06T17:00:00Z); the runner uses it as the clock")
         seen = {}
         seeds = {c["id"]: c for c in tr["setup"]["scheduled_classes"]}
         class_ids = set(seeds)
