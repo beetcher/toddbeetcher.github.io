@@ -37,12 +37,14 @@ Terminal 2:
 
 The `demo-` project name keeps the emulator from touching any real project. `run_http_tests.py` refuses to read or write Firestore unless `FIRESTORE_EMULATOR_HOST` is set.
 
-## Deploy (later, when a project is chosen)
+## Deploy and live test (the dedicated enjoy project)
+
+`.firebaserc` has no default project on purpose: always pass `--project <id>`. `firestore.rules` denies every browser read and write; it is for the dedicated project only, never for one another codebase shares (a rules deploy replaces the whole file).
 
     python3 sync_schemas.py
-    firebase deploy --only functions:enjoy --project <project>
+    firebase deploy --only functions:enjoy,firestore:rules --project <id>
 
-Do not deploy a Firestore rules file from here to a project that another codebase shares (a rules deploy replaces the whole file). Lock the new collections against browser writes in the dedicated project's own rules. The endpoint writes with admin access, which bypasses rules.
+For the live test run, deploy once with the rate limit relaxed (the run sends 30 requests from one address): set `ICDT_RATE_RULES=600:1000,86400:5000` for the function, then run `run_http_tests.py --live` (see its docstring). A warning is logged whenever the override is set. When the test is done, redeploy without it.
 
 ## Decisions (Todd, 2026-10-06)
 

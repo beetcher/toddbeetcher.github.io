@@ -3,6 +3,15 @@
 
     python3 enjoy_router/run_http_tests.py --url http://127.0.0.1:5101/demo-icdt/us-central1/enjoy_registration_request
 
+Live (a deployed function and its real Firestore project):
+
+    python3 run_http_tests.py --live --project <id> --confirm-project <id> --url https://<the function URL>
+
+Live mode refuses to start unless registration_requests and idempotency_keys are empty and the seed classes
+do not exist; it adds the seed classes, runs, and removes only what the run created (unless --keep). It uses
+your local Google credentials (gcloud auth application-default login). The deployed function must be a test
+deployment with ICDT_RATE_RULES relaxed, since the run sends 30 requests from one address.
+
 With the Firebase emulator, also set FIRESTORE_EMULATOR_HOST (for example 127.0.0.1:8180) and pass
 --project demo-icdt. The script then clears the emulator's collections, seeds the test classes, runs
 every test, and reads the stored documents back to check them. Without FIRESTORE_EMULATOR_HOST it
@@ -17,6 +26,8 @@ import json
 import os
 import pathlib
 import sys
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 import urllib.error
 import urllib.request
 
@@ -29,15 +40,45 @@ class HttpEndpoint:
     last_outcome = None
     counter = 0
 
-    def __init__(self, url, setup, schemas, project, origin):
-        self.url, self.origin = url, origin
+    def __init__(self, url, setup, schemas, project, origin, live=False):
+        self.url, self.origin, self.live = url, origin, live
         self.db = None
-        if os.environ.get("FIRESTORE_EMULATOR_HOST"):
+        self.shift_days = 0
+        self.seed_ids = [c["id"] for c in setup["scheduled_classes"]]
+        self.requests_name = schemas.collection
+        self.classes_name = schemas.class_collection
+        if live:
+            # The endpoint uses the real clock, so move every requested date by the same number of days
+            # as the gap between the tests' fixed clock and today (Mountain time). Past dates stay in the past.
+            fixed = datetime.fromisoformat(setup["now"].replace("Z", "+00:00")).astimezone(ZoneInfo("America/Denver")).date()
+            self.shift_days = (datetime.now(ZoneInfo("America/Denver")).date() - fixed).days
             from google.cloud import firestore
             self.db = firestore.Client(project=project)
-            self.requests_name = schemas.collection
-            self.classes_name = schemas.class_collection
+            self._check_empty_and_seed(setup["scheduled_classes"])
+        elif os.environ.get("FIRESTORE_EMULATOR_HOST"):
+            from google.cloud import firestore
+            self.db = firestore.Client(project=project)
             self._reset(setup["scheduled_classes"])
+
+    def _check_empty_and_seed(self, classes):
+        """Live mode never wipes anything. It refuses to start unless the test collections are empty and
+        the seed class ids are free, then it adds the seed classes and, afterwards, removes only what it added."""
+        for name in (self.requests_name, "idempotency_keys"):
+            if any(True for _ in self.db.collection(name).limit(1).stream()):
+                sys.exit(f"refusing to run: collection {name} in project {self.db.project} is not empty")
+        for c in classes:
+            if self.db.collection(self.classes_name).document(c["id"]).get().exists:
+                sys.exit(f"refusing to run: seed class {c['id']} already exists in {self.classes_name}")
+        for c in classes:
+            self.db.collection(self.classes_name).document(c["id"]).set(c)
+
+    def cleanup(self):
+        """Live mode: remove exactly what the run created (the collections were empty at the start)."""
+        for name in (self.requests_name, "idempotency_keys"):
+            for snap in self.db.collection(name).stream():
+                snap.reference.delete()
+        for cid in self.seed_ids:
+            self.db.collection(self.classes_name).document(cid).delete()
 
     def _reset(self, classes):
         for name in (self.requests_name, "idempotency_keys", self.classes_name):
@@ -47,6 +88,14 @@ class HttpEndpoint:
             self.db.collection(self.classes_name).document(c["id"]).set(c)
 
     def send(self, body):
+        if self.shift_days:
+            body = dict(body)
+            for k in ("requested_date", "alternate_requested_date"):
+                if isinstance(body.get(k), str):
+                    try:
+                        body[k] = (date.fromisoformat(body[k]) + timedelta(days=self.shift_days)).isoformat()
+                    except ValueError:
+                        pass
         # A different visitor address per test, so the rate limit (5 per 10 minutes) does not interfere.
         self.counter += 1
         req = urllib.request.Request(self.url, data=json.dumps(body).encode(), method="POST",
@@ -115,15 +164,33 @@ def main() -> int:
     ap.add_argument("--project", default="demo-icdt")
     ap.add_argument("--origin", default="https://beetcher.com")
     ap.add_argument("--records", default=str(DEFAULT_RECORDS))
+    ap.add_argument("--live", action="store_true",
+                    help="run against a deployed endpoint and its real Firestore project (needs --confirm-project)")
+    ap.add_argument("--confirm-project", help="with --live: repeat the project id to confirm you mean it")
+    ap.add_argument("--keep", action="store_true", help="with --live: leave the test documents in Firestore afterwards")
     a = ap.parse_args()
+    if a.live:
+        if os.environ.get("FIRESTORE_EMULATOR_HOST"):
+            sys.exit("--live and FIRESTORE_EMULATOR_HOST do not go together: unset FIRESTORE_EMULATOR_HOST")
+        if a.confirm_project != a.project:
+            sys.exit(f"--live writes test documents to the REAL Firestore of project {a.project}. "
+                     f"Add --confirm-project {a.project} to go ahead.")
     schemas = Schemas.load()
     setup = json.loads(pathlib.Path(a.records).read_text())["setup"]
-    ep = HttpEndpoint(a.url, setup, schemas, a.project, a.origin)
+    ep = HttpEndpoint(a.url, setup, schemas, a.project, a.origin, live=a.live)
     if ep.db is None:
         print("note: FIRESTORE_EMULATOR_HOST is not set, so stored documents are not checked (replies only)\n")
-    fails = run(a.records, ep, schemas)
-    fails += check_cors(a.url, a.origin)
-    fails += check_rate_limit(a.url, a.origin)
+    try:
+        fails = run(a.records, ep, schemas)
+        fails += check_cors(a.url, a.origin)
+        if not a.live:
+            fails += check_rate_limit(a.url, a.origin)
+        else:
+            print("note: the rate-limit check is skipped in --live mode (the test deployment relaxes the limit)")
+    finally:
+        if a.live and not a.keep:
+            ep.cleanup()
+            print("cleaned up: the test documents and seed classes were removed")
     if fails:
         print(f"\nFAILED: {len(fails)} problem(s)")
         return 1

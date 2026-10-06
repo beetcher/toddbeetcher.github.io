@@ -693,12 +693,26 @@ function initTrialPlane() {
 function initRegister() {
   const dlg = document.getElementById('register');
   if (!dlg) return;
+  // The steering pop-up (three cards, each to its own request page) stays hidden from visitors until the
+  // endpoint is live. Turn it on for yourself with ?steer=1 (it sticks for this browser tab); ?steer=0 turns it off.
+  // To launch it for everyone, set STEER_LIVE to true.
+  const STEER_LIVE = false;
+  const steerDlg = document.getElementById('steer');
+  const flag = new URLSearchParams(location.search).get('steer');
+  try {
+    if (flag === '1') sessionStorage.setItem('icdt_steer', '1');
+    if (flag === '0') sessionStorage.removeItem('icdt_steer');
+  } catch (e) { /* storage blocked: the flag simply does not stick */ }
+  let steerOn = STEER_LIVE || flag === '1';
+  try { steerOn = steerOn || sessionStorage.getItem('icdt_steer') === '1'; } catch (e) { /* ignore */ }
+  const target = steerOn && steerDlg ? steerDlg : dlg;
   const open = () => {
-    if (typeof dlg.showModal === 'function') dlg.showModal();
-    else dlg.setAttribute('open', '');
+    if (typeof target.showModal === 'function') target.showModal();
+    else target.setAttribute('open', '');
   };
   document.querySelectorAll('[data-open-register]').forEach((b) => b.addEventListener('click', open));
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  if (steerDlg) steerDlg.addEventListener('click', (e) => { if (e.target === steerDlg) steerDlg.close(); });
   if (location.hash === '#register') open();
 }
 

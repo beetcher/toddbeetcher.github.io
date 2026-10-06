@@ -921,3 +921,15 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 
 /* Phones panel: less space above the top */
 #zero-state.zero { padding-top: 40px; }
+
+
+/* ------- Steering pop-up: three cards, one to each request page ------- */
+.steer__list { list-style: none; display: grid; gap: 12px; margin: var(--sp-sm) 0 0; padding: 0; }
+.steer__card { display: grid; grid-template-columns: 112px 1fr; gap: 14px; align-items: center; text-decoration: none; color: var(--color-text); background: #fff; border: 2px solid var(--color-border); border-radius: 16px; padding: 10px; transition: transform .12s ease, border-color .12s ease; }
+.steer__card:hover, .steer__card:focus-visible { border-color: var(--color-text); transform: translateY(-2px); outline: none; }
+.steer__card:focus-visible { box-shadow: 0 0 0 3px var(--color-text); }
+.steer__card img { width: 112px; height: 80px; object-fit: cover; border-radius: 10px; }
+.steer__text { display: grid; gap: 2px; line-height: 1.3; }
+.steer__text strong { font: 800 1.2rem/1.2 var(--font-heading); }
+.steer__text span { font-size: 1rem; color: var(--color-text-secondary); }
+@media (max-width: 380px) { .steer__card { grid-template-columns: 88px 1fr; } .steer__card img { width: 88px; height: 64px; } }

@@ -8,6 +8,9 @@ them to Firebase: the request in, the Firestore store, CORS, and the settings.
 Settings (environment variables, none required):
   ICDT_ALLOWED_ORIGINS   comma-separated browser origins allowed to call this (default: the site and local dev)
   ICDT_VISITOR_SALT      salt for hashing visitor addresses in the rate limiter
+  ICDT_RATE_RULES        override the rate limit, as window_seconds:max pairs, for example "600:1000,86400:5000".
+                         For a test deployment only (a live test run sends 30 requests from one address).
+                         A warning is logged at startup whenever it is set. Leave it unset for real use.
 Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
   ICDT_FIXED_NOW         a fixed UTC clock, so date rules are repeatable in tests (set on the emulator's command line, see README)
   ICDT_STORE=memory      use the in-memory store seeded from the test records, no Firestore needed
@@ -25,7 +28,7 @@ from firebase_functions import https_fn, options
 
 from core import Schemas
 from handler import handle_http
-from ratelimit import RateLimiter, visitor_key
+from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,7 +44,10 @@ SALT = os.environ.get("ICDT_VISITOR_SALT", "icdt-enjoy")
 LOCAL_TESTING = os.environ.get("FUNCTIONS_EMULATOR") == "true" or os.environ.get("ICDT_STORE") == "memory"
 
 _schemas = Schemas.load()
-_limiter = RateLimiter()
+_rate_rules = os.environ.get("ICDT_RATE_RULES")
+if _rate_rules:
+    logging.getLogger("enjoy_router").warning("ICDT_RATE_RULES is set (%s): the public rate limit is overridden", _rate_rules)
+_limiter = RateLimiter(rules=parse_rules(_rate_rules) if _rate_rules else DEFAULT_RULES)
 _store = None
 
 
@@ -78,6 +84,7 @@ def _client_address(req) -> str:
 
 
 @https_fn.on_request(
+    invoker="public",
     cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
     max_instances=5,
     memory=options.MemoryOption.MB_256,

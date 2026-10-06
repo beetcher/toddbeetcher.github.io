@@ -211,6 +211,15 @@ def run_extra_checks(schemas, verbose=True):
     r = handle_registration_request(first, rs, schemas, now=now)
     check("a simultaneous duplicate becomes a replay, not a second document", r.outcome == "replay" and len(rs.requests) == 1)
 
+    from ratelimit import parse_rules
+    check("rate rules parse: '600:1000,86400:5000'", parse_rules("600:1000,86400:5000") == ((600, 1000), (86400, 5000)))
+    try:
+        parse_rules("nonsense")
+        bad = False
+    except ValueError:
+        bad = True
+    check("rate rules: nonsense is refused", bad)
+
     lim = RateLimiter(rules=((600, 5), (86400, 30)))
     results = [lim.allow("v", 1000.0 + i) for i in range(7)]
     check("rate limit: 5 allowed in 10 minutes, then refused", results == [True] * 5 + [False] * 2)

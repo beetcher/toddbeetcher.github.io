@@ -15,6 +15,14 @@ DEFAULT_RULES = ((600, 5), (86400, 30))
 MAX_KEYS = 10000
 
 
+def parse_rules(text: str) -> tuple:
+    """"600:5,86400:30" -> ((600, 5), (86400, 30)). Raises ValueError on anything else."""
+    rules = tuple((int(w), int(m)) for w, m in (p.split(":") for p in text.split(",")))
+    if not rules or any(w <= 0 or m <= 0 for w, m in rules):
+        raise ValueError("rate rules must be positive window:max pairs")
+    return rules
+
+
 def visitor_key(address: str, salt: str) -> str:
     return hashlib.sha256(f"{salt}|{address}".encode()).hexdigest()[:16]
 

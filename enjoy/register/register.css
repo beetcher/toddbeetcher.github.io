@@ -1,0 +1,56 @@
+/* enjoy/register/register.css: shared look for the three request pages.
+   Uses the tokens from ../style.css (colors, fonts, .btn). */
+.reg { max-width: 680px; margin: 0 auto; padding: var(--sp-md) var(--content-padding) var(--sp-2xl); }
+.reg__back { display: inline-block; margin: var(--sp-xs) 0 var(--sp-md); font-weight: 700; color: var(--color-nav); text-decoration: none; padding: 10px 0; }
+.reg__back:hover { text-decoration: underline; }
+.reg__photo { border-radius: 18px; overflow: hidden; box-shadow: 0 8px 24px rgba(27,19,64,.18); margin-bottom: var(--sp-md); }
+.reg__photo img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.reg__title { font: 800 var(--type-section)/var(--lh-heading) var(--font-heading); margin-bottom: var(--sp-sm); }
+.reg__lede { margin-bottom: var(--sp-sm); }
+.reg__price { display: inline-block; background: var(--color-accent-warm); color: var(--color-text); font-weight: 800; padding: 10px 18px; border-radius: 18px; margin: var(--sp-xs) 0 var(--sp-md); }
+.reg__note { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: var(--sp-sm) var(--sp-md); margin: var(--sp-md) 0; }
+.reg__draft { display: none; background: #eef6ff; border: 2px solid #b9d7f5; border-radius: 14px; padding: 12px var(--sp-sm); margin-bottom: var(--sp-md); font-size: 1rem; }
+.reg__draft[data-show="1"] { display: block; }
+.reg__draft button { font: inherit; font-weight: 700; color: var(--color-nav); background: none; border: 0; cursor: pointer; text-decoration: underline; padding: 6px 0 6px 8px; }
+
+.rf { display: block; }
+.rf__section { border: 0; margin: var(--sp-lg) 0 0; padding: 0; min-width: 0; }
+.rf__section > legend { font: 800 1.35rem/1.2 var(--font-heading); padding: 0; margin-bottom: var(--sp-sm); }
+.rf__field { display: block; margin-bottom: var(--sp-md); }
+.rf__label { display: block; font-weight: 700; margin-bottom: 6px; }
+.rf__hint { display: block; font-weight: 400; font-size: var(--type-small); color: var(--color-text-secondary); margin-top: 2px; }
+.rf input[type=text], .rf input[type=email], .rf input[type=tel], .rf input[type=number], .rf input[type=date], .rf select, .rf textarea {
+  width: 100%; font: inherit; color: var(--color-text); background: #fff; border: 2px solid var(--color-border); border-radius: 12px; padding: 14px 14px; min-height: 52px;
+}
+.rf textarea { min-height: 110px; resize: vertical; }
+.rf input:focus-visible, .rf select:focus-visible, .rf textarea:focus-visible, .rf__choice input:focus-visible + span { outline: 3px solid var(--color-text); outline-offset: 2px; }
+.rf [aria-invalid="true"] { border-color: #c4143c; background: #fff4f6; }
+.rf__error { color: #b00f33; font-weight: 700; font-size: 1rem; margin-top: 6px; display: none; }
+.rf__error[data-show="1"] { display: block; }
+.rf__choices { display: grid; gap: 10px; }
+.rf__choice { position: relative; display: block; }
+.rf__choice input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.rf__choice span { display: block; padding: 14px 16px 14px 48px; min-height: 52px; background: #fff; border: 2px solid var(--color-border); border-radius: 12px; position: relative; }
+.rf__choice span::before { content: ""; position: absolute; left: 14px; top: 50%; width: 22px; height: 22px; margin-top: -11px; border: 2px solid var(--color-text-secondary); border-radius: 50%; background: #fff; }
+.rf__choice input[type=checkbox] + span::before { border-radius: 6px; }
+.rf__choice input:checked + span { border-color: var(--color-text); background: #fff3c9; }
+.rf__choice input:checked + span::before { background: var(--color-text); box-shadow: inset 0 0 0 4px #fff; }
+.rf__row { display: grid; gap: var(--sp-sm); grid-template-columns: 1fr; }
+@media (min-width: 560px) { .rf__row--2 { grid-template-columns: 1fr 1fr; } }
+.rf__person { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 14px; padding: var(--sp-sm); margin-bottom: var(--sp-sm); }
+.rf__person-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 700; }
+.rf__linkbtn { font: inherit; font-weight: 700; color: var(--color-nav); background: none; border: 0; cursor: pointer; text-decoration: underline; padding: 10px 4px; min-height: 44px; }
+.rf__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.rf__submit { margin-top: var(--sp-lg); }
+.rf__status { margin-top: var(--sp-sm); font-weight: 700; min-height: 1.5em; }
+.rf__status[data-kind="error"] { color: #b00f33; }
+.rf__summary { display: none; background: #fff4f6; border: 2px solid #c4143c; border-radius: 14px; padding: 12px var(--sp-sm); margin-top: var(--sp-md); color: #7a0a22; font-weight: 700; }
+.rf__summary[data-show="1"] { display: block; }
+.reg__done { display: none; text-align: center; padding: var(--sp-lg) 0; }
+.reg__done[data-show="1"] { display: block; }
+.reg__done h2 { font: 800 var(--type-section)/var(--lh-heading) var(--font-heading); margin-bottom: var(--sp-sm); }
+.reg__conf { display: inline-block; font: 800 1.75rem/1 var(--font-heading); letter-spacing: .08em; background: #fff3c9; border: 3px dashed var(--color-text); border-radius: 14px; padding: 16px 22px; margin: var(--sp-sm) 0; }
+.reg__sr { position: absolute; left: -9999px; }
+
+.reg__done .btn { margin-top: var(--sp-sm); }
+.reg:has(.reg__done[data-show="1"]) .reg__note, .reg:has(.reg__done[data-show="1"]) .reg__lede, .reg:has(.reg__done[data-show="1"]) .reg__draft { display: none; }

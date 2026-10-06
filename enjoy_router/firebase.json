@@ -4,13 +4,34 @@
       "source": ".",
       "codebase": "enjoy",
       "runtime": "python312",
-      "ignore": ["venv", ".git", "__pycache__", "*.local", "README.md", "run_tests.py", "run_http_tests.py", "firebase-debug.log", "firestore-debug.log", "ui-debug.log"]
+      "ignore": [
+        "venv",
+        ".git",
+        "__pycache__",
+        "*.local",
+        "README.md",
+        "run_tests.py",
+        "run_http_tests.py",
+        "firebase-debug.log",
+        "firestore-debug.log",
+        "ui-debug.log"
+      ]
     }
   ],
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "emulators": {
-    "functions": { "port": 5101 },
-    "firestore": { "port": 8180 },
-    "ui": { "enabled": true, "port": 4100 },
+    "functions": {
+      "port": 5101
+    },
+    "firestore": {
+      "port": 8180
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4100
+    },
     "singleProjectMode": true
   }
 }

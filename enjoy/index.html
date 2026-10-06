@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Caveat:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261003zf">
+  <link rel="stylesheet" href="style.css?v=20261006steer">
 </head>
 <body>
 
@@ -345,6 +345,19 @@
       <button type="submit" class="btn btn--block" id="signup-submit">Count me in</button>
       <p class="signup__status" id="signup-status" role="status" aria-live="polite"></p>
     </form>
+  </dialog>
+
+  <dialog class="register steer" id="steer" aria-labelledby="steer-title">
+    <form method="dialog" class="register__close-form">
+      <button class="register__close" aria-label="Close">&times;</button>
+    </form>
+    <h2 id="steer-title" class="register__title">Which sounds like you?</h2>
+    <p>Pick one and we will take you to a short form. We save what you type on this device, so you can come back to it.</p>
+    <ul class="steer__list">
+      <li><a class="steer__card" href="register/private/"><img src="assets/price-private-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A one on one</strong><span>Just you, or you and a few people you choose.</span></span></a></li>
+      <li><a class="steer__card" href="register/group/"><img src="assets/price-group-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A small group</strong><span>Friends, family or a club. You bring the people.</span></span></a></li>
+      <li><a class="steer__card" href="register/class/"><img src="assets/price-class-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A workshop</strong><span>Join others. Tell us when and where you would like one.</span></span></a></li>
+    </ul>
   </dialog>
 
   <dialog class="ask" id="ask" aria-labelledby="ask-title">
