@@ -1,0 +1,536 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/registration_request.schema.json",
+  "title": "registration_request",
+  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule).",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "undecided",
+  "required": [
+    "registration_type",
+    "idempotency_key",
+    "attendee_count",
+    "first_name",
+    "last_name",
+    "email",
+    "consent_to_contact",
+    "presented_cost_cents",
+    "presented_cost_basis",
+    "is_requester_attending",
+    "has_minors_present"
+  ],
+  "properties": {
+    "registration_type": {
+      "enum": [
+        "private",
+        "group",
+        "class"
+      ]
+    },
+    "attendee_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "idempotency_key": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "first_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "last_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 40,
+      "x_pii": true
+    },
+    "street_address": {
+      "type": "string",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "referrer_first_name": {
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "referrer_last_name": {
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "referrer_email": {
+      "type": "string",
+      "format": "email",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "presented_cost_cents": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000000,
+      "description": "The price shown to the visitor, in US cents. Read together with presented_cost_basis: per_session is the whole session (private and group), per_person is each attendee (class)."
+    },
+    "presented_cost_basis": {
+      "enum": [
+        "per_session",
+        "per_person"
+      ]
+    },
+    "duration_minutes_requested": {
+      "type": "integer",
+      "minimum": 15,
+      "maximum": 600
+    },
+    "requested_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "alternate_requested_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "requested_time_of_day": {
+      "enum": [
+        "morning",
+        "afternoon",
+        "evening"
+      ]
+    },
+    "has_downloaded_ai_app": {
+      "type": "boolean"
+    },
+    "has_used_ai_online": {
+      "type": "boolean"
+    },
+    "proficiency": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "favorite_ai": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "ai_name": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "is_requester_attending": {
+      "type": "boolean"
+    },
+    "participants": {
+      "type": "array",
+      "maxItems": 50,
+      "x_pii": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "first_name",
+          "last_name"
+        ],
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 200
+          },
+          "age_band": {
+            "enum": [
+              "child",
+              "teen",
+              "adult"
+            ]
+          }
+        }
+      }
+    },
+    "location_type": {
+      "enum": [
+        "home",
+        "off_site"
+      ]
+    },
+    "preferred_location": {
+      "type": "string",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "what_they_want": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "preferred_times": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "is_gift": {
+      "type": "boolean"
+    },
+    "devices": {
+      "type": "array",
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "iphone",
+          "android_phone",
+          "tablet",
+          "windows_laptop",
+          "mac_laptop",
+          "other"
+        ]
+      }
+    },
+    "has_paid_ai_account": {
+      "type": "boolean"
+    },
+    "how_heard": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "preferred_contact_method": {
+      "enum": [
+        "email",
+        "phone"
+      ]
+    },
+    "consent_to_contact": {
+      "const": true
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "scheduled_class_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "no_class_fits": {
+      "const": true
+    },
+    "has_minors_present": {
+      "type": "boolean"
+    },
+    "requester_age_band": {
+      "enum": [
+        "child",
+        "teen",
+        "adult"
+      ]
+    },
+    "organization_name": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "group_type": {
+      "enum": [
+        "family",
+        "friends",
+        "colleagues",
+        "club_or_nonprofit",
+        "other"
+      ]
+    },
+    "needs_invoice": {
+      "type": "boolean"
+    },
+    "venue_arrangement": {
+      "enum": [
+        "we_have_space",
+        "need_suggestion"
+      ]
+    },
+    "sessions_requested": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 52
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "schema_version": {
+      "const": 1,
+      "readOnly": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "created_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "source": {
+      "enum": [
+        "web_enjoy",
+        "dashboard",
+        "import"
+      ],
+      "readOnly": true
+    },
+    "previous_id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "deleted_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "deleted_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "confirmation_number": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 20,
+      "readOnly": true
+    },
+    "processing_status": {
+      "enum": [
+        "not_processed",
+        "partially_processed",
+        "processed"
+      ],
+      "readOnly": true
+    },
+    "processed_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "is_paid": {
+      "type": "boolean",
+      "readOnly": true
+    },
+    "payment_source": {
+      "type": "string",
+      "maxLength": 50,
+      "readOnly": true
+    },
+    "payment_id": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "class_capacity_at_request": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "class_registered_at_request": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "seats_available_at_request": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "is_requester_attending": {
+            "const": false
+          }
+        },
+        "required": [
+          "is_requester_attending"
+        ]
+      },
+      "then": {
+        "required": [
+          "participants"
+        ],
+        "properties": {
+          "participants": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "registration_type": {
+            "enum": [
+              "private",
+              "group"
+            ]
+          }
+        },
+        "required": [
+          "registration_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "duration_minutes_requested",
+          "location_type"
+        ],
+        "properties": {
+          "scheduled_class_id": false,
+          "no_class_fits": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "registration_type": {
+            "const": "class"
+          }
+        },
+        "required": [
+          "registration_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "duration_minutes_requested": false,
+          "location_type": false,
+          "venue_arrangement": false,
+          "sessions_requested": false,
+          "group_type": false
+        },
+        "oneOf": [
+          {
+            "required": [
+              "scheduled_class_id"
+            ],
+            "not": {
+              "required": [
+                "no_class_fits"
+              ]
+            }
+          },
+          {
+            "required": [
+              "no_class_fits"
+            ],
+            "not": {
+              "required": [
+                "scheduled_class_id"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "registration_type": {
+            "const": "group"
+          }
+        },
+        "required": [
+          "registration_type"
+        ]
+      },
+      "else": {
+        "properties": {
+          "group_type": false
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "participants"
+        ],
+        "properties": {
+          "participants": {
+            "contains": {
+              "required": [
+                "age_band"
+              ],
+              "properties": {
+                "age_band": {
+                  "enum": [
+                    "child",
+                    "teen"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "has_minors_present": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "confirmation_number",
+    "processing_status",
+    "is_paid"
+  ],
+  "x_class_snapshot_fields": [
+    "class_capacity_at_request",
+    "class_registered_at_request",
+    "seats_available_at_request"
+  ]
+}

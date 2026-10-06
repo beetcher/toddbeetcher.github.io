@@ -6,15 +6,14 @@ read the same files, so they cannot drift apart. CLAUDE.md points here, so
 every build session reads these rules first.
 
 ## 1. Files and names
-- One document type has two schema files, named in the singular:
-  - `<name>.submit.schema.json`: what the browser sends.
-  - `<name>.record.schema.json`: what is stored.
-  Example: `registration_request.submit.schema.json`.
+- One document type has one schema file, named in the singular:
+  `<name>.schema.json`. Example: `registration_request.schema.json`.
+  It describes both what the browser sends and what is stored.
 - Collections are plural: `registration_requests`.
 - Choose names that pluralize with a plain "s" (venues, roles, individuals).
   Avoid irregular nouns.
-- `schemas/registry.json` lists every type: name, collection, both schema
-  files, current schema version. Code looks the collection up there and never
+- `schemas/registry.json` lists every type: name, collection, schema file,
+  guide, examples file and current schema version. Code looks the collection up there and never
   types it by hand.
 - Schemas use JSON Schema draft 2020-12.
 
@@ -37,10 +36,12 @@ every build session reads these rules first.
   name, such as `America/Denver`.
 - Email: trimmed and lowercased before it is stored or compared.
 - Optional fields are omitted when empty. Never store null.
+- Money is a whole number of cents, in US dollars. A price is always paired
+  with its basis: `per_session` or `per_person`.
 - Every string has a maximum length. Default 200, free text 2000, unless the
   schema says otherwise.
 
-## 4. Fields every record carries (record shape)
+## 4. Fields every record carries (server-set, marked readOnly)
 - `id`
 - `schema_version`: a whole number starting at 1
 - `created_at`, `created_by`
@@ -55,19 +56,27 @@ every build session reads these rules first.
 - `system:<handler_name>`: a handler or job
 - `user:<uuid>`: a signed-in person
 
-## 6. Submit shape and record shape
-- The submit shape holds only what the sender knows: the fields they fill in,
-  plus `idempotency_key`.
-- The server adds `id`, `schema_version`, timestamps, actors, `source`,
-  `previous_id` and any confirmation number. A sender can never set these;
-  a submit containing them is rejected.
-- `idempotency_key`: a UUID the browser makes once per submission. If the
-  same key arrives twice (double tap, retry), the server returns the original
-  result and creates nothing new.
+## 6. One schema: sender fields and server fields
+- Each schema holds every field of the stored record. Fields only the server
+  may set are marked `"readOnly": true`: `id`, `schema_version`, timestamps,
+  actors, `source`, `previous_id`, the confirmation number, processing and
+  payment fields, and anything else the server derives.
+- `required` lists only what a sender must provide, so a real submission
+  validates against the schema as sent.
+- The endpoint rejects any submission that contains a readOnly field. It then
+  adds the server fields and checks the full record against the same schema.
+- `x_server_required` lists the readOnly fields every stored record must
+  have. The endpoint checks these, because JSON Schema cannot require a field
+  from the sender and from the server separately.
+- Rules that depend on server state (such as the class seat snapshot) are
+  endpoint rules, named in the schema's description.
+- `idempotency_key` is a sender field: a UUID the browser makes once per
+  submission. If the same key arrives twice (double tap, retry), the server
+  returns the original result and creates nothing new.
 
 ## 7. Writes
 - Public pages never write to Firestore directly. They send JSON to our
-  endpoint, which validates it against the submit schema.
+  endpoint, which validates it against the schema.
 - The browser validates fields for the user's benefit. The server always
   re-checks and is the only authority.
 - Firestore security rules deny all web reads and writes. Verify the deployed
@@ -86,8 +95,10 @@ Every handler replies in this shape:
 - Success: `{ "ok": true, "data": { ... } }`
 - Failure: `{ "ok": false, "error": { "code": "...", "message": "...",
   "fields": [ { "field": "...", "code": "...", "message": "..." } ] } }`
-- Error codes: `validation_failed`, `duplicate_submission`, `rate_limited`,
-  `not_found`, `server_error`.
+- Error codes: `validation_failed`, `over_capacity`, `class_not_found`,
+  `class_closed`, `rate_limited`, `not_found`, `server_error`.
+- A repeated idempotency key is not an error: return the original success.
+  A repeat submission is not an error either: it is saved and flagged.
 - Messages are plain words a visitor can read. Field errors name the field so
   the form can mark it.
 
@@ -96,8 +107,14 @@ Every handler replies in this shape:
 - Logs record ids and codes, never personal data.
 - Each schema states a retention period in `x_retention`. A schema with
   none is not ready for launch.
-- Public forms carry a honeypot field and are rate limited per visitor.
-  Add Firebase App Check when the endpoint goes live.
+- Public forms carry a hidden honeypot field named `website`. The endpoint
+  removes it before schema validation. If it holds anything, the endpoint
+  replies as if it succeeded and stores nothing.
+- Public forms are rate limited per visitor. Add Firebase App Check when the
+  endpoint goes live.
+- Personal data about people other than the requester (a referrer, participants,
+  minors) is collected only as needed. Nobody is contacted from it without the
+  requester's say-so.
 - Records are read only by the dashboard behind sign-in. A public page may
   read only through a named endpoint that returns public fields (for example,
   the list of open classes).
@@ -108,11 +125,13 @@ Every handler replies in this shape:
 - Old records stay readable. Migrating them is an explicit, logged job.
 
 ## 11. Publishing and enforcement
-- The site is static with no build step. Submit schemas are published as
+- The site is static with no build step. Schemas are published as
   static files under `/schemas/` so the page can fetch them. The endpoint
   uses the same files. (Confirm the path serves on Cloudflare Pages.)
-- `schemas/check` validates the registry and every schema: snake_case pattern,
-  required record fields, collection naming. Run it before `./checkpoint.sh`.
+- `python3 schemas/check.py` validates every type in the registry: valid
+  schema, snake_case field names, collection naming, readOnly consistency, that
+  the type's guide mentions every field, and that its example requests pass or
+  fail as labelled. Run it before `./checkpoint.sh` whenever a schema changes.
 - Validator libraries: Ajv for TypeScript, `jsonschema` for Python. The
   choice follows the endpoint's language.
 

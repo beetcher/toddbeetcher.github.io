@@ -1,0 +1,12 @@
+{
+  "schemas": [
+    {
+      "name": "registration_request",
+      "collection": "registration_requests",
+      "schema": "registration_request.schema.json",
+      "guide": "REGISTRATION_REQUEST_GUIDE.md",
+      "examples": "examples/registration_request.examples.json",
+      "schema_version": 1
+    }
+  ]
+}
