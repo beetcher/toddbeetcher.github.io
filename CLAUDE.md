@@ -92,3 +92,6 @@ Both use `display: none` → `display: flex` via `.open` class.
 - GSAP ScrollTrigger transitions — Phase 3, not started
 - Layer 5 AI widget — Firebase + Claude API, build last
 - Mobile responsiveness for Layer 2 wheel — 700px stage will overflow on small screens
+
+## Schemas and data
+- Before creating or changing any schema, collection, record or endpoint handler, read `schemas/SCHEMA_RULES.md` and follow it.
