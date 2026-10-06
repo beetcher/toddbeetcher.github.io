@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import Optional
 
+from core import DuplicateIdempotencyKey
+
 
 class MemoryStore:
     def __init__(self, classes: list):
@@ -24,4 +26,6 @@ class MemoryStore:
         return any(d.get("confirmation_number") == number for d in self.requests)
 
     def put_request(self, doc: dict) -> None:
+        if self.find_by_idempotency_key(doc["idempotency_key"]) is not None:
+            raise DuplicateIdempotencyKey()
         self.requests.append(dict(doc))

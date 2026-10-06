@@ -51,12 +51,12 @@ HTTP_STATUS = {
 # ----------------------------------------------------------------------------
 
 def find_schema_dir() -> pathlib.Path:
-    """ICDT_SCHEMA_DIR if set; else ./schemas beside this file (a deploy copy); else ../schemas (the repo)."""
+    """ICDT_SCHEMA_DIR if set; else ../schemas (the repo, always current); else ./schemas (the copy sync_schemas.py puts in a deploy)."""
     env = os.environ.get("ICDT_SCHEMA_DIR")
     if env:
         return pathlib.Path(env)
     here = pathlib.Path(__file__).resolve().parent
-    for d in (here / "schemas", here.parent / "schemas"):
+    for d in (here.parent / "schemas", here / "schemas"):
         if (d / "registry.json").exists():
             return d
     raise RuntimeError("schemas folder not found; set ICDT_SCHEMA_DIR")
@@ -97,12 +97,17 @@ class Schemas:
 # Store: what the core needs from storage. Firestore in the wrapper, a dict in tests.
 # ----------------------------------------------------------------------------
 
+class DuplicateIdempotencyKey(Exception):
+    """put_request raises this when a request with the same idempotency key already exists
+    (two copies of one submission arriving at the same moment)."""
+
+
 class Store(Protocol):
     def get_class(self, class_id: str) -> Optional[dict]: ...
     def find_by_idempotency_key(self, key: str) -> Optional[dict]: ...
     def find_latest_by_email_and_type(self, email: str, registration_type: str) -> Optional[dict]: ...
     def confirmation_number_exists(self, number: str) -> bool: ...
-    def put_request(self, doc: dict) -> None: ...
+    def put_request(self, doc: dict) -> None: ...  # raises DuplicateIdempotencyKey if the key is already stored
 
 
 # ----------------------------------------------------------------------------
@@ -343,5 +348,12 @@ def handle_registration_request(
         return _err("server_error", "Could not complete the request.")
 
     # 12. Store one document; reply with the confirmation number and type only.
-    store.put_request(doc)
+    try:
+        store.put_request(doc)
+    except DuplicateIdempotencyKey:
+        # The same submission arrived twice at once and the other copy won: answer as a replay.
+        earlier = store.find_by_idempotency_key(body["idempotency_key"])
+        if earlier is None:
+            return _err("server_error", "Could not complete the request.")
+        return _ok(200, earlier, "replay")
     return _ok(201, doc, "created")

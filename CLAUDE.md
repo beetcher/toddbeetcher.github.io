@@ -96,3 +96,4 @@ Both use `display: none` → `display: flex` via `.open` class.
 ## Schemas and data
 - Before creating or changing any schema, collection, record or endpoint handler, read `schemas/SCHEMA_RULES.md` and follow it.
 - For the registration request, also read `schemas/REGISTRATION_REQUEST_GUIDE.md` (the why behind every field). After any schema change, run `python3 schemas/check.py`.
+- The registration endpoint is its own Python codebase, `enjoy_router/` (see its README). Its rules are in `core.py`, which has no Firebase in it. After changing a schema, the endpoint or the test records, run `python3 schemas/check.py` and `python3 enjoy_router/run_tests.py`. The Firestore pass needs the emulator, which runs on Todd's Mac.

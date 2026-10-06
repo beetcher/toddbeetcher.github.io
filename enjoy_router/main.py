@@ -1,0 +1,97 @@
+"""Firebase entry point for the registration endpoint (Cloud Functions for Firebase, Python).
+
+    POST  .../enjoy_registration_request   body: a registration_request as JSON
+
+All the rules are in core.py; the HTTP handling is in handler.py. This file only connects
+them to Firebase: the request in, the Firestore store, CORS, and the settings.
+
+Settings (environment variables, none required):
+  ICDT_ALLOWED_ORIGINS   comma-separated browser origins allowed to call this (default: the site and local dev)
+  ICDT_VISITOR_SALT      salt for hashing visitor addresses in the rate limiter
+Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
+  ICDT_FIXED_NOW         a fixed UTC clock, so date rules are repeatable in tests (set on the emulator's command line, see README)
+  ICDT_STORE=memory      use the in-memory store seeded from the test records, no Firestore needed
+"""
+from __future__ import annotations
+
+import json
+import logging
+import os
+import pathlib
+import time
+from datetime import datetime, timezone
+
+from firebase_functions import https_fn, options
+
+from core import Schemas
+from handler import handle_http
+from ratelimit import RateLimiter, visitor_key
+
+logging.basicConfig(level=logging.INFO)
+
+DEFAULT_ORIGINS = (
+    "https://beetcher.com",
+    "https://www.beetcher.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8788",
+)
+ORIGINS = [o.strip() for o in os.environ.get("ICDT_ALLOWED_ORIGINS", ",".join(DEFAULT_ORIGINS)).split(",") if o.strip()]
+SALT = os.environ.get("ICDT_VISITOR_SALT", "icdt-enjoy")
+LOCAL_TESTING = os.environ.get("FUNCTIONS_EMULATOR") == "true" or os.environ.get("ICDT_STORE") == "memory"
+
+_schemas = Schemas.load()
+_limiter = RateLimiter()
+_store = None
+
+
+def _get_store():
+    """Built on first use, so importing this file needs no network and no credentials."""
+    global _store
+    if _store is None:
+        if os.environ.get("ICDT_STORE") == "memory":
+            from memory_store import MemoryStore
+            records = pathlib.Path(__file__).resolve().parent.parent / "schemas" / "examples" / "registration_request.test_records.json"
+            _store = MemoryStore(json.loads(records.read_text())["setup"]["scheduled_classes"])
+        else:
+            import firebase_admin
+            from firebase_admin import firestore
+            from firestore_store import FirestoreStore
+            if not firebase_admin._apps:
+                firebase_admin.initialize_app()
+            _store = FirestoreStore(firestore.client(), _schemas)
+    return _store
+
+
+def _now() -> datetime:
+    fixed = os.environ.get("ICDT_FIXED_NOW")
+    if fixed and LOCAL_TESTING:
+        return datetime.fromisoformat(fixed.replace("Z", "+00:00"))
+    return datetime.now(timezone.utc)
+
+
+def _client_address(req) -> str:
+    """The visitor's address. Google's front end appends the real client address to X-Forwarded-For,
+    so the LAST entry is the one to trust; an earlier entry can be forged by the visitor."""
+    forwarded = [p.strip() for p in req.headers.get("X-Forwarded-For", "").split(",") if p.strip()]
+    return forwarded[-1] if forwarded else (req.remote_addr or "unknown")
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
+    max_instances=5,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_registration_request(req: https_fn.Request) -> https_fn.Response:
+    result = handle_http(
+        method=req.method,
+        raw_body=req.get_data(),
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_store(),
+        schemas=_schemas,
+        limiter=_limiter,
+        now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})

@@ -27,3 +27,7 @@ enjoy/assets/gitignore/
 # Python
 __pycache__/
 *.pyc
+
+# enjoy_router (Python endpoint)
+enjoy_router/venv/
+enjoy_router/schemas/
