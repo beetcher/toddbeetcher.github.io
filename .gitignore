@@ -31,3 +31,4 @@ __pycache__/
 # enjoy_router (Python endpoint)
 enjoy_router/venv/
 enjoy_router/schemas/
+*-debug.log

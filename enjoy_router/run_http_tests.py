@@ -54,9 +54,20 @@ class HttpEndpoint:
                                               "X-Forwarded-For": f"203.0.113.{self.counter}"})
         try:
             with urllib.request.urlopen(req, timeout=30) as r:
-                return r.status, json.loads(r.read())
+                return r.status, self._json(r.status, r.read())
         except urllib.error.HTTPError as e:
-            return e.code, json.loads(e.read() or b"{}")
+            return e.code, self._json(e.code, e.read())
+        except urllib.error.URLError as e:
+            sys.exit(f"cannot reach {self.url}: {e.reason}\nIs the emulator running, and is the URL right?")
+
+    @staticmethod
+    def _json(status, raw):
+        try:
+            return json.loads(raw or b"{}")
+        except ValueError:
+            # Not JSON: the emulator or the function itself answered. Show enough to diagnose.
+            sys.exit(f"HTTP {status} with a body that is not JSON. First 300 characters:\n{raw[:300].decode('utf-8', 'replace')}\n"
+                     "Check the emulator's terminal for errors and confirm the URL.")
 
     def docs(self):
         if self.db is None:
