@@ -10,8 +10,8 @@ every build session reads these rules first.
   `<name>.schema.json`. Example: `registration_request.schema.json`.
   It describes both what the browser sends and what is stored.
 - Collections are plural: `registration_requests`.
-- Choose names that pluralize with a plain "s" (venues, roles, individuals).
-  Avoid irregular nouns.
+- Choose names that pluralize regularly: "s" (venues, roles, individuals), or
+  "es" after s, x, z, ch or sh (classes). Avoid irregular nouns.
 - `schemas/registry.json` lists every type: name, collection, schema file,
   guide, examples file and current schema version. Code looks the collection up there and never
   types it by hand.
@@ -130,8 +130,8 @@ Every handler replies in this shape:
   uses the same files. (Confirm the path serves on Cloudflare Pages.)
 - `python3 schemas/check.py` validates every type in the registry: valid
   schema, snake_case field names, collection naming, readOnly consistency, that
-  the type's guide mentions every field, and that its example requests pass or
-  fail as labelled. Run it before `./checkpoint.sh` whenever a schema changes.
+  the type's guide mentions every field, and that its example requests and test
+  records pass or fail as labelled. Run it before `./checkpoint.sh` whenever a schema changes.
 - Validator libraries: Ajv for TypeScript, `jsonschema` for Python. The
   choice follows the endpoint's language.
 

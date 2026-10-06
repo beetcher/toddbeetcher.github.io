@@ -1,0 +1,258 @@
+{
+  "valid": {
+    "idea_only": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    },
+    "scheduled_venue_pending": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "scheduled",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": false,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923"
+      ]
+    },
+    "enrolling_full_detail": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "enrolling",
+      "is_public": true,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": true,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923",
+        "7ea04051-8293-4da4-9ec5-d6f708192a34"
+      ],
+      "venue_notes": "Use the side entrance after 5 pm.",
+      "accessibility_notes": "Step-free entry at the side door.",
+      "is_waitlist_enabled": true,
+      "waitlist_max": 10,
+      "price_cents": 5000,
+      "price_basis": "per_person",
+      "promotion_ids": [
+        "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
+      ]
+    },
+    "completed": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "completed",
+      "is_public": true,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": true,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923",
+        "7ea04051-8293-4da4-9ec5-d6f708192a34"
+      ],
+      "venue_notes": "Use the side entrance after 5 pm.",
+      "accessibility_notes": "Step-free entry at the side door.",
+      "is_waitlist_enabled": true,
+      "waitlist_max": 10,
+      "price_cents": 5000,
+      "price_basis": "per_person",
+      "promotion_ids": [
+        "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
+      ]
+    }
+  },
+  "invalid": {
+    "scheduled_without_venue": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "scheduled",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "is_venue_confirmed": false,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923"
+      ]
+    },
+    "scheduled_without_date": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "scheduled",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": false,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923"
+      ]
+    },
+    "enrolling_without_price": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "enrolling",
+      "is_public": true,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": true,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923",
+        "7ea04051-8293-4da4-9ec5-d6f708192a34"
+      ],
+      "venue_notes": "Use the side entrance after 5 pm.",
+      "accessibility_notes": "Step-free entry at the side door.",
+      "is_waitlist_enabled": true,
+      "waitlist_max": 10,
+      "promotion_ids": [
+        "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
+      ]
+    },
+    "sender_sets_registered_count": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "enrolling",
+      "is_public": true,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": true,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "6d9e3f40-7182-4c93-8db4-c5e6f7081923",
+        "7ea04051-8293-4da4-9ec5-d6f708192a34"
+      ],
+      "venue_notes": "Use the side entrance after 5 pm.",
+      "accessibility_notes": "Step-free entry at the side door.",
+      "is_waitlist_enabled": true,
+      "waitlist_max": 10,
+      "price_cents": 5000,
+      "price_basis": "per_person",
+      "promotion_ids": [
+        "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
+      ],
+      "registered_count": 5
+    },
+    "sender_sets_id": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "id": "x"
+    },
+    "camel_case_field": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "capacityMax": 15
+    },
+    "bad_status": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "status": "open",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    },
+    "instructor_not_uuid": {
+      "title": "Intro workshop, Nov 20",
+      "slug": "intro_nov_20",
+      "status": "scheduled",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "description": "A first workshop for busy adults.",
+      "starts_at": "2026-11-21T01:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": false,
+      "organizer_name": "Todd Beetcher",
+      "organizer_email": "organizer@example.com",
+      "instructor_ids": [
+        "jane"
+      ]
+    },
+    "missing_capacity_max": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10
+    },
+    "bad_slug": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "Has Spaces",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    }
+  }
+}

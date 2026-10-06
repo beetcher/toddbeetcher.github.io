@@ -2,7 +2,7 @@
 
 For anyone who writes code against `schemas/registration_request.schema.json`: the endpoint, the web surface, the dashboard, the test scripts. Read this first. The schema says WHAT is allowed. This guide says WHY, and what each field is for, in Todd's intent. Where a decision is Claude's proposal and not Todd's, it is marked **(proposal)**. Where nothing is decided, it is marked **(open)**.
 
-Companion files: `schemas/SCHEMA_RULES.md` (naming and data rules for every schema), `schemas/registry.json` (type to collection map).
+Companion files: `schemas/SCHEMA_RULES.md` (naming and data rules for every schema), `schemas/SCHEDULED_CLASS_GUIDE.md` (the class a request points at), `schemas/registry.json` (type to collection map).
 
 Written October 6, 2026, from the registration design conversation (thread 11, I Can Do That /enjoy site).
 
@@ -45,11 +45,13 @@ All three share the requester, contact, consent, attendee count, minors flag, AI
 
 A class request can bring others: "I've got three more people." Same `participants` and `attendee_count` as other types.
 
-**Class capacity logic (Todd's decisions).**
-- The check at submit compares `attendee_count` with the class's **total capacity**. If the count exceeds total capacity, refuse. A full class still accepts a request (it is a request, no seat is held).
-- At the moment of submit the server **reads the class record itself** (never trusts the list the browser saw, which could be minutes old) and stores a snapshot on the request: `class_capacity_at_request`, `class_registered_at_request`, `seats_available_at_request` (capacity minus registered). Todd: it will show "we had a fully booked class, we accepted another one," and may be useful later.
-- The class list endpoint returns each class with capacity and registered count for display.
-- This requires a **scheduled class** schema with at least `capacity` and `registered_count` (not yet written; the processing step will keep `registered_count` current, and until it is wired it stays zero).
+**Class capacity logic (Todd's decisions).** A class has three numbers: a minimum to run, a target ("we'll take it to 10") and an absolute maximum ("we'll go as high as 15"). The range between target and maximum is overflow.
+- The check at submit compares `attendee_count` with the class's **maximum capacity**. If the count exceeds it, refuse with `over_capacity`. Registered people are not subtracted: a request is not a registration and no seat is held. A class that is at its maximum still accepts a request.
+- Only a class in status `enrolling` accepts requests. Any other status gives `class_closed`.
+- At the moment of submit the server **reads the class record itself** (never trusts the list the browser saw, which could be minutes old) and stores a snapshot on the request: `class_capacity_target_at_request`, `class_capacity_max_at_request`, `class_registered_at_request`, and `seats_available_at_request` (maximum minus registered, never below zero). Todd: it will show "we had a fully booked class, we accepted another one," and may be useful later.
+- Processing, not this endpoint, later decides whether a request is accepted, accepted into overflow, or waitlisted.
+- The class list endpoint returns each public enrolling class with capacity numbers and registered count for display.
+- The class schema now exists: `schemas/scheduled_class.schema.json`, with its own guide `SCHEDULED_CLASS_GUIDE.md`.
 
 ## 4. Rules the schema enforces itself
 
@@ -110,6 +112,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 ### Other
 - `what_they_want`: the old form's "what would you love to do with it." Todd's best signal about what a person cares about.
 - `how_heard`, `notes`.
+- `promotion_code`: an optional code carried in from a promotion link, so promotions can be measured against requests. Matches a promotion record's code.
 - `idempotency_key`: a UUID the browser creates once per submission. If the same key arrives twice (double tap, retry), return the original result and create nothing.
 
 ### Set by the server only (readOnly)
@@ -117,18 +120,18 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 - `confirmation_number`: shown to the visitor. Format is **(open)**; make it readable and not guessable.
 - Processing: `processing_status` (`not_processed`, `partially_processed`, `processed`; always `not_processed` at creation) and `processed_at`. Todd: "you have to keep track of the status of that processing."
 - Payment: `is_paid` (false at creation), `payment_source`, `payment_id`. These tie a request to a payment event. **Never store card or other payment details.** Whether payment happens at registration at all is not decided; "I could see somebody providing payment" eventually, through a third party.
-- Class snapshot: `class_capacity_at_request`, `class_registered_at_request`, `seats_available_at_request`: present only when a class was picked, absent otherwise.
+- Class snapshot: `class_capacity_target_at_request`, `class_capacity_max_at_request`, `class_registered_at_request`, `seats_available_at_request`: present only when a class was picked, absent otherwise.
 
 ## 6. What the endpoint must do
 
 1. **Honeypot first.** Remove the hidden field `website` before anything else. If it held anything, reply as if the request succeeded and store nothing. (It is not in the schema, which rejects unknown fields, so it must be removed before validating.)
 2. Reject any submission containing a readOnly field.
-3. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
-4. Normalize the email (trim, lowercase).
+3. Normalize the email (trim, lowercase) so validation and matching see the clean value. Do this before validating, or surrounding spaces would fail the email format.
+4. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
 5. Honor the idempotency key: the same key twice returns the original success and creates nothing. This is not an error.
 6. Dates: `requested_date` and `alternate_requested_date` must not be in the past (Mountain time). Otherwise `validation_failed` with a field error.
 7. Names versus count: the names in `participants`, plus the requester if attending, must not exceed `attendee_count`.
-8. For a class pick: load the class. Not found gives `class_not_found`. Not open gives `class_closed`. A count over total capacity gives `over_capacity`. Otherwise store the capacity, registered and available snapshot. A full class still accepts the request.
+8. For a class pick: load the class. Not found gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
 9. **Repeats are flagged, never blocked.** Look for an earlier request with the same normalized email and the same type. If one exists, save the new request as a new record with `previous_id` pointing at the earlier one, and reply with a normal success. Because it is only a flag, a false match (a couple sharing one email) does no harm. Repeats are not errors.
 10. Generate `id`, timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`, `is_paid` = false.
 11. Check the full record against the schema and confirm every `x_server_required` field is present.
@@ -138,7 +141,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 
 ## 7. Not in this guide's scope
 
-The web surface design (the steering pop-up, wording, which optional fields to ask). The scheduled-class schema and its list endpoint. Processing workflow and follow-up email. Payment processing. The dashboard. The invite surface where participants give their own AI details. Retention.
+The web surface design (the steering pop-up, wording, which optional fields to ask). The class list endpoint. Processing workflow and follow-up email. Payment processing. The dashboard. The invite surface where participants give their own AI details. Retention.
 
 ## 8. Decisions so far
 
@@ -155,7 +158,7 @@ Claude's proposals not yet confirmed by Todd: `presented_cost_basis` (per_sessio
 - Scale for proficiency (1 to 10 versus the old 1 to 5).
 - Boolean naming: the rules say `is_`, the schema also uses `has_` and `consent_to_contact`; amend the rules.
 - Where the endpoint lives (the existing project is a test project) and its language.
-- Scheduled-class schema and list endpoint.
+- The class list endpoint, and the venue, instructor, review, attendance and promotion schemas the class points to.
 - Whether the old direct-write sign-up (`enjoy_signups`) is retired when the web surface switches.
 - Confirm Firestore rules are deployed, and that `/schemas/` serves as static files on Cloudflare Pages.
 
@@ -166,12 +169,13 @@ Todd: this registration could serve other programs. Roundup (the live in-room ev
 ## 11. Examples and checks
 
 - `schemas/examples/registration_request.examples.json` holds five valid example requests (private couple, private gift, group with an organization, class with a pick, class where none fit) and ten invalid ones, each named for what is wrong. Use them as the seed for the test-records file and as the first tests for the endpoint.
-- `python3 schemas/check.py` verifies the schema, this guide and the examples agree: valid schema, snake_case names, every field mentioned here, valid examples pass, invalid examples fail. Run it before checkpointing any schema change. It needs `pip install jsonschema`.
+- `schemas/examples/registration_request.test_records.json` holds 30 ordered test records for the endpoint: happy paths for every type, repeats and idempotent replay, schema rejections, and endpoint rules (capacity, class not found or closed, names over the count, past dates, honeypot, email cleaning). Each says the request to send and the outcome to expect. Its seed list of scheduled classes follows the scheduled-class schema and is checked against it.
+- `python3 schemas/check.py` verifies the schema, this guide, the examples and the test records agree: valid schema, snake_case names, every field mentioned here, valid examples pass, invalid examples fail, and the test records behave as labelled. Run it before checkpointing any schema change. It needs `pip install jsonschema`.
 
 ## 12. Build order (Todd's workflow)
 
 1. Schema (done, one file) and this guide.
-2. A file of test records: good ones for each type, and deliberately broken ones. Start from the examples file (section 11).
+2. A file of test records: good ones for each type, and deliberately broken ones. Use the test-records file (section 11).
 3. The endpoint, tested first with the local Firebase emulator, then deployed to a proper project.
 4. A script that sends the test records to the endpoint and confirms documents land correctly in the collection (including repeat flagging, idempotency, rejected read-only fields, and a refused direct browser write).
 5. The web surface, last.

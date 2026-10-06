@@ -1,0 +1,753 @@
+{
+  "description": "Test records for the registration_request endpoint. Run in order. Each test has a name, a layer (schema = the schema alone decides; endpoint = the schema passes but the endpoint must refuse or transform), the request to send, and the expected outcome. request_from means: start from that earlier test's request, then apply override (set fields) and remove (drop fields). Emails are distinct per test unless a repeat is the point. setup.scheduled_classes holds stored scheduled_class records (checked against that schema): one enrolling with room (target 10, maximum 15, 9 registered), one enrolling and at its maximum, and one not enrolling.",
+  "setup": {
+    "scheduled_classes": [
+      {
+        "title": "Intro workshop (room available)",
+        "slug": "intro_nov_20",
+        "status": "enrolling",
+        "is_public": true,
+        "capacity_minimum": 6,
+        "capacity_target": 10,
+        "capacity_max": 15,
+        "starts_at": "2026-11-21T01:00:00Z",
+        "time_zone": "America/Denver",
+        "duration_minutes": 120,
+        "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+        "is_venue_confirmed": true,
+        "price_cents": 5000,
+        "price_basis": "per_person",
+        "is_waitlist_enabled": true,
+        "waitlist_max": 10,
+        "id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+        "schema_version": 1,
+        "created_at": "2026-09-15T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-15T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard",
+        "registered_count": 9,
+        "waitlist_count": 0,
+        "attended_count": 0,
+        "review_count": 0
+      },
+      {
+        "title": "Intro workshop (at maximum)",
+        "slug": "intro_dec_04",
+        "status": "enrolling",
+        "is_public": true,
+        "capacity_minimum": 6,
+        "capacity_target": 10,
+        "capacity_max": 15,
+        "starts_at": "2026-11-21T01:00:00Z",
+        "time_zone": "America/Denver",
+        "duration_minutes": 120,
+        "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+        "is_venue_confirmed": true,
+        "price_cents": 5000,
+        "price_basis": "per_person",
+        "is_waitlist_enabled": true,
+        "waitlist_max": 10,
+        "id": "0b1f6e2a-3c4d-4e5f-9a6b-7c8d9e0f1a2b",
+        "schema_version": 1,
+        "created_at": "2026-09-15T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-15T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard",
+        "registered_count": 15,
+        "waitlist_count": 0,
+        "attended_count": 0,
+        "review_count": 0
+      },
+      {
+        "title": "Intro workshop (not enrolling)",
+        "slug": "intro_oct_30",
+        "status": "scheduled",
+        "is_public": true,
+        "capacity_minimum": 6,
+        "capacity_target": 10,
+        "capacity_max": 15,
+        "starts_at": "2026-11-21T01:00:00Z",
+        "time_zone": "America/Denver",
+        "duration_minutes": 120,
+        "venue_id": "5c8d2e3f-6071-4b82-9ca3-b4d5e6f70812",
+        "is_venue_confirmed": true,
+        "price_cents": 5000,
+        "price_basis": "per_person",
+        "is_waitlist_enabled": true,
+        "waitlist_max": 10,
+        "id": "2e4f6a8c-1b3d-4f5e-8a7b-9c0d1e2f3a4b",
+        "schema_version": 1,
+        "created_at": "2026-09-15T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-15T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard",
+        "registered_count": 4,
+        "waitlist_count": 0,
+        "attended_count": 0,
+        "review_count": 0
+      }
+    ],
+    "unknown_class_id": "aaaaaaaa-1111-4222-8333-bbbbbbbbbbbb"
+  },
+  "tests": [
+    {
+      "name": "t01_private_couple",
+      "layer": "schema",
+      "description": "Happy path: private session for a couple, at home.",
+      "request": {
+        "idempotency_key": "1b9bcbc7-f461-593a-a5eb-65b33703aae5",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "jane@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 2,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "email": "jane@example.com",
+          "is_paid": false,
+          "processing_status": "not_processed",
+          "source": "web_enjoy",
+          "created_by": "web:enjoy",
+          "updated_by": "web:enjoy",
+          "schema_version": 1
+        },
+        "no_previous_id": true
+      }
+    },
+    {
+      "name": "t02_private_gift",
+      "layer": "schema",
+      "description": "Gift: the requester is not attending; the recipient is a participant.",
+      "request": {
+        "idempotency_key": "b7764f67-3593-520f-8d12-49da04fa8d3d",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "giver@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": false,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 1,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Mary",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ],
+        "is_gift": true
+      },
+      "expect": {
+        "ok": true,
+        "stored": true
+      }
+    },
+    {
+      "name": "t03_group_organization",
+      "layer": "schema",
+      "description": "Group for a nonprofit that needs an invoice, wants a venue suggestion and a series.",
+      "request": {
+        "idempotency_key": "1911d198-9d4a-5bcb-9d70-10dd4495edac",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "garden-club@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "group",
+        "attendee_count": 8,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "off_site",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [],
+        "preferred_location": "Boulder",
+        "venue_arrangement": "need_suggestion",
+        "organization_name": "Boulder Garden Club",
+        "group_type": "club_or_nonprofit",
+        "needs_invoice": true,
+        "sessions_requested": 3
+      },
+      "expect": {
+        "ok": true,
+        "stored": true
+      }
+    },
+    {
+      "name": "t04_group_family_with_child",
+      "layer": "schema",
+      "description": "Family group with a child present: has_minors_present is true and the child is marked.",
+      "request": {
+        "idempotency_key": "cc46139e-c1a8-5aee-b2a4-3e0c5d01accc",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "family@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": true,
+        "registration_type": "group",
+        "attendee_count": 4,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Kim",
+            "last_name": "Doe",
+            "age_band": "child"
+          },
+          {
+            "first_name": "Sam",
+            "last_name": "Doe",
+            "age_band": "adult"
+          },
+          {
+            "first_name": "Lou",
+            "last_name": "Doe",
+            "age_band": "teen"
+          }
+        ],
+        "group_type": "family"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true
+      }
+    },
+    {
+      "name": "t05_class_pick_with_space",
+      "layer": "schema",
+      "description": "Class with room: target 10, maximum 15, 9 registered, asks for 3 (12 in total, into the overflow range). Accepted. Carries a promotion code.",
+      "request": {
+        "idempotency_key": "a93fdc03-313c-540e-9ebe-cc84f20030fd",
+        "first_name": "Ann",
+        "last_name": "Lee",
+        "email": "ann@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "class",
+        "attendee_count": 3,
+        "presented_cost_cents": 5000,
+        "presented_cost_basis": "per_person",
+        "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+        "participants": [
+          {
+            "first_name": "Bob",
+            "last_name": "Lee"
+          },
+          {
+            "first_name": "Cat",
+            "last_name": "Lee"
+          }
+        ],
+        "promotion_code": "fall_mailer"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "snapshot": {
+          "class_capacity_target_at_request": 10,
+          "class_capacity_max_at_request": 15,
+          "class_registered_at_request": 9,
+          "seats_available_at_request": 6
+        }
+      }
+    },
+    {
+      "name": "t06_class_pick_full_class",
+      "layer": "schema",
+      "description": "Class already at its maximum (15 of 15): the request is still accepted and the snapshot records zero seats available.",
+      "request": {
+        "idempotency_key": "94824daa-b024-57dd-bcbe-48f87e66c088",
+        "first_name": "Ann",
+        "last_name": "Lee",
+        "email": "dan@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "class",
+        "attendee_count": 1,
+        "presented_cost_cents": 5000,
+        "presented_cost_basis": "per_person",
+        "scheduled_class_id": "0b1f6e2a-3c4d-4e5f-9a6b-7c8d9e0f1a2b"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "snapshot": {
+          "class_capacity_target_at_request": 10,
+          "class_capacity_max_at_request": 15,
+          "class_registered_at_request": 15,
+          "seats_available_at_request": 0
+        }
+      }
+    },
+    {
+      "name": "t07_class_none_fit",
+      "layer": "schema",
+      "description": "Class request where none fit; same email as t01 but a different type, so no repeat link.",
+      "request": {
+        "idempotency_key": "63a65442-f3d0-576c-b648-928615730d97",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "jane@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "class",
+        "attendee_count": 1,
+        "presented_cost_cents": 5000,
+        "presented_cost_basis": "per_person",
+        "no_class_fits": true,
+        "preferred_location": "Denver",
+        "requested_time_of_day": "evening"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "no_previous_id": true
+      }
+    },
+    {
+      "name": "t08_repeat_same_email_same_type",
+      "layer": "schema",
+      "description": "A second private request from the same email: saved as a new record and linked to t01.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "7828024a-1e07-53db-ac1c-946c35b608a0",
+        "requested_date": "2026-12-05"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "previous_id_of": "t01_private_couple"
+      }
+    },
+    {
+      "name": "t09_idempotent_replay",
+      "layer": "schema",
+      "description": "t01 sent again with the same idempotency key: original success, no new record.",
+      "request_from": "t01_private_couple",
+      "expect": {
+        "ok": true,
+        "stored": false,
+        "replay_of": "t01_private_couple"
+      }
+    },
+    {
+      "name": "t10_sender_sets_id",
+      "layer": "schema",
+      "description": "A sender may not set the id.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "598a2e88-1826-5c37-b6a4-a05c53ea3d9a",
+        "id": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "id"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t11_sender_sets_is_paid",
+      "layer": "schema",
+      "description": "A sender may not claim they have paid.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "05f9a8f8-c822-52b8-94e6-705356c6f75b",
+        "is_paid": true
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "is_paid"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t12_sender_sets_seat_snapshot",
+      "layer": "schema",
+      "description": "A sender may not supply the class seat snapshot.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "ed4d78e2-1b9e-515c-8758-7955fe9aea97",
+        "seats_available_at_request": 99
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "seats_available_at_request"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t13_no_consent",
+      "layer": "schema",
+      "description": "consent_to_contact must be true.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "a500ba55-1133-539f-a36b-2f6e56b44c68",
+        "consent_to_contact": false
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "consent_to_contact"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t14_camel_case_field",
+      "layer": "schema",
+      "description": "Field names must be snake_case; unknown fields are rejected.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "3b4c6945-f0f0-5989-b645-aab972d4430c",
+        "firstName": "Jane"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "firstName"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t15_count_zero",
+      "layer": "schema",
+      "description": "attendee_count must be at least 1.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "8bb0bc52-8b62-509a-aadb-07c52adb3761",
+        "attendee_count": 0
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "attendee_count"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t16_class_picks_and_none_fit",
+      "layer": "schema",
+      "description": "A class request must do exactly one of pick a class or say none fit.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "e2e524c2-a699-5e3f-a2dd-97efeb42ec91",
+        "no_class_fits": true
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "scheduled_class_id",
+          "no_class_fits"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t17_private_with_class_id",
+      "layer": "schema",
+      "description": "A private request may not carry a class id.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "8178a023-37ea-5d22-9704-b49fa0729cae",
+        "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "scheduled_class_id"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t18_child_listed_minors_false",
+      "layer": "schema",
+      "description": "A participant marked child while has_minors_present is false is contradictory.",
+      "request_from": "t04_group_family_with_child",
+      "override": {
+        "idempotency_key": "a9343aa9-2102-5e34-b585-d74f940e45b6",
+        "has_minors_present": false
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "has_minors_present"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t19_missing_price_basis",
+      "layer": "schema",
+      "description": "The price needs its basis.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "20c480c2-97fa-5664-a5a8-bcfcb9dc514b"
+      },
+      "remove": [
+        "presented_cost_basis"
+      ],
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "presented_cost_basis"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t20_bad_email",
+      "layer": "schema",
+      "description": "An email must look like one.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "469c1e6b-d1fc-562f-a212-af896e7ef215",
+        "email": "not-an-email"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "email"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t21_gift_without_recipient",
+      "layer": "schema",
+      "description": "If the requester is not attending, at least one participant is required.",
+      "request_from": "t02_private_gift",
+      "override": {
+        "idempotency_key": "2b89ee0b-3bc5-5336-869a-624a3d4b2aa0"
+      },
+      "remove": [
+        "participants"
+      ],
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "participants"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t22_class_with_duration",
+      "layer": "schema",
+      "description": "A class request may not carry a duration; the class defines it.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "7b97dce3-317c-5ab7-94ad-83a9946ffa5a",
+        "duration_minutes_requested": 120
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "duration_minutes_requested"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t23_over_capacity",
+      "layer": "endpoint",
+      "description": "Asks for 16 seats in a class whose maximum is 15. The schema cannot know; the endpoint refuses.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "84eb344c-6f90-593c-8fd1-ace29858953e",
+        "attendee_count": 16,
+        "participants": []
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "over_capacity",
+        "stored": false
+      }
+    },
+    {
+      "name": "t24_class_not_found",
+      "layer": "endpoint",
+      "description": "The class id does not exist.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "2a50232f-8dd5-51ac-a2b2-71a7291d0dd2",
+        "scheduled_class_id": "aaaaaaaa-1111-4222-8333-bbbbbbbbbbbb"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "class_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t25_class_closed",
+      "layer": "endpoint",
+      "description": "The class exists but is not enrolling (status scheduled), so it takes no requests.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "fd70239b-7a8b-5cd1-9a2c-ce9000a087f8",
+        "scheduled_class_id": "2e4f6a8c-1b3d-4f5e-8a7b-9c0d1e2f3a4b"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "class_closed",
+        "stored": false
+      }
+    },
+    {
+      "name": "t26_names_exceed_count",
+      "layer": "endpoint",
+      "description": "One seat requested, but the requester plus two named participants is three people.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "c6f81c99-1640-53b6-8e2d-ff9189f9ac37",
+        "attendee_count": 1,
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe"
+          },
+          {
+            "first_name": "Amy",
+            "last_name": "Doe"
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "participants"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t27_past_date",
+      "layer": "endpoint",
+      "description": "A requested date in the past is refused.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "0f460ebd-4d4c-514c-b5ef-1ea0e45efc65",
+        "requested_date": "2020-01-01"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "requested_date"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t28_honeypot_filled",
+      "layer": "endpoint",
+      "description": "The hidden website field holds text: the reply looks like a success, nothing is stored.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "a53216ed-53f6-5b9a-add9-ada4585fc82b",
+        "email": "bot@example.com",
+        "website": "http://spam.example"
+      },
+      "expect": {
+        "ok": true,
+        "stored": false,
+        "discarded_as_spam": true
+      }
+    },
+    {
+      "name": "t29_email_mixed_case",
+      "layer": "endpoint",
+      "description": "Mixed-case email is stored lowercased.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "c504d70d-9603-5b2b-b5e4-406712f7203a",
+        "email": "Mixed.Case@Example.COM"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "email": "mixed.case@example.com"
+        }
+      }
+    },
+    {
+      "name": "t30_email_with_spaces",
+      "layer": "endpoint",
+      "description": "Spaces around the email are trimmed before validation.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "f0515c8d-af63-51e5-90ce-560d7069e0ad",
+        "email": "  spaces@example.com  "
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "email": "spaces@example.com"
+        }
+      }
+    }
+  ]
+}

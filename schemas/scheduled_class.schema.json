@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/scheduled_class.schema.json",
+  "title": "scheduled_class",
+  "description": "A workshop class people can ask to join. It carries references (venue, instructors, promotions) and summary numbers (registered, waitlist, attended, reviews). Venues, instructors, reviews, attendance and promotions are their own collections. Fields marked readOnly are set by the server only. Cross-field rules the schema cannot express are endpoint rules: capacity_minimum <= capacity_target <= capacity_max. Only a class in status enrolling accepts registration requests.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "undecided",
+  "required": [
+    "title",
+    "slug",
+    "status",
+    "is_public",
+    "capacity_minimum",
+    "capacity_target",
+    "capacity_max"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "status": {
+      "enum": [
+        "identified",
+        "scheduled",
+        "enrolling",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "cancelled_reason": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "is_public": {
+      "type": "boolean"
+    },
+    "starts_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "time_zone": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "duration_minutes": {
+      "type": "integer",
+      "minimum": 15,
+      "maximum": 600
+    },
+    "venue_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "is_venue_confirmed": {
+      "type": "boolean"
+    },
+    "venue_notes": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "accessibility_notes": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "organizer_name": {
+      "type": "string",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "organizer_email": {
+      "type": "string",
+      "format": "email",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "organizer_phone": {
+      "type": "string",
+      "maxLength": 40,
+      "x_pii": true
+    },
+    "instructor_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "uniqueItems": true,
+      "maxItems": 10
+    },
+    "capacity_minimum": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500
+    },
+    "capacity_target": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500
+    },
+    "capacity_max": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 500
+    },
+    "is_waitlist_enabled": {
+      "type": "boolean"
+    },
+    "waitlist_max": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 500
+    },
+    "price_cents": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10000000
+    },
+    "price_basis": {
+      "enum": [
+        "per_session",
+        "per_person"
+      ]
+    },
+    "promotion_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "uniqueItems": true,
+      "maxItems": 50
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "schema_version": {
+      "const": 1,
+      "readOnly": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "created_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "source": {
+      "enum": [
+        "dashboard",
+        "import"
+      ],
+      "readOnly": true
+    },
+    "previous_id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "deleted_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "deleted_by": {
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "registered_count": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "waitlist_count": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "attended_count": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "review_count": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "average_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "readOnly": true
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "registered_count",
+    "waitlist_count",
+    "attended_count",
+    "review_count"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "scheduled",
+              "enrolling",
+              "completed"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "starts_at",
+          "time_zone",
+          "duration_minutes",
+          "venue_id",
+          "is_venue_confirmed"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "enrolling",
+              "completed"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "price_cents",
+          "price_basis"
+        ]
+      }
+    }
+  ]
+}

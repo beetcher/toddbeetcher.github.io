@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/registration_request.schema.json",
   "title": "registration_request",
-  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule).",
+  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule).",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -218,6 +218,10 @@
       "type": "string",
       "maxLength": 200
     },
+    "promotion_code": {
+      "type": "string",
+      "maxLength": 100
+    },
     "preferred_contact_method": {
       "enum": [
         "email",
@@ -360,17 +364,22 @@
       "maxLength": 100,
       "readOnly": true
     },
-    "class_capacity_at_request": {
-      "type": "integer",
-      "minimum": 0,
-      "readOnly": true
-    },
     "class_registered_at_request": {
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "seats_available_at_request": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "class_capacity_target_at_request": {
+      "type": "integer",
+      "minimum": 0,
+      "readOnly": true
+    },
+    "class_capacity_max_at_request": {
       "type": "integer",
       "minimum": 0,
       "readOnly": true
@@ -529,7 +538,8 @@
     "is_paid"
   ],
   "x_class_snapshot_fields": [
-    "class_capacity_at_request",
+    "class_capacity_target_at_request",
+    "class_capacity_max_at_request",
     "class_registered_at_request",
     "seats_available_at_request"
   ]

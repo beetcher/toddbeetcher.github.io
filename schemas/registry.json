@@ -6,6 +6,15 @@
       "schema": "registration_request.schema.json",
       "guide": "REGISTRATION_REQUEST_GUIDE.md",
       "examples": "examples/registration_request.examples.json",
+      "schema_version": 1,
+      "test_records": "examples/registration_request.test_records.json"
+    },
+    {
+      "name": "scheduled_class",
+      "collection": "scheduled_classes",
+      "schema": "scheduled_class.schema.json",
+      "guide": "SCHEDULED_CLASS_GUIDE.md",
+      "examples": "examples/scheduled_class.examples.json",
       "schema_version": 1
     }
   ]
