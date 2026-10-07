@@ -155,6 +155,19 @@ a { color: var(--color-accent); }
 .will-reveal .moment__body { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .will-reveal.is-in .moment__body { opacity: 1; transform: none; }
 
+/* ------- Slim panels: short pauses between experiences (LAUNCH colors) ------- */
+.slim { position: relative; display: grid; place-items: center; text-align: center; padding: var(--sp-xl) var(--content-padding) calc(var(--sp-xl) + 50px); }
+.slim--black { background: #000; color: #fff; }
+.slim--lime { background: #c9f92c; color: #111; }
+.slim--orange { background: linear-gradient(135deg, #fc7d2d, #ffa142); color: #111; }
+.slim__inner { max-width: 860px; }
+.slim__big { margin: 0; font: 800 clamp(2rem, 7.5vw, 4.4rem)/1.08 var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; }
+.slim__big--one { font-size: clamp(1.7rem, 5.6vw, 3.2rem); line-height: 1.15; }
+.slim--black .slim__big--2 { color: #c9f92c; }
+.slim__small { margin: var(--sp-md) auto 0; max-width: 34ch; font: 600 var(--type-pullquote)/1.3 var(--font-heading); opacity: .9; }
+.will-reveal .slim__inner { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.will-reveal.is-in .slim__inner { opacity: 1; transform: none; }
+
 /* ------- Footer ------- */
 .footer { text-align: center; padding: var(--sp-2xl) var(--content-padding) calc(var(--sp-2xl) + 40px); }
 .footer__line { font: 800 var(--type-section)/var(--lh-heading) var(--font-heading); letter-spacing: -0.02em; max-width: 18ch; margin: 0 auto var(--sp-lg); text-wrap: balance; }

@@ -227,6 +227,28 @@ function sharpieArrow(kind) {
   return svg;
 }
 
+// Slim panels: short pauses between experiences. One point each, no buttons. `after` = the experience panel id it follows.
+// Lines 1 and 2 and the small line of 3 are Todd's words; the main line of 3 is Claude's and awaits Todd's OK.
+const SLIMS = [
+  { id: 'slim-not-you', after: 'san-luis-valley', theme: 'black', big: ['It\u2019s not you.', 'It\u2019s them.'], small: 'These apps were designed by 25 year olds for 25 year olds.' },
+  { id: 'slim-distance', after: 'brisket', theme: 'lime', big: ['There\u2019s a really short distance between a blank white screen and doing something that makes you feel empowered.'], small: '' },
+  { id: 'slim-pro', after: 'air-conditioner', theme: 'orange', big: ['Part of the skill is knowing when to call a professional.'], small: '(Electrical, gas and air conditioning? Call a pro.)' },
+];
+
+function renderSlims() {
+  SLIMS.forEach((s) => {
+    const target = document.getElementById(s.after);
+    if (!target) return;
+    const sec = el('section', 'slim slim--' + s.theme);
+    sec.id = s.id;
+    const inner = el('div', 'slim__inner');
+    s.big.forEach((t, i) => inner.appendChild(el('p', 'slim__big' + (i ? ' slim__big--2' : '') + (s.big.length === 1 ? ' slim__big--one' : ''), t)));
+    if (s.small) inner.appendChild(el('p', 'slim__small', s.small));
+    sec.appendChild(inner);
+    target.after(sec);
+  });
+}
+
 function renderStories() {
   const host = document.getElementById('moments');
   if (!host) return;
@@ -357,6 +379,7 @@ function renderStories() {
     panel.appendChild(body);
     host.appendChild(panel);
   });
+  renderSlims();
   // The intro text is cut into bundles; each sits after the panel named in its data-after.
   // "scroll down and you'll see" (bundle 3) now follows two examples, so check wording on review.
   document.querySelectorAll('.intro[data-after]').forEach((sec) => {
@@ -536,7 +559,7 @@ function initReveal() {
       if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
     });
   }, { threshold: 0.25 });
-  document.querySelectorAll('.moment').forEach((p) => { p.classList.add('will-reveal'); io.observe(p); });
+  document.querySelectorAll('.moment, .slim').forEach((p) => { p.classList.add('will-reveal'); io.observe(p); });
 }
 
 // ============================================================
