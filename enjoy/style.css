@@ -965,3 +965,6 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .pill-excited.is-nudged { animation: ned-nudge .7s ease 2; }
 @media (prefers-reduced-motion: reduce) { .ned { transition: opacity .3s ease; transform: none; } .ned__bubble { transition: opacity .3s ease; transform: none !important; } .pill-excited.is-nudged { animation: none; } }
 @media print { .ned { display: none; } }
+
+/* Line under the big pill: the known pathway, in one breath */
+.zero__inner > p.zero__path { margin: var(--sp-sm) auto 0; max-width: 22em; text-align: center; font-weight: 700; font-size: 1.05rem; line-height: 1.4; color: var(--color-text-secondary); text-wrap: balance; }
