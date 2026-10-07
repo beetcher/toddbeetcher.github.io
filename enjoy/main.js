@@ -1234,13 +1234,15 @@ document.addEventListener('DOMContentLoaded', () => {
 // Picture: assets/ned-point.webp (transparent, pointing LEFT, so he stands to the right of the pill).
 // ============================================================
 const NED_KEY = 'icdt-ned';
+// While testing, Ned plays every time the pill scrolls into view on a page load. At launch, set NED_ONCE to true so each visitor sees him once per visit.
+const NED_ONCE = false;
 const NED_TEXT = 'I’m Ned, Todd’s other AI assistant. Go on, press it. It gets better.';
 
 function initNed() {
   const pill = document.getElementById('excited-pill');
   if (!pill || !('IntersectionObserver' in window)) return;
   const preview = /[?&]ned(=|&|$)/.test(location.search);   // ?ned plays him again, even after he has been seen
-  try { if (!preview && sessionStorage.getItem(NED_KEY)) return; } catch (e) { /* storage blocked: plays once per load */ }
+  try { if (NED_ONCE && !preview && sessionStorage.getItem(NED_KEY)) return; } catch (e) { /* storage blocked: plays once per load */ }
   let fired = false;
   const io = new IntersectionObserver((entries) => {
     if (fired || !entries[0].isIntersecting) return;
