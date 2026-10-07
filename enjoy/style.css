@@ -936,3 +936,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .steer__text strong { font: 800 1.2rem/1.2 var(--font-heading); }
 .steer__text span { font-size: 1rem; color: var(--color-text-secondary); }
 @media (max-width: 380px) { .steer__card { grid-template-columns: 88px 1fr; } .steer__card img { width: 88px; height: 64px; } }
+
+/* ------- Pill at the end of Zero State: takes the visitor to the /excited page ------- */
+.zero__more { margin: var(--sp-md) 0 0; text-align: center; }
+.pill-excited { scroll-margin-top: 40vh; display: inline-block; text-decoration: none; text-align: center; white-space: normal; line-height: 1.25; font-weight: 800; font-size: clamp(1.05rem, 4.2vw, 1.25rem); padding: 18px 30px; max-width: 100%; }

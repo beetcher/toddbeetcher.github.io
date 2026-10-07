@@ -1,0 +1,6 @@
+/* /enjoy/excited/: the panels that explain why this is worth it. Uses the main page styles (../style.css); only the page chrome is here. */
+.exc__bar { position: sticky; top: 0; z-index: 20; background: var(--color-bg); padding: 0 var(--content-padding); border-bottom: 2px solid var(--color-border); }
+.exc__back { display: block; padding: 14px 0; font-weight: 700; color: var(--color-nav); text-decoration: none; }
+.exc__back:hover { text-decoration: underline; }
+.exc__end { text-align: center; padding: var(--sp-xl) var(--content-padding) calc(var(--sp-xl) + 56px); background: var(--color-bg); }
+.excited section[id], .excited .btn { scroll-margin-top: 64px; }
