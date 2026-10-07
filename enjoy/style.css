@@ -546,13 +546,12 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello__aside--inline { display: inline; margin: 0; }
 .hello .hello__turn { grid-column: 1 / -1; text-align: center; margin: calc(var(--sp-sm) * -1) 0 0; max-width: none; white-space: nowrap; font: 800 clamp(1.05rem, 4.9vw, 3rem)/1.1 var(--font-heading); letter-spacing: -0.02em; color: var(--color-accent); }
 /* The fridge board: three prints, same pieces as the story panels (sticker, print, tape/corners/pin, label) */
-.hello__board { position: relative; width: min(88%, 420px); aspect-ratio: 1 / 2.08; margin: 0 auto; }
+.hello__board { position: relative; width: min(88%, 420px); aspect-ratio: 1 / 1.55; margin: 0 auto; }
 .hello .hello__board .hello__p0 { left: 0; top: 0; right: auto; bottom: auto; width: 66%; z-index: 2; }
 .hello .hello__board .hello__p1 { left: auto; top: 0; right: 0; bottom: auto; width: 40%; z-index: 3; --rot: 4deg; }
-.hello .hello__board .hello__p2 { left: auto; top: 23.5%; right: 1%; bottom: auto; width: 38%; z-index: 1; --rot: -3deg; }
-.hello .hello__board .hello__p3 { left: auto; top: 41%; right: 3%; bottom: auto; width: 31%; z-index: 1; --rot: 3deg; }
-.hello .hello__board .hello__p4 { left: 2%; top: 56.7%; right: auto; bottom: auto; width: 50%; z-index: 2; --rot: -3deg; }
-.hello .hello__board .hello__p5 { left: auto; top: 63%; right: 1%; bottom: auto; width: 44%; z-index: 2; --rot: 3deg; }
+.hello .hello__board .hello__p2 { left: auto; top: 31.5%; right: 1%; bottom: auto; width: 38%; z-index: 1; --rot: -3deg; }
+.hello .hello__board .hello__p3 { left: auto; top: 54.5%; right: 3%; bottom: auto; width: 31%; z-index: 1; --rot: 3deg; }
+.hello .hello__board .hello__p5 { left: 4%; top: 69.6%; right: auto; bottom: auto; width: 50%; z-index: 2; --rot: -3deg; }
 .hello__p1 .hello__cap, .hello__p5 .hello__cap { padding-top: 6px; }
 .hello__p1 .hello__cap span, .hello__p5 .hello__cap span { font-size: clamp(.95rem, 3.3vw, 1.15rem); }
 .hello .hello__li { margin: var(--sp-xs) 0 0; font-size: .95rem; font-weight: 600; }
@@ -578,6 +577,24 @@ a.fab { display: inline-block; text-decoration: none; }
   .hello__text { margin: 0; text-align: left; }
   .hello__board { width: min(100%, 440px); }
 }
+
+/* WebPAD then and now (Todd): the 1997 poster plus two photos of Todd today with the units, as one strip under the board.
+   A Sharpie circle on Todd in the poster and a hand-drawn arrow into the first new photo. See claude/enjoy-web-surface-build.md. */
+.hello__webpad { grid-column: 1 / -1; position: relative; display: grid; grid-template-columns: 40fr 58fr; gap: 26px 4%; align-items: center; width: min(94%, 560px); margin: var(--sp-xs) auto 0; }
+.hello .hello__webpad .sticker { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: 100%; margin: 0; }
+.hello__webpad .webpad__close { grid-column: 1 / -1; width: 78%; justify-self: center; }
+.hello__webpad .hello__p4 { --rot: -3deg; }
+.webpad__shot { position: relative; display: block; }
+.webpad__circle { position: absolute; left: 6%; top: 61%; width: 40%; height: 20%; overflow: visible; pointer-events: none; }
+.webpad__circle path, .webpad__arrow path { fill: none; stroke: #16141c; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.webpad__arrow { position: absolute; left: 20%; top: 8%; width: 32%; height: 18%; overflow: visible; pointer-events: none; z-index: 6; }   /* phone box; desktop box below. Both are about square so the drawn line is not stretched */
+.webpad__now .hello__cap span, .hello__p4 .hello__cap span { font-size: clamp(1rem, 3.6vw, 1.25rem); }
+@media (min-width: 900px) {
+  .hello__webpad { grid-template-columns: 24fr 42fr 32fr; gap: 0 3%; width: 100%; max-width: 1040px; }
+  .hello__webpad .webpad__close { grid-column: auto; width: 100%; }
+  .webpad__arrow { left: 11%; top: 5%; width: 20%; height: 55%; }
+}
+@media print { .webpad__circle, .webpad__arrow { display: none; } }
 .hello .hello__bio { font-weight: 700; }
 .hello .hello__more { margin-top: var(--sp-xs); }
 /* Phones: the photo board becomes a compact two-column stack so the closing line is not a screen away */
