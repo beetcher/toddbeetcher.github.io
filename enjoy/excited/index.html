@@ -21,12 +21,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Caveat:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css?v=20261006pill2">
-  <link rel="stylesheet" href="excited.css?v=2">
+  <link rel="stylesheet" href="excited.css?v=3">
 </head>
 <body class="excited">
-  <div class="exc__bar"><a class="exc__back" href="../#excited-pill" id="exc-back">&larr; Back to the main page</a></div>
+  <div class="exc__bar" id="top"><a class="exc__back" href="../#excited-pill" id="exc-back">&larr; Back to the main page</a></div>
 
-  <section class="metaphor metaphor--bridge" id="zero-bridge" aria-label="Imagine a farming community">
+  <section class="metaphor metaphor--bridge has-next" id="zero-bridge" aria-label="Imagine a farming community">
     <div class="metaphor__inner">
       <div class="metaphor__text">
         <p class="metaphor__bridge">Imagine a small rural community in the 1800s, farming the land together.</p>
@@ -36,9 +36,10 @@
         <p class="metaphor__bridge metaphor__bridge--turn">And then one day, something changed.</p>
       </div>
     </div>
+    <a class="panel-next" href="#zero-tractor" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="metaphor" id="zero-tractor" aria-labelledby="tractor-title">
+  <section class="metaphor has-next" id="zero-tractor" aria-labelledby="tractor-title">
     <div class="metaphor__inner">
       <div class="metaphor__text metaphor__text--wide">
         <h2 class="metaphor__title" id="tractor-title">Somebody handed you a tractor.</h2>
@@ -55,9 +56,10 @@
       </div>
       <p class="metaphor__lead metaphor__lead--pink">No one understands how to use them spontaneously.</p>
     </div>
+    <a class="panel-next" href="#zero-2" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="zero" id="zero-2" aria-labelledby="zero2-title">
+  <section class="zero has-next" id="zero-2" aria-labelledby="zero2-title">
     <div class="zero__inner">
       <h2 class="zero__title zero__title--sm" id="zero2-title">This is <span class="term">Zero State</span>.</h2>
       <p class="zero__def"><span class="term">Zero State</span> is that blank screen or blank stare, with a tractor, before you&rsquo;ve done anything. You&rsquo;re at zero&nbsp;too.</p>
@@ -68,11 +70,12 @@
       </ol>
       <p>I once downloaded the wrong AI app. Sort of a scam. Then I had to figure out who even makes these.</p>
     </div>
+    <a class="panel-next" href="#zero-sixteen" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="metaphor metaphor--flip" id="zero-sixteen" aria-labelledby="sixteen-title">
+  <section class="metaphor metaphor--flip has-next" id="zero-sixteen" aria-labelledby="sixteen-title">
     <div class="metaphor__inner">
-      <h2 class="metaphor__title metaphor__title--phone">Now forget that tractor. Remember being 15?</h2>
+      <h2 class="metaphor__title metaphor__title--phone">Remember being 15?</h2>
       <div class="metaphor__board">
         <figure class="sticker sticker--print hold-corners metaphor__photo" style="--rot:1.5deg"><img src="../assets/zero-sixteen.webp" srcset="../assets/zero-sixteen-mobile.webp 760w, ../assets/zero-sixteen.webp 1264w" sizes="(max-width: 900px) 90vw, 560px" width="1264" height="848" loading="lazy" decoding="async" alt="A teenager grinning and holding up a set of car keys that catch the evening sun, with a red car parked behind him in the driveway"></figure>
         <ul class="metaphor__minis">
@@ -82,58 +85,62 @@
         </ul>
       </div>
       <div class="metaphor__text">
-        <h2 class="metaphor__title" id="sixteen-title">Now forget that tractor. Remember being 15?</h2>
+        <h2 class="metaphor__title" id="sixteen-title">Remember being 15?</h2>
         <p>You couldn&rsquo;t wait to be 16. Not for the car. For what the car meant.</p>
         <p>All those exciting things you thought lay on the other side of independence and the freedom of driving.</p>
         <p class="metaphor__tag">It was never the car. It was the capability that gave you the independence, and the empowerment that came with it.</p>
         <p>And that&rsquo;s what AI can be for you. It can be a capability. As an amplifier of capability, it is totally empowering. And I&rsquo;ve experienced it.</p>
       </div>
     </div>
+    <a class="panel-next" href="#zero-town" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="metaphor" id="zero-town" aria-labelledby="town-title">
+  <section class="metaphor has-next" id="zero-town" aria-labelledby="town-title">
     <div class="metaphor__inner">
       <h2 class="metaphor__title metaphor__title--phone">I&rsquo;m going to teach you how to drive AI.</h2>
       <figure class="sticker sticker--print hold-pin metaphor__photo" style="--rot:-1deg"><img src="../assets/zero-town.webp" srcset="../assets/zero-town-mobile.webp 760w, ../assets/zero-town.webp 1264w" sizes="(max-width: 900px) 90vw, 560px" width="1264" height="848" loading="lazy" decoding="async" alt="A red hatchback cruises down a small-town main street at golden hour with friends laughing inside, windows down, a burger stand behind them"></figure>
       <div class="metaphor__text">
         <h2 class="metaphor__title" id="town-title">I&rsquo;m going to teach you how to drive AI.</h2>
         <p>It will take you to so many cool things. Brisket. A fixed air conditioner. The Honda dome light. Read on to hear these stories.</p>
-        <figure class="metaphor__not"><img src="../assets/zero-notthese.webp" width="1722" height="251" loading="lazy" decoding="async" alt="A city bus, a box delivery truck and a tank in a row, crossed out"><figcaption>Other workshops</figcaption></figure>
         <p class="metaphor__tag">Not a truck. Not a bus. Not a tank. Just driving around town.</p>
+        <figure class="metaphor__not"><img src="../assets/zero-notthese.webp" width="1722" height="251" loading="lazy" decoding="async" alt="A city bus, a box delivery truck and a tank in a row, crossed out"><figcaption>Other workshops</figcaption></figure>
         <p>Those other super skills are other workshops. This is about learning to drive AI.</p>
       </div>
-      <p class="metaphor__lead">Here&rsquo;s what happened when I got out of zero&hellip; It&rsquo;s been very empowering.</p>
+      <p class="metaphor__lead">Here&rsquo;s what happened when I got out of zero&hellip; It&rsquo;s been very empowering and even more exciting it has been&hellip;</p>
     </div>
+    <a class="panel-next" href="#zero-3" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="zero" id="zero-3" aria-labelledby="amp-title">
+  <section class="zero has-next" id="zero-3" aria-labelledby="amp-title">
     <div class="zero__inner">
-      <h2 class="zero__title" id="amp-title">Amplified</h2>
-      <p class="zero__pivot">But let me tell you, after struggling through this process, I&rsquo;ve come to a point where I couldn&rsquo;t imagine ever going back to not having AI every day. Like driving a car. A TV. An iPhone. A flushing toilet.</p>
+      <h2 class="zero__title zero__title--big" id="amp-title">Amplifying&hellip;</h2>
+      <p class="zero__promise">And once you understand how AI can amplify your capabilities and bring real empowerment to what you&rsquo;re doing for the relationships in your life, the people, places, organizations and things that matter to you.</p>
       <figure class="zero__amp">
         <img src="../assets/amplified-doc.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Two men in starship uniforms grin over a glowing engine, then high-five inside a starship flying into a galaxy.">
         <figcaption class="zero__amp-over"><span class="zero__amp-small">This is me and how I feel when I have Doc with me.</span><span class="zero__amp-big">Amplified!!!!!</span></figcaption>
       </figure>
-      <p class="zero__promise">And once you understand how AI can amplify your capabilities and bring real empowerment to what you&rsquo;re doing for the relationships in your life, the people, places, organizations and things that matter to you.</p>
+      <p class="zero__pivot">But let me tell you, after struggling through this process, I&rsquo;ve come to a point where I couldn&rsquo;t imagine ever going back to not having AI every day. Like driving a car. A TV. An iPhone. A flushing toilet.</p>
       <p class="zero__crescendo">Every day, you&rsquo;ll be glad to have it.</p>
       <p class="zero__because">Because you <u>empowered yourself</u> to help the people, places, organizations and things that matter to you.</p>
     </div>
+    <a class="panel-next" href="#intro-1" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="intro" id="intro-1">
+  <section class="intro has-next" id="intro-1">
     <h2 class="intro__headline">Learn to have fun with AI. No nerd stuff required.</h2>
     <p class="intro__lead">I haven&rsquo;t met one person who isn&rsquo;t carrying some anxiety. They&rsquo;re time pressured. Their parents are getting older. Their kids are afraid about launching. The news is all bad.</p>
-    <p class="intro__cta"><a class="btn" href="../#register">Register for the workshop</a> <a class="intro__link" href="../about/">A letter from Todd</a> <a class="intro__link" href="../faq/">FAQ</a></p>
+    <a class="panel-next" href="#intro-2" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="intro" id="intro-2">
+  <section class="intro has-next" id="intro-2">
     <p class="intro__crux">Life is full of chaos and fear and anxiety, from many different places, including the big unknown boogeyman of AI. Oddly, I arrive at daily moments of <strong>empowerment</strong> because of AI. AI was a tool of chaos that became a source of capability. <strong>Empowerment</strong> is one of the most grounding emotions there is, empowerment through capability, and through the capability to help the people around you. You&rsquo;d be surprised: it&rsquo;s part of the <strong>antidote</strong> to the chaos, a safe haven.</p>
     <p class="intro__title">&ldquo;I can do that&rdquo; is what you say out loud when the capability shows up. That feeling is what this workshop is named for.</p>
-    <p class="intro__cta"><a class="btn" href="../#register">Register for the workshop</a> <a class="intro__link" href="../about/">A letter from Todd</a> <a class="intro__link" href="../faq/">FAQ</a></p>
+    <a class="panel-next" href="#exc-end" aria-label="Next panel">&darr;</a>
   </section>
 
-  <section class="exc__end" aria-label="Back to the main page">
+  <section class="exc__end has-next" id="exc-end" aria-label="Back to the main page">
     <p><a class="btn" href="../#excited-pill">Back to the main page</a></p>
+    <a class="panel-next" href="#top" aria-label="Back to the top">&uarr;</a>
   </section>
 
   <a class="fab" href="../#register">Register</a>
