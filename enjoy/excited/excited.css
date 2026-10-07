@@ -4,3 +4,10 @@
 .exc__back:hover { text-decoration: underline; }
 .exc__end { text-align: center; padding: var(--sp-xl) var(--content-padding) calc(var(--sp-xl) + 56px); background: var(--color-bg); }
 .excited section[id], .excited .btn { scroll-margin-top: 64px; }
+/* Panel order and phone-first titles (thread 12). */
+#zero-bridge { padding-top: 24px; }   /* first panel: sit right under the Back bar */
+.metaphor__title--phone { display: none; }
+@media (max-width: 899px) {
+  .metaphor__title--phone { display: block; margin-bottom: calc(-1 * var(--sp-md)); }
+  #zero-sixteen .metaphor__text > .metaphor__title, #zero-town .metaphor__text > .metaphor__title { display: none; }   /* the phone copy above the picture replaces it */
+}
