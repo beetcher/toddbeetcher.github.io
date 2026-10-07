@@ -72,3 +72,21 @@
 .reg__bar .reg__back { margin: 0; padding: 14px 0; display: block; }
 /* Keep fields clear of the fixed bar when the browser scrolls to them. */
 .rf__field, .rf__person, .rf__section, .rf__summary, .rf__submit, .rf input, .rf select, .rf textarea, .rf__choice, .reg__done { scroll-margin-top: 84px; }
+
+/* ---- "What we need" checklist and the closed optional section ---- */
+.rf__need { background: var(--color-bg-surface); border: 2px solid var(--color-border); border-radius: 18px; padding: var(--sp-sm); margin-top: var(--sp-sm); }
+.rf__need[data-all="1"] { border-color: #2e7d4f; }
+.rf__need-head { font-size: 1.0625rem; line-height: 1.4; margin-bottom: 10px; }
+.rf__need-sub { color: var(--color-text-secondary); }
+.rf__need-list { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.rf__need-item { font: inherit; font-size: var(--type-small); font-weight: 700; cursor: pointer; min-height: 36px; padding: 6px 12px; border-radius: 999px; border: 2px solid var(--color-border); background: var(--color-bg); color: var(--color-text); }
+.rf__need-list li[data-done="1"] .rf__need-item { background: #e8f5ec; border-color: #2e7d4f; color: #1d5a37; }
+.rf__more { margin-top: var(--sp-lg); border: 2px dashed var(--color-border); border-radius: 18px; padding: 0 var(--sp-sm); background: transparent; }
+.rf__more[open] { border-style: solid; padding-bottom: var(--sp-sm); }
+.rf__more > summary { cursor: pointer; list-style: none; padding: var(--sp-sm) 0; min-height: 56px; display: block; position: relative; padding-right: 36px; }
+.rf__more > summary::-webkit-details-marker { display: none; }
+.rf__more > summary::after { content: '+'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font: 800 1.6rem/1 var(--font-heading); color: var(--color-nav); }
+.rf__more[open] > summary::after { content: '\2212'; }
+.rf__more-title { display: block; font: 800 1.2rem/1.2 var(--font-heading); }
+.rf__more-sub { display: block; font-size: var(--type-small); color: var(--color-text-secondary); margin-top: 2px; }
+.rf__more-body > :first-child { margin-top: 0; }

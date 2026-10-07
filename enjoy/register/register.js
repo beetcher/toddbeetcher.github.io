@@ -229,78 +229,138 @@
   var status = h('p', { class: 'rf__status', id: 'rf-status', role: 'status', 'aria-live': 'polite' });
   var submit = h('button', { type: 'submit', class: 'btn btn--block rf__submit', id: 'rf-submit', text: TYPE === 'class' ? 'Send my workshop request' : 'Send my request' });
 
+  var moreBox = null;       // the closed "a little more" section
+  var needBox = null;       // the checklist at the top
+  var NEEDS = [];           // [{label, field, done()}]
   function build() {
-    var parts = [];
-
-    parts.push(section('About you', [
+    // ===== What we need (everything here is required) =====
+    var need = [
       h('div', { class: 'rf__row rf__row--2' }, [
         textField('first_name', 'First name', { required: true, max: 100, autocomplete: 'given-name' }),
         textField('last_name', 'Last name', { required: true, max: 100, autocomplete: 'family-name' }),
       ]),
       textField('email', 'Email', { type: 'email', required: true, max: 200, autocomplete: 'email', hint: 'We will write to you here.' }),
-      textField('phone', 'Phone (optional)', { type: 'tel', max: 40, autocomplete: 'tel' }),
-      radioField('preferred_contact_method', 'How would you like to hear from us?', [['email', 'Email'], ['phone', 'Phone']]),
-    ]));
-
-    var who = [
       radioField('is_requester_attending', 'Will you be taking part?', [['yes', 'Yes, I will be there'], ['no', 'No, I am arranging this for someone else']], { required: true }),
       textField('attendee_count', 'How many people in total?', { type: 'number', required: true, inputmode: 'numeric', hint: 'Count everyone who would like a seat, including you if you are coming.' }),
+      radioField('has_minors_present', 'Will anyone under 18 be there?', [['no', 'No'], ['yes', 'Yes']], { required: true, hint: 'We ask so we can plan for it.' }),
     ];
     FIELDS.attendee_count.el.setAttribute('min', String(CFG.minCount));
     FIELDS.attendee_count.el.setAttribute('max', '50');
-    who.push(h('p', { class: 'rf__label', text: 'Anyone else coming? You can add their names now, or later.' }));
-    who.push(peopleBox);
+    if (CFG.showWhere) {
+      need.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'Somewhere else (a library, cafe, hall, office)']], { required: true }));
+    }
+    var parts = [section('What we need', need)];
+
+    // ===== A little more (all optional, closed to begin with) =====
+    var more = [];
+    more.push(textField('phone', 'Phone (optional)', { type: 'tel', max: 40, autocomplete: 'tel' }));
+    more.push(radioField('preferred_contact_method', 'How would you like to hear from us? (optional)', [['email', 'Email'], ['phone', 'Phone']]));
+
+    more.push(h('p', { class: 'rf__label', text: 'Anyone else coming? (optional) You can add their names now, or later.' }));
+    more.push(peopleBox);
     var addBtn = h('button', { type: 'button', class: 'rf__linkbtn', text: '+ Add a person' });
     addBtn.addEventListener('click', function () {
       // tidy the people already added, so the list stays short
       peopleRows.forEach(function (r) { if (!r.collapsed) collapsePerson(r); });
       var r = addPerson(); r.first.focus(); saveDraft();
     });
-    who.push(addBtn);
-    who.push(radioField('has_minors_present', 'Will anyone under 18 be there?', [['no', 'No'], ['yes', 'Yes']], { required: true, hint: 'We ask so we can plan for it.' }));
-    parts.push(section(TYPE === 'class' ? 'Who would come' : 'Who is coming', who));
+    more.push(addBtn);
 
-    var when = [];
     if (CFG.showWhere) {
-      when.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'Somewhere else (a library, cafe, hall, office)']], { required: true }));
-      when.push(textField('preferred_location', 'Town or area', { max: 200, hint: 'For example, Boulder, or Louisville.' }));
-      when.push(radioField('venue_arrangement', 'Who finds the space?', [['we_have_space', 'We have a place'], ['need_suggestion', 'Please suggest a place']]));
+      more.push(textField('preferred_location', 'Town or area (optional)', { max: 200, hint: 'For example, Boulder, or Louisville.' }));
+      more.push(radioField('venue_arrangement', 'Who finds the space? (optional)', [['we_have_space', 'We have a place'], ['need_suggestion', 'Please suggest a place']]));
     } else {
-      when.push(textField('preferred_location', 'Where would you like it?', { max: 200, hint: 'A town or area. A venue idea is welcome too.' }));
+      more.push(textField('preferred_location', 'Where would you like it? (optional)', { max: 200, hint: 'A town or area. A venue idea is welcome too.' }));
     }
-    when.push(textField('requested_date', 'A date that could work (optional)', { type: 'date', min: todayLocal() }));
-    when.push(textField('alternate_requested_date', 'Another date (optional)', { type: 'date', min: todayLocal() }));
-    when.push(selectField('requested_time_of_day', 'Best time of day (optional)', [['morning', 'Morning'], ['afternoon', 'Afternoon'], ['evening', 'Evening']]));
-    when.push(textField('preferred_times', 'Anything else about timing (optional)', { max: 500, hint: 'For example, weekday mornings, or not on Fridays.' }));
-    parts.push(section(TYPE === 'class' ? 'Where and when' : 'When and where', when));
+    more.push(textField('requested_date', 'A date that could work (optional)', { type: 'date', min: todayLocal() }));
+    more.push(textField('alternate_requested_date', 'Another date (optional)', { type: 'date', min: todayLocal() }));
+    more.push(selectField('requested_time_of_day', 'Best time of day (optional)', [['morning', 'Morning'], ['afternoon', 'Afternoon'], ['evening', 'Evening']]));
+    more.push(textField('preferred_times', 'Anything else about timing (optional)', { max: 500, hint: 'For example, weekday mornings, or not on Fridays.' }));
 
     if (CFG.group) {
-      parts.push(section('About your group', [
-        selectField('group_type', 'What kind of group is it? (optional)', [['family', 'Family'], ['friends', 'Friends'], ['colleagues', 'Colleagues'], ['club_or_nonprofit', 'Club or nonprofit'], ['other', 'Other']]),
-        textField('organization_name', 'Organization name (optional)', { max: 200 }),
-        checkField('needs_invoice', 'We would need an invoice'),
-      ]));
+      more.push(selectField('group_type', 'What kind of group is it? (optional)', [['family', 'Family'], ['friends', 'Friends'], ['colleagues', 'Colleagues'], ['club_or_nonprofit', 'Club or nonprofit'], ['other', 'Other']]));
+      more.push(textField('organization_name', 'Organization name (optional)', { max: 200 }));
+      more.push(checkField('needs_invoice', 'We would need an invoice (optional)'));
     }
 
     var aiOpts = []; for (var i = 1; i <= 10; i++) aiOpts.push([String(i), i === 1 ? '1: Never tried it' : (i === 10 ? '10: Use it every day' : String(i))]);
-    parts.push(section('A little about you and AI', [
-      selectField('proficiency', 'How comfortable are you with AI today? (optional)', aiOpts),
-      areaField('what_they_want', 'What would you love to do with it? (optional)', { max: 2000, placeholder: 'Plan a trip, write a great note, fix something...' }),
-      textField('how_heard', 'How did you hear about this? (optional)', { max: 200 }),
-    ]));
+    more.push(selectField('proficiency', 'How comfortable are you with AI today? (optional)', aiOpts));
+    more.push(areaField('what_they_want', 'What would you love to do with it? (optional)', { max: 2000, placeholder: 'Plan a trip, write a great note, fix something...' }));
+    more.push(textField('how_heard', 'How did you hear about this? (optional)', { max: 200 }));
+
+    moreBox = h('details', { class: 'rf__more' }, [
+      h('summary', {}, [h('span', { class: 'rf__more-title', text: 'A little more, if you like' }), h('span', { class: 'rf__more-sub', text: 'All optional. Dates, names of others, and a few questions about you.' })]),
+      h('div', { class: 'rf__more-body' }, more),
+    ]);
+    parts.push(moreBox);
 
     var hp = h('div', { class: 'rf__hp', 'aria-hidden': 'true' }, [h('label', {}, ['Leave this blank ', h('input', { type: 'text', name: 'website', tabindex: '-1', autocomplete: 'off' })])]);
     FIELDS.website = { kind: 'text', el: hp.querySelector('input'), wrap: hp, required: false, label: 'website', noDraft: true };
 
-    parts.push(section('Permission', [
+    parts.push(section('One last thing', [
       checkField('consent_to_contact', 'It is okay for you to contact me about this request.', { required: true, noDraft: true }),
     ]));
 
+    // ===== The checklist at the top =====
+    NEEDS = [
+      { label: 'Your name', field: 'first_name', done: function () { return !!(val('first_name') && val('last_name')); } },
+      { label: 'Your email', field: 'email', done: function () { return /^\S+@\S+\.\S+$/.test(val('email')); } },
+      { label: 'Taking part?', field: 'is_requester_attending', done: function () { return !!val('is_requester_attending'); } },
+      { label: 'How many people', field: 'attendee_count', done: function () { var c = parseInt(val('attendee_count'), 10); return c >= CFG.minCount && c <= 50; } },
+      { label: 'Anyone under 18?', field: 'has_minors_present', done: function () { return !!val('has_minors_present'); } },
+    ];
+    if (CFG.showWhere) NEEDS.push({ label: 'Where', field: 'location_type', done: function () { return !!val('location_type'); } });
+    NEEDS.push({ label: 'OK to contact you', field: 'consent_to_contact', done: function () { return !!val('consent_to_contact'); } });
+
+    needBox = h('div', { class: 'rf__need', id: 'rf-need' });
+    var needHead = h('p', { class: 'rf__need-head' }, [h('strong', { class: 'rf__need-count' }), h('span', { class: 'rf__need-sub', text: ' needed to send this. Everything else is optional.' })]);
+    var needList = h('ul', { class: 'rf__need-list' });
+    NEEDS.forEach(function (n) {
+      var a = h('button', { type: 'button', class: 'rf__need-item', text: n.label });
+      a.addEventListener('click', function () { jumpTo(n.field); });
+      n.node = h('li', {}, [a]);
+      needList.appendChild(n.node);
+    });
+    needBox.appendChild(needHead); needBox.appendChild(needList);
+    needBox._count = needHead.querySelector('.rf__need-count');
+
+    form.appendChild(needBox);
     parts.forEach(function (p) { form.appendChild(p); });
     form.appendChild(hp);
     form.appendChild(summary);
     form.appendChild(submit);
     form.appendChild(status);
+  }
+  function jumpTo(name) {
+    var f = FIELDS[name]; if (!f) return;
+    f.wrap.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    var t = f.kind === 'radio' ? f.els[0] : f.el;
+    if (t) setTimeout(function () { try { t.focus({ preventScroll: true }); } catch (e) {} }, 250);
+  }
+  function updateNeeds() {
+    if (!needBox) return;
+    var left = 0;
+    NEEDS.forEach(function (n) {
+      var ok = n.done();
+      if (!ok) left += 1;
+      n.node.setAttribute('data-done', ok ? '1' : '0');
+      var b = n.node.firstChild;
+      b.textContent = (ok ? '✓ ' : '') + n.label;
+      b.setAttribute('aria-label', n.label + (ok ? ', done' : ', still needed'));
+    });
+    needBox.setAttribute('data-all', left === 0 ? '1' : '0');
+    needBox._count.textContent = left === 0 ? 'Everything we need is here.' : (left === NEEDS.length ? NEEDS.length + ' things' : left + (left === 1 ? ' thing' : ' things') + ' still');
+    needBox.querySelector('.rf__need-sub').textContent = left === 0 ? ' You can send it now, or add more below.' : ' needed to send this. Everything else is optional.';
+  }
+  function openMoreIfFilled() {
+    if (!moreBox) return;
+    var filled = peopleRows.length > 0;
+    Object.keys(FIELDS).forEach(function (n) {
+      var f = FIELDS[n];
+      if (f.noDraft || NEEDS.some(function (x) { return x.field === n; }) || n === 'last_name' || n === 'location_type') return;
+      var v = val(n); if (v && v !== '') filled = true;
+    });
+    if (filled) moreBox.open = true;
   }
 
   // ---------- reading values ----------
@@ -362,7 +422,7 @@
     var s = storage(); if (s) { try { s.removeItem(DRAFT_KEY); } catch (e) {} }
     idemKey = null;
   }
-  function onChange() { syncMinors(); saveDraft(); }
+  function onChange() { syncMinors(); saveDraft(); updateNeeds(); }
 
   // ---------- checking ----------
   var FRIENDLY = {
@@ -420,6 +480,7 @@
   }
   function showProblems(bad) {
     clearFlags();
+    if (moreBox) bad.forEach(function (b) { var f = FIELDS[b[0]]; if (b[0].indexOf('__person') === 0 || (f && moreBox.contains(f.wrap))) moreBox.open = true; });
     bad.forEach(function (b) {
       if (b[0].indexOf('__person') === 0) {
         var i = parseInt(b[0].slice(8), 10);
@@ -507,7 +568,7 @@
         if (err.code === 'validation_failed' && err.field_errors && err.field_errors.length) {
           var shown = 0;
           err.field_errors.forEach(function (fe) {
-            if (FIELDS[fe.field]) { flag(fe.field, 'Please check ' + (FRIENDLY[fe.field] || 'this answer') + '.'); shown += 1; }
+            if (FIELDS[fe.field]) { if (moreBox && moreBox.contains(FIELDS[fe.field].wrap)) moreBox.open = true; flag(fe.field, 'Please check ' + (FRIENDLY[fe.field] || 'this answer') + '.'); shown += 1; }
           });
           summary.textContent = shown ? 'Something needs another look. It is marked in red above.' : 'We could not accept that request. Please check your answers.';
           summary.setAttribute('data-show', '1'); summary.focus();
@@ -524,12 +585,14 @@
   form.addEventListener('input', onChange);
   form.addEventListener('change', onChange);
   var restored = loadDraft();
+  openMoreIfFilled();
+  updateNeeds();
   if (restored && draftNote) {
     draftNote.setAttribute('data-show', '1');
     var startOver = draftNote.querySelector('button');
     if (startOver) startOver.addEventListener('click', function () {
       clearDraft(); form.reset(); peopleRows.splice(0).forEach(function (r) { r.node.remove(); });
-      draftNote.removeAttribute('data-show'); clearFlags();
+      draftNote.removeAttribute('data-show'); clearFlags(); if (moreBox) moreBox.open = false; updateNeeds();
     });
   }
   if (CFG.minCount > 1 && !val('attendee_count')) setVal('attendee_count', '');
