@@ -712,8 +712,22 @@ function initRegister() {
   };
   document.querySelectorAll('[data-open-register]').forEach((b) => b.addEventListener('click', open));
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-  if (steerDlg) steerDlg.addEventListener('click', (e) => { if (e.target === steerDlg) steerDlg.close(); });
-  if (location.hash === '#register') open();
+  if (steerDlg) {
+    steerDlg.addEventListener('click', (e) => { if (e.target === steerDlg) steerDlg.close(); });
+    // Remember where the visitor was when they picked a card, so "Pick a different option" on a request page
+    // can bring them back to this spot with the cards open.
+    steerDlg.querySelectorAll('.steer__card').forEach((a) => a.addEventListener('click', () => {
+      try { sessionStorage.setItem('icdt_steer_y', String(Math.round(window.scrollY))); } catch (e) { /* ignore */ }
+    }));
+  }
+  if (location.hash === '#register') {
+    if (target === steerDlg) {
+      let y = NaN;
+      try { y = parseInt(sessionStorage.getItem('icdt_steer_y'), 10); } catch (e) { /* ignore */ }
+      if (y > 0) window.scrollTo({ top: y, behavior: 'instant' });
+    }
+    open();
+  }
 }
 
 // ============================================================

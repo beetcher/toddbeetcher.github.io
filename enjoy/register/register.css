@@ -54,3 +54,21 @@
 
 .reg__done .btn { margin-top: var(--sp-sm); }
 .reg:has(.reg__done[data-show="1"]) .reg__note, .reg:has(.reg__done[data-show="1"]) .reg__lede, .reg:has(.reg__done[data-show="1"]) .reg__draft { display: none; }
+
+/* People added to the request: one line each when collapsed, the full form while editing. */
+.rf__person { padding: 0; }
+.rf__person-body { padding: var(--sp-sm); }
+.rf__person-sum { display: none; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px 4px var(--sp-sm); min-height: 52px; }
+.rf__person--collapsed .rf__person-sum { display: flex; }
+.rf__person--collapsed .rf__person-body { display: none; }
+.rf__person-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rf__person-actions { display: flex; flex: none; }
+.rf__done { margin-top: 4px; padding: 12px 24px; }
+.rf__person-body .rf__field { margin-bottom: var(--sp-sm); }
+.reg__done h2:focus { outline: none; }
+
+/* The way back stays on screen while the visitor scrolls a long form. */
+.reg__bar { position: sticky; top: 0; z-index: 20; background: var(--color-bg); margin: 0 calc(-1 * var(--content-padding)) var(--sp-sm); padding: 0 var(--content-padding); border-bottom: 2px solid var(--color-border); }
+.reg__bar .reg__back { margin: 0; padding: 14px 0; display: block; }
+/* Keep fields clear of the fixed bar when the browser scrolls to them. */
+.rf__field, .rf__person, .rf__section, .rf__summary, .rf__submit, .rf input, .rf select, .rf textarea, .rf__choice, .reg__done { scroll-margin-top: 84px; }

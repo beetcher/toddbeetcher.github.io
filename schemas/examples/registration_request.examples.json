@@ -111,6 +111,32 @@
       "no_class_fits": true,
       "preferred_location": "Denver",
       "requested_time_of_day": "evening"
+    },
+    "participant_first_name_only": {
+      "idempotency_key": "af1d3884-10bc-5253-84c0-30426e097392",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "first.only@example.com",
+      "consent_to_contact": true,
+      "is_requester_attending": true,
+      "has_minors_present": false,
+      "registration_type": "private",
+      "attendee_count": 2,
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "location_type": "home",
+      "street_address": "123 Example St",
+      "requested_date": "2026-11-14",
+      "requested_time_of_day": "morning",
+      "has_used_ai_online": true,
+      "proficiency": 3,
+      "what_they_want": "Plan a trip with my husband and write notes to our kids.",
+      "participants": [
+        {
+          "first_name": "Joe"
+        }
+      ]
     }
   },
   "invalid": {
@@ -386,6 +412,32 @@
           "first_name": "Joe",
           "last_name": "Doe",
           "age_band": "adult"
+        }
+      ]
+    },
+    "participant_no_name": {
+      "idempotency_key": "23f56be6-0d5c-5df7-aa0e-2fc27ef37a36",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "nameless@example.com",
+      "consent_to_contact": true,
+      "is_requester_attending": true,
+      "has_minors_present": false,
+      "registration_type": "private",
+      "attendee_count": 2,
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "location_type": "home",
+      "street_address": "123 Example St",
+      "requested_date": "2026-11-14",
+      "requested_time_of_day": "morning",
+      "has_used_ai_online": true,
+      "proficiency": 3,
+      "what_they_want": "Plan a trip with my husband and write notes to our kids.",
+      "participants": [
+        {
+          "email": "joe@example.com"
         }
       ]
     }

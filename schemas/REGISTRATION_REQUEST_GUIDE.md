@@ -88,7 +88,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 
 ### Who is attending
 - `is_requester_attending`: required. False for a gift or when someone is arranging for others.
-- `participants`: everyone else being trained, up to 50. Each has `first_name`, `last_name`, optional `email`, optional `age_band`. For a gift, the recipient is a participant. For a couple, the spouse.
+- `participants`: everyone else being trained, up to 50. Each has a `first_name` or a `last_name` (at least one; Todd: "one or the other is good enough"), optional `email`, optional `age_band`. The requester still gives both names. For a gift, the recipient is a participant. For a couple, the spouse.
 - `attendee_count`: the TOTAL number of people wanting seats, including the requester if attending. Required on every type (even a private session can be two or three). Names are optional, so the count can exceed the names. Endpoint rule: names given (plus the requester if attending) must not exceed the count.
 - `has_minors_present`: required, true or false. Todd: "you need to know if someone's going to bring a kid on site. It's a vital piece of information for use later."
 - `age_band` on requester and participants: in the schema on purpose. The web surface need not ask for it. Todd's policy on whether minors may attend at all is **(open)**; if they do, an adult should be the requester.

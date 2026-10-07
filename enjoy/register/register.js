@@ -24,9 +24,18 @@
   var form = document.getElementById('rf');
   if (!form) return;
 
+  // Local testing: a page opened from localhost or 127.0.0.1 talks to the Firebase emulator by itself.
+  // ?endpoint=<url> overrides that (local addresses only, and it sticks for the tab).
+  var LOCAL_EMULATOR = 'http://127.0.0.1:5101/demo-icdt/us-central1/enjoy_registration_request';
+  function isLocalPage() { return location.hostname === 'localhost' || location.hostname === '127.0.0.1'; }
   function endpoint() {
     var q = new URLSearchParams(location.search).get('endpoint');
-    if (q && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(q)) return q; // local testing only
+    try {
+      if (q && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(q)) sessionStorage.setItem('icdt_endpoint', q);
+      if (isLocalPage()) { var saved = sessionStorage.getItem('icdt_endpoint'); if (saved) return saved; }
+    } catch (e) { /* storage blocked: fall through */ }
+    if (q && isLocalPage() && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(q)) return q;
+    if (isLocalPage()) return LOCAL_EMULATOR;
     return PROD_ENDPOINT;
   }
   function configured() { return endpoint().indexOf('REPLACE') !== 0; }
@@ -126,10 +135,41 @@
   // ---------- participants (other people coming) ----------
   var peopleBox = h('div', { class: 'rf__people' });
   var peopleRows = [];
-  function addPerson(v) {
+  var AGE_LABEL = { adult: 'adult', teen: 'teen', child: 'child' };
+  function personName(r) {
+    var n = (r.first.value.trim() + ' ' + r.last.value.trim()).trim();
+    return n || 'New person';
+  }
+  function refreshSummary(r) {
+    var age = r.age.value ? ' (' + AGE_LABEL[r.age.value] + ')' : '';
+    r.sumText.textContent = personName(r) + age;
+  }
+  function expandPerson(r) {
+    r.collapsed = false;
+    r.node.classList.remove('rf__person--collapsed');
+    r.editBtn.setAttribute('aria-expanded', 'true');
+  }
+  function collapsePerson(r) {
+    if (!r.first.value.trim() && !r.last.value.trim()) {
+      r.err.textContent = 'Please add a first or last name, or remove this person.';
+      r.err.setAttribute('data-show', '1');
+      return false;
+    }
+    if (r.email.value.trim() && !/^\S+@\S+\.\S+$/.test(r.email.value.trim())) {
+      r.err.textContent = 'That email address does not look right.';
+      r.err.setAttribute('data-show', '1');
+      return false;
+    }
+    r.err.textContent = ''; r.err.removeAttribute('data-show');
+    refreshSummary(r);
+    r.collapsed = true;
+    r.node.classList.add('rf__person--collapsed');
+    r.editBtn.setAttribute('aria-expanded', 'false');
+    return true;
+  }
+  function addPerson(v, startCollapsed) {
     v = v || {};
-    var n = peopleRows.length + 1;
-    var row = { first: null, last: null, email: null, age: null, node: null };
+    var row = { first: null, last: null, email: null, age: null, node: null, collapsed: false };
     var mk = function (lab, type, key, max, ac) {
       var id = nextId('p' + key);
       var inp = h('input', { type: type, id: id, maxlength: max, autocomplete: ac || 'off' });
@@ -142,29 +182,46 @@
     [['', 'Prefer not to say'], ['adult', 'Adult'], ['teen', 'Teen'], ['child', 'Child']].forEach(function (o) { age.appendChild(h('option', { value: o[0], text: o[1] })); });
     age.value = v.age || '';
     row.age = age;
-    var remove = h('button', { type: 'button', class: 'rf__linkbtn', text: 'Remove' });
-    var head = h('div', { class: 'rf__person-head' }, [h('span', { text: 'Person ' + n }), remove]);
-    var node = h('div', { class: 'rf__person' }, [
-      head,
+
+    // One-line summary (shown when the person is collapsed) and the full form (shown while editing).
+    var sumText = h('span', { class: 'rf__person-name' });
+    var editBtn = h('button', { type: 'button', class: 'rf__linkbtn', text: 'Edit', 'aria-expanded': 'true' });
+    var removeSum = h('button', { type: 'button', class: 'rf__linkbtn', text: 'Remove' });
+    var sum = h('div', { class: 'rf__person-sum' }, [sumText, h('span', { class: 'rf__person-actions' }, [editBtn, removeSum])]);
+    var removeBody = h('button', { type: 'button', class: 'rf__linkbtn', text: 'Remove' });
+    var doneBtn = h('button', { type: 'button', class: 'btn rf__done', text: 'Done' });
+    var body = h('div', { class: 'rf__person-body' }, [
+      h('div', { class: 'rf__person-head' }, [h('span', { class: 'rf__person-title' }), removeBody]),
       h('div', { class: 'rf__row rf__row--2' }, [mk('First name', 'text', 'first', 100, 'off'), mk('Last name', 'text', 'last', 100, 'off')]),
-      mk('Email (optional)', 'email', 'email', 200),
-      h('div', { class: 'rf__field' }, [h('label', { class: 'rf__label', for: ageId, text: 'Age group (optional)' }), age]),
+      h('div', { class: 'rf__row rf__row--2' }, [
+        mk('Email (optional)', 'email', 'email', 200),
+        h('div', { class: 'rf__field' }, [h('label', { class: 'rf__label', for: ageId, text: 'Age group (optional)' }), age]),
+      ]),
       h('div', { class: 'rf__error', role: 'alert' }),
+      doneBtn,
     ]);
-    row.node = node;
-    row.err = node.lastChild;
-    remove.addEventListener('click', function () {
+    var node = h('div', { class: 'rf__person' }, [sum, body]);
+    row.node = node; row.sumText = sumText; row.editBtn = editBtn;
+    row.err = body.querySelector('.rf__error');
+    var remove = function () {
       peopleRows.splice(peopleRows.indexOf(row), 1);
       node.remove();
       renumber(); saveDraft(); syncMinors();
-    });
+    };
+    removeSum.addEventListener('click', remove);
+    removeBody.addEventListener('click', remove);
+    editBtn.addEventListener('click', function () { expandPerson(row); row.first.focus(); });
+    doneBtn.addEventListener('click', function () { if (collapsePerson(row)) saveDraft(); });
     [row.first, row.last, row.email, row.age].forEach(function (e) { e.addEventListener('input', onChange); e.addEventListener('change', onChange); });
     peopleRows.push(row);
     peopleBox.appendChild(node);
     renumber();
+    refreshSummary(row);
+    if (startCollapsed && (row.first.value.trim() || row.last.value.trim())) collapsePerson(row);
+    return row;
   }
   function renumber() {
-    peopleRows.forEach(function (r, i) { r.node.querySelector('.rf__person-head span').textContent = 'Person ' + (i + 1); });
+    peopleRows.forEach(function (r, i) { r.node.querySelector('.rf__person-title').textContent = 'Person ' + (i + 1); });
   }
 
   // ---------- build the form ----------
@@ -194,7 +251,11 @@
     who.push(h('p', { class: 'rf__label', text: 'Anyone else coming? You can add their names now, or later.' }));
     who.push(peopleBox);
     var addBtn = h('button', { type: 'button', class: 'rf__linkbtn', text: '+ Add a person' });
-    addBtn.addEventListener('click', function () { addPerson(); saveDraft(); });
+    addBtn.addEventListener('click', function () {
+      // tidy the people already added, so the list stays short
+      peopleRows.forEach(function (r) { if (!r.collapsed) collapsePerson(r); });
+      var r = addPerson(); r.first.focus(); saveDraft();
+    });
     who.push(addBtn);
     who.push(radioField('has_minors_present', 'Will anyone under 18 be there?', [['no', 'No'], ['yes', 'Yes']], { required: true, hint: 'We ask so we can plan for it.' }));
     parts.push(section(TYPE === 'class' ? 'Who would come' : 'Who is coming', who));
@@ -293,7 +354,7 @@
       var v = d.fields[n]; if (v === '' || v === false || v == null) return;
       setVal(n, v); any = true;
     });
-    (d.people || []).forEach(function (p) { addPerson(p); any = true; });
+    (d.people || []).forEach(function (p) { addPerson(p, true); any = true; });
     idemKey = d.key || null;
     return any;
   }
@@ -345,7 +406,7 @@
     var ppl = people();
     var named = ppl.filter(function (p) { return p.first || p.last || p.email; });
     named.forEach(function (p, i) {
-      if (!p.first || !p.last) bad.push(['__person' + i, 'Please add a first and last name for each person, or remove the row.']);
+      if (!p.first && !p.last) bad.push(['__person' + i, 'Please add a first or last name for each person, or remove the row.']);
       if (p.email && !/^\S+@\S+\.\S+$/.test(p.email)) bad.push(['__person' + i, 'That email address does not look right.']);
     });
     if (val('is_requester_attending') === 'no' && named.length < 1) bad.push(['is_requester_attending', 'Please add at least one person who will be taking part, below.']);
@@ -363,7 +424,7 @@
       if (b[0].indexOf('__person') === 0) {
         var i = parseInt(b[0].slice(8), 10);
         var named = peopleRows.filter(function (r) { return r.first.value.trim() || r.last.value.trim() || r.email.value.trim(); });
-        var r = named[i]; if (r) { r.err.textContent = b[1]; r.err.setAttribute('data-show', '1'); }
+        var r = named[i]; if (r) { expandPerson(r); r.err.textContent = b[1]; r.err.setAttribute('data-show', '1'); }
       } else flag(b[0], b[1]);
     });
     summary.textContent = 'Please look at ' + bad.length + (bad.length === 1 ? ' thing' : ' things') + ' above. They are marked in red.';
@@ -390,7 +451,9 @@
     if (TYPE === 'class') r.no_class_fits = true; // no classes are scheduled yet: this is a request to build one
     var named = people().filter(function (p) { return p.first || p.last || p.email; });
     if (named.length) r.participants = named.map(function (p) {
-      var o = { first_name: p.first, last_name: p.last };
+      var o = {};
+      if (p.first) o.first_name = p.first;
+      if (p.last) o.last_name = p.last;
       if (p.email) o.email = p.email;
       if (p.age) o.age_band = p.age;
       return o;

@@ -805,6 +805,49 @@
           "email": "spaces@example.com"
         }
       }
+    },
+    {
+      "name": "t31_participant_first_name_only",
+      "layer": "schema",
+      "description": "A listed person needs a first name or a last name, not both.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "d75aeea6-e19f-521c-92d8-e04083b187e6",
+        "email": "first.only@example.com",
+        "participants": [
+          {
+            "first_name": "Joe"
+          }
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "no_previous_id": true
+      }
+    },
+    {
+      "name": "t32_participant_no_name",
+      "layer": "schema",
+      "description": "A listed person with neither a first name nor a last name is refused.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "96bbbc2c-49f5-51f4-bae5-9fefe844d99a",
+        "email": "nameless.person@example.com",
+        "participants": [
+          {
+            "email": "joe@example.com"
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "participants"
+        ],
+        "stored": false
+      }
     }
   ]
 }
