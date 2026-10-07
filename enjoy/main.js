@@ -685,7 +685,7 @@ function initTrialPlane() {
     window.addEventListener('scroll', onScroll, { passive: true });
     fly();
   };
-  const go = () => later(start, preview ? 600 : 4000);   // 4s: the hero rail (initHeroRail) is big until about 2.4s, then settles
+  const go = () => later(start, preview ? 600 : 7000);   // 7s: the hero rail (initHeroRail) is big until about 5.4s, then settles
   if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go);
 }
 
@@ -1241,10 +1241,10 @@ const NED_KEY = 'icdt-ned';
 // ============================================================
 // HERO RAIL + LAUNCH TILE
 // Rail: the one-line identity across the top of the hero ("In-person AI Capabilities Workshop for the rest of us", Todd's final wording).
-// At load a big bold copy sits mid-hero, holds ~1.5s, then shrinks (transform) up into the rail and fades out. Reduced motion: the rail simply shows.
+// At load a big bold copy sits mid-hero, holds ~4.5s, then shrinks (transform) up into the rail and fades out. Reduced motion: the rail simply shows.
 // Tile: the black LAUNCH tile arrives once after the plane's first pass has left, never moves, pulses softly; a click opens the invitation callout only.
 // ============================================================
-const RAIL_HOLD_MS = 1500;
+const RAIL_HOLD_MS = 4500;
 const RAIL_MOVE_MS = 900;
 const LAUNCH_INVITE = 'You are invited to our AI Capabilities Workshop';
 const LAUNCH_LINE = 'Where U are the biggest part.';
@@ -1332,7 +1332,7 @@ function initLaunch() {
   })();
   if (planeExpected) {
     document.addEventListener('plane:settled', () => setTimeout(show, 700), { once: true });
-    setTimeout(show, 16000);
+    setTimeout(show, 19000);
   } else {
     const afterRail = () => setTimeout(show, 1000);
     if (document.querySelector('header.hero.rail-set')) afterRail(); else document.addEventListener('rail:set', afterRail, { once: true });
