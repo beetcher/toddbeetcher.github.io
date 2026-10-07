@@ -1094,7 +1094,7 @@ function initWallEgg() {
 
 // ============================================================
 // DOC HI: one pop-in on the Todd panel. Doc (same picture as the peeker) slides in from the right and lands mid-screen like the trial plane,
-// a short pause, then a bubble says hello for 7 seconds, then he slides out. The X (or Esc) cancels it any time.
+// a short pause, then a bubble says hello for 4 seconds, then he slides out. The X (or Esc) cancels it any time.
 // Once per visit (sessionStorage, try/catch). While it is up, body.doc-hi-on fades the peeker out (CSS only; the peeker code is untouched).
 // Homepage only. Words are Todd's, with "Hi," added.
 // ============================================================
@@ -1157,7 +1157,7 @@ function initDocHi() {
       box.classList.add('is-in');
       talkTimer = setTimeout(() => {
         box.classList.add('is-talking');
-        endTimer = setTimeout(leave, 7000);
+        endTimer = setTimeout(leave, 4000);
       }, 1300);
     };
     if (img.complete && img.naturalWidth) start();
