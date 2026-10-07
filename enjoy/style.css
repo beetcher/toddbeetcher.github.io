@@ -614,10 +614,11 @@ a.fab { display: inline-block; text-decoration: none; }
   .hello__stack > * { width: min(94%, 440px); justify-self: center; }
   .hello__text > :nth-child(1) { order: 1; } .hello__text > :nth-child(2) { order: 2; } .hello__text > :nth-child(3) { order: 3; }
   .hello__webpad { order: 4; }
-  .hello__text > :nth-child(4) { order: 5; } .hello__text > :nth-child(5) { order: 6; } .hello__text > :nth-child(6) { order: 7; }
-  .hello__hike { order: 8; }
-  .hello__text > :nth-child(7) { order: 9; } .hello__text > :nth-child(8) { order: 10; }
-  .hello__family { order: 11; }
+  .hello__text > :nth-child(4) { order: 5; }
+  .hello__hike { order: 6; }
+  .hello__text > :nth-child(5) { order: 7; } .hello__text > :nth-child(6) { order: 8; }
+  .hello__family { order: 9; }
+  .hello__text > :nth-child(7) { order: 10; } .hello__text > :nth-child(8) { order: 11; }
   .hello .hello__turn { order: 13; }
 }
 .hello.has-next { padding-bottom: calc(var(--sp-md) + 64px); }
