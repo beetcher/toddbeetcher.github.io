@@ -1061,6 +1061,38 @@ function initPhoneBubbles() {
 }
 
 // ============================================================
+// EASTER EGG 2 (Todd's): the blank Copilot phone on the Zero State panel. A cursor blinks in its empty screen; a tap wakes the screen
+// (orange and lime glow) and the "wall and pathway" picture grows out of the phone, full screen. Closes on the X, a tap outside the card, or Esc.
+// On phones the picture is small, so a tap on it zooms (scrollable). Picture: assets/wall-pathway*.webp (original in assets/gitignore/).
+// ============================================================
+function initWallEgg() {
+  const btn = document.getElementById('wall-egg'), dlg = document.getElementById('wall-pop');
+  if (!btn || !dlg) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const img = dlg.querySelector('img'), scroll = dlg.querySelector('.wall__scroll'), card = dlg.querySelector('.wall__card');
+  const warm = () => { img.loading = 'eager'; };
+  ['pointerenter', 'touchstart', 'focus'].forEach((ev) => btn.addEventListener(ev, warm, { passive: true, once: true }));
+  const open = () => {
+    const r = btn.getBoundingClientRect();
+    dlg.style.setProperty('--dx', Math.round(r.left + r.width / 2 - window.innerWidth / 2) + 'px');
+    dlg.style.setProperty('--dy', Math.round(r.top + r.height / 2 - window.innerHeight / 2) + 'px');
+    scroll.classList.remove('is-zoomed');
+    scroll.scrollTo(0, 0);
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  };
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();   // the phone's own tap handler (speech bubble) is not wanted here
+    if (reduce) { open(); return; }
+    btn.classList.add('is-flash');
+    setTimeout(() => btn.classList.remove('is-flash'), 450);
+    setTimeout(open, 260);
+  });
+  img.addEventListener('click', () => { if (window.matchMedia('(max-width: 899px)').matches) scroll.classList.toggle('is-zoomed'); });
+  dlg.querySelector('.wall__x').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+}
+
+// ============================================================
 // DOC HI: one pop-in on the Todd panel. Doc (same picture as the peeker) slides in from the right and lands mid-screen like the trial plane,
 // a short pause, then a bubble says hello for 7 seconds, then he slides out. The X (or Esc) cancels it any time.
 // Once per visit (sessionStorage, try/catch). While it is up, body.doc-hi-on fades the peeker out (CSS only; the peeker code is untouched).
@@ -1138,6 +1170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addPanelArrows();
   initPhoneCarousel();
   initPhoneBubbles();
+  initWallEgg();
   initPriceTips();
   initLightbox();
   initReveal();
