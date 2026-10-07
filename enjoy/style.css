@@ -549,15 +549,13 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello__p1 .hello__cap, .hello__p5 .hello__cap, .hello__p0 .hello__cap { padding-top: 6px; }
 .hello__p0 .hello__cap span, .hello__p1 .hello__cap span, .hello__p5 .hello__cap span { font-size: clamp(.85rem, 3vw, 1.05rem); }
 .hello__p0 .hello__cap small { font-size: .75rem; }
-/* Todd panel photo stack (Todd's order): WebPAD then and now, hiking pair (tube over Maui), Napa family, Ironman last (may be cut later).
+/* Todd panel photo stack (Todd's order): WebPAD then and now, hiking pair (tube over Maui), Napa family (Ironman photos live on the Go deeper page only).
    Desktop: one column beside the text. Phones: .hello__text and .hello__stack use display: contents so the text and the photo groups can be interleaved with `order`. */
 .hello__stack { display: flex; flex-direction: column; gap: var(--sp-lg); width: min(94%, 440px); margin: 0 auto; }
 .hello .hello__stack .sticker { position: relative; left: auto; right: auto; top: auto; bottom: auto; width: 100%; margin: 0; }
 .hello__hike { display: grid; grid-template-columns: 54fr 43fr; gap: 3%; align-items: center; }
 .hello__duo { display: flex; flex-direction: column; gap: var(--sp-md); }
-.hello__iron { display: grid; grid-template-columns: 1fr 1fr; gap: 4%; align-items: start; }
 .hello__family .hello__cap span { font-size: clamp(1.05rem, 4vw, 1.3rem); }
-.hello__iron .print__label, .hello__iron .hello__cap span { font-size: clamp(.9rem, 3vw, 1rem); }
 .hello .hello__li { margin: var(--sp-xs) 0 0; font-size: .95rem; font-weight: 600; }
 .hello .hello__li a { color: var(--color-nav); text-decoration: underline; text-underline-offset: 3px; }
 .hello__family .hello__cap span { font-size: clamp(1.15rem, 4.4vw, 1.5rem); }
@@ -607,7 +605,6 @@ a.fab { display: inline-block; text-decoration: none; }
   .hello__hike { order: 8; }
   .hello__text > :nth-child(7) { order: 9; } .hello__text > :nth-child(8) { order: 10; }
   .hello__family { order: 11; }
-  .hello__iron { order: 12; }
   .hello .hello__turn { order: 13; }
 }
 .hello.has-next { padding-bottom: calc(var(--sp-md) + 64px); }
