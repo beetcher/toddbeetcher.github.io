@@ -1061,7 +1061,7 @@ function initPhoneBubbles() {
 }
 
 // ============================================================
-// EASTER EGG 2 (Todd's): the blank Copilot phone on the Zero State panel. A cursor blinks in its empty screen; a tap wakes the screen
+// EASTER EGG 2 (Todd's): the ChatGPT phone on the Zero State panel (the empty middle of its screen). The empty screen says "DO NOT Click this Screen!" as bait; a tap wakes the screen
 // (orange and lime glow) and the "wall and pathway" picture grows out of the phone, full screen. Closes on the X, a tap outside the card, or Esc.
 // On phones the picture is small, so a tap on it zooms (scrollable). Picture: assets/wall-pathway*.webp (original in assets/gitignore/).
 // ============================================================
