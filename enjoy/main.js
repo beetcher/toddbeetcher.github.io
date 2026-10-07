@@ -1225,3 +1225,108 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 // ==== PEEKER END ====
+
+// ============================================================
+// NED AT THE PILL: Ned is Todd's name for Claude (Doc is his name for ChatGPT).
+// When the big pill at the end of Zero State ("Let me get you more excited...") scrolls into view, Ned slides in,
+// points at it and says one line, then leaves. Once per visit (sessionStorage icdt-ned, try/catch). X or Esc closes him.
+// Desktop: he stands beside the pill, bubble over his head. Phones: he leans in just below the pill, bubble to his left.
+// Picture: assets/ned-point.webp (transparent, pointing LEFT, so he stands to the right of the pill).
+// ============================================================
+const NED_KEY = 'icdt-ned';
+const NED_TEXT = 'I’m Ned, Todd’s other AI assistant. Go on, press it. It gets better.';
+
+function initNed() {
+  const pill = document.getElementById('excited-pill');
+  if (!pill || !('IntersectionObserver' in window)) return;
+  const preview = /[?&]ned(=|&|$)/.test(location.search);   // ?ned plays him again, even after he has been seen
+  try { if (!preview && sessionStorage.getItem(NED_KEY)) return; } catch (e) { /* storage blocked: plays once per load */ }
+  let fired = false;
+  const io = new IntersectionObserver((entries) => {
+    if (fired || !entries[0].isIntersecting) return;
+    fired = true;
+    io.disconnect();
+    try { sessionStorage.setItem(NED_KEY, '1'); } catch (e) { /* fine */ }
+    setTimeout(play, 500);
+  }, { rootMargin: "0px 0px -25% 0px", threshold: 0.8 });
+  io.observe(pill);
+
+  function play() {
+    const box = document.createElement('div');
+    box.className = 'ned';
+    box.setAttribute('role', 'status');
+    const img = document.createElement('img');
+    img.className = 'ned__img';
+    img.src = 'assets/ned-point.webp';
+    img.alt = '';
+    img.width = 360; img.height = 1108;
+    const bubble = document.createElement('div');
+    bubble.className = 'ned__bubble';
+    const p = document.createElement('p');
+    p.textContent = NED_TEXT;
+    bubble.appendChild(p);
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'ned__x';
+    x.setAttribute('aria-label', 'Close Ned');
+    x.textContent = '×';
+    box.append(img, bubble, x);
+
+    let talkTimer = null, endTimer = null, outTimer = null, over = false;
+    // Keep Ned lined up with the pill while the page scrolls.
+    const place = () => {
+      const r = pill.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const wide = vw >= 900;
+      box.classList.toggle('ned--wide', wide);
+      const h = wide ? Math.min(330, Math.max(240, window.innerHeight * 0.38)) : 170;
+      const w = h * (img.naturalWidth && img.naturalHeight ? img.naturalWidth / img.naturalHeight : 0.34);
+      box.style.height = h + 'px';
+      box.style.width = w + 'px';
+      if (wide) {
+        // pointing hand is about a third of the way down his picture; put it level with the middle of the pill
+        box.style.top = Math.round(r.top + r.height / 2 - h * 0.34) + 'px';
+        box.style.left = Math.round(Math.min(r.right + 14, vw - w - 8)) + 'px';
+        // the 300px bubble sits up and to the right of Ned (so it does not cover the page text); near the right edge it slides left to stay on screen. Its tail still points at him.
+        const left = Math.min(r.right + 14, vw - w - 8);
+        box.style.setProperty('--bshift', Math.min(100, Math.round(vw - 12 - (left + w / 2 + 150))) + 'px');
+      } else {
+        box.style.top = Math.round(r.bottom + 4) + 'px';
+        box.style.left = Math.round(vw - w - 14) + 'px';
+      }
+    };
+    const leave = () => {
+      if (over) return;
+      over = true;
+      clearTimeout(talkTimer); clearTimeout(endTimer);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('scroll', place);
+      window.removeEventListener('resize', place);
+      pill.classList.remove('is-nudged');
+      box.classList.remove('is-talking');
+      box.classList.remove('is-in');
+      outTimer = setTimeout(() => box.remove(), 900);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') leave(); };
+    x.addEventListener('click', leave);
+    pill.addEventListener('click', leave, { once: true });
+    document.addEventListener('keydown', onKey);
+    const start = () => {
+      if (over) return;
+      document.body.appendChild(box);
+      place();
+      window.addEventListener('scroll', place, { passive: true });
+      window.addEventListener('resize', place);
+      void box.offsetWidth;
+      box.classList.add('is-in');
+      talkTimer = setTimeout(() => {
+        box.classList.add('is-talking');
+        pill.classList.add('is-nudged');
+        endTimer = setTimeout(leave, 9000);
+      }, 1200);
+    };
+    if (img.complete && img.naturalWidth) start();
+    else { img.addEventListener('load', start, { once: true }); img.addEventListener('error', () => { over = true; document.removeEventListener('keydown', onKey); }, { once: true }); }
+  }
+}
+document.addEventListener('DOMContentLoaded', initNed);
