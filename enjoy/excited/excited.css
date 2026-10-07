@@ -8,7 +8,8 @@
 #zero-bridge { padding-top: 24px; }   /* first panel: sit right under the Back bar */
 .metaphor__title--phone { display: none; }
 @media (max-width: 899px) {
-  .metaphor__title--phone { display: block; margin-bottom: calc(-1 * var(--sp-md)); }
+  .metaphor__title--phone { display: block; margin-bottom: 0; }
+  #zero-sixteen .metaphor__title--phone { margin-bottom: var(--sp-lg); }   /* room for the tape on the photo corners */
   #zero-sixteen .metaphor__text > .metaphor__title, #zero-town .metaphor__text > .metaphor__title { display: none; }   /* the phone copy above the picture replaces it */
 }
 
@@ -25,7 +26,7 @@
   #zero-sixteen .metaphor__board, #zero-sixteen .metaphor__text { display: contents; }
   #zero-sixteen .metaphor__photo { order: 1; }
   #zero-sixteen .metaphor__text > p:nth-of-type(-n+2) { order: 2; }
-  #zero-sixteen .metaphor__minis { order: 3; width: 100%; max-width: 620px; margin: 0 auto; }
+  #zero-sixteen .metaphor__minis { order: 3; width: 100%; max-width: 620px; margin: var(--sp-sm) auto var(--sp-sm); }
   #zero-sixteen .metaphor__text > .metaphor__tag, #zero-sixteen .metaphor__text > p:nth-of-type(4) { order: 4; }
   #zero-sixteen .metaphor__text > p { max-width: 560px; margin-left: auto; margin-right: auto; }
 }
