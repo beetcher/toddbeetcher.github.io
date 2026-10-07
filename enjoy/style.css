@@ -992,6 +992,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .ned:not(.ned--wide).is-talking .ned__bubble { transform: none; }
 .ned__x { position: absolute; top: 0; right: 0; width: 30px; height: 30px; border-radius: 50%; border: 0; background: #fff; color: var(--color-text); font-size: 20px; line-height: 30px; padding: 0; cursor: pointer; pointer-events: auto; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); }
 .ned__x::after { content: ''; position: absolute; inset: -8px; }
+.ned:not(.ned--wide) .ned__x { top: auto; bottom: 4px; right: 2px; }   /* phones: close button by his feet, so it does not cover his head */
 .ned__x:hover, .ned__x:focus-visible { background: var(--color-accent-warm); }
 /* the pill gives a small wiggle once Ned has said his line */
 @keyframes ned-nudge { 0%, 100% { transform: none; } 20% { transform: translateX(-5px) rotate(-.6deg); } 45% { transform: translateX(5px) rotate(.6deg); } 70% { transform: translateX(-3px); } }
