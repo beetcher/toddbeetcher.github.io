@@ -639,12 +639,13 @@ function initTrialPlane() {
   let state = 'idle', timers = [], pass = reduce ? 2 : 1;
   const later = (fn, ms) => { const t = setTimeout(fn, ms); timers.push(t); };
   const heroGone = () => hero.getBoundingClientRect().bottom < window.innerHeight * 0.35;
-  const busy = () => document.hidden || document.querySelector('dialog[open]');
+  const busy = () => document.hidden || document.querySelector('dialog[open], .launch__pop.is-open');
   const bubbleText = bubble.querySelector('p');
   const onScroll = () => { if (state !== 'out' && heroGone()) finish(); };
   const finish = () => {
     if (state === 'out') return;
     state = 'out';
+    document.dispatchEvent(new Event('plane:settled'));
     timers.forEach(clearTimeout);
     box.classList.remove('is-landed');
     box.classList.add('is-out');
@@ -663,6 +664,7 @@ function initTrialPlane() {
   };
   const awayForNow = () => {
     state = 'away';
+    document.dispatchEvent(new Event('plane:settled'));
     box.classList.remove('is-landed');
     box.classList.add('is-out');
     later(() => box.remove(), 2000);
@@ -683,7 +685,7 @@ function initTrialPlane() {
     window.addEventListener('scroll', onScroll, { passive: true });
     fly();
   };
-  const go = () => later(start, preview ? 600 : 2000);
+  const go = () => later(start, preview ? 600 : 4000);   // 4s: the hero rail (initHeroRail) is big until about 2.4s, then settles
   if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go);
 }
 
@@ -1110,6 +1112,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initStory();
   initAsk();
   initTrialLetter();
+  initHeroRail();
+  initLaunch();
   initTrialPlane();
   initDocHi();
   // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
@@ -1234,6 +1238,107 @@ document.addEventListener('DOMContentLoaded', () => {
 // Picture: assets/ned-point.webp (transparent, pointing LEFT, so he stands to the right of the pill).
 // ============================================================
 const NED_KEY = 'icdt-ned';
+// ============================================================
+// HERO RAIL + LAUNCH TILE
+// Rail: the one-line identity across the top of the hero ("In-person AI Capabilities Workshop for the rest of us", Todd's final wording).
+// At load a big bold copy sits mid-hero, holds ~1.5s, then shrinks (transform) up into the rail and fades out. Reduced motion: the rail simply shows.
+// Tile: the black LAUNCH tile arrives once after the plane's first pass has left, never moves, pulses softly; a click opens the invitation callout only.
+// ============================================================
+const RAIL_HOLD_MS = 1500;
+const RAIL_MOVE_MS = 900;
+const LAUNCH_INVITE = 'You are invited to our AI Capabilities Workshop';
+const LAUNCH_LINE = 'Where U are the biggest part.';
+
+function initHeroRail() {
+  const hero = document.querySelector('header.hero');
+  const rail = document.getElementById('hero-rail');
+  if (!hero || !rail) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const settle = () => { hero.classList.remove('is-intro'); hero.classList.add('rail-set'); document.dispatchEvent(new Event('rail:set')); };
+  if (reduce || !rail.animate) { settle(); return; }
+
+  const big = el('div', 'hero__rail-big');
+  big.setAttribute('aria-hidden', 'true');
+  big.textContent = rail.textContent.replace(/\s+/g, ' ').trim().replace('In-person', 'In\u2011person');   // non-breaking hyphen: never wraps as "In-" / "person"
+  hero.appendChild(big);
+  hero.classList.add('is-intro');
+
+  const shrink = () => {
+    const b = big.getBoundingClientRect();
+    const r = rail.querySelector('.hero__rail-a').getBoundingClientRect();
+    const rr = rail.getBoundingClientRect();
+    const s = Math.max(0.2, Math.min(1, rr.width / b.width));
+    const dx = (rr.left + rr.width / 2) - (b.left + b.width / 2);
+    const dy = (rr.top + rr.height / 2) - (b.top + b.height / 2);
+    const anim = big.animate([
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: 0 },
+      { transform: 'translate(-50%, -50%) translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')', opacity: 0, offset: 1 }
+    ], { duration: RAIL_MOVE_MS, easing: 'cubic-bezier(.55, 0, .2, 1)', fill: 'forwards' });
+    setTimeout(() => hero.classList.add('rail-in'), Math.round(RAIL_MOVE_MS * 0.45));
+    anim.onfinish = () => { big.remove(); settle(); };
+  };
+  const ready = (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 800))]) : Promise.resolve();
+  ready.then(() => setTimeout(shrink, RAIL_HOLD_MS));
+}
+
+function initLaunch() {
+  const slot = document.getElementById('launch-slot');
+  if (!slot) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const tile = el('button', 'launch__tile');
+  tile.type = 'button';
+  tile.setAttribute('aria-label', 'LAUNCH, AI capabilities workshop. Open your invitation.');
+  tile.setAttribute('aria-expanded', 'false');
+  const img = el('img');
+  img.src = 'assets/launch-tile-mobile.webp';
+  img.srcset = 'assets/launch-tile-mobile.webp 400w, assets/launch-tile.webp 560w';
+  img.sizes = '200px';
+  img.width = 560; img.height = 555;
+  img.alt = '';
+  img.decoding = 'async';
+  tile.appendChild(img);
+
+  const pop = el('div', 'launch__pop');
+  pop.id = 'launch-pop';
+  pop.setAttribute('role', 'region');
+  pop.setAttribute('aria-label', 'Your invitation');
+  pop.appendChild(el('p', 'launch__invite', LAUNCH_INVITE));
+  pop.appendChild(el('p', 'launch__line', LAUNCH_LINE));
+  const x = el('button', 'launch__x', '×');
+  x.type = 'button';
+  x.setAttribute('aria-label', 'Close');
+  pop.appendChild(x);
+  tile.setAttribute('aria-controls', 'launch-pop');
+  slot.appendChild(pop);
+  slot.appendChild(tile);
+
+  const open = () => { pop.classList.add('is-open'); tile.setAttribute('aria-expanded', 'true'); slot.classList.add('is-clicked'); };
+  const close = (refocus) => { pop.classList.remove('is-open'); tile.setAttribute('aria-expanded', 'false'); if (refocus) tile.focus(); };
+  tile.addEventListener('click', (e) => { e.stopPropagation(); pop.classList.contains('is-open') ? close(false) : open(); });
+  x.addEventListener('click', (e) => { e.stopPropagation(); close(true); });
+  pop.addEventListener('click', (e) => e.stopPropagation());
+  document.addEventListener('click', () => { if (pop.classList.contains('is-open')) close(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && pop.classList.contains('is-open')) close(true); });
+
+  // Arrival: after the plane's first pass has left. No plane (dismissed, off, reduced motion): shortly after the rail settles.
+  let shown = false;
+  const show = () => { if (shown) return; shown = true; slot.classList.add('is-here'); };
+  const planeExpected = (() => {
+    if (typeof TRIAL_ON === 'undefined' || !TRIAL_ON || reduce) return false;
+    if (/[?&]trial(=|&|$)/.test(location.search)) return false;
+    if (/[?&]plane(=|&|$)/.test(location.search)) return true;
+    try { return !localStorage.getItem(TRIAL_PLANE_KEY); } catch (e) { return true; }
+  })();
+  if (planeExpected) {
+    document.addEventListener('plane:settled', () => setTimeout(show, 700), { once: true });
+    setTimeout(show, 16000);
+  } else {
+    const afterRail = () => setTimeout(show, 1000);
+    if (document.querySelector('header.hero.rail-set')) afterRail(); else document.addEventListener('rail:set', afterRail, { once: true });
+  }
+}
+
 // While testing, Ned plays every time the pill scrolls into view on a page load. At launch, set NED_ONCE to true so each visitor sees him once per visit.
 const NED_ONCE = false;
 const NED_TEXT = 'I’m Ned, Todd’s other AI assistant. Go on, press it. It gets better.';
