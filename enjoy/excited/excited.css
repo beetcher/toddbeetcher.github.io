@@ -37,3 +37,5 @@
 /* Build 4 (thread 12): the two closing panels are now one (#intro-1, yellow). */
 #intro-1 .intro__lead, #intro-1 .intro__crux, #intro-1 .intro__title { margin: 0 0 var(--sp-md); }
 #intro-1 .intro__close { margin: var(--sp-lg) 0 0; }
+.intro__photo { margin: var(--sp-lg) 0; }
+.intro__photo img { display: block; width: 100%; height: auto; border-radius: 22px; box-shadow: 0 12px 30px rgba(27,19,64,.25); }
