@@ -17,9 +17,8 @@
 #zero-town { background: #efe3c8; }                 /* the tractors were tan then cream; the cars go cream then tan */
 .zero__title--big { font-size: clamp(2.8rem, 10vw, 5.5rem); line-height: 1; letter-spacing: -0.03em; margin-bottom: var(--sp-lg); }
 #zero-3 .zero__promise { margin-top: 0; }
-#intro-1, #intro-2 { max-width: none; padding-left: max(var(--content-padding), calc((100% - 720px) / 2)); padding-right: max(var(--content-padding), calc((100% - 720px) / 2)); }
+#intro-1 { max-width: none; padding-left: max(var(--content-padding), calc((100% - 720px) / 2)); padding-right: max(var(--content-padding), calc((100% - 720px) / 2)); }
 #intro-1 { background: #ffe9a6; }
-#intro-2 { background: #d9f1ec; }
 .exc__end.has-next { position: relative; }
 @media (max-width: 899px) {
   #zero-sixteen .metaphor__inner { gap: var(--sp-md); }
@@ -34,3 +33,7 @@
 /* Build 3 (thread 12): LAUNCH wink. Closer last line on the car panel; "Amplifying..." in the LAUNCH orange to lime (thin dark outline keeps the lime readable on white). */
 #zero-town .metaphor__lead { margin-top: 9px; }   /* grid gap 64px + 40px margin was 104px; 30% less = about 73px */
 #zero-3 .zero__title--big { width: fit-content; margin-left: auto; margin-right: auto; color: #fc7d2d; background: linear-gradient(90deg, #ed6121 0%, #fc7d2d 35%, #ffa142 60%, #c9f92c 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 1px rgba(27,19,64,.95)) drop-shadow(0 2px 0 rgba(27,19,64,.2)); }
+
+/* Build 4 (thread 12): the two closing panels are now one (#intro-1, yellow). */
+#intro-1 .intro__lead, #intro-1 .intro__crux, #intro-1 .intro__title { margin: 0 0 var(--sp-md); }
+#intro-1 .intro__close { margin: var(--sp-lg) 0 0; }
