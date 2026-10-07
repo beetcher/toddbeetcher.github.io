@@ -607,14 +607,17 @@ const TRIAL_PLANE_KEY = 'icdt-trial-plane';
 const TRIAL_PLANE_TEASER = 'Hi there! I’m going to be right back to offer you a trial.';
 const TRIAL_PLANE_TEXT = 'I’m ready to trial this free hands-on starter AI workshop. Click the plane to become one of my first trial members.';
 
-function initTrialPlane() {
+let planeLive = false;   // true while a plane is on its way or flying (the Easter egg never starts a second one)
+function initTrialPlane(forced) {   // forced: the Easter egg (hero upper-left, 3 quick taps) brings the plane back at once
   const hero = document.querySelector('header.hero');
   if (!TRIAL_ON || !hero || /[?&]trial(=|&|$)/.test(location.search)) return;
   const preview = /[?&]plane(=|&|$)/.test(location.search);   // ?plane previews it even after it was dismissed
-  if (/[?&]noplane(=|&|$)/.test(location.search)) return;   // ?noplane: preview the page without the plane (nothing is saved)
+  if (!forced && /[?&]noplane(=|&|$)/.test(location.search)) return;   // ?noplane: preview the page without the plane (nothing is saved)
   const read = () => { try { return localStorage.getItem(TRIAL_PLANE_KEY); } catch (e) { return null; } };
   const remember = () => { try { localStorage.setItem(TRIAL_PLANE_KEY, '1'); } catch (e) { /* storage blocked: fine */ } };
-  if (!preview && read()) return;
+  if (!preview && !forced && read()) return;
+  if (planeLive) return;
+  planeLive = true;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const box = el('aside', 'trial-plane');
@@ -646,6 +649,7 @@ function initTrialPlane() {
   const finish = () => {
     if (state === 'out') return;
     state = 'out';
+    planeLive = false;
     timers.forEach(clearTimeout);
     box.classList.remove('is-landed');
     box.classList.add('is-out');
@@ -684,8 +688,42 @@ function initTrialPlane() {
     window.addEventListener('scroll', onScroll, { passive: true });
     fly();
   };
-  const go = () => later(start, preview ? 600 : 7000);   // 7s: the hero rail (initHeroRail) is big until about 5.4s, then settles
+  const go = () => later(start, forced ? 0 : preview ? 600 : 7000);   // 7s: the hero rail (initHeroRail) is big until about 5.4s, then settles
   if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go);
+}
+
+// ============================================================
+// EASTER EGG (Todd's): 3 quick taps in the hero's upper-left corner bring the trial plane back after it was closed.
+// Clears the plane's saved flag, shows "Takeoff Approved." for 3 seconds, then the plane flies in. No visible hint.
+// Only while the trial plane exists (TRIAL_ON); when the plane is retired for production, this goes quiet too.
+// ============================================================
+const EGG_TAPS = 3, EGG_WINDOW_MS = 1500, EGG_TOAST_MS = 3000;
+function initEgg() {
+  const spot = document.getElementById('egg-spot');
+  if (!TRIAL_ON || !spot) return;
+  let hits = [], toast = null, hideT = 0, flyT = 0;
+  const showToast = () => {
+    if (!toast) {
+      toast = el('div', 'egg-toast', 'Takeoff Approved.');
+      toast.setAttribute('role', 'status');
+      document.body.appendChild(toast);
+    }
+    void toast.offsetWidth;
+    toast.classList.add('is-on');
+    clearTimeout(hideT);
+    hideT = setTimeout(() => toast.classList.remove('is-on'), EGG_TOAST_MS);
+  };
+  spot.addEventListener('click', () => {
+    const now = Date.now();
+    hits = hits.filter((t) => now - t < EGG_WINDOW_MS);
+    hits.push(now);
+    if (hits.length < EGG_TAPS) return;
+    hits = [];
+    try { localStorage.removeItem(TRIAL_PLANE_KEY); } catch (e) { /* storage blocked: the plane still flies this visit */ }
+    showToast();
+    clearTimeout(flyT);
+    flyT = setTimeout(() => initTrialPlane(true), EGG_TOAST_MS + 200);
+  });
 }
 
 // ============================================================
@@ -1114,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLaunch();
   initHeroRail();
   initTrialPlane();
+  initEgg();
   initDocHi();
   // Links from the "What I've done" page (../#brisket etc.): panels are built by JS, so scroll to them here.
   const target = location.hash.length > 1 && document.querySelector('.moment' + location.hash);
