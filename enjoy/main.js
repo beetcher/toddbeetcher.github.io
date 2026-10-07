@@ -611,6 +611,7 @@ function initTrialPlane() {
   const hero = document.querySelector('header.hero');
   if (!TRIAL_ON || !hero || /[?&]trial(=|&|$)/.test(location.search)) return;
   const preview = /[?&]plane(=|&|$)/.test(location.search);   // ?plane previews it even after it was dismissed
+  if (/[?&]noplane(=|&|$)/.test(location.search)) return;   // ?noplane: preview the page without the plane (nothing is saved)
   const read = () => { try { return localStorage.getItem(TRIAL_PLANE_KEY); } catch (e) { return null; } };
   const remember = () => { try { localStorage.setItem(TRIAL_PLANE_KEY, '1'); } catch (e) { /* storage blocked: fine */ } };
   if (!preview && read()) return;
@@ -1240,7 +1241,7 @@ const NED_KEY = 'icdt-ned';
 // HERO RAIL + LAUNCH TILE
 // Rail: the one-line identity across the top of the hero ("In-person AI Capabilities Workshop for the rest of us", Todd's final wording).
 // At load a big bold copy sits mid-hero with the black LAUNCH tile ABOVE it. After ~4.5s the big copy shrinks (transform) up into the rail;
-// 0.5s after that starts, the tile glides down to its resting place under the pitch (above the scroll arrow), lands, and starts pulsing.
+// 0.5s after that starts, the tile glides down (and the pitch paragraph, hidden until now, fades in) to its resting place under the pitch (above the scroll arrow), lands, and starts pulsing.
 // Not clickable until it has landed. A click opens the invitation callout only. Reduced motion: rail and tile simply show in place.
 // ============================================================
 const RAIL_HOLD_MS = 4500;
@@ -1255,11 +1256,12 @@ function initHeroRail() {
   const rail = document.getElementById('hero-rail');
   const slot = document.getElementById('launch-slot');
   const tile = slot && slot.querySelector('.launch__tile');
-  if (!hero || !rail) return;
+  if (!hero || !rail) { if (hero) hero.classList.add('pitch-on'); return; }
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const showPitch = () => hero.classList.add('pitch-on');   // the pitch paragraph is hidden until the tile starts moving, then fades in
   const land = () => { if (slot) slot.classList.add('is-here'); };
   const settle = () => { hero.classList.remove('is-intro'); hero.classList.add('rail-set'); document.dispatchEvent(new Event('rail:set')); };
-  if (reduce || !rail.animate) { settle(); land(); return; }
+  if (reduce || !rail.animate) { settle(); land(); showPitch(); return; }
 
   const big = el('div', 'hero__rail-big');
   big.setAttribute('aria-hidden', 'true');
@@ -1284,6 +1286,7 @@ function initHeroRail() {
   window.addEventListener('resize', place);
 
   const glide = () => {
+    showPitch();
     if (!tile) { land(); return; }
     slot.classList.add('is-gliding');
     tile.style.setProperty('--launch-dy', '0px');
