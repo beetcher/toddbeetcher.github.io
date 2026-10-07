@@ -24,6 +24,7 @@
   ],
   "properties": {
     "registration_type": {
+      "description": "Which kind of request this is: private (one person, a couple or a family), group (a leader bringing a network of people) or class (a seat in a scheduled class, or a request for one). Decides which other fields apply. Required.",
       "enum": [
         "private",
         "group",
@@ -31,84 +32,99 @@
       ]
     },
     "attendee_count": {
+      "description": "The TOTAL number of people wanting seats, including the requester when attending. 1 to 50. Required on every type. Names in participants (plus the requester if attending) must not exceed it, but the count may be higher than the names given.",
       "type": "integer",
       "minimum": 1,
       "maximum": 50
     },
     "idempotency_key": {
+      "description": "A UUID the browser creates once per submission. If the same key arrives again (double tap, retry after a network failure) the endpoint returns the original result and creates nothing. Required.",
       "type": "string",
       "format": "uuid"
     },
     "first_name": {
+      "description": "The requester's first name. The requester is the person filling in the form, who may or may not be attending. Required. Personal data.",
       "type": "string",
       "minLength": 1,
       "maxLength": 100,
       "x_pii": true
     },
     "last_name": {
+      "description": "The requester's last name. Required. Personal data.",
       "type": "string",
       "minLength": 1,
       "maxLength": 100,
       "x_pii": true
     },
     "email": {
+      "description": "The requester's email address. The server trims and lowercases it before validating and before matching repeats. Required. Personal data.",
       "type": "string",
       "format": "email",
       "maxLength": 200,
       "x_pii": true
     },
     "phone": {
+      "description": "The requester's phone number, free text up to 40 characters. Optional. Personal data.",
       "type": "string",
       "maxLength": 40,
       "x_pii": true
     },
     "street_address": {
+      "description": "The requester's street address. Matters mainly when the session is at their home. Optional. Personal data.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "referrer_first_name": {
+      "description": "First name of the person who referred the requester. Optional. Third-party personal data: store it, but do not contact that person without their say-so.",
       "type": "string",
       "maxLength": 100,
       "x_pii": true
     },
     "referrer_last_name": {
+      "description": "Last name of the person who referred the requester. Optional. Third-party personal data.",
       "type": "string",
       "maxLength": 100,
       "x_pii": true
     },
     "referrer_email": {
+      "description": "Email of the person who referred the requester. Optional. Third-party personal data: never used to contact them without their say-so.",
       "type": "string",
       "format": "email",
       "maxLength": 200,
       "x_pii": true
     },
     "presented_cost_cents": {
+      "description": "The price shown to the visitor, in US cents. Read together with presented_cost_basis: per_session is the whole session (private and group), per_person is each attendee (class).",
       "type": "integer",
       "minimum": 0,
-      "maximum": 10000000,
-      "description": "The price shown to the visitor, in US cents. Read together with presented_cost_basis: per_session is the whole session (private and group), per_person is each attendee (class)."
+      "maximum": 10000000
     },
     "presented_cost_basis": {
+      "description": "What the presented price covers: per_session is the whole session (private and group are a flat session price); per_person is each attendee (a class seat). Required alongside presented_cost_cents.",
       "enum": [
         "per_session",
         "per_person"
       ]
     },
     "duration_minutes_requested": {
+      "description": "How long a private or group session should be, in minutes (15 to 600). Required for private and group; not allowed on a class request, because the class sets its own length.",
       "type": "integer",
       "minimum": 15,
       "maximum": 600
     },
     "requested_date": {
+      "description": "A date that could work (YYYY-MM-DD, Mountain time, today or later). Optional. For a \"none fit\" class request this is part of the demand signal.",
       "type": "string",
       "format": "date"
     },
     "alternate_requested_date": {
+      "description": "A second date that could work (YYYY-MM-DD, today or later). Optional.",
       "type": "string",
       "format": "date"
     },
     "requested_time_of_day": {
+      "description": "Best time of day: morning, afternoon or evening. Optional.",
       "enum": [
         "morning",
         "afternoon",
@@ -116,28 +132,35 @@
       ]
     },
     "has_downloaded_ai_app": {
+      "description": "Whether the requester has downloaded an AI app on a phone or computer. Optional background for planning the session.",
       "type": "boolean"
     },
     "has_used_ai_online": {
+      "description": "Whether the requester has used AI on a website. Optional background.",
       "type": "boolean"
     },
     "proficiency": {
+      "description": "How comfortable the requester is with AI today, 1 (never tried it) to 10 (uses it every day). Optional. The scale (1 to 10 here, 1 to 5 on the old form) is still an open decision.",
       "type": "integer",
       "minimum": 1,
       "maximum": 10
     },
     "favorite_ai": {
+      "description": "The AI product the requester likes best, free text. Optional.",
       "type": "string",
       "maxLength": 100
     },
     "ai_name": {
+      "description": "What the requester calls, or would call, their AI assistant. Optional.",
       "type": "string",
       "maxLength": 100
     },
     "is_requester_attending": {
+      "description": "Whether the requester will take part. False for a gift or when arranging for others; then participants must list at least one person. Required.",
       "type": "boolean"
     },
     "participants": {
+      "description": "Everyone else being trained (up to 50). For a gift the recipient is a participant; for a couple, the spouse. Each person needs a first name or a last name (one is enough), plus an optional email and age_band. Personal data about people other than the requester: collect the minimum, and do not contact them without the requester's say-so.",
       "type": "array",
       "maxItems": 50,
       "x_pii": true,
@@ -158,21 +181,25 @@
         ],
         "properties": {
           "first_name": {
+            "description": "First name of this person. A first or last name is required (one is enough).",
             "type": "string",
             "minLength": 1,
             "maxLength": 100
           },
           "last_name": {
+            "description": "Last name of this person. A first or last name is required (one is enough).",
             "type": "string",
             "minLength": 1,
             "maxLength": 100
           },
           "email": {
+            "description": "Optional email for this person. Not used to contact them without the requester's say-so.",
             "type": "string",
             "format": "email",
             "maxLength": 200
           },
           "age_band": {
+            "description": "Optional age group: child, teen or adult. A child or teen means has_minors_present must be true.",
             "enum": [
               "child",
               "teen",
@@ -183,28 +210,34 @@
       }
     },
     "location_type": {
+      "description": "Where a private or group session should happen: home (a private home) or off_site (a library, cafe, hall, office). Required for private and group; not allowed on a class request.",
       "enum": [
         "home",
         "off_site"
       ]
     },
     "preferred_location": {
+      "description": "Where the requester would like it, in their own words (a town, an area, a venue idea). Used by private, group and class (\"none fit\") requests. Optional.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "what_they_want": {
+      "description": "In the requester's words: what they would love to do with AI. Free text up to 2000 characters. The best signal of what a person cares about. Optional.",
       "type": "string",
       "maxLength": 2000
     },
     "preferred_times": {
+      "description": "Anything else about timing, free text (for example \"weekday mornings, not Fridays\"). Optional.",
       "type": "string",
       "maxLength": 500
     },
     "is_gift": {
+      "description": "True when the request is a gift. The recipient is listed in participants, so there are no separate recipient fields.",
       "type": "boolean"
     },
     "devices": {
+      "description": "Devices the requester or their group would bring: iphone, android_phone, tablet, windows_laptop, mac_laptop, other (up to 6, no repeats). Optional.",
       "type": "array",
       "maxItems": 6,
       "uniqueItems": true,
@@ -220,40 +253,50 @@
       }
     },
     "has_paid_ai_account": {
+      "description": "Whether the requester pays for an AI account. Optional background.",
       "type": "boolean"
     },
     "how_heard": {
+      "description": "How the requester heard about the workshop, free text. Optional.",
       "type": "string",
       "maxLength": 200
     },
     "promotion_code": {
+      "description": "An optional code carried in from a promotion link, so promotions can be measured against requests. Matches a promotion record's code.",
       "type": "string",
       "maxLength": 100
     },
     "preferred_contact_method": {
+      "description": "How the requester prefers to be contacted: email or phone. Optional.",
       "enum": [
         "email",
         "phone"
       ]
     },
     "consent_to_contact": {
+      "description": "Must be true: the requester agrees we may contact them about this request. A request without it is refused. Required.",
       "const": true
     },
     "notes": {
+      "description": "Anything that fits nowhere else, free text up to 2000 characters. Optional.",
       "type": "string",
       "maxLength": 2000
     },
     "scheduled_class_id": {
+      "description": "UUID of the scheduled class being requested. Class type only: a class request has exactly one of scheduled_class_id or no_class_fits. The class must exist (class_not_found) and be enrolling (class_closed), and attendee_count must not exceed its maximum capacity (over_capacity).",
       "type": "string",
       "format": "uuid"
     },
     "no_class_fits": {
+      "description": "Must be true when present. Class type only: \"I would like to be part of a class, none of yours work; tell me when one is available.\" Excludes scheduled_class_id. A demand signal, especially with dates, time and location filled in.",
       "const": true
     },
     "has_minors_present": {
+      "description": "Whether anyone under 18 will be on site. Required, true or false. Must be true when any listed person is a child or teen. Vital information for later planning.",
       "type": "boolean"
     },
     "requester_age_band": {
+      "description": "Age group of the requester: child, teen or adult. Optional (the pages do not ask it today).",
       "enum": [
         "child",
         "teen",
@@ -261,10 +304,12 @@
       ]
     },
     "organization_name": {
+      "description": "A club, company, church or nonprofit the request is on behalf of. Optional, any type.",
       "type": "string",
       "maxLength": 200
     },
     "group_type": {
+      "description": "What kind of group this is: family, friends, colleagues, club_or_nonprofit or other. Group type only; optional.",
       "enum": [
         "family",
         "friends",
@@ -274,49 +319,59 @@
       ]
     },
     "needs_invoice": {
+      "description": "True when an organization needs an invoice or purchase order instead of paying by card.",
       "type": "boolean"
     },
     "venue_arrangement": {
+      "description": "Who arranges the space for a private or group session: we_have_space (the requester has a place) or need_suggestion (please suggest one). Optional; not allowed on a class request.",
       "enum": [
         "we_have_space",
         "need_suggestion"
       ]
     },
     "sessions_requested": {
+      "description": "How many sessions the requester wants, for a series (1 to 52). Optional; not allowed on a class request.",
       "type": "integer",
       "minimum": 1,
       "maximum": 52
     },
     "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by the browser.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
       "const": 1,
       "readOnly": true
     },
     "created_at": {
+      "description": "When the record was created (UTC, ISO 8601). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "created_by": {
+      "description": "Who created the record, as an actor string: web:enjoy for the public pages, system:<handler>, user:<uuid>. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "updated_by": {
+      "description": "Who last changed the record, as an actor string. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "source": {
+      "description": "Where the record came from: web_enjoy (the public pages), dashboard or import. Set by the server.",
       "enum": [
         "web_enjoy",
         "dashboard",
@@ -325,27 +380,32 @@
       "readOnly": true
     },
     "previous_id": {
+      "description": "When the same normalized email already had a request of the same type, the id of the earlier record. A flag, never a refusal: repeats are saved as new records. Set by the server.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "deleted_at": {
+      "description": "Soft-delete time. A deleted record is kept but ignored. Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "deleted_by": {
+      "description": "Actor who soft-deleted the record. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "confirmation_number": {
+      "description": "The reference shown to the visitor, ICDT- followed by six characters (no vowels, no 0 or 1, so it reads cleanly and is hard to guess). Set by the server.",
       "type": "string",
       "minLength": 6,
       "maxLength": 20,
       "readOnly": true
     },
     "processing_status": {
+      "description": "Where the request is in processing: not_processed (always at creation), partially_processed or processed. Set by the server and later by handlers.",
       "enum": [
         "not_processed",
         "partially_processed",
@@ -354,40 +414,48 @@
       "readOnly": true
     },
     "processed_at": {
+      "description": "When processing finished. Set by a handler, never by the browser.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "is_paid": {
+      "description": "Whether a payment is tied to this request. False at creation. Never store card or other payment details; this is only a flag plus the source and id below.",
       "type": "boolean",
       "readOnly": true
     },
     "payment_source": {
+      "description": "Which payment system recorded the payment (for example a third-party processor). Set by a handler. Never card details.",
       "type": "string",
       "maxLength": 50,
       "readOnly": true
     },
     "payment_id": {
+      "description": "The payment event's id in that system. Set by a handler. Never card details.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "class_registered_at_request": {
+      "description": "Snapshot: how many people were registered in the class when this request arrived. Present only when a class was picked. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "seats_available_at_request": {
+      "description": "Snapshot: seats left up to the class maximum when this request arrived (never below 0). Present only when a class was picked. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "class_capacity_target_at_request": {
+      "description": "Snapshot: the class's target capacity when this request arrived. Present only when a class was picked. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "class_capacity_max_at_request": {
+      "description": "Snapshot: the class's absolute maximum capacity when this request arrived. Present only when a class was picked. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true

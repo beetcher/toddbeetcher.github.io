@@ -20,21 +20,25 @@
   ],
   "properties": {
     "title": {
+      "description": "The class's public name. Required.",
       "type": "string",
       "minLength": 1,
       "maxLength": 200
     },
     "slug": {
+      "description": "A short unique identifier: lowercase letters, digits and underscores. Never changes once set. Required.",
       "type": "string",
       "pattern": "^[a-z0-9_]+$",
       "minLength": 1,
       "maxLength": 100
     },
     "description": {
+      "description": "A few sentences about the class for the public list, free text up to 2000 characters. Optional.",
       "type": "string",
       "maxLength": 2000
     },
     "status": {
+      "description": "Where the class is in its life, in order: identified (an idea, no date), scheduled (date and venue set), enrolling (taking registration requests), completed, or cancelled. Only enrolling accepts registration requests; any other status gives the class_closed error. Once scheduled, enrolling or completed the class must have starts_at, time_zone, duration_minutes, venue_id and is_venue_confirmed; once enrolling or completed it must also have price_cents and price_basis. Required.",
       "enum": [
         "identified",
         "scheduled",
@@ -44,62 +48,76 @@
       ]
     },
     "cancelled_reason": {
+      "description": "Why a cancelled class was cancelled, free text. Optional.",
       "type": "string",
       "maxLength": 500
     },
     "is_public": {
+      "description": "Whether the class appears in the public list. Whether a private class can still take requests by direct link is an open decision. Required.",
       "type": "boolean"
     },
     "starts_at": {
+      "description": "When the class starts (UTC, ISO 8601). Empty while the class is only an idea. Required once scheduled.",
       "type": "string",
       "format": "date-time"
     },
     "time_zone": {
+      "description": "An IANA time zone name such as America/Denver, so the start time can be shown in local time. Required once scheduled.",
       "type": "string",
       "maxLength": 64
     },
     "duration_minutes": {
+      "description": "How long the class runs, in minutes (15 to 600). Required once scheduled.",
       "type": "integer",
       "minimum": 15,
       "maximum": 600
     },
     "venue_id": {
+      "description": "UUID of the venue record where the class is held. The venue holds the address, contacts, rooms and standing details, so every class there reuses them. Required once scheduled.",
       "type": "string",
       "format": "uuid"
     },
     "venue_room_label": {
+      "description": "The label of a room in that venue's rooms list. The room must exist, and capacity_max should not be above that room's max_occupancy (an endpoint rule, not a schema rule). Optional.",
       "type": "string",
       "minLength": 1,
       "maxLength": 100
     },
     "is_venue_confirmed": {
+      "description": "Whether the venue has been confirmed with the venue (true) or only chosen (false). Required once scheduled.",
       "type": "boolean"
     },
     "venue_notes": {
+      "description": "Anything specific to this class at this venue, for example \"use the side entrance\". Not for standing venue details, which belong on the venue record. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "accessibility_notes": {
+      "description": "Anything about accessibility specific to this class. The physical accessibility facts live on the venue record. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "organizer_name": {
+      "description": "The class organizer's name (for now, Todd). Personal data. Never shown in the public class list.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "organizer_email": {
+      "description": "The class organizer's email. Personal data. Never shown in the public class list.",
       "type": "string",
       "format": "email",
       "maxLength": 200,
       "x_pii": true
     },
     "organizer_phone": {
+      "description": "The class organizer's phone. Personal data. Never shown in the public class list.",
       "type": "string",
       "maxLength": 40,
       "x_pii": true
     },
     "instructor_ids": {
+      "description": "UUIDs of the instructors teaching the class (up to 10, no repeats). Their names and contact details live in a person schema that is not written yet.",
       "type": "array",
       "items": {
         "type": "string",
@@ -109,40 +127,48 @@
       "maxItems": 10
     },
     "capacity_minimum": {
+      "description": "How many people must be registered for the class to run. Must not be above capacity_target (an endpoint rule). Required.",
       "type": "integer",
       "minimum": 1,
       "maximum": 500
     },
     "capacity_target": {
+      "description": "The number planned for (\"we'll take it to 10\"). Must be between capacity_minimum and capacity_max (an endpoint rule). Required.",
       "type": "integer",
       "minimum": 1,
       "maximum": 500
     },
     "capacity_max": {
+      "description": "The absolute ceiling (\"we'll go as high as 15\"). The range from capacity_target to capacity_max is overflow; there is no separate overflow field. A registration request is refused (over_capacity) only when its attendee_count is over this number. Required.",
       "type": "integer",
       "minimum": 1,
       "maximum": 500
     },
     "is_waitlist_enabled": {
+      "description": "Whether the class keeps a waiting list. A waitlisted person is still a registration request; processing decides whether a request is accepted, accepted into overflow, or waitlisted.",
       "type": "boolean"
     },
     "waitlist_max": {
+      "description": "How long the waiting list may grow (0 to 500). Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 500
     },
     "price_cents": {
+      "description": "What the class costs, in US cents. Zero means free. Read with price_basis, so the price shown on a request can be compared with it. Required once enrolling.",
       "type": "integer",
       "minimum": 0,
       "maximum": 10000000
     },
     "price_basis": {
+      "description": "What price_cents covers: per_session (the whole session) or per_person (each attendee). Required once enrolling.",
       "enum": [
         "per_session",
         "per_person"
       ]
     },
     "promotion_ids": {
+      "description": "UUIDs of promotion records (channel, link, cost) for this class, so a promotion's success can be measured. A request carries the optional promotion_code from the link.",
       "type": "array",
       "items": {
         "type": "string",
@@ -152,35 +178,42 @@
       "maxItems": 50
     },
     "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
       "const": 1,
       "readOnly": true
     },
     "created_at": {
+      "description": "When the record was created (UTC, ISO 8601). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "created_by": {
+      "description": "Who created the record, as an actor string such as user:<uuid>. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "updated_by": {
+      "description": "Who last changed the record, as an actor string. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server. Classes are created from the dashboard, never by a public page.",
       "enum": [
         "dashboard",
         "import"
@@ -188,41 +221,49 @@
       "readOnly": true
     },
     "previous_id": {
+      "description": "Id of the earlier record this one follows or replaces; a rescheduled class can point at the one it replaces. Set by the server.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "deleted_at": {
+      "description": "Soft-delete time: the record is kept, never hard-deleted. Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "deleted_by": {
+      "description": "Actor who soft-deleted the record. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "registered_count": {
+      "description": "How many people are registered for the class. Starts at zero and is kept current as requests are processed. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "waitlist_count": {
+      "description": "How many people are on the waiting list. Starts at zero and is kept current as requests are processed. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "attended_count": {
+      "description": "How many people attended, kept current from the attendance collection (not written yet). Starts at zero. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "review_count": {
+      "description": "How many reviews the class has, kept current from the reviews collection. Starts at zero. Set by the server.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "average_rating": {
+      "description": "Average of the class's review ratings, 1 to 5. Absent until the first review exists. Set by the server.",
       "type": "number",
       "minimum": 1,
       "maximum": 5,

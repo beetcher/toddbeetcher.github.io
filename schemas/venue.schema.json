@@ -17,102 +17,124 @@
   ],
   "properties": {
     "name": {
+      "description": "The venue's name as people know it (for example \"Louisville Public Library\"). Required, even for an inactive venue.",
       "type": "string",
       "maxLength": 200,
       "minLength": 1
     },
     "slug": {
+      "description": "A short unique identifier: lowercase letters, digits and underscores. Never changes once set. Required.",
       "type": "string",
       "maxLength": 100,
       "minLength": 1,
       "pattern": "^[a-z0-9_]+$"
     },
     "description": {
+      "description": "A few sentences about the venue, free text up to 2000 characters. Optional.",
       "type": "string",
       "maxLength": 2000
     },
     "status": {
+      "description": "active (usable: appears in the venue picker and can host classes) or inactive (an idea, or a retired venue; kept without deleting). An active venue must have an address, time zone, a contact (name plus email or phone), at least one room, and answers to is_accessible, allows_minors and allows_animals.",
       "enum": [
         "active",
         "inactive"
       ]
     },
     "is_public_venue": {
+      "description": "True for a public venue (library, cafe, hall); false for a private one (a home, an office). Different from a class's is_public, which is whether the class is listed. Required.",
       "type": "boolean"
     },
     "street_address": {
+      "description": "Street address. Personal data when the venue is a private home, so the public class list never shows a private venue's street address. Required when active.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "address_line_2": {
+      "description": "Suite, unit or floor. Personal data for a private home. Optional.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "city": {
+      "description": "City or town. Required when active.",
       "type": "string",
       "maxLength": 100
     },
     "state_region": {
+      "description": "State or region. Required when active.",
       "type": "string",
       "maxLength": 100
     },
     "postal_code": {
+      "description": "Postal or ZIP code. Required when active.",
       "type": "string",
       "maxLength": 20
     },
     "country": {
+      "description": "Two capital letters, ISO 3166 (for example US). Required when active.",
       "type": "string",
       "pattern": "^[A-Z]{2}$"
     },
     "time_zone": {
+      "description": "An IANA time zone name such as America/Denver. A class at this venue takes its time zone from here, and availability_hours are in this zone. Required when active.",
       "type": "string",
       "maxLength": 64
     },
     "latitude": {
+      "description": "GPS latitude of the venue, -90 to 90. Must be given together with longitude. Optional.",
       "type": "number",
       "minimum": -90,
       "maximum": 90
     },
     "longitude": {
+      "description": "GPS longitude of the venue, -180 to 180. Must be given together with latitude. Optional.",
       "type": "number",
       "minimum": -180,
       "maximum": 180
     },
     "parking_description": {
+      "description": "Where to park, in words. Optional; may be given together with the GPS point below or on its own.",
       "type": "string",
       "maxLength": 1000
     },
     "parking_latitude": {
+      "description": "GPS latitude of the parking spot. Must be given together with parking_longitude. Optional.",
       "type": "number",
       "minimum": -90,
       "maximum": 90
     },
     "parking_longitude": {
+      "description": "GPS longitude of the parking spot. Must be given together with parking_latitude. Optional.",
       "type": "number",
       "minimum": -180,
       "maximum": 180
     },
     "entry_description": {
+      "description": "Which door to use, in words. Optional; may be given with the GPS point below or on its own.",
       "type": "string",
       "maxLength": 1000
     },
     "entry_latitude": {
+      "description": "GPS latitude of the entry door. Must be given together with entry_longitude. Optional.",
       "type": "number",
       "minimum": -90,
       "maximum": 90
     },
     "entry_longitude": {
+      "description": "GPS longitude of the entry door. Must be given together with entry_latitude. Optional.",
       "type": "number",
       "minimum": -180,
       "maximum": 180
     },
     "transit_description": {
+      "description": "How to arrive by bus or train. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "location_pin_ids": {
+      "description": "UUIDs of location_pin records: precise spots inside a venue (a picture, a verbal description and GPS). That schema is not written yet, so this only keeps the place to point at them.",
       "type": "array",
       "items": {
         "type": "string",
@@ -122,52 +144,62 @@
       "maxItems": 50
     },
     "contact_name": {
+      "description": "The venue contact's name. Personal data. Required when active.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "contact_email": {
+      "description": "The venue contact's email. Personal data. An active venue needs this or contact_phone. Never shown on public pages.",
       "type": "string",
       "maxLength": 200,
       "format": "email",
       "x_pii": true
     },
     "contact_phone": {
+      "description": "The venue contact's phone. Personal data. An active venue needs this or contact_email. Never shown on public pages.",
       "type": "string",
       "maxLength": 40,
       "x_pii": true
     },
     "backup_contact_name": {
+      "description": "A backup contact's name. Personal data. Optional. Never shown on public pages.",
       "type": "string",
       "maxLength": 200,
       "x_pii": true
     },
     "backup_contact_email": {
+      "description": "A backup contact's email. Personal data. Optional. Never shown on public pages.",
       "type": "string",
       "maxLength": 200,
       "format": "email",
       "x_pii": true
     },
     "backup_contact_phone": {
+      "description": "A backup contact's phone. Personal data. Optional. Never shown on public pages.",
       "type": "string",
       "maxLength": 40,
       "x_pii": true
     },
     "website_url": {
+      "description": "The venue's website. Optional.",
       "type": "string",
       "maxLength": 300,
       "format": "uri"
     },
     "booking_process": {
+      "description": "How to book the space, in words. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "booking_lead_days": {
+      "description": "How many days of notice the venue needs for a booking (0 to 730). Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 730
     },
     "rooms": {
+      "description": "The rooms inside this venue. Rooms live inside the venue record because a room has no life apart from its venue. An active venue needs at least one. Labels are unique within the venue; a class names its room with venue_room_label. The number of rooms is the length of this list.",
       "type": "array",
       "items": {
         "type": "object",
@@ -178,28 +210,34 @@
         ],
         "properties": {
           "label": {
+            "description": "The room's name, such as \"Main room\". Unique within the venue. A class names its room with venue_room_label. Required.",
             "type": "string",
             "maxLength": 100,
             "minLength": 1
           },
           "preferred_occupancy": {
+            "description": "The preferred number of people in the room. Not above max_occupancy. Optional.",
             "type": "integer",
             "minimum": 1,
             "maximum": 1000
           },
           "max_occupancy": {
+            "description": "The most people the room may hold. A class's capacity_max must not exceed this. Required.",
             "type": "integer",
             "minimum": 1,
             "maximum": 1000
           },
           "is_accessible": {
+            "description": "Whether this room is accessible. Optional: a venue can be accessible while one room is not.",
             "type": "boolean"
           },
           "seating_layout": {
+            "description": "How the room is set up (tables, rows, a circle). Optional.",
             "type": "string",
             "maxLength": 200
           },
           "equipment": {
+            "description": "What the room offers, such as a screen, projector, whiteboard or power strips. Optional.",
             "type": "array",
             "items": {
               "type": "string",
@@ -209,6 +247,7 @@
             "maxItems": 30
           },
           "notes": {
+            "description": "Anything else about this room. Optional.",
             "type": "string",
             "maxLength": 500
           }
@@ -217,48 +256,62 @@
       "maxItems": 100
     },
     "has_wifi": {
+      "description": "Whether the venue has wifi available for classes. Optional.",
       "type": "boolean"
     },
     "wifi_notes": {
+      "description": "Wifi details, such as the network name and how reliable it is. Optional.",
       "type": "string",
       "maxLength": 500
     },
     "is_accessible": {
+      "description": "Whether the venue is accessible overall (\"handicap accessible\"). Required when active. A venue can be accessible while one room is not; see rooms.",
       "type": "boolean"
     },
     "has_step_free_entry": {
+      "description": "Whether there is an entrance without steps. Optional.",
       "type": "boolean"
     },
     "has_elevator": {
+      "description": "Whether there is an elevator. Optional.",
       "type": "boolean"
     },
     "has_accessible_restroom": {
+      "description": "Whether there is an accessible restroom. Optional.",
       "type": "boolean"
     },
     "accessibility_notes": {
+      "description": "Anything else a visitor needs to know about accessibility. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "allows_minors": {
+      "description": "Whether people under 18 may attend events at this venue. Required when active. When a registration request has has_minors_present true for a class here and this is false, processing flags it for the organizer; it is not refused at the endpoint.",
       "type": "boolean"
     },
     "allows_animals": {
+      "description": "Whether animals may be brought in. Required when active.",
       "type": "boolean"
     },
     "allows_food": {
+      "description": "Whether food may be brought or served. Optional.",
       "type": "boolean"
     },
     "allows_alcohol": {
+      "description": "Whether alcohol is allowed (it matters for a happy-hour format). Optional.",
       "type": "boolean"
     },
     "requires_insurance": {
+      "description": "Whether the venue wants proof of insurance from the organizer. Optional.",
       "type": "boolean"
     },
     "insurance_notes": {
+      "description": "What insurance the venue asks for. Optional.",
       "type": "string",
       "maxLength": 500
     },
     "availability_hours": {
+      "description": "When the venue can be used: one entry per day of the week, with opening and closing times. A day with no entry is closed. Up to 14 entries.",
       "type": "array",
       "items": {
         "type": "object",
@@ -270,6 +323,7 @@
         ],
         "properties": {
           "day_of_week": {
+            "description": "monday through sunday.",
             "enum": [
               "monday",
               "tuesday",
@@ -281,10 +335,12 @@
             ]
           },
           "opens_at": {
+            "description": "Opening time, 24-hour HH:MM, in the venue's local time. Before closes_at.",
             "type": "string",
             "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
           },
           "closes_at": {
+            "description": "Closing time, 24-hour HH:MM, in the venue's local time. After opens_at.",
             "type": "string",
             "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
           }
@@ -293,25 +349,30 @@
       "maxItems": 14
     },
     "availability_notes": {
+      "description": "Holidays and exceptions to the hours above. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "setup_minutes_before": {
+      "description": "Minutes the space is needed before a class starts (0 to 480). Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 480
     },
     "teardown_minutes_after": {
+      "description": "Minutes the space is needed after a class ends (0 to 480). Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 480
     },
     "cost_cents": {
+      "description": "What the venue charges, in US cents. Zero means a free venue. Must be given together with cost_basis. Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 10000000
     },
     "cost_basis": {
+      "description": "What cost_cents covers: per_hour, per_session or per_day. Must be given together with cost_cents.",
       "enum": [
         "per_hour",
         "per_session",
@@ -319,52 +380,63 @@
       ]
     },
     "deposit_cents": {
+      "description": "A required deposit, in US cents. Optional.",
       "type": "integer",
       "minimum": 0,
       "maximum": 10000000
     },
     "cancellation_terms": {
+      "description": "The venue's cancellation terms, in words. Optional.",
       "type": "string",
       "maxLength": 1000
     },
     "cost_notes": {
+      "description": "Anything else about cost. Optional.",
       "type": "string",
       "maxLength": 500
     },
     "notes": {
+      "description": "Anything that fits nowhere else, free text up to 2000 characters. Optional.",
       "type": "string",
       "maxLength": 2000
     },
     "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
       "const": 1,
       "readOnly": true
     },
     "created_at": {
+      "description": "When the record was created (UTC, ISO 8601). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "created_by": {
+      "description": "Who created the record, as an actor string such as user:<uuid>. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "updated_by": {
+      "description": "Who last changed the record, as an actor string. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server. Venues are created from the dashboard, never by a public page.",
       "enum": [
         "dashboard",
         "import"
@@ -372,26 +444,31 @@
       "readOnly": true
     },
     "previous_id": {
+      "description": "Id of the earlier record this one follows or replaces, when there is one. Set by the server.",
       "type": "string",
       "format": "uuid",
       "readOnly": true
     },
     "deleted_at": {
+      "description": "Soft-delete time: the record is kept, never hard-deleted. Never soft-delete a venue that classes point at; set it inactive instead. Set by the server.",
       "type": "string",
       "format": "date-time",
       "readOnly": true
     },
     "deleted_by": {
+      "description": "Actor who soft-deleted the record. Set by the server.",
       "type": "string",
       "maxLength": 100,
       "readOnly": true
     },
     "review_count": {
+      "description": "How many reviews this venue has. Starts at zero and is kept current by the server from the reviews collection. Reviews themselves are separate records that point back at the venue.",
       "type": "integer",
       "minimum": 0,
       "readOnly": true
     },
     "average_rating": {
+      "description": "Average of the venue's review ratings, 1 to 5. Absent until the first review exists. Kept current by the server.",
       "type": "number",
       "minimum": 1,
       "maximum": 5,
