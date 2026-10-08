@@ -169,35 +169,6 @@
       ],
       "id": "x"
     },
-    "sender_sets_is_paid": {
-      "idempotency_key": "8f14e45f-ceea-4672-9a4e-1f2b3c4d5e6f",
-      "first_name": "Jane",
-      "last_name": "Doe",
-      "email": "jane@example.com",
-      "consent_to_contact": true,
-      "is_requester_attending": true,
-      "has_minors_present": false,
-      "registration_type": "private",
-      "attendee_count": 2,
-      "presented_cost_cents": 50000,
-      "presented_cost_basis": "per_session",
-      "duration_minutes_requested": 120,
-      "location_type": "home",
-      "street_address": "123 Example St",
-      "requested_date": "2026-11-14",
-      "requested_time_of_day": "morning",
-      "has_used_ai_online": true,
-      "proficiency": 3,
-      "what_they_want": "Plan a trip with my husband and write notes to our kids.",
-      "participants": [
-        {
-          "first_name": "Joe",
-          "last_name": "Doe",
-          "age_band": "adult"
-        }
-      ],
-      "is_paid": true
-    },
     "class_picks_and_none_fit": {
       "idempotency_key": "5f8e1d3a-2b7c-4e9f-8a10-4c6d9b2e7f33",
       "first_name": "Jane",
@@ -440,6 +411,35 @@
           "email": "joe@example.com"
         }
       ]
+    },
+    "sender_claims_payment": {
+      "idempotency_key": "8f14e45f-ceea-4672-9a4e-1f2b3c4d5e6f",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "jane@example.com",
+      "consent_to_contact": true,
+      "is_requester_attending": true,
+      "has_minors_present": false,
+      "registration_type": "private",
+      "attendee_count": 2,
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "location_type": "home",
+      "street_address": "123 Example St",
+      "requested_date": "2026-11-14",
+      "requested_time_of_day": "morning",
+      "has_used_ai_online": true,
+      "proficiency": 3,
+      "what_they_want": "Plan a trip with my husband and write notes to our kids.",
+      "participants": [
+        {
+          "first_name": "Joe",
+          "last_name": "Doe",
+          "age_band": "adult"
+        }
+      ],
+      "is_paid": true
     }
   }
 }

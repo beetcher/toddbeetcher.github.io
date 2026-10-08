@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/transaction_record.schema.json",
+  "title": "transaction_record",
+  "description": "A record that money moved: from whom, to whom, how much, how and when. It is a record for provenance and does not replace or perform the transaction itself; the real transaction lives in the payment system, the bank or the cash drawer. Other records (such as a registration_assignment) hold only this record's id, never payment details. Never store card numbers, bank account numbers or other payment credentials, here or anywhere. A refund is a new record (transaction_type refund) that points at the payment it refunds with refund_of_id; an existing record is never edited to become a refund. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: refund_of_id must name an existing record of type payment, and a refund's amount_cents may not exceed that payment's amount_cents less refunds already recorded.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "undecided",
+  "required": [
+    "transaction_type",
+    "payer",
+    "payee",
+    "amount_cents",
+    "method",
+    "status",
+    "occurred_at"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "program_slug"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "transaction_type": {
+            "const": "refund"
+          }
+        },
+        "required": [
+          "transaction_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "refund_of_id"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "refund_of_id"
+          ]
+        }
+      }
+    }
+  ],
+  "properties": {
+    "transaction_type": {
+      "description": "payment (money in), refund (money back out, linked to the payment by refund_of_id) or adjustment (a correction or write-off). Required.",
+      "enum": [
+        "payment",
+        "refund",
+        "adjustment"
+      ]
+    },
+    "payer": {
+      "description": "Who the money came from. Required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "party_type",
+        "name"
+      ],
+      "properties": {
+        "party_type": {
+          "description": "What kind of party: person, organization or program (for example the workshop program itself receiving money). Required.",
+          "enum": [
+            "person",
+            "organization",
+            "program"
+          ]
+        },
+        "name": {
+          "description": "The party's name as it should read on the record. Required.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "x_pii": true
+        },
+        "party_id": {
+          "description": "UUID of the party's own record, when one exists (a person, organization or program record; none are written yet). Optional.",
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "payee": {
+      "description": "Who the money went to. Required.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "party_type",
+        "name"
+      ],
+      "properties": {
+        "party_type": {
+          "description": "What kind of party: person, organization or program (for example the workshop program itself receiving money). Required.",
+          "enum": [
+            "person",
+            "organization",
+            "program"
+          ]
+        },
+        "name": {
+          "description": "The party's name as it should read on the record. Required.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "x_pii": true
+        },
+        "party_id": {
+          "description": "UUID of the party's own record, when one exists (a person, organization or program record; none are written yet). Optional.",
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "amount_cents": {
+      "description": "The amount in whole US cents. Never negative: direction is carried by transaction_type, payer and payee. Required.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "method": {
+      "description": "How it was paid: card_processor (through a third-party processor; the processor holds the card), cash, check, bank_transfer or other. Required.",
+      "enum": [
+        "card_processor",
+        "cash",
+        "check",
+        "bank_transfer",
+        "other"
+      ]
+    },
+    "external_source": {
+      "description": "The outside system that holds the real transaction, for example a processor's name. Optional.",
+      "type": "string",
+      "maxLength": 50
+    },
+    "external_reference": {
+      "description": "The outside system's id for the transaction, such as a processor's payment id or a check number. Never card or account details. Optional.",
+      "type": "string",
+      "maxLength": 100
+    },
+    "status": {
+      "description": "pending (expected or processing), completed (money moved), failed (it did not go through) or voided (cancelled before completing). A refund is a separate record, not a status. Required.",
+      "enum": [
+        "pending",
+        "completed",
+        "failed",
+        "voided"
+      ]
+    },
+    "occurred_at": {
+      "description": "When the money moved, or was expected to. Sent by the dashboard or handler because a transaction may be recorded later than it happened. Required.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "refund_of_id": {
+      "description": "UUID of the payment this refund refunds. Required on a refund and not allowed on any other type.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "note": {
+      "description": "Anything worth remembering about the transaction, in the organizer's words. Never card or account details.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "program_slug": {
+      "description": "Which program the transaction belongs to, as a slug such as launch. Set by the server.",
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "const": 1,
+      "readOnly": true
+    },
+    "created_at": {
+      "description": "When the record was created. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "created_by": {
+      "description": "Who created the record, as an actor string such as user:<uuid> or system:<handler>. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "updated_at": {
+      "description": "When the record was last changed. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_by": {
+      "description": "Who last changed the record, as an actor string. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "source": {
+      "description": "Where the record came from: dashboard, import or system (an automated handler, for example a payment webhook). Set by the server.",
+      "enum": [
+        "dashboard",
+        "import",
+        "system"
+      ],
+      "readOnly": true
+    },
+    "previous_id": {
+      "description": "Id of the earlier record this one follows or replaces. Set by the server.",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted. Records are never hard deleted. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "deleted_by": {
+      "description": "Who soft deleted the record, as an actor string. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    }
+  }
+}

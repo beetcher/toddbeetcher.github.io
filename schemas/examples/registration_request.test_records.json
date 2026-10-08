@@ -220,12 +220,11 @@
         "stored": true,
         "stored_fields": {
           "email": "jane@example.com",
-          "is_paid": false,
           "processing_status": "not_processed",
           "source": "web_enjoy",
           "created_by": "web:enjoy",
           "updated_by": "web:enjoy",
-          "schema_version": 1
+          "schema_version": 2
         },
         "no_previous_id": true
       }
@@ -481,9 +480,9 @@
       }
     },
     {
-      "name": "t11_sender_sets_is_paid",
+      "name": "t11_sender_claims_payment",
       "layer": "schema",
-      "description": "A sender may not claim they have paid.",
+      "description": "A sender may not claim they have paid. Payment is no longer a field on a request at all (payments are transaction records), so is_paid is an unknown field and is refused.",
       "request_from": "t01_private_couple",
       "override": {
         "idempotency_key": "05f9a8f8-c822-52b8-94e6-705356c6f75b",

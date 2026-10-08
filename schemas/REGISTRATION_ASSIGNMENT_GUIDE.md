@@ -25,6 +25,7 @@ Todd: private, group and workshop are all scheduled classes of a certain type. A
 - `status`: required. `accepted` (a seat up to the class target), `overflow` (a seat between target and maximum), `waitlisted` (waiting for a seat), `declined` (not given a seat), `cancelled` (was in, now out). The class's `registered_count` counts accepted and overflow seats only **(proposal)**.
 - `attendee_count`: how many seats this decision covers, 1 to 50. Required. May be fewer than the request asked for, for example when only part of a group fits.
 - `decision_note`: why, in the organizer's words. Optional.
+- `transaction_record_ids`: the ids of the transaction records (payments and refunds) that belong to this assignment. Only ids are kept here; who paid whom and how much live on the transaction record (`TRANSACTION_RECORD_GUIDE.md`). Optional; added as payments are recorded.
 
 ### Program
 - `program_slug`: which program the assignment belongs to, copied from the class. Set by the server. See `SCHEMA_RULES.md`.
@@ -49,7 +50,7 @@ No names, emails, phone numbers or other personal details. They stay on the requ
 
 ## 5. Open
 
-- Payment: whether `is_paid` and the payment id move from the request to the assignment once payments exist **(open)**. Today payment fields live on the request.
+- Payment: decided. Payments are transaction records and the assignment holds only their ids in `transaction_record_ids`. Whether a class can also hold payment ids is open.
 - A person record: later the assignment may point at individual people, not only at a request **(open)**.
 - Retention period (`x_retention` is undecided; required before launch).
 - Series: a party that wants several sessions is not modeled; each scheduled class is one date and time **(open)**.

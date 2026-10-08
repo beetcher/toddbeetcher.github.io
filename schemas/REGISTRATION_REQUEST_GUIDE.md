@@ -116,10 +116,10 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 - `idempotency_key`: a UUID the browser creates once per submission. If the same key arrives twice (double tap, retry), return the original result and create nothing.
 
 ### Set by the server only (readOnly)
-- Identity and provenance: `id` (UUID v4; also the Firestore document id), `schema_version` (1), `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (web_enjoy, dashboard, import), `program_slug` (which program, such as `launch`; set from where the request came in), `previous_id`, `deleted_at`, `deleted_by`. Actors look like `web:enjoy`, `system:<handler>`, `user:<uuid>`.
+- Identity and provenance: `id` (UUID v4; also the Firestore document id), `schema_version` (2), `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (web_enjoy, dashboard, import), `program_slug` (which program, such as `launch`; set from where the request came in), `previous_id`, `deleted_at`, `deleted_by`. Actors look like `web:enjoy`, `system:<handler>`, `user:<uuid>`.
 - `confirmation_number`: shown to the visitor. Format is **(open)**; make it readable and not guessable.
 - Processing: `processing_status` (`not_processed`, `partially_processed`, `processed`; always `not_processed` at creation) and `processed_at`. Todd: "you have to keep track of the status of that processing."
-- Payment: `is_paid` (false at creation), `payment_source`, `payment_id`. These tie a request to a payment event. **Never store card or other payment details.** Whether payment happens at registration at all is not decided; "I could see somebody providing payment" eventually, through a third party.
+- Payment: none. A request carries no payment fields. `is_paid`, `payment_source` and `payment_id` were removed in schema version 2; payments are transaction records (`TRANSACTION_RECORD_GUIDE.md`) whose ids are held by the registration assignment. **Never store card or other payment details.** Whether payment happens at registration at all is not decided; "I could see somebody providing payment" eventually, through a third party.
 - Class snapshot: `class_capacity_target_at_request`, `class_capacity_max_at_request`, `class_registered_at_request`, `seats_available_at_request`: present only when a class was picked, absent otherwise.
 
 ## 6. What the endpoint must do
@@ -133,7 +133,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 7. Names versus count: the names in `participants`, plus the requester if attending, must not exceed `attendee_count`.
 8. For a class pick: load the class. Not found, or a class that is not a public workshop, gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
 9. **Repeats are flagged, never blocked.** Look for an earlier request with the same normalized email and the same type. If one exists, save the new request as a new record with `previous_id` pointing at the earlier one, and reply with a normal success. Because it is only a flag, a false match (a couple sharing one email) does no harm. Repeats are not errors.
-10. Generate `id`, `program_slug` (`launch` for the /enjoy pages), timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`, `is_paid` = false.
+10. Generate `id`, `program_slug` (`launch` for the /enjoy pages), timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`.
 11. Check the full record against the schema and confirm every `x_server_required` field is present.
 12. Store one document. Reply with `confirmation_number` and `registration_type` and nothing else. The wording shown to the visitor says a request was received, never that they are registered.
 13. Protect the public form: rate limit per visitor, Firebase App Check once live. Never put personal data in logs; log ids and codes.
@@ -183,3 +183,7 @@ Todd: this registration could serve other programs. Roundup (the live in-room ev
 ## 13. Where a request goes next (2026-10-08)
 
 A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUIDE.md`). For a private or group request, processing creates a scheduled class of that type (with `source_request_id` pointing back) and assigns the party to it. For a class request, processing assigns the party to the workshop they picked, or later offers one if none fit. The request itself does not change except for its processing status.
+
+## 14. Changes in version 2 (2026-10-08)
+
+`is_paid`, `payment_source` and `payment_id` were removed from the request, because payments are now separate transaction records. Removing fields is a breaking change, so `schema_version` moved from 1 to 2. No stored records existed yet.

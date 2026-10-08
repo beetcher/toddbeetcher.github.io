@@ -139,6 +139,7 @@ Every handler replies in this shape:
 ## 12. Units and chain
 - A **registration request** comes in. A **registration assignment** records the decision. A **scheduled class** is the unit people are assigned to: one date, one time, one room at one venue, of a type (private, group or workshop).
 - Assignments hold no personal details. Names and contacts stay on the request.
+- A **transaction record** says that money moved: from whom, to whom, how much. It does not replace the real transaction, and card or account details are never stored. Other records hold only its id (the assignment keeps `transaction_record_ids`). A refund is a new linked record, never an edit.
 
 ## 13. Legacy
 - `enjoy_signups` and the trial writes are camelCase and stay untouched.

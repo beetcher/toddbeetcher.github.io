@@ -6,7 +6,7 @@
       "schema": "registration_request.schema.json",
       "guide": "REGISTRATION_REQUEST_GUIDE.md",
       "examples": "examples/registration_request.examples.json",
-      "schema_version": 1,
+      "schema_version": 2,
       "test_records": "examples/registration_request.test_records.json"
     },
     {
@@ -31,6 +31,14 @@
       "schema": "registration_assignment.schema.json",
       "guide": "REGISTRATION_ASSIGNMENT_GUIDE.md",
       "examples": "examples/registration_assignment.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "transaction_record",
+      "collection": "transaction_records",
+      "schema": "transaction_record.schema.json",
+      "guide": "TRANSACTION_RECORD_GUIDE.md",
+      "examples": "examples/transaction_record.examples.json",
       "schema_version": 1
     }
   ]

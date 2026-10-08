@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/registration_assignment.schema.json",
   "title": "registration_assignment",
-  "description": "The decision that puts a registration request into a scheduled class: this party is in, in overflow, or waitlisted for this class. A request is not a registration; an assignment is what processing writes after it decides. It links a request to a class and says how many seats it takes. It carries no personal details: names and contacts stay on the request. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: request_id and scheduled_class_id must exist; attendee_count may not exceed the request's attendee_count; the class's registered_count counts accepted and overflow seats only; a request can have more than one assignment over time (for example waitlisted, then accepted), and each change is a new linked record, never an overwrite.",
+  "description": "The decision that puts a registration request into a scheduled class: this party is in, in overflow, or waitlisted for this class. A request is not a registration; an assignment is what processing writes after it decides. It links a request to a class and says how many seats it takes. It carries no personal details: names and contacts stay on the request. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: request_id and scheduled_class_id must exist; attendee_count may not exceed the request's attendee_count; the class's registered_count counts accepted and overflow seats only; a request can have more than one assignment over time (for example waitlisted, then accepted), and each change is a new linked record, never an overwrite. Payments are recorded as transaction_records; this record holds only their ids.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -58,6 +58,16 @@
       "description": "Why, in the organizer's words. Free text.",
       "type": "string",
       "maxLength": 2000
+    },
+    "transaction_record_ids": {
+      "description": "UUIDs of the transaction records (payments and refunds) that belong to this assignment. Only ids are kept here; who paid whom, how much and how live on the transaction record. Optional; added as payments are recorded.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "uniqueItems": true,
+      "maxItems": 20
     },
     "program_slug": {
       "description": "Which program this assignment belongs to, copied from the class. Set by the server.",

@@ -1,0 +1,331 @@
+{
+  "valid": {
+    "card_payment": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "external_source": "processor",
+      "external_reference": "pi_example_123"
+    },
+    "cash_payment": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 5000,
+      "method": "cash",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "note": "Paid at the door."
+    },
+    "check_pending": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "check",
+      "status": "pending",
+      "occurred_at": "2026-11-10T00:00:00Z",
+      "external_reference": "1042"
+    },
+    "refund_of_payment": {
+      "transaction_type": "refund",
+      "payer": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "payee": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "amount_cents": 5000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "refund_of_id": "3f2a1b0c-9d8e-4f7a-8b6c-5d4e3f2a1b0c",
+      "note": "Cancelled two days before."
+    },
+    "organization_payer": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "organization",
+        "name": "Foothills Book Club",
+        "party_id": "6e5d4c3b-2a19-4087-9f6e-5d4c3b2a1908"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "bank_transfer",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "adjustment": {
+      "transaction_type": "adjustment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 1000,
+      "method": "other",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "note": "Write-off of a short payment."
+    }
+  },
+  "invalid": {
+    "missing_amount": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "negative_amount": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": -500,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "amount_not_whole": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 500.5,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "bad_type": {
+      "transaction_type": "charge",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "bad_method": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "bitcoin",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "bad_status": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "refunded",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "refund_without_refund_of_id": {
+      "transaction_type": "refund",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "payment_with_refund_of_id": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "refund_of_id": "3f2a1b0c-9d8e-4f7a-8b6c-5d4e3f2a1b0c"
+    },
+    "payer_without_name": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "bad_party_type": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "bank",
+        "name": "First Bank"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z"
+    },
+    "card_number_field": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "card_number": "4242424242424242"
+    },
+    "camel_case_field": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "externalReference": "x"
+    },
+    "sender_sets_program_slug": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "program_slug": "launch"
+    },
+    "sender_sets_id": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "id": "3f2a1b0c-9d8e-4f7a-8b6c-5d4e3f2a1b0c"
+    },
+    "missing_occurred_at": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed"
+    }
+  }
+}
