@@ -39,7 +39,7 @@ All three share the requester, contact, consent, attendee count, minors flag, AI
 
 **Group.** "An extension of a private with a network of people that may or may not be affiliated, like at the family level." The requester is the group leader. Same fields and rules as private, plus an optional `group_type` (family, friends, colleagues, club or nonprofit, other). Names of the other people are optional because a leader may only know a headcount at first. Individual AI levels are deliberately NOT collected here (see section 5, "Who is attending").
 
-**Class.** A class is a scheduled event from a list. A class request does exactly one of:
+**Class.** A class request picks a scheduled class from a list: a public, enrolling class of type workshop (private and group classes are created later by processing and are never in the list). A scheduled class is a scheduled event. A class request does exactly one of:
 - **Picks a scheduled class** (`scheduled_class_id`, a UUID of a class record). Location, date and time come from the class, so the request does not carry duration or location type.
 - **Says none fit** (`no_class_fits` = true). This means "I would like to be part of a class; none of yours work; tell me when one is available." Location and timing preferences matter most here, because enough of them can justify building a new class. This is a demand signal.
 
@@ -116,7 +116,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 - `idempotency_key`: a UUID the browser creates once per submission. If the same key arrives twice (double tap, retry), return the original result and create nothing.
 
 ### Set by the server only (readOnly)
-- Identity and provenance: `id` (UUID v4; also the Firestore document id), `schema_version` (1), `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (web_enjoy, dashboard, import), `previous_id`, `deleted_at`, `deleted_by`. Actors look like `web:enjoy`, `system:<handler>`, `user:<uuid>`.
+- Identity and provenance: `id` (UUID v4; also the Firestore document id), `schema_version` (1), `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (web_enjoy, dashboard, import), `program_slug` (which program, such as `launch`; set from where the request came in), `previous_id`, `deleted_at`, `deleted_by`. Actors look like `web:enjoy`, `system:<handler>`, `user:<uuid>`.
 - `confirmation_number`: shown to the visitor. Format is **(open)**; make it readable and not guessable.
 - Processing: `processing_status` (`not_processed`, `partially_processed`, `processed`; always `not_processed` at creation) and `processed_at`. Todd: "you have to keep track of the status of that processing."
 - Payment: `is_paid` (false at creation), `payment_source`, `payment_id`. These tie a request to a payment event. **Never store card or other payment details.** Whether payment happens at registration at all is not decided; "I could see somebody providing payment" eventually, through a third party.
@@ -131,9 +131,9 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 5. Honor the idempotency key: the same key twice returns the original success and creates nothing. This is not an error.
 6. Dates: `requested_date` and `alternate_requested_date` must not be in the past (Mountain time). Otherwise `validation_failed` with a field error.
 7. Names versus count: the names in `participants`, plus the requester if attending, must not exceed `attendee_count`.
-8. For a class pick: load the class. Not found gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
+8. For a class pick: load the class. Not found, or a class that is not a public workshop, gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
 9. **Repeats are flagged, never blocked.** Look for an earlier request with the same normalized email and the same type. If one exists, save the new request as a new record with `previous_id` pointing at the earlier one, and reply with a normal success. Because it is only a flag, a false match (a couple sharing one email) does no harm. Repeats are not errors.
-10. Generate `id`, timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`, `is_paid` = false.
+10. Generate `id`, `program_slug` (`launch` for the /enjoy pages), timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`, `is_paid` = false.
 11. Check the full record against the schema and confirm every `x_server_required` field is present.
 12. Store one document. Reply with `confirmation_number` and `registration_type` and nothing else. The wording shown to the visitor says a request was received, never that they are registered.
 13. Protect the public form: rate limit per visitor, Firebase App Check once live. Never put personal data in logs; log ids and codes.
@@ -179,3 +179,7 @@ Todd: this registration could serve other programs. Roundup (the live in-room ev
 3. The endpoint, tested first with the local Firebase emulator, then deployed to a proper project.
 4. A script that sends the test records to the endpoint and confirms documents land correctly in the collection (including repeat flagging, idempotency, rejected read-only fields, and a refused direct browser write).
 5. The web surface, last.
+
+## 13. Where a request goes next (2026-10-08)
+
+A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUIDE.md`). For a private or group request, processing creates a scheduled class of that type (with `source_request_id` pointing back) and assigns the party to it. For a class request, processing assigns the party to the workshop they picked, or later offers one if none fit. The request itself does not change except for its processing status.

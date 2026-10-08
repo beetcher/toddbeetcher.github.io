@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/registration_assignment.schema.json",
+  "title": "registration_assignment",
+  "description": "The decision that puts a registration request into a scheduled class: this party is in, in overflow, or waitlisted for this class. A request is not a registration; an assignment is what processing writes after it decides. It links a request to a class and says how many seats it takes. It carries no personal details: names and contacts stay on the request. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: request_id and scheduled_class_id must exist; attendee_count may not exceed the request's attendee_count; the class's registered_count counts accepted and overflow seats only; a request can have more than one assignment over time (for example waitlisted, then accepted), and each change is a new linked record, never an overwrite.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "undecided",
+  "required": [
+    "request_id",
+    "scheduled_class_id",
+    "status",
+    "attendee_count"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "program_slug",
+    "decided_at",
+    "decided_by"
+  ],
+  "properties": {
+    "request_id": {
+      "description": "UUID of the registration request being decided. Required.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "scheduled_class_id": {
+      "description": "UUID of the scheduled class the party is assigned to. For a private or group request this is the class processing created from it. Required.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "description": "The decision: accepted (a seat up to the class target), overflow (a seat between target and maximum), waitlisted (waiting for a seat), declined (not given a seat) or cancelled (was in, now out). Required.",
+      "enum": [
+        "accepted",
+        "overflow",
+        "waitlisted",
+        "declined",
+        "cancelled"
+      ]
+    },
+    "attendee_count": {
+      "description": "How many seats this decision covers. May be fewer than the request asked for. 1 to 50. Required.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "decision_note": {
+      "description": "Why, in the organizer's words. Free text.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "program_slug": {
+      "description": "Which program this assignment belongs to, copied from the class. Set by the server.",
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "decided_at": {
+      "description": "When the decision was made. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "decided_by": {
+      "description": "Who made the decision, as an actor string such as user:<uuid> or system:<handler>. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "const": 1,
+      "readOnly": true
+    },
+    "created_at": {
+      "description": "When the record was created. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "created_by": {
+      "description": "Who created the record, as an actor string such as user:<uuid> or system:<handler>. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "updated_at": {
+      "description": "When the record was last changed. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_by": {
+      "description": "Who last changed the record, as an actor string. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "source": {
+      "description": "Where the record came from: dashboard, import or system (an automated handler). Set by the server.",
+      "enum": [
+        "dashboard",
+        "import",
+        "system"
+      ],
+      "readOnly": true
+    },
+    "previous_id": {
+      "description": "Id of the earlier assignment this one replaces, for example when a waitlisted party is later accepted as a new record. Set by the server.",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted. Records are never hard deleted. Set by the server.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "deleted_by": {
+      "description": "Who soft deleted the record, as an actor string. Set by the server.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    }
+  }
+}

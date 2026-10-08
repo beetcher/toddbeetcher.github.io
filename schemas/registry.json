@@ -15,7 +15,7 @@
       "schema": "scheduled_class.schema.json",
       "guide": "SCHEDULED_CLASS_GUIDE.md",
       "examples": "examples/scheduled_class.examples.json",
-      "schema_version": 1
+      "schema_version": 2
     },
     {
       "name": "venue",
@@ -23,6 +23,14 @@
       "schema": "venue.schema.json",
       "guide": "VENUE_GUIDE.md",
       "examples": "examples/venue.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "registration_assignment",
+      "collection": "registration_assignments",
+      "schema": "registration_assignment.schema.json",
+      "guide": "REGISTRATION_ASSIGNMENT_GUIDE.md",
+      "examples": "examples/registration_assignment.examples.json",
       "schema_version": 1
     }
   ]

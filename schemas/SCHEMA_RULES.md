@@ -47,6 +47,7 @@ every build session reads these rules first.
 - `created_at`, `created_by`
 - `updated_at`, `updated_by`
 - `source`: where it came from (`web_enjoy`, `dashboard`, `import`)
+- `program_slug`: which program the record belongs to (such as `launch`), on registration requests, scheduled classes and registration assignments. It is how one registration system serves several programs (and, later, other trainers or territories): search a collection for one program. Venues do not carry it, because a venue can serve many programs. It is a slug for now; it becomes `program_id`, a UUID, when programs have their own schema. Added to schemas later, it is a small versioned change.
 - `previous_id` (optional): the earlier record this one follows or replaces
 - `deleted_at`, `deleted_by` (optional): soft delete, never a hard delete
 
@@ -135,7 +136,11 @@ Every handler replies in this shape:
 - Validator libraries: Ajv for TypeScript, `jsonschema` for Python. The
   choice follows the endpoint's language.
 
-## 12. Legacy
+## 12. Units and chain
+- A **registration request** comes in. A **registration assignment** records the decision. A **scheduled class** is the unit people are assigned to: one date, one time, one room at one venue, of a type (private, group or workshop).
+- Assignments hold no personal details. Names and contacts stay on the request.
+
+## 13. Legacy
 - `enjoy_signups` and the trial writes are camelCase and stay untouched.
   New collections follow these rules.
 

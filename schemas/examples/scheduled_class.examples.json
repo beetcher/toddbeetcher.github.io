@@ -3,6 +3,8 @@
     "idea_only": {
       "title": "Boulder evening workshop (idea)",
       "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "identified",
       "is_public": false,
       "capacity_minimum": 6,
@@ -12,6 +14,8 @@
     "scheduled_venue_pending": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "scheduled",
       "is_public": false,
       "capacity_minimum": 6,
@@ -32,6 +36,8 @@
     "enrolling_full_detail": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "enrolling",
       "is_public": true,
       "capacity_minimum": 6,
@@ -63,6 +69,8 @@
     "completed": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "completed",
       "is_public": true,
       "capacity_minimum": 6,
@@ -89,12 +97,32 @@
       "promotion_ids": [
         "8fb15162-93a4-4eb5-8fd6-e7f8091a3b45"
       ]
+    },
+    "private_session_enrolling": {
+      "title": "Private session for a couple",
+      "slug": "private_couple_nov_12",
+      "class_type": "private",
+      "program_slug": "launch",
+      "status": "enrolling",
+      "is_public": false,
+      "starts_at": "2026-11-12T23:00:00Z",
+      "time_zone": "America/Denver",
+      "duration_minutes": 120,
+      "venue_id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "is_venue_confirmed": true,
+      "price_cents": 50000,
+      "price_basis": "per_session",
+      "capacity_minimum": 1,
+      "capacity_target": 2,
+      "capacity_max": 4
     }
   },
   "invalid": {
     "scheduled_without_venue": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "scheduled",
       "is_public": false,
       "capacity_minimum": 6,
@@ -114,6 +142,8 @@
     "scheduled_without_date": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "scheduled",
       "is_public": false,
       "capacity_minimum": 6,
@@ -133,6 +163,8 @@
     "enrolling_without_price": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "enrolling",
       "is_public": true,
       "capacity_minimum": 6,
@@ -161,6 +193,8 @@
     "sender_sets_registered_count": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "enrolling",
       "is_public": true,
       "capacity_minimum": 6,
@@ -192,6 +226,8 @@
     "sender_sets_id": {
       "title": "Boulder evening workshop (idea)",
       "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "identified",
       "is_public": false,
       "capacity_minimum": 6,
@@ -202,6 +238,8 @@
     "camel_case_field": {
       "title": "Boulder evening workshop (idea)",
       "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "identified",
       "is_public": false,
       "capacity_minimum": 6,
@@ -212,6 +250,8 @@
     "bad_status": {
       "title": "Boulder evening workshop (idea)",
       "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "open",
       "is_public": false,
       "capacity_minimum": 6,
@@ -221,6 +261,8 @@
     "instructor_not_uuid": {
       "title": "Intro workshop, Nov 20",
       "slug": "intro_nov_20",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "scheduled",
       "is_public": false,
       "capacity_minimum": 6,
@@ -241,6 +283,8 @@
     "missing_capacity_max": {
       "title": "Boulder evening workshop (idea)",
       "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "identified",
       "is_public": false,
       "capacity_minimum": 6,
@@ -249,11 +293,57 @@
     "bad_slug": {
       "title": "Boulder evening workshop (idea)",
       "slug": "Has Spaces",
+      "class_type": "workshop",
+      "program_slug": "launch",
       "status": "identified",
       "is_public": false,
       "capacity_minimum": 6,
       "capacity_target": 10,
       "capacity_max": 15
+    },
+    "missing_class_type": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "program_slug": "launch",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    },
+    "bad_class_type": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "class_type": "class",
+      "program_slug": "launch",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    },
+    "bad_program_slug": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "Launch Program",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15
+    },
+    "sender_sets_source_request_id": {
+      "title": "Boulder evening workshop (idea)",
+      "slug": "boulder_evening_idea",
+      "class_type": "workshop",
+      "program_slug": "launch",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 6,
+      "capacity_target": 10,
+      "capacity_max": 15,
+      "source_request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f"
     }
   }
 }

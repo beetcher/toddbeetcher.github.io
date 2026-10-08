@@ -1,0 +1,89 @@
+{
+  "valid": {
+    "accepted": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2
+    },
+    "overflow_with_note": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "overflow",
+      "attendee_count": 1,
+      "decision_note": "Past the target of 10; room has space up to the maximum."
+    },
+    "waitlisted_partial": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "waitlisted",
+      "attendee_count": 3,
+      "decision_note": "Asked for 4 seats; 3 fit on the waitlist."
+    },
+    "declined": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "declined",
+      "attendee_count": 1,
+      "decision_note": "Under 18 without an adult."
+    }
+  },
+  "invalid": {
+    "missing_request_id": {
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2
+    },
+    "missing_scheduled_class_id": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "status": "accepted",
+      "attendee_count": 2
+    },
+    "bad_status": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "registered",
+      "attendee_count": 2
+    },
+    "count_zero": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 0
+    },
+    "request_id_not_uuid": {
+      "request_id": "not-a-uuid",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2
+    },
+    "sender_sets_decided_by": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2,
+      "decided_by": "user:me"
+    },
+    "sender_sets_program_slug": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2,
+      "program_slug": "launch"
+    },
+    "camel_case_field": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2,
+      "decisionNote": "x"
+    },
+    "unknown_field": {
+      "request_id": "9c1d2e3f-4a5b-4c6d-8e7f-0a1b2c3d4e5f",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "status": "accepted",
+      "attendee_count": 2,
+      "first_name": "Todd"
+    }
+  }
+}

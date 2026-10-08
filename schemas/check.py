@@ -15,6 +15,7 @@ Verifies, for every type in schemas/registry.json:
     different tests share an idempotency key; seed classes are valid scheduled_class
     records, and snapshot, class_closed and over_capacity expectations match them;
     setup.now parses (the clock the endpoint runner uses);
+    a class request may only pick a seed class of type workshop;
     seed venues are valid venue records, every seed class points at a seed venue, names a room that
     exists there, and its capacity_max is not above that room's max_occupancy
 Passing means the schema, guide, examples and test records agree. Needs: pip install jsonschema
@@ -198,6 +199,10 @@ for e in REG:
                 want = {"class_capacity_target_at_request": sd["capacity_target"], "class_capacity_max_at_request": sd["capacity_max"], "class_registered_at_request": sd["registered_count"], "seats_available_at_request": max(0, sd["capacity_max"] - sd["registered_count"])}
                 if exp["snapshot"] != want:
                     fails.append(f"{c['name']}: snapshot does not match seed class (expected {want})")
+            if sd and exp["ok"] and sd.get("class_type") != "workshop":
+                fails.append(f"{c['name']}: a class request may only pick a workshop, but the seed class is {sd.get('class_type')}")
+            if sd and exp.get("error_code") == "class_not_found" and sd.get("class_type") == "workshop" and sd["status"] == "enrolling" and sd.get("is_public"):
+                fails.append(f"{c['name']}: class_not_found test uses a public enrolling workshop")
             if sd and exp.get("error_code") == "class_closed" and sd["status"] == "enrolling":
                 fails.append(f"{c['name']}: class_closed test uses an enrolling class")
             if sd and exp.get("error_code") == "over_capacity" and doc.get("attendee_count", 0) <= sd["capacity_max"]:

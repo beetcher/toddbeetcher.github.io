@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/registration_request.schema.json",
   "title": "registration_request",
-  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule).",
+  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id; it must be a public workshop) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule).",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -283,7 +283,7 @@
       "maxLength": 2000
     },
     "scheduled_class_id": {
-      "description": "UUID of the scheduled class being requested. Class type only: a class request has exactly one of scheduled_class_id or no_class_fits. The class must exist (class_not_found) and be enrolling (class_closed), and attendee_count must not exceed its maximum capacity (over_capacity).",
+      "description": "UUID of the scheduled class being requested. Class type only: a class request has exactly one of scheduled_class_id or no_class_fits. The class must exist and be a public workshop (class_not_found) and be enrolling (class_closed), and attendee_count must not exceed its maximum capacity (over_capacity).",
       "type": "string",
       "format": "uuid"
     },
@@ -377,6 +377,14 @@
         "dashboard",
         "import"
       ],
+      "readOnly": true
+    },
+    "program_slug": {
+      "description": "Which program this request belongs to, as a slug such as launch. Set by the server from where the request came in (the /enjoy pages give launch). Never sent by a browser.",
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100,
       "readOnly": true
     },
     "previous_id": {
@@ -609,6 +617,7 @@
     "updated_at",
     "updated_by",
     "source",
+    "program_slug",
     "confirmation_number",
     "processing_status",
     "is_paid"

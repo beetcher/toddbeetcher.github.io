@@ -8,6 +8,8 @@ Written October 6, 2026 from the class design conversation (thread 11).
 
 ## 1. What a scheduled class is
 
+The definitive unit: **one date, one time, one room at one venue, with its instructors and capacity.** Every time a workshop runs, that is a new scheduled class record. People are assigned to it by a registration assignment (`REGISTRATION_ASSIGNMENT_GUIDE.md`). It has a type, `class_type`: `private` (one person, a couple or a family), `group` (a leader bringing a network of people) or `workshop` (the public workshop people pick from a list). Todd: private, group and workshop are all scheduled classes of a certain type.
+
 A workshop that people can ask to join. A class is created by the organizer (Todd) from the dashboard, never by a public page. It may exist long before it has a date: a class can begin as an idea built from demand (people who said "none of your classes fit").
 
 The class record stays light. It holds **references** (venue, instructors, promotions) and **summary numbers** (registered, waitlist, attended, reviews). The bigger things are their own collections, each with its own schema: venues (written, see `VENUE_GUIDE.md`) and, not yet written, instructors (identities and contact details live in a person schema), reviews, attendance and promotions.
@@ -25,6 +27,9 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 ## 3. Fields
 
 ### The class itself
+- `class_type`: `private`, `group` or `workshop`. Required. A registration request of type class can only pick a `workshop`. Private and group classes are created by processing when a request is accepted, not by the public.
+- `program_slug`: which program the class belongs to, a slug such as `launch`. Required; the dashboard fills in `launch`. It lets one system serve many programs and territories, so all classes for one program can be found together. It becomes a `program_id` (a UUID) when programs get their own record **(proposal)**.
+- `source_request_id`: private and group classes only. The registration request the class was created from. Set by the server.
 - `title`, `slug` (lowercase letters, digits and underscores; unique; never changes), `description`.
 - `is_public`: whether the class appears in the public list. A private class can still take requests by direct link **(proposal)**.
 
@@ -60,7 +65,7 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 - `promotion_ids`: UUIDs of promotion records (channel, link, cost), so success can be measured. The request carries an optional `promotion_code` carried in from the link.
 
 ### Set by the server only (readOnly)
-- Identity and provenance: `id`, `schema_version`, `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (`dashboard` or `import`), `previous_id` (a rescheduled class can point at the one it replaces), `deleted_at`, `deleted_by`.
+- Identity and provenance: `id`, `schema_version` (now 2), `created_at`, `created_by`, `updated_at`, `updated_by`, `source` (`dashboard` or `import`), `previous_id` (a rescheduled class can point at the one it replaces), `deleted_at`, `deleted_by`.
 - Summary numbers, kept current by processing: `registered_count`, `waitlist_count`, `attended_count` (from the attendance collection), `review_count` and `average_rating` (from the reviews collection, 1 to 5).
 - `x_server_required` in the schema lists the readOnly fields every stored class must have. `average_rating` is absent until a first review exists.
 
@@ -79,3 +84,7 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 - Which fields the public class list may expose.
 - Whether a private class (`is_public` false) is reachable by a direct link.
 - The attendance app Todd described for checking people in.
+
+## Changes in version 2 (2026-10-08)
+
+`class_type` and `program_slug` were added and made required, and `source_request_id` was added, so the schema version moved from 1 to 2. No stored records existed yet. Private and group classes are classes of a type, so they share this schema and the capacity rules (a private class is usually a minimum of 1, a target of 2 and a small maximum).
