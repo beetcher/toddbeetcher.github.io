@@ -102,6 +102,25 @@
   #editPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .req { color: var(--orange); font-weight: 800; }
   .lsub { font-weight: 800; margin: 14px 0 2px; }
+  .chiplink { all: unset; box-sizing: border-box; min-height: 44px; display: inline-flex; align-items: center; color: #7a3a00; text-decoration: underline; cursor: pointer; font-weight: 600; font-size: 14px; }
+  .chiplink:focus-visible { outline: 3px solid var(--orange); }
+  li .lchips { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; padding: 0 14px 4px; font-size: 14px; color: var(--muted); }
+  dialog.lsdlg { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: calc(100vw - 24px); max-width: 560px; max-height: calc(100vh - 24px); background: var(--cream); color: var(--ink); }
+  dialog.lsdlg[open] { display: flex; flex-direction: column; }
+  dialog.lsdlg::backdrop { background: rgba(0,0,0,.45); }
+  .lshead { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--card); border-radius: 14px 14px 0 0; }
+  .lshead button { white-space: nowrap; flex: none; padding: 0 14px; }
+  .lshead h2 { margin: 0; font-size: 18px; overflow-wrap: anywhere; }
+  .lsbody { overflow-y: auto; padding: 4px 14px 14px; flex: 1 1 auto; -webkit-overflow-scrolling: touch; }
+  .dmsg { padding: 8px 14px 0; min-height: 1.4em; color: var(--err); font-weight: 600; font-size: 14px; }
+  .dmsg.ok { color: #2f5d00; }
+  .rentry { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 10px 0; background: var(--card); }
+  .rentry .rl { font-size: 14px; color: var(--muted); padding: 1px 0; overflow-wrap: anywhere; }
+  .lsdlg label.f { display: block; font-weight: 600; margin-top: 12px; }
+  .lsdlg input, .lsdlg select, .lsdlg textarea { width: 100%; min-height: 48px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  .lsdlg textarea { min-height: 96px; }
+  .lsdlg .btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .lsdlg .confirm { margin-top: 8px; }
   .rrow { border: 1px solid var(--line); border-radius: 10px; padding: 4px 12px 12px; margin: 10px 0; background: #fcfaf5; }
   .rhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
   .rhead button { min-height: 40px; }
@@ -109,7 +128,7 @@
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .drow { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 8px 0; border-top: 1px solid var(--line); }
   .drow label.day { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; text-transform: capitalize; }
-  #editPanel .drow label.day input { width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
+  #editPanel .drow label.day input, .lsdlg .drow label.day input { width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
   .drow .times { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .drow .times[hidden] { display: none; }
   .drow .times span { color: var(--muted); font-size: 13px; display: block; }
@@ -502,11 +521,15 @@
     kind.textContent = rec.is_public_venue ? "Public venue" : "Private space";
     var place = document.createElement("div"); place.className = "sub";
     place.textContent = [rec.city, rec.state_region].filter(Boolean).join(", ");
-    var chips = document.createElement("div"); chips.className = "chips";
-    var rooms = document.createElement("span"); rooms.textContent = "Rooms: " + ((rec.rooms && rec.rooms.length) || 0);
     var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
-    chips.appendChild(rooms); chips.appendChild(added);
-    [top, kind, place, chips].forEach(function (n) { head.appendChild(n); });
+    [top, kind, place].forEach(function (n) { head.appendChild(n); });
+    var chips = document.createElement("div"); chips.className = "lchips";
+    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
+    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
+    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
+    rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
+    hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
+    chips.appendChild(rlink); chips.appendChild(hlink); chips.appendChild(added);
 
     var detail = document.createElement("div"); detail.className = "detail";
     detail.appendChild(venueActions(rec));
@@ -518,7 +541,7 @@
       var open = li.classList.toggle("open");
       head.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    li.appendChild(head); li.appendChild(detail);
+    li.appendChild(head); li.appendChild(chips); li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -790,23 +813,99 @@
     return (LIST_ISSUES[field] && LIST_ISSUES[field][issue]) || ("Check the " + (field === "rooms" ? "rooms" : "hours") + ".");
   }
 
+  function lfield(parent, key, text, node) {
+    var w = mk("div"); var id = "lf" + (++listUid) + "_" + key;
+    var l = mk("label", "f", text); l.htmlFor = id; node.id = id;
+    w.appendChild(l); w.appendChild(node); parent.appendChild(w); return w;
+  }
+  function lopt(sel, value, text) { var o = mk("option", "", text); o.value = value; sel.appendChild(o); }
+
+  // The fields of one room, appended to box. Returns the inputs.
+  function buildRoomFields(box, r) {
+    var f = {};
+    f.label = mk("input"); f.label.type = "text"; f.label.maxLength = 100; f.label.autocomplete = "off"; f.label.value = r.label || "";
+    lfield(box, "label", "Room name (like Main room)", f.label);
+    var two = mk("div", "two"); box.appendChild(two);
+    f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.min = 1; f.max.max = 1000; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
+    lfield(two, "max", "Most people", f.max);
+    f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.min = 1; f.pref.max = 1000; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
+    lfield(two, "pref", "Comfortable number", f.pref);
+    f.acc = mk("select"); lopt(f.acc, "", "Not answered"); lopt(f.acc, "true", "Yes"); lopt(f.acc, "false", "No");
+    f.acc.value = r.is_accessible == null ? "" : String(r.is_accessible);
+    lfield(box, "acc", "Accessible room", f.acc);
+    f.seat = mk("input"); f.seat.type = "text"; f.seat.maxLength = 200; f.seat.autocomplete = "off"; f.seat.value = r.seating_layout || "";
+    lfield(box, "seat", "Seating (tables, rows, a circle)", f.seat);
+    f.equip = mk("input"); f.equip.type = "text"; f.equip.autocomplete = "off"; f.equip.placeholder = "Screen, projector, whiteboard"; f.equip.value = (r.equipment || []).join(", ");
+    lfield(box, "equip", "Equipment (separate with commas)", f.equip);
+    f.notes = mk("textarea"); f.notes.maxLength = 500; f.notes.value = r.notes || "";
+    lfield(box, "notes", "Notes about this room", f.notes);
+    return f;
+  }
+  function readRoomFields(f) {
+    var o = {}, blank = true, bad = false, miss = false;
+    var lab = f.label.value.trim(), mx = wholeNum(f.max.value), pf = wholeNum(f.pref.value);
+    var seat = f.seat.value.trim(), notes = f.notes.value.trim();
+    var eq = f.equip.value.split(",").map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+    if (lab || f.max.value.trim() || f.pref.value.trim() || seat || notes || eq.length || f.acc.value) blank = false;
+    if (blank) return { blank: true };
+    if (lab) o.label = lab; else miss = true;
+    if (mx === null) miss = true; else if (isNaN(mx)) bad = true; else o.max_occupancy = mx;
+    if (pf !== null) { if (isNaN(pf)) bad = true; else o.preferred_occupancy = pf; }
+    if (f.acc.value) o.is_accessible = f.acc.value === "true";
+    if (seat) o.seating_layout = seat;
+    if (eq.length) o.equipment = eq;
+    if (notes) o.notes = notes;
+    return { value: o, bad: bad, miss: miss };
+  }
+  // Seven day rows (tick = open). Returns count, clearErr and read.
+  function buildHoursRows(parent, entries) {
+    var hours = {}, extras = [], byDay = {};
+    (entries || []).forEach(function (e) { if (byDay[e.day_of_week]) extras.push(e); else byDay[e.day_of_week] = e; });
+    DAYS.forEach(function (d) {
+      var e = byDay[d];
+      var row = mk("div", "drow");
+      var lab = mk("label", "day"); var cb = mk("input"); cb.type = "checkbox"; cb.checked = !!e;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(d)); row.appendChild(lab);
+      var times = mk("div", "times"); times.hidden = !e; row.appendChild(times);
+      var o = mk("input"); o.type = "time"; var c = mk("input"); c.type = "time";
+      o.value = e ? e.opens_at : ""; c.value = e ? e.closes_at : "";
+      var ow = mk("div"); ow.appendChild(mk("span", "", "Opens"));
+      var cw = mk("div"); cw.appendChild(mk("span", "", "Closes"));
+      o.id = "lf" + (++listUid) + "_o"; c.id = "lf" + (++listUid) + "_c"; o.setAttribute("aria-label", d + " opens"); c.setAttribute("aria-label", d + " closes");
+      ow.appendChild(o); cw.appendChild(c); times.appendChild(ow); times.appendChild(cw);
+      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); row.appendChild(re);
+      cb.addEventListener("change", function () {
+        times.hidden = !cb.checked;
+        if (cb.checked) { if (!o.value) o.value = "09:00"; if (!c.value) c.value = "17:00"; }
+      });
+      hours[d] = { cb: cb, o: o, c: c, err: re };
+      parent.appendChild(row);
+    });
+    return {
+      count: function () { return DAYS.filter(function (d) { return hours[d].cb.checked; }).length; },
+      clearErr: function () { DAYS.forEach(function (d) { hours[d].err.textContent = ""; }); },
+      read: function () {
+        var vals = [], bad = false;
+        DAYS.forEach(function (d) {
+          var h = hours[d]; h.err.textContent = "";
+          if (!h.cb.checked) return;
+          if (!h.o.value || !h.c.value) { bad = true; h.err.textContent = "Give both an opening and a closing time."; return; }
+          vals.push({ day_of_week: d, opens_at: h.o.value, closes_at: h.c.value });
+        });
+        vals = sortDays(vals.concat(extras));
+        return { value: vals.length ? vals : null, bad: bad };
+      }
+    };
+  }
+
   function buildListEditors(sec, rec) {
     var body = sec.body;
-    var note = mk("div", "note", "Changes are saved when you press Save, along with the rest of the form.");
-    body.appendChild(note);
-
+    body.appendChild(mk("div", "note", "Changes are saved when you press Save, along with the rest of the form."));
     function updateSummary() {
       var nr = editLists.rooms ? editLists.rooms.count() : 0, nh = editLists.availability_hours ? editLists.availability_hours.count() : 0;
       sec.sm.textContent = "Rooms and hours (" + nr + (nr === 1 ? " room, " : " rooms, ") + nh + (nh === 1 ? " day open)" : " days open)");
     }
-    function addField(parent, key, text, node) {
-      var w = mk("div"); var id = "lf" + (++listUid) + "_" + key;
-      var l = mk("label", "f", text); l.htmlFor = id; node.id = id;
-      w.appendChild(l); w.appendChild(node); parent.appendChild(w); return w;
-    }
-    function opt(sel, value, text) { var o = mk("option", "", text); o.value = value; sel.appendChild(o); }
 
-    // ---- Rooms
     body.appendChild(mk("div", "lsub", "Rooms"));
     var rlist = mk("div", "rlist");
     var rerr = mk("div", "ferr"); rerr.id = "ee_rooms"; rerr.setAttribute("role", "alert");
@@ -817,23 +916,7 @@
       var box = mk("div", "rrow"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
       var rm = mk("button", "quiet", "Remove"); rm.type = "button";
       head.appendChild(title); head.appendChild(rm); box.appendChild(head);
-      var f = {};
-      f.label = mk("input"); f.label.type = "text"; f.label.maxLength = 100; f.label.autocomplete = "off"; f.label.value = r.label || "";
-      addField(box, "label", "Room name (like Main room)", f.label);
-      var two = mk("div", "two"); box.appendChild(two);
-      f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.min = 1; f.max.max = 1000; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
-      addField(two, "max", "Most people", f.max);
-      f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.min = 1; f.pref.max = 1000; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
-      addField(two, "pref", "Comfortable number", f.pref);
-      f.acc = mk("select"); opt(f.acc, "", "Not answered"); opt(f.acc, "true", "Yes"); opt(f.acc, "false", "No");
-      f.acc.value = r.is_accessible == null ? "" : String(r.is_accessible);
-      addField(box, "acc", "Accessible room", f.acc);
-      f.seat = mk("input"); f.seat.type = "text"; f.seat.maxLength = 200; f.seat.autocomplete = "off"; f.seat.value = r.seating_layout || "";
-      addField(box, "seat", "Seating (tables, rows, a circle)", f.seat);
-      f.equip = mk("input"); f.equip.type = "text"; f.equip.autocomplete = "off"; f.equip.placeholder = "Screen, projector, whiteboard"; f.equip.value = (r.equipment || []).join(", ");
-      addField(box, "equip", "Equipment (separate with commas)", f.equip);
-      f.notes = mk("textarea"); f.notes.maxLength = 500; f.notes.value = r.notes || "";
-      addField(box, "notes", "Notes about this room", f.notes);
+      var f = buildRoomFields(box, r);
       var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
       var row = { box: box, title: title, f: f, err: re };
       rooms.push(row); rlist.appendChild(box); renumber();
@@ -843,64 +926,24 @@
       });
       return row;
     }
-    function roomValue(row) {
-      var f = row.f, o = {}, blank = true, bad = false, miss = false;
-      var lab = f.label.value.trim(), mx = wholeNum(f.max.value), pf = wholeNum(f.pref.value);
-      var seat = f.seat.value.trim(), notes = f.notes.value.trim();
-      var eq = f.equip.value.split(",").map(function (x) { return x.trim(); }).filter(function (x) { return x; });
-      if (lab || f.max.value.trim() || f.pref.value.trim() || seat || notes || eq.length || f.acc.value) blank = false;
-      if (blank) return { blank: true };
-      if (lab) o.label = lab; else miss = true;
-      if (mx === null) miss = true; else if (isNaN(mx)) bad = true; else o.max_occupancy = mx;
-      if (pf !== null) { if (isNaN(pf)) bad = true; else o.preferred_occupancy = pf; }
-      if (f.acc.value) o.is_accessible = f.acc.value === "true";
-      if (seat) o.seating_layout = seat;
-      if (eq.length) o.equipment = eq;
-      if (notes) o.notes = notes;
-      return { value: o, bad: bad, miss: miss };
-    }
     var addRoomBtn = mk("button", "quiet", "Add a room"); addRoomBtn.type = "button";
     addRoomBtn.addEventListener("click", function () { var r = addRoom(); updateSummary(); r.f.label.focus(); });
     (rec.rooms || []).forEach(function (r) { addRoom(r); });
     body.appendChild(rlist); body.appendChild(rerr); body.appendChild(addRoomBtn);
 
-    // ---- Hours
     body.appendChild(mk("div", "lsub", "Open hours"));
     body.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
-    var hours = {}, extras = [];
-    var byDay = {};
-    (rec.availability_hours || []).forEach(function (e) { if (byDay[e.day_of_week]) extras.push(e); else byDay[e.day_of_week] = e; });
-    DAYS.forEach(function (d) {
-      var e = byDay[d];
-      var row = mk("div", "drow");
-      var lab = mk("label", "day"); var cb = mk("input"); cb.type = "checkbox"; cb.checked = !!e;
-      lab.appendChild(cb); lab.appendChild(document.createTextNode(d)); row.appendChild(lab);
-      var times = mk("div", "times"); times.hidden = !e; row.appendChild(times);
-      var o = mk("input"); o.type = "time"; var c = mk("input"); c.type = "time";
-      o.value = e ? e.opens_at : ""; c.value = e ? e.closes_at : "";
-      var ow = mk("div"); var ol = mk("span", "", "Opens"); ol.appendChild(document.createTextNode("")); ow.appendChild(ol);
-      var cw = mk("div"); var cl = mk("span", "", "Closes"); cw.appendChild(cl);
-      o.id = "lf" + (++listUid) + "_o"; c.id = "lf" + (++listUid) + "_c"; o.setAttribute("aria-label", d + " opens"); c.setAttribute("aria-label", d + " closes");
-      ow.appendChild(o); cw.appendChild(c); times.appendChild(ow); times.appendChild(cw);
-      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); row.appendChild(re);
-      cb.addEventListener("change", function () {
-        times.hidden = !cb.checked;
-        if (cb.checked) { if (!o.value) o.value = "09:00"; if (!c.value) c.value = "17:00"; }
-        updateSummary();
-      });
-      hours[d] = { cb: cb, o: o, c: c, err: re };
-      body.appendChild(row);
-    });
+    var hr = buildHoursRows(body, rec.availability_hours);
     var herr = mk("div", "ferr"); herr.id = "ee_availability_hours"; herr.setAttribute("role", "alert"); body.appendChild(herr);
 
     editLists.rooms = {
       sec: sec.d, summary: sec.sm, el: rerr, msg: "Fix the marked rooms.",
-      count: function () { return rooms.filter(function (r) { return !roomValue(r).blank; }).length; },
+      count: function () { return rooms.filter(function (r) { return !readRoomFields(r.f).blank; }).length; },
       clearRowErrs: function () { rooms.forEach(function (r) { r.err.textContent = ""; }); },
       read: function () {
         var vals = [], bad = false;
         rooms.forEach(function (r) {
-          var v = roomValue(r); r.err.textContent = "";
+          var v = readRoomFields(r.f); r.err.textContent = "";
           if (v.blank) return;
           if (v.bad) { bad = true; r.err.textContent = "Use whole numbers."; }
           else if (v.miss) { bad = true; r.err.textContent = "Give the room a name and the most people it holds."; }
@@ -911,24 +954,165 @@
     };
     editLists.availability_hours = {
       sec: sec.d, summary: sec.sm, el: herr, msg: "Fix the marked days.",
-      count: function () { return DAYS.filter(function (d) { return hours[d].cb.checked; }).length; },
-      clearRowErrs: function () { DAYS.forEach(function (d) { hours[d].err.textContent = ""; }); },
+      count: hr.count, clearRowErrs: hr.clearErr,
       read: function () {
-        var vals = [], bad = false;
-        DAYS.forEach(function (d) {
-          var h = hours[d]; h.err.textContent = "";
-          if (!h.cb.checked) return;
-          if (!h.o.value || !h.c.value) { bad = true; h.err.textContent = "Give both an opening and a closing time."; return; }
-          vals.push({ day_of_week: d, opens_at: h.o.value, closes_at: h.c.value });
-        });
-        vals = sortDays(vals.concat(extras));
-        var orig = rec.availability_hours && rec.availability_hours.length ? sortDays(rec.availability_hours) : null;
-        return { value: vals.length ? vals : null, bad: bad, orig: orig };
+        var x = hr.read();
+        return { value: x.value, bad: x.bad, orig: rec.availability_hours && rec.availability_hours.length ? sortDays(rec.availability_hours) : null };
       }
     };
     sec.d.addEventListener("input", updateSummary);
     sec.d.addEventListener("change", updateSummary);
     updateSummary();
+  }
+
+  // ---- Popup on the venue card: view, edit, add and remove rooms; view and edit the open hours.
+  var D = { dlg: null, rec: null, kind: "", editing: null, busy: false, body: null, msg: null, title: null };
+  function clockLabel(t) {
+    var m = /^(\d\d):(\d\d)$/.exec(t || ""); if (!m) return t || "";
+    var h = Number(m[1]), ap = h >= 12 ? "PM" : "AM"; h = h % 12; if (h === 0) h = 12;
+    return h + ":" + m[2] + " " + ap;
+  }
+  function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  function ensureDlg() {
+    if (D.dlg) return;
+    var d = mk("dialog", "lsdlg"); d.setAttribute("aria-labelledby", "lsTitle");
+    var head = mk("div", "lshead"); D.title = mk("h2"); D.title.id = "lsTitle";
+    var close = mk("button", "quiet", "Close"); close.type = "button";
+    head.appendChild(D.title); head.appendChild(close);
+    D.msg = mk("div", "dmsg"); D.msg.setAttribute("role", "status");
+    D.body = mk("div", "lsbody");
+    d.appendChild(head); d.appendChild(D.msg); d.appendChild(D.body);
+    document.body.appendChild(d); D.dlg = d;
+    close.addEventListener("click", function () { d.close(); });
+    d.addEventListener("close", function () { D.rec = null; D.editing = null; loadVenues(); });
+  }
+  function dmsg(t, ok) { D.msg.textContent = t || ""; D.msg.className = "dmsg" + (ok ? " ok" : ""); }
+  function openListDlg(rec, kind) {
+    ensureDlg();
+    D.rec = rec; D.kind = kind; D.editing = null; D.busy = false;
+    D.title.textContent = (kind === "rooms" ? "Rooms: " : "Open hours: ") + (rec.name || "venue");
+    dmsg(""); renderDlg();
+    if (!D.dlg.open) D.dlg.showModal();
+    D.body.scrollTop = 0;
+  }
+  function renderDlg() { if (D.kind === "rooms") renderRooms(); else renderHours(); }
+
+  // Sends one list field. onOk runs after a saved change.
+  function saveList(field, value, onOk) {
+    if (D.busy) return;
+    D.busy = true; dmsg("");
+    var changes = {}; changes[field] = value;
+    admin("update", { id: D.rec.id, changes: changes, expected_updated_at: D.rec.updated_at }).then(function (res) {
+      D.busy = false;
+      if (res.status === 401) { D.dlg.close(); lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        if (value === null) delete D.rec[field]; else D.rec[field] = value;
+        var u = res.body.data && res.body.data.updated_at; if (u) D.rec.updated_at = u;
+        dmsg("Saved.", true); onOk(); return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) { dmsg("This venue changed since you opened this. Nothing was saved. Close this window and open it again."); return; }
+      if (res.status === 404) { dmsg("This venue no longer exists. Close this window."); return; }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var mine = err.problems.filter(function (p) { return p.field === field; })[0];
+        dmsg("Not saved. " + (mine ? listIssueText(field, mine.issue) : "Check the values and try again."));
+        return;
+      }
+      dmsg(adminProblem(res.status));
+    });
+  }
+
+  function roomLines(r) {
+    var out = [];
+    var nums = ["Up to " + r.max_occupancy + " people"];
+    if (r.preferred_occupancy != null) nums.push("comfortable " + r.preferred_occupancy);
+    out.push(nums.join(", "));
+    if (r.is_accessible != null) out.push(r.is_accessible ? "Accessible" : "Not accessible");
+    if (r.seating_layout) out.push("Seating: " + r.seating_layout);
+    if (r.equipment && r.equipment.length) out.push("Equipment: " + r.equipment.join(", "));
+    if (r.notes) out.push("Notes: " + r.notes);
+    return out;
+  }
+  function renderRooms() {
+    var body = D.body; body.textContent = "";
+    var list = D.rec.rooms || [];
+    body.appendChild(mk("div", "note", "Saving a room here saves it right away. It does not wait for the venue form."));
+    if (!list.length && D.editing !== "new") body.appendChild(mk("div", "empty", "No rooms yet."));
+    list.forEach(function (r, i) {
+      if (D.editing === i) { body.appendChild(roomForm(i, r)); return; }
+      var e = mk("div", "rentry"); e.appendChild(mk("strong", "", r.label));
+      roomLines(r).forEach(function (t) { e.appendChild(mk("div", "rl", t)); });
+      var row = mk("div", "actions-row");
+      var ed = mk("button", "", "Edit"); ed.type = "button";
+      var rm = mk("button", "danger", "Remove"); rm.type = "button";
+      row.appendChild(ed); row.appendChild(rm); e.appendChild(row);
+      var box = mk("div", "confirm"); box.hidden = true;
+      box.appendChild(mk("div", "", "Remove " + r.label + " from this venue?"));
+      var bt = mk("div", "btns"); var yes = mk("button", "danger", "Remove room"); yes.type = "button";
+      var no = mk("button", "quiet", "Cancel"); no.type = "button"; bt.appendChild(yes); bt.appendChild(no); box.appendChild(bt); e.appendChild(box);
+      ed.addEventListener("click", function () { D.editing = i; dmsg(""); renderRooms(); });
+      rm.addEventListener("click", function () { box.hidden = !box.hidden; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        var next = list.filter(function (x, j) { return j !== i; });
+        saveList("rooms", next.length ? next : null, function () { renderRooms(); });
+      });
+      body.appendChild(e);
+    });
+    if (D.editing === "new") body.appendChild(roomForm("new", {}));
+    else if (D.editing === null) {
+      var add = mk("button", "quiet", "Add a room"); add.type = "button";
+      add.addEventListener("click", function () { D.editing = "new"; dmsg(""); renderRooms(); var l = D.body.querySelector("input"); if (l) l.focus(); });
+      body.appendChild(add);
+    }
+  }
+  function roomForm(idx, r) {
+    var box = mk("div", "rrow"); box.appendChild(mk("strong", "", idx === "new" ? "New room" : "Edit room"));
+    var f = buildRoomFields(box, r);
+    var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
+    var bt = mk("div", "btns"); var save = mk("button", "", "Save room"); save.type = "button";
+    var cancel = mk("button", "quiet", "Cancel"); cancel.type = "button"; bt.appendChild(save); bt.appendChild(cancel); box.appendChild(bt);
+    cancel.addEventListener("click", function () { D.editing = null; dmsg(""); renderRooms(); });
+    save.addEventListener("click", function () {
+      var v = readRoomFields(f); re.textContent = "";
+      if (v.blank || v.miss) { re.textContent = "Give the room a name and the most people it holds."; return; }
+      if (v.bad) { re.textContent = "Use whole numbers."; return; }
+      var next = (D.rec.rooms || []).slice();
+      if (idx === "new") next.push(v.value); else next[idx] = v.value;
+      if (idx !== "new" && canon(next[idx]) === canon((D.rec.rooms || [])[idx])) { dmsg("Nothing changed."); return; }
+      saveList("rooms", next, function () { D.editing = null; renderRooms(); });
+    });
+    return box;
+  }
+
+  function renderHours() {
+    var body = D.body; body.textContent = "";
+    var list = D.rec.availability_hours || [];
+    body.appendChild(mk("div", "note", "Saving here saves right away. It does not wait for the venue form."));
+    if (D.editing === "hours") {
+      var wrap = mk("div", "rrow"); wrap.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
+      var hr = buildHoursRows(wrap, list);
+      var bt = mk("div", "btns"); var save = mk("button", "", "Save hours"); save.type = "button";
+      var cancel = mk("button", "quiet", "Cancel"); cancel.type = "button"; bt.appendChild(save); bt.appendChild(cancel); wrap.appendChild(bt);
+      cancel.addEventListener("click", function () { D.editing = null; dmsg(""); renderHours(); });
+      save.addEventListener("click", function () {
+        var x = hr.read();
+        if (x.bad) { dmsg("Fix the marked days."); return; }
+        var orig = list.length ? sortDays(list) : null;
+        if (canon(x.value) === canon(orig)) { dmsg("Nothing changed."); return; }
+        saveList("availability_hours", x.value, function () { D.editing = null; renderHours(); });
+      });
+      body.appendChild(wrap); return;
+    }
+    if (!list.length) body.appendChild(mk("div", "empty", "No hours set. Every day counts as closed."));
+    else {
+      var box = mk("div", "rentry");
+      sortDays(list).forEach(function (e) { box.appendChild(mk("div", "rl", cap(e.day_of_week) + ": " + clockLabel(e.opens_at) + " to " + clockLabel(e.closes_at))); });
+      body.appendChild(box);
+    }
+    var ed = mk("button", "quiet", list.length ? "Edit hours" : "Set hours"); ed.type = "button";
+    ed.addEventListener("click", function () { D.editing = "hours"; dmsg(""); renderHours(); });
+    body.appendChild(ed);
   }
 
   function buildSections(rec) {
