@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
-from crud_endpoint import handle_crud_test, make_failure_limiter  # noqa: E402
+from crud_endpoint import handle_admin, handle_crud_test, make_failure_limiter  # noqa: E402
 
 KEY = "k" * 16 + "Z" * 16 + "-test-key-not-real"
 NOW = datetime(2026, 10, 9, 12, 0, 0, tzinfo=timezone.utc)
@@ -86,6 +86,43 @@ check("soft_delete again: 404", op("soft_delete", id=vid).status == 404)
 check("no-store on success", op("list").headers.get("Cache-Control") == "no-store")
 blob = json.dumps(call({}, auth="Bearer wrong").body)
 check("error body never contains the key", KEY not in blob)
+
+# ---------------------------------------------------------------------------
+# The admin door (the Console): real collections, only list / get / create
+# ---------------------------------------------------------------------------
+astore = MemoryDocStore("")
+alimiter = make_failure_limiter()
+
+
+def acall(body, auth=f"Bearer {KEY}", method="POST", key=KEY, lim=None):
+    return handle_admin(method, auth, json.dumps(body).encode(), key, "v", astore, lim or alimiter, NOW)
+
+
+def aop(o, **args):
+    return acall({"collection": "venues", "op": o, "args": args})
+
+
+check("admin: no key 401", acall({}, auth="").status == 401)
+check("admin: wrong key 401", acall({}, auth="Bearer nope").status == 401)
+check("admin: fails closed without a configured key", acall({}, key="").status == 401)
+check("admin: GET refused", acall({}, method="GET").status == 405)
+r = aop("create", data={"name": "Admin Test", "slug": "admin_test", "status": "inactive", "is_public_venue": True})
+check("admin: create 200, actor user:admin", r.status == 200 and r.body["data"]["created_by"] == "user:admin")
+aid = r.body["data"]["id"]
+check("admin: record is in the REAL collection, not test_", list(astore.data) == ["venues"])
+check("admin: get 200", aop("get", id=aid).status == 200)
+r = aop("list", filters={"status": "inactive"})
+check("admin: list with filter 200", r.status == 200 and r.body["data"]["count"] == 1)
+r = aop("update", id=aid, changes={"name": "X"})
+check("admin: update not enabled yet (400)", r.status == 400 and "not enabled" in r.body["error"]["message"])
+r = aop("soft_delete", id=aid)
+check("admin: soft_delete not enabled yet (400)", r.status == 400)
+check("admin: refused ops changed nothing", astore.data["venues"][aid]["name"] == "Admin Test" and "deleted_at" not in astore.data["venues"][aid])
+check("admin: unknown op still 400", aop("drop").status == 400)
+check("admin: refusal for bad data names fields", aop("create", data={"name": "x"}).body["error"]["problems"] != [])
+check("test door still allows update", op("update", id=vid, changes={"name": "Back"}).status in (200, 404))
+check("admin store and test store are separate", "venues" not in store.data)
+
 
 print()
 if fails:

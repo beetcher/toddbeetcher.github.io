@@ -15,6 +15,8 @@
         "run_console_tests.py",
         "run_crud_tests.py",
         "run_crud_endpoint_tests.py",
+        "admin_curl_check.sh",
+        "crud_curl_demo.sh",
         "firebase-debug.log",
         "firestore-debug.log",
         "ui-debug.log"

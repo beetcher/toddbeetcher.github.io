@@ -67,6 +67,24 @@
   .detail div { padding: 3px 0; white-space: pre-wrap; }
   .detail b { color: var(--muted); font-weight: 600; }
   .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+  select { font: inherit; min-height: 40px; padding: 0 10px; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  header select { background: #1c1a17; color: #fff; border-color: #6a6a6a; max-width: 52vw; }
+  .hright { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex: 1 1 auto; min-width: 0; }
+  header > div:first-child { flex: none; }
+  header h1 { white-space: nowrap; }
+  header select { min-width: 0; flex: 0 1 220px; }
+  header button.quiet { white-space: nowrap; flex: none; padding: 0 12px; }
+  .actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  .panel h2 { margin: 0 0 4px; font-size: 18px; }
+  .panel label.f { display: block; font-weight: 600; margin-top: 12px; }
+  .panel input[type=text], .panel select { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  .panel .hint { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .panel .btns { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .ferr { color: var(--err); font-weight: 600; font-size: 14px; min-height: 1.2em; }
+  .notice { color: #2f5d00; font-weight: 600; margin: 0 0 8px; }
+  .vname { font-size: 19px; font-weight: 800; }
+  .type.on { color: #1d4d00; background: var(--new); }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -76,12 +94,18 @@
     <h1>Console</h1>
     <div class="app" id="appName">LAUNCH</div>
   </div>
-  <button class="quiet" id="lockBtn" hidden>Lock</button>
+  <div class="hright">
+    <select id="collPick" aria-label="Collection" hidden>
+      <option value="requests">Registration requests</option>
+      <option value="venues">Venues</option>
+    </select>
+    <button class="quiet" id="lockBtn" hidden>Lock</button>
+  </div>
 </header>
 
 <main>
   <section class="lock" id="lockView">
-    <p>Enter your key to see registration requests.</p>
+    <p>Enter your key to open the Console.</p>
     <form class="row" id="lockForm" autocomplete="off">
       <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
       <button type="submit" id="unlockBtn">Unlock</button>
@@ -101,6 +125,51 @@
     <div class="msg" id="listMsg" role="alert"></div>
     <ul id="list"></ul>
     <div class="empty" id="empty" hidden>No requests yet.</div>
+  </section>
+
+  <section id="venuesView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="vCount"></div>
+        <div class="meta" id="vChecked"></div>
+      </div>
+      <div class="actions">
+        <select id="vFilter" aria-label="Filter by status">
+          <option value="">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <button id="vRefresh" class="quiet" type="button">Refresh</button>
+        <button id="addBtn" type="button">Add venue</button>
+      </div>
+    </div>
+    <form class="panel" id="addForm" hidden autocomplete="off" novalidate>
+      <h2>Add a venue</h2>
+      <div class="hint">It is added as inactive. Address, rooms and contact come next, when you edit it.</div>
+      <label class="f" for="fName">Name</label>
+      <input type="text" id="fName" maxlength="200" autocomplete="off">
+      <div class="ferr" id="eName"></div>
+      <label class="f" for="fSlug">Short name (slug)</label>
+      <input type="text" id="fSlug" maxlength="100" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <div class="hint">Lowercase letters, numbers and underscores. It cannot be changed later.</div>
+      <div class="ferr" id="eSlug"></div>
+      <label class="f" for="fPublic">Kind of place</label>
+      <select id="fPublic">
+        <option value="">Choose one</option>
+        <option value="public">Public venue (library, cafe, community room)</option>
+        <option value="private">Private space (a home)</option>
+      </select>
+      <div class="ferr" id="ePublic"></div>
+      <div class="btns">
+        <button type="submit" id="saveBtn">Save venue</button>
+        <button type="button" class="quiet" id="cancelBtn">Cancel</button>
+      </div>
+      <div class="msg" id="fMsg" role="alert"></div>
+    </form>
+    <div class="notice" id="vNotice" role="status"></div>
+    <div class="msg" id="vMsg" role="alert"></div>
+    <ul id="vList"></ul>
+    <div class="empty" id="vEmpty" hidden>No venues yet.</div>
   </section>
 </main>
 
@@ -127,6 +196,7 @@
   var timer = null;
   var busy = false;
   var firstLoadDone = false;
+  var vLoaded = false, vBusy = false, vNewId = "";
 
   $("appName").textContent = APP.name;
 
@@ -153,8 +223,20 @@
 
   function show(locked) {
     $("lockView").hidden = !locked;
-    $("listView").hidden = locked;
     $("lockBtn").hidden = locked;
+    $("collPick").hidden = locked;
+    if (locked) { $("listView").hidden = true; $("venuesView").hidden = true; }
+  }
+
+  // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
+  function currentRoute() { return (location.hash || "").replace(/^#\/?/, "") === "venues" ? "venues" : "requests"; }
+  function route() {
+    if (!key) return;
+    var r = currentRoute();
+    $("collPick").value = r;
+    $("listView").hidden = r !== "requests";
+    $("venuesView").hidden = r !== "venues";
+    if (r === "requests") startTimer(); else { stopTimer(); if (!vLoaded) loadVenues(); }
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
@@ -294,7 +376,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -317,9 +399,138 @@
       merge(res.records);
       firstLoadDone = true;
       $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
-      startTimer();
+      route();
     });
   }
+
+  // ---- Venues view: list and add, through the admin endpoint (the CRUD handler file does the checking).
+  var ADMIN_URL = "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_admin";
+  var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
+                out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
+                not_allowed: "Not allowed." };
+  var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
+  var slugTouched = false;
+
+  function admin(op, args) {
+    return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
+        headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
+        body: JSON.stringify({ collection: "venues", op: op, args: args }) })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
+      })
+      .catch(function () { return { status: 0, body: {} }; });
+  }
+  function adminProblem(status) {
+    if (status === 429) return "Too many tries. Wait a few minutes.";
+    if (status === 0) return "Could not reach the server.";
+    return "Something went wrong. Try again.";
+  }
+
+  function venueRow(rec, isNew) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+    var head = document.createElement("button");
+    head.className = "head"; head.type = "button"; head.setAttribute("aria-expanded", "false");
+
+    var top = document.createElement("div"); top.className = "top";
+    var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
+    var st = document.createElement("span"); st.className = "type" + (rec.status === "active" ? " on" : ""); st.textContent = rec.status || "";
+    top.appendChild(nm); top.appendChild(st);
+
+    var kind = document.createElement("div"); kind.className = "who";
+    kind.textContent = rec.is_public_venue ? "Public venue" : "Private space";
+    var place = document.createElement("div"); place.className = "sub";
+    place.textContent = [rec.city, rec.state_region].filter(Boolean).join(", ");
+    var chips = document.createElement("div"); chips.className = "chips";
+    var rooms = document.createElement("span"); rooms.textContent = "Rooms: " + ((rec.rooms && rec.rooms.length) || 0);
+    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
+    chips.appendChild(rooms); chips.appendChild(added);
+    [top, kind, place, chips].forEach(function (n) { head.appendChild(n); });
+
+    var detail = document.createElement("div"); detail.className = "detail";
+    var done = {};
+    ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+
+    head.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    li.appendChild(head); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function loadVenues() {
+    if (vBusy) return Promise.resolve();
+    vBusy = true; $("vMsg").textContent = "";
+    var f = $("vFilter").value;
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }).then(function (res) {
+      vBusy = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("vMsg").textContent = adminProblem(res.status); return; }
+      var recs = res.body.data.records || [];
+      var ul = $("vList"); ul.textContent = "";
+      recs.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
+      vNewId = ""; vLoaded = true;
+      $("vCount").textContent = recs.length + (recs.length === 1 ? " venue" : " venues");
+      $("vEmpty").hidden = recs.length > 0;
+      $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
+    });
+  }
+
+  function resetVenues() {
+    vLoaded = false; vBusy = false; vNewId = "";
+    $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
+    $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
+    $("vFilter").value = ""; closeForm();
+  }
+
+  function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
+  function clearErrs() { ["eName", "eSlug", "ePublic", "fMsg"].forEach(function (id) { $(id).textContent = ""; }); }
+  function openForm() {
+    $("addForm").reset(); slugTouched = false; clearErrs(); $("vNotice").textContent = "";
+    $("addForm").hidden = false; $("addBtn").hidden = true; $("fName").focus();
+  }
+  function closeForm() { $("addForm").hidden = true; $("addBtn").hidden = false; }
+
+  $("fName").addEventListener("input", function () { if (!slugTouched) $("fSlug").value = slugify($("fName").value); });
+  $("fSlug").addEventListener("input", function () { slugTouched = true; });
+  $("addBtn").addEventListener("click", openForm);
+  $("cancelBtn").addEventListener("click", closeForm);
+  $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; loadVenues(); });
+  $("vFilter").addEventListener("change", function () { $("vNotice").textContent = ""; loadVenues(); });
+
+  $("addForm").addEventListener("submit", function (e) {
+    e.preventDefault(); clearErrs();
+    var kind = $("fPublic").value;
+    if (!kind) { $("ePublic").textContent = "Choose one."; return; }
+    var data = { name: $("fName").value, slug: $("fSlug").value, status: "inactive", is_public_venue: kind === "public" };
+    $("saveBtn").disabled = true;
+    admin("create", { data: data }).then(function (res) {
+      $("saveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        vNewId = res.body.data.id;
+        $("vNotice").textContent = "Added " + res.body.data.name + " (inactive).";
+        closeForm(); loadVenues();
+        return;
+      }
+      var probs = res.status === 400 && res.body && res.body.error && res.body.error.problems;
+      if (probs && probs.length) {
+        var other = [];
+        probs.forEach(function (p) {
+          var target = FIELD_ERR[p.field];
+          var text = (p.field === "slug" && p.issue === "invalid_format") ? "Use lowercase letters, numbers and underscores only."
+                   : (ISSUE[p.issue] || "That value is not valid.");
+          if (target) $(target).textContent = text; else other.push(p.field + " (" + p.issue + ")");
+        });
+        if (other.length) $("fMsg").textContent = "Could not save: " + other.join(", ");
+        return;
+      }
+      $("fMsg").textContent = adminProblem(res.status);
+    });
+  });
 
   $("lockForm").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -329,7 +540,9 @@
   });
   $("lockBtn").addEventListener("click", function () { lock(""); });
   $("refreshBtn").addEventListener("click", function () { check(true); });
-  document.addEventListener("visibilitychange", function () { if (!document.hidden && key) check(false); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
+  window.addEventListener("hashchange", route);
+  $("collPick").addEventListener("change", function () { location.hash = "#/" + $("collPick").value; });
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);

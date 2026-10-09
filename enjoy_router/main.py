@@ -29,7 +29,7 @@ from firebase_functions import https_fn, options
 
 from core import Schemas
 from console import handle_console, make_failure_limiter
-from crud_endpoint import handle_crud_test
+from crud_endpoint import handle_admin, handle_crud_test
 from handler import handle_http
 from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
@@ -54,6 +54,8 @@ if _rate_rules:
 _limiter = RateLimiter(rules=parse_rules(_rate_rules) if _rate_rules else DEFAULT_RULES)
 _console_limiter = make_failure_limiter()
 _crud_limiter = make_failure_limiter()
+_admin_limiter = make_failure_limiter()
+_admin_store = None
 _store = None
 _doc_store = None
 CRUD_TEST_PREFIX = "test_"  # fixed in code on purpose: the test endpoint can never reach a real collection
@@ -92,6 +94,23 @@ def _get_doc_store():
                 firebase_admin.initialize_app()
             _doc_store = FirestoreDocStore(firestore.client(), CRUD_TEST_PREFIX)
     return _doc_store
+
+
+def _get_admin_store():
+    """The handler-file store for the Console's admin endpoint: the REAL collections, no prefix."""
+    global _admin_store
+    if _admin_store is None:
+        if os.environ.get("ICDT_STORE") == "memory":
+            from crud.memory_doc_store import MemoryDocStore
+            _admin_store = MemoryDocStore("")
+        else:
+            import firebase_admin
+            from firebase_admin import firestore
+            from crud.firestore_doc_store import FirestoreDocStore
+            if not firebase_admin._apps:
+                firebase_admin.initialize_app()
+            _admin_store = FirestoreDocStore(firestore.client(), "")
+    return _admin_store
 
 
 def _now() -> datetime:
@@ -167,6 +186,29 @@ def enjoy_crud_test(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_doc_store(),
         limiter=_crud_limiter,
+        now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
+    max_instances=3,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_admin(req: https_fn.Request) -> https_fn.Response:
+    """The Console's door to the real collections through the CRUD handler files. Locked by the admin key."""
+    result = handle_admin(
+        method=req.method,
+        authorization=req.headers.get("Authorization", ""),
+        raw_body=req.get_data(),
+        admin_key=ADMIN_KEY,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        limiter=_admin_limiter,
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
