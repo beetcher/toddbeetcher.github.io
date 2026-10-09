@@ -101,6 +101,18 @@
   #editPanel textarea { min-height: 96px; }
   #editPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .req { color: var(--orange); font-weight: 800; }
+  .lsub { font-weight: 800; margin: 14px 0 2px; }
+  .rrow { border: 1px solid var(--line); border-radius: 10px; padding: 4px 12px 12px; margin: 10px 0; background: #fcfaf5; }
+  .rhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+  .rhead button { min-height: 40px; }
+  .rowerr { color: var(--err); font-weight: 600; font-size: 14px; min-height: 1.2em; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .drow { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .drow label.day { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; text-transform: capitalize; }
+  #editPanel .drow label.day input { width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
+  .drow .times { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .drow .times[hidden] { display: none; }
+  .drow .times span { color: var(--muted); font-size: 13px; display: block; }
   .stickybar { position: sticky; bottom: 0; background: var(--cream); border-top: 1px solid var(--line); padding: 10px 0 12px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   #editPanel .fhint { display: none; }
   #editPanel.showhelp .fhint { display: block; }
@@ -729,7 +741,7 @@
     var rows = [], missing = 0;
     function row(ok, text) { rows.push([ok, text]); if (!ok) missing++; }
     Object.keys(editActive).forEach(function (f) {
-      if (f === "rooms") { row(((editRec.rooms && editRec.rooms.length) || 0) >= 1, "At least one room (rooms can be edited in the next update)"); return; }
+      if (f === "rooms") { row((editLists.rooms ? editLists.rooms.count() : ((editRec.rooms && editRec.rooms.length) || 0)) >= 1, "At least one room"); return; }
       var fld = editFields[f];
       var v = fld ? readValue(fld) : (editRec[f] === undefined ? null : editRec[f]);
       row(v !== null && v !== undefined, humanize(f));
@@ -754,9 +766,174 @@
     body.appendChild(btn); body.appendChild(box);
   }
 
+  // Rooms and hours: lists inside the venue record. Edited as rows; the whole list is sent when anything in it changed.
+  var editLists = {};
+  var DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  var listUid = 0;
+  function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function canon(v) {
+    if (v === null || v === undefined) return "null";
+    if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
+    if (typeof v === "object") return "{" + Object.keys(v).sort().map(function (k) { return JSON.stringify(k) + ":" + canon(v[k]); }).join(",") + "}";
+    return JSON.stringify(v);
+  }
+  function wholeNum(txt) { var t = String(txt).trim(); if (t === "") return null; var n = Number(t); return (isFinite(n) && Math.floor(n) === n) ? n : NaN; }
+  function dayIndex(e) { return DAYS.indexOf(e.day_of_week); }
+  function sortDays(a) {
+    return a.map(function (e, i) { return [e, i]; }).sort(function (x, y) { return (dayIndex(x[0]) - dayIndex(y[0])) || (x[1] - y[1]); }).map(function (x) { return x[0]; });
+  }
+  var LIST_ISSUES = {
+    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", out_of_range: "A room’s preferred number is above its maximum." },
+    availability_hours: { out_of_range: "Each open day must open before it closes." }
+  };
+  function listIssueText(field, issue) {
+    return (LIST_ISSUES[field] && LIST_ISSUES[field][issue]) || ("Check the " + (field === "rooms" ? "rooms" : "hours") + ".");
+  }
+
+  function buildListEditors(sec, rec) {
+    var body = sec.body;
+    var note = mk("div", "note", "Changes are saved when you press Save, along with the rest of the form.");
+    body.appendChild(note);
+
+    function updateSummary() {
+      var nr = editLists.rooms ? editLists.rooms.count() : 0, nh = editLists.availability_hours ? editLists.availability_hours.count() : 0;
+      sec.sm.textContent = "Rooms and hours (" + nr + (nr === 1 ? " room, " : " rooms, ") + nh + (nh === 1 ? " day open)" : " days open)");
+    }
+    function addField(parent, key, text, node) {
+      var w = mk("div"); var id = "lf" + (++listUid) + "_" + key;
+      var l = mk("label", "f", text); l.htmlFor = id; node.id = id;
+      w.appendChild(l); w.appendChild(node); parent.appendChild(w); return w;
+    }
+    function opt(sel, value, text) { var o = mk("option", "", text); o.value = value; sel.appendChild(o); }
+
+    // ---- Rooms
+    body.appendChild(mk("div", "lsub", "Rooms"));
+    var rlist = mk("div", "rlist");
+    var rerr = mk("div", "ferr"); rerr.id = "ee_rooms"; rerr.setAttribute("role", "alert");
+    var rooms = [];
+    function renumber() { rooms.forEach(function (r, i) { r.title.textContent = "Room " + (i + 1); }); }
+    function addRoom(r) {
+      r = r || {};
+      var box = mk("div", "rrow"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
+      var rm = mk("button", "quiet", "Remove"); rm.type = "button";
+      head.appendChild(title); head.appendChild(rm); box.appendChild(head);
+      var f = {};
+      f.label = mk("input"); f.label.type = "text"; f.label.maxLength = 100; f.label.autocomplete = "off"; f.label.value = r.label || "";
+      addField(box, "label", "Room name (like Main room)", f.label);
+      var two = mk("div", "two"); box.appendChild(two);
+      f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.min = 1; f.max.max = 1000; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
+      addField(two, "max", "Most people", f.max);
+      f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.min = 1; f.pref.max = 1000; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
+      addField(two, "pref", "Comfortable number", f.pref);
+      f.acc = mk("select"); opt(f.acc, "", "Not answered"); opt(f.acc, "true", "Yes"); opt(f.acc, "false", "No");
+      f.acc.value = r.is_accessible == null ? "" : String(r.is_accessible);
+      addField(box, "acc", "Accessible room", f.acc);
+      f.seat = mk("input"); f.seat.type = "text"; f.seat.maxLength = 200; f.seat.autocomplete = "off"; f.seat.value = r.seating_layout || "";
+      addField(box, "seat", "Seating (tables, rows, a circle)", f.seat);
+      f.equip = mk("input"); f.equip.type = "text"; f.equip.autocomplete = "off"; f.equip.placeholder = "Screen, projector, whiteboard"; f.equip.value = (r.equipment || []).join(", ");
+      addField(box, "equip", "Equipment (separate with commas)", f.equip);
+      f.notes = mk("textarea"); f.notes.maxLength = 500; f.notes.value = r.notes || "";
+      addField(box, "notes", "Notes about this room", f.notes);
+      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
+      var row = { box: box, title: title, f: f, err: re };
+      rooms.push(row); rlist.appendChild(box); renumber();
+      rm.addEventListener("click", function () {
+        rooms.splice(rooms.indexOf(row), 1); rlist.removeChild(box); renumber(); updateSummary();
+        document.getElementById("editSections").dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      return row;
+    }
+    function roomValue(row) {
+      var f = row.f, o = {}, blank = true, bad = false, miss = false;
+      var lab = f.label.value.trim(), mx = wholeNum(f.max.value), pf = wholeNum(f.pref.value);
+      var seat = f.seat.value.trim(), notes = f.notes.value.trim();
+      var eq = f.equip.value.split(",").map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+      if (lab || f.max.value.trim() || f.pref.value.trim() || seat || notes || eq.length || f.acc.value) blank = false;
+      if (blank) return { blank: true };
+      if (lab) o.label = lab; else miss = true;
+      if (mx === null) miss = true; else if (isNaN(mx)) bad = true; else o.max_occupancy = mx;
+      if (pf !== null) { if (isNaN(pf)) bad = true; else o.preferred_occupancy = pf; }
+      if (f.acc.value) o.is_accessible = f.acc.value === "true";
+      if (seat) o.seating_layout = seat;
+      if (eq.length) o.equipment = eq;
+      if (notes) o.notes = notes;
+      return { value: o, bad: bad, miss: miss };
+    }
+    var addRoomBtn = mk("button", "quiet", "Add a room"); addRoomBtn.type = "button";
+    addRoomBtn.addEventListener("click", function () { var r = addRoom(); updateSummary(); r.f.label.focus(); });
+    (rec.rooms || []).forEach(function (r) { addRoom(r); });
+    body.appendChild(rlist); body.appendChild(rerr); body.appendChild(addRoomBtn);
+
+    // ---- Hours
+    body.appendChild(mk("div", "lsub", "Open hours"));
+    body.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
+    var hours = {}, extras = [];
+    var byDay = {};
+    (rec.availability_hours || []).forEach(function (e) { if (byDay[e.day_of_week]) extras.push(e); else byDay[e.day_of_week] = e; });
+    DAYS.forEach(function (d) {
+      var e = byDay[d];
+      var row = mk("div", "drow");
+      var lab = mk("label", "day"); var cb = mk("input"); cb.type = "checkbox"; cb.checked = !!e;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(d)); row.appendChild(lab);
+      var times = mk("div", "times"); times.hidden = !e; row.appendChild(times);
+      var o = mk("input"); o.type = "time"; var c = mk("input"); c.type = "time";
+      o.value = e ? e.opens_at : ""; c.value = e ? e.closes_at : "";
+      var ow = mk("div"); var ol = mk("span", "", "Opens"); ol.appendChild(document.createTextNode("")); ow.appendChild(ol);
+      var cw = mk("div"); var cl = mk("span", "", "Closes"); cw.appendChild(cl);
+      o.id = "lf" + (++listUid) + "_o"; c.id = "lf" + (++listUid) + "_c"; o.setAttribute("aria-label", d + " opens"); c.setAttribute("aria-label", d + " closes");
+      ow.appendChild(o); cw.appendChild(c); times.appendChild(ow); times.appendChild(cw);
+      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); row.appendChild(re);
+      cb.addEventListener("change", function () {
+        times.hidden = !cb.checked;
+        if (cb.checked) { if (!o.value) o.value = "09:00"; if (!c.value) c.value = "17:00"; }
+        updateSummary();
+      });
+      hours[d] = { cb: cb, o: o, c: c, err: re };
+      body.appendChild(row);
+    });
+    var herr = mk("div", "ferr"); herr.id = "ee_availability_hours"; herr.setAttribute("role", "alert"); body.appendChild(herr);
+
+    editLists.rooms = {
+      sec: sec.d, summary: sec.sm, el: rerr, msg: "Fix the marked rooms.",
+      count: function () { return rooms.filter(function (r) { return !roomValue(r).blank; }).length; },
+      clearRowErrs: function () { rooms.forEach(function (r) { r.err.textContent = ""; }); },
+      read: function () {
+        var vals = [], bad = false;
+        rooms.forEach(function (r) {
+          var v = roomValue(r); r.err.textContent = "";
+          if (v.blank) return;
+          if (v.bad) { bad = true; r.err.textContent = "Use whole numbers."; }
+          else if (v.miss) { bad = true; r.err.textContent = "Give the room a name and the most people it holds."; }
+          else vals.push(v.value);
+        });
+        return { value: vals.length ? vals : null, bad: bad, orig: rec.rooms && rec.rooms.length ? rec.rooms : null };
+      }
+    };
+    editLists.availability_hours = {
+      sec: sec.d, summary: sec.sm, el: herr, msg: "Fix the marked days.",
+      count: function () { return DAYS.filter(function (d) { return hours[d].cb.checked; }).length; },
+      clearRowErrs: function () { DAYS.forEach(function (d) { hours[d].err.textContent = ""; }); },
+      read: function () {
+        var vals = [], bad = false;
+        DAYS.forEach(function (d) {
+          var h = hours[d]; h.err.textContent = "";
+          if (!h.cb.checked) return;
+          if (!h.o.value || !h.c.value) { bad = true; h.err.textContent = "Give both an opening and a closing time."; return; }
+          vals.push({ day_of_week: d, opens_at: h.o.value, closes_at: h.c.value });
+        });
+        vals = sortDays(vals.concat(extras));
+        var orig = rec.availability_hours && rec.availability_hours.length ? sortDays(rec.availability_hours) : null;
+        return { value: vals.length ? vals : null, bad: bad, orig: orig };
+      }
+    };
+    sec.d.addEventListener("input", updateSummary);
+    sec.d.addEventListener("change", updateSummary);
+    updateSummary();
+  }
+
   function buildSections(rec) {
     var host = $("editSections"); host.textContent = "";
-    editFields = {};
+    editFields = {}; editLists = {};
     var props = editSchema.properties, used = {};
     function section(title, open, parent) {
       var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
@@ -781,10 +958,7 @@
       if (t === "Basics") addReady(s2.body);
     });
     var sr = section("Rooms and hours", false);
-    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
-    var info = document.createElement("div"); info.className = "note";
-    info.textContent = "Rooms: " + nr + ". Hours: " + nh + ". Editing rooms and hours comes in the next update.";
-    sr.body.appendChild(info);
+    buildListEditors(sr, rec);
 
     var more = document.createElement("details"); more.className = "more";
     var msm = document.createElement("summary"); msm.textContent = "More details (map, booking, facilities, cost, notes)"; more.appendChild(msm);
@@ -818,6 +992,13 @@
       var orig = editRec[n] === undefined ? null : editRec[n];
       if (v !== orig) changes[n] = v;
     });
+    Object.keys(editLists).forEach(function (n) {
+      if (n === "availability_hours" || n === "rooms") {
+        var r = editLists[n].read();
+        if (r.bad) { bad.push(n); return; }
+        if (canon(r.value) !== canon(r.orig)) changes[n] = r.value;
+      }
+    });
     return { changes: changes, bad: bad };
   }
   function editDirty() {
@@ -831,10 +1012,13 @@
       $("ee_" + n).textContent = "";
       if (editFields[n].summary) editFields[n].summary.className = "";
     });
+    Object.keys(editLists).forEach(function (n) {
+      $("ee_" + n).textContent = ""; editLists[n].summary.className = ""; editLists[n].clearRowErrs();
+    });
     document.querySelectorAll("details.more > summary").forEach(function (sm) { sm.className = ""; });
   }
   function closeEdit() {
-    editRec = null; editFields = {};
+    editRec = null; editFields = {}; editLists = {};
     $("editPanel").hidden = true; $("vMain").hidden = false;
   }
   function openEdit(rec) {
@@ -872,7 +1056,12 @@
     clearEditErrs();
     var c = collectChanges();
     if (c.bad.length) {
-      c.bad.forEach(function (n) { $("ee_" + n).textContent = "Enter a number."; openSec(editFields[n]); });
+      c.bad.forEach(function (n) {
+        var L = editLists[n];
+        $("ee_" + n).textContent = L ? L.msg : "Enter a number.";
+        if (L) L.summary.className = "haserr";
+        openSec(L || editFields[n]);
+      });
       $("editMsg").textContent = "Not saved. Fix the marked fields.";
       return;
     }
@@ -901,9 +1090,9 @@
       if (res.status === 400 && err && err.problems && err.problems.length) {
         var other = [], first = null, n = 0;
         err.problems.forEach(function (p) {
-          var f = editFields[p.field];
+          var f = editFields[p.field] || editLists[p.field];
           if (f) {
-            $("ee_" + p.field).textContent = issueText(p, f);
+            $("ee_" + p.field).textContent = editLists[p.field] ? listIssueText(p.field, p.issue) : issueText(p, f);
             openSec(f); f.summary.className = "haserr"; n++;
             if (!first) first = f.el;
           } else {
@@ -911,7 +1100,7 @@
           }
         });
         $("editMsg").textContent = "Not saved. " + (n ? n + " field" + (n === 1 ? "" : "s") + " need attention, marked below." : "")
-          + (other.length ? " Also needed: " + other.join(", ") + ". Rooms and hours can be edited in the next update." : "");
+          + (other.length ? " Also needed: " + other.join(", ") + "." : "");
         if (first) first.scrollIntoView({ block: "center" });
         return;
       }
