@@ -1,6 +1,6 @@
 # Console: edit and delete a venue. Build plan
 
-Status: steps 1 to 3 BUILT, DEPLOYED and TESTED LIVE by Todd on 2026-10-09 (edit works, delete works). Step 4 (rooms and hours) and step 5 (docs, live test of the whole) remain. Written as a plan on 2026-10-09 (thread 13); the "As built" section below records what changed on the way. It follows the collection manager (picker, venues list, Add venue), live at beetcher.com/console/#/venues. Method: `docs/schema-first-build-method.md`.
+Status: steps 1 to 4 BUILT and DEPLOYED on 2026-10-09 (edit and delete tested live by Todd; rooms, hours and the popup built after and checkpointed). Step 5 (docs) is this pass; a live walk-through of activating a venue is still to do. Written as a plan on 2026-10-09 (thread 13); the "As built" section below records what changed on the way. It follows the collection manager (picker, venues list, Add venue), live at beetcher.com/console/#/venues. Method: `docs/schema-first-build-method.md`.
 
 ## Goal
 From the Console, open a venue and change any of its fields (address, contact, rooms, hours, rules, cost, notes), make it active, and delete it. All changes go through the venue handler file (`enjoy_router/crud/venues_crud.py`), which already does the checking, so the page never decides what is valid.
@@ -79,7 +79,13 @@ Todd found the first version unusable: every section loaded at once, about a doz
 ### Decisions settled (defaults accepted)
 Dollars in the form; collapsible sections in one panel; Rooms and Hours in a second pass; location pins left out until their schema exists; the delete guard is a warning in words only for now (the venue service will enforce "no classes point here" when classes exist). Time zone and country changed from text boxes to pick lists after Todd's feedback.
 
+### Step 4, rooms and hours (built 2026-10-09)
+- Rooms and hours are lists inside the venue record (not collections). The venue edit form has list editors: add, change and remove rows; rooms carry label, preferred and maximum occupancy, accessible, seating layout, equipment and notes; hours carry day, opens and closes (shown as clock times).
+- Each venue card has "Rooms: N" and "Open days: N" links that open a scrollable popup (`<dialog>`) with an edit button on each entry, so a room can be changed without opening the whole form. Saves send the whole list with `expected_updated_at`.
+- The server's code rules show next to the row: duplicate room label, preferred above maximum, opens not before closes.
+- Guards added once classes existed (venue service): a venue with live classes cannot be deleted (409, `id:in_use`, the message names the classes); a room used by a live class cannot be removed, renamed or shrunk below the class's maximum (400, `rooms:in_use`). This closes the "delete guard" decision that had been a warning in words only. Details: `docs/classes-build.md`.
+- Tested at 375 px in a headless browser against the real handlers.
+
 ### Still to do
-- **Step 4: rooms and hours** (add, change, remove rows). Until it exists a venue cannot be made active from the Console, because an active venue needs at least one room. The panel shows the counts and says editing comes in the next update.
-- Step 5: final docs pass after step 4.
-- Open: the delete guard (service layer); Google sign-in replacing the key; undelete.
+- Live walk-through: fill in a venue, activate it, schedule a class there, try the delete and room guards on live data.
+- Open: Google sign-in replacing the key; undelete; whether venue activation should demand so many fields (see `docs/classes-build.md`).

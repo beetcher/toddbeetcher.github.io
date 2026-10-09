@@ -227,6 +227,8 @@ Some writes must succeed or fail together: for example a registration request an
 8. Rewrite the rules block: normalizers, and the table of cross-field rules. Delete what does not apply.
 9. Run all tests in memory, including the existing ones, and make sure a deliberate break of each rule fails a test.
 10. Only then write the service that uses the handler.
+11. **If the collection points at another** (a class at a venue), write the cross-collection rules in a service that passes a `check(doc)` callback to the handler, and list `check_fields`: the fields that must force a whole-record read. Add the reverse guards on the other collection's service (the venue cannot be deleted while classes use it). Register the service in `HANDLERS` in `crud_endpoint.py`. Worked example: `docs/classes-build.md`.
+12. **Indexes and the Console:** add a composite index for each filtered list (field plus the order field) for both the real and the `test_` collection, then deploy `firestore:indexes`. The Console form is generated from the published schema; add a view, not a hand-written form.
 
 ## 11. Testing
 
@@ -327,7 +329,10 @@ The split is its own piece of work, done after the owner reviews this document. 
 4. **Done 2026-10-09:** shared kit and `venues_crud.py` with in-memory tests (291 checks pass). It is the model file; Appendix A now points to it.
 5. **Done 2026-10-09:** admin-key test endpoint with the test prefix, exercised with curl.
 5a. **Done 2026-10-09: Console collection manager.** The Console has a collection picker (registration requests, venues; `#/venues` addresses) and, for venues, a list with a status filter, a detail card and an Add venue form (name, slug, kind of place; added inactive). It talks to a second door on the same dispatcher, `enjoy_admin` (`crud_endpoint.handle_admin`): real collections with no test prefix, actor `user:admin`, and only the ops in `ADMIN_OPS` (`list`, `get`, `create`). Tested with the real handlers in a real browser at phone width and verified live with `enjoy_router/admin_curl_check.sh`. This door calls the handler directly, with no service layer in between, because no cross-collection rule exists yet; the first one (a class's venue must exist, a venue with classes cannot be deleted) is where a service is introduced. 
-5b. **Done 2026-10-09: edit and delete a venue in the Console, tested live by Todd.** `update` and `soft_delete` are now in `ADMIN_OPS`. The edit form is generated from the published schema (`/schemas/venue.schema.json`), so field types, limits and allowed values live in one place; it sends only changed fields plus `expected_updated_at`, shows the server's refusals next to the field, and refuses a stale edit. Lesson recorded: the first form showed all 55 fields and every active-venue requirement at once and was unusable; the fix was a page-only reshaping (essentials first, a readiness checklist computed from the schema's active rule, pick lists), not loosening the schema. The schema stays the single definition of the rules and the form adapts to it. Details in `docs/venue-edit-delete-build-plan.md`. **Next: rooms and hours** (the lists inside a venue), then Google sign-in and the first service-layer rule.
+5b. **Done 2026-10-09: edit and delete a venue in the Console, tested live by Todd.** `update` and `soft_delete` are now in `ADMIN_OPS`. The edit form is generated from the published schema (`/schemas/venue.schema.json`), so field types, limits and allowed values live in one place; it sends only changed fields plus `expected_updated_at`, shows the server's refusals next to the field, and refuses a stale edit. Lesson recorded: the first form showed all 55 fields and every active-venue requirement at once and was unusable; the fix was a page-only reshaping (essentials first, a readiness checklist computed from the schema's active rule, pick lists), not loosening the schema. The schema stays the single definition of the rules and the form adapts to it. Details in `docs/venue-edit-delete-build-plan.md`. Rooms and hours followed (5c).
+5c. **Done 2026-10-09: rooms and hours editing.** The two lists inside a venue are editable in the venue form and in a popup opened from the "Rooms: N" and "Open days: N" links on each card. The server's code rules (unique room labels, preferred occupancy not above maximum, opening before closing) are shown next to the row.
+5d. **Done 2026-10-09: second collection, `scheduled_classes`, handler and Console in one build** (`docs/classes-build.md`). The first service layer: `classes_service.py` (a class's venue must exist, be active when scheduled, contain the room, and fit its capacity) and `venues_service.py` (a venue with live classes cannot be deleted; a room a class uses cannot be removed, renamed or shrunk). The mechanism is a hook in the handler, not a dependency: `create` and `update` take an optional `check(doc)` callback run on the final merged record, and `update` takes `check_fields` that force the whole-record path. Handlers still know only their own collection; the dispatcher maps each collection to its service. Tick-box filters on the class list came from live use: a filtered list hid a just-created class. Lesson: a list must never silently hide a record the user just made; show all by default and let the user narrow. 164 class checks plus endpoint and browser tests; deployed and checked live with curl.
+**Next:** registration request to class (a `registration_assignment` collection with enrolling, capacity and waitlist rules), then Google sign-in.
 6. Wire handlers into real services. The registration core is then reworked to use a registration requests handler file.
 7. Split `SCHEMA_RULES.md` (section 14.5).
 
@@ -342,6 +347,9 @@ The layers and who may call whom (section 4). Handler files are not deployed end
 - `list` supports: no filter, or exactly one of `status` or `is_public_venue`, ordered by name; no filter ordered by newest first. Anything else is refused with `not_supported`. The filter-plus-name combinations need composite indexes in Firestore (section 8); `firestore.indexes.json` is written when the Firestore store is. Soft-deleted venues are removed after the query, so a page can hold fewer than `limit` records.
 - `set_review_summary` writes `review_count` and `average_rating` (the server-kept fields) with the actor `system:reviews`, no read.
 - Soft-deleting a venue that a class points at is a service rule; the handler does not check.
+
+### 14.8b Class build decisions (Todd, 2026-10-09)
+Retention "keep until the owner deletes" (policy only), `x_history` `in_place`; instructor and promotion fields hidden until those collections exist; start time typed in the venue's time zone and stored in UTC; a scheduled or enrolling class needs an active venue; class lists are ordered by title (not start time, because Firestore drops documents missing the ordered field) and the Console sorts by start time itself; class filters are tick boxes, all ticked by default. Details in `docs/classes-build.md`.
 
 ### 14.9 Open decisions
 Still needing Todd's decision:
@@ -375,6 +383,10 @@ Every gap found in the draft-1 gap analysis, where this document closes it, and 
 | 13 | No test area for the test endpoint | 11, 14.2 | Integrated |
 | 14 | No index file for filtered lists | 8, 14.2 | Integrated |
 | 15 | SCHEMA_RULES mixes portable and LAUNCH rules | 14.5, header | Integrated (inventory); the split is later work |
+| 16 | No home for rules that span two collections | 4.1, 10, 14.7 (5d) | Built: service layer with `check` and `check_fields` hook (classes and venues). Method text in section 4 still to be tightened with the lesson |
+| 17 | Retention periods for schemas other than venues and classes | 14.9 | Decision open |
+| 18 | Class delete not guarded against registrations | `docs/classes-build.md` | Waits for the registration collection |
+| 19 | Venue activation re-asks for many fields | `docs/classes-build.md` | Decision open: fill in, loosen the active rule, or leave |
 
 ---
 
