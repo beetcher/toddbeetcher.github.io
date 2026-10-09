@@ -755,18 +755,24 @@ function initEgg() {
 function initRegister() {
   const dlg = document.getElementById('register');
   if (!dlg) return;
-  // The steering pop-up (three cards, each to its own request page) stays hidden from visitors until the
-  // endpoint is live. Turn it on for yourself with ?steer=1 (it sticks for this browser tab); ?steer=0 turns it off.
-  // To launch it for everyone, set STEER_LIVE to true.
-  const STEER_LIVE = false;
+  // The steering pop-up (three cards, each to its own request page) is what visitors get (live since the
+  // endpoint went live). The OLD sign-up form is still here: open the site with ?1 to get it back (it sticks
+  // for this browser tab); ?steer=1 returns to the new cards; ?steer=0 forces the old form too.
+  const STEER_LIVE = true;
   const steerDlg = document.getElementById('steer');
   const flag = new URLSearchParams(location.search).get('steer');
   try {
     if (flag === '1') sessionStorage.setItem('icdt_steer', '1');
     if (flag === '0') sessionStorage.removeItem('icdt_steer');
   } catch (e) { /* storage blocked: the flag simply does not stick */ }
-  let steerOn = STEER_LIVE || flag === '1';
-  try { steerOn = steerOn || sessionStorage.getItem('icdt_steer') === '1'; } catch (e) { /* ignore */ }
+  const oldAsked = new URLSearchParams(location.search).has('1');
+  try {
+    if (oldAsked) sessionStorage.setItem('icdt_old_form', '1');
+    if (flag === '1') sessionStorage.removeItem('icdt_old_form');
+  } catch (e) { /* storage blocked: the switch simply does not stick */ }
+  let useOld = oldAsked || flag === '0';
+  try { useOld = useOld || (sessionStorage.getItem('icdt_old_form') === '1' && flag !== '1'); } catch (e) { /* ignore */ }
+  const steerOn = STEER_LIVE && !useOld;
   const target = steerOn && steerDlg ? steerDlg : dlg;
   const open = () => {
     if (typeof target.showModal === 'function') target.showModal();
