@@ -140,6 +140,48 @@ check("test door still allows update", op("update", id=vid, changes={"name": "Ba
 check("admin store and test store are separate", "venues" not in store.data)
 
 
+# ---------------------------------------------------------------------------
+# Scheduled classes through the admin door, with the venue rules and guards
+# ---------------------------------------------------------------------------
+def cop(o, **args):
+    return acall({"collection": "scheduled_classes", "op": o, "args": args})
+
+
+r = aop("create", data={"name": "Hall", "slug": "hall", "status": "active", "is_public_venue": True, "street_address": "1 St", "city": "Boulder",
+                        "state_region": "CO", "postal_code": "80302", "country": "US", "time_zone": "America/Denver", "contact_name": "Pat",
+                        "contact_email": "p@example.com", "is_accessible": True, "allows_minors": True, "allows_animals": False,
+                        "rooms": [{"label": "Main room", "max_occupancy": 20}]})
+check("admin classes: venue for the class created", r.status == 200, str(r.body))
+hid = r.body["data"]["id"]
+CL = {"title": "Intro", "slug": "intro", "class_type": "workshop", "program_slug": "launch", "status": "identified", "is_public": False,
+      "capacity_minimum": 6, "capacity_target": 10, "capacity_max": 15}
+r = cop("create", data=CL)
+check("admin classes: create 200 in the real collection", r.status == 200 and r.body["data"]["created_by"] == "user:admin" and "scheduled_classes" in astore.data, str(r.body))
+cid = r.body["data"]["id"]
+check("admin classes: counts start at zero", all(r.body["data"][f] == 0 for f in ("registered_count", "waitlist_count", "attended_count", "review_count")))
+r = cop("update", id=cid, changes={"status": "scheduled", "starts_at": "2026-11-21T01:00:00Z", "time_zone": "America/Denver", "duration_minutes": 120,
+                                   "venue_id": hid, "venue_room_label": "Main room", "is_venue_confirmed": False})
+check("admin classes: schedule at an active venue 200", r.status == 200, str(r.body))
+r = cop("update", id=cid, changes={"venue_room_label": "Attic"})
+check("admin classes: unknown room 400 names the field", r.status == 400 and r.body["error"]["problems"] == [{"field": "venue_room_label", "issue": "not_found"}])
+r = cop("update", id=cid, changes={"capacity_max": 25})
+check("admin classes: capacity above room 400", r.status == 400 and r.body["error"]["problems"] == [{"field": "capacity_max", "issue": "out_of_range"}])
+r = aop("soft_delete", id=hid)
+check("admin venues: delete blocked by a live class: 409 with id:in_use", r.status == 409 and r.body["error"]["problems"] == [{"field": "id", "issue": "in_use"}] and "deleted_at" not in astore.data["venues"][hid])
+r = aop("update", id=hid, changes={"rooms": [{"label": "Hall room", "max_occupancy": 20}]})
+check("admin venues: renaming a used room 400 rooms:in_use", r.status == 400 and r.body["error"]["problems"] == [{"field": "rooms", "issue": "in_use"}])
+r = cop("list", filters={"venue_id": hid})
+check("admin classes: list by venue", r.status == 200 and r.body["data"]["count"] == 1)
+r = cop("list", filters={"status": "scheduled"})
+check("admin classes: list by status", r.status == 200 and r.body["data"]["count"] == 1)
+check("admin classes: set_review_summary not enabled", cop("set_review_summary", id=cid, review_count=1, average_rating=5).status == 400)
+check("admin classes: delete 200", cop("soft_delete", id=cid).status == 200 and "deleted_at" in astore.data["scheduled_classes"][cid])
+check("admin venues: delete allowed once the class is gone", aop("soft_delete", id=hid).status == 200)
+check("admin classes: bad data names fields only", all(set(p) == {"field", "issue"} for p in cop("create", data={"title": "x"}).body["error"]["problems"]))
+r = call({"collection": "scheduled_classes", "op": "create", "args": {"data": CL}})
+check("test door: classes go to test_scheduled_classes only", r.status == 200 and "test_scheduled_classes" in store.data and list(astore.data).count("test_scheduled_classes") == 0)
+
+
 print()
 if fails:
     print("FAILED:", *fails, sep="\n  ")

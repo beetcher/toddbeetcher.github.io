@@ -14,5 +14,10 @@ call "list venues (expect 200, probably count 0)" '{"collection":"venues","op":"
 call "list venues, status=active (expect 200; needs the real venues index)" '{"collection":"venues","op":"list","args":{"filters":{"status":"active"}}}'
 call "update an unknown id (expect 404, writes nothing)" '{"collection":"venues","op":"update","args":{"id":"11111111-1111-4111-8111-111111111111","changes":{"name":"X"}}}'
 call "soft_delete an unknown id (expect 404, writes nothing)" '{"collection":"venues","op":"soft_delete","args":{"id":"11111111-1111-4111-8111-111111111111"}}'
+call "list scheduled_classes (expect 200)" '{"collection":"scheduled_classes","op":"list","args":{}}'
+call "list scheduled_classes, status=scheduled (expect 200; needs the classes index, which takes a few minutes after deploy)" '{"collection":"scheduled_classes","op":"list","args":{"filters":{"status":"scheduled"}}}'
+call "list scheduled_classes by venue_id (expect 200; needs the index)" '{"collection":"scheduled_classes","op":"list","args":{"filters":{"venue_id":"11111111-1111-4111-8111-111111111111"}}}'
+call "update a class with an unknown id (expect 404, writes nothing)" '{"collection":"scheduled_classes","op":"update","args":{"id":"11111111-1111-4111-8111-111111111111","changes":{"title":"X"}}}'
+call "soft_delete a class with an unknown id (expect 404, writes nothing)" '{"collection":"scheduled_classes","op":"soft_delete","args":{"id":"11111111-1111-4111-8111-111111111111"}}'
 call "set_review_summary is server-only (expect 400 not enabled)" '{"collection":"venues","op":"set_review_summary","args":{"id":"11111111-1111-4111-8111-111111111111","review_count":1,"average_rating":5}}'
 echo; echo "Done. Nothing was written."

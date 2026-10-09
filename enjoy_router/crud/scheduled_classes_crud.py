@@ -1,18 +1,19 @@
-"""CRUD handler for the `venues` collection. Model handler file: copy this shape for the next collection
-(docs/schema-first-build-method.md, section 6 and Appendix A).
+"""CRUD handler for the `scheduled_classes` collection. Same shape as venues_crud.py (the model handler file).
 
-Rules of this file:
+Rules of this file (docs/schema-first-build-method.md, section 6):
   * Plain functions called by services, in-process. Never an endpoint, never takes an HTTP request.
   * Validates with the standard checker through the kit. No business logic (who may do what, what happens next).
+  * Knows ONLY its own collection. It never reads venues or any other collection. Rules that need another
+    collection live in classes_service.py, which hands them to create/update as `check`.
   * Returns a Result. Problems name fields, never values.
-  * `store` is any document store with get/create/update/query (MemoryDocStore now, Firestore later).
-    `tx` is optional: when a service passes one, writes join its transaction.
+
+`check` (create and update): an optional function(doc) -> problems, run on the final record after the schema
+and this file's own rules pass. `check_fields` (update): the fields that make an update use the whole-record
+path so `check` can see the merged record.
 """
 from __future__ import annotations
 
-import builtins
 import re
-from typing import Optional
 
 from .schema_kit import (
     UUID_PATTERN, check_actor, check_document, check_field, clean, drop_empty, failure,
@@ -20,64 +21,61 @@ from .schema_kit import (
 )
 from .store_errors import DocExists, DocMissing, StaleUpdate
 
-VENUES = load_collection("venue")
+CLASSES = load_collection("scheduled_class")
 
 SOURCES = ("dashboard", "import")
 DEFAULT_LIMIT = 100
 MAX_LIMIT = 200
 STAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+COUNT_FIELDS = ("registered_count", "waitlist_count", "attended_count", "review_count")  # start at 0, server-kept
 
 
 # =============================================================================
-# RULES BLOCK: everything specific to venues that the schema cannot say
+# RULES BLOCK: everything specific to scheduled classes that the schema cannot say
 # =============================================================================
 
-LOWERCASE_FIELDS = tuple(f for f in ("contact_email", "backup_contact_email") if f in VENUES.properties)
+LOWERCASE_FIELDS = tuple(f for f in ("organizer_email",) if f in CLASSES.properties)
 
 
-def _rooms_labels_unique(doc: dict) -> list:
-    labels = [str(r.get("label", "")).strip().lower() for r in doc.get("rooms", []) if isinstance(r, dict)]
-    return [] if len(labels) == len(set(labels)) else [{"field": "rooms", "issue": "duplicate"}]
+def _capacity_order(doc: dict) -> list:
+    """capacity_minimum <= capacity_target <= capacity_max (schema description, an endpoint rule)."""
+    lo, mid, hi = doc.get("capacity_minimum"), doc.get("capacity_target"), doc.get("capacity_max")
+    out = []
+    if isinstance(lo, int) and isinstance(mid, int) and lo > mid:
+        out.append({"field": "capacity_minimum", "issue": "out_of_range"})
+    if isinstance(mid, int) and isinstance(hi, int) and mid > hi:
+        out.append({"field": "capacity_max", "issue": "out_of_range"})
+    if isinstance(lo, int) and isinstance(hi, int) and lo > hi and not out:
+        out.append({"field": "capacity_max", "issue": "out_of_range"})
+    return out
 
 
-def _rooms_preferred_within_max(doc: dict) -> list:
-    for r in doc.get("rooms", []):
-        if isinstance(r, dict) and "preferred_occupancy" in r and "max_occupancy" in r:
-            if r["preferred_occupancy"] > r["max_occupancy"]:
-                return [{"field": "rooms", "issue": "out_of_range"}]
+def _cancelled_reason_only_when_cancelled(doc: dict) -> list:
+    if "cancelled_reason" in doc and doc.get("status") != "cancelled":
+        return [{"field": "cancelled_reason", "issue": "not_allowed"}]
     return []
 
 
-def _hours_open_before_close(doc: dict) -> list:
-    for h in doc.get("availability_hours", []):
-        if isinstance(h, dict) and "opens_at" in h and "closes_at" in h and h["opens_at"] >= h["closes_at"]:
-            return [{"field": "availability_hours", "issue": "out_of_range"}]
+def _source_request_only_private_or_group(doc: dict) -> list:
+    if "source_request_id" in doc and doc.get("class_type") == "workshop":
+        return [{"field": "source_request_id", "issue": "not_allowed"}]
     return []
 
 
 # (name, fields it reads, function). The fields column decides when an update must use the whole-record path.
 CROSS_FIELD_RULES = (
-    ("room_labels_unique", ("rooms",), _rooms_labels_unique),
-    ("room_preferred_not_above_max", ("rooms",), _rooms_preferred_within_max),
-    ("opens_before_closes", ("availability_hours",), _hours_open_before_close),
+    ("capacity_order", ("capacity_minimum", "capacity_target", "capacity_max"), _capacity_order),
+    ("cancelled_reason_only_when_cancelled", ("cancelled_reason", "status"), _cancelled_reason_only_when_cancelled),
+    ("source_request_only_private_or_group", ("source_request_id", "class_type"), _source_request_only_private_or_group),
 )
 RULE_FIELDS = frozenset(f for _, fields, _ in CROSS_FIELD_RULES for f in fields)
-
-
-def _prune(value):
-    """Drop nulls left by blank strings inside nested objects (rooms, hours)."""
-    if isinstance(value, dict):
-        return {k: _prune(v) for k, v in value.items() if v is not None}
-    if isinstance(value, builtins.list):
-        return [_prune(v) for v in value if v is not None]
-    return value
 
 
 def _normalize_value(name: str, value):
     value = clean(value)
     if isinstance(value, str) and name in LOWERCASE_FIELDS:
         value = value.lower()
-    return _prune(value)
+    return value
 
 
 def _run_rules(doc: dict) -> list:
@@ -113,7 +111,7 @@ def _is_deleted(doc: dict) -> bool:
 # create
 # =============================================================================
 
-def create(store, data, actor, source="dashboard", tx=None, now=None):
+def create(store, data, actor, source="dashboard", tx=None, now=None, check=None):
     problems = check_actor(actor)
     if source not in SOURCES:
         problems.append({"field": "source", "issue": "invalid_value"})
@@ -122,28 +120,31 @@ def create(store, data, actor, source="dashboard", tx=None, now=None):
     if not isinstance(data, dict):
         return _bad([{"field": "body", "issue": "invalid_type"}])
 
-    read_only = [{"field": k, "issue": "not_allowed"} for k in data if k in VENUES.read_only]
+    read_only = [{"field": k, "issue": "not_allowed"} for k in data if k in CLASSES.read_only]
     if read_only:
         return _bad(read_only)
 
     doc = drop_empty({k: _normalize_value(k, v) for k, v in data.items()})
-    problems = check_document(VENUES, doc)
+    problems = check_document(CLASSES, doc)
     if not problems:
         problems = _run_rules(doc)
+    if not problems and check is not None:
+        problems = check(doc)
     if problems:
         return _bad(problems)
 
-    if store.query(VENUES.name, [("slug", "==", doc["slug"])], limit=1):  # includes soft-deleted venues
+    if store.query(CLASSES.name, [("slug", "==", doc["slug"])], limit=1):  # includes soft-deleted classes
         return _bad([{"field": "slug", "issue": "duplicate"}])
 
-    doc = stamp_create(VENUES, doc, actor, source, now)
-    doc["review_count"] = 0
-    missing = [{"field": f, "issue": "required"} for f in VENUES.server_required if f not in doc]
-    self_check = check_document(VENUES, doc) + missing
+    doc = stamp_create(CLASSES, doc, actor, source, now)
+    for f in COUNT_FIELDS:
+        doc[f] = 0
+    missing = [{"field": f, "issue": "required"} for f in CLASSES.server_required if f not in doc]
+    self_check = check_document(CLASSES, doc) + missing
     if self_check:  # our own bug, not the sender's: say nothing about fields
         return failure("server_error")
     try:
-        store.create(VENUES.name, doc["id"], doc, tx=tx)
+        store.create(CLASSES.name, doc["id"], doc, tx=tx)
     except DocExists:
         return failure("server_error")
     return success(doc)
@@ -157,29 +158,31 @@ def get(store, id, include_deleted=False):
     problems = _id_problem(id)
     if problems:
         return _bad(problems)
-    doc = store.get(VENUES.name, id)
+    doc = store.get(CLASSES.name, id)
     if doc is None or (_is_deleted(doc) and not include_deleted):
         return failure("not_found")
     return success(doc)
 
 
-_LIST_FILTERS = ("status", "is_public_venue")
+_LIST_FILTERS = ("status", "class_type", "venue_id", "is_public")
 
 
-def list(store, filters=None, order="name", limit=DEFAULT_LIMIT):  # noqa: A001  (the name is the contract)
-    """Supported: no filter or ONE of status / is_public_venue, ordered by name; no filter ordered by -created_at.
-    Anything else is `not_supported`, because each combination needs an index (section 8 of the method doc).
-    Soft-deleted venues are left out after the query, so a page can hold fewer than `limit` records."""
+def list(store, filters=None, order="title", limit=DEFAULT_LIMIT):  # noqa: A001  (the name is the contract)
+    """Supported: no filter or ONE of status / class_type / venue_id / is_public, ordered by title; no filter
+    may also be ordered by -created_at. Anything else is `not_supported`, because each combination needs an index
+    (section 8 of the method doc). Not ordered by starts_at: an idea has no start, and a store leaves out
+    records that lack the ordered field. Soft-deleted classes are left out after the query, so a page can hold
+    fewer than `limit` records."""
     filters = dict(filters or {})
     problems = []
     for k, v in filters.items():
         if k not in _LIST_FILTERS:
             problems.append({"field": k, "issue": "not_supported"})
         else:
-            problems += check_field(VENUES, k, v)
+            problems += check_field(CLASSES, k, v)
     if len(filters) > 1:
         problems += [{"field": k, "issue": "not_supported"} for k in filters]
-    if order not in ("name", "-created_at"):
+    if order not in ("title", "-created_at"):
         problems.append({"field": "order", "issue": "not_supported"})
     elif order == "-created_at" and filters:
         problems.append({"field": "order", "issue": "not_supported"})
@@ -188,7 +191,7 @@ def list(store, filters=None, order="name", limit=DEFAULT_LIMIT):  # noqa: A001 
     if problems:
         return _bad(problems)
     limit = max(1, min(limit, MAX_LIMIT))
-    docs = store.query(VENUES.name, [(k, "==", v) for k, v in filters.items()],
+    docs = store.query(CLASSES.name, [(k, "==", v) for k, v in filters.items()],
                        order_by=order.lstrip("-"), descending=order.startswith("-"), limit=limit)
     docs = [d for d in docs if not _is_deleted(d)]
     return success({"records": docs, "count": len(docs)})
@@ -204,10 +207,8 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
     Simple path (no read): every changed field is checked against its own definition and nothing else
     is looked at. Whole-record path (one read): used only when a changed field takes part in a cross-field
     rule (schema set_involved/remove_involved, a code rule, or check_fields), because then the other fields matter.
-    check: an optional function(merged record) -> problems from a service (rules that need another collection);
-    it runs on the whole-record path only, which check_fields forces.
     expected_updated_at: if given, the write is refused with `conflict` when the record changed since.
-    Updating a soft-deleted venue is allowed on the simple path (no read to notice); the whole-record path refuses it.
+    Updating a soft-deleted class is allowed on the simple path (no read to notice); the whole-record path refuses it.
     """
     problems = check_actor(actor) + _id_problem(id)
     if expected_updated_at is not None and not (isinstance(expected_updated_at, str) and STAMP.match(expected_updated_at)):
@@ -222,27 +223,27 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
     for name, raw in changes.items():
         if name == "slug":
             problems.append({"field": name, "issue": "immutable"})
-        elif name not in VENUES.properties or name in VENUES.read_only:
+        elif name not in CLASSES.properties or name in CLASSES.read_only:
             problems.append({"field": name, "issue": "not_allowed"})
         else:
             value = _normalize_value(name, raw)
             if value is None:
-                (problems.append({"field": name, "issue": "required"}) if name in VENUES.required
+                (problems.append({"field": name, "issue": "required"}) if name in CLASSES.required
                  else removals.append(name))
             else:
-                problems += check_field(VENUES, name, value)
+                problems += check_field(CLASSES, name, value)
                 set_fields[name] = value
     if problems:
         return _bad(problems)
 
     extra = frozenset(check_fields) if check is not None else frozenset()
-    needs_whole = (any(f in VENUES.set_involved or f in RULE_FIELDS or f in extra for f in set_fields)
-                   or any(f in VENUES.remove_involved or f in RULE_FIELDS or f in extra for f in removals))
+    needs_whole = (any(f in CLASSES.set_involved or f in RULE_FIELDS or f in extra for f in set_fields)
+                   or any(f in CLASSES.remove_involved or f in RULE_FIELDS or f in extra for f in removals))
     stamp = stamp_update(actor, now)
     expected = expected_updated_at
 
     if needs_whole:
-        cur = store.get(VENUES.name, id)
+        cur = store.get(CLASSES.name, id)
         if cur is None or _is_deleted(cur):
             return failure("not_found")
         if expected is not None and cur.get("updated_at") != expected:
@@ -250,7 +251,7 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         merged = {**cur, **set_fields}
         for f in removals:
             merged.pop(f, None)
-        problems = check_document(VENUES, merged)
+        problems = check_document(CLASSES, merged)
         if not problems:
             problems = _run_rules(merged)
         if not problems and check is not None:
@@ -260,7 +261,7 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         expected = cur["updated_at"]  # the record must not move between our read and our write
 
     try:
-        store.update(VENUES.name, id, {**set_fields, **stamp}, removals, expected_updated_at=expected, tx=tx)
+        store.update(CLASSES.name, id, {**set_fields, **stamp}, removals, expected_updated_at=expected, tx=tx)
     except DocMissing:
         return failure("not_found")
     except StaleUpdate:
@@ -274,18 +275,18 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
 # =============================================================================
 
 def soft_delete(store, id, actor, tx=None, now=None):
-    """Mark deleted; the record stays. The service must first make sure no class points at this venue
-    (the schema says: set it inactive instead). Deleting twice is `not_found`."""
+    """Mark deleted; the record stays. Deleting twice is `not_found`. The service decides whether a class that
+    already has registrations may go (nothing is enforced here)."""
     problems = check_actor(actor) + _id_problem(id)
     if problems:
         return _bad(problems)
-    cur = store.get(VENUES.name, id)
+    cur = store.get(CLASSES.name, id)
     if cur is None or _is_deleted(cur):
         return failure("not_found")
     stamp = utc_stamp(now)
     fields = {"deleted_at": stamp, "deleted_by": actor, "updated_at": stamp, "updated_by": actor}
     try:
-        store.update(VENUES.name, id, fields, (), expected_updated_at=cur["updated_at"], tx=tx)
+        store.update(CLASSES.name, id, fields, (), expected_updated_at=cur["updated_at"], tx=tx)
     except DocMissing:
         return failure("not_found")
     except StaleUpdate:
@@ -299,9 +300,9 @@ def soft_delete(store, id, actor, tx=None, now=None):
 
 def set_review_summary(store, id, review_count, average_rating, actor="system:reviews", tx=None, now=None):
     problems = check_actor(actor) + _id_problem(id)
-    problems += check_field(VENUES, "review_count", review_count, allow_read_only=True)
+    problems += check_field(CLASSES, "review_count", review_count, allow_read_only=True)
     if average_rating is not None:
-        problems += check_field(VENUES, "average_rating", average_rating, allow_read_only=True)
+        problems += check_field(CLASSES, "average_rating", average_rating, allow_read_only=True)
     if problems:
         return _bad(problems)
     fields = {"review_count": review_count, **stamp_update(actor, now)}
@@ -311,7 +312,7 @@ def set_review_summary(store, id, review_count, average_rating, actor="system:re
     else:
         fields["average_rating"] = average_rating
     try:
-        store.update(VENUES.name, id, fields, removals, tx=tx)
+        store.update(CLASSES.name, id, fields, removals, tx=tx)
     except DocMissing:
         return failure("not_found")
     return success({"id": id, "review_count": review_count, "average_rating": average_rating})

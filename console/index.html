@@ -90,16 +90,22 @@
   .confirm { background: #fff3f1; border: 1px solid #f0c4be; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; }
   .confirm .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
   #editPanel h2 { margin: 0; font-size: 20px; }
+  #cEditPanel h2 { margin: 0; font-size: 20px; }
   #editPanel .hint { color: var(--muted); font-size: 14px; margin: 2px 0 8px; }
+  #cEditPanel .hint { color: var(--muted); font-size: 14px; margin: 2px 0 8px; }
   details.sec { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
   details.sec > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; font-weight: 700; list-style-position: inside; }
   details.sec > summary.haserr { color: var(--err); }
   details.sec .body { padding: 0 14px 14px; }
   details.sec .note { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
   #editPanel label.f { display: block; font-weight: 600; margin-top: 12px; }
+  #cEditPanel label.f { display: block; font-weight: 600; margin-top: 12px; }
   #editPanel input, #editPanel select, #editPanel textarea { width: 100%; min-height: 48px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  #cEditPanel input, #cEditPanel select, #cEditPanel textarea { width: 100%; min-height: 48px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
   #editPanel textarea { min-height: 96px; }
+  #cEditPanel textarea { min-height: 96px; }
   #editPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  #cEditPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .req { color: var(--orange); font-weight: 800; }
   .lsub { font-weight: 800; margin: 14px 0 2px; }
   .chiplink { all: unset; box-sizing: border-box; min-height: 44px; display: inline-flex; align-items: center; color: #7a3a00; text-decoration: underline; cursor: pointer; font-weight: 600; font-size: 14px; }
@@ -129,14 +135,19 @@
   .drow { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 8px 0; border-top: 1px solid var(--line); }
   .drow label.day { display: flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; text-transform: capitalize; }
   #editPanel .drow label.day input, .lsdlg .drow label.day input { width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
+  #cEditPanel .drow label.day input, .lsdlg .drow label.day input { width: 22px; height: 22px; min-height: 0; margin: 0; padding: 0; }
   .drow .times { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .drow .times[hidden] { display: none; }
   .drow .times span { color: var(--muted); font-size: 13px; display: block; }
   .stickybar { position: sticky; bottom: 0; background: var(--cream); border-top: 1px solid var(--line); padding: 10px 0 12px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   #editPanel .fhint { display: none; }
+  #cEditPanel .fhint { display: none; }
   #editPanel.showhelp .fhint { display: block; }
+  #cEditPanel.showhelp .fhint { display: block; }
   #editPanel .fhint.keep { display: block; }
+  #cEditPanel .fhint.keep { display: block; }
   #editPanel .other { margin-top: 8px; }
+  #cEditPanel .other { margin-top: 8px; }
   .linkbtn { all: unset; box-sizing: border-box; display: inline-block; min-height: 44px; line-height: 44px; margin-top: 8px; color: #7a3a00; text-decoration: underline; cursor: pointer; font-weight: 600; }
   .linkbtn:focus-visible { outline: 3px solid var(--orange); }
   .ready { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: #fcfaf5; margin-top: 4px; font-size: 14px; }
@@ -161,6 +172,7 @@
     <select id="collPick" aria-label="Collection" hidden>
       <option value="requests">Registration requests</option>
       <option value="venues">Venues</option>
+      <option value="classes">Classes</option>
     </select>
     <button class="quiet" id="lockBtn" hidden>Lock</button>
   </div>
@@ -250,6 +262,93 @@
       </form>
     </section>
   </section>
+
+  <section id="classesView" hidden>
+    <div id="cMain">
+    <div class="bar">
+      <div>
+        <div class="count" id="cCount"></div>
+        <div class="meta" id="cChecked"></div>
+      </div>
+      <div class="actions">
+        <select id="cStatusFilter" aria-label="Filter by status">
+          <option value="">Any status</option>
+          <option value="identified">Idea</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="enrolling">Enrolling</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select id="cTypeFilter" aria-label="Filter by kind">
+          <option value="">Any kind</option>
+          <option value="workshop">Workshop</option>
+          <option value="group">Group</option>
+          <option value="private">One on one</option>
+        </select>
+        <button id="cRefresh" class="quiet" type="button">Refresh</button>
+        <button id="cAddBtn" type="button">Add class</button>
+      </div>
+    </div>
+    <form class="panel" id="cAddForm" hidden autocomplete="off" novalidate>
+      <h2>Add a class</h2>
+      <div class="hint">It is added as an idea with no date. Venue, date, time and price come next, when you edit it.</div>
+      <label class="f" for="cTitle">Title</label>
+      <input type="text" id="cTitle" maxlength="200" autocomplete="off">
+      <div class="ferr" id="eCTitle"></div>
+      <label class="f" for="cSlug">Short name (slug)</label>
+      <input type="text" id="cSlug" maxlength="100" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
+      <div class="hint">Lowercase letters, numbers and underscores. It cannot be changed later.</div>
+      <div class="ferr" id="eCSlug"></div>
+      <label class="f" for="cType">Kind of class</label>
+      <select id="cType">
+        <option value="">Choose one</option>
+        <option value="workshop">Workshop (people pick it from the public list)</option>
+        <option value="group">Group (a leader brings a network of people)</option>
+        <option value="private">One on one (one person, a couple or a family)</option>
+      </select>
+      <div class="ferr" id="eCType"></div>
+      <label class="f" for="cPublic">Show in the public list?</label>
+      <select id="cPublic">
+        <option value="">Choose one</option>
+        <option value="yes">Yes, show it</option>
+        <option value="no">No, keep it out of the list</option>
+      </select>
+      <div class="ferr" id="eCPublic"></div>
+      <label class="f" for="cMin">Fewest people (needed for it to run)</label>
+      <input type="number" id="cMin" inputmode="numeric" min="1" max="500" step="1">
+      <div class="ferr" id="eCMin"></div>
+      <label class="f" for="cTarget">Target number</label>
+      <input type="number" id="cTarget" inputmode="numeric" min="1" max="500" step="1">
+      <div class="ferr" id="eCTarget"></div>
+      <label class="f" for="cMax">Most people</label>
+      <input type="number" id="cMax" inputmode="numeric" min="1" max="500" step="1">
+      <div class="ferr" id="eCMax"></div>
+      <div class="btns">
+        <button type="submit" id="cSaveBtn">Save class</button>
+        <button type="button" class="quiet" id="cCancelBtn">Cancel</button>
+      </div>
+      <div class="msg" id="cFMsg" role="alert"></div>
+    </form>
+    <div class="notice" id="cNotice" role="status"></div>
+    <div class="msg" id="cMsg" role="alert"></div>
+    <ul id="cList"></ul>
+    <div class="empty" id="cEmpty" hidden>No classes yet.</div>
+    </div>
+
+    <section id="cEditPanel" hidden>
+      <div class="headrow"><h2 id="cEditTitle"></h2><button type="button" class="quiet" id="cHelpBtn">Show field help</button></div>
+      <div class="hint" id="cEditSub"></div>
+      <div class="msg" id="cEditMsg" role="alert"></div>
+      <button type="button" class="quiet" id="cEditReload" hidden>Close and reload the latest</button>
+      <form id="cEditForm" novalidate autocomplete="off">
+        <div id="cEditSections"></div>
+        <div class="stickybar">
+          <button type="submit" id="cEditSave">Save changes</button>
+          <button type="button" class="quiet" id="cEditCancel">Cancel</button>
+        </div>
+      </form>
+    </section>
+  </section>
 </main>
 
 <script>
@@ -275,7 +374,7 @@
   var timer = null;
   var busy = false;
   var firstLoadDone = false;
-  var vLoaded = false, vBusy = false, vNewId = "";
+  var vLoaded = false, vBusy = false, vAgain = false, vNewId = "";
 
   $("appName").textContent = APP.name;
 
@@ -304,19 +403,21 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { $("listView").hidden = true; $("venuesView").hidden = true; }
+    if (locked) { $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { return (location.hash || "").replace(/^#\/?/, "") === "venues" ? "venues" : "requests"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : "requests"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
     if (r !== "venues") closeEdit();
+    if (r !== "classes") closeClassEdit();
     $("collPick").value = r;
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
-    if (r === "requests") startTimer(); else { stopTimer(); if (!vLoaded) loadVenues(); }
+    $("classesView").hidden = r !== "classes";
+    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); }
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
@@ -456,7 +557,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -491,10 +592,10 @@
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
   var slugTouched = false;
 
-  function admin(op, args) {
+  function admin(op, args, coll) {
     return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
         headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
-        body: JSON.stringify({ collection: "venues", op: op, args: args }) })
+        body: JSON.stringify({ collection: coll || "venues", op: op, args: args }) })
       .then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
       })
@@ -547,11 +648,12 @@
   }
 
   function loadVenues() {
-    if (vBusy) return Promise.resolve();
+    if (vBusy) { vAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
     vBusy = true; $("vMsg").textContent = "";
     var f = $("vFilter").value;
     return admin("list", { filters: f ? { status: f } : {}, limit: 200 }).then(function (res) {
       vBusy = false;
+      if (vAgain) { vAgain = false; return loadVenues(); }
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { $("vMsg").textContent = adminProblem(res.status); return; }
       var recs = res.body.data.records || [];
@@ -633,6 +735,12 @@
         } else if (res.status === 404) {
           $("vNotice").textContent = "That venue was already gone.";
           loadVenues();
+        } else if (res.status === 409 && res.body && res.body.error && (res.body.error.problems || []).some(function (p) { return p.issue === "in_use"; })) {
+          err.textContent = "Classes use this venue, so it cannot be deleted. Set it inactive instead, or move or delete those classes first.";
+          admin("list", { filters: { venue_id: rec.id }, limit: 50 }, "scheduled_classes").then(function (r2) {
+            var names = (r2.status === 200 && r2.body.ok ? r2.body.data.records : []).map(function (c) { return c.title; });
+            if (names.length) err.textContent += " Classes: " + names.join(", ") + ".";
+          });
         } else {
           err.textContent = adminProblem(res.status);
         }
@@ -686,11 +794,12 @@
     return null;
   }
 
-  function buildField(name, def, rec) {
+  function buildField(name, def, rec, ctx) {
+    var P = ctx ? ctx.prefix : "", SCH = ctx ? ctx.schema : editSchema, FLD = ctx ? ctx.fields : editFields;
     var wrap = document.createElement("div");
-    var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + name;
+    var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + P + name;
     label.appendChild(document.createTextNode(humanize(name)));
-    var isReq = (editSchema.required || []).indexOf(name) >= 0;
+    var isReq = (SCH.required || []).indexOf(name) >= 0;
     var orig = rec[name] === undefined ? null : rec[name];
     var kind, el, other = null;
     var choices = (def.type === "string" && !def["enum"]) ? choicesFor(name) : null;
@@ -723,7 +832,7 @@
       });
       if (choices.other) {
         opt(el, "__other__", "Other (type it)");
-        other = document.createElement("input"); other.type = "text"; other.className = "other"; other.id = "ef_" + name + "_other";
+        other = document.createElement("input"); other.type = "text"; other.className = "other"; other.id = "ef_" + P + name + "_other";
         other.maxLength = def.maxLength || 100; other.placeholder = "Type it"; other.hidden = true; other.autocomplete = "off";
         el.addEventListener("change", function () { other.hidden = el.value !== "__other__"; if (!other.hidden) other.focus(); });
       }
@@ -740,14 +849,14 @@
       el.autocomplete = "off"; el.autocapitalize = "off"; el.spellcheck = false;
       el.value = orig === null ? "" : String(orig);
     }
-    el.id = "ef_" + name;
+    el.id = "ef_" + P + name;
     wrap.appendChild(label); wrap.appendChild(el);
     if (other) wrap.appendChild(other);
     if (kind === "money") { var k = document.createElement("div"); k.className = "fhint keep"; k.textContent = "In dollars."; wrap.appendChild(k); }
     var hintText = firstSentence(def.description);
     if (hintText) { var h = document.createElement("div"); h.className = "fhint"; h.textContent = hintText; wrap.appendChild(h); }
-    var er = document.createElement("div"); er.className = "ferr"; er.id = "ee_" + name; wrap.appendChild(er);
-    editFields[name] = { el: el, other: other, kind: kind, def: def, sec: null, summary: null };
+    var er = document.createElement("div"); er.className = "ferr"; er.id = "ee_" + P + name; wrap.appendChild(er);
+    FLD[name] = { el: el, other: other, kind: kind, def: def, sec: null, summary: null };
     return wrap;
   }
 
@@ -806,7 +915,8 @@
     return a.map(function (e, i) { return [e, i]; }).sort(function (x, y) { return (dayIndex(x[0]) - dayIndex(y[0])) || (x[1] - y[1]); }).map(function (x) { return x[0]; });
   }
   var LIST_ISSUES = {
-    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", out_of_range: "A room’s preferred number is above its maximum." },
+    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", out_of_range: "A room’s preferred number is above its maximum.",
+             in_use: "A class uses this room (or needs more seats than it would have). Change that class first." },
     availability_hours: { out_of_range: "Each open day must open before it closes." }
   };
   function listIssueText(field, issue) {
@@ -1304,6 +1414,531 @@
   });
   $("editReload").addEventListener("click", function () { closeEdit(); loadVenues(); });
 
+  // ======================================================================================================
+  // ---- Classes view: list, add, edit, delete. Same pattern as venues; the server does all the checking.
+  // The form is built from the published scheduled_class schema. The venue and room are pick lists made from
+  // the venues collection; the start time is typed in the venue's time zone and saved as UTC.
+  // ======================================================================================================
+  var CLS_SCHEMA_URL = "/schemas/scheduled_class.schema.json";
+  var CTYPES = { workshop: "Workshop", group: "Group", "private": "One on one" };
+  var CPRIMARY = ["Basics", "When and where", "Capacity and price"];
+  var CLAYOUT = [
+    ["Basics", ["title", "class_type", "status", "is_public", "description", "cancelled_reason"]],
+    ["When and where", ["venue_id", "venue_room_label", "starts_at", "time_zone", "duration_minutes", "is_venue_confirmed", "venue_notes"]],
+    ["Capacity and price", ["capacity_minimum", "capacity_target", "capacity_max", "is_waitlist_enabled", "waitlist_max", "price_cents", "price_basis"]],
+    ["Program and organizer", ["program_slug", "accessibility_notes", "organizer_name", "organizer_email", "organizer_phone"]]
+  ];
+  var CLABELS = { title: "Title", class_type: "Kind of class", is_public: "Show in the public list", program_slug: "Program",
+                  venue_id: "Venue", venue_room_label: "Room", starts_at: "Starts", duration_minutes: "Length (minutes)",
+                  is_venue_confirmed: "Venue confirmed with them", venue_notes: "Notes about the venue for this class",
+                  capacity_minimum: "Fewest people (needed to run)", capacity_target: "Target number", capacity_max: "Most people",
+                  is_waitlist_enabled: "Keep a waiting list", waitlist_max: "Waiting list limit", price_cents: "Price", price_basis: "Price is",
+                  cancelled_reason: "Why it was cancelled", organizer_name: "Organizer name", organizer_email: "Organizer email", organizer_phone: "Organizer phone" };
+  Object.keys(CLABELS).forEach(function (k) { if (!LABELS[k]) LABELS[k] = CLABELS[k]; });
+  var CISSUE = {
+    venue_id: { not_found: "That venue was not found.", inactive: "That venue is not active. Make the venue active first, or keep this class as an idea.", required: "Choose a venue." },
+    venue_room_label: { not_found: "That venue has no room with that name." },
+    capacity_minimum: { out_of_range: "The fewest people is above the target." },
+    capacity_max: { out_of_range: "Check the numbers: fewest ≤ target ≤ most, and the most cannot be above the room's size." },
+    cancelled_reason: { not_allowed: "Only for a cancelled class." }
+  };
+
+  var cCtx = { prefix: "c_", schema: null, fields: {} };
+  var cAgain = false, cSchemaP = null, cRec = null, cVenues = [], cVenueById = {}, cLoaded = false, cBusy = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
+
+  function getClassSchema() {
+    if (!cSchemaP) {
+      cSchemaP = fetch(CLS_SCHEMA_URL, { cache: "no-cache" })
+        .then(function (r) { if (!r.ok) throw new Error("x"); return r.json(); })
+        .catch(function () { cSchemaP = null; return null; });
+    }
+    return cSchemaP;
+  }
+  function loadVenueChoices() {
+    return admin("list", { limit: 200 }, "venues").then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return false; }
+      if (res.status !== 200 || !res.body.ok) return false;
+      cVenues = (res.body.data.records || []).slice().sort(function (a, b) { return (a.name || "").toLowerCase() < (b.name || "").toLowerCase() ? -1 : 1; });
+      cVenueById = {}; cVenues.forEach(function (v) { cVenueById[v.id] = v; });
+      return true;
+    });
+  }
+
+  // ---- time zone helpers: the time is typed in the class's time zone and saved as UTC
+  function zoneParts(ms, tz) {
+    var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
+                                                hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    var o = {}; f.formatToParts(new Date(ms)).forEach(function (p) { o[p.type] = p.value; });
+    return o;
+  }
+  function zoneOffsetMin(ms, tz) {
+    var o = zoneParts(ms, tz), h = Number(o.hour) === 24 ? 0 : Number(o.hour);
+    return (Date.UTC(Number(o.year), Number(o.month) - 1, Number(o.day), h, Number(o.minute), Number(o.second)) - Math.floor(ms / 1000) * 1000) / 60000;
+  }
+  function zonedToUtc(date, time, tz) {
+    var m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(date || ""), t = /^(\d\d):(\d\d)$/.exec(time || "");
+    if (!m || !t || !tz) return null;
+    try {
+      var naive = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(t[1]), Number(t[2]));
+      var off = zoneOffsetMin(naive, tz), guess = naive - off * 60000, off2 = zoneOffsetMin(guess, tz);
+      if (off2 !== off) guess = naive - off2 * 60000;
+      return new Date(guess).toISOString().replace(/\.\d{3}Z$/, "Z");
+    } catch (e) { return null; }
+  }
+  function utcToZoned(iso, tz) {
+    var d = new Date(iso); if (isNaN(d) || !tz) return null;
+    try {
+      var o = zoneParts(d.getTime(), tz), h = Number(o.hour) === 24 ? "00" : o.hour;
+      return { date: o.year + "-" + o.month + "-" + o.day, time: h + ":" + o.minute };
+    } catch (e) { return null; }
+  }
+  function classWhen(rec) {
+    if (!rec.starts_at) return "No date yet";
+    try {
+      var d = new Date(rec.starts_at);
+      return new Intl.DateTimeFormat("en-US", { timeZone: rec.time_zone || "America/Denver", weekday: "short", month: "short", day: "numeric",
+                                                 hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(d);
+    } catch (e) { return String(rec.starts_at); }
+  }
+  function money(cents) { return "$" + (cents / 100).toFixed(cents % 100 === 0 ? 0 : 2); }
+
+  // ---- list
+  function classRow(rec, isNew) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+    var head = document.createElement("button");
+    head.className = "head"; head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", rec.title || "(no title)"));
+    top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), rec.status || ""));
+    head.appendChild(top);
+    head.appendChild(mk("div", "who", classWhen(rec)));
+    var v = rec.venue_id ? cVenueById[rec.venue_id] : null;
+    var where = rec.venue_id ? ((v ? v.name : "(venue not found)") + (rec.venue_room_label ? " · " + rec.venue_room_label : "")) : "No venue yet";
+    head.appendChild(mk("div", "sub", where));
+    var chips = mk("div", "chips");
+    chips.appendChild(mk("span", "", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", public" : ", not public")));
+    chips.appendChild(mk("span", "", "People: " + rec.capacity_minimum + " to " + rec.capacity_target + " (up to " + rec.capacity_max + ")"));
+    chips.appendChild(mk("span", "", "Registered: " + (rec.registered_count || 0)));
+    if (rec.waitlist_count) chips.appendChild(mk("span", "", "Waiting: " + rec.waitlist_count));
+    if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
+    head.appendChild(chips);
+
+    var detail = mk("div", "detail");
+    detail.appendChild(classActions(rec));
+    var done = {};
+    ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
+      if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
+    });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    head.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    li.appendChild(head); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function classActions(rec) {
+    var wrap = document.createElement("div");
+    var row = mk("div", "actions-row");
+    var ed = mk("button", "", "Edit"); ed.type = "button";
+    var del = mk("button", "danger", "Delete"); del.type = "button";
+    row.appendChild(ed); row.appendChild(del);
+    var box = mk("div", "confirm"); box.hidden = true;
+    box.appendChild(mk("div", "", "Delete this class? It is hidden from the lists but kept in the database."
+      + (rec.registered_count ? " " + rec.registered_count + (rec.registered_count === 1 ? " person is" : " people are") + " registered. Cancel the class instead if it should still show." : "")));
+    var btns = mk("div", "btns");
+    var yes = mk("button", "danger", "Delete class"); yes.type = "button";
+    var no = mk("button", "quiet", "Cancel"); no.type = "button";
+    var err = mk("div", "msg"); err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no); box.appendChild(btns); box.appendChild(err);
+    ed.addEventListener("click", function () { openClassEdit(rec); });
+    del.addEventListener("click", function () { box.hidden = !box.hidden; err.textContent = ""; });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      admin("soft_delete", { id: rec.id }, "scheduled_classes").then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { $("cNotice").textContent = "Deleted " + (rec.title || "class") + "."; loadClasses(); }
+        else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
+        else err.textContent = adminProblem(res.status);
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(box);
+    return wrap;
+  }
+
+  function loadClasses() {
+    if (cBusy) { cAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
+    cBusy = true; $("cMsg").textContent = "";
+    var st = $("cStatusFilter").value, ty = $("cTypeFilter").value;
+    var filters = st ? { status: st } : (ty ? { class_type: ty } : {});
+    return Promise.all([loadVenueChoices(), admin("list", { filters: filters, limit: 200 }, "scheduled_classes")]).then(function (both) {
+      cBusy = false;
+      if (cAgain) { cAgain = false; return loadClasses(); }
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("cMsg").textContent = adminProblem(res.status); return; }
+      var recs = (res.body.data.records || []).filter(function (r) { return !(st && ty) || r.class_type === ty; });
+      recs.sort(function (a, b) {
+        if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
+        if (a.starts_at) return -1;
+        if (b.starts_at) return 1;
+        return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1;
+      });
+      var ul = $("cList"); ul.textContent = "";
+      recs.forEach(function (r) { ul.appendChild(classRow(r, r.id === cNewId)); });
+      cNewId = ""; cLoaded = true;
+      $("cCount").textContent = recs.length + (recs.length === 1 ? " class" : " classes");
+      $("cEmpty").hidden = recs.length > 0;
+      $("cChecked").textContent = "Last checked " + fmtClock.format(new Date());
+    });
+  }
+
+  // ---- add
+  function cClearErrs() { ["eCTitle", "eCSlug", "eCType", "eCPublic", "eCMin", "eCTarget", "eCMax", "cFMsg"].forEach(function (id) { $(id).textContent = ""; }); }
+  function openClassForm() {
+    $("cAddForm").reset(); cSlugTouched = false; cClearErrs(); $("cNotice").textContent = "";
+    $("cMin").value = "6"; $("cTarget").value = "10"; $("cMax").value = "15";
+    $("cAddForm").hidden = false; $("cAddBtn").hidden = true; $("cTitle").focus();
+  }
+  function closeClassForm() { $("cAddForm").hidden = true; $("cAddBtn").hidden = false; }
+  var CADD_ERR = { title: "eCTitle", slug: "eCSlug", class_type: "eCType", is_public: "eCPublic", capacity_minimum: "eCMin", capacity_target: "eCTarget", capacity_max: "eCMax" };
+
+  // ---- edit
+  function classNeeds(schema, status) {
+    var need = [];
+    (schema.allOf || []).forEach(function (b) {
+      var c = b["if"] && b["if"].properties && b["if"].properties.status;
+      if (c && c["enum"] && c["enum"].indexOf(status) >= 0 && b.then) (b.then.required || []).forEach(function (f) { if (need.indexOf(f) < 0) need.push(f); });
+    });
+    return need;
+  }
+  function cField(name) { return cCtx.fields[name]; }
+  function cValue(name) {
+    var f = cField(name); if (!f) return cRec && cRec[name] !== undefined ? cRec[name] : null;
+    if (f.kind === "when") return f.date.value && f.time.value ? "set" : null;
+    return readValue(f);
+  }
+  function cTz() { var f = cField("time_zone"); return f ? readValue(f) : null; }
+  function cStartsUtc() {
+    var f = cField("starts_at"); if (!f.date.value && !f.time.value) return { value: null };
+    if (!f.date.value || !f.time.value) return { bad: "Give both a date and a time." };
+    var tz = cTz(); if (!tz) return { bad: "Choose the time zone first." };
+    var u = zonedToUtc(f.date.value, f.time.value, tz);
+    return u ? { value: u } : { bad: "That date or time is not valid." };
+  }
+
+  function buildVenueField(rec) {
+    var wrap = mk("div"), id = "ef_c_venue_id";
+    var l = mk("label", "f", "Venue"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
+    cVenues.forEach(function (v) { var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o); });
+    if (rec.venue_id && !cVenueById[rec.venue_id]) { var ox = mk("option", "", "(venue not found)"); ox.value = rec.venue_id; sel.appendChild(ox); }
+    sel.value = rec.venue_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_venue_id"; wrap.appendChild(er);
+    cCtx.fields.venue_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.venue_id, sec: null, summary: null };
+    return wrap;
+  }
+  function buildRoomPick(rec) {
+    var wrap = mk("div"), id = "ef_c_venue_room_label";
+    var l = mk("label", "f", "Room"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_venue_room_label"; wrap.appendChild(er);
+    cCtx.fields.venue_room_label = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.venue_room_label, sec: null, summary: null };
+    fillRooms(rec.venue_room_label || "");
+    return wrap;
+  }
+  function fillRooms(keep) {
+    var sel = cField("venue_room_label").el, vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+    sel.textContent = "";
+    var o0 = mk("option", "", vid ? "Not chosen yet" : "Choose a venue first"); o0.value = ""; sel.appendChild(o0);
+    var found = false;
+    ((v && v.rooms) || []).forEach(function (r) {
+      var o = mk("option", "", r.label + " (up to " + r.max_occupancy + ")"); o.value = r.label; sel.appendChild(o);
+      if (r.label === keep) found = true;
+    });
+    if (keep && !found) { var ox = mk("option", "", keep + " (not in this venue)"); ox.value = keep; sel.appendChild(ox); }
+    sel.value = keep || "";
+    sel.disabled = !vid;
+  }
+  function buildStartsField(rec) {
+    var wrap = mk("div");
+    var l = mk("label", "f", "Starts (in the time zone below)"); l.htmlFor = "ef_c_starts_date"; wrap.appendChild(l);
+    var two = mk("div", "two");
+    var d = mk("input"); d.type = "date"; d.id = "ef_c_starts_date";
+    var t = mk("input"); t.type = "time"; t.id = "ef_c_starts_time"; t.setAttribute("aria-label", "Start time");
+    two.appendChild(d); two.appendChild(t); wrap.appendChild(two);
+    var er = mk("div", "ferr"); er.id = "ee_c_starts_at"; wrap.appendChild(er);
+    var z = rec.starts_at ? utcToZoned(rec.starts_at, rec.time_zone) : null;
+    if (z) { d.value = z.date; t.value = z.time; }
+    cCtx.fields.starts_at = { el: d, other: null, kind: "when", date: d, time: t, def: cCtx.schema.properties.starts_at, sec: null, summary: null,
+                              initial: { date: d.value, time: t.value, tz: rec.time_zone || "" } };
+    return wrap;
+  }
+
+  function cBuildSections(rec) {
+    var host = $("cEditSections"); host.textContent = "";
+    cCtx.fields = {};
+    var props = cCtx.schema.properties, used = {};
+    function section(title, open, parent) {
+      var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
+      var sm = document.createElement("summary"); sm.textContent = title; d.appendChild(sm);
+      var body = document.createElement("div"); body.className = "body"; d.appendChild(body);
+      (parent || host).appendChild(d);
+      return { d: d, sm: sm, body: body };
+    }
+    function put(sec, n) {
+      used[n] = 1; var node;
+      if (n === "venue_id") node = buildVenueField(rec);
+      else if (n === "venue_room_label") node = buildRoomPick(rec);
+      else if (n === "starts_at") node = buildStartsField(rec);
+      else { var df = props[n]; if (!df || df.readOnly || df.type === "array") return; node = buildField(n, df, rec, cCtx); }
+      node.id = "cw_" + n;
+      sec.body.appendChild(node);
+      var f = cCtx.fields[n]; if (f) { f.sec = sec.d; f.summary = sec.sm; f.wrap = node; }
+    }
+    CLAYOUT.forEach(function (l) {
+      if (CPRIMARY.indexOf(l[0]) < 0) return;
+      var s2 = section(l[0], true);
+      l[1].forEach(function (n) { put(s2, n); });
+      if (l[0] === "Capacity and price") {
+        var btn = mk("button", "linkbtn", "What’s needed to schedule or open enrolment?"); btn.type = "button"; btn.id = "cReadyBtn";
+        var box = mk("div", "ready"); box.id = "cReadyBox"; box.hidden = true;
+        btn.addEventListener("click", function () { box.hidden = !box.hidden; if (!box.hidden) renderClassReady(); });
+        s2.body.appendChild(btn); s2.body.appendChild(box);
+      }
+    });
+    var more = mk("details", "more");
+    more.appendChild(mk("summary", "", "More (program, organizer, accessibility)"));
+    var mbody = mk("div", "mbody"); more.appendChild(mbody); host.appendChild(more);
+    CLAYOUT.forEach(function (l) {
+      if (CPRIMARY.indexOf(l[0]) >= 0) return;
+      var s3 = section(l[0], false, mbody);
+      l[1].forEach(function (n) { put(s3, n); });
+    });
+
+    // behaviour: venue changes the room list and (if blank) the time zone; status shows the cancelled reason
+    cField("venue_id").el.addEventListener("change", function () {
+      fillRooms("");
+      var v = cVenueById[this.value], tzf = cField("time_zone");
+      if (v && v.time_zone && tzf && !readValue(tzf)) {
+        var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === v.time_zone; });
+        if (has) tzf.el.value = v.time_zone;
+      }
+    });
+    function syncReason() {
+      var show = cField("status").el.value === "cancelled", w = cField("cancelled_reason").wrap;
+      w.hidden = !show;
+    }
+    cField("status").el.addEventListener("change", syncReason); syncReason();
+  }
+
+  function renderClassReady() {
+    var box = $("cReadyBox"); if (!box) return;
+    box.textContent = "";
+    var sch = cCtx.schema;
+    function group(title, status) {
+      box.appendChild(mk("div", "sum", title));
+      var miss = 0;
+      classNeeds(sch, status).forEach(function (f) {
+        var ok;
+        if (f === "starts_at") ok = !!cField("starts_at").date.value && !!cField("starts_at").time.value;
+        else { var v = cValue(f); ok = v !== null && v !== undefined; }
+        if (!ok) miss++;
+        box.appendChild(mk("div", ok ? "ok" : "todo", (ok ? "✓ " : "○ ") + humanize(f)));
+      });
+      var vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+      var vok = !!v && v.status === "active"; if (!vok) miss++;
+      box.appendChild(mk("div", vok ? "ok" : "todo", (vok ? "✓ " : "○ ") + "An active venue"));
+      return miss;
+    }
+    group("To schedule it:", "scheduled");
+    group("To open enrolment:", "enrolling");
+  }
+
+  function cClearEditErrs() {
+    $("cEditMsg").textContent = ""; $("cEditReload").hidden = true;
+    Object.keys(cCtx.fields).forEach(function (n) {
+      var e = $("ee_c_" + n); if (e) e.textContent = "";
+      if (cCtx.fields[n].summary) cCtx.fields[n].summary.className = "";
+    });
+    document.querySelectorAll("#cEditSections details.more > summary").forEach(function (sm) { sm.className = ""; });
+  }
+  function cOpenSec(f) {
+    f.sec.open = true;
+    var m = f.sec.closest("details.more");
+    if (m) { m.open = true; m.firstChild.className = "haserr"; }
+  }
+
+  // Collect what changed. Returns {changes, bad:{field:message}}
+  function collectClassChanges() {
+    var changes = {}, bad = {};
+    Object.keys(cCtx.fields).forEach(function (n) {
+      var f = cCtx.fields[n];
+      if (n === "starts_at") {
+        var ini = f.initial, tz = cTz() || "";
+        if (f.date.value === ini.date && f.time.value === ini.time && tz === ini.tz) return;   // untouched: leave it as stored
+        var r = cStartsUtc();
+        if (r.bad) { bad.starts_at = r.bad; return; }
+        var orig = cRec.starts_at === undefined ? null : cRec.starts_at;
+        if (r.value !== orig) changes.starts_at = r.value;
+        return;
+      }
+      var v = readValue(f);
+      if (v === undefined) { bad[n] = "Enter a number."; return; }
+      if (n === "cancelled_reason" && cField("status").el.value !== "cancelled") v = null;
+      var o = cRec[n] === undefined ? null : cRec[n];
+      if (v !== o) changes[n] = v;
+    });
+    return { changes: changes, bad: bad };
+  }
+  function classDirty() {
+    if (!cRec) return false;
+    var c = collectClassChanges();
+    return Object.keys(c.bad).length > 0 || Object.keys(c.changes).length > 0;
+  }
+  function closeClassEdit() {
+    cRec = null; cCtx.fields = {};
+    $("cEditPanel").hidden = true; $("cMain").hidden = false;
+  }
+  function openClassEdit(rec) {
+    $("cMsg").textContent = "";
+    Promise.all([getClassSchema(), loadVenueChoices()]).then(function (both) {
+      var schema = both[0];
+      if (!schema) { $("cMsg").textContent = "Could not load the class form. Try again."; return; }
+      cCtx.schema = schema; cRec = rec;
+      $("cEditTitle").textContent = "Edit " + (rec.title || "class");
+      $("cEditSub").textContent = "Slug: " + rec.slug + " (cannot be changed)";
+      cBuildSections(rec);
+      cClearEditErrs();
+      $("cEditPanel").classList.remove("showhelp"); $("cHelpBtn").textContent = "Show field help";
+      $("cMain").hidden = true; $("cEditPanel").hidden = false;
+      window.scrollTo(0, 0);
+    });
+  }
+  function cIssueText(p, f) {
+    var m = CISSUE[p.field] && CISSUE[p.field][p.issue];
+    if (m) return m;
+    if (p.issue === "required") return "Required.";
+    if (p.issue === "invalid_format") return f && f.def && f.def.format === "email" ? "That email address does not look right." : "That value is not valid.";
+    if (p.issue === "out_of_range") return "That number is outside the allowed range.";
+    return ISSUE[p.issue] || "That value is not valid.";
+  }
+
+  $("cEditForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!cRec) return;
+    cClearEditErrs();
+    var c = collectClassChanges(), badKeys = Object.keys(c.bad);
+    if (badKeys.length) {
+      badKeys.forEach(function (n) { $("ee_c_" + n).textContent = c.bad[n]; cOpenSec(cCtx.fields[n]); });
+      $("cEditMsg").textContent = "Not saved. Fix the marked fields.";
+      return;
+    }
+    if (!Object.keys(c.changes).length) { $("cEditMsg").textContent = "Nothing changed."; return; }
+    $("cEditSave").disabled = true;
+    admin("update", { id: cRec.id, changes: c.changes, expected_updated_at: cRec.updated_at }, "scheduled_classes").then(function (res) {
+      $("cEditSave").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        cNewId = cRec.id;
+        $("cNotice").textContent = "Saved " + (c.changes.title || cRec.title) + ".";
+        closeClassEdit(); loadClasses();
+        return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) { $("cEditMsg").textContent = "This class changed since you opened it. Nothing was saved."; $("cEditReload").hidden = false; return; }
+      if (res.status === 404) { $("cEditMsg").textContent = "This class no longer exists."; $("cEditReload").hidden = false; return; }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var other = [], first = null, n = 0;
+        err.problems.forEach(function (p) {
+          var f = cCtx.fields[p.field];
+          if (f) {
+            $("ee_c_" + p.field).textContent = cIssueText(p, f);
+            cOpenSec(f); f.summary.className = "haserr"; n++;
+            if (!first) first = f.el;
+          } else other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
+        });
+        $("cEditMsg").textContent = "Not saved. " + (n ? n + " field" + (n === 1 ? "" : "s") + " need attention, marked below." : "")
+          + (other.length ? " Also needed: " + other.join(", ") + "." : "");
+        if (first) first.scrollIntoView({ block: "center" });
+        return;
+      }
+      $("cEditMsg").textContent = adminProblem(res.status);
+    });
+  });
+  function liveClassReady() { var b = $("cReadyBox"); if (b && !b.hidden) renderClassReady(); }
+  $("cEditSections").addEventListener("input", liveClassReady);
+  $("cEditSections").addEventListener("change", liveClassReady);
+  $("cHelpBtn").addEventListener("click", function () {
+    var on = $("cEditPanel").classList.toggle("showhelp");
+    $("cHelpBtn").textContent = on ? "Hide field help" : "Show field help";
+  });
+  $("cEditCancel").addEventListener("click", function () {
+    if (classDirty() && !window.confirm("Discard your changes?")) return;
+    closeClassEdit();
+  });
+  $("cEditReload").addEventListener("click", function () { closeClassEdit(); loadClasses(); });
+
+  function resetClasses() {
+    cLoaded = false; cBusy = false; cNewId = "";
+    $("cList").textContent = ""; $("cCount").textContent = ""; $("cChecked").textContent = "";
+    $("cMsg").textContent = ""; $("cNotice").textContent = ""; $("cEmpty").hidden = true;
+    $("cStatusFilter").value = ""; $("cTypeFilter").value = ""; closeClassForm(); closeClassEdit();
+  }
+  $("cTitle").addEventListener("input", function () { if (!cSlugTouched) $("cSlug").value = slugify($("cTitle").value); });
+  $("cSlug").addEventListener("input", function () { cSlugTouched = true; });
+  $("cAddBtn").addEventListener("click", openClassForm);
+  $("cCancelBtn").addEventListener("click", closeClassForm);
+  $("cRefresh").addEventListener("click", function () { $("cNotice").textContent = ""; loadClasses(); });
+  $("cStatusFilter").addEventListener("change", function () { $("cNotice").textContent = ""; loadClasses(); });
+  $("cTypeFilter").addEventListener("change", function () { $("cNotice").textContent = ""; loadClasses(); });
+  $("cAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); cClearErrs();
+    var ty = $("cType").value, pub = $("cPublic").value, bad = false;
+    if (!ty) { $("eCType").textContent = "Choose one."; bad = true; }
+    if (!pub) { $("eCPublic").textContent = "Choose one."; bad = true; }
+    var nums = { capacity_minimum: $("cMin").value, capacity_target: $("cTarget").value, capacity_max: $("cMax").value };
+    Object.keys(nums).forEach(function (k) {
+      var n = wholeNum(nums[k]);
+      if (n === null || isNaN(n)) { $(CADD_ERR[k]).textContent = "Enter a whole number."; bad = true; } else nums[k] = n;
+    });
+    if (bad) return;
+    var data = { title: $("cTitle").value, slug: $("cSlug").value, class_type: ty, program_slug: "launch", status: "identified", is_public: pub === "yes" };
+    Object.keys(nums).forEach(function (k) { data[k] = nums[k]; });
+    $("cSaveBtn").disabled = true;
+    admin("create", { data: data }, "scheduled_classes").then(function (res) {
+      $("cSaveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        cNewId = res.body.data.id;
+        $("cNotice").textContent = "Added " + res.body.data.title + " (an idea, no date yet).";
+        closeClassForm(); loadClasses();
+        return;
+      }
+      var probs = res.status === 400 && res.body && res.body.error && res.body.error.problems;
+      if (probs && probs.length) {
+        var other = [];
+        probs.forEach(function (p) {
+          var target = CADD_ERR[p.field];
+          var text = (p.field === "slug" && p.issue === "invalid_format") ? "Use lowercase letters, numbers and underscores only."
+                   : (CISSUE[p.field] && CISSUE[p.field][p.issue]) || (ISSUE[p.issue] || "That value is not valid.");
+          if (target) $(target).textContent = text; else other.push(p.field + " (" + p.issue + ")");
+        });
+        if (other.length) $("cFMsg").textContent = "Could not save: " + other.join(", ");
+        return;
+      }
+      $("cFMsg").textContent = adminProblem(res.status);
+    });
+  });
+
   function resetVenues() {
     vLoaded = false; vBusy = false; vNewId = "";
     $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
@@ -1369,6 +2004,7 @@
   window.addEventListener("hashchange", route);
   $("collPick").addEventListener("change", function () {
     if (editRec && editDirty() && !window.confirm("Discard your changes?")) { $("collPick").value = "venues"; return; }
+    if (cRec && classDirty() && !window.confirm("Discard your changes?")) { $("collPick").value = "classes"; return; }
     location.hash = "#/" + $("collPick").value;
   });
 

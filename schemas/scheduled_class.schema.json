@@ -8,7 +8,8 @@
   "propertyNames": {
     "pattern": "^[a-z][a-z0-9_]*$"
   },
-  "x_retention": "undecided",
+  "x_retention": "Keep classes until the owner deletes them. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
   "required": [
     "title",
     "slug",

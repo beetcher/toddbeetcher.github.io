@@ -31,7 +31,7 @@ import logging
 from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import venues_crud
+from crud import classes_service, venues_service
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -40,8 +40,8 @@ TEST_ACTOR = "system:crud_test"
 ADMIN_ACTOR = "user:admin"
 MAX_BODY_BYTES = 100_000
 
-# collection -> handler module. A new collection's handler file is added here.
-HANDLERS = {"venues": venues_crud}
+# collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
+HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service}
 
 # op -> (required args, optional args)
 OPS = {
