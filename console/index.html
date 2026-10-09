@@ -102,6 +102,21 @@
   #editPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .req { color: var(--orange); font-weight: 800; }
   .stickybar { position: sticky; bottom: 0; background: var(--cream); border-top: 1px solid var(--line); padding: 10px 0 12px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  #editPanel .fhint { display: none; }
+  #editPanel.showhelp .fhint { display: block; }
+  #editPanel .fhint.keep { display: block; }
+  #editPanel .other { margin-top: 8px; }
+  .linkbtn { all: unset; box-sizing: border-box; display: inline-block; min-height: 44px; line-height: 44px; margin-top: 8px; color: #7a3a00; text-decoration: underline; cursor: pointer; font-weight: 600; }
+  .linkbtn:focus-visible { outline: 3px solid var(--orange); }
+  .ready { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: #fcfaf5; margin-top: 4px; font-size: 14px; }
+  .ready .sum { font-weight: 700; margin-bottom: 4px; }
+  .ready .ok { color: #2f5d00; }
+  .ready .todo { color: var(--muted); }
+  details.more { margin-bottom: 10px; }
+  details.more > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; font-weight: 700; background: transparent; border: 1px dashed var(--muted); border-radius: 12px; list-style-position: inside; }
+  details.more > summary.haserr { color: var(--err); }
+  details.more > .mbody { padding-top: 10px; }
+  .headrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -191,9 +206,8 @@
     </div>
 
     <section id="editPanel" hidden>
-      <h2 id="editTitle"></h2>
+      <div class="headrow"><h2 id="editTitle"></h2><button type="button" class="quiet" id="helpBtn">Show field help</button></div>
       <div class="hint" id="editSub"></div>
-      <div class="hint"><span class="req">*</span> needed to make the venue active</div>
       <div class="msg" id="editMsg" role="alert"></div>
       <button type="button" class="quiet" id="editReload" hidden>Close and reload the latest</button>
       <form id="editForm" novalidate autocomplete="off">
@@ -517,18 +531,26 @@
 
   // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
   var SCHEMA_URL = "/schemas/venue.schema.json";
+  var PRIMARY = ["Basics", "Address", "Contact"];   // shown open; everything else sits under "More details"
   var LAYOUT = [
     ["Basics", ["name", "description", "status", "is_public_venue"]],
     ["Address", ["street_address", "address_line_2", "city", "state_region", "postal_code", "country", "time_zone"]],
+    ["Contact", ["contact_name", "contact_email", "contact_phone", "backup_contact_name", "backup_contact_email", "backup_contact_phone"]],
     ["Map and access", ["latitude", "longitude", "parking_description", "parking_latitude", "parking_longitude",
                         "entry_description", "entry_latitude", "entry_longitude", "transit_description"]],
-    ["Contact", ["contact_name", "contact_email", "contact_phone", "backup_contact_name", "backup_contact_email", "backup_contact_phone"]],
     ["Booking", ["website_url", "booking_process", "booking_lead_days", "availability_notes", "setup_minutes_before", "teardown_minutes_after"]],
     ["Facilities and rules", ["has_wifi", "wifi_notes", "is_accessible", "has_step_free_entry", "has_elevator", "has_accessible_restroom",
                               "accessibility_notes", "allows_minors", "allows_animals", "allows_food", "allows_alcohol", "requires_insurance", "insurance_notes"]],
     ["Cost", ["cost_cents", "cost_basis", "deposit_cents", "cancellation_terms", "cost_notes"]],
     ["Notes", ["notes"]]
   ];
+  var US_STATES = [["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],["CT","Connecticut"],
+    ["DE","Delaware"],["DC","District of Columbia"],["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],
+    ["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],
+    ["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],
+    ["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],
+    ["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],
+    ["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]];
   var schemaP = null, editSchema = null, editRec = null, editFields = {}, editActive = {}, editAny = [];
 
   function getSchema() {
@@ -539,7 +561,11 @@
     }
     return schemaP;
   }
-  function humanize(n) { var t = n.replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); }
+  var LABELS = { is_public_venue: "Public venue", state_region: "State or region", postal_code: "ZIP or postal code", time_zone: "Time zone",
+                 has_wifi: "Has Wi-Fi", wifi_notes: "Wi-Fi notes", is_accessible: "Accessible", has_step_free_entry: "Step-free entry",
+                 cost_cents: "Cost", deposit_cents: "Deposit", booking_lead_days: "Booking lead time (days)", allows_minors: "Allows minors",
+                 allows_animals: "Allows animals", allows_food: "Allows food", allows_alcohol: "Allows alcohol", website_url: "Website" };
+  function humanize(n) { if (LABELS[n]) return LABELS[n]; var t = n.replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); }
   function firstSentence(t) { if (!t) return ""; var m = t.match(/^.*?[.!?](\s|$)/); return (m ? m[0] : t).trim(); }
 
   function venueActions(rec) {
@@ -592,17 +618,47 @@
     });
   }
 
+  // Pick lists for fields where free text is hard to get right. The saved value is the same kind of string the schema allows.
+  function choicesFor(name) {
+    if (name === "country") {
+      var names = null, out = [];
+      try { names = new Intl.DisplayNames(["en"], { type: "region" }); } catch (e) {}
+      if (names) {
+        for (var a = 65; a <= 90; a++) for (var b = 65; b <= 90; b++) {
+          var code = String.fromCharCode(a, b), nm = "";
+          try { nm = names.of(code); } catch (e) { continue; }
+          if (nm && nm !== code && nm !== "Unknown Region") out.push([code, nm]);
+        }
+        out.sort(function (x, y) { return x[1] < y[1] ? -1 : 1; });
+      }
+      out = [["US", "United States"]].concat(out.filter(function (o) { return o[0] !== "US"; }));
+      if (out.length < 5) out = [["US", "United States"], ["CA", "Canada"], ["MX", "Mexico"], ["GB", "United Kingdom"]];
+      return { groups: [{ label: "", opts: out }], other: false };
+    }
+    if (name === "state_region") {
+      return { groups: [{ label: "", opts: US_STATES }], other: true };
+    }
+    if (name === "time_zone") {
+      var us = [["America/New_York", "Eastern"], ["America/Chicago", "Central"], ["America/Denver", "Mountain"], ["America/Phoenix", "Arizona, no daylight time"],
+                ["America/Los_Angeles", "Pacific"], ["America/Anchorage", "Alaska"], ["Pacific/Honolulu", "Hawaii"]]
+        .map(function (z) { return [z[0], z[1] + " (" + z[0] + ")"]; });
+      var all = [];
+      try { all = Intl.supportedValuesOf("timeZone").map(function (z) { return [z, z]; }); } catch (e) {}
+      var groups = [{ label: "United States", opts: us }];
+      if (all.length) groups.push({ label: "All time zones", opts: all });
+      return { groups: groups, other: all.length === 0 };
+    }
+    return null;
+  }
+
   function buildField(name, def, rec) {
     var wrap = document.createElement("div");
     var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + name;
     label.appendChild(document.createTextNode(humanize(name)));
-    if (editActive[name] || editAny.indexOf(name) >= 0) {
-      var star = document.createElement("span"); star.className = "req"; star.textContent = " *"; star.title = "Needed to make the venue active";
-      label.appendChild(star);
-    }
     var isReq = (editSchema.required || []).indexOf(name) >= 0;
     var orig = rec[name] === undefined ? null : rec[name];
-    var kind, el;
+    var kind, el, other = null;
+    var choices = (def.type === "string" && !def["enum"]) ? choicesFor(name) : null;
     function opt(sel, value, text) { var o = document.createElement("option"); o.value = value; o.textContent = text; sel.appendChild(o); }
     if (def.type === "boolean") {
       kind = "bool"; el = document.createElement("select");
@@ -622,64 +678,130 @@
       if (def.minimum != null) el.min = def.minimum / div;
       if (def.maximum != null) el.max = def.maximum / div;
       el.value = orig === null ? "" : (kind === "money" ? (orig / 100).toFixed(2) : String(orig));
+    } else if (choices) {
+      kind = "text"; el = document.createElement("select");
+      opt(el, "", "Not set");
+      choices.groups.forEach(function (g) {
+        var parent = el;
+        if (g.label) { parent = document.createElement("optgroup"); parent.label = g.label; el.appendChild(parent); }
+        g.opts.forEach(function (o) { opt(parent, o[0], o[1]); });
+      });
+      if (choices.other) {
+        opt(el, "__other__", "Other (type it)");
+        other = document.createElement("input"); other.type = "text"; other.className = "other"; other.id = "ef_" + name + "_other";
+        other.maxLength = def.maxLength || 100; other.placeholder = "Type it"; other.hidden = true; other.autocomplete = "off";
+        el.addEventListener("change", function () { other.hidden = el.value !== "__other__"; if (!other.hidden) other.focus(); });
+      }
+      var has = orig !== null && Array.prototype.some.call(el.options, function (o) { return o.value === orig; });
+      if (orig === null) el.value = "";
+      else if (has) el.value = orig;
+      else if (other) { el.value = "__other__"; other.value = orig; other.hidden = false; }
+      else { opt(el, orig, orig); el.value = orig; }
     } else {
       kind = "text";
       el = (def.maxLength || 0) > 200 ? document.createElement("textarea") : document.createElement("input");
-      if (el.tagName === "INPUT") el.type = def.format === "email" ? "email" : def.format === "uri" ? "url" : "text";
+      if (el.tagName === "INPUT") el.type = def.format === "email" ? "email" : def.format === "uri" ? "url" : /_phone$/.test(name) ? "tel" : "text";
       if (def.maxLength) el.maxLength = def.maxLength;
       el.autocomplete = "off"; el.autocapitalize = "off"; el.spellcheck = false;
       el.value = orig === null ? "" : String(orig);
     }
     el.id = "ef_" + name;
     wrap.appendChild(label); wrap.appendChild(el);
-    var hintText = (kind === "money" ? "In dollars. " : "") + firstSentence(def.description);
+    if (other) wrap.appendChild(other);
+    if (kind === "money") { var k = document.createElement("div"); k.className = "fhint keep"; k.textContent = "In dollars."; wrap.appendChild(k); }
+    var hintText = firstSentence(def.description);
     if (hintText) { var h = document.createElement("div"); h.className = "fhint"; h.textContent = hintText; wrap.appendChild(h); }
     var er = document.createElement("div"); er.className = "ferr"; er.id = "ee_" + name; wrap.appendChild(er);
-    editFields[name] = { el: el, kind: kind, def: def, sec: null, summary: null };
+    editFields[name] = { el: el, other: other, kind: kind, def: def, sec: null, summary: null };
     return wrap;
+  }
+
+  function openSec(f) {
+    f.sec.open = true;
+    var m = f.sec.closest("details.more");
+    if (m) { m.open = true; m.firstChild.className = "haserr"; }
+  }
+
+  // "What's needed to make this active?": a checklist worked out from the schema's own active rule and the form as it is now.
+  function renderReady() {
+    var box = $("readyBox"); if (!box) return;
+    box.textContent = "";
+    var rows = [], missing = 0;
+    function row(ok, text) { rows.push([ok, text]); if (!ok) missing++; }
+    Object.keys(editActive).forEach(function (f) {
+      if (f === "rooms") { row(((editRec.rooms && editRec.rooms.length) || 0) >= 1, "At least one room (rooms can be edited in the next update)"); return; }
+      var fld = editFields[f];
+      var v = fld ? readValue(fld) : (editRec[f] === undefined ? null : editRec[f]);
+      row(v !== null && v !== undefined, humanize(f));
+    });
+    if (editAny.length) {
+      var any = editAny.some(function (f) { var fld = editFields[f]; var v = fld ? readValue(fld) : null; return v !== null && v !== undefined; });
+      row(any, "A contact " + editAny.map(function (f) { return f.replace(/^contact_/, ""); }).join(" or "));
+    }
+    var sum = document.createElement("div"); sum.className = "sum";
+    sum.textContent = missing ? "Still needed: " + missing : "Everything needed is filled in.";
+    box.appendChild(sum);
+    rows.forEach(function (r) {
+      var d = document.createElement("div"); d.className = r[0] ? "ok" : "todo";
+      d.textContent = (r[0] ? "✓ " : "○ ") + r[1];
+      box.appendChild(d);
+    });
+  }
+  function addReady(body) {
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "linkbtn"; btn.textContent = "What’s needed to make this active?";
+    var box = document.createElement("div"); box.id = "readyBox"; box.className = "ready"; box.hidden = true;
+    btn.addEventListener("click", function () { box.hidden = !box.hidden; if (!box.hidden) renderReady(); });
+    body.appendChild(btn); body.appendChild(box);
   }
 
   function buildSections(rec) {
     var host = $("editSections"); host.textContent = "";
     editFields = {};
     var props = editSchema.properties, used = {};
-    function section(title, open) {
+    function section(title, open, parent) {
       var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
       var sm = document.createElement("summary"); sm.textContent = title; d.appendChild(sm);
       var body = document.createElement("div"); body.className = "body"; d.appendChild(body);
-      host.appendChild(d);
+      (parent || host).appendChild(d);
       return { d: d, sm: sm, body: body };
     }
     function eligible(n) { var df = props[n]; return df && !df.readOnly && df.type !== "array" && n !== "slug"; }
-    LAYOUT.forEach(function (sec, idx) {
-      var names = sec[1].filter(eligible);
-      if (!names.length) return;
-      var s2 = section(sec[0], idx === 0);
-      if (sec[0] === "Contact" && editAny.length) {
-        var note = document.createElement("div"); note.className = "note";
-        note.textContent = "An active venue needs at least one of: " + editAny.map(function (f) { return humanize(f).toLowerCase(); }).join(", ") + ".";
-        s2.body.appendChild(note);
-      }
+    function fill(sec, names) {
       names.forEach(function (n) {
         used[n] = 1;
-        s2.body.appendChild(buildField(n, props[n], rec));
-        editFields[n].sec = s2.d; editFields[n].summary = s2.sm;
+        sec.body.appendChild(buildField(n, props[n], rec));
+        editFields[n].sec = sec.d; editFields[n].summary = sec.sm;
       });
-    });
-    var rest = Object.keys(props).filter(function (n) { return !used[n] && eligible(n); });
-    if (rest.length) {
-      var s3 = section("Other", false);
-      rest.forEach(function (n) { s3.body.appendChild(buildField(n, props[n], rec)); editFields[n].sec = s3.d; editFields[n].summary = s3.sm; });
     }
-    var s4 = section("Rooms and hours", false);
+    function names(title) { return LAYOUT.filter(function (l) { return l[0] === title; })[0][1].filter(eligible); }
+
+    PRIMARY.forEach(function (t) {
+      var s2 = section(t, true);
+      fill(s2, names(t));
+      if (t === "Basics") addReady(s2.body);
+    });
+    var sr = section("Rooms and hours", false);
     var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
     var info = document.createElement("div"); info.className = "note";
     info.textContent = "Rooms: " + nr + ". Hours: " + nh + ". Editing rooms and hours comes in the next update.";
-    s4.body.appendChild(info);
+    sr.body.appendChild(info);
+
+    var more = document.createElement("details"); more.className = "more";
+    var msm = document.createElement("summary"); msm.textContent = "More details (map, booking, facilities, cost, notes)"; more.appendChild(msm);
+    var mbody = document.createElement("div"); mbody.className = "mbody"; more.appendChild(mbody);
+    host.appendChild(more);
+    LAYOUT.forEach(function (l) {
+      if (PRIMARY.indexOf(l[0]) >= 0) return;
+      var nm = names(l[0]);
+      if (nm.length) fill(section(l[0], false, mbody), nm);
+    });
+    var rest = Object.keys(props).filter(function (n) { return !used[n] && eligible(n); });
+    if (rest.length) fill(section("Other", false, mbody), rest);
   }
 
   function readValue(f) {
     var raw = f.el.value;
+    if (f.other && raw === "__other__") raw = f.other.value;
     if (f.kind === "bool") return raw === "" ? null : raw === "true";
     var t = raw.trim();
     if (f.kind === "text") return t === "" ? null : t;
@@ -709,6 +831,7 @@
       $("ee_" + n).textContent = "";
       if (editFields[n].summary) editFields[n].summary.className = "";
     });
+    document.querySelectorAll("details.more > summary").forEach(function (sm) { sm.className = ""; });
   }
   function closeEdit() {
     editRec = null; editFields = {};
@@ -723,6 +846,7 @@
       $("editSub").textContent = "Slug: " + rec.slug + " (cannot be changed)";
       buildSections(rec);
       clearEditErrs();
+      $("editPanel").classList.remove("showhelp"); $("helpBtn").textContent = "Show field help";
       $("vMain").hidden = true; $("editPanel").hidden = false;
       window.scrollTo(0, 0);
     });
@@ -748,7 +872,7 @@
     clearEditErrs();
     var c = collectChanges();
     if (c.bad.length) {
-      c.bad.forEach(function (n) { $("ee_" + n).textContent = "Enter a number."; editFields[n].sec.open = true; });
+      c.bad.forEach(function (n) { $("ee_" + n).textContent = "Enter a number."; openSec(editFields[n]); });
       $("editMsg").textContent = "Not saved. Fix the marked fields.";
       return;
     }
@@ -780,7 +904,7 @@
           var f = editFields[p.field];
           if (f) {
             $("ee_" + p.field).textContent = issueText(p, f);
-            f.sec.open = true; f.summary.className = "haserr"; n++;
+            openSec(f); f.summary.className = "haserr"; n++;
             if (!first) first = f.el;
           } else {
             other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
@@ -793,6 +917,13 @@
       }
       $("editMsg").textContent = adminProblem(res.status);
     });
+  });
+  function liveReady() { var b = $("readyBox"); if (b && !b.hidden) renderReady(); }
+  $("editSections").addEventListener("input", liveReady);
+  $("editSections").addEventListener("change", liveReady);
+  $("helpBtn").addEventListener("click", function () {
+    var on = $("editPanel").classList.toggle("showhelp");
+    $("helpBtn").textContent = on ? "Hide field help" : "Show field help";
   });
   $("editCancel").addEventListener("click", function () {
     if (editDirty() && !window.confirm("Discard your changes?")) return;
