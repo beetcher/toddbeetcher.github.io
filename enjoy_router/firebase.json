@@ -13,6 +13,7 @@
         "run_tests.py",
         "run_http_tests.py",
         "run_console_tests.py",
+        "run_crud_tests.py",
         "firebase-debug.log",
         "firestore-debug.log",
         "ui-debug.log"

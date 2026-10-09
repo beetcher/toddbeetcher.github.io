@@ -1,0 +1,132 @@
+{
+  "about": "Handler test records for enjoy_router/crud/venues_crud.py. Read by enjoy_router/run_crud_tests.py. Every valid example in venue.examples.json must create; every invalid one must be refused. The scenarios below are stateful: each runs against a fresh in-memory store, the clock moves one second per step, and \"$name\" refers to a venue made earlier in the scenario (\"$name\" is its id, \"$name.field\" is a stored field). A data value {\"$example\": \"x\", \"set\": {...}, \"unset\": [...]} starts from the valid example x. Expect keys: ok, code, problems (exact set of field:issue), problems_include (subset), reads (store reads made by the step), stored (fields on the stored record; {\"$absent\": true} means the field is not there), data (fields in the returned data; dotted paths allowed).",
+  "scenarios": [
+    {"name": "create trims, drops blanks, lowercases email, stamps server fields", "steps": [
+      {"op": "create", "as": "a", "data": {"name": "  Cafe  ", "slug": "cafe", "status": "inactive", "is_public_venue": true, "description": "   ", "contact_email": "  Host@Example.COM "},
+       "expect": {"ok": true, "stored": {"name": "Cafe", "description": {"$absent": true}, "contact_email": "host@example.com", "review_count": 0, "source": "dashboard", "created_by": "user:todd", "schema_version": 1}}}
+    ]},
+    {"name": "create refuses a bad actor, a bad source and a non-object", "steps": [
+      {"op": "create", "data": {"$example": "idea_only"}, "actor": "todd", "expect": {"ok": false, "code": "validation_failed", "problems": ["actor:invalid_format"]}},
+      {"op": "create", "data": {"$example": "idea_only"}, "source": "web", "expect": {"ok": false, "code": "validation_failed", "problems": ["source:invalid_value"]}},
+      {"op": "create", "data": ["x"], "expect": {"ok": false, "code": "validation_failed", "problems": ["body:invalid_type"]}}
+    ]},
+    {"name": "create refuses an unknown field and a server-kept field", "steps": [
+      {"op": "create", "data": {"$example": "idea_only", "set": {"favourite_colour": "blue"}}, "expect": {"ok": false, "code": "validation_failed", "problems": ["favourite_colour:not_allowed"]}},
+      {"op": "create", "data": {"$example": "idea_only", "set": {"created_by": "user:x"}}, "expect": {"ok": false, "code": "validation_failed", "problems": ["created_by:not_allowed"]}}
+    ]},
+    {"name": "slug must be unique, even against a soft-deleted venue", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "create", "data": {"$example": "idea_only", "set": {"name": "Other"}}, "expect": {"ok": false, "code": "validation_failed", "problems": ["slug:duplicate"]}},
+      {"op": "soft_delete", "id": "$a", "expect": {"ok": true}},
+      {"op": "create", "data": {"$example": "idea_only", "set": {"name": "Again"}}, "expect": {"ok": false, "problems": ["slug:duplicate"]}}
+    ]},
+    {"name": "code rule: room labels are unique (case-insensitive)", "steps": [
+      {"op": "create", "data": {"$example": "private_home", "set": {"rooms": [{"label": "Den", "max_occupancy": 5}, {"label": "den", "max_occupancy": 6}]}}, "expect": {"ok": false, "problems": ["rooms:duplicate"]}}
+    ]},
+    {"name": "code rule: preferred occupancy is not above the maximum", "steps": [
+      {"op": "create", "data": {"$example": "private_home", "set": {"rooms": [{"label": "Den", "preferred_occupancy": 9, "max_occupancy": 5}]}}, "expect": {"ok": false, "problems": ["rooms:out_of_range"]}}
+    ]},
+    {"name": "code rule: opening time is before closing time", "steps": [
+      {"op": "create", "data": {"$example": "private_home", "set": {"availability_hours": [{"day_of_week": "monday", "opens_at": "18:00", "closes_at": "09:00"}]}}, "expect": {"ok": false, "problems": ["availability_hours:out_of_range"]}}
+    ]},
+    {"name": "get", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "get", "id": "$a", "expect": {"ok": true, "data": {"slug": "possible_cafe"}}},
+      {"op": "get", "id": "11111111-1111-4111-8111-111111111111", "expect": {"ok": false, "code": "not_found"}},
+      {"op": "get", "id": "nope", "expect": {"ok": false, "code": "validation_failed", "problems": ["id:invalid_format"]}},
+      {"op": "soft_delete", "id": "$a", "expect": {"ok": true}},
+      {"op": "get", "id": "$a", "expect": {"ok": false, "code": "not_found"}},
+      {"op": "get", "id": "$a", "include_deleted": true, "expect": {"ok": true, "data": {"deleted_by": "user:todd"}}}
+    ]},
+    {"name": "update, simple path: one field, no read", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"name": "  New Name "}, "actor": "user:sam",
+       "expect": {"ok": true, "reads": 0, "data": {"changed": ["name"], "removed": [], "updated_by": "user:sam"}, "stored": {"name": "New Name", "updated_by": "user:sam", "created_by": "user:todd"}}},
+      {"op": "update", "id": "$a", "changes": {"contact_email": "nope"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["contact_email:invalid_format"], "reads": 0, "stored": {"contact_email": "venue@example.com"}}},
+      {"op": "update", "id": "$a", "changes": {"description": null}, "expect": {"ok": true, "reads": 0, "data": {"removed": ["description"]}, "stored": {"description": {"$absent": true}}}}
+    ]},
+    {"name": "update refuses server fields, slug, unknown fields, empty changes, required removal", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"id": "x"}, "expect": {"ok": false, "problems": ["id:not_allowed"]}},
+      {"op": "update", "id": "$a", "changes": {"review_count": 9}, "expect": {"ok": false, "problems": ["review_count:not_allowed"]}},
+      {"op": "update", "id": "$a", "changes": {"created_at": "2020-01-01T00:00:00Z"}, "expect": {"ok": false, "problems": ["created_at:not_allowed"]}},
+      {"op": "update", "id": "$a", "changes": {"slug": "other"}, "expect": {"ok": false, "problems": ["slug:immutable"]}},
+      {"op": "update", "id": "$a", "changes": {"colour": "blue"}, "expect": {"ok": false, "problems": ["colour:not_allowed"]}},
+      {"op": "update", "id": "$a", "changes": {}, "expect": {"ok": false, "problems": ["changes:required"]}},
+      {"op": "update", "id": "$a", "changes": {"name": ""}, "expect": {"ok": false, "problems": ["name:required"]}},
+      {"op": "update", "id": "nope", "changes": {"name": "X"}, "expect": {"ok": false, "problems": ["id:invalid_format"]}},
+      {"op": "update", "id": "11111111-1111-4111-8111-111111111111", "changes": {"name": "X"}, "expect": {"ok": false, "code": "not_found"}}
+    ]},
+    {"name": "update, whole-record path: reads once and checks the other fields", "steps": [
+      {"op": "create", "as": "idea", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$idea", "changes": {"status": "active"}, "expect": {"ok": false, "code": "validation_failed", "reads": 1, "problems_include": ["street_address:required", "rooms:required", "allows_minors:required"]}},
+      {"op": "update", "id": "$idea", "changes": {"cost_cents": 500}, "expect": {"ok": false, "reads": 1, "problems": ["cost_basis:required"]}},
+      {"op": "update", "id": "$idea", "changes": {"cost_cents": 500, "cost_basis": "per_hour"}, "expect": {"ok": true, "reads": 1, "stored": {"cost_cents": 500, "cost_basis": "per_hour"}}},
+      {"op": "update", "id": "$idea", "changes": {"latitude": 40.0}, "expect": {"ok": false, "reads": 1, "problems": ["longitude:required"]}},
+      {"op": "update", "id": "$idea", "changes": {"latitude": 40.0, "longitude": -105.0}, "expect": {"ok": true, "reads": 1}}
+    ]},
+    {"name": "update, whole-record path: removing a field other rules need", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"contact_email": null}, "expect": {"ok": true, "reads": 1, "stored": {"contact_email": {"$absent": true}}}},
+      {"op": "update", "id": "$a", "changes": {"contact_phone": null}, "expect": {"ok": false, "reads": 1, "problems_include": ["contact_phone:choose_one"]}},
+      {"op": "update", "id": "$a", "changes": {"street_address": null}, "expect": {"ok": false, "reads": 1, "problems": ["street_address:required"]}},
+      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expect": {"ok": true, "reads": 1, "stored": {"status": "inactive"}}}
+    ]},
+    {"name": "update, code rules run on the whole-record path", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "A", "max_occupancy": 4}, {"label": "a", "max_occupancy": 4}]}, "expect": {"ok": false, "reads": 1, "problems": ["rooms:duplicate"]}},
+      {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "A", "preferred_occupancy": 8, "max_occupancy": 4}]}, "expect": {"ok": false, "reads": 1, "problems": ["rooms:out_of_range"]}},
+      {"op": "update", "id": "$a", "changes": {"availability_hours": [{"day_of_week": "monday", "opens_at": "10:00", "closes_at": "10:00"}]}, "expect": {"ok": false, "reads": 1, "problems": ["availability_hours:out_of_range"]}},
+      {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "Only room", "max_occupancy": 4}]}, "expect": {"ok": true, "reads": 1}}
+    ]},
+    {"name": "expected_updated_at: stale is a conflict on both paths", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"name": "X"}, "expected_updated_at": "2020-01-01T00:00:00Z", "expect": {"ok": false, "code": "conflict", "reads": 0}},
+      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expected_updated_at": "2020-01-01T00:00:00Z", "expect": {"ok": false, "code": "conflict", "reads": 1}},
+      {"op": "update", "id": "$a", "changes": {"name": "X"}, "expected_updated_at": "$a.updated_at", "expect": {"ok": true, "reads": 0, "stored": {"name": "X"}}},
+      {"op": "update", "id": "$a", "changes": {"name": "Y"}, "expected_updated_at": "yesterday", "expect": {"ok": false, "code": "validation_failed", "problems": ["expected_updated_at:invalid_format"]}}
+    ]},
+    {"name": "update on a soft-deleted venue: whole path refuses, simple path does not notice (documented)", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "soft_delete", "id": "$a", "expect": {"ok": true}},
+      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expect": {"ok": false, "code": "not_found"}},
+      {"op": "update", "id": "$a", "changes": {"name": "Still here"}, "expect": {"ok": true, "reads": 0}}
+    ]},
+    {"name": "soft delete keeps the record and stamps who and when", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "soft_delete", "id": "$a", "actor": "user:sam", "expect": {"ok": true, "stored": {"deleted_by": "user:sam", "slug": "possible_cafe"}}},
+      {"op": "soft_delete", "id": "$a", "expect": {"ok": false, "code": "not_found"}},
+      {"op": "soft_delete", "id": "nope", "expect": {"ok": false, "problems": ["id:invalid_format"]}},
+      {"op": "soft_delete", "id": "$a", "actor": "sam", "expect": {"ok": false, "problems": ["actor:invalid_format"]}}
+    ]},
+    {"name": "list: filters, order, limits, soft-deleted left out", "steps": [
+      {"op": "create", "as": "idea", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "create", "as": "lib", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
+      {"op": "create", "as": "home", "data": {"$example": "private_home"}, "expect": {"ok": true}},
+      {"op": "create", "as": "free", "data": {"$example": "free_venue"}, "expect": {"ok": true}},
+      {"op": "list", "expect": {"ok": true, "data": {"count": 4, "records.0.name": "Boulder Community Library"}}},
+      {"op": "list", "filters": {"status": "active"}, "expect": {"ok": true, "data": {"count": 3}}},
+      {"op": "list", "filters": {"status": "inactive"}, "expect": {"ok": true, "data": {"count": 1, "records.0.id": "$idea"}}},
+      {"op": "list", "filters": {"is_public_venue": false}, "expect": {"ok": true, "data": {"count": 1, "records.0.id": "$home"}}},
+      {"op": "list", "order": "-created_at", "expect": {"ok": true, "data": {"count": 4, "records.0.id": "$free"}}},
+      {"op": "list", "limit": 2, "expect": {"ok": true, "data": {"count": 2}}},
+      {"op": "list", "limit": 0, "expect": {"ok": true, "data": {"count": 1}}},
+      {"op": "list", "limit": 9999, "expect": {"ok": true, "data": {"count": 4}}},
+      {"op": "soft_delete", "id": "$home", "expect": {"ok": true}},
+      {"op": "list", "expect": {"ok": true, "data": {"count": 3}}},
+      {"op": "list", "filters": {"city": "Boulder"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["city:not_supported"]}},
+      {"op": "list", "filters": {"status": "active", "is_public_venue": true}, "expect": {"ok": false, "problems": ["status:not_supported", "is_public_venue:not_supported"]}},
+      {"op": "list", "filters": {"status": "weird"}, "expect": {"ok": false, "problems": ["status:invalid_value"]}},
+      {"op": "list", "order": "city", "expect": {"ok": false, "problems": ["order:not_supported"]}},
+      {"op": "list", "order": "-created_at", "filters": {"status": "active"}, "expect": {"ok": false, "problems": ["order:not_supported"]}},
+      {"op": "list", "limit": "5", "expect": {"ok": false, "problems": ["limit:invalid_type"]}}
+    ]},
+    {"name": "set_review_summary: server-only fields, no read", "steps": [
+      {"op": "create", "as": "a", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
+      {"op": "set_review_summary", "id": "$a", "review_count": 3, "average_rating": 4.5, "expect": {"ok": true, "reads": 0, "stored": {"review_count": 3, "average_rating": 4.5, "updated_by": "system:reviews"}}},
+      {"op": "set_review_summary", "id": "$a", "review_count": 0, "average_rating": null, "expect": {"ok": true, "stored": {"review_count": 0, "average_rating": {"$absent": true}}}},
+      {"op": "set_review_summary", "id": "$a", "review_count": -1, "average_rating": 6, "expect": {"ok": false, "problems": ["review_count:out_of_range", "average_rating:out_of_range"]}},
+      {"op": "set_review_summary", "id": "11111111-1111-4111-8111-111111111111", "review_count": 1, "average_rating": 5, "expect": {"ok": false, "code": "not_found"}}
+    ]}
+  ]
+}

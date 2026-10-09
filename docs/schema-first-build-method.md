@@ -2,7 +2,7 @@
 
 How we build the data foundation of a new product, in a fixed order, with a fixed shape, so that any person or any AI agent can find things, extend them, and not make spaghetti.
 
-Status: DRAFT 2, written 2026-10-09 from Todd Beetcher's design conversation (LAUNCH build, thread 13), with every gap from the draft-1 gap analysis integrated (section 15 is the register). Todd settled gaps 1 to 5 on 2026-10-09 by accepting the proposed defaults. Nothing here is wired into code yet; section 14 says what exists today and what does not.
+Status: DRAFT 2, written 2026-10-09 from Todd Beetcher's design conversation (LAUNCH build, thread 13), with every gap from the draft-1 gap analysis integrated (section 15 is the register). Todd settled gaps 1 to 5 on 2026-10-09 by accepting the proposed defaults. The shared kit and the first handler file now exist and pass in-memory tests (`enjoy_router/crud/schema_kit.py` and `enjoy_router/crud/venues_crud.py`, the model file); nothing is deployed, no store for the real database is written yet, and no service calls them yet. Section 14 says what exists today and what does not.
 
 How to read this document:
 - Sections 1 to 13 are **portable**. They are the method and apply to any project.
@@ -154,7 +154,7 @@ The shapes match the endpoint's reply envelope, so a service can pass a failure 
 |---|---|---|
 | `create(data, actor)` | Refuses any readOnly field in `data`. Runs the normalizers. Checks the whole document against the schema and the cross-field rules. Adds the server fields: `id` (UUID), `schema_version`, `created_at`, `created_by`, `updated_at`, `updated_by`, `source`. Writes it. | Decide whether the record *should* exist. |
 | `get(id)` | Returns one document, or `not_found`. Soft-deleted documents are treated as not found unless asked for. | Filter by business meaning. |
-| `list(filters, limit, order, cursor)` | Returns documents, newest first by default, with a hard maximum limit. Filters are simple field comparisons. | Join across collections. |
+| `list(filters, order, limit)` | Returns documents in a stated order (venues: by name), with a hard maximum limit. No paging yet; a page is the first `limit` records. Filters are simple field comparisons. | Join across collections. |
 | `update(id, changes, actor, expected_updated_at)` | See section 7. | Change readOnly fields, ever. |
 | `soft_delete(id, actor)` | Sets `deleted_at` and `deleted_by`, and stamps `updated_at` and `updated_by`. Never removes the document. | Hard delete. |
 
@@ -165,7 +165,7 @@ Handler files are copies of one shape, and copies drift. To keep the mechanical 
 - `load_collection(name)`: reads the registry, loads the schema, builds the checker, and returns the collection name, the readOnly list and the server-required list. It replaces any loader hard-wired to one schema.
 - `check_field(collection, field, value)`: validates one value against that field's own definition. Built by wrapping the field's definition with the schema's shared definitions so references resolve. Verified on the venue schema on 2026-10-09: a bad email, a three-letter country, a negative cost and a latitude of 95 each failed on their own, and valid values passed.
 - `check_document(collection, doc)`: validates a whole document.
-- `involved_fields(collection)`: scans the schema for `dependentRequired`, `allOf` with `if`/`then`, and `anyOf`, and returns every field that appears in one, so the update function knows which changes need the whole-record path without anyone listing them by hand.
+- `involved_fields(schema)`: scans the schema for `dependentRequired`, `allOf` with `if`/`then`, and `anyOf`, and returns two sets, so the update function knows which changes need the whole-record path without anyone listing them by hand. `set_involved` holds the fields whose being *set* can break a rule (triggers, fields in an `if`, fields constrained by a `then`). `remove_involved` holds the fields whose being *removed* can break a rule (anything required by the schema or by a conditional block). The collection loader attaches both sets to the loaded collection.
 - `stamp_create(...)` and `stamp_update(...)`: set the standard fields in one way everywhere.
 - The `Result` type.
 
@@ -198,7 +198,9 @@ The update procedure, therefore:
 2. Does a changed field appear in any cross-field rule? Then read the record once, apply the changes, check the **merged** document against the schema and run the code rules, then write.
 3. Either way, stamp `updated_at` and `updated_by`.
 
-**Concurrent edits (gap 1; Todd, 2026-10-09).** `SCHEMA_RULES.md` section 7 says an update must name the `updated_at` it read, and the server refuses it if the record changed since. Mechanics: `update` takes an optional `expected_updated_at`. When it is given, the write uses the database's own precondition on the document's last-update time, so the comparison happens inside the write itself and the simple path still needs no separate read. If the record changed, the Result is `conflict` and nothing is written. When it is not given, the last write wins and is stamped. Default (Todd): a service must supply it for any edit that follows a person looking at the record (a dashboard edit), and need not for system jobs.
+A change whose value is `None` or an empty string means *remove this optional field*. Removing a required field is refused (`required`). Setting a field uses `set_involved`; removing one uses `remove_involved`. The slug is refused with the issue word `immutable`. `update` returns `{id, changed, removed, updated_at, updated_by}` (field names only). **Soft-deleted records:** the whole-record path reads the record and answers `not_found` for a soft-deleted one; the simple path does no read and so cannot notice, and the write goes through. This is accepted for now; a service that cares reads first.
+
+**Concurrent edits (gap 1; Todd, 2026-10-09).** `SCHEMA_RULES.md` section 7 says an update must name the `updated_at` it read, and the server refuses it if the record changed since. Mechanics: `update` takes an optional `expected_updated_at`. When it is given, the stored `updated_at` is compared with it at write time and a mismatch gives the Result `conflict` with nothing written. In the in-memory store the compare and the write are one step. In Firestore the compare is done inside a transaction (one read, only when `expected_updated_at` is given), not as an update-time precondition on the document, because a precondition can only test the document's own last-write time and that has to be compared with the *stored* `updated_at` field. Timestamps have one-second granularity, so two edits in the same second are not told apart. The whole-record path always writes with the `updated_at` it just read as the expectation, so a change between its read and its write is also a `conflict`. When `expected_updated_at` is not given on the simple path, the last write wins and is stamped. Default (Todd): a service must supply it for any edit that follows a person looking at the record (a dashboard edit), and need not for system jobs.
 
 **History (gap 2; Todd, 2026-10-09, for venues).** What an update does with the old version depends on the schema's `x_history` keyword (section 5.1). `in_place` is the default behavior described above. `history_collection` makes the update copy the old version first, in the same transaction, and therefore costs one read. `linked_records` means `update` is not used for that collection at all. Value for venues (Todd): `in_place`, because a venue is reference data edited by its owner and `updated_at` and `updated_by` give the trace. Each other schema sets its own value when it is designed.
 
@@ -276,7 +278,7 @@ Some writes must succeed or fail together: for example a registration request an
 ### 14.2 What exists today versus this method
 - `core.py` validates a registration request against its schema and applies its business rules in one flow. It is **not yet split** into handler file plus service. Today's `Store` interface has narrow, request-specific methods (`get_class`, `find_by_idempotency_key`, `put_request`, `list_requests` and so on), not five generic functions per collection.
 - **Loader (gap 11).** `Schemas.load` in `core.py` is hard-wired to `registration_request` (it also reads the `scheduled_class` collection name). The method needs the registry-driven `load_collection(name)` of the shared kit (section 6.5). `sync_schemas.py` already copies every schema the registry names into the deploy folder, so no change is needed there.
-- **No handler files, folder or model (gap 12).** Proposed layout (open): a package `enjoy_router/crud/` holding `schema_kit.py` and one `<collection>_crud.py` per collection. `venues_crud.py` is built first and becomes the model; until it exists Appendix A is the skeleton.
+- **Handler files, folder and model (gap 12), built 2026-10-09.** The package `enjoy_router/crud/` holds `schema_kit.py` (the shared kit), `store_errors.py` (the three errors every store raises: `DocExists`, `DocMissing`, `StaleUpdate`), `memory_doc_store.py` (in-memory store with a test prefix and a read log), and `venues_crud.py`, the model file. Tests: `schemas/examples/venue.handler_tests.json` (handler test records) run by `enjoy_router/run_crud_tests.py`, which also runs every valid and invalid venue example through `create`, checks transactions, and includes a deliberate-break check that proves the tests notice a handler that stopped validating. Still missing: the store for the real database, `firestore.indexes.json`, any service calling the handlers, and the admin-key test endpoint. `core.py` is not changed; later it will import its mechanical helpers from the kit.
 - **Test area (gap 13).** The Firestore store takes collection names straight from the registry and has no prefix setting. It needs an optional prefix (section 11) before a test endpoint can be deployed safely.
 - **Indexes (gap 14).** There is no `firestore.indexes.json` and `firebase.json` declares no indexes. The registration and console queries need none. It is created when the first handler `list` needs a filter-plus-order combination.
 - Today's endpoints: `enjoy_registration_request` (create only, public, rate limited) and `enjoy_console_records` (read only, admin key). No update, soft delete or per-collection handler exists. Only the registration request collection holds live data.
@@ -322,7 +324,7 @@ The split is its own piece of work, done after the owner reviews this document. 
 1. Todd reviews this document.
 2. Todd settles what remains open in section 14.9 (the venue proposals and the shape questions). Gaps 1 to 5 are settled.
 3. Venue readiness (section 14.4): confirm the proposals, write the handler test records, declare `x_history` and `x_retention`.
-4. Build the shared kit and `venues_crud.py` with in-memory tests. Once it passes, it becomes the model file and this document points to it.
+4. **Done 2026-10-09:** shared kit and `venues_crud.py` with in-memory tests (291 checks pass). It is the model file; Appendix A now points to it.
 5. Build the admin-key test endpoint with the test prefix, and exercise the handlers with curl.
 6. Wire handlers into real services. The registration core is then reworked to use a registration requests handler file.
 7. Split `SCHEMA_RULES.md` (section 14.5).
@@ -330,10 +332,19 @@ The split is its own piece of work, done after the owner reviews this document. 
 ### 14.8 Decisions recorded (Todd)
 The layers and who may call whom (section 4). Handler files are not deployed endpoints. One file per collection, same shape, field logic in one block. The schema is the single definition of field rules, read by a standard checker. Update checks only the changed field's value against its own definition, and uses the whole-record path only for a field involved in a cross-field rule. Documentation first, reusable beyond LAUNCH. Venues is the first handler. The test endpoint is protected by the admin key. The foundation principle (section 1). On 2026-10-09 Todd also accepted the proposed defaults for gaps 1 to 5: `expected_updated_at` required for edits that follow a person looking at a record and optional for system jobs; `in_place` history for venues; the `conflict` error code; the readiness rule (undecided retention means no real data, no `x_history` means no handler); and a `/docs/*` noindex rule.
 
+### 14.8a Venue build decisions (defaults accepted by Todd, 2026-10-09)
+- `x_retention` for venues: keep until the owner deletes them; a private home's address is removed one year after the venue goes inactive. A written policy only; nothing enforces it yet. `x_history` is `in_place`.
+- Slug: lowercase letters, digits and underscores, unique across all venues **including soft-deleted ones**, cannot be changed (the issue word is `immutable`). Duplicate: `validation_failed` with `slug:duplicate`.
+- Normalizers: trim every string, an empty string removes an optional field, `contact_email` and `backup_contact_email` are lowercased.
+- Code rules (not expressible in the schema): room labels unique (ignoring case, issue `duplicate`), each room's `preferred_occupancy` not above `max_occupancy`, each day's `opens_at` before `closes_at` (issue `out_of_range`).
+- `list` supports: no filter, or exactly one of `status` or `is_public_venue`, ordered by name; no filter ordered by newest first. Anything else is refused with `not_supported`. The filter-plus-name combinations need composite indexes in Firestore (section 8); `firestore.indexes.json` is written when the Firestore store is. Soft-deleted venues are removed after the query, so a page can hold fewer than `limit` records.
+- `set_review_summary` writes `review_count` and `average_rating` (the server-kept fields) with the actor `system:reviews`, no read.
+- Soft-deleting a venue that a class points at is a service rule; the handler does not check.
+
 ### 14.9 Open decisions
 Still needing Todd's decision:
-1. **Venue proposals (gap 6):** confirm, change or remove each item listed in section 14.4.
-2. **Retention periods (gap 4, the period itself):** how long each schema's records are kept, venues first. The readiness rule is decided; the numbers are not.
+1. **Venue proposals (gap 6):** settled by accepting the defaults on 2026-10-09 (section 14.8a).
+2. **Retention periods (gap 4, the period itself):** venues settled (section 14.8a). Every other schema still needs its own.
 
 Settled on 2026-10-09 (Todd accepted the defaults): gap 1 concurrent edits (section 7), gap 2 history (sections 5.1 and 7), gap 3 the `conflict` code (section 6.4), gap 4 the readiness rule (section 5.1), gap 5 the `/docs/*` noindex rule (section 14.6).
 
@@ -367,7 +378,7 @@ Every gap found in the draft-1 gap analysis, where this document closes it, and 
 
 ## Appendix A. Handler file skeleton
 
-Shape only. This is not tested code. Copy the shape, not the venue details. Once `venues_crud.py` exists and passes its tests, replace this skeleton with a pointer to it.
+Shape only; this skeleton is a summary. **The real, tested model file is `enjoy_router/crud/venues_crud.py`: copy that, not this.** Copy the shape, not the venue details.
 
 ```python
 """venues_crud.py: the CRUD handler file for the `venues` collection.
@@ -415,16 +426,16 @@ def get(store, id: str, include_deleted: bool = False) -> Result:
     # one document, or not_found; soft-deleted counts as not_found unless asked for
     ...
 
-def list(store, filters: dict | None = None, limit: int = 100, order: str = "-created_at", cursor=None) -> Result:
+def list(store, filters: dict | None = None, order: str = "name", limit: int = 100) -> Result:
     # supported filter/order combinations only (section 8); hard maximum limit
     ...
 
 def update(store, id: str, changes: dict, actor: str, expected_updated_at=None, tx=None) -> Result:
     # 1 refuse readOnly fields     2 normalize the changed fields
-    # 3 if no changed field is in VENUES.involved_fields or any CROSS_FIELD_RULES["fields"]:
+    # 3 if no changed field is in VENUES.set_involved (or removed field in remove_involved) or any rule's fields:
     #       check each value with check_field, write only those fields (no read)
     #    else: read the record once, merge the changes, check the merged document and every rule, write
-    # 4 stamp_update; if expected_updated_at is given, write with the update-time precondition -> conflict if stale
+    # 4 stamp_update; if expected_updated_at is given, compare with the stored updated_at (inside a transaction in Firestore) -> conflict if stale
     # 5 history: follow the schema's x_history (in_place by default)
     ...
 

@@ -8,7 +8,8 @@
   "propertyNames": {
     "pattern": "^[a-z][a-z0-9_]*$"
   },
-  "x_retention": "undecided",
+  "x_retention": "Keep venues until the owner deletes them. A private home's address is removed one year after the venue goes inactive. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
   "required": [
     "name",
     "slug",
