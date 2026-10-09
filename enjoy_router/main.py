@@ -11,6 +11,7 @@ Settings (environment variables, none required):
   ICDT_RATE_RULES        override the rate limit, as window_seconds:max pairs, for example "600:1000,86400:5000".
                          For a test deployment only (a live test run sends 30 requests from one address).
                          A warning is logged at startup whenever it is set. Leave it unset for real use.
+  ICDT_ADMIN_KEY         the one key that locks the Console and the CRUD test endpoint (32+ characters)
 Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
   ICDT_FIXED_NOW         a fixed UTC clock, so date rules are repeatable in tests (set on the emulator's command line, see README)
   ICDT_STORE=memory      use the in-memory store seeded from the test records, no Firestore needed
@@ -28,6 +29,7 @@ from firebase_functions import https_fn, options
 
 from core import Schemas
 from console import handle_console, make_failure_limiter
+from crud_endpoint import handle_crud_test
 from handler import handle_http
 from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
@@ -51,7 +53,10 @@ if _rate_rules:
     logging.getLogger("enjoy_router").warning("ICDT_RATE_RULES is set (%s): the public rate limit is overridden", _rate_rules)
 _limiter = RateLimiter(rules=parse_rules(_rate_rules) if _rate_rules else DEFAULT_RULES)
 _console_limiter = make_failure_limiter()
+_crud_limiter = make_failure_limiter()
 _store = None
+_doc_store = None
+CRUD_TEST_PREFIX = "test_"  # fixed in code on purpose: the test endpoint can never reach a real collection
 
 
 def _get_store():
@@ -70,6 +75,23 @@ def _get_store():
                 firebase_admin.initialize_app()
             _store = FirestoreStore(firestore.client(), _schemas)
     return _store
+
+
+def _get_doc_store():
+    """The handler-file store for the CRUD test endpoint. Collection names get the test prefix."""
+    global _doc_store
+    if _doc_store is None:
+        if os.environ.get("ICDT_STORE") == "memory":
+            from crud.memory_doc_store import MemoryDocStore
+            _doc_store = MemoryDocStore(CRUD_TEST_PREFIX)
+        else:
+            import firebase_admin
+            from firebase_admin import firestore
+            from crud.firestore_doc_store import FirestoreDocStore
+            if not firebase_admin._apps:
+                firebase_admin.initialize_app()
+            _doc_store = FirestoreDocStore(firestore.client(), CRUD_TEST_PREFIX)
+    return _doc_store
 
 
 def _now() -> datetime:
@@ -123,6 +145,28 @@ def enjoy_console_records(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_store(),
         limiter=_console_limiter,
+        now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    max_instances=2,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_crud_test(req: https_fn.Request) -> https_fn.Response:
+    """Exercise the CRUD handler files with curl. Locked by the admin key; works only on test_-prefixed collections."""
+    result = handle_crud_test(
+        method=req.method,
+        authorization=req.headers.get("Authorization", ""),
+        raw_body=req.get_data(),
+        admin_key=ADMIN_KEY,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_doc_store(),
+        limiter=_crud_limiter,
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
