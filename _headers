@@ -16,3 +16,5 @@
   X-Robots-Tag: noindex, nofollow, noarchive
 /console/*
   X-Robots-Tag: noindex, nofollow, noarchive
+/docs/*
+  X-Robots-Tag: noindex, nofollow, noarchive
