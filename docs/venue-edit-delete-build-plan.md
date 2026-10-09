@@ -1,6 +1,6 @@
 # Console: edit and delete a venue. Build plan
 
-Status: PLAN, written 2026-10-09 (thread 13). Nothing here is built. It follows the collection manager (picker, venues list, Add venue), which is live at beetcher.com/console/#/venues. Method: `docs/schema-first-build-method.md`.
+Status: steps 1 to 3 BUILT, DEPLOYED and TESTED LIVE by Todd on 2026-10-09 (edit works, delete works). Step 4 (rooms and hours) and step 5 (docs, live test of the whole) remain. Written as a plan on 2026-10-09 (thread 13); the "As built" section below records what changed on the way. It follows the collection manager (picker, venues list, Add venue), live at beetcher.com/console/#/venues. Method: `docs/schema-first-build-method.md`.
 
 ## Goal
 From the Console, open a venue and change any of its fields (address, contact, rooms, hours, rules, cost, notes), make it active, and delete it. All changes go through the venue handler file (`enjoy_router/crud/venues_crud.py`), which already does the checking, so the page never decides what is valid.
@@ -60,3 +60,26 @@ Rules the page must make easy to meet (the server enforces all of them and names
 
 ## Not in this build
 Google sign-in (the key still locks the Console; the actor stays `user:admin`), undelete, change history beyond updated_at and updated_by, and any other collection's editor (the same panel is built to be reused: a collection supplies its schema and its handler).
+
+## As built (2026-10-09)
+Commits: f850f0f (server ops on, edit panel, delete), 2f66d5b (edit form reshaped).
+
+- **Step 1, server:** `update` and `soft_delete` added to `ADMIN_OPS` in `crud_endpoint.py`. `set_review_summary` stays server-only. Endpoint tests extended (update, stale 409, slug refused, activation refused with the missing fields, null removes a field, delete hides and keeps the record). `admin_curl_check.sh` now checks update and delete on an unknown id (404, writes nothing).
+- **Step 2, edit panel:** built as planned, form generated from the published schema (`/schemas/venue.schema.json`), only changed fields sent, `expected_updated_at` always sent, server refusals shown next to the field, stale edit refused with a reload button, discard prompt on Cancel and on switching collection.
+- **Step 3, delete:** inline confirmation, `soft_delete`, the record is kept with `deleted_at` and `deleted_by` (`user:admin`).
+
+### Change after Todd's first try: the edit form was overwhelming
+Todd found the first version unusable: every section loaded at once, about a dozen orange stars, and free-text country and time zone. Todd's suggestion was to drop the required fields from the schema; the decision (Todd agreed, "go") was to **keep the schema and fix the form**. The required list was never the problem (creating a venue needs only name, slug, status and kind of place; the long list applies only when status is active), and the active rule protects the class picker from venues with no address or contact. Changes, all in `console/index.html` only (no schema, server or test changes):
+- Opens with Basics, Address and Contact expanded; Rooms and hours is its own collapsed section; everything else sits under one collapsed "More details". A section holding an error opens itself.
+- No stars, no legend. Field help text is hidden behind a "Show field help" button.
+- "What's needed to make this active?" is a quiet link under Basics. It opens a checklist computed from the schema's own active rule and the form as it stands (updates live as fields are filled).
+- Pick lists: country (names; saves the two-letter code; United States first), state or region (US states saved as two-letter codes, plus "Other (type it)" so a region like Ontario works), time zone (US zones first, then the browser's full list). Phone fields use the phone keypad. Money fields are shown in dollars and saved as cents. Friendlier labels (a small `LABELS` table in the page).
+- Tested in a real browser at 375 px wide against the real handlers (50+ checks: edit, removal, pairs, bad email, activation refusal, stale edit from a second window, discard prompts, delete, pick lists, checklist, Other region, error opening "More details").
+
+### Decisions settled (defaults accepted)
+Dollars in the form; collapsible sections in one panel; Rooms and Hours in a second pass; location pins left out until their schema exists; the delete guard is a warning in words only for now (the venue service will enforce "no classes point here" when classes exist). Time zone and country changed from text boxes to pick lists after Todd's feedback.
+
+### Still to do
+- **Step 4: rooms and hours** (add, change, remove rows). Until it exists a venue cannot be made active from the Console, because an active venue needs at least one room. The panel shows the counts and says editing comes in the next update.
+- Step 5: final docs pass after step 4.
+- Open: the delete guard (service layer); Google sign-in replacing the key; undelete.
