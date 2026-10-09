@@ -41,6 +41,8 @@
   .lock p { color: var(--muted); margin: 0 0 12px; }
   .lock .row { display: flex; gap: 8px; }
   .lock .row button { flex: none; }
+  .remember { display: flex; align-items: center; gap: 10px; margin-top: 12px; min-height: 44px; color: var(--muted); cursor: pointer; }
+  .remember input { width: 22px; height: 22px; margin: 0; }
   .msg { min-height: 1.4em; margin: 10px 0 0; color: var(--err); font-weight: 600; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
   .bar .count { font-weight: 700; }
@@ -84,6 +86,7 @@
       <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
       <button type="submit" id="unlockBtn">Unlock</button>
     </form>
+    <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
     <div class="msg" id="lockMsg" role="alert"></div>
   </section>
 
@@ -127,8 +130,22 @@
 
   $("appName").textContent = APP.name;
 
-  function getKey() { try { return sessionStorage.getItem(KEY_STORE) || ""; } catch (e) { return ""; } }
-  function setKey(v) { try { if (v) sessionStorage.setItem(KEY_STORE, v); else sessionStorage.removeItem(KEY_STORE); } catch (e) {} }
+  // Remember off: the key lives in sessionStorage (gone when the tab closes). On: localStorage (stays until Lock).
+  function getKey() {
+    try {
+      var l = localStorage.getItem(KEY_STORE);
+      if (l) return { key: l, remember: true };
+      var s = sessionStorage.getItem(KEY_STORE);
+      if (s) return { key: s, remember: false };
+    } catch (e) {}
+    return { key: "", remember: false };
+  }
+  function setKey(v, remember) {
+    try { sessionStorage.removeItem(KEY_STORE); } catch (e) {}
+    try { localStorage.removeItem(KEY_STORE); } catch (e) {}
+    if (!v) return;
+    try { (remember ? localStorage : sessionStorage).setItem(KEY_STORE, v); } catch (e) {}
+  }
 
   var fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
@@ -277,13 +294,13 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey(""); key = ""; reset();
+    stopTimer(); setKey("", false); key = ""; reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
   }
 
-  function unlock(k) {
+  function unlock(k, remember) {
     key = k; reset();
     $("lockMsg").textContent = "";
     $("unlockBtn").disabled = true;
@@ -295,7 +312,7 @@
         show(true);
         return;
       }
-      setKey(k);
+      setKey(k, remember);
       show(false);
       merge(res.records);
       firstLoadDone = true;
@@ -308,14 +325,14 @@
     e.preventDefault();
     var k = $("keyInput").value.trim();
     if (!k) { $("lockMsg").textContent = "That key did not work."; return; }
-    unlock(k);
+    unlock(k, $("rememberBox").checked);
   });
   $("lockBtn").addEventListener("click", function () { lock(""); });
   $("refreshBtn").addEventListener("click", function () { check(true); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key) check(false); });
 
   var saved = getKey();
-  if (saved) unlock(saved); else show(true);
+  if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
 })();
 </script>
 </body>
