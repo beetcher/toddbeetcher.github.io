@@ -155,6 +155,12 @@
   .ready .ok { color: #2f5d00; }
   .ready .todo { color: var(--muted); }
   details.more { margin-bottom: 10px; }
+  fieldset.fs { border: none; margin: 0 0 6px; padding: 0; min-width: 0; }
+  fieldset.fs legend { font-weight: 700; padding: 8px 0 0; }
+  label.chk { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
+  label.chk input { width: 22px; height: 22px; margin: 0; flex: none; }
+  .filters .mbody { padding: 0 14px 10px; }
+  details.more.filters > summary.some { border-style: solid; border-color: var(--orange); }
   details.more > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; font-weight: 700; background: transparent; border: 1px dashed var(--muted); border-radius: 12px; list-style-position: inside; }
   details.more > summary.haserr { color: var(--err); }
   details.more > .mbody { padding-top: 10px; }
@@ -271,24 +277,28 @@
         <div class="meta" id="cChecked"></div>
       </div>
       <div class="actions">
-        <select id="cStatusFilter" aria-label="Filter by status">
-          <option value="">Any status</option>
-          <option value="identified">Idea</option>
-          <option value="scheduled">Scheduled</option>
-          <option value="enrolling">Enrolling</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
-        </select>
-        <select id="cTypeFilter" aria-label="Filter by kind">
-          <option value="">Any kind</option>
-          <option value="workshop">Workshop</option>
-          <option value="group">Group</option>
-          <option value="private">One on one</option>
-        </select>
         <button id="cRefresh" class="quiet" type="button">Refresh</button>
         <button id="cAddBtn" type="button">Add class</button>
       </div>
     </div>
+    <details class="more filters" id="cFilters">
+      <summary id="cFilterSummary">Filters: all classes shown</summary>
+      <div class="mbody">
+        <fieldset class="fs"><legend>Status</legend>
+          <label class="chk"><input type="checkbox" data-f="status" value="identified" checked> Idea</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="scheduled" checked> Scheduled</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="enrolling" checked> Enrolling</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="completed" checked> Completed</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="cancelled" checked> Cancelled</label>
+        </fieldset>
+        <fieldset class="fs"><legend>Kind</legend>
+          <label class="chk"><input type="checkbox" data-f="class_type" value="workshop" checked> Workshop</label>
+          <label class="chk"><input type="checkbox" data-f="class_type" value="group" checked> Group</label>
+          <label class="chk"><input type="checkbox" data-f="class_type" value="private" checked> One on one</label>
+        </fieldset>
+        <button type="button" class="quiet" id="cShowAll">Show all</button>
+      </div>
+    </details>
     <form class="panel" id="cAddForm" hidden autocomplete="off" novalidate>
       <h2>Add a class</h2>
       <div class="hint">It is added as an idea with no date. Venue, date, time and price come next, when you edit it.</div>
@@ -331,8 +341,10 @@
     </form>
     <div class="notice" id="cNotice" role="status"></div>
     <div class="msg" id="cMsg" role="alert"></div>
+    <button type="button" class="quiet" id="cRetry" hidden>Retry</button>
     <ul id="cList"></ul>
     <div class="empty" id="cEmpty" hidden>No classes yet.</div>
+    <div class="empty" id="cNoMatch" hidden>No classes match the filters. <button type="button" class="linkbtn" id="cNoMatchAll">Show all</button></div>
     </div>
 
     <section id="cEditPanel" hidden>
@@ -1444,7 +1456,7 @@
   };
 
   var cCtx = { prefix: "c_", schema: null, fields: {} };
-  var cAgain = false, cSchemaP = null, cRec = null, cVenues = [], cVenueById = {}, cLoaded = false, cBusy = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
+  var cSchemaP = null, cRec = null, cVenues = [], cVenueById = {}, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
 
   function getClassSchema() {
     if (!cSchemaP) {
@@ -1571,29 +1583,88 @@
     return wrap;
   }
 
+  // ---- filters: tick boxes. Everything ticked shows everything; unticking narrows. The page holds the whole list and filters it here.
+  var CSTAT = ["identified", "scheduled", "enrolling", "completed", "cancelled"], CKIND = ["workshop", "group", "private"];
+  var CF_STORE = "console_class_filters";
+  var cAll = [], cSeq = 0;
+  function cChecks() { return document.querySelectorAll("#cFilters input[type=checkbox]"); }
+  function cSelected() {
+    var o = { status: {}, class_type: {} };
+    Array.prototype.forEach.call(cChecks(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
+    return o;
+  }
+  function cSaveFilters() {
+    try {
+      var off = [];
+      Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) off.push(c.getAttribute("data-f") + ":" + c.value); });
+      if (off.length) sessionStorage.setItem(CF_STORE, JSON.stringify(off)); else sessionStorage.removeItem(CF_STORE);
+    } catch (e) {}
+  }
+  function cRestoreFilters() {
+    try {
+      var off = JSON.parse(sessionStorage.getItem(CF_STORE) || "[]");
+      Array.prototype.forEach.call(cChecks(), function (c) { c.checked = off.indexOf(c.getAttribute("data-f") + ":" + c.value) < 0; });
+    } catch (e) {}
+    cFilterSummary();
+  }
+  function cShowEverything() {
+    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
+    cSaveFilters(); cFilterSummary(); renderClasses();
+  }
+  function cFilterSummary() {
+    var all = true;
+    Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) all = false; });
+    $("cFilterSummary").textContent = all ? "Filters: all classes shown" : "Filters: some classes are hidden";
+    $("cFilterSummary").className = all ? "" : "some";
+  }
+  function cPass(sel, field, v) { var known = (field === "status" ? CSTAT : CKIND).indexOf(v) >= 0; return known ? !!sel[field][v] : true; }
+  function cTick(rec) {
+    Array.prototype.forEach.call(cChecks(), function (c) {
+      var f = c.getAttribute("data-f");
+      if (rec[f] === c.value) c.checked = true;
+    });
+    cSaveFilters(); cFilterSummary();
+  }
+
+  function renderClasses() {
+    var sel = cSelected();
+    function shownList() { return cAll.filter(function (r) { return cPass(sel, "status", r.status) && cPass(sel, "class_type", r.class_type); }); }
+    var shown = shownList();
+    if (cNewId) {   // a class you just added or saved is never hidden by the filters
+      var nr = cAll.filter(function (r) { return r.id === cNewId; })[0];
+      if (nr && shown.indexOf(nr) < 0) { cTick(nr); sel = cSelected(); shown = shownList(); }
+    }
+    shown.sort(function (a, b) {
+      if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
+      if (a.starts_at) return -1;
+      if (b.starts_at) return 1;
+      return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1;
+    });
+    var ul = $("cList"); ul.textContent = "";
+    var focus = null;
+    shown.forEach(function (r) { var li = classRow(r, r.id === cNewId); ul.appendChild(li); if (r.id === cNewId) focus = li; });
+    var n = shown.length, t = cAll.length;
+    $("cCount").textContent = (n === t ? t + (t === 1 ? " class" : " classes") : "Showing " + n + " of " + t + " classes") + (t >= 200 ? " (the first 200)" : "");
+    $("cEmpty").hidden = t > 0;
+    $("cNoMatch").hidden = !(t > 0 && n === 0);
+    cFilterSummary();
+    if (focus) { try { focus.scrollIntoView({ block: "center" }); } catch (e) {} }
+    cNewId = "";
+  }
+
   function loadClasses() {
-    if (cBusy) { cAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
-    cBusy = true; $("cMsg").textContent = "";
-    var st = $("cStatusFilter").value, ty = $("cTypeFilter").value;
-    var filters = st ? { status: st } : (ty ? { class_type: ty } : {});
-    return Promise.all([loadVenueChoices(), admin("list", { filters: filters, limit: 200 }, "scheduled_classes")]).then(function (both) {
-      cBusy = false;
-      if (cAgain) { cAgain = false; return loadClasses(); }
+    var my = ++cSeq;   // only the newest load may change the page, so a slow older answer can never overwrite a newer one
+    $("cMsg").textContent = ""; $("cRetry").hidden = true;
+    return Promise.all([loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
+      if (my !== cSeq) return;
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { $("cMsg").textContent = adminProblem(res.status); return; }
-      var recs = (res.body.data.records || []).filter(function (r) { return !(st && ty) || r.class_type === ty; });
-      recs.sort(function (a, b) {
-        if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
-        if (a.starts_at) return -1;
-        if (b.starts_at) return 1;
-        return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1;
-      });
-      var ul = $("cList"); ul.textContent = "";
-      recs.forEach(function (r) { ul.appendChild(classRow(r, r.id === cNewId)); });
-      cNewId = ""; cLoaded = true;
-      $("cCount").textContent = recs.length + (recs.length === 1 ? " class" : " classes");
-      $("cEmpty").hidden = recs.length > 0;
+      if (res.status !== 200 || !res.body.ok) {
+        $("cMsg").textContent = "Could not load the classes. " + adminProblem(res.status); $("cRetry").hidden = false; return;
+      }
+      cAll = res.body.data.records || [];
+      cLoaded = true;
+      renderClasses();
       $("cChecked").textContent = "Last checked " + fmtClock.format(new Date());
     });
   }
@@ -1888,18 +1959,23 @@
   $("cEditReload").addEventListener("click", function () { closeClassEdit(); loadClasses(); });
 
   function resetClasses() {
-    cLoaded = false; cBusy = false; cNewId = "";
+    cLoaded = false; cNewId = ""; cAll = []; cSeq++;
     $("cList").textContent = ""; $("cCount").textContent = ""; $("cChecked").textContent = "";
-    $("cMsg").textContent = ""; $("cNotice").textContent = ""; $("cEmpty").hidden = true;
-    $("cStatusFilter").value = ""; $("cTypeFilter").value = ""; closeClassForm(); closeClassEdit();
+    $("cMsg").textContent = ""; $("cNotice").textContent = ""; $("cEmpty").hidden = true; $("cNoMatch").hidden = true; $("cRetry").hidden = true;
+    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
+    try { sessionStorage.removeItem(CF_STORE); } catch (e) {}
+    cFilterSummary(); closeClassForm(); closeClassEdit();
   }
   $("cTitle").addEventListener("input", function () { if (!cSlugTouched) $("cSlug").value = slugify($("cTitle").value); });
   $("cSlug").addEventListener("input", function () { cSlugTouched = true; });
   $("cAddBtn").addEventListener("click", openClassForm);
   $("cCancelBtn").addEventListener("click", closeClassForm);
   $("cRefresh").addEventListener("click", function () { $("cNotice").textContent = ""; loadClasses(); });
-  $("cStatusFilter").addEventListener("change", function () { $("cNotice").textContent = ""; loadClasses(); });
-  $("cTypeFilter").addEventListener("change", function () { $("cNotice").textContent = ""; loadClasses(); });
+  $("cFilters").addEventListener("change", function () { cSaveFilters(); cFilterSummary(); renderClasses(); });
+  $("cShowAll").addEventListener("click", cShowEverything);
+  $("cNoMatchAll").addEventListener("click", cShowEverything);
+  $("cRetry").addEventListener("click", function () { loadClasses(); });
+  cRestoreFilters();
   $("cAddForm").addEventListener("submit", function (e) {
     e.preventDefault(); cClearErrs();
     var ty = $("cType").value, pub = $("cPublic").value, bad = false;
