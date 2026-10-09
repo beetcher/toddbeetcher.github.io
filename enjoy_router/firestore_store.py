@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Optional
 
 from google.api_core.exceptions import AlreadyExists
+from google.cloud.firestore_v1 import Query
 from google.cloud.firestore_v1.base_query import FieldFilter
 
 from core import DuplicateIdempotencyKey, Schemas
@@ -55,3 +56,11 @@ class FirestoreStore:
             batch.commit()
         except AlreadyExists:
             raise DuplicateIdempotencyKey()
+
+    def list_requests(self, limit: int, since: Optional[str] = None) -> list:
+        """Newest first by created_at. since keeps created_at >= since (one field, so no composite index)."""
+        q = self.requests
+        if since is not None:
+            q = q.where(filter=FieldFilter("created_at", ">=", since))
+        q = q.order_by("created_at", direction=Query.DESCENDING).limit(limit)
+        return [d.to_dict() for d in q.stream()]

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Console</title>
+<style>
+  :root {
+    --black: #0b0b0b;
+    --cream: #fff8ec;
+    --ink: #1c1a17;
+    --muted: #6b645a;
+    --line: #e6dccb;
+    --card: #ffffff;
+    --orange: #fc7d2d;
+    --lime: #c9f92c;
+    --new: #f4ffc2;
+    --err: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-wrap: anywhere;
+  }
+  header { background: var(--black); color: #fff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  header h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .02em; }
+  header .app { color: var(--orange); font-size: 13px; font-weight: 700; letter-spacing: .14em; margin-top: 2px; }
+  main { max-width: 760px; margin: 0 auto; padding: 16px; }
+  button {
+    font: inherit; font-weight: 600; min-height: 44px; padding: 0 16px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  }
+  button.quiet { background: transparent; color: inherit; border-color: currentColor; }
+  header button.quiet { color: #fff; border-color: #6a6a6a; min-height: 40px; }
+  input[type=password] { font: inherit; width: 100%; min-height: 48px; padding: 0 12px; border: 1px solid var(--muted); border-radius: 10px; background: #fff; }
+  .lock { max-width: 420px; margin: 8vh auto 0; }
+  .lock p { color: var(--muted); margin: 0 0 12px; }
+  .lock .row { display: flex; gap: 8px; }
+  .lock .row button { flex: none; }
+  .msg { min-height: 1.4em; margin: 10px 0 0; color: var(--err); font-weight: 600; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .bar .count { font-weight: 700; }
+  .bar .meta { color: var(--muted); font-size: 14px; }
+  .bar button { min-height: 40px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; transition: background 1.2s ease; }
+  li.isnew { background: var(--new); border-color: var(--lime); }
+  li > button.head {
+    all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 14px; cursor: pointer; min-height: 44px;
+  }
+  li > button.head:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
+  .conf { font-size: 22px; font-weight: 800; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+  .top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .type { font-size: 13px; font-weight: 700; color: #7a3a00; background: #ffe7d1; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+  .when { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .who { margin-top: 6px; font-weight: 600; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .chips { margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .detail { display: none; border-top: 1px solid var(--line); padding: 10px 14px 12px; background: #fcfaf5; font-size: 14px; }
+  li.open .detail { display: block; }
+  .detail div { padding: 3px 0; white-space: pre-wrap; }
+  .detail b { color: var(--muted); font-weight: 600; }
+  .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Console</h1>
+    <div class="app" id="appName">LAUNCH</div>
+  </div>
+  <button class="quiet" id="lockBtn" hidden>Lock</button>
+</header>
+
+<main>
+  <section class="lock" id="lockView">
+    <p>Enter your key to see registration requests.</p>
+    <form class="row" id="lockForm" autocomplete="off">
+      <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button type="submit" id="unlockBtn">Unlock</button>
+    </form>
+    <div class="msg" id="lockMsg" role="alert"></div>
+  </section>
+
+  <section id="listView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="countText"></div>
+        <div class="meta" id="checkedText"></div>
+      </div>
+      <button id="refreshBtn" class="quiet">Refresh</button>
+    </div>
+    <div class="msg" id="listMsg" role="alert"></div>
+    <ul id="list"></ul>
+    <div class="empty" id="empty" hidden>No requests yet.</div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  // One entry for now. A second app later is one more line here.
+  var APPS = [
+    { id: "launch", name: "LAUNCH", endpoint: "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_console_records" }
+  ];
+  var APP = APPS[0];
+  var REFRESH_MS = 20000;
+  var MAX = 100;
+  var KEY_STORE = "console_key_" + APP.id;
+  var TYPES = { private: "One on one", group: "Small group", "class": "Workshop" };
+  var FIRST_FIELDS = ["confirmation_number", "registration_type", "created_at", "processing_status", "first_name", "last_name",
+                      "email", "phone", "attendee_count", "program_slug", "source", "id"];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var known = {};        // id -> record
+  var rows = {};         // id -> <li>
+  var key = "";
+  var timer = null;
+  var busy = false;
+  var firstLoadDone = false;
+
+  $("appName").textContent = APP.name;
+
+  function getKey() { try { return sessionStorage.getItem(KEY_STORE) || ""; } catch (e) { return ""; } }
+  function setKey(v) { try { if (v) sessionStorage.setItem(KEY_STORE, v); else sessionStorage.removeItem(KEY_STORE); } catch (e) {} }
+
+  var fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
+  function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d) + " Mountain"; }
+
+  function show(locked) {
+    $("lockView").hidden = !locked;
+    $("listView").hidden = locked;
+    $("lockBtn").hidden = locked;
+  }
+
+  // Returns {status, records} ; status: ok | unauthorized | limited | network | error
+  function fetchRecords(since) {
+    var url = APP.endpoint + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
+    return fetch(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" })
+      .then(function (r) {
+        if (r.status === 401) return { status: "unauthorized" };
+        if (r.status === 429) return { status: "limited" };
+        if (!r.ok) return { status: "error" };
+        return r.json().then(function (j) {
+          return { status: "ok", records: (j && j.data && j.data.records) || [] };
+        });
+      })
+      .catch(function () { return { status: "network" }; });
+  }
+
+  function newest() {
+    var best = "";
+    Object.keys(known).forEach(function (id) { if (known[id].created_at > best) best = known[id].created_at; });
+    return best;
+  }
+
+  function line(label, value) {
+    var d = document.createElement("div");
+    var b = document.createElement("b");
+    b.textContent = label + ": ";
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(value));
+    return d;
+  }
+  function str(v) { return (v !== null && typeof v === "object") ? JSON.stringify(v) : String(v); }
+
+  function buildRow(rec, isNew) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+
+    var head = document.createElement("button");
+    head.className = "head";
+    head.type = "button";
+    head.setAttribute("aria-expanded", "false");
+
+    var top = document.createElement("div"); top.className = "top";
+    var conf = document.createElement("span"); conf.className = "conf"; conf.textContent = rec.confirmation_number || rec.id || "";
+    var type = document.createElement("span"); type.className = "type"; type.textContent = TYPES[rec.registration_type] || rec.registration_type || "";
+    top.appendChild(conf); top.appendChild(type);
+
+    var w = document.createElement("div"); w.className = "when"; w.textContent = when(rec.created_at);
+    var who = document.createElement("div"); who.className = "who";
+    who.textContent = [rec.first_name, rec.last_name].filter(Boolean).join(" ") || "(no name)";
+    var email = document.createElement("div"); email.className = "sub"; email.textContent = rec.email || "";
+
+    var chips = document.createElement("div"); chips.className = "chips";
+    var ppl = document.createElement("span"); ppl.textContent = "People: " + (rec.attendee_count != null ? rec.attendee_count : "—");
+    var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
+    chips.appendChild(ppl); chips.appendChild(st);
+
+    [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
+
+    var detail = document.createElement("div"); detail.className = "detail";
+    var done = {};
+    FIRST_FIELDS.forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+
+    head.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    li.appendChild(head); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  // Add records we have not seen. Existing rows are never rebuilt, so nothing moves while reading.
+  function merge(records) {
+    var list = $("list");
+    var fresh = records.filter(function (r) { return r && r.id && !known[r.id]; });
+    fresh.sort(function (a, b) { return a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0; }); // oldest first, then each goes on top
+    fresh.forEach(function (r) {
+      known[r.id] = r;
+      var li = buildRow(r, firstLoadDone);
+      rows[r.id] = li;
+      list.insertBefore(li, list.firstChild);
+    });
+    // First load arrives newest first from the server; sort the whole list once to be safe.
+    if (!firstLoadDone) {
+      Object.keys(rows).sort(function (a, b) {
+        var x = known[a].created_at, y = known[b].created_at;
+        return x < y ? 1 : x > y ? -1 : 0;
+      }).forEach(function (id) { list.appendChild(rows[id]); });
+    }
+    var n = Object.keys(known).length;
+    $("countText").textContent = n + (n === 1 ? " request" : " requests");
+    $("empty").hidden = n > 0;
+  }
+
+  function problem(status) {
+    if (status === "unauthorized") return "That key did not work.";
+    if (status === "limited") return "Too many tries. Wait a few minutes.";
+    if (status === "network") return "Could not reach the server.";
+    return "Something went wrong. Try again.";
+  }
+
+  function check(manual) {
+    if (busy) return Promise.resolve();
+    busy = true;
+    return fetchRecords(firstLoadDone ? newest() : "").then(function (res) {
+      busy = false;
+      if (res.status === "ok") {
+        $("listMsg").textContent = "";
+        merge(res.records);
+        firstLoadDone = true;
+        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+      } else if (res.status === "unauthorized") {
+        lock("That key did not work.");
+      } else if (manual || !firstLoadDone || res.status !== "network") {
+        $("listMsg").textContent = problem(res.status);
+      } else {
+        $("listMsg").textContent = "Could not reach the server. Will try again.";
+      }
+      return res;
+    });
+  }
+
+  function startTimer() {
+    stopTimer();
+    timer = setInterval(function () { if (!document.hidden) check(false); }, REFRESH_MS);
+  }
+  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+
+  function reset() {
+    known = {}; rows = {}; firstLoadDone = false;
+    $("list").textContent = "";
+    $("countText").textContent = ""; $("checkedText").textContent = ""; $("listMsg").textContent = "";
+    $("empty").hidden = true;
+  }
+
+  function lock(message) {
+    stopTimer(); setKey(""); key = ""; reset();
+    $("keyInput").value = "";
+    $("lockMsg").textContent = message || "";
+    show(true);
+  }
+
+  function unlock(k) {
+    key = k; reset();
+    $("lockMsg").textContent = "";
+    $("unlockBtn").disabled = true;
+    return fetchRecords("").then(function (res) {
+      $("unlockBtn").disabled = false;
+      if (res.status !== "ok") {
+        key = "";
+        $("lockMsg").textContent = problem(res.status);
+        show(true);
+        return;
+      }
+      setKey(k);
+      show(false);
+      merge(res.records);
+      firstLoadDone = true;
+      $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+      startTimer();
+    });
+  }
+
+  $("lockForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var k = $("keyInput").value.trim();
+    if (!k) { $("lockMsg").textContent = "That key did not work."; return; }
+    unlock(k);
+  });
+  $("lockBtn").addEventListener("click", function () { lock(""); });
+  $("refreshBtn").addEventListener("click", function () { check(true); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && key) check(false); });
+
+  var saved = getKey();
+  if (saved) unlock(saved); else show(true);
+})();
+</script>
+</body>
+</html>

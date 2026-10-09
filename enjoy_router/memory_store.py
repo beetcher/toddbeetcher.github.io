@@ -29,3 +29,9 @@ class MemoryStore:
         if self.find_by_idempotency_key(doc["idempotency_key"]) is not None:
             raise DuplicateIdempotencyKey()
         self.requests.append(dict(doc))
+
+    def list_requests(self, limit: int, since: Optional[str] = None) -> list:
+        """Newest first by created_at (ties broken by id). since keeps created_at >= since."""
+        docs = [d for d in self.requests if since is None or d["created_at"] >= since]
+        docs.sort(key=lambda d: (d["created_at"], d["id"]), reverse=True)
+        return [dict(d) for d in docs[:limit]]
