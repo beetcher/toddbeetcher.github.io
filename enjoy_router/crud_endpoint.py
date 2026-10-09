@@ -1,7 +1,7 @@
 """The CRUD endpoints, with no Firebase in it: one dispatcher, two front doors.
 
     handle_crud_test   enjoy_crud_test: every op, test_-prefixed collections only (main.py gives it that store).
-    handle_admin       enjoy_admin: the Console's door to the real collections; only the ops in ADMIN_OPS.
+    handle_admin       enjoy_admin: the Console's door to the real collections; only the ops in ADMIN_OPS (everything but set_review_summary).
 
 main.py turns a Firebase request into one of these; tests call them directly.
 
@@ -52,8 +52,8 @@ OPS = {
     "soft_delete": ({"id"}, set()),
     "set_review_summary": ({"id", "review_count", "average_rating"}, set()),
 }
-# Ops the Console may use. update and soft_delete are switched on when the editing view is built.
-ADMIN_OPS = frozenset({"list", "get", "create"})
+# Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
+ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 

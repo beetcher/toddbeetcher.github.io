@@ -85,6 +85,23 @@
   .notice { color: #2f5d00; font-weight: 600; margin: 0 0 8px; }
   .vname { font-size: 19px; font-weight: 800; }
   .type.on { color: #1d4d00; background: var(--new); }
+  button.danger { background: var(--err); border-color: var(--err); }
+  .actions-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 10px; }
+  .confirm { background: #fff3f1; border: 1px solid #f0c4be; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; }
+  .confirm .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  #editPanel h2 { margin: 0; font-size: 20px; }
+  #editPanel .hint { color: var(--muted); font-size: 14px; margin: 2px 0 8px; }
+  details.sec { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+  details.sec > summary { cursor: pointer; padding: 12px 14px; min-height: 44px; font-weight: 700; list-style-position: inside; }
+  details.sec > summary.haserr { color: var(--err); }
+  details.sec .body { padding: 0 14px 14px; }
+  details.sec .note { color: var(--muted); font-size: 14px; margin: 0 0 4px; }
+  #editPanel label.f { display: block; font-weight: 600; margin-top: 12px; }
+  #editPanel input, #editPanel select, #editPanel textarea { width: 100%; min-height: 48px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  #editPanel textarea { min-height: 96px; }
+  #editPanel .fhint { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .req { color: var(--orange); font-weight: 800; }
+  .stickybar { position: sticky; bottom: 0; background: var(--cream); border-top: 1px solid var(--line); padding: 10px 0 12px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -128,6 +145,7 @@
   </section>
 
   <section id="venuesView" hidden>
+    <div id="vMain">
     <div class="bar">
       <div>
         <div class="count" id="vCount"></div>
@@ -170,6 +188,22 @@
     <div class="msg" id="vMsg" role="alert"></div>
     <ul id="vList"></ul>
     <div class="empty" id="vEmpty" hidden>No venues yet.</div>
+    </div>
+
+    <section id="editPanel" hidden>
+      <h2 id="editTitle"></h2>
+      <div class="hint" id="editSub"></div>
+      <div class="hint"><span class="req">*</span> needed to make the venue active</div>
+      <div class="msg" id="editMsg" role="alert"></div>
+      <button type="button" class="quiet" id="editReload" hidden>Close and reload the latest</button>
+      <form id="editForm" novalidate autocomplete="off">
+        <div id="editSections"></div>
+        <div class="stickybar">
+          <button type="submit" id="editSave">Save changes</button>
+          <button type="button" class="quiet" id="editCancel">Cancel</button>
+        </div>
+      </form>
+    </section>
   </section>
 </main>
 
@@ -233,6 +267,7 @@
   function route() {
     if (!key) return;
     var r = currentRoute();
+    if (r !== "venues") closeEdit();
     $("collPick").value = r;
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
@@ -448,6 +483,7 @@
     [top, kind, place, chips].forEach(function (n) { head.appendChild(n); });
 
     var detail = document.createElement("div"); detail.className = "detail";
+    detail.appendChild(venueActions(rec));
     var done = {};
     ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
     Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
@@ -479,11 +515,296 @@
     });
   }
 
+  // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
+  var SCHEMA_URL = "/schemas/venue.schema.json";
+  var LAYOUT = [
+    ["Basics", ["name", "description", "status", "is_public_venue"]],
+    ["Address", ["street_address", "address_line_2", "city", "state_region", "postal_code", "country", "time_zone"]],
+    ["Map and access", ["latitude", "longitude", "parking_description", "parking_latitude", "parking_longitude",
+                        "entry_description", "entry_latitude", "entry_longitude", "transit_description"]],
+    ["Contact", ["contact_name", "contact_email", "contact_phone", "backup_contact_name", "backup_contact_email", "backup_contact_phone"]],
+    ["Booking", ["website_url", "booking_process", "booking_lead_days", "availability_notes", "setup_minutes_before", "teardown_minutes_after"]],
+    ["Facilities and rules", ["has_wifi", "wifi_notes", "is_accessible", "has_step_free_entry", "has_elevator", "has_accessible_restroom",
+                              "accessibility_notes", "allows_minors", "allows_animals", "allows_food", "allows_alcohol", "requires_insurance", "insurance_notes"]],
+    ["Cost", ["cost_cents", "cost_basis", "deposit_cents", "cancellation_terms", "cost_notes"]],
+    ["Notes", ["notes"]]
+  ];
+  var schemaP = null, editSchema = null, editRec = null, editFields = {}, editActive = {}, editAny = [];
+
+  function getSchema() {
+    if (!schemaP) {
+      schemaP = fetch(SCHEMA_URL, { cache: "no-cache" })
+        .then(function (r) { if (!r.ok) throw new Error("x"); return r.json(); })
+        .catch(function () { schemaP = null; return null; });
+    }
+    return schemaP;
+  }
+  function humanize(n) { var t = n.replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function firstSentence(t) { if (!t) return ""; var m = t.match(/^.*?[.!?](\s|$)/); return (m ? m[0] : t).trim(); }
+
+  function venueActions(rec) {
+    var wrap = document.createElement("div");
+    var row = document.createElement("div"); row.className = "actions-row";
+    var ed = document.createElement("button"); ed.type = "button"; ed.textContent = "Edit";
+    var del = document.createElement("button"); del.type = "button"; del.className = "danger"; del.textContent = "Delete";
+    row.appendChild(ed); row.appendChild(del);
+
+    var box = document.createElement("div"); box.className = "confirm"; box.hidden = true;
+    var q = document.createElement("div");
+    q.textContent = "Delete this venue? It is hidden from the lists but kept in the database. If a class uses this venue, make it inactive instead.";
+    var btns = document.createElement("div"); btns.className = "btns";
+    var yes = document.createElement("button"); yes.type = "button"; yes.className = "danger"; yes.textContent = "Delete venue";
+    var no = document.createElement("button"); no.type = "button"; no.className = "quiet"; no.textContent = "Cancel";
+    var err = document.createElement("div"); err.className = "msg"; err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no); box.appendChild(q); box.appendChild(btns); box.appendChild(err);
+
+    ed.addEventListener("click", function () { openEdit(rec); });
+    del.addEventListener("click", function () { box.hidden = !box.hidden; err.textContent = ""; });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      admin("soft_delete", { id: rec.id }).then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          $("vNotice").textContent = "Deleted " + (rec.name || "venue") + ".";
+          loadVenues();
+        } else if (res.status === 404) {
+          $("vNotice").textContent = "That venue was already gone.";
+          loadVenues();
+        } else {
+          err.textContent = adminProblem(res.status);
+        }
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(box);
+    return wrap;
+  }
+
+  function activationInfo(schema) {
+    editActive = {}; editAny = [];
+    (schema.allOf || []).forEach(function (b) {
+      var c = b["if"] && b["if"].properties && b["if"].properties.status;
+      if (c && c["const"] === "active" && b.then) {
+        (b.then.required || []).forEach(function (f) { editActive[f] = 1; });
+        (b.then.anyOf || []).forEach(function (br) { (br.required || []).forEach(function (f) { if (editAny.indexOf(f) < 0) editAny.push(f); }); });
+      }
+    });
+  }
+
+  function buildField(name, def, rec) {
+    var wrap = document.createElement("div");
+    var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + name;
+    label.appendChild(document.createTextNode(humanize(name)));
+    if (editActive[name] || editAny.indexOf(name) >= 0) {
+      var star = document.createElement("span"); star.className = "req"; star.textContent = " *"; star.title = "Needed to make the venue active";
+      label.appendChild(star);
+    }
+    var isReq = (editSchema.required || []).indexOf(name) >= 0;
+    var orig = rec[name] === undefined ? null : rec[name];
+    var kind, el;
+    function opt(sel, value, text) { var o = document.createElement("option"); o.value = value; o.textContent = text; sel.appendChild(o); }
+    if (def.type === "boolean") {
+      kind = "bool"; el = document.createElement("select");
+      if (!isReq) opt(el, "", "Not answered");
+      opt(el, "true", "Yes"); opt(el, "false", "No");
+      el.value = orig === null ? "" : String(orig);
+    } else if (def["enum"]) {
+      kind = "text"; el = document.createElement("select");
+      if (!isReq) opt(el, "", "Not set");
+      def["enum"].forEach(function (v) { opt(el, String(v), String(v).replace(/_/g, " ")); });
+      el.value = orig === null ? "" : String(orig);
+    } else if (def.type === "integer" || def.type === "number") {
+      kind = /_cents$/.test(name) ? "money" : "num";
+      el = document.createElement("input"); el.type = "number"; el.inputMode = "decimal";
+      el.step = kind === "money" ? "0.01" : (def.type === "integer" ? "1" : "any");
+      var div = kind === "money" ? 100 : 1;
+      if (def.minimum != null) el.min = def.minimum / div;
+      if (def.maximum != null) el.max = def.maximum / div;
+      el.value = orig === null ? "" : (kind === "money" ? (orig / 100).toFixed(2) : String(orig));
+    } else {
+      kind = "text";
+      el = (def.maxLength || 0) > 200 ? document.createElement("textarea") : document.createElement("input");
+      if (el.tagName === "INPUT") el.type = def.format === "email" ? "email" : def.format === "uri" ? "url" : "text";
+      if (def.maxLength) el.maxLength = def.maxLength;
+      el.autocomplete = "off"; el.autocapitalize = "off"; el.spellcheck = false;
+      el.value = orig === null ? "" : String(orig);
+    }
+    el.id = "ef_" + name;
+    wrap.appendChild(label); wrap.appendChild(el);
+    var hintText = (kind === "money" ? "In dollars. " : "") + firstSentence(def.description);
+    if (hintText) { var h = document.createElement("div"); h.className = "fhint"; h.textContent = hintText; wrap.appendChild(h); }
+    var er = document.createElement("div"); er.className = "ferr"; er.id = "ee_" + name; wrap.appendChild(er);
+    editFields[name] = { el: el, kind: kind, def: def, sec: null, summary: null };
+    return wrap;
+  }
+
+  function buildSections(rec) {
+    var host = $("editSections"); host.textContent = "";
+    editFields = {};
+    var props = editSchema.properties, used = {};
+    function section(title, open) {
+      var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
+      var sm = document.createElement("summary"); sm.textContent = title; d.appendChild(sm);
+      var body = document.createElement("div"); body.className = "body"; d.appendChild(body);
+      host.appendChild(d);
+      return { d: d, sm: sm, body: body };
+    }
+    function eligible(n) { var df = props[n]; return df && !df.readOnly && df.type !== "array" && n !== "slug"; }
+    LAYOUT.forEach(function (sec, idx) {
+      var names = sec[1].filter(eligible);
+      if (!names.length) return;
+      var s2 = section(sec[0], idx === 0);
+      if (sec[0] === "Contact" && editAny.length) {
+        var note = document.createElement("div"); note.className = "note";
+        note.textContent = "An active venue needs at least one of: " + editAny.map(function (f) { return humanize(f).toLowerCase(); }).join(", ") + ".";
+        s2.body.appendChild(note);
+      }
+      names.forEach(function (n) {
+        used[n] = 1;
+        s2.body.appendChild(buildField(n, props[n], rec));
+        editFields[n].sec = s2.d; editFields[n].summary = s2.sm;
+      });
+    });
+    var rest = Object.keys(props).filter(function (n) { return !used[n] && eligible(n); });
+    if (rest.length) {
+      var s3 = section("Other", false);
+      rest.forEach(function (n) { s3.body.appendChild(buildField(n, props[n], rec)); editFields[n].sec = s3.d; editFields[n].summary = s3.sm; });
+    }
+    var s4 = section("Rooms and hours", false);
+    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
+    var info = document.createElement("div"); info.className = "note";
+    info.textContent = "Rooms: " + nr + ". Hours: " + nh + ". Editing rooms and hours comes in the next update.";
+    s4.body.appendChild(info);
+  }
+
+  function readValue(f) {
+    var raw = f.el.value;
+    if (f.kind === "bool") return raw === "" ? null : raw === "true";
+    var t = raw.trim();
+    if (f.kind === "text") return t === "" ? null : t;
+    if (t === "") return null;
+    var n = Number(t);
+    if (!isFinite(n)) return undefined;
+    return f.kind === "money" ? Math.round(n * 100) : n;
+  }
+  function collectChanges() {
+    var changes = {}, bad = [];
+    Object.keys(editFields).forEach(function (n) {
+      var v = readValue(editFields[n]);
+      if (v === undefined) { bad.push(n); return; }
+      var orig = editRec[n] === undefined ? null : editRec[n];
+      if (v !== orig) changes[n] = v;
+    });
+    return { changes: changes, bad: bad };
+  }
+  function editDirty() {
+    if (!editRec) return false;
+    var c = collectChanges();
+    return c.bad.length > 0 || Object.keys(c.changes).length > 0;
+  }
+  function clearEditErrs() {
+    $("editMsg").textContent = ""; $("editReload").hidden = true;
+    Object.keys(editFields).forEach(function (n) {
+      $("ee_" + n).textContent = "";
+      if (editFields[n].summary) editFields[n].summary.className = "";
+    });
+  }
+  function closeEdit() {
+    editRec = null; editFields = {};
+    $("editPanel").hidden = true; $("vMain").hidden = false;
+  }
+  function openEdit(rec) {
+    $("vMsg").textContent = "";
+    getSchema().then(function (schema) {
+      if (!schema) { $("vMsg").textContent = "Could not load the venue form. Try again."; return; }
+      editSchema = schema; editRec = rec; activationInfo(schema);
+      $("editTitle").textContent = "Edit " + (rec.name || "venue");
+      $("editSub").textContent = "Slug: " + rec.slug + " (cannot be changed)";
+      buildSections(rec);
+      clearEditErrs();
+      $("vMain").hidden = true; $("editPanel").hidden = false;
+      window.scrollTo(0, 0);
+    });
+  }
+
+  function issueText(p, f) {
+    var def = f.def;
+    if (p.issue === "choose_one") return "Give at least one of the contact options.";
+    if (p.issue === "required") return "Required.";
+    if (p.issue === "invalid_format") {
+      if (def.format === "email") return "That email address does not look right.";
+      if (def.format === "uri") return "Start with https://";
+      if (p.field === "country") return "Two capital letters, like US.";
+      return "That value is not valid.";
+    }
+    if (p.issue === "out_of_range") return "That number is outside the allowed range.";
+    return ISSUE[p.issue] || "That value is not valid.";
+  }
+
+  $("editForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!editRec) return;
+    clearEditErrs();
+    var c = collectChanges();
+    if (c.bad.length) {
+      c.bad.forEach(function (n) { $("ee_" + n).textContent = "Enter a number."; editFields[n].sec.open = true; });
+      $("editMsg").textContent = "Not saved. Fix the marked fields.";
+      return;
+    }
+    if (!Object.keys(c.changes).length) { $("editMsg").textContent = "Nothing changed."; return; }
+    $("editSave").disabled = true;
+    admin("update", { id: editRec.id, changes: c.changes, expected_updated_at: editRec.updated_at }).then(function (res) {
+      $("editSave").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        vNewId = editRec.id;
+        $("vNotice").textContent = "Saved " + (c.changes.name || editRec.name) + ".";
+        closeEdit(); loadVenues();
+        return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) {
+        $("editMsg").textContent = "This venue changed since you opened it. Nothing was saved.";
+        $("editReload").hidden = false;
+        return;
+      }
+      if (res.status === 404) {
+        $("editMsg").textContent = "This venue no longer exists.";
+        $("editReload").hidden = false;
+        return;
+      }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var other = [], first = null, n = 0;
+        err.problems.forEach(function (p) {
+          var f = editFields[p.field];
+          if (f) {
+            $("ee_" + p.field).textContent = issueText(p, f);
+            f.sec.open = true; f.summary.className = "haserr"; n++;
+            if (!first) first = f.el;
+          } else {
+            other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
+          }
+        });
+        $("editMsg").textContent = "Not saved. " + (n ? n + " field" + (n === 1 ? "" : "s") + " need attention, marked below." : "")
+          + (other.length ? " Also needed: " + other.join(", ") + ". Rooms and hours can be edited in the next update." : "");
+        if (first) first.scrollIntoView({ block: "center" });
+        return;
+      }
+      $("editMsg").textContent = adminProblem(res.status);
+    });
+  });
+  $("editCancel").addEventListener("click", function () {
+    if (editDirty() && !window.confirm("Discard your changes?")) return;
+    closeEdit();
+  });
+  $("editReload").addEventListener("click", function () { closeEdit(); loadVenues(); });
+
   function resetVenues() {
     vLoaded = false; vBusy = false; vNewId = "";
     $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
     $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
-    $("vFilter").value = ""; closeForm();
+    $("vFilter").value = ""; closeForm(); closeEdit();
   }
 
   function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
@@ -542,7 +863,10 @@
   $("refreshBtn").addEventListener("click", function () { check(true); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
-  $("collPick").addEventListener("change", function () { location.hash = "#/" + $("collPick").value; });
+  $("collPick").addEventListener("change", function () {
+    if (editRec && editDirty() && !window.confirm("Discard your changes?")) { $("collPick").value = "venues"; return; }
+    location.hash = "#/" + $("collPick").value;
+  });
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
