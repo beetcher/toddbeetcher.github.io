@@ -30,6 +30,8 @@ from jsonschema import Draft202012Validator, FormatChecker
 HONEYPOT = "website"
 ACTOR = "web:enjoy"
 SOURCE = "web_enjoy"
+PROGRAM_SLUG = "launch"  # the /enjoy pages are the launch program; the schema says the server sets it
+SCHEMA_VERSION = 2
 TIME_ZONE = ZoneInfo("America/Denver")
 # No vowels (so no accidental words) and no 0, 1, so nothing looks like O, I or L.
 CONFIRMATION_ALPHABET = "23456789BCDFGHJKMNPQRSTVWXYZ"
@@ -299,7 +301,7 @@ def handle_registration_request(
     class_id = body.get("scheduled_class_id")
     if class_id:
         cls = store.get_class(class_id)
-        if cls is None or cls.get("deleted_at"):
+        if cls is None or cls.get("deleted_at") or cls.get("class_type") != "workshop" or cls.get("is_public") is not True:
             return _err("class_not_found", "That class was not found.")
         if cls.get("status") != "enrolling":
             return _err("class_closed", "That class is not taking requests.")
@@ -328,7 +330,8 @@ def handle_registration_request(
     doc.update(snapshot)
     doc.update({
         "id": new_id(),
-        "schema_version": 1,
+        "schema_version": SCHEMA_VERSION,
+        "program_slug": PROGRAM_SLUG,
         "created_at": stamp,
         "created_by": ACTOR,
         "updated_at": stamp,
@@ -336,7 +339,6 @@ def handle_registration_request(
         "source": SOURCE,
         "confirmation_number": number,
         "processing_status": "not_processed",
-        "is_paid": False,
     })
     if previous is not None:
         doc["previous_id"] = previous["id"]

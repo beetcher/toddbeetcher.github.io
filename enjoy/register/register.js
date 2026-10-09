@@ -8,7 +8,7 @@
   var CONTACT_EMAIL = 'toddbeetcher17@gmail.com';
   // The endpoint address. Local testing uses the address the page was opened from (?endpoint=...).
   // Production: set PROD_ENDPOINT once the function is deployed. Until then the page says so plainly.
-  var PROD_ENDPOINT = 'REPLACE_WITH_DEPLOYED_FUNCTION_URL';
+  var PROD_ENDPOINT = 'https://enjoy-registration-request-o4aryqt6sq-uc.a.run.app';
 
   var TYPES = {
     private: { cents: 50000, basis: 'per_session', duration: 120, minCount: 1, showWhere: true, group: false },
