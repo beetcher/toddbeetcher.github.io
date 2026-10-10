@@ -6,6 +6,7 @@
                         * the room exists in that venue's rooms list         (venue_room_label:not_found)
                         * capacity_max is not above that room's max          (capacity_max:out_of_range)
                         * a scheduled or enrolling class needs an active venue (venue_id:inactive)
+    * a class that holds registrations cannot be deleted         (conflict, id:in_use)
     (venues_service.py holds the matching guards on the venue side.)
 
 Both modules expose the same function names as a handler file, so the dispatcher treats them alike. All the
@@ -14,6 +15,7 @@ Problems name fields and never values (so the Console asks which classes are in 
 """
 from __future__ import annotations
 
+from . import registration_assignments_crud as A
 from . import scheduled_classes_crud as C
 from . import venues_crud as V
 from .schema_kit import failure
@@ -76,11 +78,18 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
 
 
 def soft_delete(store, id, actor, tx=None, now=None):
+    if isinstance(id, str) and holding_assignments(store, id):
+        return failure("conflict", [{"field": "id", "issue": "in_use"}])
     return C.soft_delete(store, id, actor, tx=tx, now=now)
 
 
 def set_review_summary(store, id, review_count, average_rating, actor="system:reviews", tx=None, now=None):
     return C.set_review_summary(store, id, review_count, average_rating, actor, tx=tx, now=now)
+
+
+def holding_assignments(store, class_id: str) -> list:
+    """Decisions that still hold a place in this class (accepted, overflow, waitlisted and not replaced)."""
+    return [d for d in A.current_only(A.for_class(store, class_id)) if d["status"] in A.HOLDING_STATUSES]
 
 
 def live_classes_at(store, venue_id: str, limit: int = 200) -> list:

@@ -62,9 +62,18 @@ def _source_request_only_private_or_group(doc: dict) -> list:
     return []
 
 
+def _capacity_not_below_registered(doc: dict) -> list:
+    """The biggest size cannot drop below the seats already registered (registered_count is server-kept)."""
+    hi, reg = doc.get("capacity_max"), doc.get("registered_count")
+    if isinstance(hi, int) and isinstance(reg, int) and hi < reg:
+        return [{"field": "capacity_max", "issue": "out_of_range"}]
+    return []
+
+
 # (name, fields it reads, function). The fields column decides when an update must use the whole-record path.
 CROSS_FIELD_RULES = (
     ("capacity_order", ("capacity_minimum", "capacity_target", "capacity_max"), _capacity_order),
+    ("capacity_not_below_registered", ("capacity_max", "registered_count"), _capacity_not_below_registered),
     ("cancelled_reason_only_when_cancelled", ("cancelled_reason", "status"), _cancelled_reason_only_when_cancelled),
     ("source_request_only_private_or_group", ("source_request_id", "class_type"), _source_request_only_private_or_group),
 )
@@ -316,3 +325,22 @@ def set_review_summary(store, id, review_count, average_rating, actor="system:re
     except DocMissing:
         return failure("not_found")
     return success({"id": id, "review_count": review_count, "average_rating": average_rating})
+
+
+# =============================================================================
+# server-kept seat counts (written only by the assignments service)
+# =============================================================================
+
+def set_registration_counts(store, id, registered_count, waitlist_count, actor="system:assignments", tx=None, now=None):
+    """Write registered_count (accepted + overflow seats) and waitlist_count. No read, no other rule."""
+    problems = check_actor(actor) + _id_problem(id)
+    problems += check_field(CLASSES, "registered_count", registered_count, allow_read_only=True)
+    problems += check_field(CLASSES, "waitlist_count", waitlist_count, allow_read_only=True)
+    if problems:
+        return _bad(problems)
+    fields = {"registered_count": registered_count, "waitlist_count": waitlist_count, **stamp_update(actor, now)}
+    try:
+        store.update(CLASSES.name, id, fields, (), tx=tx)
+    except DocMissing:
+        return failure("not_found")
+    return success({"id": id, "registered_count": registered_count, "waitlist_count": waitlist_count})

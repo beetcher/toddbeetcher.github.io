@@ -224,6 +224,40 @@
   .mpage .tip { border-left-color: var(--lime); }
   .mpage code { background: #101a3d; border-radius: 6px; padding: 1px 6px; color: #ffd9bd; }
   .manualBtn { white-space: nowrap; }
+
+  /* ---- Assignments, one-touch row, Needs attention ---- */
+  .qrow { padding: 0 14px 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .qrow[hidden] { display: none; }
+  .qchip { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 14px; font-weight: 700; background: #e9e4d8; color: #4a443a; }
+  .qchip.ok { background: var(--new); color: #1d4d00; }
+  .qchip.warn { background: #ffe0c2; color: #8a2f00; border: 1px solid var(--orange); }
+  .qrow .go { min-height: 44px; background: var(--orange); border-color: var(--orange); color: #1a0d00; }
+  .qrow .go:disabled { opacity: .6; }
+  .qrow .qmsg { flex: 1 1 100%; color: var(--err); font-weight: 600; font-size: 14px; }
+  .attn { border: 2px solid #27397a; background: #0b1226; color: #dbe7ff; border-radius: 14px; padding: 12px 14px; margin: 12px 0; }
+  .attn.hot { border-color: var(--orange); }
+  .attn h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 8px; }
+  .attn .badge { background: var(--orange); color: #1a0d00; border-radius: 999px; padding: 0 9px; font-size: 13px; letter-spacing: 0; }
+  .attn .aitem { border-top: 1px solid #27397a; padding: 8px 0; }
+  .attn .aitem:first-of-type { border-top: 0; }
+  .attn .aitem b { color: #fff; }
+  .attn .aitem .why { color: #ffd2a8; }
+  .attn .arow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .attn button { min-height: 44px; background: #0b1226; border-color: #27397a; color: #dbe7ff; }
+  .attn .quietline { color: #b9c8ee; font-size: 14px; margin-top: 6px; }
+  .type.st-accepted, .type.st-overflow { color: #1d4d00; background: var(--new); }
+  .type.st-waitlisted { color: #7a3a00; background: #ffe7d1; }
+  .type.st-declined, .type.st-cancelled { color: #4a443a; background: #e9e4d8; }
+  li.superseded { opacity: .6; }
+  .rrow { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .rrow:last-child { border-bottom: 0; }
+  .rhead { margin: 14px 0 2px; font-weight: 800; }
+  .rsum { color: var(--muted); font-size: 14px; margin: 8px 0 0; }
+  #assignView .panel textarea, #assignView li textarea { width: 100%; min-height: 72px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  #assignView .panel input[type=number], #assignView li input[type=number] { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  #assignView li select, #assignView .panel select { width: 100%; min-height: 48px; }
+  #assignView li .inl { padding: 8px 0; }
+  #assignView li .inl label.f { display: block; font-weight: 600; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -250,6 +284,7 @@
         <p>This is the LAUNCH Console: the control room for the I Can Do That workshops. It is a fun first surface, built to learn on. The production console will look different; the lists, forms and ship's rules carry over.</p>
       </div>
     </div>
+    <div class="attn" id="attnBox" aria-live="polite"><h3>Needs attention <span class="badge" id="attnBadge" hidden></span></h3><div id="attnBody">Checking the queue…</div></div>
     <div class="howto">
       <h3>Flight basics</h3>
       <ol>
@@ -356,6 +391,73 @@
     </section>
   </section>
 
+  <section id="assignView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="aCount"></div>
+        <div class="meta" id="aChecked"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="quiet manualBtn" data-m="assignments">Manual</button>
+        <button id="aRefresh" class="quiet" type="button">Refresh</button>
+        <button id="aAddBtn" type="button">New decision</button>
+      </div>
+    </div>
+    <details class="more filters" id="aFilters">
+      <summary id="aFilterSummary">Filters: all current decisions shown</summary>
+      <div class="mbody">
+        <fieldset class="fs"><legend>Decision</legend>
+          <label class="chk"><input type="checkbox" data-f="status" value="accepted" checked> Accepted</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="overflow" checked> Overflow</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="waitlisted" checked> Waiting list</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="declined" checked> Declined</label>
+          <label class="chk"><input type="checkbox" data-f="status" value="cancelled" checked> Cancelled</label>
+        </fieldset>
+        <fieldset class="fs"><legend>History</legend>
+          <label class="chk"><input type="checkbox" id="aHistory"> Also show replaced decisions</label>
+        </fieldset>
+        <button type="button" class="quiet" id="aShowAll">Show all</button>
+      </div>
+    </details>
+    <form class="panel" id="aAddForm" hidden autocomplete="off" novalidate>
+      <h2>New decision</h2>
+      <div class="hint">Leave the decision on "Let the server decide" and it fits the party in for you. Pick one only to overrule it.</div>
+      <label class="f" for="aReq">Request</label>
+      <select id="aReq"></select>
+      <div class="ferr" id="eAReq"></div>
+      <label class="f" for="aCls">Class</label>
+      <select id="aCls"></select>
+      <div class="ferr" id="eACls"></div>
+      <label class="f" for="aSeats">Seats</label>
+      <input type="number" id="aSeats" inputmode="numeric" min="1" max="50" step="1">
+      <div class="ferr" id="eASeats"></div>
+      <label class="f" for="aStatus">Decision</label>
+      <select id="aStatus">
+        <option value="">Let the server decide (recommended)</option>
+        <option value="accepted">Accepted</option>
+        <option value="overflow">Overflow</option>
+        <option value="waitlisted">Waiting list</option>
+        <option value="declined">Declined</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+      <div class="ferr" id="eAStatus"></div>
+      <label class="f" for="aNote">Note (optional)</label>
+      <textarea id="aNote" maxlength="2000"></textarea>
+      <div class="ferr" id="eANote"></div>
+      <div class="btns">
+        <button type="submit" id="aSave">Save decision</button>
+        <button type="button" class="quiet" id="aCancel">Cancel</button>
+      </div>
+      <div class="msg" id="aFMsg" role="alert"></div>
+    </form>
+    <div class="notice" id="aNotice" role="status"></div>
+    <div class="msg" id="aMsg" role="alert"></div>
+    <button type="button" class="quiet" id="aRetry" hidden>Try again</button>
+    <ul id="aList"></ul>
+    <div class="empty" id="aEmpty" hidden>No decisions yet. Assign a request from its card, or tap New decision.</div>
+    <div class="empty" id="aNoMatch" hidden>Nothing matches the filters. Open Filters and tap Show all.</div>
+  </section>
+
   <section id="classesView" hidden>
     <div id="cMain">
     <div class="bar">
@@ -450,6 +552,11 @@
     </section>
   </section>
 </main>
+<dialog class="lsdlg" id="rosterDlg" aria-labelledby="rosterTitle">
+  <div class="lshead"><h2 id="rosterTitle">Roster</h2><button type="button" class="quiet" id="rosterClose">Close</button></div>
+  <div class="dmsg" id="rosterMsg" role="status"></div>
+  <div class="lsbody" id="rosterBody"></div>
+</dialog>
 <div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
   <div class="mhead">
     <div class="mbtns" id="overlayBtns"></div>
@@ -513,14 +620,20 @@
     { id: "requests", name: "Registration requests", short: "Requests", blurb: "Sign-ups arriving from the website, newest first.",
       manual:
         '<div class="kicker">Station 1</div><h2>Registration requests</h2>' +
-        '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive.</p>' +
+        '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer the person gave.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
+        '<li><b>One touch.</b> Under each card the ship shows what it would do: an orange <b>Assign</b> button, for example "Accept 2 seats in Intro Workshop". Tap it and it is done. The ship decides between accepted, overflow and the waiting list from the seats left.</li>' +
         '</ul>' +
-        '<div class="rule"><b>Ship\'s rule:</b> this station is read only. You look, you do not change. Moving a request into a class comes in a later build.</div>' +
-        '<h3>Try this</h3><ul><li>Register on the website in another window and watch the card appear here.</li></ul>' },
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The ship only fits a party in when the class is <b>enrolling</b>. If the class is closed, full, or gone, nothing is written and the request shows <b>Needs attention</b> here and on Home.</li>' +
+        '<li>A private or group request can only go into the class made from it. A request that asked for no class waits until one exists.</li>' +
+        '<li>You never lose the old decision: changing one writes a new record that replaces it. The history stays.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> for anything the ship will not do on its own, tap <b>Decide by hand</b> and overrule it from the Assignments station.</div>' +
+        '<h3>Try this</h3><ul><li>Register on the website in another window, watch the card appear, then tap its Assign button.</li></ul>' },
     { id: "venues", name: "Venues", short: "Venues", blurb: "Places where classes happen: address, rooms, hours, rules.",
       manual:
         '<div class="kicker">Station 2</div><h2>Venues</h2>' +
@@ -551,6 +664,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
+        '<li><b>Registered</b> and <b>Waiting</b> on a card open the class roster: who is in, who is waiting.</li>' +
         '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -559,12 +673,33 @@
         '<li>A <b>scheduled</b> or <b>enrolling</b> class needs a venue that exists and is <b>active</b>.</li>' +
         '<li>A cancelled reason is only for cancelled classes.</li>' +
         '<li>The short name cannot be changed once saved. The counts (registered, waiting, attended, reviews) belong to the ship and cannot be typed in.</li>' +
+        '<li>A class that holds registrations <b>cannot be deleted</b> (cancel the registrations first), and its biggest size cannot drop below the seats already taken.</li>' +
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> if a class seems missing, open Filters and tap Show all, then Refresh.</div>' +
-        '<h3>Try this</h3><ul><li>Add a one on one class, then edit it and give it a venue, a room and a start time.</li></ul>' }
+        '<h3>Try this</h3><ul><li>Add a one on one class, then edit it and give it a venue, a room and a start time.</li></ul>' },
+    { id: "assignments", name: "Assignments", short: "Assignments", blurb: "Who is in which class: accepted, overflow, waiting list.",
+      manual:
+        '<div class="kicker">Station 4</div><h2>Assignments</h2>' +
+        '<h3>Mission</h3><p>An assignment is a decision that puts a registration request into a class: accepted, overflow, on the waiting list, declined or cancelled. It holds seats and nothing else. Names stay on the request.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li>Most of the time you will not need this station: tap <b>Assign</b> on a request card.</li>' +
+        '<li><b>New decision</b> picks a request and a class. Leave the decision on <b>Let the server decide</b> and the ship fits the party in. Pick a decision only to overrule it.</li>' +
+        '<li><b>Filters</b> are tick boxes for the decision. Replaced decisions are history; tick <b>Also show replaced decisions</b> to see them.</li>' +
+        '<li><b>Change decision</b> on a card writes a new decision that replaces the old one. <b>Decide again automatically</b> lets the ship re-fit the party, for example when a seat has opened for someone on the waiting list.</li>' +
+        '<li><b>Edit note</b> changes only the note.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Accepted is up to the class target. Overflow is between the target and the biggest size. A party is never split.</li>' +
+        '<li>Over the biggest size the party goes on the waiting list, if the class has one and it is not full. Otherwise nothing is written and the request shows <b>Needs attention</b>.</li>' +
+        '<li>Seats cannot be more than the request asked for.</li>' +
+        '<li>An identical decision is refused. A decision is never edited: it is replaced by a new one and the old one stays as history.</li>' +
+        '<li>Decisions cannot be deleted. Cancel instead.</li>' +
+        '<li>The class\'s Registered and Waiting counts are kept by the ship, in the same step as the decision.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> Needs attention on Home lists every request the ship could not place by itself.</div>' +
+        '<h3>Try this</h3><ul><li>Fill a class to its biggest size, then assign one more request and watch it turn up under Needs attention.</li></ul>' },
   ];
   var COMING = [
-    { name: "Class sign-ups", blurb: "Put a registration request into a class. Next in the queue." },
     { name: "More stations", blurb: "New collections dock here as they are built." }
   ];
 
@@ -635,11 +770,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
+    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -651,6 +786,9 @@
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
     $("classesView").hidden = r !== "classes";
+    $("assignView").hidden = r !== "assignments";
+    if (r === "home" || r === "requests" || r === "assignments") loadQueue();
+    if (r === "assignments") openAssignView();
     if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); }
   }
 
@@ -721,7 +859,10 @@
       head.setAttribute("aria-expanded", open ? "true" : "false");
     });
 
-    li.appendChild(head); li.appendChild(detail);
+    var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
+    li.appendChild(head); li.appendChild(qrow); li.appendChild(detail);
+    li._q = qrow; li._rec = rec;
+    fillQRow(qrow, rec);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -744,6 +885,7 @@
         return x < y ? 1 : x > y ? -1 : 0;
       }).forEach(function (id) { list.appendChild(rows[id]); });
     }
+    if (fresh.length && firstLoadDone) loadQueue();
     var n = Object.keys(known).length;
     $("countText").textContent = n + (n === 1 ? " request" : " requests");
     $("empty").hidden = n > 0;
@@ -791,7 +933,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetAssign();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -1753,8 +1895,11 @@
     var chips = mk("div", "chips");
     chips.appendChild(mk("span", "", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", public" : ", not public")));
     chips.appendChild(mk("span", "", "People: " + rec.capacity_minimum + " to " + rec.capacity_target + " (up to " + rec.capacity_max + ")"));
-    chips.appendChild(mk("span", "", "Registered: " + (rec.registered_count || 0)));
-    if (rec.waitlist_count) chips.appendChild(mk("span", "", "Waiting: " + rec.waitlist_count));
+    var links = mk("div", "lchips");   // outside the card's head button: a button cannot sit inside a button
+    var rl = mk("button", "chiplink", "Registered: " + (rec.registered_count || 0)); rl.type = "button";
+    rl.addEventListener("click", function () { openRoster(rec); });
+    links.appendChild(rl);
+    if (rec.waitlist_count) { var wl = mk("button", "chiplink", "Waiting: " + rec.waitlist_count); wl.type = "button"; wl.addEventListener("click", function () { openRoster(rec); }); links.appendChild(wl); }
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
 
@@ -1769,7 +1914,7 @@
       var open = li.classList.toggle("open");
       head.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    li.appendChild(head); li.appendChild(detail);
+    li.appendChild(head); li.appendChild(links); li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -1798,6 +1943,7 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) { $("cNotice").textContent = "Deleted " + (rec.title || "class") + "."; loadClasses(); }
         else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
+        else if (res.status === 409) err.textContent = "This class holds registrations. Cancel or decline them in Assignments first.";
         else err.textContent = adminProblem(res.status);
       });
     });
@@ -2297,7 +2443,7 @@
     unlock(k, $("rememberBox").checked);
   });
   $("lockBtn").addEventListener("click", function () { lock(""); });
-  $("refreshBtn").addEventListener("click", function () { check(true); });
+  $("refreshBtn").addEventListener("click", function () { check(true); loadQueue(); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
   $("collPick").addEventListener("change", function () { goTo($("collPick").value); });
@@ -2312,6 +2458,402 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mOpen && !document.querySelector("dialog[open]")) closeManual(); });
   window.addEventListener("resize", function () { if (mOpen) $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px"); });
   buildHome();
+
+
+  // ======== Assignments: the queue (one-touch and Needs attention), the Assignments station, the class roster ========
+  var COLL_A = "registration_assignments";
+  var Q = { loaded: false, items: [], by: {}, counts: null, error: "" };
+  var qSeq = 0;
+  var STATUS_WORD = { accepted: "Accepted", overflow: "Overflow", waitlisted: "On the waiting list", declined: "Declined", cancelled: "Cancelled" };
+  var VERB = { accepted: "Accept", overflow: "Accept into overflow", waitlisted: "Put on the waiting list" };
+  var WHY = { class_closed: "the class is not taking registrations", class_full: "the class is full and has no waiting list",
+              waitlist_full: "the class and its waiting list are full", class_not_found: "the class they asked for is gone" };
+  var NOCLASS = { no_class_fits: "Asked for a class that does not exist yet.", no_class_yet: "Waiting for a class to be made from this request." };
+  var AISSUE = {
+    "status:class_closed": "The class is not taking registrations.", "status:class_full": "The class is full.",
+    "status:waitlist_full": "The class and its waiting list are full.", "status:waitlist_off": "This class has no waiting list.",
+    "status:over_target": "That would go past the class target. Choose overflow instead.", "status:unchanged": "That is already the decision.",
+    "status:invalid_value": "Choose a decision.", "status:required": "Choose a decision.",
+    "scheduled_class_id:wrong_class": "This request can only go into the class made from it.",
+    "scheduled_class_id:not_found": "That class was not found.", "scheduled_class_id:required": "Choose a class.",
+    "request_id:not_found": "That request was not found.", "request_id:required": "Choose a request.",
+    "attendee_count:out_of_range": "Seats must be 1 or more, and no more than the request asked for.",
+    "attendee_count:invalid_type": "Seats must be a whole number.", "decision_note:out_of_range": "That note is too long."
+  };
+  function assignIssues(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    var out = ps.map(function (p) { return AISSUE[p.field + ":" + p.issue] || ("Could not save (" + p.field + ": " + p.issue + ")."); });
+    return out.length ? out.join(" ") : adminProblem(res.status);
+  }
+  function personOf(it) { return [it.first_name, it.last_name].filter(Boolean).join(" ") || "(no name)"; }
+  function whyText(it) { return it.reason && WHY[it.reason] ? WHY[it.reason] : (it.reason || ""); }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function loadQueue() {
+    var my = ++qSeq;
+    return admin("queue", { limit: 100 }, COLL_A).then(function (res) {
+      if (my !== qSeq || !key) return;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { Q.error = adminProblem(res.status); Q.loaded = Q.loaded && !!Q.items.length; }
+      else {
+        Q.error = ""; Q.loaded = true;
+        Q.items = res.body.data.items || []; Q.counts = res.body.data.counts || {};
+        Q.by = {}; Q.items.forEach(function (it) { Q.by[it.request_id] = it; });
+      }
+      decorateCards(); renderAttention();
+      if (!$("assignView").hidden && aNameMiss) renderAssignments();   // only if some names were missing; otherwise leave open cards alone
+    });
+  }
+  function decorateCards() { Object.keys(rows).forEach(function (id) { if (rows[id]._q) fillQRow(rows[id]._q, known[id]); }); }
+
+  function goDecide(it) {
+    aPrefill = { request_id: it.request_id, class_id: it.scheduled_class_id || "" };
+    if (location.hash === "#/assignments") route(); else location.hash = "#/assignments";
+  }
+
+  // The row under each request card: what has happened, or the one touch that does it.
+  function fillQRow(box, rec) {
+    box.textContent = "";
+    var it = Q.by[rec.id];
+    if (!Q.loaded || !it) { box.hidden = true; return; }
+    box.hidden = false;
+    if (it.state === "assigned") {
+      box.appendChild(mk("span", "qchip ok", (STATUS_WORD[it.status] || it.status) + " · " + plural(it.seats, "seat", "seats") + (it.class_title ? " · " + it.class_title : "")));
+    } else if (it.state === "closed") {
+      box.appendChild(mk("span", "qchip", STATUS_WORD[it.status] || it.status));
+    } else if (it.state === "no_class") {
+      box.appendChild(mk("span", "qchip", NOCLASS[it.reason] || "No class yet."));
+    } else if (it.state === "needs_attention") {
+      box.appendChild(mk("span", "qchip warn", "Needs attention: " + whyText(it) + (it.class_title ? " (" + it.class_title + ")" : "")));
+      var hb = mk("button", "quiet", "Decide by hand"); hb.type = "button";
+      hb.addEventListener("click", function () { goDecide(it); });
+      box.appendChild(hb);
+    } else if (it.state === "ready") {
+      var b = mk("button", "go", "Assign: " + VERB[it.status] + " " + plural(it.seats, "seat", "seats") + " in " + (it.class_title || "the class")); b.type = "button";
+      var msg = mk("div", "qmsg"); msg.setAttribute("role", "alert");
+      b.addEventListener("click", function () {
+        b.disabled = true; msg.textContent = "";
+        admin("create", { data: { request_id: it.request_id, scheduled_class_id: it.scheduled_class_id } }, COLL_A).then(function (res) {
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { loadQueue(); if (cLoaded) cLoaded = false; return; }
+          b.disabled = false; msg.textContent = assignIssues(res); loadQueue();
+        });
+      });
+      box.appendChild(b); box.appendChild(msg);
+    }
+  }
+
+  // Home: the "Needs attention" panel.
+  function renderAttention() {
+    var box = $("attnBox"), body = $("attnBody"), badge = $("attnBadge");
+    body.textContent = "";
+    if (!Q.loaded && Q.error) {
+      body.appendChild(document.createTextNode("Could not check the queue. " + Q.error + " "));
+      var rb = mk("button", "", "Try again"); rb.type = "button"; rb.addEventListener("click", function () { loadQueue(); }); body.appendChild(rb);
+      badge.hidden = true; box.className = "attn"; return;
+    }
+    if (!Q.loaded) { body.textContent = "Checking the queue…"; badge.hidden = true; box.className = "attn"; return; }
+    var c = Q.counts || {};
+    var hot = Q.items.filter(function (i) { return i.state === "needs_attention"; });
+    badge.hidden = !hot.length; badge.textContent = hot.length;
+    box.className = "attn" + (hot.length ? " hot" : "");
+    if (!hot.length) body.appendChild(mk("div", "", "All clear. Nothing needs a person right now."));
+    hot.slice(0, 8).forEach(function (it) {
+      var d = mk("div", "aitem");
+      var t = mk("div", ""); var bn = mk("b", "", personOf(it)); t.appendChild(bn);
+      t.appendChild(document.createTextNode(" · " + (TYPES[it.registration_type] || it.registration_type) + " · " + plural(it.attendee_count, "person", "people") + " · " + (it.confirmation_number || "")));
+      d.appendChild(t);
+      d.appendChild(mk("div", "why", "Could not place them: " + whyText(it) + (it.class_title ? " (" + it.class_title + ")" : "") + "."));
+      var row = mk("div", "arow");
+      var o = mk("button", "", "Decide by hand"); o.type = "button"; o.addEventListener("click", function () { goDecide(it); });
+      var g = mk("button", "", "Open requests"); g.type = "button"; g.addEventListener("click", function () { goTo("requests"); });
+      row.appendChild(o); row.appendChild(g); d.appendChild(row); body.appendChild(d);
+    });
+    if (hot.length > 8) body.appendChild(mk("div", "quietline", "and " + (hot.length - 8) + " more. Open Requests to see them all."));
+    var quiet = [];
+    if (c.ready) quiet.push(plural(c.ready, "request is", "requests are") + " ready for one touch");
+    if (c.no_class) quiet.push(plural(c.no_class, "request is", "requests are") + " waiting for a class");
+    if (quiet.length) {
+      var ql = mk("div", "quietline", quiet.join(" · ") + ". ");
+      var lk = mk("button", "chiplink", "Open requests"); lk.type = "button"; lk.addEventListener("click", function () { goTo("requests"); });
+      ql.appendChild(lk); body.appendChild(ql);
+    }
+  }
+
+  // ---- Assignments station
+  var ASTAT = ["accepted", "overflow", "waitlisted", "declined", "cancelled"];
+  var AF_STORE = "console_assign_filters";
+  var aNameMiss = false, aAll = [], aSeq = 0, aLoaded = false, aClasses = [], aClassById = {}, aPrefill = null, aNewId = "";
+  function aChecks() { return document.querySelectorAll("#aFilters input[type=checkbox][data-f]"); }
+  function aSelected() { var o = {}; Array.prototype.forEach.call(aChecks(), function (c) { if (c.checked) o[c.value] = 1; }); return o; }
+  function aSaveFilters() {
+    try {
+      var off = []; Array.prototype.forEach.call(aChecks(), function (c) { if (!c.checked) off.push(c.value); });
+      if ($("aHistory").checked) off.push("+history");
+      if (off.length) sessionStorage.setItem(AF_STORE, JSON.stringify(off)); else sessionStorage.removeItem(AF_STORE);
+    } catch (e) {}
+  }
+  function aRestoreFilters() {
+    try {
+      var off = JSON.parse(sessionStorage.getItem(AF_STORE) || "[]");
+      Array.prototype.forEach.call(aChecks(), function (c) { c.checked = off.indexOf(c.value) < 0; });
+      $("aHistory").checked = off.indexOf("+history") >= 0;
+    } catch (e) {}
+  }
+  function aShowEverything() {
+    Array.prototype.forEach.call(aChecks(), function (c) { c.checked = true; }); $("aHistory").checked = true;
+    aSaveFilters(); renderAssignments();
+  }
+  function supersededIds(list) { var o = {}; list.forEach(function (r) { if (r.previous_id) o[r.previous_id] = 1; }); return o; }
+  function requestLabel(id) {
+    var it = Q.by[id];
+    if (it) return [it.confirmation_number, personOf(it)].filter(Boolean).join(" · ");
+    var r = known[id];
+    if (r) return [r.confirmation_number, [r.first_name, r.last_name].filter(Boolean).join(" ")].filter(Boolean).join(" · ");
+    aNameMiss = true;
+    return "Request " + String(id).slice(0, 8);
+  }
+  function classTitle(id) { var c = aClassById[id]; return c ? c.title : "(class not found)"; }
+
+  function assignRow(rec, isNew, replaced) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+    if (replaced) li.className += " superseded";
+    var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", requestLabel(rec.request_id)));
+    top.appendChild(mk("span", "type st-" + rec.status, STATUS_WORD[rec.status] || rec.status));
+    head.appendChild(top);
+    head.appendChild(mk("div", "who", classTitle(rec.scheduled_class_id)));
+    var chips = mk("div", "chips");
+    chips.appendChild(mk("span", "", plural(rec.attendee_count, "seat", "seats")));
+    chips.appendChild(mk("span", "", "Decided: " + when(rec.decided_at || rec.created_at)));
+    if (replaced) chips.appendChild(mk("span", "", "Replaced by a newer decision"));
+    else if (rec.previous_id) chips.appendChild(mk("span", "", "Replaces an earlier decision"));
+    head.appendChild(chips);
+    var detail = mk("div", "detail");
+    if (!replaced) detail.appendChild(assignActions(rec));
+    var done = {};
+    ["request_id", "scheduled_class_id", "status", "attendee_count", "decision_note", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+    li.appendChild(head); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function assignActions(rec) {
+    var wrap = mk("div", "");
+    var row = mk("div", "actions-row");
+    var chg = mk("button", "", "Change decision"); chg.type = "button";
+    var auto = mk("button", "quiet", "Decide again automatically"); auto.type = "button";
+    var note = mk("button", "quiet", "Edit note"); note.type = "button";
+    row.appendChild(chg); row.appendChild(auto); row.appendChild(note);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+    // change decision panel
+    var cp = mk("div", "inl"); cp.hidden = true;
+    var ssel = mk("select"); ["accepted", "overflow", "waitlisted", "declined", "cancelled"].forEach(function (v) {
+      var o = mk("option", "", STATUS_WORD[v]); o.value = v; if (v === rec.status) o.selected = true; ssel.appendChild(o);
+    });
+    var seats = mk("input"); seats.type = "number"; seats.min = "1"; seats.max = "50"; seats.step = "1"; seats.value = String(rec.attendee_count);
+    var cnote = mk("textarea"); cnote.maxLength = 2000; cnote.placeholder = "Why (optional)";
+    var l1 = mk("label", "f", "Decision"), l2 = mk("label", "f", "Seats"), l3 = mk("label", "f", "Note (optional)");
+    var cb = mk("div", "btns"); var go = mk("button", "", "Save new decision"); go.type = "button"; var cx = mk("button", "quiet", "Cancel"); cx.type = "button";
+    cb.appendChild(go); cb.appendChild(cx);
+    [l1, ssel, l2, seats, l3, cnote, cb].forEach(function (n) { cp.appendChild(n); });
+    // note panel
+    var np = mk("div", "inl"); np.hidden = true;
+    var nta = mk("textarea"); nta.maxLength = 2000; nta.value = rec.decision_note || "";
+    var nb = mk("div", "btns"); var ns = mk("button", "", "Save note"); ns.type = "button"; var nx = mk("button", "quiet", "Cancel"); nx.type = "button";
+    nb.appendChild(ns); nb.appendChild(nx); np.appendChild(nta); np.appendChild(nb);
+    function submit(data, btn) {
+      btn.disabled = true; msg.textContent = "";
+      admin("create", { data: data }, COLL_A).then(function (res) {
+        btn.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { aNewId = res.body.data.id; $("aNotice").textContent = "Saved. The class counts are updated."; cLoaded = false; loadAssignments(); loadQueue(); }
+        else msg.textContent = assignIssues(res);
+      });
+    }
+    chg.addEventListener("click", function () { cp.hidden = !cp.hidden; np.hidden = true; msg.textContent = ""; });
+    cx.addEventListener("click", function () { cp.hidden = true; });
+    note.addEventListener("click", function () { np.hidden = !np.hidden; cp.hidden = true; msg.textContent = ""; });
+    nx.addEventListener("click", function () { np.hidden = true; });
+    go.addEventListener("click", function () {
+      var n = Number(seats.value);
+      var d = { request_id: rec.request_id, scheduled_class_id: rec.scheduled_class_id, status: ssel.value, attendee_count: n };
+      if (cnote.value.trim()) d.decision_note = cnote.value.trim();
+      if (!seats.value.trim() || Math.floor(n) !== n) { msg.textContent = AISSUE["attendee_count:invalid_type"]; return; }
+      submit(d, go);
+    });
+    auto.addEventListener("click", function () { submit({ request_id: rec.request_id, scheduled_class_id: rec.scheduled_class_id }, auto); });
+    ns.addEventListener("click", function () {
+      ns.disabled = true; msg.textContent = "";
+      admin("update", { id: rec.id, changes: { decision_note: nta.value.trim() || null }, expected_updated_at: rec.updated_at }, COLL_A).then(function (res) {
+        ns.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { $("aNotice").textContent = "Note saved."; loadAssignments(); }
+        else if (res.status === 409) msg.textContent = "This decision changed since you opened it. Refresh the list.";
+        else msg.textContent = assignIssues(res);
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(cp); wrap.appendChild(np); wrap.appendChild(msg);
+    return wrap;
+  }
+
+  function renderAssignments() {
+    aNameMiss = false;
+    var sel = aSelected(), hist = $("aHistory").checked;
+    var gone = supersededIds(aAll);
+    var current = aAll.filter(function (r) { return !gone[r.id]; });
+    var pool = hist ? aAll : current;
+    var shown = pool.filter(function (r) { return ASTAT.indexOf(r.status) < 0 || sel[r.status]; });
+    if (aNewId) {   // a decision you just made is never hidden by the filters
+      var nr = aAll.filter(function (r) { return r.id === aNewId; })[0];
+      if (nr && shown.indexOf(nr) < 0) { Array.prototype.forEach.call(aChecks(), function (c) { if (c.value === nr.status) c.checked = true; }); aSaveFilters(); sel = aSelected(); shown = pool.filter(function (r) { return ASTAT.indexOf(r.status) < 0 || sel[r.status]; }); }
+    }
+    var ul = $("aList"); ul.textContent = "";
+    var focus = null;
+    shown.forEach(function (r) { var li = assignRow(r, r.id === aNewId, !!gone[r.id]); ul.appendChild(li); if (r.id === aNewId) focus = li; });
+    var allTicked = true; Array.prototype.forEach.call(aChecks(), function (c) { if (!c.checked) allTicked = false; });
+    var olderHidden = hist ? 0 : aAll.length - current.length;
+    $("aCount").textContent = (shown.length === pool.length ? plural(pool.length, "decision", "decisions") : "Showing " + shown.length + " of " + pool.length + " decisions") + (olderHidden ? " (" + plural(olderHidden, "replaced decision", "replaced decisions") + " hidden)" : "");
+    $("aFilterSummary").textContent = (allTicked && hist) ? "Filters: everything shown" : (allTicked ? "Filters: all current decisions shown" : "Filters: some decisions are hidden");
+    $("aFilterSummary").className = allTicked ? "" : "some";
+    $("aEmpty").hidden = aAll.length > 0; $("aNoMatch").hidden = !(pool.length > 0 && shown.length === 0);
+    if (focus) { try { focus.scrollIntoView({ block: "center" }); } catch (e) {} }
+    aNewId = "";
+  }
+
+  function loadClassChoices() {
+    return admin("list", { limit: 200 }, "scheduled_classes").then(function (res) {
+      if (res.status === 200 && res.body.ok) { aClasses = res.body.data.records || []; aClassById = {}; aClasses.forEach(function (c) { aClassById[c.id] = c; }); }
+    });
+  }
+  function loadAssignments() {
+    var my = ++aSeq;
+    $("aMsg").textContent = ""; $("aRetry").hidden = true;
+    return Promise.all([admin("list", { limit: 200 }, COLL_A), loadClassChoices()]).then(function (both) {
+      if (my !== aSeq) return;
+      var res = both[0];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("aMsg").textContent = "Could not load the decisions. " + adminProblem(res.status); $("aRetry").hidden = false; return; }
+      aAll = res.body.data.records || []; aLoaded = true;
+      renderAssignments();
+      $("aChecked").textContent = "Last checked " + fmtClock.format(new Date());
+    });
+  }
+  function openAssignView() {
+    if (!aLoaded) aRestoreFilters();
+    $("aNotice").textContent = "";
+    var p = aPrefill; aPrefill = null;
+    loadAssignments().then(function () { if (p) openAssignForm(p); });
+    loadQueue();
+  }
+
+  // ---- new decision form
+  function aClearErrs() { ["eAReq", "eACls", "eASeats", "eAStatus", "eANote", "aFMsg"].forEach(function (id) { $(id).textContent = ""; }); }
+  function fillAssignForm(pre) {
+    var rs = $("aReq"), cs = $("aCls"); rs.textContent = ""; cs.textContent = "";
+    function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); return o; }
+    opt(rs, "", "Choose a request");
+    var order = { needs_attention: 0, ready: 1, no_class: 2, assigned: 3, closed: 4 };
+    Q.items.slice().sort(function (a, b) { return (order[a.state] - order[b.state]); }).forEach(function (it) {
+      opt(rs, it.request_id, [it.confirmation_number, personOf(it), plural(it.attendee_count, "person", "people"), (TYPES[it.registration_type] || "")].filter(Boolean).join(" · ") + (it.state === "needs_attention" ? "  (needs attention)" : it.state === "ready" ? "  (ready)" : ""));
+    });
+    if (pre && pre.request_id && !Q.by[pre.request_id]) opt(rs, pre.request_id, requestLabel(pre.request_id));
+    opt(cs, "", "Choose a class");
+    aClasses.slice().sort(function (a, b) { return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1; }).forEach(function (c) {
+      opt(cs, c.id, c.title + " (" + c.status + ", " + (c.registered_count || 0) + " of " + c.capacity_target + " to " + c.capacity_max + ")");
+    });
+    if (pre) { rs.value = pre.request_id || ""; cs.value = pre.class_id || ""; if (!cs.value && Q.by[pre.request_id]) cs.value = Q.by[pre.request_id].scheduled_class_id || ""; syncSeats(); }
+  }
+  function syncSeats() { var it = Q.by[$("aReq").value]; if (it) $("aSeats").value = String(it.attendee_count); }
+  function openAssignForm(pre) {
+    $("aAddForm").reset(); aClearErrs(); $("aNotice").textContent = "";
+    fillAssignForm(pre || null);
+    $("aAddForm").hidden = false; $("aAddBtn").hidden = true; $("aReq").focus();
+  }
+  function closeAssignForm() { $("aAddForm").hidden = true; $("aAddBtn").hidden = false; }
+  var AFIELD = { request_id: "eAReq", scheduled_class_id: "eACls", attendee_count: "eASeats", status: "eAStatus", decision_note: "eANote" };
+
+  // ---- class roster (read only)
+  function openRoster(cls) {
+    var dlg = $("rosterDlg"), body = $("rosterBody");
+    $("rosterTitle").textContent = "Roster: " + (cls.title || "class");
+    $("rosterMsg").textContent = ""; body.textContent = "Loading…";
+    if (!dlg.open) dlg.showModal();
+    Promise.all([admin("list", { filters: { scheduled_class_id: cls.id }, limit: 200 }, COLL_A), Q.loaded ? Promise.resolve() : loadQueue()]).then(function (both) {
+      var res = both[0]; body.textContent = "";
+      if (res.status !== 200 || !res.body.ok) { $("rosterMsg").textContent = "Could not load the roster. " + adminProblem(res.status); return; }
+      var recs = res.body.data.records || [], gone = supersededIds(recs);
+      var cur = recs.filter(function (r) { return !gone[r.id]; });
+      function group(title, list) {
+        if (!list.length) return;
+        body.appendChild(mk("div", "rhead", title + " (" + list.reduce(function (n, r) { return n + r.attendee_count; }, 0) + ")"));
+        list.forEach(function (r) {
+          var row = mk("div", "rrow");
+          row.appendChild(mk("span", "", requestLabel(r.request_id)));
+          row.appendChild(mk("span", "", plural(r.attendee_count, "seat", "seats") + (r.status === "overflow" ? " · overflow" : "")));
+          body.appendChild(row);
+        });
+      }
+      var reg = cur.filter(function (r) { return r.status === "accepted" || r.status === "overflow"; });
+      var wait = cur.filter(function (r) { return r.status === "waitlisted"; });
+      var out = cur.filter(function (r) { return r.status === "declined" || r.status === "cancelled"; });
+      group("Registered", reg); group("On the waiting list", wait); group("Declined or cancelled", out);
+      if (!cur.length) body.appendChild(mk("div", "empty", "Nobody is assigned to this class yet."));
+      var seats = reg.reduce(function (n, r) { return n + r.attendee_count; }, 0);
+      body.appendChild(mk("div", "rsum", seats + " seats taken. Target " + cls.capacity_target + ", up to " + cls.capacity_max + "."));
+      var all = mk("button", "quiet", "Open in Assignments"); all.type = "button";
+      all.addEventListener("click", function () { dlg.close(); goTo("assignments"); });
+      body.appendChild(all);
+    });
+  }
+
+  function resetAssign() {
+    Q = { loaded: false, items: [], by: {}, counts: null, error: "" }; qSeq++; aSeq++;
+    aAll = []; aClasses = []; aClassById = {}; aLoaded = false; aPrefill = null; aNewId = "";
+    $("aList").textContent = ""; $("aCount").textContent = ""; $("aChecked").textContent = ""; $("aMsg").textContent = ""; $("aNotice").textContent = "";
+    $("aEmpty").hidden = true; $("aNoMatch").hidden = true; $("aRetry").hidden = true; closeAssignForm();
+    try { $("rosterDlg").close(); } catch (e) {}
+    $("attnBody").textContent = "Checking the queue…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";
+  }
+
+  $("aRefresh").addEventListener("click", function () { $("aNotice").textContent = ""; loadAssignments(); loadQueue(); });
+  $("aRetry").addEventListener("click", function () { loadAssignments(); });
+  $("aAddBtn").addEventListener("click", function () { openAssignForm(null); });
+  $("aCancel").addEventListener("click", closeAssignForm);
+  $("aReq").addEventListener("change", function () { var it = Q.by[$("aReq").value]; if (it) { if (it.scheduled_class_id) $("aCls").value = it.scheduled_class_id; syncSeats(); } });
+  Array.prototype.forEach.call(document.querySelectorAll("#aFilters input[type=checkbox]"), function (c) { c.addEventListener("change", function () { aSaveFilters(); renderAssignments(); }); });
+  $("aShowAll").addEventListener("click", aShowEverything);
+  $("rosterClose").addEventListener("click", function () { $("rosterDlg").close(); });
+  $("aAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); aClearErrs();
+    var n = Number($("aSeats").value), data = { request_id: $("aReq").value, scheduled_class_id: $("aCls").value };
+    var bad = false;
+    if (!data.request_id) { $("eAReq").textContent = AISSUE["request_id:required"]; bad = true; }
+    if (!data.scheduled_class_id) { $("eACls").textContent = AISSUE["scheduled_class_id:required"]; bad = true; }
+    if ($("aSeats").value.trim()) { if (Math.floor(n) !== n) { $("eASeats").textContent = AISSUE["attendee_count:invalid_type"]; bad = true; } else data.attendee_count = n; }
+    if ($("aStatus").value) data.status = $("aStatus").value;
+    if ($("aNote").value.trim()) data.decision_note = $("aNote").value.trim();
+    if (bad) return;
+    $("aSave").disabled = true;
+    admin("create", { data: data }, COLL_A).then(function (res) {
+      $("aSave").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        aNewId = res.body.data.id; closeAssignForm(); cLoaded = false;
+        $("aNotice").textContent = "Saved: " + (STATUS_WORD[res.body.data.status] || res.body.data.status) + ", " + plural(res.body.data.attendee_count, "seat", "seats") + ". The class counts are updated.";
+        loadAssignments(); loadQueue(); return;
+      }
+      var ps = (res.body && res.body.error && res.body.error.problems) || [], other = [];
+      ps.forEach(function (p) { var t = AFIELD[p.field]; var w = AISSUE[p.field + ":" + p.issue] || "That value is not valid."; if (t) $(t).textContent = w; else other.push(w); });
+      if (!ps.length) other.push(adminProblem(res.status));
+      if (other.length) $("aFMsg").textContent = other.join(" ");
+    });
+  });
+
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);

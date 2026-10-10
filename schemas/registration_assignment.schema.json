@@ -8,7 +8,8 @@
   "propertyNames": {
     "pattern": "^[a-z][a-z0-9_]*$"
   },
-  "x_retention": "undecided",
+  "x_retention": "Keep assignments until the owner deletes them. (A written policy only; nothing enforces it yet.)",
+  "x_history": "linked_records",
   "required": [
     "request_id",
     "scheduled_class_id",

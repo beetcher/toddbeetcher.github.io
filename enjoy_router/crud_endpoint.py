@@ -15,6 +15,8 @@ ops and their args:
     update             id, changes, expected_updated_at (optional)
     soft_delete        id
     set_review_summary id, review_count, average_rating
+    suggest            request_id             (registration_assignments only: what one touch would do)
+    queue              limit (optional)       (registration_assignments only: the state of each recent request)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
 never read or write a real collection. Its actor is always system:crud_test. The admin door works on the real
@@ -31,7 +33,8 @@ import logging
 from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import classes_service, venues_service
+from crud import assignments_service, classes_service, venues_service
+from crud.schema_kit import failure
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -41,7 +44,7 @@ ADMIN_ACTOR = "user:admin"
 MAX_BODY_BYTES = 100_000
 
 # collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
-HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service}
+HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "registration_assignments": assignments_service}
 
 # op -> (required args, optional args)
 OPS = {
@@ -51,13 +54,23 @@ OPS = {
     "update": ({"id", "changes"}, {"expected_updated_at"}),
     "soft_delete": ({"id"}, set()),
     "set_review_summary": ({"id", "review_count", "average_rating"}, set()),
+    "suggest": ({"request_id"}, set()),   # only collections whose module has it (assignments)
+    "queue": (set(), {"limit"}),          # same
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
-ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete"})
+ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
 def _run(module, store, op: str, a: dict, now: datetime, actor: str):
+    if op in ("suggest", "queue", "set_review_summary"):
+        if not hasattr(module, op):
+            return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
+        if op == "suggest":
+            return module.suggest(store, a["request_id"])
+        if op == "queue":
+            return module.queue(store, **({"limit": a["limit"]} if "limit" in a else {}))
+        return module.set_review_summary(store, a["id"], a["review_count"], a["average_rating"], now=now)
     if op == "create":
         return module.create(store, a["data"], actor, a.get("source", "dashboard"), now=now)
     if op == "get":

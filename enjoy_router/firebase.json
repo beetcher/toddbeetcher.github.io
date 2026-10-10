@@ -16,6 +16,7 @@
         "run_crud_tests.py",
         "run_crud_endpoint_tests.py",
         "run_class_tests.py",
+        "run_assignment_tests.py",
         "admin_curl_check.sh",
         "crud_curl_demo.sh",
         "firebase-debug.log",

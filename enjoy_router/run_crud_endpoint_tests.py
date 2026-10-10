@@ -181,6 +181,58 @@ check("admin classes: bad data names fields only", all(set(p) == {"field", "issu
 r = call({"collection": "scheduled_classes", "op": "create", "args": {"data": CL}})
 check("test door: classes go to test_scheduled_classes only", r.status == 200 and "test_scheduled_classes" in store.data and list(astore.data).count("test_scheduled_classes") == 0)
 
+# ---------------------------------------------------------------------------
+# Registration assignments through the admin door: auto decision, suggest, queue, guards
+# ---------------------------------------------------------------------------
+import uuid  # noqa: E402
+
+
+def xop(o, **args):
+    return acall({"collection": "registration_assignments", "op": o, "args": args})
+
+
+r = aop("create", data={"name": "Hall 2", "slug": "hall2", "status": "active", "is_public_venue": True, "street_address": "1 St", "city": "Boulder",
+                        "state_region": "CO", "postal_code": "80302", "country": "US", "time_zone": "America/Denver", "contact_name": "Pat",
+                        "contact_email": "p@example.com", "is_accessible": True, "allows_minors": True, "allows_animals": False,
+                        "rooms": [{"label": "Main room", "max_occupancy": 20}]})
+h2 = r.body["data"]["id"]
+r = cop("create", data={**CL, "slug": "enrolling_one", "title": "Enrolling one", "status": "enrolling", "starts_at": "2026-11-21T01:00:00Z",
+                        "time_zone": "America/Denver", "duration_minutes": 120, "venue_id": h2, "is_venue_confirmed": True,
+                        "price_cents": 5000, "price_basis": "per_person", "capacity_minimum": 2, "capacity_target": 3, "capacity_max": 4})
+check("admin assignments: an enrolling class to assign into", r.status == 200, str(r.body))
+ecid = r.body["data"]["id"]
+rq1, rq2, rq3 = (str(uuid.uuid4()) for _ in range(3))
+for i, (rid, seats) in enumerate(((rq1, 2), (rq2, 2), (rq3, 1))):
+    astore.data.setdefault("registration_requests", {})[rid] = {
+        "id": rid, "registration_type": "class", "attendee_count": seats, "scheduled_class_id": ecid, "confirmation_number": f"ICDT-AAAA{i}{i}",
+        "first_name": "Ann", "last_name": f"T{i}", "created_at": f"2026-10-09T12:00:0{i}Z"}
+r = xop("suggest", request_id=rq1)
+check("admin assignments: suggest says ready/accepted, writes nothing", r.status == 200 and r.body["data"]["state"] == "ready" and r.body["data"]["status"] == "accepted" and not astore.data.get("registration_assignments"), str(r.body))
+r = xop("queue")
+check("admin assignments: queue 200 with counts", r.status == 200 and r.body["data"]["counts"]["ready"] == 3 and len(r.body["data"]["items"]) == 3, str(r.body))
+check("admin assignments: queue with a limit", len(xop("queue", limit=1).body["data"]["items"]) == 1)
+r = xop("create", data={"request_id": rq1, "scheduled_class_id": ecid})
+check("admin assignments: one-touch create (no status) -> server decides accepted", r.status == 200 and r.body["data"]["status"] == "accepted" and r.body["data"]["decided_by"] == "user:admin", str(r.body))
+check("admin assignments: class counts updated", astore.data["scheduled_classes"][ecid]["registered_count"] == 2)
+r = xop("create", data={"request_id": rq2, "scheduled_class_id": ecid})
+check("admin assignments: second party goes to overflow", r.status == 200 and r.body["data"]["status"] == "overflow" and astore.data["scheduled_classes"][ecid]["registered_count"] == 4)
+r = xop("create", data={"request_id": rq3, "scheduled_class_id": ecid})
+check("admin assignments: full class -> 409 conflict status:class_full, nothing written", r.status == 409 and r.body["error"]["problems"] == [{"field": "status", "issue": "class_full"}] and len(astore.data["registration_assignments"]) == 2, str(r.body))
+r = xop("queue")
+check("admin assignments: queue shows the refused one as needs_attention", r.body["data"]["counts"] == {"assigned": 2, "ready": 0, "needs_attention": 1, "no_class": 0, "closed": 0}, str(r.body["data"]["counts"]))
+r = cop("soft_delete", id=ecid)
+check("admin classes: delete blocked while it holds registrations: 409 id:in_use", r.status == 409 and r.body["error"]["problems"] == [{"field": "id", "issue": "in_use"}])
+aid1 = next(a for a in astore.data["registration_assignments"].values() if a["request_id"] == rq1)["id"]
+check("admin assignments: delete refused (id:not_allowed)", xop("soft_delete", id=aid1).status == 400 and xop("soft_delete", id=aid1).body["error"]["problems"] == [{"field": "id", "issue": "not_allowed"}])
+check("admin assignments: update note 200, status change 400 immutable", xop("update", id=aid1, changes={"decision_note": "hi"}).status == 200 and xop("update", id=aid1, changes={"status": "cancelled"}).body["error"]["problems"] == [{"field": "status", "issue": "immutable"}])
+check("admin assignments: set_review_summary not enabled", xop("set_review_summary", id=aid1, review_count=1, average_rating=5).status == 400)
+check("admin assignments: list by request", xop("list", filters={"request_id": rq1}).body["data"]["count"] == 1)
+check("admin assignments: wrong key 401", acall({"collection": "registration_assignments", "op": "queue", "args": {}}, auth="Bearer nope").status == 401)
+check("other collections refuse suggest/queue (400 op:not_supported)", cop("queue").status == 400 and cop("queue").body["error"]["problems"] == [{"field": "op", "issue": "not_supported"}] and aop("suggest", request_id=rq1).status == 400)
+check("suggest needs request_id; queue takes only limit", xop("suggest").status == 400 and acall({"collection": "registration_assignments", "op": "queue", "args": {"x": 1}}).status == 400)
+r = call({"collection": "registration_assignments", "op": "queue", "args": {}})
+check("test door: queue works on test_ collections only", r.status == 200 and r.body["data"]["items"] == [] and not astore.data.get("test_registration_assignments"))
+
 
 print()
 if fails:

@@ -19,5 +19,12 @@ call "list scheduled_classes, status=scheduled (expect 200; needs the classes in
 call "list scheduled_classes by venue_id (expect 200; needs the index)" '{"collection":"scheduled_classes","op":"list","args":{"filters":{"venue_id":"11111111-1111-4111-8111-111111111111"}}}'
 call "update a class with an unknown id (expect 404, writes nothing)" '{"collection":"scheduled_classes","op":"update","args":{"id":"11111111-1111-4111-8111-111111111111","changes":{"title":"X"}}}'
 call "soft_delete a class with an unknown id (expect 404, writes nothing)" '{"collection":"scheduled_classes","op":"soft_delete","args":{"id":"11111111-1111-4111-8111-111111111111"}}'
+call "assignments: queue (expect 200 with items and counts; reads requests, assignments and classes)" '{"collection":"registration_assignments","op":"queue","args":{}}'
+call "assignments: list newest first (expect 200)" '{"collection":"registration_assignments","op":"list","args":{}}'
+call "assignments: list by status (expect 200; needs the assignments index, a few minutes after deploy)" '{"collection":"registration_assignments","op":"list","args":{"filters":{"status":"waitlisted"}}}'
+call "assignments: suggest for an unknown request (expect 404, writes nothing)" '{"collection":"registration_assignments","op":"suggest","args":{"request_id":"11111111-1111-4111-8111-111111111111"}}'
+call "assignments: create for an unknown request (expect 400 request_id:not_found, writes nothing)" '{"collection":"registration_assignments","op":"create","args":{"data":{"request_id":"11111111-1111-4111-8111-111111111111","scheduled_class_id":"22222222-2222-4222-8222-222222222222"}}}'
+call "assignments: delete is refused (expect 400 id:not_allowed, writes nothing)" '{"collection":"registration_assignments","op":"soft_delete","args":{"id":"11111111-1111-4111-8111-111111111111"}}'
+call "venues: queue is not for venues (expect 400 op:not_supported)" '{"collection":"venues","op":"queue","args":{}}'
 call "set_review_summary is server-only (expect 400 not enabled)" '{"collection":"venues","op":"set_review_summary","args":{"id":"11111111-1111-4111-8111-111111111111","review_count":1,"average_rating":5}}'
 echo; echo "Done. Nothing was written."
