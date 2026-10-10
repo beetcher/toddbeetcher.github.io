@@ -166,25 +166,111 @@
   details.more > .mbody { padding-top: 10px; }
   .headrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
   [hidden] { display: none !important; }
+
+  /* ---- Home and manual (bridge theme) ---- */
+  header .brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; min-height: 44px; border-radius: 10px; }
+  header .brand:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  header .brand img { width: 40px; height: 40px; border-radius: 9px; display: block; }
+  header .brand .bname { display: block; font-size: 20px; font-weight: 700; letter-spacing: .02em; line-height: 1.1; }
+  header .brand .bapp { display: block; color: var(--orange); font-size: 12px; font-weight: 700; letter-spacing: .14em; margin-top: 2px; }
+  #homeView { max-width: 760px; margin: 0 auto; }
+  .hero { margin: 0 0 14px; border-radius: 16px; overflow: hidden; background: #050814; border: 1px solid #1d2a55; box-shadow: 0 6px 22px rgba(5, 8, 20, .35); }
+  .hero img { display: block; width: 100%; height: auto; }
+  .hero figcaption { background: linear-gradient(90deg, #050814, #101a3d); color: #cfe0ff; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; padding: 8px 14px; font-weight: 700; }
+  .welcome { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 8px; }
+  .welcome img { width: 84px; height: 84px; border-radius: 16px; flex: none; }
+  .welcome h2 { margin: 0 0 4px; font-size: 24px; line-height: 1.15; }
+  .welcome p { margin: 0; color: var(--muted); }
+  .howto { background: #0b1226; color: #dbe7ff; border: 1px solid #1d2a55; border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
+  .howto h3, .stations h3, .dash h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); }
+  .howto ol { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+  .howto b { color: var(--lime); }
+  .howto li { background: none; border: 0; border-radius: 0; overflow: visible; }
+  .mhead .mbtns { gap: 6px; }
+  .mhead .mbtns button, .mhead .mclose { min-height: 40px; padding: 0 12px; }
+  .stations, .dash { margin: 16px 0; }
+  .stations h3, .dash h3 { color: var(--ink); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+  .tile { all: unset; box-sizing: border-box; cursor: pointer; display: block; background: #0b1226; color: #fff; border: 1px solid #27397a; border-radius: 14px; padding: 12px 14px; min-height: 92px; }
+  .tile:hover { border-color: var(--orange); }
+  .tile:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .tile .tno { display: block; color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .tile .tname { display: block; font-size: 18px; font-weight: 800; margin: 2px 0; }
+  .tile .tdesc { display: block; font-size: 14px; color: #b9c8ee; }
+  .tile.soon { cursor: default; background: transparent; border: 2px dashed #b8ad98; color: var(--muted); }
+  .tile.soon:hover { border-color: #b8ad98; }
+  .tile.soon .tno { color: var(--muted); }
+  .tile.soon .tdesc { color: var(--muted); }
+  .mbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mbtns button { background: #0b1226; border-color: #27397a; color: #dbe7ff; min-height: 44px; }
+  .mbtns button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: #1a0d00; }
+  .mhint { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  body.mopen { overflow: hidden; }
+  .manual { position: fixed; left: 0; right: 0; bottom: 0; top: var(--hh, 68px); z-index: 50; display: flex; flex-direction: column; background: #070b1a; color: #dbe7ff; border-top: 2px solid var(--orange); }
+  .manual[hidden] { display: none; }
+  .mhead { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 10px 12px; background: #0b1226; border-bottom: 1px solid #1d2a55; flex-wrap: wrap; }
+  .mhead .mclose { background: transparent; color: #fff; border-color: #6a6a6a; min-height: 44px; }
+  .mscroll { flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; }
+  .mpage { max-width: 720px; margin: 0 auto 40px; }
+  .mpage[hidden] { display: none; }
+  .mpage h2 { margin: 0 0 4px; font-size: 24px; color: #fff; }
+  .mpage .kicker { color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .mpage h3 { margin: 20px 0 6px; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--lime); }
+  .mpage p { margin: 6px 0; }
+  .mpage ul { display: block; list-style: disc; padding-left: 22px; margin: 6px 0; }
+  .mpage li { background: none; border: 0; border-radius: 0; overflow: visible; padding: 3px 0; }
+  .mpage b { color: #fff; }
+  .mpage .rule, .mpage .tip { border-left: 4px solid var(--orange); background: #101a3d; padding: 8px 12px; border-radius: 0 10px 10px 0; margin: 8px 0; }
+  .mpage .tip { border-left-color: var(--lime); }
+  .mpage code { background: #101a3d; border-radius: 6px; padding: 1px 6px; color: #ffd9bd; }
+  .manualBtn { white-space: nowrap; }
 </style>
 </head>
 <body>
-<header>
+<header id="topbar">
   <div>
-    <h1>Console</h1>
-    <div class="app" id="appName">LAUNCH</div>
+    <h1><a class="brand" id="brand" href="#/home" aria-label="LAUNCH Console: go to Home"><img src="assets/launch-tile-mobile.webp" width="40" height="40" alt=""><span><span class="bname">Console</span><span class="bapp" id="appName">LAUNCH</span></span></a></h1>
   </div>
   <div class="hright">
-    <select id="collPick" aria-label="Collection" hidden>
-      <option value="requests">Registration requests</option>
-      <option value="venues">Venues</option>
-      <option value="classes">Classes</option>
-    </select>
+    <select id="collPick" aria-label="Go to" hidden></select>
     <button class="quiet" id="lockBtn" hidden>Lock</button>
   </div>
 </header>
 
 <main>
+  <section id="homeView" hidden>
+    <figure class="hero">
+      <img src="assets/bridge.webp" width="1200" height="800" alt="Two crew members in starship uniforms grin over a glowing warp engine, then high-five inside the starship BFN-1 as it flies into a galaxy.">
+      <figcaption>The bridge</figcaption>
+    </figure>
+    <div class="welcome">
+      <img src="assets/launch-tile.webp" width="84" height="84" alt="LAUNCH">
+      <div>
+        <h2>Welcome aboard the bridge</h2>
+        <p>This is the LAUNCH Console: the control room for the I Can Do That workshops. It is a fun first surface, built to learn on. The production console will look different; the lists, forms and ship's rules carry over.</p>
+      </div>
+    </div>
+    <div class="howto">
+      <h3>Flight basics</h3>
+      <ol>
+        <li><b>Pick a station.</b> The menu at the top of every screen jumps to any station. The tiles below do the same.</li>
+        <li><b>Each station is a list.</b> Tap a card to open it. Use Add and Edit to change things.</li>
+        <li><b>The ship protects its records.</b> If something is refused, the message names the field and says why. Nothing is half-saved.</li>
+        <li><b>Back to the bridge any time:</b> tap the LAUNCH tile in the top left.</li>
+        <li><b>Lost?</b> Open the ship's manual below, or tap Manual on any station.</li>
+      </ol>
+    </div>
+    <div class="stations">
+      <h3>Stations</h3>
+      <div class="tiles" id="stationTiles"></div>
+    </div>
+    <div class="dash">
+      <h3>Ship's manual</h3>
+      <p class="mhint">Tap a button to open its manual. Tap it again to close. Only one is open at a time.</p>
+      <div class="mbtns" id="homeManualBtns"></div>
+    </div>
+  </section>
+
   <section class="lock" id="lockView">
     <p>Enter your key to open the Console.</p>
     <form class="row" id="lockForm" autocomplete="off">
@@ -201,7 +287,7 @@
         <div class="count" id="countText"></div>
         <div class="meta" id="checkedText"></div>
       </div>
-      <button id="refreshBtn" class="quiet">Refresh</button>
+      <div class="actions"><button type="button" class="quiet manualBtn" data-m="requests">Manual</button><button id="refreshBtn" class="quiet">Refresh</button></div>
     </div>
     <div class="msg" id="listMsg" role="alert"></div>
     <ul id="list"></ul>
@@ -221,6 +307,7 @@
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
+        <button type="button" class="quiet manualBtn" data-m="venues">Manual</button>
         <button id="vRefresh" class="quiet" type="button">Refresh</button>
         <button id="addBtn" type="button">Add venue</button>
       </div>
@@ -277,6 +364,7 @@
         <div class="meta" id="cChecked"></div>
       </div>
       <div class="actions">
+        <button type="button" class="quiet manualBtn" data-m="classes">Manual</button>
         <button id="cRefresh" class="quiet" type="button">Refresh</button>
         <button id="cAddBtn" type="button">Add class</button>
       </div>
@@ -362,6 +450,14 @@
     </section>
   </section>
 </main>
+<div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
+  <div class="mhead">
+    <div class="mbtns" id="overlayBtns"></div>
+    <button type="button" class="mclose" id="manualClose">Close</button>
+  </div>
+  <div class="mscroll" id="manualScroll" tabindex="0"></div>
+</div>
+
 
 <script>
 (function () {
@@ -411,18 +507,144 @@
   var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
   function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d) + " Mountain"; }
 
+
+  // ---- Stations and manuals. To add a station: one SURFACES entry (name, blurb, manual), one view section, one line in route().
+  var SURFACES = [
+    { id: "requests", name: "Registration requests", short: "Requests", blurb: "Sign-ups arriving from the website, newest first.",
+      manual:
+        '<div class="kicker">Station 1</div><h2>Registration requests</h2>' +
+        '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Tap a card</b> to open it and see every answer the person gave.</li>' +
+        '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
+        '<li><b>Refresh</b> checks right now.</li>' +
+        '</ul>' +
+        '<div class="rule"><b>Ship\'s rule:</b> this station is read only. You look, you do not change. Moving a request into a class comes in a later build.</div>' +
+        '<h3>Try this</h3><ul><li>Register on the website in another window and watch the card appear here.</li></ul>' },
+    { id: "venues", name: "Venues", short: "Venues", blurb: "Places where classes happen: address, rooms, hours, rules.",
+      manual:
+        '<div class="kicker">Station 2</div><h2>Venues</h2>' +
+        '<h3>Mission</h3><p>A venue is a place where a class can happen: a library, a cafe, a community room or a private home. Its rooms and opening hours live inside it.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Status menu</b> filters the list to Active or Inactive.</li>' +
+        '<li><b>Add venue</b> needs only a name, a short name and the kind of place. It starts <b>inactive</b>.</li>' +
+        '<li><b>Tap a card</b> to read the details. <b>Edit</b> opens the form: Basics, Address and Contact first, everything else under More details.</li>' +
+        '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
+        '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
+        '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>To make a venue <b>active</b> it needs an address, a time zone, a contact, at least one room, and answers about accessibility, minors and animals. Inactive venues need far less.</li>' +
+        '<li>The short name cannot be changed once saved.</li>' +
+        '<li>A venue that has live classes <b>cannot be deleted</b>. Set it inactive instead.</li>' +
+        '<li>A room a live class uses cannot be removed, renamed, or made smaller than that class\'s biggest size.</li>' +
+        '<li>If someone else changed the venue while you were editing, you are asked to reload. Nothing is overwritten.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> a class that is scheduled or enrolling needs an <b>active</b> venue, so fill a venue in and activate it before scheduling.</div>' +
+        '<h3>Try this</h3><ul><li>Add a venue, edit it, add a room, then open Rooms: 1 and change the room size.</li></ul>' },
+    { id: "classes", name: "Classes", short: "Classes", blurb: "Scheduled sessions: when, where, how many seats.",
+      manual:
+        '<div class="kicker">Station 3</div><h2>Classes</h2>' +
+        '<h3>Mission</h3><p>A class is one scheduled session: a workshop, a group, or a one on one. It points at a venue and a room.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Filters</b> are tick boxes for status and kind. Everything is ticked at first, so you see every class. Untick to narrow, or tap Show all.</li>' +
+        '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
+        '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
+        '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
+        '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Fewest people, target and biggest size must go in order: fewest, then target, then biggest.</li>' +
+        '<li>The biggest size cannot be more than the chosen room holds.</li>' +
+        '<li>A <b>scheduled</b> or <b>enrolling</b> class needs a venue that exists and is <b>active</b>.</li>' +
+        '<li>A cancelled reason is only for cancelled classes.</li>' +
+        '<li>The short name cannot be changed once saved. The counts (registered, waiting, attended, reviews) belong to the ship and cannot be typed in.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> if a class seems missing, open Filters and tap Show all, then Refresh.</div>' +
+        '<h3>Try this</h3><ul><li>Add a one on one class, then edit it and give it a venue, a room and a start time.</li></ul>' }
+  ];
+  var COMING = [
+    { name: "Class sign-ups", blurb: "Put a registration request into a class. Next in the queue." },
+    { name: "More stations", blurb: "New collections dock here as they are built." }
+  ];
+
+  var mOpen = null, mScroll = {}, mOpener = null, mPages = {};
+  function surfaceById(id) { for (var i = 0; i < SURFACES.length; i++) if (SURFACES[i].id === id) return SURFACES[i]; return null; }
+  function buildHome() {
+    var pick = $("collPick"); pick.innerHTML = "";
+    var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
+    var tiles = $("stationTiles");
+    SURFACES.forEach(function (sf, i) {
+      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name; pick.appendChild(op);
+      var t = document.createElement("button"); t.type = "button"; t.className = "tile"; t.dataset.go = sf.id;
+      t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
+      t.querySelector(".tname").textContent = sf.name; t.querySelector(".tdesc").textContent = sf.blurb;
+      tiles.appendChild(t);
+    });
+    COMING.forEach(function (c) {
+      var d = document.createElement("div"); d.className = "tile soon";
+      d.innerHTML = '<span class="tno">Coming soon</span><span class="tname"></span><span class="tdesc"></span>';
+      d.querySelector(".tname").textContent = c.name; d.querySelector(".tdesc").textContent = c.blurb;
+      tiles.appendChild(d);
+    });
+    ["homeManualBtns", "overlayBtns"].forEach(function (host) {
+      SURFACES.forEach(function (sf) {
+        var b = document.createElement("button"); b.type = "button"; b.dataset.m = sf.id; b.setAttribute("aria-pressed", "false"); b.textContent = sf.short || sf.name;
+        $(host).appendChild(b);
+      });
+    });
+    var sc = $("manualScroll");
+    SURFACES.forEach(function (sf) {
+      var pg = document.createElement("div"); pg.className = "mpage"; pg.hidden = true; pg.innerHTML = sf.manual; sc.appendChild(pg); mPages[sf.id] = pg;
+    });
+  }
+  function markManual() {
+    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
+  }
+  function closeManual() {
+    if (!mOpen) return;
+    mScroll[mOpen] = $("manualScroll").scrollTop;
+    mOpen = null; $("manual").hidden = true; document.body.classList.remove("mopen"); markManual();
+    if (mOpener && document.body.contains(mOpener) && mOpener.offsetParent) { try { mOpener.focus(); } catch (e) {} }
+    mOpener = null;
+  }
+  function openManual(id, opener) {
+    if (!surfaceById(id)) return;
+    if (mOpen === id) { closeManual(); return; }
+    var sc = $("manualScroll");
+    if (mOpen) mScroll[mOpen] = sc.scrollTop; else mOpener = opener || null;
+    $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px");
+    mOpen = id;
+    Object.keys(mPages).forEach(function (k) { mPages[k].hidden = k !== id; });
+    $("manual").hidden = false; document.body.classList.add("mopen");
+    sc.scrollTop = mScroll[id] || 0;
+    markManual();
+  }
+  function leaveOk() {
+    if (editRec && editDirty() && !window.confirm("Discard your changes?")) return false;
+    if (cRec && classDirty() && !window.confirm("Discard your changes?")) return false;
+    return true;
+  }
+  function goTo(id) {
+    if (!leaveOk()) { $("collPick").value = currentRoute(); return; }
+    closeManual();
+    if (location.hash === "#/" + id) route(); else location.hash = "#/" + id;
+  }
+
   function show(locked) {
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : "requests"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
+    closeManual();
+    $("homeView").hidden = r !== "home";
     if (r !== "venues") closeEdit();
     if (r !== "classes") closeClassEdit();
     $("collPick").value = r;
@@ -2078,11 +2300,18 @@
   $("refreshBtn").addEventListener("click", function () { check(true); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
-  $("collPick").addEventListener("change", function () {
-    if (editRec && editDirty() && !window.confirm("Discard your changes?")) { $("collPick").value = "venues"; return; }
-    if (cRec && classDirty() && !window.confirm("Discard your changes?")) { $("collPick").value = "classes"; return; }
-    location.hash = "#/" + $("collPick").value;
+  $("collPick").addEventListener("change", function () { goTo($("collPick").value); });
+  $("brand").addEventListener("click", function (e) { e.preventDefault(); goTo("home"); });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-go],[data-m]") : null;
+    if (!t) return;
+    if (t.dataset.go) { goTo(t.dataset.go); return; }
+    if (t.dataset.m) openManual(t.dataset.m, t);
   });
+  $("manualClose").addEventListener("click", closeManual);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mOpen && !document.querySelector("dialog[open]")) closeManual(); });
+  window.addEventListener("resize", function () { if (mOpen) $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px"); });
+  buildHome();
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
