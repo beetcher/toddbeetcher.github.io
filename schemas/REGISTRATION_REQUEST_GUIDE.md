@@ -187,3 +187,7 @@ A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUID
 ## 14. Changes in version 2 (2026-10-08)
 
 `is_paid`, `payment_source` and `payment_id` were removed from the request, because payments are now separate transaction records. Removing fields is a breaking change, so `schema_version` moved from 1 to 2. No stored records existed yet.
+
+## Individual link (added October 10, 2026)
+
+`individual_id` (server-set, readOnly): the person record this request's requester was matched to. It is absent until identity review decides, and it is never set by matching on email or phone alone (couples share both). A sender may not send it; the endpoint rejects it like any readOnly field. The name, email and phone on the request stay exactly as submitted. Setting `individual_id` is the identity matcher's job (a later step); until then no request carries it.

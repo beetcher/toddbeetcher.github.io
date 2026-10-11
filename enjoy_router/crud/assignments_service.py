@@ -15,7 +15,10 @@ decision, and the "Needs attention" queue. Same function names as a handler file
               request may only go into the class made from it (scheduled_class_id:wrong_class); a second decision for the
               same request and class is a NEW record that replaces the first (previous_id), and an identical one
               is refused (status:unchanged).
-    update    note and transaction ids only (the handler refuses changes to the decision: `immutable`).
+    update    note, transaction ids and participants only (the handler refuses changes to the decision: `immutable`).
+    participant_individual_ids (create and update): each id must be an existing individual that is not deleted or erased
+              (participant_individual_ids:not_found; a merged person is followed to the person they were merged into),
+              and there may not be more of them than the seats (participant_individual_ids:out_of_range).
     soft_delete  not allowed (cancel the assignment instead): id:not_allowed.
     suggest   what one touch would do for one request, without writing anything.
     queue     the state of each recent request (assigned, ready, needs_attention, no_class, closed).
@@ -29,6 +32,9 @@ operator today; a counter transaction is the fix when there are more.
 """
 from __future__ import annotations
 
+import builtins
+
+from . import individuals_crud as I
 from . import registration_assignments_crud as A
 from . import scheduled_classes_crud as C
 from .schema_kit import UUID_PATTERN, failure, load_collection, success
@@ -45,6 +51,19 @@ def _uuid(v) -> bool:
 
 def _live(doc):
     return doc if doc is not None and "deleted_at" not in doc else None
+
+
+def participant_problems(store, ids, seats) -> list:
+    """Problems with a list of participant individual ids; [] when it is not a list of UUIDs (the handler reports that)."""
+    if not isinstance(ids, builtins.list) or not all(_uuid(i) for i in ids):
+        return []
+    if isinstance(seats, int) and not isinstance(seats, bool) and len(ids) > seats:
+        return [{"field": "participant_individual_ids", "issue": "out_of_range"}]
+    for i in ids:
+        got = I.get(store, i)
+        if not got.ok or got.data.get("status") == "erased":
+            return [{"field": "participant_individual_ids", "issue": "not_found"}]
+    return []
 
 
 def get_request(store, request_id):
@@ -125,6 +144,9 @@ def create(store, data, actor, source="dashboard", tx=None, now=None):
         return A.create(store, data, actor, source, tx=tx, now=now, server_fields={"program_slug": cls["program_slug"]})
     if seats > request["attendee_count"]:
         return _refuse("validation_failed", "attendee_count", "out_of_range")
+    bad_people = participant_problems(store, data.get("participant_individual_ids"), seats)
+    if bad_people:
+        return failure("validation_failed", bad_people)
 
     current = A.current_only(A.for_class(store, cid))
     prior = next((d for d in current if d["request_id"] == rid), None)
@@ -178,6 +200,12 @@ def list(store, filters=None, **kw):  # noqa: A001
 
 
 def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=None):
+    if isinstance(changes, dict) and "participant_individual_ids" in changes:
+        cur = A.get(store, id)
+        if cur.ok:
+            bad_people = participant_problems(store, changes["participant_individual_ids"], cur.data.get("attendee_count"))
+            if bad_people:
+                return failure("validation_failed", bad_people)
     return A.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now)
 
 

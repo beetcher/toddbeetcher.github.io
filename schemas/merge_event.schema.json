@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/merge_event.schema.json",
+  "title": "merge_event",
+  "description": "The record of one decision that two individual records are the same person: who survived, who was folded in, why, who decided, a snapshot of both records, what changed on the survivor and every other record that was re-pointed. It is what makes a merge reversible. A merge_event is written only by the merge handler, never edited, never deleted; an unmerge marks it unmerged. A sender (the operator) supplies only survivor_id, duplicate_id, reason and optional field_choices; everything else is readOnly and set by the server. Endpoint rules the schema cannot express: survivor and duplicate exist, differ, and are each active or inactive; at most one of them holds restricted details; the merge writes the survivor, the duplicate, every re-pointed record and this event in one transaction; an unmerge refuses when the duplicate is no longer merged into the survivor.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept as long as either person exists. Snapshots are scrubbed to empty objects when either person is erased; the rest of the event (ids, reason removed) stays as proof a merge happened. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
+  "required": [
+    "survivor_id",
+    "duplicate_id",
+    "reason"
+  ],
+  "properties": {
+    "survivor_id": {
+      "description": "The individual that stays. Required. Must be active or inactive, not merged, erased or deleted.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "duplicate_id": {
+      "description": "The individual found to be the same person, folded into the survivor. Required. Different from survivor_id, and not merged, erased or deleted.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "reason": {
+      "description": "Why the operator decided these are the same person: the evidence in words. Required, up to 500 characters. Personal data.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "x_pii": true
+    },
+    "field_choices": {
+      "description": "Optional per-field decisions where the two records disagree: the field name mapped to survivor (keep the survivor's value) or duplicate (take the duplicate's). Without a choice the server applies the survivorship rules in the guide. Up to 60 fields.",
+      "type": "object",
+      "maxProperties": 60,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "enum": [
+          "survivor",
+          "duplicate"
+        ]
+      }
+    },
+    "status": {
+      "description": "merged (the merge stands) or unmerged (it was reversed). Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "merged",
+        "unmerged"
+      ]
+    },
+    "survivor_before": {
+      "description": "The survivor's whole record as it was just before the merge. Personal data; scrubbed to an empty object when either person is erased (then the merge can no longer be reversed). Set by the server.",
+      "readOnly": true,
+      "type": "object",
+      "x_pii": true
+    },
+    "duplicate_before": {
+      "description": "The duplicate's whole record as it was just before the merge. Personal data; scrubbed like survivor_before. Set by the server.",
+      "readOnly": true,
+      "type": "object",
+      "x_pii": true
+    },
+    "changed_fields": {
+      "description": "What the merge changed on the survivor: one entry per field, with its value before and after. An entry without `before` means the field was absent before; without `after`, it was removed. Set by the server.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field"
+        ],
+        "x_pii": true,
+        "properties": {
+          "field": {
+            "description": "The survivor field that changed.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "before": {
+            "description": "The value before the merge. Absent when the field did not exist."
+          },
+          "after": {
+            "description": "The value after the merge. Absent when the field was removed."
+          }
+        }
+      }
+    },
+    "moved_links": {
+      "description": "Every other record that pointed at the duplicate and now points at the survivor: its collection, id and field (a dotted path for a nested field), with the value before and after. Unmerge puts back only those whose current value is still the `after` value. Up to 400. Set by the server.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 400,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "collection",
+          "id",
+          "field"
+        ],
+        "properties": {
+          "collection": {
+            "description": "The collection of the record that was re-pointed.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "id": {
+            "description": "The id of the record that was re-pointed.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "field": {
+            "description": "The field that holds the individual id, such as individual_id or payer.party_id.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "before": {
+            "description": "The value before: the duplicate's id, or the list that contained it."
+          },
+          "after": {
+            "description": "The value after: the survivor's id, or the list with it in place."
+          }
+        }
+      }
+    },
+    "unmerged_at": {
+      "description": "When the merge was reversed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "unmerged_by": {
+      "description": "Who reversed it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "unmerge_skipped": {
+      "description": "What an unmerge could not put back because it had changed since: field and link entries by name and id, no values. Set by the server.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      }
+    },
+    "has_erased_snapshots": {
+      "description": "True once a person in this merge was erased and the snapshots were scrubbed. Such a merge cannot be reversed. Set by the server.",
+      "readOnly": true,
+      "type": "boolean"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the merge happened (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who decided the merge, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed the record. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard. Merges are never made by a public page. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard"
+      ]
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "status",
+    "survivor_before",
+    "duplicate_before",
+    "changed_fields",
+    "moved_links"
+  ]
+}

@@ -54,3 +54,7 @@ No names, emails, phone numbers or other personal details. They stay on the requ
 - A person record: later the assignment may point at individual people, not only at a request **(open)**.
 - Retention period (`x_retention` is undecided; required before launch).
 - Series: a party that wants several sessions is not modeled; each scheduled class is one date and time **(open)**.
+
+## Participants (added October 10, 2026)
+
+`participant_individual_ids`: the individuals who attend under this assignment (optional list of UUIDs, no repeats, at most 100). The assignment service checks that each one exists, is not deleted and is not erased, and that there are no more of them than `attendee_count` (`participant_individual_ids:not_found`, `participant_individual_ids:out_of_range`). A merged person is followed to the person they were merged into. It can be set when the assignment is created and changed later with update, like the note and the transaction ids. Names and contacts stay on the individual; the assignment still carries no personal details.

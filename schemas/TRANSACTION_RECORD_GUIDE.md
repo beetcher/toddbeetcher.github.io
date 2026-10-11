@@ -70,3 +70,7 @@ The request carries no payment fields. `is_paid`, `payment_source` and `payment_
 - Whether an assignment is the only place payments attach, or a class can hold them too (a private session paid in advance) **(open)**. Today only the assignment holds ids.
 - Whether `payer` and `payee` should point at person and organization records once those schemas exist (`party_id` is ready for that).
 - Currency: US dollars only, per the rules.
+
+## Who paid and who it is for (added October 10, 2026)
+
+`party_id` on the payer and the payee, when `party_type` is person, is an individual's id. `participant_individual_ids` lists the individuals the payment is for when that differs from the payer (a parent paying for a child). The payer is often not the participant; both links exist so continuity and certification can follow the participant while the receipt follows the payer. Existence of the individuals is an endpoint rule (a transaction service, later); the schema checks only that the ids are UUIDs and not repeated.

@@ -258,6 +258,12 @@
   #assignView li select, #assignView .panel select { width: 100%; min-height: 48px; }
   #assignView li .inl { padding: 8px 0; }
   #assignView li .inl label.f { display: block; font-weight: 600; margin-top: 8px; }
+  .psearch { width: 100%; min-height: 48px; padding: 0 12px; margin: 0 0 10px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
+  #peopleView .panel input[type=text], #peopleView .panel select, #peopleView li input[type=text], #peopleView li select { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
+  #peopleView li textarea { width: 100%; min-height: 72px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
+  #peopleView li label.f { display: block; font-weight: 600; margin-top: 10px; }
+  #peopleView li .eform, #peopleView li .mergebox { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; }
+  #peopleView .mbody { padding: 8px 0; }
 </style>
 </head>
 <body>
@@ -551,6 +557,62 @@
       </form>
     </section>
   </section>
+  <section id="peopleView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="pCount"></div>
+        <div class="meta" id="pChecked"></div>
+      </div>
+      <div class="actions">
+        <select id="pFilter" aria-label="Filter by status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="">All</option>
+        </select>
+        <button type="button" class="quiet manualBtn" data-m="people">Manual</button>
+        <button id="pRefresh" class="quiet" type="button">Refresh</button>
+        <button id="pAddBtn" type="button">Add person</button>
+      </div>
+    </div>
+    <form class="panel" id="pAddForm" hidden autocomplete="off" novalidate>
+      <h2>Add a person</h2>
+      <div class="hint">Only a given name is needed. Everything else can be added later, when you edit.</div>
+      <label class="f" for="paGiven">Given name</label>
+      <input type="text" id="paGiven" maxlength="100" autocomplete="off">
+      <div class="ferr" id="epaGiven"></div>
+      <label class="f" for="paFamily">Family name (optional)</label>
+      <input type="text" id="paFamily" maxlength="100" autocomplete="off">
+      <div class="ferr" id="epaFamily"></div>
+      <label class="f" for="paUse">Name to use (optional)</label>
+      <input type="text" id="paUse" maxlength="100" autocomplete="off">
+      <div class="hint">What the person asks to be called. It shows instead of the given name.</div>
+      <div class="ferr" id="epaUse"></div>
+      <label class="f" for="paBirth">Birth date (optional)</label>
+      <input type="text" id="paBirth" maxlength="10" placeholder="YYYY, YYYY-MM or YYYY-MM-DD" autocomplete="off">
+      <div class="ferr" id="epaBirth"></div>
+      <div class="btns">
+        <button type="submit" id="pSaveBtn">Save person</button>
+        <button type="button" class="quiet" id="pCancelBtn">Cancel</button>
+      </div>
+      <div class="msg" id="pFMsg" role="alert"></div>
+    </form>
+    <input type="search" id="pSearch" class="psearch" placeholder="Find by name" aria-label="Find a person by name" autocomplete="off">
+    <div class="notice" id="pNotice" role="status"></div>
+    <div class="msg" id="pMsg" role="alert"></div>
+    <button type="button" class="quiet" id="pRetry" hidden>Retry</button>
+    <ul id="pList"></ul>
+    <div class="empty" id="pEmpty" hidden>No people yet.</div>
+    <div class="empty" id="pNoMatch" hidden>Nobody matches that name.</div>
+    <details class="more" id="pHist">
+      <summary>Merge history</summary>
+      <div class="mbody">
+        <div class="hint">Each merge can be undone while both people still exist. Values that changed after the merge are left as they are.</div>
+        <div class="msg" id="pHMsg" role="alert"></div>
+        <ul id="pHList"></ul>
+        <div class="empty" id="pHEmpty" hidden>No merges yet.</div>
+      </div>
+    </details>
+  </section>
 </main>
 <dialog class="lsdlg" id="rosterDlg" aria-labelledby="rosterTitle">
   <div class="lshead"><h2 id="rosterTitle">Roster</h2><button type="button" class="quiet" id="rosterClose">Close</button></div>
@@ -698,6 +760,27 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> Needs attention on Home lists every request the ship could not place by itself.</div>' +
         '<h3>Try this</h3><ul><li>Fill a class to its biggest size, then assign one more request and watch it turn up under Needs attention.</li></ul>' },
+    { id: "people", name: "People", short: "People", blurb: "The people behind the sign-ups: names, birth dates, merging duplicates.",
+      manual:
+        '<div class="kicker">Station 5</div><h2>People</h2>' +
+        '<h3>Mission</h3><p>A person is one human, recorded once, whatever they do with LAUNCH: a student, a payer, a leader, a guest. Roles and details that change over time are kept elsewhere and point back here.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Status menu</b> shows Active, Inactive, or all. <b>Find by name</b> narrows the list as you type.</li>' +
+        '<li><b>Add person</b> needs only a given name.</li>' +
+        '<li><b>Tap a card</b> to read everything on file. <b>Edit</b> changes names, birth date, language, status and notes. Clear a box to remove that value.</li>' +
+        '<li><b>Merge into another person</b> is for duplicates. Pick who to keep and say why. Gaps on the kept person are filled from the duplicate, records pointing at the duplicate move over, and the duplicate is marked merged.</li>' +
+        '<li><b>Merge history</b> lists every merge. <b>Undo this merge</b> puts the records back. Values changed since the merge are left alone.</li>' +
+        '<li><b>Delete</b> asks first. The person is hidden from the lists but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The ship never merges two people on its own, and never because an email or phone matches. A person decides.</li>' +
+        '<li>A birth date can be a year alone. Whether someone is under 18 is worked out by the ship, never typed.</li>' +
+        '<li>Protected details (health and similar) have no screen here on purpose. They need a recorded purpose and consent first.</li>' +
+        '<li>Erasing a person for good is not available here. It waits for sign-in roles.</li>' +
+        '<li>If someone else changed the person while you were editing, you are asked to refresh. Nothing is overwritten.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> a name like "Bob Smith" twice is not proof of one person. Check a birth date or ask before merging.</div>' +
+        '<h3>Try this</h3><ul><li>Add two people with nearly the same name, merge one into the other, then undo it from Merge history.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -770,11 +853,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; }
+    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : h === "people" ? "people" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -787,9 +870,10 @@
     $("venuesView").hidden = r !== "venues";
     $("classesView").hidden = r !== "classes";
     $("assignView").hidden = r !== "assignments";
+    $("peopleView").hidden = r !== "people";
     if (r === "home" || r === "requests" || r === "assignments") loadQueue();
     if (r === "assignments") openAssignView();
-    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); }
+    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); }
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
@@ -933,7 +1017,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetAssign();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetAssign(); resetPeople();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -2854,6 +2938,286 @@
     });
   });
 
+
+  // ---- People station: the individuals, through the same admin door. Restricted details are not reachable from here (the server refuses them).
+  var COLL_P = "individuals", COLL_MERGE = "merge_events";
+  var pAll = [], pLoaded = false, pSeq = 0, pNewId = "";
+  var PLABEL = { given_name: "Given name", middle_names: "Middle names", family_name: "Family name", name_to_use: "Name to use", pronouns: "Pronouns",
+                 birth_date: "Birth date", birth_date_certainty: "Birth date certainty", preferred_language: "Preferred language", time_zone: "Time zone",
+                 requires_interpreter: "Interpreter", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
+  var PISSUE = { required: "Required.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.", invalid_value: "That value is not valid.",
+                 invalid_type: "That value is not valid.", not_found: "That person was not found.", same_as_survivor: "Pick a different person.",
+                 conflict_restricted_detail: "Both people hold protected details. That needs a person to sort out first.",
+                 too_many_links: "Too many records point at this person to merge in one go.", snapshots_erased: "One of the people has been erased, so this cannot be undone.",
+                 not_merged: "This merge was already undone.", already_erased: "Already erased.", in_use: "Protected details exist for this person.", immutable: "That cannot be changed.",
+                 inconsistent: "That does not fit with the other answers." };
+  var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth" };
+  var P_FIELDS = [
+    { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },
+    { k: "family_name", label: "Family name", t: "text" }, { k: "name_to_use", label: "Name to use", t: "text", hint: "What the person asks to be called. It shows instead of the given name." },
+    { k: "pronouns", label: "Pronouns", t: "text", hint: "As the person says them, for example she/her." },
+    { k: "birth_date", label: "Birth date", t: "text", hint: "YYYY, YYYY-MM or YYYY-MM-DD. A year alone is fine." },
+    { k: "birth_date_certainty", label: "How sure is the birth date?", t: "select", opts: [["", "Not stated (treated as exact)"], ["exact", "Exact"], ["approximate", "Approximate"], ["estimated", "Estimated"]] },
+    { k: "preferred_language", label: "Preferred language", t: "text", hint: "A language tag such as en or es-MX." },
+    { k: "time_zone", label: "Time zone", t: "text", hint: "For example America/Denver." },
+    { k: "requires_interpreter", label: "Needs an interpreter?", t: "bool" },
+    { k: "status", label: "Status", t: "select", opts: [["active", "Active"], ["inactive", "Inactive (kept, not offered in pickers)"]] },
+    { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." }
+  ];
+  function pName(rec) { return rec.display_name || rec.given_name || "(no name)"; }
+  function pById(id) { for (var i = 0; i < pAll.length; i++) if (pAll[i].id === id) return pAll[i]; return null; }
+  function pProblems(res, map) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+    ps.forEach(function (p) {
+      var text = (p.field === "birth_date" && p.issue === "invalid_format") ? "Use YYYY, YYYY-MM or YYYY-MM-DD, and a date that exists."
+               : (PISSUE[p.issue] || "That value is not valid.");
+      if (map && map[p.field]) mine[p.field] = text; else out.push((PLABEL[p.field] || p.field) + ": " + text);
+    });
+    if (!ps.length) out.push(adminProblem(res.status));
+    return { fields: mine, other: out };
+  }
+
+  function loadPeople() {
+    var my = ++pSeq;
+    $("pMsg").textContent = ""; $("pRetry").hidden = true;
+    var f = $("pFilter").value;
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_P).then(function (res) {
+      if (my !== pSeq) return;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("pMsg").textContent = "Could not load the people. " + adminProblem(res.status); $("pRetry").hidden = false; return; }
+      pAll = res.body.data.records || []; pLoaded = true;
+      renderPeople();
+      $("pChecked").textContent = "Last checked " + fmtClock.format(new Date());
+      if ($("pHist").open) loadMerges();
+    });
+  }
+  function renderPeople() {
+    var q = $("pSearch").value.trim().toLowerCase(), list = $("pList");
+    var shown = pAll.filter(function (r) { return !q || [r.display_name, r.given_name, r.family_name, r.name_to_use].join(" ").toLowerCase().indexOf(q) >= 0; });
+    list.textContent = "";
+    shown.forEach(function (r) { list.appendChild(personRow(r, r.id === pNewId)); });
+    pNewId = "";
+    $("pCount").textContent = pAll.length + (pAll.length === 1 ? " person" : " people");
+    $("pEmpty").hidden = pAll.length > 0;
+    $("pNoMatch").hidden = !(pAll.length > 0 && shown.length === 0);
+  }
+
+  function personRow(rec, isNew) {
+    var li = mk("li", isNew ? "isnew" : "");
+    var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", pName(rec)));
+    top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+    head.appendChild(top);
+    var bits = [];
+    if (rec.birth_date) bits.push("Born " + rec.birth_date);
+    if (rec.is_minor) bits.push("Under 18");
+    if (rec.life_status && rec.life_status !== "alive") bits.push(rec.life_status.replace(/_/g, " "));
+    if (rec.record_privacy && rec.record_privacy !== "normal") bits.push(rec.record_privacy);
+    if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
+    var detail = mk("div", "detail");
+    detail.appendChild(personActions(rec));
+    var done = {};
+    ["display_name", "given_name", "family_name", "status", "birth_date", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+    li.appendChild(head); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function personActions(rec) {
+    var wrap = mk("div"), row = mk("div", "actions-row");
+    var ed = mk("button", "", "Edit"); ed.type = "button";
+    var mg = mk("button", "quiet", "Merge into another person"); mg.type = "button";
+    var del = mk("button", "danger", "Delete"); del.type = "button";
+    row.appendChild(ed); row.appendChild(mg); row.appendChild(del);
+    var editHost = mk("div"), mergeHost = mk("div");
+    var box = mk("div", "confirm"); box.hidden = true;
+    box.appendChild(mk("div", "", "Delete " + pName(rec) + "? They are hidden from the lists but the record is kept."));
+    var btns = mk("div", "btns"), yes = mk("button", "danger", "Delete person"), no = mk("button", "quiet", "Cancel");
+    yes.type = "button"; no.type = "button";
+    var err = mk("div", "msg"); err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no); box.appendChild(btns); box.appendChild(err);
+    ed.addEventListener("click", function () { mergeHost.textContent = ""; box.hidden = true; if (editHost.firstChild) editHost.textContent = ""; else editHost.appendChild(personEditForm(rec, editHost)); });
+    mg.addEventListener("click", function () { editHost.textContent = ""; box.hidden = true; if (mergeHost.firstChild) mergeHost.textContent = ""; else mergeHost.appendChild(mergeForm(rec, mergeHost)); });
+    del.addEventListener("click", function () { editHost.textContent = ""; mergeHost.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      admin("soft_delete", { id: rec.id }, COLL_P).then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { $("pNotice").textContent = "Deleted " + pName(rec) + "."; loadPeople(); }
+        else if (res.status === 404) { $("pNotice").textContent = "That person was already gone."; loadPeople(); }
+        else if (res.status === 409) err.textContent = "This person has protected details on file. Those have to be dealt with first.";
+        else err.textContent = pProblems(res).other.join(" ");
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(editHost); wrap.appendChild(mergeHost); wrap.appendChild(box);
+    return wrap;
+  }
+
+  function personEditForm(rec, host) {
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    var els = {};
+    P_FIELDS.forEach(function (f) {
+      var id = "pe_" + rec.id + "_" + f.k, cur = rec[f.k];
+      var l = mk("label", "f", f.label); l.htmlFor = id; form.appendChild(l);
+      var el;
+      if (f.t === "select" || f.t === "bool") {
+        el = mk("select");
+        var opts = f.t === "bool" ? [["", "Not stated"], ["yes", "Yes"], ["no", "No"]] : f.opts;
+        opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
+        el.value = f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
+      } else if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur === undefined ? "" : cur; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : cur; }
+      el.id = id; form.appendChild(el);
+      if (f.hint) form.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); form.appendChild(er);
+      els[f.k] = { el: el, err: er, t: f.t };
+    });
+    var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+    save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+    cancel.addEventListener("click", function () { host.textContent = ""; });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); msg.textContent = "";
+      Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+      var changes = {};
+      P_FIELDS.forEach(function (f) {
+        var x = els[f.k], v = x.el.value.trim(), cur = rec[f.k];
+        var val = f.t === "bool" ? (v === "yes" ? true : v === "no" ? false : null) : (v === "" ? null : v);
+        if (f.k === "status" && val === null) val = "active";
+        if (val === null) { if (cur !== undefined) changes[f.k] = null; }
+        else if (val !== cur) changes[f.k] = val;
+      });
+      if (!Object.keys(changes).length) { host.textContent = ""; $("pNotice").textContent = "Nothing changed."; return; }
+      save.disabled = true;
+      admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_P).then(function (res) {
+        save.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { pNewId = rec.id; $("pNotice").textContent = "Saved changes to " + pName(rec) + "."; loadPeople(); return; }
+        if (res.status === 409) { msg.textContent = "Someone changed this person while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+        if (res.status === 404) { msg.textContent = "That person is gone or merged. Tap Refresh."; return; }
+        var pr = pProblems(res, els);
+        Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    return form;
+  }
+
+  function mergeForm(rec, host) {
+    var box = mk("div", "mergebox");
+    box.appendChild(mk("div", "", pName(rec) + " is the same person as someone already listed. Pick who to keep. Anything missing on that person is filled in from this record, links to this person move over, and this record is marked merged. It can be undone in Merge history."));
+    var l1 = mk("label", "f", "Person to keep"); var sel = mk("select"); sel.id = "pm_" + rec.id; l1.htmlFor = sel.id;
+    var o0 = mk("option", "", "Choose one"); o0.value = ""; sel.appendChild(o0);
+    pAll.filter(function (p) { return p.id !== rec.id && p.status === "active"; }).forEach(function (p) {
+      var o = mk("option", "", pName(p) + (p.birth_date ? " (born " + p.birth_date + ")" : "")); o.value = p.id; sel.appendChild(o);
+    });
+    var e1 = mk("div", "ferr");
+    var l2 = mk("label", "f", "Reason"); var why = mk("input"); why.type = "text"; why.maxLength = 500; why.id = "pr_" + rec.id; l2.htmlFor = why.id; why.placeholder = "For example: same phone and birth date, confirmed by phone";
+    var e2 = mk("div", "ferr");
+    var btns = mk("div", "btns"), go = mk("button", "", "Merge"), no = mk("button", "quiet", "Cancel"); go.type = "button"; no.type = "button";
+    btns.appendChild(go); btns.appendChild(no);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+    [l1, sel, e1, l2, why, e2, btns, msg].forEach(function (n) { box.appendChild(n); });
+    no.addEventListener("click", function () { host.textContent = ""; });
+    go.addEventListener("click", function () {
+      e1.textContent = ""; e2.textContent = ""; msg.textContent = "";
+      var bad = false;
+      if (!sel.value) { e1.textContent = "Choose one."; bad = true; }
+      if (!why.value.trim()) { e2.textContent = "Say why they are the same person."; bad = true; }
+      if (bad) return;
+      go.disabled = true;
+      admin("merge", { survivor_id: sel.value, duplicate_id: rec.id, reason: why.value.trim() }, COLL_P).then(function (res) {
+        go.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var d = res.body.data, keep = pById(sel.value);
+          $("pNotice").textContent = "Merged " + pName(rec) + " into " + (keep ? pName(keep) : "the other person") + ": " + d.changed_fields.length + " values filled in, " + d.moved_links + " records moved. Undo it in Merge history.";
+          if ($("pHist").open) loadMerges();
+          loadPeople(); return;
+        }
+        if (res.status === 409) { msg.textContent = "Someone changed one of them while you were working. Tap Refresh and try again."; return; }
+        msg.textContent = "Could not merge: " + pProblems(res).other.join(" ");
+      });
+    });
+    return box;
+  }
+
+  function loadMerges() {
+    $("pHMsg").textContent = "";
+    return admin("list", { limit: 50 }, COLL_MERGE).then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("pHMsg").textContent = "Could not load the merge history. " + adminProblem(res.status); return; }
+      var evs = res.body.data.records || [], ul = $("pHList");
+      ul.textContent = "";
+      evs.forEach(function (ev) {
+        var li = mk("li"), body = mk("div", "detail"); body.style.display = "block";
+        var a = pById(ev.duplicate_id) || ev.duplicate_before, b = pById(ev.survivor_id) || ev.survivor_before;
+        body.appendChild(mk("div", "", when(ev.created_at) + ": " + (a && (a.display_name || a.given_name) ? pName(a) : "a person") + " merged into " + (b && (b.display_name || b.given_name) ? pName(b) : "another person") + " (" + ev.status + ")"));
+        body.appendChild(line("reason", ev.reason || ""));
+        if (ev.status === "unmerged" && ev.unmerge_skipped && ev.unmerge_skipped.length) body.appendChild(line("left as they were after the undo", String(ev.unmerge_skipped.length) + " values changed since the merge"));
+        if (ev.status === "merged") {
+          var row = mk("div", "actions-row"), undo = mk("button", "quiet", "Undo this merge"); undo.type = "button"; row.appendChild(undo);
+          var err = mk("div", "msg"); err.setAttribute("role", "alert");
+          undo.addEventListener("click", function () {
+            undo.disabled = true; err.textContent = "";
+            admin("unmerge", { id: ev.id }, COLL_P).then(function (r2) {
+              undo.disabled = false;
+              if (r2.status === 401) { lock("That key did not work."); return; }
+              if (r2.status === 200 && r2.body && r2.body.ok) {
+                var sk = (r2.body.data.skipped || []).length;
+                $("pNotice").textContent = "Undone: " + r2.body.data.restored_links + " records pointed back." + (sk ? " " + sk + " values were left alone because they changed after the merge." : "");
+                loadPeople(); return;
+              }
+              err.textContent = "Could not undo: " + pProblems(r2).other.join(" ");
+            });
+          });
+          body.appendChild(row); body.appendChild(err);
+        }
+        li.appendChild(body); ul.appendChild(li);
+      });
+      $("pHEmpty").hidden = evs.length > 0;
+    });
+  }
+
+  function resetPeople() {
+    pLoaded = false; pAll = []; pNewId = "";
+    $("pList").textContent = ""; $("pCount").textContent = ""; $("pChecked").textContent = ""; $("pMsg").textContent = ""; $("pNotice").textContent = "";
+    $("pEmpty").hidden = true; $("pNoMatch").hidden = true; $("pSearch").value = ""; $("pFilter").value = "active";
+    $("pAddForm").hidden = true; $("pAddBtn").hidden = false; $("pHist").open = false; $("pHList").textContent = "";
+  }
+  function pClearErrs() { Object.keys(PADD_ERR).forEach(function (k) { $(PADD_ERR[k]).textContent = ""; }); $("pFMsg").textContent = ""; }
+  $("pAddBtn").addEventListener("click", function () { $("pAddForm").reset(); pClearErrs(); $("pNotice").textContent = ""; $("pAddForm").hidden = false; $("pAddBtn").hidden = true; $("paGiven").focus(); });
+  $("pCancelBtn").addEventListener("click", function () { $("pAddForm").hidden = true; $("pAddBtn").hidden = false; });
+  $("pAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); pClearErrs();
+    var data = {}, map = { given_name: "paGiven", family_name: "paFamily", name_to_use: "paUse", birth_date: "paBirth" };
+    Object.keys(map).forEach(function (k) { var v = $(map[k]).value.trim(); if (v) data[k] = v; });
+    if (!data.given_name) { $("epaGiven").textContent = "Required."; return; }
+    $("pSaveBtn").disabled = true;
+    admin("create", { data: data }, COLL_P).then(function (res) {
+      $("pSaveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        pNewId = res.body.data.id; $("pNotice").textContent = "Added " + pName(res.body.data) + ".";
+        $("pAddForm").hidden = true; $("pAddBtn").hidden = false;
+        if ($("pFilter").value === "inactive") $("pFilter").value = "active";
+        loadPeople(); return;
+      }
+      var pr = pProblems(res, PADD_ERR);
+      Object.keys(pr.fields).forEach(function (k) { $(PADD_ERR[k]).textContent = pr.fields[k]; });
+      if (pr.other.length) $("pFMsg").textContent = "Could not save: " + pr.other.join(" ");
+    });
+  });
+  $("pFilter").addEventListener("change", function () { $("pNotice").textContent = ""; loadPeople(); });
+  $("pRefresh").addEventListener("click", function () { $("pNotice").textContent = ""; loadPeople(); });
+  $("pRetry").addEventListener("click", loadPeople);
+  $("pSearch").addEventListener("input", renderPeople);
+  $("pHist").addEventListener("toggle", function () { if ($("pHist").open) loadMerges(); });
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);

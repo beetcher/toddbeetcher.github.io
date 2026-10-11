@@ -4,6 +4,7 @@
     * a `sealed` record is invisible to everyone but an administrator: get, list, update and soft_delete answer
       `not_found`, so its existence is not revealed.
     * a `confidential` record is left out of lists for everyone but an administrator (get still returns it).
+    * merge, unmerge and erase refuse (not_found) when a sealed record is involved and the caller is not an admin.
     * an individual that a live restricted-detail record points at cannot be soft-deleted (conflict, id:in_use).
       Other collections will add their own guards here when they gain an `individual_id`.
 
@@ -13,6 +14,7 @@ Same function names as a handler file, so the dispatcher treats both alike. All 
 """
 from __future__ import annotations
 
+from . import individual_merges_crud as M
 from . import individuals_crud as I
 from .schema_kit import UUID_PATTERN, failure, load_collection, success
 
@@ -62,3 +64,22 @@ def soft_delete(store, id, actor, tx=None, now=None, as_admin=False):
         if live:
             return failure("conflict", [{"field": "id", "issue": "in_use"}])
     return I.soft_delete(store, id, actor, tx=tx, now=now)
+
+
+def merge(store, survivor_id, duplicate_id, reason, actor, field_choices=None, tx=None, now=None, as_admin=False):
+    if _hidden_from(store, survivor_id, as_admin) or _hidden_from(store, duplicate_id, as_admin):
+        return failure("not_found")
+    return M.merge(store, survivor_id, duplicate_id, reason, actor, field_choices, tx=tx, now=now)
+
+
+def unmerge(store, id, actor, tx=None, now=None, as_admin=False):
+    ev = store.get(M.MERGES.name, id) if isinstance(id, str) and UUID_PATTERN.match(id) else None
+    if ev and (_hidden_from(store, ev["survivor_id"], as_admin) or _hidden_from(store, ev["duplicate_id"], as_admin)):
+        return failure("not_found")
+    return M.unmerge(store, id, actor, tx=tx, now=now)
+
+
+def erase(store, id, actor, tx=None, now=None, as_admin=False):
+    if _hidden_from(store, id, as_admin):
+        return failure("not_found")
+    return M.erase(store, id, actor, tx=tx, now=now)

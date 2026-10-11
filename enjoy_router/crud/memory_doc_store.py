@@ -4,7 +4,7 @@
     create(base, id, doc, tx=None)                 raises DocExists
     update(base, id, set_fields, delete_fields=(), expected_updated_at=None, tx=None)
                                                    raises DocMissing, StaleUpdate
-    query(base, filters=(), order_by=None, descending=False, limit=100)
+    query(base, filters=(), order_by=None, descending=False, limit=100)   filters: (field, "==" or "array_contains", value); a field may be a dotted path
     transaction()                                  context manager; writes apply together or not at all
 
 `base` is the collection name from the registry. An optional prefix (for example "test_") is added
@@ -18,6 +18,34 @@ from contextlib import contextmanager
 from typing import Optional
 
 from .store_errors import DocExists, DocMissing, StaleUpdate  # noqa: F401  (re-exported)
+
+
+def _get_path(doc, path):
+    """Value at a dotted path (like Firestore field paths), or None."""
+    cur = doc
+    for part in path.split("."):
+        if not isinstance(cur, dict) or part not in cur:
+            return None
+        cur = cur[part]
+    return cur
+
+
+def _set_path(doc, path, value):
+    """Set a dotted path, creating the nested objects (like Firestore update with a field path)."""
+    parts = path.split(".")
+    cur = doc
+    for part in parts[:-1]:
+        if not isinstance(cur.get(part), dict):
+            cur[part] = {}
+        cur = cur[part]
+    cur[parts[-1]] = value
+
+
+def _matches(doc, field, op, value):
+    got = _get_path(doc, field)
+    if op == "array_contains":
+        return isinstance(got, list) and value in got
+    return got == value
 
 
 class _Tx:
@@ -54,7 +82,8 @@ class MemoryDocStore:
                 raise DocMissing()
             if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
                 raise StaleUpdate()
-            cur.update(copy.deepcopy(set_fields))
+            for k, v in copy.deepcopy(set_fields).items():
+                _set_path(cur, k, v)
             for f in delete_fields:
                 cur.pop(f, None)
         (tx.pending.append(apply) if tx is not None else apply())
@@ -62,7 +91,7 @@ class MemoryDocStore:
     def query(self, base: str, filters=(), order_by: Optional[str] = None, descending: bool = False,
               limit: int = 100) -> list:
         self.reads.append(("query", base))
-        docs = [d for d in self._c(base).values() if all(d.get(f) == v for f, op, v in filters)]
+        docs = [d for d in self._c(base).values() if all(_matches(d, f, op, v) for f, op, v in filters)]
         if order_by:
             docs.sort(key=lambda d: (d.get(order_by) is None, d.get(order_by)), reverse=descending)
         return [copy.deepcopy(d) for d in docs[:limit]]

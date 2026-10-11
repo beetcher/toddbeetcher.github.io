@@ -97,6 +97,27 @@
       "status": "completed",
       "occurred_at": "2026-11-02T18:30:00Z",
       "note": "Write-off of a short payment."
+    },
+    "parent_pays_for_child": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Parent Payer",
+        "party_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "external_source": "processor",
+      "external_reference": "pi_example_123",
+      "participant_individual_ids": [
+        "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c"
+      ]
     }
   },
   "invalid": {
@@ -326,6 +347,65 @@
       "amount_cents": 50000,
       "method": "card_processor",
       "status": "completed"
+    },
+    "participant_id_not_uuid": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "external_source": "processor",
+      "external_reference": "pi_example_123",
+      "participant_individual_ids": [
+        "nope"
+      ]
+    },
+    "participant_ids_duplicated": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "Jane Doe"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "external_source": "processor",
+      "external_reference": "pi_example_123",
+      "participant_individual_ids": [
+        "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+        "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+      ]
+    },
+    "payer_party_id_not_uuid": {
+      "transaction_type": "payment",
+      "payer": {
+        "party_type": "person",
+        "name": "X",
+        "party_id": "nope"
+      },
+      "payee": {
+        "party_type": "program",
+        "name": "LAUNCH"
+      },
+      "amount_cents": 50000,
+      "method": "card_processor",
+      "status": "completed",
+      "occurred_at": "2026-11-02T18:30:00Z",
+      "external_source": "processor",
+      "external_reference": "pi_example_123"
     }
   }
 }

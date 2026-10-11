@@ -18,6 +18,9 @@ ops and their args:
     suggest            request_id             (registration_assignments only: what one touch would do)
     queue              limit (optional)       (registration_assignments only: the state of each recent request)
     get_for_individual individual_id          (individual_restricted_details only: the one record for a person)
+    merge              survivor_id, duplicate_id, reason, field_choices (optional)   (individuals only)
+    unmerge            id                     (individuals only: id is the merge event)
+    erase              id                     (individuals only; the test door only, never the Console)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
 never read or write a real collection. Its actor is always system:crud_test. The admin door works on the real
@@ -35,7 +38,7 @@ from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (assignments_service, classes_service, individual_restricted_details_service,
-                  individuals_service, venues_service)
+                  individuals_service, merge_events_service, venues_service)
 from crud.schema_kit import failure
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
@@ -47,7 +50,8 @@ MAX_BODY_BYTES = 100_000
 
 # collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
 HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "registration_assignments": assignments_service,
-            "individuals": individuals_service, "individual_restricted_details": individual_restricted_details_service}
+            "individuals": individuals_service, "individual_restricted_details": individual_restricted_details_service,
+            "merge_events": merge_events_service}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 
@@ -62,18 +66,29 @@ OPS = {
     "suggest": ({"request_id"}, set()),   # only collections whose module has it (assignments)
     "queue": (set(), {"limit"}),          # same
     "get_for_individual": ({"individual_id"}, set()),  # only individual_restricted_details: the one record for a person
+    "merge": ({"survivor_id", "duplicate_id", "reason"}, {"field_choices"}),  # only individuals
+    "unmerge": ({"id"}, set()),                        # only individuals
+    "erase": ({"id"}, set()),                          # only individuals; not in ADMIN_OPS
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
-ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual"})
+# erase is deliberately missing: it is irreversible and waits for sign-in roles.
+ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
+                       "merge", "unmerge"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
 def _run(module, store, op: str, a: dict, now: datetime, actor: str):
-    if op in ("suggest", "queue", "set_review_summary", "get_for_individual"):
+    if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "get_for_individual":
             return module.get_for_individual(store, a["individual_id"])
+        if op == "merge":
+            return module.merge(store, a["survivor_id"], a["duplicate_id"], a["reason"], actor, a.get("field_choices"), now=now)
+        if op == "unmerge":
+            return module.unmerge(store, a["id"], actor, now=now)
+        if op == "erase":
+            return module.erase(store, a["id"], actor, now=now)
         if op == "suggest":
             return module.suggest(store, a["request_id"])
         if op == "queue":

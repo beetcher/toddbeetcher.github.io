@@ -1,0 +1,82 @@
+{
+  "valid": {
+    "minimal": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "Same name, birth date and phone; registered twice at two workshops."
+    },
+    "with_choices": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "Confirmed by the person on the phone.",
+      "field_choices": {
+        "given_name": "duplicate",
+        "notes": "survivor"
+      }
+    }
+  },
+  "invalid": {
+    "missing_reason": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c"
+    },
+    "empty_reason": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": ""
+    },
+    "missing_survivor": {
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x"
+    },
+    "missing_duplicate": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "reason": "x"
+    },
+    "survivor_not_uuid": {
+      "survivor_id": "nope",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x"
+    },
+    "bad_choice_value": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "field_choices": {
+        "given_name": "both"
+      }
+    },
+    "camel_case_choice": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "field_choices": {
+        "givenName": "survivor"
+      }
+    },
+    "status_sent": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "status": "merged"
+    },
+    "snapshot_sent": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "survivor_before": {}
+    },
+    "moved_links_sent": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "moved_links": []
+    },
+    "unknown_field": {
+      "survivor_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "duplicate_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "reason": "x",
+      "force": true
+    }
+  }
+}

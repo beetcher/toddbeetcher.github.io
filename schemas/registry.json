@@ -56,6 +56,14 @@
       "guide": "INDIVIDUAL_RESTRICTED_DETAIL_GUIDE.md",
       "examples": "examples/individual_restricted_detail.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "merge_event",
+      "collection": "merge_events",
+      "schema": "merge_event.schema.json",
+      "guide": "MERGE_EVENT_GUIDE.md",
+      "examples": "examples/merge_event.examples.json",
+      "schema_version": 1
     }
   ]
 }
