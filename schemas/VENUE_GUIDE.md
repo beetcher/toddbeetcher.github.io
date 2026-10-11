@@ -49,7 +49,7 @@ Because a link needs the venue to exist first, a venue is created inactive, link
 ### Rooms (Todd; inside the record)
 `rooms` is a list. Each room has:
 - `label` (required): the room name, such as "Main room". Unique within the venue. A class names it with `venue_room_label`.
-- `max_occupancy` (required) and `preferred_occupancy` (Todd: "preferred occupancy, maximum occupancy"). Preferred is not above maximum.
+- `max_occupancy` and `preferred_occupancy` (Todd: "preferred occupancy, maximum occupancy"). Both are optional, and there is no rule of any kind about occupancy (Todd): a room needs only its `label`, preferred may be above maximum, and a class is never checked against the room.
 - `is_accessible`: whether this room is accessible. A venue can be accessible while one room is not **(proposal)**.
 - `seating_layout`, `equipment` (a list such as screen, projector, whiteboard, power strips), `notes` **(proposal)**.
 - The number of rooms is the length of the list; there is no separate count field.
@@ -86,9 +86,9 @@ Because a link needs the venue to exist first, a venue is created inactive, link
 ## 4. What the endpoints must do
 
 1. Venue creation and changes come only from the dashboard. Reject any readOnly field sent.
-2. Validate against the schema, then check the rules it cannot express: room labels are unique, each room's `preferred_occupancy` is not above its `max_occupancy`, and each day's `opens_at` is before its `closes_at`.
+2. Validate against the schema, then check the rules it cannot express: room labels are unique and each day's `opens_at` is before its `closes_at`.
 3. Set provenance and start `review_count` at zero.
-4. When a class is saved with a `venue_id`: the venue must exist. If `venue_room_label` is present it must name a room in that venue, and the class's `capacity_max` must not be above that room's `max_occupancy` (**proposal**: a warning to the organizer first; make it a refusal only if Todd wants that).
+4. When a class is saved with a `venue_id`: the venue must exist. If `venue_room_label` is present it must name a room in that venue. The class's `capacity_max` is never compared with the room's `max_occupancy` (Todd: no occupancy rules).
 5. Never delete a venue that classes point at; set it `inactive` instead.
 6. `contact_individual_id` and `backup_contact_individual_id`, when given, must point at an individual that exists and is not erased (a merged individual is followed to the survivor). Activating a venue requires a live `operates_at` link to a location that has an address or a GPS point; nothing else is required. Public pages and the class list never expose `email`, `phone`, the contact people or a private venue's address. What the class list may show (venue name, city, accessibility, address after a person has registered) is **(open)**.
 

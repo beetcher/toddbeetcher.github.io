@@ -183,6 +183,72 @@
       "slug": "louisville_park",
       "status": "active",
       "is_public_venue": true
+    },
+    "room_name_only": {
+      "name": "Boulder Community Library",
+      "slug": "boulder_community_library",
+      "status": "active",
+      "is_public_venue": true,
+      "description": "Public library with bookable meeting rooms.",
+      "parking_description": "Free lot behind the building; 2 hour limit.",
+      "parking_latitude": 40.0148,
+      "parking_longitude": -105.2711,
+      "entry_description": "Side door on the east wall, past the bike racks.",
+      "entry_latitude": 40.0151,
+      "entry_longitude": -105.2699,
+      "transit_description": "Bus 204 stops one block away.",
+      "location_pin_ids": [
+        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
+      ],
+      "email": "venue@example.com",
+      "phone": "+13035550101",
+      "website_url": "https://example.com/library",
+      "booking_process": "Email the contact; confirm in writing.",
+      "booking_lead_days": 14,
+      "rooms": [
+        {
+          "label": "Main room"
+        },
+        {
+          "label": "Side room",
+          "seating_layout": "Tables of four"
+        }
+      ],
+      "has_wifi": true,
+      "wifi_notes": "Guest network, no password.",
+      "is_accessible": true,
+      "has_step_free_entry": true,
+      "has_elevator": true,
+      "has_accessible_restroom": true,
+      "accessibility_notes": "Main room is on the ground floor.",
+      "allows_minors": true,
+      "allows_animals": false,
+      "allows_food": true,
+      "allows_alcohol": false,
+      "requires_insurance": false,
+      "availability_hours": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "20:00"
+        },
+        {
+          "day_of_week": "saturday",
+          "opens_at": "10:00",
+          "closes_at": "16:00"
+        }
+      ],
+      "availability_notes": "Closed on public holidays.",
+      "setup_minutes_before": 30,
+      "teardown_minutes_after": 30,
+      "cost_cents": 7500,
+      "cost_basis": "per_hour",
+      "deposit_cents": 10000,
+      "cancellation_terms": "Free cancellation up to 7 days before.",
+      "cost_notes": "Nonprofit rate.",
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     }
   },
   "invalid": {
@@ -470,68 +536,6 @@
           "preferred_occupancy": 6,
           "max_occupancy": 8,
           "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk.",
-      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
-      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
-    },
-    "room_without_max_occupancy": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "email": "venue@example.com",
-      "phone": "+13035550101",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room"
         }
       ],
       "has_wifi": true,

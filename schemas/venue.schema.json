@@ -142,8 +142,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "label",
-          "max_occupancy"
+          "label"
         ],
         "properties": {
           "label": {
@@ -153,16 +152,12 @@
             "minLength": 1
           },
           "preferred_occupancy": {
-            "description": "The preferred number of people in the room. Not above max_occupancy. Optional.",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 1000
+            "description": "The preferred number of people in the room. Optional. No rule is attached to it.",
+            "type": "integer"
           },
           "max_occupancy": {
-            "description": "The most people the room may hold. A class's capacity_max must not exceed this. Required.",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 1000
+            "description": "The most people the room may hold. Optional. No rule is attached to it (a class is never checked against it).",
+            "type": "integer"
           },
           "is_accessible": {
             "description": "Whether this room is accessible. Optional: a venue can be accessible while one room is not.",

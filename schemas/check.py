@@ -8,7 +8,7 @@ Verifies, for every type in schemas/registry.json:
   - every example marked valid passes, and every example marked invalid fails
   - capacity_minimum <= capacity_target <= capacity_max in examples and seed classes
   - venue rules the schema cannot express, in examples and seed venues: room labels are
-    unique, preferred_occupancy <= max_occupancy, opens_at before closes_at
+    unique, opens_at before closes_at (no rule on room occupancy: Todd)
   - the test records agree with the schema: schema-layer tests pass or fail as
     expected, endpoint-layer tests pass the schema (the endpoint decides the rest),
     names and references resolve, expected error codes are known, and no two
@@ -17,7 +17,7 @@ Verifies, for every type in schemas/registry.json:
     setup.now parses (the clock the endpoint runner uses);
     a class request may only pick a seed class of type workshop;
     seed venues are valid venue records, every seed class points at a seed venue, names a room that
-    exists there, and its capacity_max is not above that room's max_occupancy
+    exists there
 Passing means the schema, guide, examples and test records agree. Needs: pip install jsonschema
 """
 import json, re, sys, pathlib
@@ -63,9 +63,6 @@ def venue_problems(doc):
     labels = [r.get("label") for r in rooms]
     if len(labels) != len(set(labels)):
         out.append("room labels are not unique")
-    for r in rooms:
-        if "preferred_occupancy" in r and "max_occupancy" in r and r["preferred_occupancy"] > r["max_occupancy"]:
-            out.append(f"room {r.get('label')}: preferred_occupancy above max_occupancy")
     for h in doc.get("availability_hours", []):
         if "opens_at" in h and "closes_at" in h and h["opens_at"] >= h["closes_at"]:
             out.append(f"{h.get('day_of_week')}: opens_at not before closes_at")
@@ -159,8 +156,6 @@ for e in REG:
                 room = next((r for r in vd.get("rooms", []) if r["label"] == sd["venue_room_label"]), None)
                 if room is None:
                     fails.append(f"seed class {sd.get('slug')}: venue_room_label not a room at its venue")
-                elif sd["capacity_max"] > room["max_occupancy"]:
-                    fails.append(f"seed class {sd.get('slug')}: capacity_max above room max_occupancy")
             if cs is None:
                 fails.append("test seed classes need the scheduled_class schema in the registry"); break
             serrs = [x.message[:70] for x in V(cs, format_checker=FormatChecker()).iter_errors(sd)]

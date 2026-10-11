@@ -4,7 +4,6 @@
                         * the venue exists and is not deleted                (venue_id:not_found)
                         * a room label needs a venue                         (venue_id:required)
                         * the room exists in that venue's rooms list         (venue_room_label:not_found)
-                        * capacity_max is not above that room's max          (capacity_max:out_of_range)
                         * a scheduled or enrolling class needs an active venue (venue_id:inactive)
     * a class that holds registrations cannot be deleted         (conflict, id:in_use)
     (venues_service.py holds the matching guards on the venue side.)
@@ -21,7 +20,7 @@ from . import venues_crud as V
 from .schema_kit import failure
 
 # What changes the answer of a class rule. An update touching none of these never reads the venue.
-CLASS_CHECK_FIELDS = ("venue_id", "venue_room_label", "capacity_max", "status")
+CLASS_CHECK_FIELDS = ("venue_id", "venue_room_label", "status")
 LIVE_STATUSES_NEEDING_ACTIVE_VENUE = ("scheduled", "enrolling")
 
 
@@ -52,8 +51,6 @@ def make_class_check(store):
             room = _find_room(venue, label)
             if room is None:
                 problems.append({"field": "venue_room_label", "issue": "not_found"})
-            elif isinstance(doc.get("capacity_max"), int) and doc["capacity_max"] > room.get("max_occupancy", 10 ** 9):
-                problems.append({"field": "capacity_max", "issue": "out_of_range"})
         return problems
     return check
 

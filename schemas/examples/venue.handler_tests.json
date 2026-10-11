@@ -23,8 +23,9 @@
     {"name": "code rule: room labels are unique (case-insensitive)", "steps": [
       {"op": "create", "data": {"$example": "private_home", "set": {"rooms": [{"label": "Den", "max_occupancy": 5}, {"label": "den", "max_occupancy": 6}]}}, "expect": {"ok": false, "problems": ["rooms:duplicate"]}}
     ]},
-    {"name": "code rule: preferred occupancy is not above the maximum", "steps": [
-      {"op": "create", "data": {"$example": "private_home", "set": {"rooms": [{"label": "Den", "preferred_occupancy": 9, "max_occupancy": 5}]}}, "expect": {"ok": false, "problems": ["rooms:out_of_range"]}}
+    {"name": "no rule on room occupancy: a room can have a name only, or a preferred number above the maximum", "steps": [
+      {"op": "create", "data": {"$example": "private_home", "set": {"rooms": [{"label": "Den"}]}}, "expect": {"ok": true}},
+      {"op": "create", "data": {"$example": "private_home", "set": {"slug": "den_two", "rooms": [{"label": "Den", "preferred_occupancy": 9, "max_occupancy": 5}]}}, "expect": {"ok": true}}
     ]},
     {"name": "code rule: opening time is before closing time", "steps": [
       {"op": "create", "data": {"$example": "private_home", "set": {"availability_hours": [{"day_of_week": "monday", "opens_at": "18:00", "closes_at": "09:00"}]}}, "expect": {"ok": false, "problems": ["availability_hours:out_of_range"]}}
@@ -75,7 +76,7 @@
     {"name": "update, code rules run on the whole-record path", "steps": [
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
       {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "A", "max_occupancy": 4}, {"label": "a", "max_occupancy": 4}]}, "expect": {"ok": false, "reads": 1, "problems": ["rooms:duplicate"]}},
-      {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "A", "preferred_occupancy": 8, "max_occupancy": 4}]}, "expect": {"ok": false, "reads": 1, "problems": ["rooms:out_of_range"]}},
+      {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "A", "preferred_occupancy": 8, "max_occupancy": 4}]}, "expect": {"ok": true, "reads": 1}},
       {"op": "update", "id": "$a", "changes": {"availability_hours": [{"day_of_week": "monday", "opens_at": "10:00", "closes_at": "10:00"}]}, "expect": {"ok": false, "reads": 1, "problems": ["availability_hours:out_of_range"]}},
       {"op": "update", "id": "$a", "changes": {"rooms": [{"label": "Only room", "max_occupancy": 4}]}, "expect": {"ok": true, "reads": 1}}
     ]},

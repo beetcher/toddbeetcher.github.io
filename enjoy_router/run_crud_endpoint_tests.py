@@ -179,7 +179,7 @@ check("admin classes: schedule at an active venue 200", r.status == 200, str(r.b
 r = cop("update", id=cid, changes={"venue_room_label": "Attic"})
 check("admin classes: unknown room 400 names the field", r.status == 400 and r.body["error"]["problems"] == [{"field": "venue_room_label", "issue": "not_found"}])
 r = cop("update", id=cid, changes={"capacity_max": 25})
-check("admin classes: capacity above room 400", r.status == 400 and r.body["error"]["problems"] == [{"field": "capacity_max", "issue": "out_of_range"}])
+check("admin classes: capacity above the room is allowed (no occupancy rule)", r.status == 200)
 r = aop("soft_delete", id=hid)
 check("admin venues: delete blocked by a live class: 409 with id:in_use", r.status == 409 and r.body["error"]["problems"] == [{"field": "id", "issue": "in_use"}] and "deleted_at" not in astore.data["venues"][hid])
 r = aop("update", id=hid, changes={"rooms": [{"label": "Hall room", "max_occupancy": 20}]})

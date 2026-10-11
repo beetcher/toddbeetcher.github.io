@@ -40,14 +40,6 @@ def _rooms_labels_unique(doc: dict) -> list:
     return [] if len(labels) == len(set(labels)) else [{"field": "rooms", "issue": "duplicate"}]
 
 
-def _rooms_preferred_within_max(doc: dict) -> list:
-    for r in doc.get("rooms", []):
-        if isinstance(r, dict) and "preferred_occupancy" in r and "max_occupancy" in r:
-            if r["preferred_occupancy"] > r["max_occupancy"]:
-                return [{"field": "rooms", "issue": "out_of_range"}]
-    return []
-
-
 def _hours_open_before_close(doc: dict) -> list:
     for h in doc.get("availability_hours", []):
         if isinstance(h, dict) and "opens_at" in h and "closes_at" in h and h["opens_at"] >= h["closes_at"]:
@@ -58,7 +50,6 @@ def _hours_open_before_close(doc: dict) -> list:
 # (name, fields it reads, function). The fields column decides when an update must use the whole-record path.
 CROSS_FIELD_RULES = (
     ("room_labels_unique", ("rooms",), _rooms_labels_unique),
-    ("room_preferred_not_above_max", ("rooms",), _rooms_preferred_within_max),
     ("opens_before_closes", ("availability_hours",), _hours_open_before_close),
 )
 RULE_FIELDS = frozenset(f for _, fields, _ in CROSS_FIELD_RULES for f in fields)

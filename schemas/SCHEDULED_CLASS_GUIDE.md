@@ -38,7 +38,7 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 
 ### Where
 - `venue_id`: the UUID of a venue record. The venue record (`schemas/venue.schema.json`, `VENUE_GUIDE.md`) holds the address, the venue contact, the backup contact, its rooms, and standing details such as parking and the physical accessibility facts. Todd: venue contact details and a backup contact exist; they belong with the venue so every class there reuses them **(proposal, confirmed in discussion)**.
-- `venue_room_label`: the label of a room in that venue's `rooms` list (Todd: the class points at the venue plus a room label). The room must exist, and `capacity_max` should not be above its `max_occupancy`.
+- `venue_room_label`: the label of a room in that venue's `rooms` list (Todd: the class points at the venue plus a room label). The room must exist. `capacity_max` is not compared with the room's `max_occupancy` (Todd: no occupancy rules).
 - `is_venue_confirmed`: venue chosen versus venue confirmed.
 - `venue_notes`: anything specific to this class at this venue (for example, "use the side entrance"). Not for standing venue details.
 - `accessibility_notes`: anything about accessibility specific to this class **(proposal)**. The physical facts live on the venue record. Use the words "accessible" and "accessibility" in field names and visitor wording.

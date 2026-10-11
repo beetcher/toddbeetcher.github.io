@@ -1,7 +1,7 @@
 """Service for venues: the guards the venue schema asks for, on top of venues_crud (see classes_service.py).
 
     * a venue that live classes point at cannot be deleted   (conflict, id:in_use)
-    * a room a live class uses cannot be removed, renamed, or shrunk below that class's capacity_max
+    * a room a live class uses cannot be removed or renamed
                                                                 (validation_failed, rooms:in_use)
     * a venue becomes active only when it has a place: a live operates_at location_link to a location that is
       active and has an address or a GPS point                   (validation_failed, status:place_required)
@@ -67,7 +67,7 @@ def make_room_check(store, venue_id: str):
             if not c.get("venue_room_label"):
                 continue
             room = _find_room(merged, c["venue_room_label"])
-            if room is None or (isinstance(c.get("capacity_max"), int) and c["capacity_max"] > room.get("max_occupancy", 10 ** 9)):
+            if room is None:
                 return [{"field": "rooms", "issue": "in_use"}]
         return []
     return check

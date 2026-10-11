@@ -96,7 +96,7 @@
       "format": "uuid"
     },
     "venue_room_label": {
-      "description": "The label of a room in that venue's rooms list. The room must exist, and capacity_max should not be above that room's max_occupancy (an endpoint rule, not a schema rule). Optional.",
+      "description": "The label of a room in that venue's rooms list. The room must exist (an endpoint rule). capacity_max is not compared with the room's occupancy. Optional.",
       "type": "string",
       "minLength": 1,
       "maxLength": 100

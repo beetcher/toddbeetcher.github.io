@@ -24,7 +24,7 @@ Built, deployed and checkpointed 2026-10-09 (thread 13). Second collection throu
 **In the class service** (look at venues):
 - The venue must exist and not be deleted (`venue_id:not_found`).
 - A room label needs a venue (`venue_id:required`); the room must exist in that venue, ignoring case (`venue_room_label:not_found`).
-- `capacity_max` may not exceed the room's `max_occupancy` (`capacity_max:out_of_range`).
+- No occupancy rules (Todd, 2026-10-11): `capacity_max` is not compared with the room's `max_occupancy`, and a room needs only a label.
 - A class that is scheduled or enrolling needs an ACTIVE venue (`venue_id:inactive`).
 
 **In the venue service** (look at classes):

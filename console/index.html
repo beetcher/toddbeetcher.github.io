@@ -127,7 +127,7 @@
   .lsdlg textarea { min-height: 96px; }
   .lsdlg .btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .lsdlg .confirm { margin-top: 8px; }
-  .rrow { border: 1px solid var(--line); border-radius: 10px; padding: 4px 12px 12px; margin: 10px 0; background: #fcfaf5; }
+  .rcard { border: 1px solid var(--line); border-radius: 10px; padding: 4px 12px 12px; margin: 10px 0; background: #fcfaf5; }
   .rhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
   .rhead button { min-height: 40px; }
   .rowerr { color: var(--err); font-weight: 600; font-size: 14px; min-height: 1.2em; }
@@ -1426,8 +1426,7 @@
     return a.map(function (e, i) { return [e, i]; }).sort(function (x, y) { return (dayIndex(x[0]) - dayIndex(y[0])) || (x[1] - y[1]); }).map(function (x) { return x[0]; });
   }
   var LIST_ISSUES = {
-    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", out_of_range: "A room’s preferred number is above its maximum.",
-             in_use: "A class uses this room (or needs more seats than it would have). Change that class first." },
+    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", in_use: "A class uses this room. Change that class first." },
     availability_hours: { out_of_range: "Each open day must open before it closes." }
   };
   function listIssueText(field, issue) {
@@ -1447,10 +1446,10 @@
     f.label = mk("input"); f.label.type = "text"; f.label.maxLength = 100; f.label.autocomplete = "off"; f.label.value = r.label || "";
     lfield(box, "label", "Room name (like Main room)", f.label);
     var two = mk("div", "two"); box.appendChild(two);
-    f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.min = 1; f.max.max = 1000; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
-    lfield(two, "max", "Most people", f.max);
-    f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.min = 1; f.pref.max = 1000; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
-    lfield(two, "pref", "Comfortable number", f.pref);
+    f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
+    lfield(two, "max", "Most people (optional)", f.max);
+    f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
+    lfield(two, "pref", "Comfortable number (optional)", f.pref);
     f.acc = mk("select"); lopt(f.acc, "", "Not answered"); lopt(f.acc, "true", "Yes"); lopt(f.acc, "false", "No");
     f.acc.value = r.is_accessible == null ? "" : String(r.is_accessible);
     lfield(box, "acc", "Accessible room", f.acc);
@@ -1470,7 +1469,7 @@
     if (lab || f.max.value.trim() || f.pref.value.trim() || seat || notes || eq.length || f.acc.value) blank = false;
     if (blank) return { blank: true };
     if (lab) o.label = lab; else miss = true;
-    if (mx === null) miss = true; else if (isNaN(mx)) bad = true; else o.max_occupancy = mx;
+    if (mx !== null) { if (isNaN(mx)) bad = true; else o.max_occupancy = mx; }
     if (pf !== null) { if (isNaN(pf)) bad = true; else o.preferred_occupancy = pf; }
     if (f.acc.value) o.is_accessible = f.acc.value === "true";
     if (seat) o.seating_layout = seat;
@@ -1534,7 +1533,7 @@
     function renumber() { rooms.forEach(function (r, i) { r.title.textContent = "Room " + (i + 1); }); }
     function addRoom(r) {
       r = r || {};
-      var box = mk("div", "rrow"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
+      var box = mk("div", "rcard"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
       var rm = mk("button", "quiet", "Remove"); rm.type = "button";
       head.appendChild(title); head.appendChild(rm); box.appendChild(head);
       var f = buildRoomFields(box, r);
@@ -1567,7 +1566,7 @@
           var v = readRoomFields(r.f); r.err.textContent = "";
           if (v.blank) return;
           if (v.bad) { bad = true; r.err.textContent = "Use whole numbers."; }
-          else if (v.miss) { bad = true; r.err.textContent = "Give the room a name and the most people it holds."; }
+          else if (v.miss) { bad = true; r.err.textContent = "Give the room a name."; }
           else vals.push(v.value);
         });
         return { value: vals.length ? vals : null, bad: bad, orig: rec.rooms && rec.rooms.length ? rec.rooms : null };
@@ -1645,9 +1644,10 @@
 
   function roomLines(r) {
     var out = [];
-    var nums = ["Up to " + r.max_occupancy + " people"];
+    var nums = [];
+    if (r.max_occupancy != null) nums.push("Up to " + r.max_occupancy + " people");
     if (r.preferred_occupancy != null) nums.push("comfortable " + r.preferred_occupancy);
-    out.push(nums.join(", "));
+    if (nums.length) out.push(nums.join(", "));
     if (r.is_accessible != null) out.push(r.is_accessible ? "Accessible" : "Not accessible");
     if (r.seating_layout) out.push("Seating: " + r.seating_layout);
     if (r.equipment && r.equipment.length) out.push("Equipment: " + r.equipment.join(", "));
@@ -1688,7 +1688,7 @@
     }
   }
   function roomForm(idx, r) {
-    var box = mk("div", "rrow"); box.appendChild(mk("strong", "", idx === "new" ? "New room" : "Edit room"));
+    var box = mk("div", "rcard"); box.appendChild(mk("strong", "", idx === "new" ? "New room" : "Edit room"));
     var f = buildRoomFields(box, r);
     var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
     var bt = mk("div", "btns"); var save = mk("button", "", "Save room"); save.type = "button";
@@ -1696,7 +1696,7 @@
     cancel.addEventListener("click", function () { D.editing = null; dmsg(""); renderRooms(); });
     save.addEventListener("click", function () {
       var v = readRoomFields(f); re.textContent = "";
-      if (v.blank || v.miss) { re.textContent = "Give the room a name and the most people it holds."; return; }
+      if (v.blank || v.miss) { re.textContent = "Give the room a name."; return; }
       if (v.bad) { re.textContent = "Use whole numbers."; return; }
       var next = (D.rec.rooms || []).slice();
       if (idx === "new") next.push(v.value); else next[idx] = v.value;
@@ -1711,7 +1711,7 @@
     var list = D.rec.availability_hours || [];
     body.appendChild(mk("div", "note", "Saving here saves right away. It does not wait for the venue form."));
     if (D.editing === "hours") {
-      var wrap = mk("div", "rrow"); wrap.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
+      var wrap = mk("div", "rcard"); wrap.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
       var hr = buildHoursRows(wrap, list);
       var bt = mk("div", "btns"); var save = mk("button", "", "Save hours"); save.type = "button";
       var cancel = mk("button", "quiet", "Cancel"); cancel.type = "button"; bt.appendChild(save); bt.appendChild(cancel); wrap.appendChild(bt);
@@ -2240,7 +2240,7 @@
     var o0 = mk("option", "", vid ? "Not chosen yet" : "Choose a venue first"); o0.value = ""; sel.appendChild(o0);
     var found = false;
     ((v && v.rooms) || []).forEach(function (r) {
-      var o = mk("option", "", r.label + " (up to " + r.max_occupancy + ")"); o.value = r.label; sel.appendChild(o);
+      var o = mk("option", "", r.label + (r.max_occupancy != null ? " (up to " + r.max_occupancy + ")" : "")); o.value = r.label; sel.appendChild(o);
       if (r.label === keep) found = true;
     });
     if (keep && !found) { var ox = mk("option", "", keep + " (not in this venue)"); ox.value = keep; sel.appendChild(ox); }
