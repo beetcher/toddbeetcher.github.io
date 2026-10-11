@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/registration_request.schema.json",
   "title": "registration_request",
-  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id; it must be a public workshop) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule). Payment is not stored on a request: payments are transaction_records, and the registration_assignment holds their ids.",
+  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id; it must be a public workshop) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule). Payment is not stored on a request: payments are transaction_records, and the registration_assignment holds their ids. The requester is linked to a person record by individual_id once identity review decides.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -389,6 +389,12 @@
     },
     "previous_id": {
       "description": "When the same normalized email already had a request of the same type, the id of the earlier record. A flag, never a refusal: repeats are saved as new records. Set by the server.",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "individual_id": {
+      "description": "The individual (person record) this request's requester was matched to. Absent until identity review decides; the server sets it when an operator confirms the match or creates the person. Never matched on email or phone alone (couples share both). The name, email and phone on this request stay as submitted; this only adds the link. Set by the server.",
       "type": "string",
       "format": "uuid",
       "readOnly": true

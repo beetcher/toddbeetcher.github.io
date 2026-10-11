@@ -88,7 +88,7 @@
           "x_pii": true
         },
         "party_id": {
-          "description": "UUID of the party's own record, when one exists (a person, organization or program record; none are written yet). Optional.",
+          "description": "UUID of the party's own record, when one exists. When party_type is person this is an individual's id (it must exist, endpoint rule); organization and program records are not written yet. Optional.",
           "type": "string",
           "format": "uuid"
         }
@@ -119,7 +119,7 @@
           "x_pii": true
         },
         "party_id": {
-          "description": "UUID of the party's own record, when one exists (a person, organization or program record; none are written yet). Optional.",
+          "description": "UUID of the party's own record, when one exists. When party_type is person this is an individual's id (it must exist, endpoint rule); organization and program records are not written yet. Optional.",
           "type": "string",
           "format": "uuid"
         }
@@ -149,6 +149,16 @@
       "description": "The outside system's id for the transaction, such as a processor's payment id or a check number. Never card or account details. Optional.",
       "type": "string",
       "maxLength": 100
+    },
+    "participant_individual_ids": {
+      "description": "UUIDs of the individuals this payment is for, when that differs from the payer (a parent paying for a child, an organization paying for staff). Each must exist (endpoint rule). Optional, up to 100.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "uniqueItems": true,
+      "maxItems": 100
     },
     "status": {
       "description": "pending (expected or processing), completed (money moved), failed (it did not go through) or voided (cancelled before completing). A refund is a separate record, not a status. Required.",
