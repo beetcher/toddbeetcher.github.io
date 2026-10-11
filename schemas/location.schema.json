@@ -1,0 +1,426 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/location.schema.json",
+  "title": "location",
+  "description": "A place on Earth, of any size: a doorway, a street address, a 20-acre property with one street address and several GPS points, a parcel, a route. It has names, addresses, GPS shapes, a time zone and facts about the place itself, and nothing else. It holds NO knowledge of who lives, owns, operates or delivers there: those are location_link records, which can start and end while the location never changes. What stands on the place (a house with three bedrooms) is a separate thing, not stored here. Family or any other relationship between people is never inferred from sharing a location. Endpoint rules the schema cannot express: at least one of name, addresses or geometries; at most one primary address; a civic address needs a country; valid_from not after valid_to; GeoJSON coordinates in range and nested right for their type; time_zone is a real IANA name; part_of_location_id exists, is not itself and makes no loop; a location with a live location_link cannot be retired or deleted (conflict, id:in_use); an address already used by another live location is a warning to the operator (the server reports the match; it never merges).",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept as long as any link points at it. A residential location is retired and its personal details removed when its last residence link is erased with the person; a location a venue or organization still links to stays. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
+  "anyOf": [
+    {
+      "required": [
+        "name"
+      ]
+    },
+    {
+      "required": [
+        "addresses"
+      ]
+    },
+    {
+      "required": [
+        "geometries"
+      ]
+    }
+  ],
+  "properties": {
+    "kind": {
+      "description": "How big a thing this is: point (a doorway or a spot), site (a building, campus or property), parcel (a legal lot) or route (a street or trail). Optional; site when absent. Neighborhoods and cities are not locations here.",
+      "enum": [
+        "point",
+        "site",
+        "parcel",
+        "route"
+      ]
+    },
+    "name": {
+      "description": "What people call the place, such as 'Boulder Public Library' or 'Beetcher home'. Optional, but a location needs at least one of name, addresses or geometries.",
+      "type": "string",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "aliases": {
+      "description": "Other names the place is or was known by. Up to 20.",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "description": "One name.",
+        "type": "string",
+        "maxLength": 200
+      },
+      "x_pii": true
+    },
+    "description": {
+      "description": "What the place physically is, in words: 'two-story brick building on the corner, parking behind'. About the place only; never who lives, owns or operates there. Optional.",
+      "type": "string",
+      "maxLength": 2000,
+      "x_pii": true
+    },
+    "addresses": {
+      "description": "Every street, mailing and former address of this place, each with a usage. Up to 20. One may be primary.",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "usage"
+        ],
+        "properties": {
+          "usage": {
+            "description": "What this address is for: civic (where the place physically is, for deliveries and emergency services), mailing (where mail goes), po_box, or former (no longer valid but remembered). Required.",
+            "enum": [
+              "civic",
+              "mailing",
+              "po_box",
+              "former"
+            ]
+          },
+          "description": {
+            "description": "A few words about this address: 'main gate on Elm St', 'rear entrance'. Optional.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "lines": {
+            "description": "The address as printed, one string per line, top to bottom. Use these for anything that does not fit the parts below, or for a foreign address. Up to 6 lines.",
+            "type": "array",
+            "maxItems": 6,
+            "items": {
+              "description": "One printed line.",
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          "street_number": {
+            "description": "House or building number, such as 1000 or 12B. Optional.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "street": {
+            "description": "Street name with direction and type, such as Walnut St or 'W County Road 7'. Optional.",
+            "type": "string",
+            "maxLength": 120
+          },
+          "unit": {
+            "description": "Suite, apartment or floor, such as 'Suite 4'. Optional.",
+            "type": "string",
+            "maxLength": 60
+          },
+          "locality": {
+            "description": "City, town or village. Optional.",
+            "type": "string",
+            "maxLength": 120
+          },
+          "region": {
+            "description": "State, province or county-level region. Two capital letters for the US (CO). Optional.",
+            "type": "string",
+            "maxLength": 60
+          },
+          "postal_code": {
+            "description": "Postal or ZIP code, as written. Optional.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "po_box": {
+            "description": "Post office box number. Optional.",
+            "type": "string",
+            "maxLength": 20
+          },
+          "country": {
+            "description": "Two capital letters, ISO 3166 (for example US). Required on a civic address.",
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "valid_from": {
+            "description": "First day the address applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional.",
+            "type": "string",
+            "maxLength": 10,
+            "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+          },
+          "valid_to": {
+            "description": "Last day the address applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional; absent means still valid.",
+            "type": "string",
+            "maxLength": 10,
+            "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+          },
+          "is_primary": {
+            "description": "True on the one address to show first. At most one address in the list may be primary. Optional.",
+            "type": "boolean"
+          },
+          "verification": {
+            "description": "How much the address has been checked: none, self_reported (someone said so) or verified (checked against mail, a map or an official record). Optional; none when absent.",
+            "enum": [
+              "none",
+              "self_reported",
+              "verified"
+            ]
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "lines"
+            ]
+          },
+          {
+            "required": [
+              "street"
+            ]
+          },
+          {
+            "required": [
+              "po_box"
+            ]
+          }
+        ]
+      },
+      "x_pii": true
+    },
+    "geometries": {
+      "description": "Every GPS point, line or outline for this place, each with a role. A 20-acre property can hold a center point, four gate points and a boundary. Up to 50.",
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "geometry"
+        ],
+        "properties": {
+          "role": {
+            "description": "What the shape marks: center (a representative point), entrance, boundary (the outline of the place), parcel (the legal lot) or other. Required.",
+            "enum": [
+              "center",
+              "entrance",
+              "boundary",
+              "parcel",
+              "other"
+            ]
+          },
+          "geometry": {
+            "description": "The shape as GeoJSON (RFC 7946): longitude first, then latitude, WGS84, optional altitude in meters. Required.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "coordinates"
+            ],
+            "properties": {
+              "type": {
+                "description": "Point, MultiPoint, LineString, MultiLineString, Polygon or MultiPolygon.",
+                "enum": [
+                  "Point",
+                  "MultiPoint",
+                  "LineString",
+                  "MultiLineString",
+                  "Polygon",
+                  "MultiPolygon"
+                ]
+              },
+              "coordinates": {
+                "description": "GeoJSON coordinates for the type. Longitude -180 to 180, latitude -90 to 90; the handler checks the ranges and the nesting for the type.",
+                "type": "array",
+                "maxItems": 500
+              }
+            }
+          },
+          "accuracy_m": {
+            "description": "How close the shape is to the truth, in meters. Optional.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "source": {
+            "description": "Where the shape came from: gps_device, map_click, geocoder, survey, public_record or other. Optional.",
+            "enum": [
+              "gps_device",
+              "map_click",
+              "geocoder",
+              "survey",
+              "public_record",
+              "other"
+            ]
+          },
+          "as_of": {
+            "description": "When the shape was captured, as YYYY, YYYY-MM or YYYY-MM-DD. Optional.",
+            "type": "string",
+            "maxLength": 10,
+            "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+          },
+          "label": {
+            "description": "A short label, such as 'north gate'. Optional.",
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
+      "x_pii": true
+    },
+    "time_zone": {
+      "description": "An IANA time zone name such as America/Denver. Optional.",
+      "type": "string",
+      "maxLength": 64
+    },
+    "identifiers": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "description": "What kind of identifier, lowercase words and underscores, such as parcel_number. Required.",
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "value": {
+            "description": "The identifier. Required.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "description": {
+            "description": "A few words about it. Optional.",
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      },
+      "description": "Outside identifiers for the place: county parcel number, utility id, a venue code. Each has a type, a value and an optional description. Up to 20. Not personal data about a person.",
+      "x_pii": true
+    },
+    "characteristics": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "description": "What kind of characteristic, lowercase words and underscores, such as parcel_number. Required.",
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "value": {
+            "description": "The characteristic, in a few words, such as fenced or gravel_lot. Required.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "description": {
+            "description": "A few words about it. Optional.",
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      },
+      "description": "Facts about the place itself, never about who is there: fenced, gravel lot, steep driveway. Each has a type, a value and an optional description. Up to 20.",
+      "x_pii": true
+    },
+    "part_of_location_id": {
+      "description": "The larger location this one sits inside (a doorway inside a campus). One parent at most; not itself and not a loop. Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "description": "active (default when omitted) or retired (kept for history; not offered in pickers). A location with a live link cannot be retired.",
+      "enum": [
+        "active",
+        "retired"
+      ]
+    },
+    "is_residential": {
+      "description": "True while any active resides_at link points at this location; false otherwise. Used to find homes whose residents need privacy. Set by the server (the link service).",
+      "readOnly": true,
+      "type": "boolean"
+    },
+    "address_keys": {
+      "description": "Normalized strings made from the addresses (number, street, unit, locality, region, postal code), used to find a place that already exists. Set by the server; not personal data on its own.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      }
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "is_residential"
+  ]
+}

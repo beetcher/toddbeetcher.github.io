@@ -22,6 +22,7 @@ from google.cloud import firestore
 from google.cloud.firestore_v1 import Query
 from google.cloud.firestore_v1.base_query import FieldFilter
 
+from .nested_arrays import decode as _decode, encode as _encode
 from .store_errors import DocExists, DocMissing, StaleUpdate
 
 
@@ -41,10 +42,11 @@ class FirestoreDocStore:
 
     def get(self, base: str, id: str) -> Optional[dict]:
         snap = self._col(base).document(id).get()
-        return snap.to_dict() if snap.exists else None
+        return _decode(snap.to_dict()) if snap.exists else None
 
     def create(self, base: str, id: str, doc: dict, tx: Optional[_Tx] = None) -> None:
         ref = self._col(base).document(id)
+        doc = _encode(doc)  # Firestore refuses an array inside an array (GeoJSON coordinates); see nested_arrays.py
         if tx is not None:
             tx.batch.create(ref, doc)
             tx.count += 1
@@ -57,7 +59,7 @@ class FirestoreDocStore:
     def update(self, base: str, id: str, set_fields: dict, delete_fields=(), expected_updated_at: Optional[str] = None,
                tx: Optional[_Tx] = None) -> None:
         ref = self._col(base).document(id)
-        changes = dict(set_fields)
+        changes = _encode(dict(set_fields))
         for f in delete_fields:
             changes[f] = firestore.DELETE_FIELD
         if tx is not None:
@@ -95,7 +97,7 @@ class FirestoreDocStore:
             q = q.where(filter=FieldFilter(field, op, value))
         if order_by:
             q = q.order_by(order_by, direction=Query.DESCENDING if descending else Query.ASCENDING)
-        return [d.to_dict() for d in q.limit(limit).stream()]
+        return [_decode(d.to_dict()) for d in q.limit(limit).stream()]
 
     @contextmanager
     def transaction(self):

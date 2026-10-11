@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/location_link.schema.json",
+  "title": "location_link",
+  "description": "One relationship between a thing and a location, with dates: this individual resides at that location from 2019 to 2024; this venue operates at that location from 2005 on. The location never changes when a relationship does: a venue that moves buildings gets its old link ended and a new link made. A link says nothing about family: two people linked to one location are not thereby related. The link, never the location, is what makes a place residential. Endpoint rules the schema cannot express: the subject exists in the right collection and is live; the location exists and is active; subject_type and relationship fit (resides_at only for an individual, operates_at only for a venue); valid_from not after valid_to; no two links with the same subject, location and relationship overlap in time; one primary per subject and relationship among active links; subject_type, subject_id, location_id and relationship never change after creation; status follows valid_to.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept as long as the subject and the location exist, for history. When an individual is erased the link is soft deleted and everything that describes it is removed (dates, notes, description, verification), leaving an anonymous tombstone. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
+  "required": [
+    "subject_type",
+    "subject_id",
+    "location_id",
+    "relationship"
+  ],
+  "properties": {
+    "subject_type": {
+      "description": "What kind of thing is related to the location: individual, venue or organization. Required. (organization is reserved until organizations have their own schema; the service refuses it for now.)",
+      "enum": [
+        "individual",
+        "venue",
+        "organization"
+      ]
+    },
+    "subject_id": {
+      "description": "The id of that individual, venue or organization. Required. The service checks it exists in the right collection. A merged individual is followed to the surviving person.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "location_id": {
+      "description": "The location. Required. Must exist and be active. Never changes once set.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "relationship": {
+      "description": "How the subject relates to the location: resides_at, mailing_address_for, billing_address_for, works_at, operates_at, owns, manages, delivers_to or other. Required. Never changes once set; to change it, end this link and make another.",
+      "enum": [
+        "resides_at",
+        "mailing_address_for",
+        "billing_address_for",
+        "works_at",
+        "operates_at",
+        "owns",
+        "manages",
+        "delivers_to",
+        "other"
+      ]
+    },
+    "description": {
+      "description": "A few words about this relationship, especially for other: 'summer cabin', 'loading dock only'. Up to 300 characters. Optional.",
+      "type": "string",
+      "maxLength": 300,
+      "x_pii": true
+    },
+    "is_primary": {
+      "description": "True when this is the subject's main link of this relationship (their main home). At most one active link per subject and relationship is primary; making one primary demotes the other. Optional.",
+      "type": "boolean"
+    },
+    "valid_from": {
+      "description": "First day the relationship applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "valid_to": {
+      "description": "Last day the relationship applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional; absent means it still applies. Setting it ends the link (status ended); removing it reopens it.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "verification": {
+      "description": "How much the relationship has been checked: none, self_reported or verified. Optional; none when absent.",
+      "enum": [
+        "none",
+        "self_reported",
+        "verified"
+      ]
+    },
+    "notes": {
+      "description": "Free text for the operator. Up to 2000 characters. Personal data when the subject is a person. Optional.",
+      "type": "string",
+      "maxLength": 2000,
+      "x_pii": true
+    },
+    "status": {
+      "description": "active (no valid_to) or ended (valid_to set). Set by the server from valid_to.",
+      "readOnly": true,
+      "enum": [
+        "active",
+        "ended"
+      ]
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. A deleted link is a mistake corrected, not a relationship that ended. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "status"
+  ]
+}

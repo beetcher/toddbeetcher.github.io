@@ -31,6 +31,7 @@ MERGES = load_collection("merge_event")
 REQUESTS = load_collection("registration_request")
 ASSIGNMENTS = load_collection("registration_assignment")
 TRANSACTIONS = load_collection("transaction_record")
+LOCATION_LINKS = load_collection("location_link")
 INDIVIDUALS = I.INDIVIDUALS
 DETAILS = R.DETAILS
 HISTORY = I.HISTORY
@@ -47,6 +48,7 @@ LINKS = (
     (TRANSACTIONS.name, "participant_individual_ids", "list"),
     (TRANSACTIONS.name, "payer.party_id", "scalar"),
     (TRANSACTIONS.name, "payee.party_id", "scalar"),
+    (LOCATION_LINKS.name, "subject_id", "scalar"),  # only links whose subject_type is individual (see _find_links)
 )
 
 SKIP = frozenset({"id", "schema_version", "created_at", "created_by", "updated_at", "updated_by", "source", "status",
@@ -180,6 +182,8 @@ def _find_links(store, individual_id: str) -> list:
     for base, field, kind in LINKS:
         op = "array_contains" if kind == "list" else "=="
         for d in store.query(base, [(field, op, individual_id)], limit=SCAN_LIMIT):
+            if base == LOCATION_LINKS.name and d.get("subject_type") != "individual":
+                continue  # a venue or organization id can never equal an individual id, but say so anyway
             out.append((base, d, field, kind))
     return out
 

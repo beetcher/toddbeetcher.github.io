@@ -1,0 +1,54 @@
+{
+  "valid": {
+    "minimal_named": {"name": "Boulder Public Library"},
+    "street_address": {
+      "kind": "site",
+      "name": "Boulder Public Library Main",
+      "addresses": [{"usage": "civic", "street_number": "1001", "street": "Arapahoe Ave", "locality": "Boulder", "region": "CO", "postal_code": "80302", "country": "US", "is_primary": true, "verification": "verified"}],
+      "geometries": [{"role": "center", "geometry": {"type": "Point", "coordinates": [-105.2783, 40.0150]}, "accuracy_m": 8, "source": "map_click"}],
+      "time_zone": "America/Denver"
+    },
+    "twenty_acre_property": {
+      "kind": "parcel",
+      "name": "Cedar Ridge property",
+      "aliases": ["the ranch"],
+      "description": "Twenty acres off the county road; gravel driveway, one gate at the road.",
+      "addresses": [
+        {"usage": "civic", "street_number": "4521", "street": "County Road 7", "locality": "Lyons", "region": "CO", "postal_code": "80540", "country": "US", "is_primary": true},
+        {"usage": "mailing", "po_box": "88", "locality": "Lyons", "region": "CO", "postal_code": "80540", "country": "US"}
+      ],
+      "geometries": [
+        {"role": "center", "geometry": {"type": "Point", "coordinates": [-105.2701, 40.2245]}},
+        {"role": "entrance", "label": "road gate", "geometry": {"type": "Point", "coordinates": [-105.2712, 40.2231]}, "accuracy_m": 5, "source": "gps_device", "as_of": "2026-09"},
+        {"role": "boundary", "geometry": {"type": "Polygon", "coordinates": [[[-105.272, 40.223], [-105.268, 40.223], [-105.268, 40.226], [-105.272, 40.226], [-105.272, 40.223]]]}, "source": "public_record"}
+      ],
+      "identifiers": [{"type": "parcel_number", "value": "R0012345", "description": "Boulder County assessor"}],
+      "characteristics": [{"type": "surface", "value": "gravel driveway"}],
+      "time_zone": "America/Denver"
+    },
+    "gps_only_doorway": {"kind": "point", "name": "Side door", "geometries": [{"role": "entrance", "geometry": {"type": "Point", "coordinates": [-105.28, 40.015, 1655.2]}}], "part_of_location_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"},
+    "former_address": {"name": "Old office", "addresses": [{"usage": "former", "lines": ["12 Pearl St", "Boulder, CO 80302"], "valid_from": "2015", "valid_to": "2022-06"}]}
+  },
+  "invalid": {
+    "empty": {},
+    "nothing_to_identify": {"description": "just words", "time_zone": "America/Denver"},
+    "address_without_usage": {"addresses": [{"street": "Main St"}]},
+    "address_without_content": {"addresses": [{"usage": "civic", "country": "US"}]},
+    "bad_usage": {"addresses": [{"usage": "home", "street": "Main St"}]},
+    "country_lowercase": {"name": "X", "addresses": [{"usage": "civic", "street": "Main St", "country": "us"}]},
+    "bad_valid_from": {"name": "X", "addresses": [{"usage": "former", "street": "Main St", "valid_from": "6/2020"}]},
+    "geometry_missing_coordinates": {"name": "X", "geometries": [{"role": "center", "geometry": {"type": "Point"}}]},
+    "geometry_bad_type": {"name": "X", "geometries": [{"role": "center", "geometry": {"type": "Circle", "coordinates": [1, 2]}}]},
+    "geometry_bad_role": {"name": "X", "geometries": [{"role": "middle", "geometry": {"type": "Point", "coordinates": [1, 2]}}]},
+    "bad_kind": {"name": "X", "kind": "city"},
+    "bad_status": {"name": "X", "status": "closed"},
+    "parent_not_uuid": {"name": "X", "part_of_location_id": "main"},
+    "identifier_bad_type": {"name": "X", "identifiers": [{"type": "Parcel Number", "value": "1"}]},
+    "camel_case_field": {"name": "X", "timeZone": "America/Denver"},
+    "residential_flag_sent": {"name": "X", "is_residential": true},
+    "address_keys_sent": {"name": "X", "address_keys": ["a"]},
+    "id_sent": {"name": "X", "id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"},
+    "unknown_field": {"name": "X", "owner": "Todd"},
+    "occupant_field_sent": {"name": "X", "residents": ["Todd"]}
+  }
+}

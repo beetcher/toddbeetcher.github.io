@@ -64,6 +64,22 @@
       "guide": "MERGE_EVENT_GUIDE.md",
       "examples": "examples/merge_event.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "location",
+      "collection": "locations",
+      "schema": "location.schema.json",
+      "guide": "LOCATION_GUIDE.md",
+      "examples": "examples/location.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "location_link",
+      "collection": "location_links",
+      "schema": "location_link.schema.json",
+      "guide": "LOCATION_LINK_GUIDE.md",
+      "examples": "examples/location_link.examples.json",
+      "schema_version": 1
     }
   ]
 }

@@ -17,6 +17,7 @@ import copy
 from contextlib import contextmanager
 from typing import Optional
 
+from .nested_arrays import decode as _decode, encode as _encode, has_nested_array as _has_nested
 from .store_errors import DocExists, DocMissing, StaleUpdate  # noqa: F401  (re-exported)
 
 
@@ -65,13 +66,16 @@ class MemoryDocStore:
     def get(self, base: str, id: str) -> Optional[dict]:
         self.reads.append(("get", base, id))
         doc = self._c(base).get(id)
-        return copy.deepcopy(doc) if doc is not None else None
+        return _decode(copy.deepcopy(doc)) if doc is not None else None
 
     def create(self, base: str, id: str, doc: dict, tx: Optional[_Tx] = None) -> None:
         def apply():
             if id in self._c(base):
                 raise DocExists()
-            self._c(base)[id] = copy.deepcopy(doc)
+            stored = _encode(copy.deepcopy(doc))   # the same wrapping the Firestore store does (nested arrays are refused there)
+            if _has_nested(stored):
+                raise ValueError("nested array")
+            self._c(base)[id] = stored
         (tx.pending.append(apply) if tx is not None else apply())
 
     def update(self, base: str, id: str, set_fields: dict, delete_fields=(), expected_updated_at: Optional[str] = None,
@@ -82,7 +86,7 @@ class MemoryDocStore:
                 raise DocMissing()
             if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
                 raise StaleUpdate()
-            for k, v in copy.deepcopy(set_fields).items():
+            for k, v in _encode(copy.deepcopy(set_fields)).items():
                 _set_path(cur, k, v)
             for f in delete_fields:
                 cur.pop(f, None)
@@ -94,7 +98,7 @@ class MemoryDocStore:
         docs = [d for d in self._c(base).values() if all(_matches(d, f, op, v) for f, op, v in filters)]
         if order_by:
             docs.sort(key=lambda d: (d.get(order_by) is None, d.get(order_by)), reverse=descending)
-        return [copy.deepcopy(d) for d in docs[:limit]]
+        return [_decode(copy.deepcopy(d)) for d in docs[:limit]]
 
     @contextmanager
     def transaction(self):
