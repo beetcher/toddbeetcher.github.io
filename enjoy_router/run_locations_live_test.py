@@ -112,9 +112,46 @@ check("Console find_by_address (real collection)", A("locations", "find_by_addre
 check("Console cannot erase", A("individuals", "erase", id=bob["id"])[0] == 400)
 check("end is only for links", T("locations", "end", id=home["id"])[0] == 400)
 
+# venues on places: one-window add, expand, move, activation gate, contact pointer
+venues = []
+stamp = str(int(time.time()))
+vaddr = {"usage": "civic", "street_number": "9002", "street": "Livetest Venue Way", "locality": "Boulder", "region": "CO", "postal_code": "80302", "country": "US", "is_primary": True}
+vdata = lambda n, **kw: {"name": "Livetest " + n, "slug": "livetest_" + n.lower() + "_" + stamp, "status": "inactive", "is_public_venue": True, **kw}
+r = T("venues", "create_with_place", data=vdata("Venue", email="Livetest@Example.com", contact_individual_id=bob["id"]), address=vaddr)
+check("create_with_place 200", r[0] == 200, r)
+v = data(r)
+if v.get("id"): venues.append(v["id"])
+if v.get("place", {}).get("location_id"): places.append(v["place"]["location_id"])
+check("venue starts inactive, email lowercased, place and contact shown",
+      v.get("status") == "inactive" and v.get("email") == "livetest@example.com" and v.get("place", {}).get("address", {}).get("street") == "Livetest Venue Way"
+      and v.get("main_contact", {}).get("id") == bob["id"], v)
+check("expand on get shows the place", data(T("venues", "get", id=v["id"], expand=True)).get("place", {}).get("name") == "Livetest Venue")
+check("get without expand has no place", "place" not in data(T("venues", "get", id=v["id"])))
+r = T("venues", "update", id=v["id"], changes={"status": "active"}, expected_updated_at=v["updated_at"])
+check("activate with a place works", r[0] == 200 and "status" in data(r).get("changed", []), r)
+check("venue reads back as active", data(T("venues", "get", id=v["id"])).get("status") == "active")
+r = T("venues", "create", data=vdata("Active", status="active"))
+check("create already active is refused (place_required)", r[0] == 400 and "status:place_required" in probs(r), r)
+if r[0] == 200: venues.append(data(r)["id"])
+r = T("venues", "create_with_place", data=vdata("Bad"), address={"locality": "x"})
+check("bad address is refused", r[0] == 400, r)
+if r[0] == 200: venues.append(data(r)["id"])
+r = T("venues", "set_place", id=v["id"], address={**vaddr, "street_number": "9003"}); check("set_place to a new address", r[0] == 200, r)
+if data(r).get("place", {}).get("location_id"): places.append(data(r)["place"]["location_id"])
+spot = place(name="Livetest saved spot", addresses=[{**addr, "street_number": "9004"}])
+r = T("venues", "set_place", id=v["id"], location_id=spot["id"]); check("set_place to a saved place", r[0] == 200 and data(r).get("place", {}).get("location_id") == spot["id"], r)
+r = T("venues", "set_place", id=v["id"], location_id=spot["id"]); check("same place again changes nothing", r[0] == 200 and data(r).get("changed") is False, r)
+for l in (data(T("location_links", "list", filters={"subject_id": v["id"]})).get("records") or []):
+    links.append(l["id"])
+check("Console door: list venues with expand (real collection)", A("venues", "list", expand=True)[0] == 200)
+check("Console door: set_place needs an id", A("venues", "set_place")[0] == 400)
+check("expand is refused on other modules", T("locations", "list", expand=True)[0] == 400)
+
 # clean up
 for i in links:
     T("location_links", "soft_delete", id=i)
+for i in venues:
+    T("venues", "soft_delete", id=i)
 for i in places:
     T("locations", "soft_delete", id=i)
 for i in people:
