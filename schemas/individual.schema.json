@@ -1,0 +1,533 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/individual.schema.json",
+  "title": "individual",
+  "description": "One human being, independent of any role. Holds only what is intrinsic and stable: names (the core ones), birth, life status, stable physical traits, language and a few cross-references. Roles, memberships, addresses, contact points, identifiers, relationships, unions, observations, consents, guardianship, credentials, payments and registrations are other schemas that point at an individual by individual_id; none of them live here. Health, blood type, sex, gender identity and other sensitive items live in individual_restricted_detail. Robots and animals have their own schemas. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: a partial or full date must be a real calendar date; birth_date may not be in the future; death_date may not be before birth_date; a sender may set status only to active or inactive; merged and erased come only from the merge and erase handlers; display_name is computed; a minor's birth_date is stored as a year unless the product needs more; a new individual is never created by matching on email or phone alone (see the guide's identity rules).",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Keep while the person is an active participant. Inactive records are reviewed after 3 years. A minor's record is reviewed at 18. A deceased person's record is reviewed after the estate period. Financial links are kept 7 years. On erasure only a tombstone (id, status, erased_at) remains. (A written policy only; nothing enforces it yet.)",
+  "x_history": "history_collection",
+  "required": [
+    "given_name"
+  ],
+  "properties": {
+    "given_name": {
+      "description": "The first or only name the person goes by in records. Required. Not unique, may be one word, and is never used alone to identify anyone. Other names (legal, former, alias, other scripts) are individual_name records, a later schema.",
+      "type": "string",
+      "maxLength": 100,
+      "minLength": 1,
+      "x_pii": true
+    },
+    "middle_names": {
+      "description": "Middle or additional names, free text. Optional.",
+      "type": "string",
+      "maxLength": 200,
+      "x_pii": true
+    },
+    "family_name": {
+      "description": "Family name. Optional: some people have a single name. Never assume it exists.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "name_prefix": {
+      "description": "Honorific before the name (Dr., Mx.). Optional.",
+      "type": "string",
+      "maxLength": 30,
+      "x_pii": true
+    },
+    "name_suffix": {
+      "description": "Suffix after the name (Jr., III, PhD). Optional.",
+      "type": "string",
+      "maxLength": 30,
+      "x_pii": true
+    },
+    "name_to_use": {
+      "description": "What the person asks to be called. When present it overrides given_name in display_name. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "name_pronunciation": {
+      "description": "How to say the name, plain text or phonetic. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "pronouns": {
+      "description": "Pronouns as the person states them (for example she/her). Person-stated only, never inferred. Optional.",
+      "type": "string",
+      "maxLength": 50,
+      "x_pii": true
+    },
+    "display_name": {
+      "description": "The name to show on screens: name_to_use if present, otherwise given_name and family_name. Computed by the server. A label only, never an identity key.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 300
+    },
+    "status": {
+      "description": "Record state: active (default when omitted), inactive (kept, not in pickers), merged (this record was found to be the same person as merged_into_id; every read follows it) or erased (personal data removed; only a tombstone remains). A sender may set only active or inactive; merged and erased are set by the server.",
+      "enum": [
+        "active",
+        "inactive",
+        "merged",
+        "erased"
+      ]
+    },
+    "merged_into_id": {
+      "description": "When status is merged: the id of the individual this record was folded into. All reads follow it. Set by the merge handler.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "erased_at": {
+      "description": "When the personal data was erased (UTC). Set by the erase handler. After this only the id, status, erased_at and server fields remain.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "record_privacy": {
+      "description": "normal (default), confidential (hidden from ordinary lists) or sealed (readable only by an administrator). Optional.",
+      "enum": [
+        "normal",
+        "confidential",
+        "sealed"
+      ]
+    },
+    "identity_verification": {
+      "description": "How well this person's identity is established: none (a name and nothing else, such as a walk-in), self_reported (the person told us) or document_verified (an issued document was checked). Matching favors document_verified. Optional; absent means none.",
+      "enum": [
+        "none",
+        "self_reported",
+        "document_verified"
+      ]
+    },
+    "retention_class": {
+      "description": "Which retention rule applies: active_participant, inactive_3y, financial_7y, minor_review_at_18 or deceased_review. The server sets a default from is_minor and life_status; an operator may override. Optional.",
+      "enum": [
+        "active_participant",
+        "inactive_3y",
+        "financial_7y",
+        "minor_review_at_18",
+        "deceased_review"
+      ]
+    },
+    "is_minor": {
+      "description": "Whether the person is under 18. Derived by the server from birth_date and the clock; absent when birth_date is unknown. Stored only as a cache and refreshed nightly. Drives the rules for minors.",
+      "readOnly": true,
+      "type": "boolean"
+    },
+    "birth_date": {
+      "description": "Date of birth as YYYY, YYYY-MM or YYYY-MM-DD, so a partial date is allowed (the length is the precision). Personal data. For a minor, store only the year unless a product needs the full date. Optional.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$",
+      "x_pii": true
+    },
+    "birth_date_certainty": {
+      "description": "exact, approximate or estimated. Absent means exact. Optional.",
+      "enum": [
+        "exact",
+        "approximate",
+        "estimated"
+      ]
+    },
+    "birth_date_verification": {
+      "description": "none, self (the person said) or document (an issued document was checked). Matching favors document over self. Optional.",
+      "enum": [
+        "none",
+        "self",
+        "document"
+      ]
+    },
+    "birth_place_city": {
+      "description": "City or town of birth. A place, not an address. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "birth_place_region": {
+      "description": "State or region of birth. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "birth_country": {
+      "description": "Country of birth, two capital letters, ISO 3166 (for example US). Optional.",
+      "type": "string",
+      "maxLength": 2,
+      "pattern": "^[A-Z]{2}$"
+    },
+    "multiple_birth_count": {
+      "description": "How many were born in the same birth (2 for twins). Absent for a single birth. Twins are never auto-matched as the same person. Optional.",
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 10
+    },
+    "multiple_birth_order": {
+      "description": "Birth order within the multiple birth, starting at 1. Needs multiple_birth_count. Optional.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "life_status": {
+      "description": "alive (default when omitted), deceased, presumed_deceased or unknown. deceased and presumed_deceased require death_evidence. Setting one blocks new registrations, messages and charges and starts the retention clock.",
+      "enum": [
+        "alive",
+        "deceased",
+        "presumed_deceased",
+        "unknown"
+      ]
+    },
+    "death_date": {
+      "description": "Date of death as YYYY, YYYY-MM or YYYY-MM-DD. Only with life_status deceased or presumed_deceased. Optional.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$",
+      "x_pii": true
+    },
+    "death_date_certainty": {
+      "description": "exact, approximate or estimated. Absent means exact. Optional.",
+      "enum": [
+        "exact",
+        "approximate",
+        "estimated"
+      ]
+    },
+    "death_place_city": {
+      "description": "City or town of death. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "death_place_region": {
+      "description": "State or region of death. Optional.",
+      "type": "string",
+      "maxLength": 100,
+      "x_pii": true
+    },
+    "death_country": {
+      "description": "Country of death, ISO 3166 two capital letters. Optional.",
+      "type": "string",
+      "maxLength": 2,
+      "pattern": "^[A-Z]{2}$"
+    },
+    "death_evidence": {
+      "description": "Basis for the death status: family_report, document, public_record or operator_assertion. Required when life_status is deceased or presumed_deceased. Automated actions need document or public_record.",
+      "enum": [
+        "family_report",
+        "document",
+        "public_record",
+        "operator_assertion"
+      ]
+    },
+    "eye_color_left": {
+      "description": "Natural color of the left eye: black, blue, brown, gray, green, hazel, maroon, pink, dichromatic or unknown. Different left and right values are valid. Optional. A baby's eye color is not recorded before age 3.",
+      "enum": [
+        "black",
+        "blue",
+        "brown",
+        "gray",
+        "green",
+        "hazel",
+        "maroon",
+        "pink",
+        "dichromatic",
+        "unknown"
+      ]
+    },
+    "eye_color_right": {
+      "description": "Natural color of the right eye, same values as eye_color_left. Optional.",
+      "enum": [
+        "black",
+        "blue",
+        "brown",
+        "gray",
+        "green",
+        "hazel",
+        "maroon",
+        "pink",
+        "dichromatic",
+        "unknown"
+      ]
+    },
+    "natural_hair_color": {
+      "description": "Natural hair color at maturity: bald, black, blond, brown, gray, red, sandy, white or unknown. Hair as it is now (dyed, cut) is a later observation record. Optional.",
+      "enum": [
+        "bald",
+        "black",
+        "blond",
+        "brown",
+        "gray",
+        "red",
+        "sandy",
+        "white",
+        "unknown"
+      ]
+    },
+    "handedness": {
+      "description": "right, left, ambidextrous or unknown. Optional.",
+      "enum": [
+        "right",
+        "left",
+        "ambidextrous",
+        "unknown"
+      ]
+    },
+    "adult_height_cm": {
+      "description": "Height in centimeters, measured once as an adult baseline (50 to 272). Ongoing heights and a child's heights are observation records, a later schema. Optional.",
+      "type": "number",
+      "minimum": 50,
+      "maximum": 272
+    },
+    "preferred_language": {
+      "description": "The language to use with this person, a BCP 47 tag such as en or es-MX. All languages and proficiency are language_ability records, a later schema. Optional.",
+      "type": "string",
+      "maxLength": 35,
+      "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+    },
+    "time_zone": {
+      "description": "The person's IANA time zone such as America/Denver. Optional.",
+      "type": "string",
+      "maxLength": 64
+    },
+    "requires_interpreter": {
+      "description": "Whether the person needs an interpreter. Optional.",
+      "type": "boolean"
+    },
+    "external_refs": {
+      "description": "Pointers to this person in other systems, such as a payment processor customer id. Government ids never go here. Optional, up to 20.",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "system",
+          "ref"
+        ],
+        "properties": {
+          "system": {
+            "description": "The other system's name, lowercase with underscores (for example stripe).",
+            "type": "string",
+            "maxLength": 50,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "ref": {
+            "description": "The id in that system.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "kind": {
+            "description": "What the id is (customer, member, account). Optional.",
+            "type": "string",
+            "maxLength": 50
+          }
+        }
+      }
+    },
+    "same_as_urls": {
+      "description": "Public profile pages the person chose to link. Optional, up to 10.",
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type": "string",
+        "format": "uri",
+        "maxLength": 300
+      }
+    },
+    "notes": {
+      "description": "Operator notes about the person, free text. Personal data. Optional.",
+      "type": "string",
+      "maxLength": 2000,
+      "x_pii": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC, ISO 8601). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created the record. Who acted, as an actor string such as user:<uuid>. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server. A change must name the updated_at it read.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed the record. Who acted, as an actor string such as user:<uuid>. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: web_enjoy, dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "web_enjoy",
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "Soft-delete time: the record is kept. Never soft-delete a record that others point at; set it inactive or erase it instead. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Actor who soft-deleted the record. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "display_name"
+  ],
+  "dependentRequired": {
+    "multiple_birth_order": [
+      "multiple_birth_count"
+    ],
+    "birth_date_certainty": [
+      "birth_date"
+    ],
+    "birth_date_verification": [
+      "birth_date"
+    ],
+    "death_date_certainty": [
+      "death_date"
+    ],
+    "merged_into_id": [
+      "status"
+    ]
+  },
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": [
+              "death_date"
+            ]
+          },
+          {
+            "required": [
+              "death_date_certainty"
+            ]
+          },
+          {
+            "required": [
+              "death_place_city"
+            ]
+          },
+          {
+            "required": [
+              "death_place_region"
+            ]
+          },
+          {
+            "required": [
+              "death_country"
+            ]
+          }
+        ]
+      },
+      "then": {
+        "required": [
+          "life_status"
+        ],
+        "properties": {
+          "life_status": {
+            "enum": [
+              "deceased",
+              "presumed_deceased"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "life_status": {
+            "enum": [
+              "deceased",
+              "presumed_deceased"
+            ]
+          }
+        },
+        "required": [
+          "life_status"
+        ]
+      },
+      "then": {
+        "required": [
+          "death_evidence"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "merged"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "merged_into_id"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "erased"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "erased_at"
+        ]
+      }
+    }
+  ]
+}

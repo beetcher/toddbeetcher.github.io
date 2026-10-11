@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/individual_restricted_detail.schema.json",
+  "title": "individual_restricted_detail",
+  "description": "The sensitive, optional facts about one individual, held apart from the individual so security rules and exports can treat them separately: blood type, skin type, recorded sex, gender identity, clinical sex, veteran status and cause of death. Nothing here is collected by default. A record may be written only with a purpose and either a consent_ref or a legal_basis, and each field only for a purpose it allows. Reads are limited by role and logged by id. Disability and health conditions are not here; they are the later accessibility_profile and health_profile schemas. Sexual orientation and anything sexual are not in any schema. Endpoint rules the schema cannot express: one record per individual; the individual must exist; the purpose must be one the field allows; the record is erased when the individual is erased.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept only as long as the purpose lasts and the consent is not withdrawn; removed with the individual on erasure. A minor's details need guardian consent and are reviewed at 18. (A written policy only; nothing enforces it yet.)",
+  "x_history": "history_collection",
+  "required": [
+    "individual_id",
+    "purpose"
+  ],
+  "properties": {
+    "individual_id": {
+      "description": "The individual this detail belongs to (a UUID). Required. At most one restricted-detail record per individual (endpoint rule).",
+      "type": "string",
+      "format": "uuid"
+    },
+    "purpose": {
+      "description": "Why these details are held: registration, safety, billing, certification, research or health_care. Required. A field may be written only for a purpose it allows (see x_allowed_purposes on each field).",
+      "enum": [
+        "registration",
+        "safety",
+        "billing",
+        "certification",
+        "research",
+        "health_care"
+      ]
+    },
+    "consent_ref": {
+      "description": "Reference to the consent record that covers this purpose (a UUID once the consent schema exists). Required unless legal_basis is given.",
+      "type": "string",
+      "maxLength": 100
+    },
+    "legal_basis": {
+      "description": "Another lawful basis when there is no consent: vital_interests, legal_obligation or public_interest. Required unless consent_ref is given.",
+      "enum": [
+        "vital_interests",
+        "legal_obligation",
+        "public_interest"
+      ]
+    },
+    "blood_type_abo": {
+      "description": "ABO blood group: A, B, AB, O or unknown. Health data. Allowed purposes: safety, health_care.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "A",
+        "B",
+        "AB",
+        "O",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "safety",
+        "health_care"
+      ]
+    },
+    "blood_type_rh": {
+      "description": "Rh factor: positive, negative or unknown. Health data. Allowed purposes: safety, health_care.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "positive",
+        "negative",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "safety",
+        "health_care"
+      ]
+    },
+    "skin_tone_scale": {
+      "description": "Fitzpatrick skin type: type_1 to type_6 or unknown. Not ethnicity. Allowed purposes: safety, health_care.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "type_1",
+        "type_2",
+        "type_3",
+        "type_4",
+        "type_5",
+        "type_6",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "safety",
+        "health_care"
+      ]
+    },
+    "sex_recorded": {
+      "description": "Recorded sex on a source document: female, male, other or unknown. The concept is the recorded sex, not gender identity. Allowed purposes: registration, health_care, certification.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "female",
+        "male",
+        "other",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "registration",
+        "health_care",
+        "certification"
+      ]
+    },
+    "gender_identity": {
+      "description": "Gender identity as the person states it, free text up to 100 characters. Person-stated only. Allowed purposes: registration, research.",
+      "x_pii": true,
+      "x_restricted": true,
+      "type": "string",
+      "maxLength": 100,
+      "x_allowed_purposes": [
+        "registration",
+        "research"
+      ]
+    },
+    "sex_for_clinical_use": {
+      "description": "Sex parameter for clinical use: female, male, specified, unknown. Health products only. Allowed purposes: health_care.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "female",
+        "male",
+        "specified",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "health_care"
+      ]
+    },
+    "veteran_status": {
+      "description": "Whether the person is a military veteran: yes, no or unknown. A cached flag; the military_service schema (later) is the source. Allowed purposes: registration, certification.",
+      "x_pii": true,
+      "x_restricted": true,
+      "enum": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "x_allowed_purposes": [
+        "registration",
+        "certification"
+      ]
+    },
+    "death_cause": {
+      "description": "Cause of death in words. Health data; collected only when a lawful basis exists. Allowed purposes: health_care, research.",
+      "x_pii": true,
+      "x_restricted": true,
+      "type": "string",
+      "maxLength": 500,
+      "x_allowed_purposes": [
+        "health_care",
+        "research"
+      ]
+    },
+    "notes": {
+      "description": "Operator notes on these details, free text. Allowed purposes: any.",
+      "x_pii": true,
+      "x_restricted": true,
+      "type": "string",
+      "maxLength": 2000
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC, ISO 8601). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created the record. Who acted, as an actor string such as user:<uuid>. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server. A change must name the updated_at it read.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed the record. Who acted, as an actor string such as user:<uuid>. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Restricted details are never taken from a public page. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "consent_ref"
+      ]
+    },
+    {
+      "required": [
+        "legal_basis"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "valid": {
+    "consent_blood_type": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "consent-0001",
+      "blood_type_abo": "O",
+      "blood_type_rh": "positive"
+    },
+    "legal_basis_only": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "health_care",
+      "legal_basis": "vital_interests",
+      "sex_for_clinical_use": "female"
+    },
+    "registration_details": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "registration",
+      "consent_ref": "consent-0002",
+      "sex_recorded": "female",
+      "gender_identity": "woman",
+      "veteran_status": "no",
+      "notes": "Self-reported at intake."
+    }
+  },
+  "invalid": {
+    "no_individual": {
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "blood_type_abo": "A"
+    },
+    "no_purpose": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "consent_ref": "c1",
+      "blood_type_abo": "A"
+    },
+    "no_basis": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "blood_type_abo": "A"
+    },
+    "bad_purpose": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "marketing",
+      "consent_ref": "c1"
+    },
+    "bad_blood_type": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "blood_type_abo": "C"
+    },
+    "bad_skin_scale": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "skin_tone_scale": "type_7"
+    },
+    "bad_uuid": {
+      "individual_id": "not-a-uuid",
+      "purpose": "safety",
+      "consent_ref": "c1"
+    },
+    "server_field_sent": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+    },
+    "orientation_field": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "registration",
+      "consent_ref": "c1",
+      "sexual_orientation": "x"
+    },
+    "camel_case": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "bloodType": "A"
+    },
+    "public_source_sent": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "purpose": "safety",
+      "consent_ref": "c1",
+      "source": "web_enjoy"
+    }
+  }
+}

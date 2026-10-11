@@ -1,0 +1,180 @@
+{
+  "valid": {
+    "walk_in_minimal": {
+      "given_name": "Pat"
+    },
+    "mononym": {
+      "given_name": "Sukarno"
+    },
+    "adult_full": {
+      "given_name": "Maria",
+      "middle_names": "Elena",
+      "family_name": "Garcia Lopez",
+      "name_prefix": "Dr.",
+      "name_suffix": "PhD",
+      "name_to_use": "Mari",
+      "name_pronunciation": "MAH-ree",
+      "pronouns": "she/her",
+      "status": "active",
+      "record_privacy": "normal",
+      "identity_verification": "document_verified",
+      "birth_date": "1961-04-17",
+      "birth_date_certainty": "exact",
+      "birth_date_verification": "document",
+      "birth_place_city": "Mexico City",
+      "birth_country": "MX",
+      "life_status": "alive",
+      "eye_color_left": "brown",
+      "eye_color_right": "brown",
+      "natural_hair_color": "black",
+      "handedness": "left",
+      "adult_height_cm": 163.5,
+      "preferred_language": "es-MX",
+      "time_zone": "America/Denver",
+      "requires_interpreter": false,
+      "external_refs": [
+        {
+          "system": "stripe",
+          "ref": "cus_example123",
+          "kind": "customer"
+        }
+      ],
+      "same_as_urls": [
+        "https://example.com/maria"
+      ],
+      "retention_class": "active_participant",
+      "notes": "Prefers morning classes."
+    },
+    "heterochromia_twin": {
+      "given_name": "Alex",
+      "family_name": "Reed",
+      "birth_date": "2009",
+      "birth_date_certainty": "exact",
+      "multiple_birth_count": 2,
+      "multiple_birth_order": 1,
+      "eye_color_left": "blue",
+      "eye_color_right": "green"
+    },
+    "approximate_birth_year": {
+      "given_name": "Walter",
+      "birth_date": "1938",
+      "birth_date_certainty": "estimated",
+      "birth_date_verification": "self"
+    },
+    "deceased": {
+      "given_name": "Edith",
+      "family_name": "Moore",
+      "birth_date": "1930-05",
+      "life_status": "deceased",
+      "death_date": "2025-11-02",
+      "death_evidence": "document",
+      "death_place_city": "Boulder",
+      "death_place_region": "CO",
+      "death_country": "US",
+      "retention_class": "deceased_review"
+    },
+    "inactive": {
+      "given_name": "Lee",
+      "status": "inactive"
+    }
+  },
+  "invalid": {
+    "missing_given_name": {
+      "family_name": "Garcia"
+    },
+    "empty_given_name": {
+      "given_name": ""
+    },
+    "camel_case_field": {
+      "given_name": "Pat",
+      "familyName": "Smith"
+    },
+    "unknown_field": {
+      "given_name": "Pat",
+      "shoe_size": 9
+    },
+    "null_value": {
+      "given_name": "Pat",
+      "family_name": null
+    },
+    "server_field_sent": {
+      "given_name": "Pat",
+      "id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+    },
+    "display_name_sent": {
+      "given_name": "Pat",
+      "display_name": "Pat"
+    },
+    "bad_birth_date_month": {
+      "given_name": "Pat",
+      "birth_date": "1961-13-01"
+    },
+    "bad_birth_date_format": {
+      "given_name": "Pat",
+      "birth_date": "4/17/1961"
+    },
+    "bad_eye_color": {
+      "given_name": "Pat",
+      "eye_color_left": "purple"
+    },
+    "death_date_while_alive": {
+      "given_name": "Pat",
+      "life_status": "alive",
+      "death_date": "2025-01-01"
+    },
+    "death_date_no_status": {
+      "given_name": "Pat",
+      "death_date": "2025-01-01"
+    },
+    "deceased_no_evidence": {
+      "given_name": "Pat",
+      "life_status": "deceased"
+    },
+    "twin_order_without_count": {
+      "given_name": "Pat",
+      "multiple_birth_order": 1
+    },
+    "certainty_without_date": {
+      "given_name": "Pat",
+      "birth_date_certainty": "approximate"
+    },
+    "bad_country_code": {
+      "given_name": "Pat",
+      "birth_country": "usa"
+    },
+    "bad_language_tag": {
+      "given_name": "Pat",
+      "preferred_language": "english please"
+    },
+    "height_out_of_range": {
+      "given_name": "Pat",
+      "adult_height_cm": 5
+    },
+    "bad_status": {
+      "given_name": "Pat",
+      "status": "deleted"
+    },
+    "merged_without_target": {
+      "given_name": "Pat",
+      "status": "merged"
+    },
+    "external_ref_missing_ref": {
+      "given_name": "Pat",
+      "external_refs": [
+        {
+          "system": "stripe"
+        }
+      ]
+    },
+    "email_field_sent": {
+      "given_name": "Pat",
+      "email": "pat@example.com"
+    },
+    "role_field_sent": {
+      "given_name": "Pat",
+      "roles": [
+        "learner"
+      ]
+    }
+  }
+}

@@ -40,6 +40,22 @@
       "guide": "TRANSACTION_RECORD_GUIDE.md",
       "examples": "examples/transaction_record.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "individual",
+      "collection": "individuals",
+      "schema": "individual.schema.json",
+      "guide": "INDIVIDUAL_GUIDE.md",
+      "examples": "examples/individual.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "individual_restricted_detail",
+      "collection": "individual_restricted_details",
+      "schema": "individual_restricted_detail.schema.json",
+      "guide": "INDIVIDUAL_RESTRICTED_DETAIL_GUIDE.md",
+      "examples": "examples/individual_restricted_detail.examples.json",
+      "schema_version": 1
     }
   ]
 }
