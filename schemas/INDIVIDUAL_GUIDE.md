@@ -104,7 +104,7 @@ A sender must provide only `given_name`. Everything else is optional and is omit
 - `display_name` is computed. `is_minor` is derived and cached, refreshed nightly.
 - **Minors**: store the birth year only unless a product needs more; no photo, voice or home address without guardian consent; the guardianship schema (later) is required before a minor is registered. Until it exists, a registration for a minor is flagged, not completed **(proposal)**.
 - **Dead**: `life_status` deceased blocks new registrations, messages and charges, and keeps history.
-- Updates name the `updated_at` they read and are refused if the record changed. Corrections to a stable field write a history record to `individual_history` (the `x_history` mode is `history_collection`; that collection is built with the handlers).
+- Updates name the `updated_at` they read and are refused if the record changed. Every update writes a history record (values before and after) to `individual_history` in the same transaction (the `x_history` mode is `history_collection`). The history holds personal data and is erased with the individual.
 - Logs record ids and codes, never personal data.
 
 ## 6. Identity rules (proposal)

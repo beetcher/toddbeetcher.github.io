@@ -207,6 +207,18 @@
         "dashboard",
         "import"
       ]
+    },
+    "deleted_at": {
+      "description": "Soft-delete time: the record is kept. Never soft-delete a record that others point at; set it inactive or erase it instead. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Actor who soft-deleted the record. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
     }
   },
   "x_server_required": [

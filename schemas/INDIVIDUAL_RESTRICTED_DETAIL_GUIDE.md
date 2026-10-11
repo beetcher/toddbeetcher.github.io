@@ -35,6 +35,8 @@ The sensitive, optional facts about one individual, held in a separate record so
 - `updated_at`: When the record last changed (UTC). Set by the server. A change must name the updated_at it read.
 - `updated_by`: Who last changed the record. Who acted, as an actor string such as user:<uuid>. Set by the server.
 - `source`: Where the record came from: dashboard or import. Restricted details are never taken from a public page. Set by the server.
+- `deleted_at`: Soft-delete time: the record is kept. Never soft-delete a record that others point at; set it inactive or erase it instead. Set by the server.
+- `deleted_by`: Actor who soft-deleted the record. Set by the server.
 
 Each sensitive field also carries `x_allowed_purposes`, the purposes it may be held for, and `x_restricted`.
 
@@ -46,6 +48,6 @@ Each sensitive field also carries `x_allowed_purposes`, the purposes it may be h
 - One record per individual; the individual must exist and not be erased.
 - `purpose` must be in the field's allowed purposes, or the write is refused.
 - For a minor, consent comes from a guardian (guardianship schema, later). Until it exists, restricted details for a minor are refused **(proposal)**.
-- Reads are limited by role and logged by id. A change names the `updated_at` it read. History goes to `individual_restricted_detail_history`, built with the handlers.
+- Reads are limited by role and logged by id. A change names the `updated_at` it read. Every update writes a history record to `individual_restricted_detail_history` in the same transaction. A soft delete (consent withdrawn) keeps the record but stops its use; a new record may then be created for the individual.
 - When the individual is erased this record is erased too. When consent is withdrawn the fields it covered are removed.
 - Disability and health conditions are not here (later accessibility and health profile schemas). Sexual orientation and anything sexual are collected nowhere.
