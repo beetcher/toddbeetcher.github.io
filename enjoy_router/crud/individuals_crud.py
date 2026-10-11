@@ -34,6 +34,7 @@ DEFAULT_LIMIT = 100
 MAX_LIMIT = 200
 STAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 UPPERCASE_FIELDS = tuple(f for f in ("birth_country", "death_country") if f in INDIVIDUALS.properties)
+LOWERCASE_FIELDS = tuple(f for f in ("email", "backup_email") if f in INDIVIDUALS.properties)
 
 
 # =============================================================================
@@ -127,7 +128,23 @@ def _normalize_value(name: str, value):
     value = clean(value)
     if isinstance(value, str) and name in UPPERCASE_FIELDS:
         value = value.upper()
+    if isinstance(value, str) and name in LOWERCASE_FIELDS:
+        value = value.lower()
     return _prune(value)
+
+
+def contact_order(doc: dict) -> list:
+    """How to reach this person, in the order to try: a list of {"kind": "email"|"text", "to": value}. Derived, never refused.
+    The preference is `prefers_email` (true email, false text); when absent, a person with only one contact prefers it, and
+    a person with both prefers email. A preference pointing at a contact that is not there is ignored. A missing primary
+    falls back to its backup. LAUNCH sends text messages only and never calls."""
+    emails = [v for v in (doc.get("email"), doc.get("backup_email")) if v]
+    phones = [v for v in (doc.get("phone"), doc.get("backup_phone")) if v]
+    prefer_email = doc.get("prefers_email")
+    if prefer_email is None or (prefer_email and not emails) or (prefer_email is False and not phones):
+        prefer_email = bool(emails)
+    first, second = (("email", emails), ("text", phones)) if prefer_email else (("text", phones), ("email", emails))
+    return [{"kind": k, "to": v} for k, vals in (first, second) for v in vals]
 
 
 def _default_retention(doc: dict, now=None) -> str:

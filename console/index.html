@@ -598,6 +598,13 @@
       <label class="f" for="paBirth">Birth date (optional)</label>
       <input type="text" id="paBirth" maxlength="10" placeholder="MM-DD-YYYY, MM-YYYY or YYYY" autocomplete="off">
       <div class="ferr" id="epaBirth"></div>
+      <label class="f" for="paEmail">Email (optional)</label>
+      <input type="text" id="paEmail" maxlength="200" autocomplete="off" inputmode="email">
+      <div class="ferr" id="epaEmail"></div>
+      <label class="f" for="paPhone">Phone (optional)</label>
+      <input type="text" id="paPhone" maxlength="40" autocomplete="off" inputmode="tel">
+      <div class="hint">We send text messages only and never call. Backups and a preference can be added when you edit.</div>
+      <div class="ferr" id="epaPhone"></div>
       <div class="btns">
         <button type="submit" id="pSaveBtn">Save person</button>
         <button type="button" class="quiet" id="pCancelBtn">Cancel</button>
@@ -3011,14 +3018,14 @@
   var pAll = [], pLoaded = false, pSeq = 0, pNewId = "";
   var PLABEL = { given_name: "Given name", middle_names: "Middle names", family_name: "Family name", name_to_use: "Name to use", pronouns: "Pronouns",
                  birth_date: "Birth date", birth_date_certainty: "Birth date certainty", preferred_language: "Preferred language", time_zone: "Time zone",
-                 requires_interpreter: "Interpreter", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
+                 requires_interpreter: "Interpreter", email: "Email", phone: "Phone", backup_email: "Backup email", backup_phone: "Backup phone", prefers_email: "Preferred way to reach", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
   var PISSUE = { required: "Required.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.", invalid_value: "That value is not valid.",
                  invalid_type: "That value is not valid.", not_found: "That person was not found.", same_as_survivor: "Pick a different person.",
                  conflict_restricted_detail: "Both people hold protected details. That needs a person to sort out first.",
                  too_many_links: "Too many records point at this person to merge in one go.", snapshots_erased: "One of the people has been erased, so this cannot be undone.",
                  not_merged: "This merge was already undone.", already_erased: "Already erased.", in_use: "Protected details exist for this person.", immutable: "That cannot be changed.",
                  inconsistent: "That does not fit with the other answers." };
-  var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth" };
+  var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth", email: "epaEmail", phone: "epaPhone" };
   var P_FIELDS = [
     { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },
     { k: "family_name", label: "Family name", t: "text" }, { k: "name_to_use", label: "Name to use", t: "text", hint: "What the person asks to be called. It shows instead of the given name." },
@@ -3028,6 +3035,11 @@
     { k: "preferred_language", label: "Preferred language", t: "text", hint: "A language tag such as en or es-MX." },
     { k: "time_zone", label: "Time zone", t: "text", hint: "For example America/Denver." },
     { k: "requires_interpreter", label: "Needs an interpreter?", t: "bool" },
+    { k: "email", label: "Email", t: "text", hint: "The email address they asked us to use. Couples may share one." },
+    { k: "phone", label: "Phone (text messages)", t: "text", hint: "We send text messages only and never call." },
+    { k: "backup_email", label: "Backup email", t: "text", hint: "Used when the first one is missing or fails." },
+    { k: "backup_phone", label: "Backup phone", t: "text", hint: "Used when the first one is missing or fails." },
+    { k: "prefers_email", label: "How do they want to hear from us?", t: "prefer", opts: [["", "Not said (the one they gave, or email if both)"], ["email", "Email"], ["text", "Text message"]] },
     { k: "status", label: "Status", t: "select", opts: [["active", "Active"], ["inactive", "Inactive (kept, not offered in pickers)"]] },
     { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." }
   ];
@@ -3066,6 +3078,8 @@
     var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
     ps.forEach(function (p) {
       var text = (p.field === "birth_date" && p.issue === "invalid_format") ? DATE_HELP + " It has to be a real date."
+               : (/email$/.test(p.field) && p.issue === "invalid_format") ? "That email address does not look right."
+               : (/phone$/.test(p.field) && p.issue === "invalid_format") ? "That phone number does not look right. Use digits, for example 303-555-0142."
                : (PISSUE[p.issue] || "That value is not valid.");
       if (map && map[p.field]) mine[p.field] = text; else out.push((PLABEL[p.field] || p.field) + ": " + text);
     });
@@ -3163,11 +3177,11 @@
       var id = "pe_" + rec.id + "_" + f.k, cur = rec[f.k];
       var l = mk("label", "f", f.label); l.htmlFor = id; form.appendChild(l);
       var el;
-      if (f.t === "select" || f.t === "bool") {
+      if (f.t === "select" || f.t === "bool" || f.t === "prefer") {
         el = mk("select");
         var opts = f.t === "bool" ? [["", "Not stated"], ["yes", "Yes"], ["no", "No"]] : f.opts;
         opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
-        el.value = f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
+        el.value = f.t === "prefer" ? (cur === true ? "email" : cur === false ? "text" : "") : f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
       } else if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur === undefined ? "" : cur; }
       else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : (f.k === "birth_date" ? pDateField(cur) : cur); }
       el.id = id; form.appendChild(el);
@@ -3186,7 +3200,7 @@
       P_FIELDS.forEach(function (f) {
         var x = els[f.k], v = x.el.value.trim(), cur = rec[f.k];
         if (f.k === "birth_date" && v !== "") { var pd = pDateIn(v); if (pd.bad) { x.err.textContent = DATE_HELP + " It has to be a real date."; badDate = true; return; } v = pd.iso; }
-        var val = f.t === "bool" ? (v === "yes" ? true : v === "no" ? false : null) : (v === "" ? null : v);
+        var val = f.t === "prefer" ? (v === "email" ? true : v === "text" ? false : null) : f.t === "bool" ? (v === "yes" ? true : v === "no" ? false : null) : (v === "" ? null : v);
         if (f.k === "status" && val === null) val = "active";
         if (val === null) { if (cur !== undefined) changes[f.k] = null; }
         else if (val !== cur) changes[f.k] = val;
@@ -3295,7 +3309,7 @@
   $("pCancelBtn").addEventListener("click", function () { $("pAddForm").hidden = true; $("pAddBtn").hidden = false; });
   $("pAddForm").addEventListener("submit", function (e) {
     e.preventDefault(); pClearErrs();
-    var data = {}, map = { given_name: "paGiven", family_name: "paFamily", name_to_use: "paUse", birth_date: "paBirth" };
+    var data = {}, map = { given_name: "paGiven", family_name: "paFamily", name_to_use: "paUse", birth_date: "paBirth", email: "paEmail", phone: "paPhone" };
     Object.keys(map).forEach(function (k) { var v = $(map[k]).value.trim(); if (v) data[k] = v; });
     if (!data.given_name) { $("epaGiven").textContent = "Required."; return; }
     if (data.birth_date) { var pd = pDateIn(data.birth_date); if (pd.bad) { $("epaBirth").textContent = DATE_HELP + " It has to be a real date."; return; } data.birth_date = pd.iso; }

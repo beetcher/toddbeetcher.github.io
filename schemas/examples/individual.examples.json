@@ -76,6 +76,19 @@
     "inactive": {
       "given_name": "Lee",
       "status": "inactive"
+    },
+    "reach_both_text_preferred": {
+      "given_name": "Pat",
+      "family_name": "Rivera",
+      "email": "pat@example.com",
+      "phone": "+1 (303) 555-0142",
+      "backup_email": "pat.rivera@example.org",
+      "backup_phone": "303-555-0177",
+      "prefers_email": false
+    },
+    "reach_email_only": {
+      "given_name": "Lee",
+      "email": "lee@example.com"
     }
   },
   "invalid": {
@@ -166,14 +179,35 @@
         }
       ]
     },
-    "email_field_sent": {
-      "given_name": "Pat",
-      "email": "pat@example.com"
-    },
     "role_field_sent": {
       "given_name": "Pat",
       "roles": [
         "learner"
+      ]
+    },
+    "bad_email": {
+      "given_name": "Pat",
+      "email": "pat-at-example.com"
+    },
+    "bad_phone": {
+      "given_name": "Pat",
+      "phone": "call me maybe"
+    },
+    "bad_backup_email": {
+      "given_name": "Pat",
+      "backup_email": "nope"
+    },
+    "prefers_email_not_boolean": {
+      "given_name": "Pat",
+      "prefers_email": "email"
+    },
+    "contact_list_sent": {
+      "given_name": "Pat",
+      "contact_points": [
+        {
+          "kind": "email",
+          "value": "pat@example.com"
+        }
       ]
     }
   }

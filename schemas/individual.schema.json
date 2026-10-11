@@ -299,6 +299,38 @@
       "description": "Whether the person needs an interpreter. Optional.",
       "type": "boolean"
     },
+    "email": {
+      "description": "The email address the person asked LAUNCH to use to reach them. Optional. Lowercase. Couples may share one; it is never used to match or merge people.",
+      "type": "string",
+      "maxLength": 200,
+      "format": "email",
+      "x_pii": true
+    },
+    "phone": {
+      "description": "The phone number the person asked LAUNCH to use to reach them. LAUNCH sends text messages only and never calls. Optional. Digits with an optional leading plus, spaces, dashes, dots and brackets.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[+]?[0-9 ().-]{7,25}$",
+      "x_pii": true
+    },
+    "backup_email": {
+      "description": "A second email address to try when the first is missing or fails. Optional. Lowercase.",
+      "type": "string",
+      "maxLength": 200,
+      "format": "email",
+      "x_pii": true
+    },
+    "backup_phone": {
+      "description": "A second phone number (text messages only) to try when the first is missing or fails. Optional.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[+]?[0-9 ().-]{7,25}$",
+      "x_pii": true
+    },
+    "prefers_email": {
+      "description": "How the person prefers to hear from LAUNCH: true is email, false is a text message to the phone. Optional. When it is absent, the one contact given is the preference, and if both are given the preference is email. A preference that points at a contact that is not there is ignored; the one that is there is used.",
+      "type": "boolean"
+    },
     "external_refs": {
       "description": "Pointers to this person in other systems, such as a payment processor customer id. Government ids never go here. Optional, up to 20.",
       "type": "array",

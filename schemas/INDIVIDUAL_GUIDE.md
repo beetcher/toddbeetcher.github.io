@@ -10,7 +10,7 @@ Written October 10, 2026 (thread 13). Todd chose to have it built without review
 
 One human being, independent of any role. Robots and animals get their own schemas. An individual is created by the dashboard, by an import, or by the matcher when a registration arrives. It is never a registration, a customer or a participant: those are roles or events that point at an individual with `individual_id`.
 
-Only things that are intrinsic and stable live here. The boundary rule: a fact stays out if it can have more than one value, changes over time, or depends on context. So addresses, contact points, identifiers, relationships, unions, roles, observations (current height, weight, hair, shoe size), consents, guardianship, credentials, payments and registrations are all other schemas that point at the individual. Sensitive items live in `individual_restricted_detail` (its own guide).
+Only things that are intrinsic and stable live here. The boundary rule: a fact stays out if it can have more than one value, changes over time, or depends on context. So addresses (location links), identifiers, relationships, unions, roles, observations (current height, weight, hair, shoe size), consents, guardianship, credentials, payments and registrations are all other schemas that point at the individual. Sensitive items live in `individual_restricted_detail` (its own guide). The one exception to the boundary rule is how to reach the person: the email, phone, backup email, backup phone and preference they asked LAUNCH to use (Todd), kept as plain fields because it is not an address book.
 
 ## 2. Fields
 
@@ -65,6 +65,15 @@ Only things that are intrinsic and stable live here. The boundary rule: a fact s
 - `time_zone`: The person's IANA time zone such as America/Denver. Optional.
 - `requires_interpreter`: Whether the person needs an interpreter. Optional.
 
+### How to reach the person (Todd: not an address book; only what the person asks LAUNCH to use)
+- `email`: The email address the person asked LAUNCH to use. Optional. Stored lowercase. Couples may share one.
+- `phone`: The phone number the person asked LAUNCH to use. Text messages only; LAUNCH never calls. Optional.
+- `backup_email`: A second email to try when the first is missing or fails. Optional.
+- `backup_phone`: A second phone number (text only) to try when the first is missing or fails. Optional.
+- `prefers_email`: How the person prefers to hear from LAUNCH: true is email, false is a text message. Optional.
+
+How the preference reads (a derived answer, never a refusal): if only one of email and phone is given, that one is the preference. If both are given and `prefers_email` is absent, the preference is email. If `prefers_email` points at a contact that is not there, the contact that is there is used. If a primary is missing, its backup is used. These are the person's own LAUNCH contacts, not a general address book; another service would hold its own record.
+
 ### Cross-references
 - `external_refs`: Pointers to this person in other systems, such as a payment processor customer id. Government ids never go here. Optional, up to 20.
 - `same_as_urls`: Public profile pages the person chose to link. Optional, up to 10.
@@ -104,6 +113,7 @@ A sender must provide only `given_name`. Everything else is optional and is omit
 - `display_name` is computed. `is_minor` is derived and cached, refreshed nightly.
 - **Minors**: store the birth year only unless a product needs more; no photo, voice or home address without guardian consent; the guardianship schema (later) is required before a minor is registered. Until it exists, a registration for a minor is flagged, not completed **(proposal)**.
 - **Dead**: `life_status` deceased blocks new registrations, messages and charges, and keeps history.
+- `email` and `backup_email` are stored lowercase. The only refusals on contact fields are a bad email format and a bad phone format (Todd: nothing else is required or refused).
 - Updates name the `updated_at` they read and are refused if the record changed. Every update writes a history record (values before and after) to `individual_history` in the same transaction (the `x_history` mode is `history_collection`). The history holds personal data and is erased with the individual.
 - Logs record ids and codes, never personal data.
 

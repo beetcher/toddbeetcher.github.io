@@ -309,6 +309,51 @@ check("restricted deleted hidden", R.get(s, rid).code == "not_found" and R.get_f
 check("new record allowed after delete", R.create(s, dict(good, individual_id=pid, consent_ref="c2"), "user:todd", now=later(21)).ok)
 check("restricted delete twice not_found", R.soft_delete(s, rid, "user:todd").code == "not_found")
 
+# ---------------------------------------------------------------------------
+# Contact fields: how to reach the person (email, phone, backups, preference). Todd: only format refusals.
+from crud import individual_merges_crud as CM  # noqa: E402
+
+s = fresh()
+r = I.create(s, {"given_name": "Pat", "email": "Pat@Example.COM", "backup_email": "ALT@Example.org", "phone": "+1 (303) 555-0142", "backup_phone": "303-555-0177", "prefers_email": False}, "user:todd", now=START)
+check("contact: all five fields save", r.ok, str(r))
+pid = r.data["id"]
+rec = s.get("individuals", pid)
+check("contact: emails stored lowercase", rec["email"] == "pat@example.com" and rec["backup_email"] == "alt@example.org")
+check("contact: phone stored as typed", rec["phone"] == "+1 (303) 555-0142" and rec["prefers_email"] is False)
+check("contact: a person with nothing saves (all optional)", I.create(s, {"given_name": "Sam"}, "user:todd", now=START).ok)
+check("contact: only an email saves", I.create(s, {"given_name": "Lee", "email": "lee@example.com"}, "user:todd", now=START).ok)
+check("contact: bad email refused", pairs(I.create(s, {"given_name": "A", "email": "nope"}, "user:todd", now=START).problems) == ["email:invalid_format"])
+check("contact: bad backup email refused", pairs(I.create(s, {"given_name": "A", "backup_email": "nope"}, "user:todd", now=START).problems) == ["backup_email:invalid_format"])
+check("contact: bad phone refused", pairs(I.create(s, {"given_name": "A", "phone": "call me"}, "user:todd", now=START).problems) == ["phone:invalid_format"])
+check("contact: prefers_email must be true or false", pairs(I.create(s, {"given_name": "A", "prefers_email": "email"}, "user:todd", now=START).problems) == ["prefers_email:invalid_type"])
+check("contact: preference with no matching contact is NOT refused", I.create(s, {"given_name": "B", "prefers_email": True, "phone": "303-555-0100"}, "user:todd", now=START).ok)
+check("contact: two people may share one email", I.create(s, {"given_name": "C", "email": "pat@example.com"}, "user:todd", now=START).ok)
+r = I.update(s, pid, {"email": "NEW@Example.com", "prefers_email": None}, "user:todd", expected_updated_at=rec["updated_at"], now=later(1))
+check("contact: update lowercases and a null removes the preference", r.ok and s.get("individuals", pid)["email"] == "new@example.com" and "prefers_email" not in s.get("individuals", pid), str(r))
+check("contact: update refuses a bad email", pairs(I.update(s, pid, {"email": "x"}, "user:todd", now=later(2)).problems) == ["email:invalid_format"])
+
+order = lambda d: [(x["kind"], x["to"]) for x in I.contact_order(d)]
+check("reach: nothing given, nothing to try", order({}) == [])
+check("reach: only an email", order({"email": "a@x.com"}) == [("email", "a@x.com")])
+check("reach: only a phone is the preference", order({"phone": "3035550100"}) == [("text", "3035550100")])
+check("reach: both given, no preference: email first", order({"email": "a@x.com", "phone": "3035550100"}) == [("email", "a@x.com"), ("text", "3035550100")])
+check("reach: prefers text", order({"email": "a@x.com", "phone": "3035550100", "prefers_email": False}) == [("text", "3035550100"), ("email", "a@x.com")])
+check("reach: prefers email but has none, so the phone is used", order({"phone": "3035550100", "prefers_email": True}) == [("text", "3035550100")])
+check("reach: prefers text but has no phone, so the email is used", order({"email": "a@x.com", "prefers_email": False}) == [("email", "a@x.com")])
+check("reach: backups follow their primary", order({"email": "a@x.com", "backup_email": "b@x.com", "phone": "1", "backup_phone": "2"}) == [("email", "a@x.com"), ("email", "b@x.com"), ("text", "1"), ("text", "2")])
+check("reach: a missing primary falls back to the backup", order({"backup_email": "b@x.com"}) == [("email", "b@x.com")])
+
+s = fresh()
+a = mk(s, {"given_name": "Pat", "family_name": "Rivera", "email": "pat@example.com"})
+b = mk(s, {"given_name": "Pat", "family_name": "Rivera", "phone": "303-555-0142", "backup_email": "pat2@example.com", "prefers_email": False})
+m = CM.merge(s, a["id"], b["id"], "same person", "user:todd", now=later(5))
+got = s.get("individuals", a["id"])
+check("merge: survivor keeps its email and gains the duplicate's missing contacts", m.ok and got["email"] == "pat@example.com" and got["phone"] == "303-555-0142" and got["backup_email"] == "pat2@example.com", str(m))
+x = mk(s, {"given_name": "Zed", "email": "zed@example.com", "phone": "303-555-0100", "prefers_email": False})
+e = CM.erase(s, x["id"], "user:todd", now=later(6))
+tomb = s.get("individuals", x["id"])
+check("erase: contact fields are removed with the person", e.ok and not any(k in tomb for k in ("email", "phone", "backup_email", "backup_phone", "prefers_email")), str(tomb))
+
 print(f"\n{total - len(fails)}/{total} checks passed")
 if fails:
     print("FAILED:")
