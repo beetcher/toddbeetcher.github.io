@@ -2,13 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/venue.schema.json",
   "title": "venue",
-  "description": "A place where classes are held. A scheduled_class points at one venue by venue_id and names a room by venue_room_label. A venue holds where it is, how to get in, who to contact, its rooms (inside the record), accessibility, house rules, hours and what it costs. Reviews are their own records that point at the venue; only review_count and average_rating live here. Precise spots inside a venue are location_pin records, a later schema, listed by location_pin_ids. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: room labels are unique within the venue, a room preferred_occupancy is not above its max_occupancy, opens_at is before closes_at.",
+  "description": "A place where classes are held. A scheduled_class points at one venue by venue_id and names a room by venue_room_label. A venue is an entity of its own: it holds its name, its own email and phone, how to get in, pointers to its contact people, its rooms (inside the record), accessibility, house rules, hours and what it costs. Reviews are their own records that point at the venue; only review_count and average_rating live here. Where it is lives in a location record, reached through a location_link (relationship operates_at); the venue stores no address, GPS point or time zone. A class still stores its own time_zone; the time zone of the venue's place is its natural default. Precise spots inside a venue are location_pin records, a later schema, listed by location_pin_ids. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: an active venue has a live operates_at location_link to a location that has an address or a GPS point; contact_individual_id and backup_contact_individual_id point at individuals that exist and are not erased; room labels are unique within the venue, a room preferred_occupancy is not above its max_occupancy, opens_at is before closes_at.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
     "pattern": "^[a-z][a-z0-9_]*$"
   },
-  "x_retention": "Keep venues until the owner deletes them. A private home's address is removed one year after the venue goes inactive. (A written policy only; nothing enforces it yet.)",
+  "x_retention": "Keep venues until the owner deletes them. (A written policy only; nothing enforces it yet.) The venue's address lives in its place (a location record), which has its own retention.",
   "x_history": "in_place",
   "required": [
     "name",
@@ -36,7 +36,7 @@
       "maxLength": 2000
     },
     "status": {
-      "description": "active (usable: appears in the venue picker and can host classes) or inactive (an idea, or a retired venue; kept without deleting). An active venue must have an address, time zone, a contact (name plus email or phone), at least one room, and answers to is_accessible, allows_minors and allows_animals.",
+      "description": "active (usable: appears in the venue picker and can host classes) or inactive (an idea, or a retired venue; kept without deleting). The only thing an active venue needs is a place: a live operates_at location_link to an active location that has an address or a GPS point (an endpoint rule, because it reads another collection). Everything else on the venue is optional.",
       "enum": [
         "active",
         "inactive"
@@ -45,55 +45,6 @@
     "is_public_venue": {
       "description": "True for a public venue (library, cafe, hall); false for a private one (a home, an office). Different from a class's is_public, which is whether the class is listed. Required.",
       "type": "boolean"
-    },
-    "street_address": {
-      "description": "Street address. Personal data when the venue is a private home, so the public class list never shows a private venue's street address. Required when active.",
-      "type": "string",
-      "maxLength": 200,
-      "x_pii": true
-    },
-    "address_line_2": {
-      "description": "Suite, unit or floor. Personal data for a private home. Optional.",
-      "type": "string",
-      "maxLength": 200,
-      "x_pii": true
-    },
-    "city": {
-      "description": "City or town. Required when active.",
-      "type": "string",
-      "maxLength": 100
-    },
-    "state_region": {
-      "description": "State or region. Required when active.",
-      "type": "string",
-      "maxLength": 100
-    },
-    "postal_code": {
-      "description": "Postal or ZIP code. Required when active.",
-      "type": "string",
-      "maxLength": 20
-    },
-    "country": {
-      "description": "Two capital letters, ISO 3166 (for example US). Required when active.",
-      "type": "string",
-      "pattern": "^[A-Z]{2}$"
-    },
-    "time_zone": {
-      "description": "An IANA time zone name such as America/Denver. A class at this venue takes its time zone from here, and availability_hours are in this zone. Required when active.",
-      "type": "string",
-      "maxLength": 64
-    },
-    "latitude": {
-      "description": "GPS latitude of the venue, -90 to 90. Must be given together with longitude. Optional.",
-      "type": "number",
-      "minimum": -90,
-      "maximum": 90
-    },
-    "longitude": {
-      "description": "GPS longitude of the venue, -180 to 180. Must be given together with latitude. Optional.",
-      "type": "number",
-      "minimum": -180,
-      "maximum": 180
     },
     "parking_description": {
       "description": "Where to park, in words. Optional; may be given together with the GPS point below or on its own.",
@@ -144,43 +95,28 @@
       "uniqueItems": true,
       "maxItems": 50
     },
-    "contact_name": {
-      "description": "The venue contact's name. Personal data. Required when active.",
-      "type": "string",
-      "maxLength": 200,
-      "x_pii": true
-    },
-    "contact_email": {
-      "description": "The venue contact's email. Personal data. An active venue needs this or contact_phone. Never shown on public pages.",
+    "email": {
+      "description": "The venue's own email address (the business, not a person). Optional. Personal data when the venue is a private home. Never shown on public pages.",
       "type": "string",
       "maxLength": 200,
       "format": "email",
       "x_pii": true
     },
-    "contact_phone": {
-      "description": "The venue contact's phone. Personal data. An active venue needs this or contact_email. Never shown on public pages.",
+    "phone": {
+      "description": "The venue's own phone number (the business, not a person). Optional. Personal data when the venue is a private home. Never shown on public pages.",
       "type": "string",
       "maxLength": 40,
       "x_pii": true
     },
-    "backup_contact_name": {
-      "description": "A backup contact's name. Personal data. Optional. Never shown on public pages.",
+    "contact_individual_id": {
+      "description": "UUID of the individual record who is the venue's main contact, the person to ask for. The venue stores no name or personal details for this person; they are read from the individual record when needed. Optional (a park has no one to call). Endpoint rule: the individual must exist and not be erased (a merged individual is followed to the survivor).",
       "type": "string",
-      "maxLength": 200,
-      "x_pii": true
+      "format": "uuid"
     },
-    "backup_contact_email": {
-      "description": "A backup contact's email. Personal data. Optional. Never shown on public pages.",
+    "backup_contact_individual_id": {
+      "description": "UUID of the individual record who is the venue's backup contact. Optional. Same rules as contact_individual_id.",
       "type": "string",
-      "maxLength": 200,
-      "format": "email",
-      "x_pii": true
-    },
-    "backup_contact_phone": {
-      "description": "A backup contact's phone. Personal data. Optional. Never shown on public pages.",
-      "type": "string",
-      "maxLength": 40,
-      "x_pii": true
+      "format": "uuid"
     },
     "website_url": {
       "description": "The venue's website. Optional.",
@@ -200,7 +136,7 @@
       "maximum": 730
     },
     "rooms": {
-      "description": "The rooms inside this venue. Rooms live inside the venue record because a room has no life apart from its venue. An active venue needs at least one. Labels are unique within the venue; a class names its room with venue_room_label. The number of rooms is the length of this list.",
+      "description": "The rooms inside this venue. Rooms live inside the venue record because a room has no life apart from its venue. Optional (a park has no rooms). Labels are unique within the venue; a class names its room with venue_room_label. The number of rooms is the length of this list.",
       "type": "array",
       "items": {
         "type": "object",
@@ -266,7 +202,7 @@
       "maxLength": 500
     },
     "is_accessible": {
-      "description": "Whether the venue is accessible overall (\"handicap accessible\"). Required when active. A venue can be accessible while one room is not; see rooms.",
+      "description": "Whether the venue is accessible overall (\"handicap accessible\"). Optional. A venue can be accessible while one room is not; see rooms.",
       "type": "boolean"
     },
     "has_step_free_entry": {
@@ -287,11 +223,11 @@
       "maxLength": 1000
     },
     "allows_minors": {
-      "description": "Whether people under 18 may attend events at this venue. Required when active. When a registration request has has_minors_present true for a class here and this is false, processing flags it for the organizer; it is not refused at the endpoint.",
+      "description": "Whether people under 18 may attend events at this venue. Optional. When a registration request has has_minors_present true for a class here and this is false, processing flags it for the organizer; it is not refused at the endpoint.",
       "type": "boolean"
     },
     "allows_animals": {
-      "description": "Whether animals may be brought in. Required when active.",
+      "description": "Whether animals may be brought in. Optional.",
       "type": "boolean"
     },
     "allows_food": {
@@ -487,12 +423,6 @@
     "review_count"
   ],
   "dependentRequired": {
-    "latitude": [
-      "longitude"
-    ],
-    "longitude": [
-      "latitude"
-    ],
     "parking_latitude": [
       "parking_longitude"
     ],
@@ -511,51 +441,5 @@
     "cost_basis": [
       "cost_cents"
     ]
-  },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "status": {
-            "const": "active"
-          }
-        },
-        "required": [
-          "status"
-        ]
-      },
-      "then": {
-        "required": [
-          "street_address",
-          "city",
-          "state_region",
-          "postal_code",
-          "country",
-          "time_zone",
-          "contact_name",
-          "rooms",
-          "is_accessible",
-          "allows_minors",
-          "allows_animals"
-        ],
-        "properties": {
-          "rooms": {
-            "minItems": 1
-          }
-        },
-        "anyOf": [
-          {
-            "required": [
-              "contact_email"
-            ]
-          },
-          {
-            "required": [
-              "contact_phone"
-            ]
-          }
-        ]
-      }
-    }
-  ]
+  }
 }

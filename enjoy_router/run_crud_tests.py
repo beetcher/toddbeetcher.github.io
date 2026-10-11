@@ -172,9 +172,10 @@ check("prefix keeps real collection untouched", "venues" not in store.data and "
 # 5. Schema-derived facts the update logic depends on
 # ---------------------------------------------------------------------------
 setf, remf = involved_fields(V.VENUES.schema)
-check("set_involved holds the GPS and cost triggers", {"latitude", "cost_cents", "status", "rooms"} <= setf)
-check("remove_involved holds contact fields and required ones",
-      {"contact_email", "contact_phone", "street_address", "name"} <= remf)
+check("set_involved holds the GPS and cost triggers", {"entry_latitude", "cost_cents"} <= setf)
+check("remove_involved holds the pair fields and required ones", {"cost_cents", "cost_basis", "entry_latitude", "name"} <= remf)
+check("nothing about activation sits in the schema: email, phone and contacts are plain optional fields",
+      not ({"email", "phone", "contact_individual_id"} & (setf | remf)) and "status" not in setf)
 check("a plain field is in neither set", "notes" not in setf and "notes" not in remf)
 check("code rules read only rooms and availability_hours", V.RULE_FIELDS == {"rooms", "availability_hours"})
 

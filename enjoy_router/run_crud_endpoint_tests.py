@@ -13,6 +13,9 @@ from crud_endpoint import handle_admin, handle_crud_test, make_failure_limiter  
 KEY = "k" * 16 + "Z" * 16 + "-test-key-not-real"
 NOW = datetime(2026, 10, 9, 12, 0, 0, tzinfo=timezone.utc)
 EX = json.loads((HERE.parent / "schemas" / "examples" / "venue.examples.json").read_text())["valid"]
+# the full example, inactive and without the contact pointers (no such individual exists in this store)
+INACTIVE_FULL = {k: v for k, v in EX["active_full_detail"].items() if k not in ("contact_individual_id", "backup_contact_individual_id")}
+INACTIVE_FULL["status"] = "inactive"
 fails = []
 
 
@@ -62,11 +65,11 @@ check("extra arg refused: 400", r.status == 400 and "extra" in r.body["error"]["
 check("oversized body: 413", call(None, raw=b"x" * 100_001).status == 413)
 check("nothing written by refused calls", not store.data)
 
-r = op("create", data=EX["active_full_detail"])
+r = op("create", data=INACTIVE_FULL)
 check("create: 200 with record", r.status == 200 and r.body["ok"] and r.body["data"]["created_by"] == "system:crud_test")
 vid = r.body["data"]["id"]
 check("stored only under the test_ prefix", list(store.data) == ["test_venues"])
-r = op("create", data=EX["active_full_detail"])
+r = op("create", data=INACTIVE_FULL)
 check("duplicate slug: 400 with problem", r.status == 400 and r.body["error"]["problems"] == [{"field": "slug", "issue": "duplicate"}])
 r = op("create", data={"name": "x"})
 check("invalid: 400, problems name fields only", r.status == 400 and all(set(p) == {"field", "issue"} for p in r.body["error"]["problems"]))
@@ -78,7 +81,7 @@ r = op("update", id=vid, changes={"name": "Again"}, expected_updated_at="2020-01
 check("stale update: 409 conflict", r.status == 409 and r.body["error"]["code"] == "conflict")
 r = op("list")
 check("list: 200 count 1", r.status == 200 and r.body["data"]["count"] == 1)
-r = op("list", filters={"city": "x"})
+r = op("list", filters={"website_url": "x"})
 check("unsupported list: 400", r.status == 400)
 check("set_review_summary: 200", op("set_review_summary", id=vid, review_count=2, average_rating=4).status == 200)
 check("soft_delete: 200", op("soft_delete", id=vid).status == 200)
@@ -120,11 +123,11 @@ check("admin: stale update 409", r.status == 409 and astore.data["venues"][aid][
 r = aop("update", id=aid, changes={"slug": "other_slug"})
 check("admin: slug change refused 400 immutable", r.status == 400 and r.body["error"]["problems"] == [{"field": "slug", "issue": "immutable"}])
 r = aop("update", id=aid, changes={"status": "active"})
-check("admin: activation without required fields refused, names them", r.status == 400 and {"field": "street_address", "issue": "required"} in r.body["error"]["problems"] and astore.data["venues"][aid]["status"] == "inactive")
-r = aop("update", id=aid, changes={"city": "Boulder", "contact_phone": "+13035550101"})
-check("admin: several simple fields in one update 200", r.status == 200 and astore.data["venues"][aid]["city"] == "Boulder")
-r = aop("update", id=aid, changes={"city": None})
-check("admin: null removes an optional field", r.status == 200 and "city" not in astore.data["venues"][aid])
+check("admin: activation without a place refused, names status:place_required", r.status == 400 and r.body["error"]["problems"] == [{"field": "status", "issue": "place_required"}] and astore.data["venues"][aid]["status"] == "inactive")
+r = aop("update", id=aid, changes={"website_url": "https://example.com", "phone": "+13035550101"})
+check("admin: several simple fields in one update 200", r.status == 200 and astore.data["venues"][aid]["website_url"] == "https://example.com")
+r = aop("update", id=aid, changes={"website_url": None})
+check("admin: null removes an optional field", r.status == 200 and "website_url" not in astore.data["venues"][aid])
 check("admin: update unknown id 404", aop("update", id="11111111-1111-4111-8111-111111111111", changes={"name": "X"}).status == 404)
 check("admin: update with wrong key 401", acall({"collection": "venues", "op": "update", "args": {"id": aid, "changes": {"name": "Z"}}}, auth="Bearer nope").status == 401)
 check("admin: set_review_summary is not enabled (server-only)", aop("set_review_summary", id=aid, review_count=1, average_rating=5).status == 400)
@@ -147,12 +150,23 @@ def cop(o, **args):
     return acall({"collection": "scheduled_classes", "op": o, "args": args})
 
 
-r = aop("create", data={"name": "Hall", "slug": "hall", "status": "active", "is_public_venue": True, "street_address": "1 St", "city": "Boulder",
-                        "state_region": "CO", "postal_code": "80302", "country": "US", "time_zone": "America/Denver", "contact_name": "Pat",
-                        "contact_email": "p@example.com", "is_accessible": True, "allows_minors": True, "allows_animals": False,
-                        "rooms": [{"label": "Main room", "max_occupancy": 20}]})
-check("admin classes: venue for the class created", r.status == 200, str(r.body))
-hid = r.body["data"]["id"]
+import uuid  # noqa: E402
+
+
+def active_venue(slug, name, rooms):
+    """An active venue the way the endpoint requires it: created inactive, linked to a place, then activated."""
+    who = acall({"collection": "individuals", "op": "create", "args": {"data": {"given_name": "Pat"}}}).body["data"]["id"]
+    vid = aop("create", data={"name": name, "slug": slug, "status": "inactive", "is_public_venue": True}).body["data"]["id"]
+    loc = acall({"collection": "locations", "op": "create", "args": {"data": {"name": name, "kind": "site", "addresses": [
+        {"usage": "civic", "street": "1 St", "locality": "Boulder", "region": "CO", "postal_code": "80302", "country": "US"}]}}}).body["data"]["id"]
+    acall({"collection": "location_links", "op": "create", "args": {"data": {
+        "subject_type": "venue", "subject_id": vid, "location_id": loc, "relationship": "operates_at"}}})
+    return aop("update", id=vid, changes={"email": "p@example.com", "contact_individual_id": who, "is_accessible": True,
+                                          "allows_minors": True, "allows_animals": False, "rooms": rooms, "status": "active"}), vid
+
+
+r, hid = active_venue("hall", "Hall", [{"label": "Main room", "max_occupancy": 20}])
+check("admin classes: venue for the class created and activated", r.status == 200, str(r.body))
 CL = {"title": "Intro", "slug": "intro", "class_type": "workshop", "program_slug": "launch", "status": "identified", "is_public": False,
       "capacity_minimum": 6, "capacity_target": 10, "capacity_max": 15}
 r = cop("create", data=CL)
@@ -184,18 +198,11 @@ check("test door: classes go to test_scheduled_classes only", r.status == 200 an
 # ---------------------------------------------------------------------------
 # Registration assignments through the admin door: auto decision, suggest, queue, guards
 # ---------------------------------------------------------------------------
-import uuid  # noqa: E402
-
-
 def xop(o, **args):
     return acall({"collection": "registration_assignments", "op": o, "args": args})
 
 
-r = aop("create", data={"name": "Hall 2", "slug": "hall2", "status": "active", "is_public_venue": True, "street_address": "1 St", "city": "Boulder",
-                        "state_region": "CO", "postal_code": "80302", "country": "US", "time_zone": "America/Denver", "contact_name": "Pat",
-                        "contact_email": "p@example.com", "is_accessible": True, "allows_minors": True, "allows_animals": False,
-                        "rooms": [{"label": "Main room", "max_occupancy": 20}]})
-h2 = r.body["data"]["id"]
+r, h2 = active_venue("hall2", "Hall 2", [{"label": "Main room", "max_occupancy": 20}])
 r = cop("create", data={**CL, "slug": "enrolling_one", "title": "Enrolling one", "status": "enrolling", "starts_at": "2026-11-21T01:00:00Z",
                         "time_zone": "America/Denver", "duration_minutes": 120, "venue_id": h2, "is_venue_confirmed": True,
                         "price_cents": 5000, "price_basis": "per_person", "capacity_minimum": 2, "capacity_target": 3, "capacity_max": 4})
@@ -232,6 +239,35 @@ check("other collections refuse suggest/queue (400 op:not_supported)", cop("queu
 check("suggest needs request_id; queue takes only limit", xop("suggest").status == 400 and acall({"collection": "registration_assignments", "op": "queue", "args": {"x": 1}}).status == 400)
 r = call({"collection": "registration_assignments", "op": "queue", "args": {}})
 check("test door: queue works on test_ collections only", r.status == 200 and r.body["data"]["items"] == [] and not astore.data.get("test_registration_assignments"))
+
+
+# ---------------------------------------------------------------------------
+# Venues: one-window add, move, and read with the records they point at
+# ---------------------------------------------------------------------------
+ADDR = {"street": "2 Pearl St", "locality": "Boulder", "region": "CO", "postal_code": "80302", "country": "US"}
+n0 = (len(astore.data["locations"]), len(astore.data["location_links"]), len(astore.data["venues"]))
+r = aop("create_with_place", data={"name": "Amante Coffee", "slug": "amante", "status": "inactive", "is_public_venue": True}, address=ADDR)
+check("admin: create_with_place 200, venue inactive, place created", r.status == 200 and r.body["data"]["status"] == "inactive" and r.body["data"]["place"]["address"]["street"] == "2 Pearl St" and r.body["data"]["created_place"], str(r.body))
+amid = r.body["data"]["id"]
+check("admin: it saved one place, one link and the venue in the REAL collections",
+      (len(astore.data["locations"]), len(astore.data["location_links"]), len(astore.data["venues"])) == (n0[0] + 1, n0[1] + 1, n0[2] + 1) and amid in astore.data["venues"])
+r = aop("get", id=amid, expand=True)
+check("admin: get with expand returns the place", r.status == 200 and r.body["data"]["place"]["name"] == "Amante Coffee")
+check("admin: get without expand returns no place", "place" not in aop("get", id=amid).body["data"])
+r = aop("list", expand=True)
+check("admin: list with expand returns places", r.status == 200 and any(v.get("place") for v in r.body["data"]["records"]))
+r = cop("get", id=cid, expand=True)
+check("expand on another collection: 400 expand:not_supported", r.status == 400 and r.body["error"]["problems"] == [{"field": "expand", "issue": "not_supported"}])
+r = aop("set_place", id=amid, address={**ADDR, "street": "9 New Rd"})
+check("admin: set_place moves the venue", r.status == 200 and r.body["data"]["changed"] and r.body["data"]["place"]["address"]["street"] == "9 New Rd", str(r.body))
+check("admin: set_place without a destination 400", aop("set_place", id=amid).status == 400)
+check("admin: set_place on an unknown venue 404", aop("set_place", id="11111111-1111-4111-8111-111111111111", address=ADDR).status == 404)
+r = aop("create_with_place", data={"name": "Bad", "slug": "bad_one", "status": "inactive", "is_public_venue": True}, address={"locality": "x"})
+check("admin: a bad address 400 and nothing saved", r.status == 400 and len([v for v in astore.data["venues"].values() if v["slug"] == "bad_one"]) == 0)
+check("admin: create_with_place has no extra args", aop("create_with_place", data={}, bogus=1).status == 400)
+r = call({"collection": "venues", "op": "create_with_place", "args": {"data": {"name": "T", "slug": "t_venue", "status": "inactive", "is_public_venue": True}, "address": ADDR}})
+check("test door: create_with_place works in test_ collections only", r.status == 200 and "test_locations" in store.data and "test_location_links" in store.data)
+check("the other collections refuse create_with_place and set_place", cop("create_with_place", data={}).status == 400 and cop("set_place", id=cid, address=ADDR).status == 400)
 
 
 print()

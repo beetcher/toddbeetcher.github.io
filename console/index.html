@@ -360,7 +360,7 @@
     </div>
     <form class="panel" id="addForm" hidden autocomplete="off" novalidate>
       <h2>Add a venue</h2>
-      <div class="hint">It is added as inactive. Address, rooms and contact come next, when you edit it.</div>
+      <div class="hint">It is added as inactive. If you give an address, the place is saved with it. Rooms, hours and contacts come next, when you edit it.</div>
       <label class="f" for="fName">Name</label>
       <input type="text" id="fName" maxlength="200" autocomplete="off">
       <div class="ferr" id="eName"></div>
@@ -375,6 +375,9 @@
         <option value="private">Private space (a home)</option>
       </select>
       <div class="ferr" id="ePublic"></div>
+      <div class="f" style="margin-top:14px">Where is it? (optional)</div>
+      <div class="hint">Leave this blank if you do not know yet. A name alone saves as a draft.</div>
+      <div id="fPlaceHost"></div>
       <div class="btns">
         <button type="submit" id="saveBtn">Save venue</button>
         <button type="button" class="quiet" id="cancelBtn">Cancel</button>
@@ -736,20 +739,21 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> for anything the ship will not do on its own, tap <b>Decide by hand</b> and overrule it from the Assignments station.</div>' +
         '<h3>Try this</h3><ul><li>Register on the website in another window, watch the card appear, then tap its Assign button.</li></ul>' },
-    { id: "venues", name: "Venues", short: "Venues", blurb: "Places where classes happen: address, rooms, hours, rules.",
+    { id: "venues", name: "Venues", short: "Venues", blurb: "Places where classes happen: where, rooms, hours, rules.",
       manual:
         '<div class="kicker">Station 2</div><h2>Venues</h2>' +
         '<h3>Mission</h3><p>A venue is a place where a class can happen: a library, a cafe, a community room or a private home. Its rooms and opening hours live inside it.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Status menu</b> filters the list to Active or Inactive.</li>' +
-        '<li><b>Add venue</b> needs only a name, a short name and the kind of place. It starts <b>inactive</b>.</li>' +
-        '<li><b>Tap a card</b> to read the details. <b>Edit</b> opens the form: Basics, Address and Contact first, everything else under More details.</li>' +
+        '<li><b>Add venue</b> needs only a name, a short name and the kind of place. It starts <b>inactive</b>. Type an address too and the place is saved with it; if that address is already saved you are offered the saved place.</li>' +
+        '<li><b>Tap a card</b> to read the details. <b>Edit</b> opens the form: Basics, Place and Contact first, everything else under More details. <b>Change place</b> saves right away; the old place is kept.</li>' +
+        '<li>The venue\'s <b>email and phone</b> are the venue\'s own. The <b>main and backup contacts</b> are people you choose from People; the venue keeps only a pointer, so their details stay in one place.</li>' +
         '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
         '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
         '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
-        '<li>To make a venue <b>active</b> it needs an address, a time zone, a contact, at least one room, and answers about accessibility, minors and animals. Inactive venues need far less.</li>' +
+        '<li>To make a venue <b>active</b> it needs one thing: a place with an address or a GPS point. Everything else is optional (a park has no one to call and no rooms).</li>' +
         '<li>The short name cannot be changed once saved.</li>' +
         '<li>A venue that has live classes <b>cannot be deleted</b>. Set it inactive instead.</li>' +
         '<li>A room a live class uses cannot be removed, renamed, or made smaller than that class\'s biggest size.</li>' +
@@ -1107,9 +1111,10 @@
   var ADMIN_URL = "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_admin";
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
                 out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
-                not_allowed: "Not allowed." };
+                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That person was not found.",
+                choose_one: "Choose one." };
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
-  var slugTouched = false;
+  var slugTouched = false, addPlace = null;
 
   function admin(op, args, coll) {
     return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
@@ -1140,7 +1145,7 @@
     var kind = document.createElement("div"); kind.className = "who";
     kind.textContent = rec.is_public_venue ? "Public venue" : "Private space";
     var place = document.createElement("div"); place.className = "sub";
-    place.textContent = [rec.city, rec.state_region].filter(Boolean).join(", ");
+    place.textContent = venuePlaceLine(rec);
     var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
     [top, kind, place].forEach(function (n) { head.appendChild(n); });
     var chips = document.createElement("div"); chips.className = "lchips";
@@ -1170,7 +1175,7 @@
     if (vBusy) { vAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
     vBusy = true; $("vMsg").textContent = "";
     var f = $("vFilter").value;
-    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }).then(function (res) {
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200, expand: true }).then(function (res) {
       vBusy = false;
       if (vAgain) { vAgain = false; return loadVenues(); }
       if (res.status === 401) { lock("That key did not work."); return; }
@@ -1187,12 +1192,12 @@
 
   // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
   var SCHEMA_URL = "/schemas/venue.schema.json";
-  var PRIMARY = ["Basics", "Address", "Contact"];   // shown open; everything else sits under "More details"
+  var PRIMARY = ["Basics", "Place", "Contact"];   // shown open; everything else sits under "More details"
   var LAYOUT = [
     ["Basics", ["name", "description", "status", "is_public_venue"]],
-    ["Address", ["street_address", "address_line_2", "city", "state_region", "postal_code", "country", "time_zone"]],
-    ["Contact", ["contact_name", "contact_email", "contact_phone", "backup_contact_name", "backup_contact_email", "backup_contact_phone"]],
-    ["Map and access", ["latitude", "longitude", "parking_description", "parking_latitude", "parking_longitude",
+    ["Place", []],
+    ["Contact", ["email", "phone"]],
+    ["Map and access", ["parking_description", "parking_latitude", "parking_longitude",
                         "entry_description", "entry_latitude", "entry_longitude", "transit_description"]],
     ["Booking", ["website_url", "booking_process", "booking_lead_days", "availability_notes", "setup_minutes_before", "teardown_minutes_after"]],
     ["Facilities and rules", ["has_wifi", "wifi_notes", "is_accessible", "has_step_free_entry", "has_elevator", "has_accessible_restroom",
@@ -1385,30 +1390,17 @@
     if (m) { m.open = true; m.firstChild.className = "haserr"; }
   }
 
-  // "What's needed to make this active?": a checklist worked out from the schema's own active rule and the form as it is now.
+  // "What's needed to make this active?": a venue needs only a place (an address or a GPS point).
   function renderReady() {
     var box = $("readyBox"); if (!box) return;
     box.textContent = "";
-    var rows = [], missing = 0;
-    function row(ok, text) { rows.push([ok, text]); if (!ok) missing++; }
-    Object.keys(editActive).forEach(function (f) {
-      if (f === "rooms") { row((editLists.rooms ? editLists.rooms.count() : ((editRec.rooms && editRec.rooms.length) || 0)) >= 1, "At least one room"); return; }
-      var fld = editFields[f];
-      var v = fld ? readValue(fld) : (editRec[f] === undefined ? null : editRec[f]);
-      row(v !== null && v !== undefined, humanize(f));
-    });
-    if (editAny.length) {
-      var any = editAny.some(function (f) { var fld = editFields[f]; var v = fld ? readValue(fld) : null; return v !== null && v !== undefined; });
-      row(any, "A contact " + editAny.map(function (f) { return f.replace(/^contact_/, ""); }).join(" or "));
-    }
+    var p = editRec && editRec.place, ok = !!(p && (p.address || p.has_gps));
     var sum = document.createElement("div"); sum.className = "sum";
-    sum.textContent = missing ? "Still needed: " + missing : "Everything needed is filled in.";
+    sum.textContent = ok ? "Everything needed is filled in." : "Still needed: 1";
     box.appendChild(sum);
-    rows.forEach(function (r) {
-      var d = document.createElement("div"); d.className = r[0] ? "ok" : "todo";
-      d.textContent = (r[0] ? "✓ " : "○ ") + r[1];
-      box.appendChild(d);
-    });
+    var d = document.createElement("div"); d.className = ok ? "ok" : "todo";
+    d.textContent = (ok ? "✓ " : "○ ") + "A place with an address or a GPS point";
+    box.appendChild(d);
   }
   function addReady(body) {
     var btn = document.createElement("button"); btn.type = "button"; btn.className = "linkbtn"; btn.textContent = "What’s needed to make this active?";
@@ -1755,7 +1747,7 @@
       (parent || host).appendChild(d);
       return { d: d, sm: sm, body: body };
     }
-    function eligible(n) { var df = props[n]; return df && !df.readOnly && df.type !== "array" && n !== "slug"; }
+    function eligible(n) { var df = props[n]; return df && !df.readOnly && df.type !== "array" && n !== "slug" && n !== "contact_individual_id" && n !== "backup_contact_individual_id"; }
     function fill(sec, names) {
       names.forEach(function (n) {
         used[n] = 1;
@@ -1769,6 +1761,11 @@
       var s2 = section(t, true);
       fill(s2, names(t));
       if (t === "Basics") addReady(s2.body);
+      if (t === "Place") s2.body.appendChild(placePanel(rec));
+      if (t === "Contact") {
+        s2.body.appendChild(contactPicker("contact_individual_id", "Main contact", rec.main_contact, s2.d, s2.sm));
+        s2.body.appendChild(contactPicker("backup_contact_individual_id", "Backup contact", rec.backup_contact, s2.d, s2.sm));
+      }
     });
     var sr = section("Rooms and hours", false);
     buildListEditors(sr, rec);
@@ -1974,7 +1971,7 @@
     return cSchemaP;
   }
   function loadVenueChoices() {
-    return admin("list", { limit: 200 }, "venues").then(function (res) {
+    return admin("list", { limit: 200, expand: true }, "venues").then(function (res) {
       if (res.status === 401) { lock("That key did not work."); return false; }
       if (res.status !== 200 || !res.body.ok) return false;
       cVenues = (res.body.data.records || []).slice().sort(function (a, b) { return (a.name || "").toLowerCase() < (b.name || "").toLowerCase() ? -1 : 1; });
@@ -2309,10 +2306,10 @@
     // behaviour: venue changes the room list and (if blank) the time zone; status shows the cancelled reason
     cField("venue_id").el.addEventListener("change", function () {
       fillRooms("");
-      var v = cVenueById[this.value], tzf = cField("time_zone");
-      if (v && v.time_zone && tzf && !readValue(tzf)) {
-        var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === v.time_zone; });
-        if (has) tzf.el.value = v.time_zone;
+      var v = cVenueById[this.value], tzf = cField("time_zone"), vtz = v && v.place && v.place.time_zone;
+      if (vtz && tzf && !readValue(tzf)) {
+        var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === vtz; });
+        if (has) tzf.el.value = vtz;
       }
     });
     function syncReason() {
@@ -2537,6 +2534,7 @@
   function clearErrs() { ["eName", "eSlug", "ePublic", "fMsg"].forEach(function (id) { $(id).textContent = ""; }); }
   function openForm() {
     $("addForm").reset(); slugTouched = false; clearErrs(); $("vNotice").textContent = "";
+    addPlace = placeInput(true); $("fPlaceHost").textContent = ""; $("fPlaceHost").appendChild(addPlace);
     $("addForm").hidden = false; $("addBtn").hidden = true; $("fName").focus();
   }
   function closeForm() { $("addForm").hidden = true; $("addBtn").hidden = false; }
@@ -2554,18 +2552,27 @@
     if (!kind) { $("ePublic").textContent = "Choose one."; return; }
     var data = { name: $("fName").value, slug: $("fSlug").value, status: "inactive", is_public_venue: kind === "public" };
     $("saveBtn").disabled = true;
-    admin("create", { data: data }).then(function (res) {
+    (addPlace ? addPlace.next() : Promise.resolve({ done: true, args: {} })).then(function (pl) {
+      if (!pl.done) { $("saveBtn").disabled = false; return null; }   // address needs fixing, or a saved place is being offered
+      var withPlace = pl.args && (pl.args.address || pl.args.location_id);
+      return admin(withPlace ? "create_with_place" : "create", withPlace ? Object.assign({ data: data }, pl.args) : { data: data });
+    }).then(function (res) {
+      if (!res) return;
       $("saveBtn").disabled = false;
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status === 200 && res.body && res.body.ok) {
         vNewId = res.body.data.id;
-        $("vNotice").textContent = "Added " + res.body.data.name + " (inactive).";
+        $("vNotice").textContent = "Added " + res.body.data.name + " (inactive)" + (res.body.data.place ? ", with its place." : ".");
         closeForm(); loadVenues();
         return;
       }
       var probs = res.status === 400 && res.body && res.body.error && res.body.error.problems;
       if (probs && probs.length) {
         var other = [];
+        if (probs.some(function (p) { return p.field === "address" || p.field === "location_id"; })) {
+          $("fMsg").textContent = "Nothing was saved. " + lProblems(res);
+          return;
+        }
         probs.forEach(function (p) {
           var target = FIELD_ERR[p.field];
           var text = (p.field === "slug" && p.issue === "invalid_format") ? "Use lowercase letters, numbers and underscores only."
@@ -3320,10 +3327,12 @@
               owns: "Owns", manages: "Manages", operates_at: "Operates here", delivers_to: "Delivers here", other: "Other" };
   var PERSON_RELS = ["resides_at", "mailing_address_for", "billing_address_for", "works_at", "owns", "other"];
   var LLABEL = { name: "Name", description: "Description", time_zone: "Time zone", kind: "Kind", addresses: "Address", geometries: "GPS point", status: "Status",
-                 location_id: "Place", subject_id: "Person", relationship: "Kind of address", valid_from: "From", valid_to: "Until", id: "Place" };
+                 location_id: "Place", subject_id: "Person", relationship: "Kind of address", valid_from: "From", valid_to: "Until", id: "Place", address: "Address" };
   var LISSUE = { "addresses:required": "A street address needs a country (two letters, such as US).", "addresses:duplicate": "Only one address can be the main one.",
                  "addresses:out_of_range": "An address ends before it starts.", "geometries:invalid_value": "GPS needs latitude from -90 to 90 and longitude from -180 to 180.",
                  "time_zone:invalid_value": "Use a time zone name such as America/Denver.", "location_id:duplicate": "This person is already linked to that place for those dates.",
+                 "status:place_required": "A venue needs a place (an address or a GPS point) to be active.", "address:choose_one": "Give an address or choose a saved place, not both.",
+                 "address:required": "Type an address or choose a saved place.", "address:invalid_format": "Check the address.",
                  "location_id:not_found": "That place was not found.", "location_id:retired": "That place is retired.", "subject_id:not_found": "That person was not found.",
                  "valid_to:out_of_range": "The last day is before the first day.", "id:in_use": "People or venues are still linked to this place. End those links first.",
                  "part_of_location_id:invalid_value": "That would make a place part of itself.", "relationship:invalid_value": "That kind of address does not fit.",
@@ -3397,10 +3406,178 @@
       if (f.name && v("name")) data.name = v("name");
       if (f.description && v("description")) data.description = v("description");
       if (f.time_zone && v("time_zone")) data.time_zone = v("time_zone");
-      if (ok && !data.name && !data.addresses && !data.geometries) { f.street.err.textContent = "Enter a street address, a name or GPS."; ok = false; }
+      if (ok && !opts.optional && !data.name && !data.addresses && !data.geometries) { f.street.err.textContent = "Enter a street address, a name or GPS."; ok = false; }
       return { ok: ok, data: data };
     };
     return box;
+  }
+
+  // ---- Venues and their places and contacts (the venue stores pointers; these read the records they point at)
+  function placeText(pl) {
+    if (!pl) return "";
+    var t = locAddr(pl.address);
+    if (t) return (pl.name && pl.name !== t ? pl.name + " · " : "") + t;
+    return (pl.name || "(unnamed place)") + (pl.has_gps ? " (GPS point only)" : "");
+  }
+  function venuePlaceLine(rec) {
+    var pl = rec.place, parts = [];
+    if (!pl) parts.push("No place yet");
+    else if (pl.address && (pl.address.locality || pl.address.region)) parts.push([pl.address.locality, pl.address.region].filter(Boolean).join(", "));
+    else parts.push(pl.name || "Place saved");
+    if (rec.main_contact) parts.push("Contact: " + (rec.main_contact.display_name || "(unavailable)"));
+    return parts.join(" · ");
+  }
+
+  var pickSeq = 0, savedPlaces = null;
+  function savedPlacesList() {
+    if (savedPlaces) return Promise.resolve(savedPlaces);
+    return admin("list", { filters: { status: "active" }, limit: 200 }, COLL_L).then(function (r) {
+      if (r.status === 401) { lock("That key did not work."); return []; }
+      savedPlaces = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      return savedPlaces;
+    });
+  }
+  // An address to type, or a saved place to use. next() -> Promise of {done, args}. args is {address}, {location_id} or {}.
+  // If the typed address is already saved it offers that place first and waits for a second click.
+  function placeInput(withSaved) {
+    var box = mk("div"), block = addrForm({ optional: true }), chooser = mk("div", "confirm"), step = "start", addr = null, savedId = "";
+    var seq = ++pickSeq;
+    chooser.hidden = true;
+    var picked = mk("div", "note"); picked.hidden = true;
+    if (withSaved) {
+      var sl = mk("label", "f", "Or use a place that is already saved"), si = mk("input"), res = mk("div");
+      si.type = "text"; si.id = "pi_" + seq; si.placeholder = "Search by name or address"; si.autocomplete = "off"; sl.htmlFor = si.id;
+      box.appendChild(sl); box.appendChild(si); box.appendChild(res);
+      var clear = mk("button", "quiet", "Clear"); clear.type = "button";
+      clear.addEventListener("click", function () { savedId = ""; picked.hidden = true; });
+      picked.appendChild(document.createTextNode("")); picked.appendChild(clear);
+      si.addEventListener("input", function () {
+        var q = si.value.trim().toLowerCase(); res.textContent = "";
+        if (!q) return;
+        savedPlacesList().then(function (list) {
+          list.filter(function (l) { return locSummary(l).toLowerCase().indexOf(q) >= 0; }).slice(0, 6).forEach(function (l) {
+            var b = mk("button", "quiet", locSummary(l)); b.type = "button";
+            b.addEventListener("click", function () {
+              savedId = l.id; res.textContent = ""; si.value = "";
+              picked.textContent = "Using the saved place: " + locSummary(l) + " "; picked.appendChild(clear); picked.hidden = false;
+            });
+            res.appendChild(b);
+          });
+          if (!res.firstChild) res.appendChild(mk("div", "hint", "No saved place matches."));
+        });
+      });
+    }
+    box.appendChild(block); if (withSaved) box.appendChild(picked); box.appendChild(chooser);
+    box.next = function () {
+      if (step === "choose") {
+        var pick = chooser.querySelector("input[name=pk" + seq + "]:checked");
+        return Promise.resolve({ done: true, args: pick && pick.value ? { location_id: pick.value } : { address: addr } });
+      }
+      if (savedId) return Promise.resolve({ done: true, args: { location_id: savedId } });
+      var rd = block.read();
+      if (!rd.ok) return Promise.resolve({ done: false });
+      if (!rd.data.addresses) return Promise.resolve({ done: true, args: {} });
+      addr = rd.data.addresses[0];
+      return admin("find_by_address", { address: addr }, COLL_L).then(function (r) {
+        if (r.status === 401) { lock("That key did not work."); return { done: false }; }
+        var found = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+        if (!found.length) return { done: true, args: { address: addr } };
+        step = "choose"; chooser.hidden = false; chooser.textContent = "";
+        chooser.appendChild(mk("div", "", "This address is already saved. Use the saved place, so everything there shares one record? Then press Save again."));
+        found.forEach(function (m, i) {
+          var lb = mk("label", "f"), rd2 = mk("input"); rd2.type = "radio"; rd2.name = "pk" + seq; rd2.value = m.id; if (i === 0) rd2.checked = true;
+          lb.style.display = "flex"; lb.style.gap = "8px"; lb.style.alignItems = "center"; lb.appendChild(rd2); lb.appendChild(document.createTextNode(" Use: " + locSummary(m))); chooser.appendChild(lb);
+        });
+        var lb2 = mk("label", "f"), rd3 = mk("input"); rd3.type = "radio"; rd3.name = "pk" + seq; rd3.value = "";
+        lb2.style.display = "flex"; lb2.style.gap = "8px"; lb2.style.alignItems = "center"; lb2.appendChild(rd3); lb2.appendChild(document.createTextNode(" No, this is a different place")); chooser.appendChild(lb2);
+        return { done: false };
+      });
+    };
+    return box;
+  }
+
+  // The Place section of the venue form: where the venue is, and a way to move it.
+  function placePanel(rec) {
+    var wrap = mk("div"), now = mk("div", "note"), host = mk("div"), msg = mk("div", "msg");
+    msg.setAttribute("role", "alert");
+    var btn = mk("button", "quiet"); btn.type = "button";
+    function show() {
+      var pl = editRec && editRec.place;
+      now.textContent = pl ? "Where: " + placeText(pl) : "No place yet. A venue needs a place (an address or a GPS point) to be active.";
+      btn.textContent = pl ? "Change place" : "Add place";
+    }
+    show();
+    btn.addEventListener("click", function () {
+      msg.textContent = "";
+      if (host.firstChild) { host.textContent = ""; return; }
+      var pin = placeInput(true), row = mk("div", "btns"), save = mk("button", "", "Save place"), cancel = mk("button", "quiet", "Cancel");
+      save.type = "button"; cancel.type = "button"; row.appendChild(save); row.appendChild(cancel);
+      host.appendChild(mk("div", "hint", "This saves right away. When a venue moves, the old place is kept and only the link changes."));
+      host.appendChild(pin); host.appendChild(row);
+      cancel.addEventListener("click", function () { host.textContent = ""; msg.textContent = ""; });
+      save.addEventListener("click", function () {
+        msg.textContent = ""; save.disabled = true;
+        pin.next().then(function (pl) {
+          if (!pl.done) { save.disabled = false; return null; }
+          if (!pl.args.address && !pl.args.location_id) { save.disabled = false; msg.textContent = "Type an address or choose a saved place."; return null; }
+          return admin("set_place", Object.assign({ id: rec.id }, pl.args));
+        }).then(function (r) {
+          if (!r) return;
+          save.disabled = false;
+          if (r.status === 401) { lock("That key did not work."); return; }
+          if (r.status === 200 && r.body.ok) {
+            editRec.place = r.body.data.place; host.textContent = ""; show(); savedPlaces = null;
+            $("vNotice").textContent = r.body.data.changed === false ? "That is already the venue's place." : "Moved " + (rec.name || "venue") + " to its new place.";
+            loadVenues(); liveReady();
+            return;
+          }
+          msg.textContent = r.status === 404 ? "This venue no longer exists." : lProblems(r);
+        });
+      });
+    });
+    wrap.appendChild(now); wrap.appendChild(btn); wrap.appendChild(host); wrap.appendChild(msg);
+    return wrap;
+  }
+
+  // A person pointer on the venue form. The venue stores only the person's id; the name is read from their record.
+  var peopleForPick = null;
+  function peopleList() {
+    if (peopleForPick) return Promise.resolve(peopleForPick);
+    return admin("list", { order: "display_name", limit: 200 }, "individuals").then(function (r) {
+      if (r.status === 401) { lock("That key did not work."); return []; }
+      peopleForPick = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      return peopleForPick;
+    });
+  }
+  function contactPicker(field, label, current, sec, summary) {
+    var wrap = mk("div"), l = mk("div", "f", label), idEl = mk("input"), cur = mk("div", "note"), results = mk("div");
+    idEl.type = "hidden"; idEl.id = "ef_" + field; idEl.value = (editRec && editRec[field]) || "";
+    var er = mk("div", "ferr"); er.id = "ee_" + field;
+    var pick = mk("button", "quiet", "Choose person"), clear = mk("button", "quiet", "Clear"); pick.type = "button"; clear.type = "button";
+    var search = mk("input"); search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.hidden = true; search.id = "ef_" + field + "_q";
+    function show(name) {
+      cur.textContent = idEl.value ? (name || "(unavailable)") : "Nobody chosen.";
+      clear.hidden = !idEl.value;
+    }
+    show(current && !current.unavailable ? current.display_name : (current ? "(unavailable)" : ""));
+    pick.addEventListener("click", function () { search.hidden = !search.hidden; results.textContent = ""; if (!search.hidden) search.focus(); });
+    clear.addEventListener("click", function () { idEl.value = ""; show(""); liveReady(); });
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase(); results.textContent = "";
+      if (!q) return;
+      peopleList().then(function (list) {
+        list.filter(function (p) { return pName(p).toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pName(p)); b.type = "button";
+          b.addEventListener("click", function () { idEl.value = p.id; show(pName(p)); results.textContent = ""; search.value = ""; search.hidden = true; liveReady(); });
+          results.appendChild(b);
+        });
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Add them in People first."));
+      });
+    });
+    wrap.appendChild(l); wrap.appendChild(cur); wrap.appendChild(pick); wrap.appendChild(clear); wrap.appendChild(search); wrap.appendChild(results);
+    wrap.appendChild(idEl); wrap.appendChild(er);
+    editFields[field] = { el: idEl, other: null, kind: "text", def: { type: "string", format: "uuid" }, sec: sec, summary: summary };
+    return wrap;
   }
 
   function refreshPlaces() { lLoaded = false; if (currentRoute() === "places") loadPlaces(); }

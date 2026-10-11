@@ -47,8 +47,7 @@ def fresh():
 
 
 VENUE = {"name": "Library", "slug": "library", "status": "active", "is_public_venue": True,
-         "street_address": "1 Main St", "city": "Boulder", "state_region": "CO", "postal_code": "80302", "country": "US",
-         "time_zone": "America/Denver", "contact_name": "Pat", "contact_email": "pat@example.com",
+         "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
          "is_accessible": True, "allows_minors": True, "allows_animals": False,
          "rooms": [{"label": "Main room", "max_occupancy": 20}, {"label": "Side room", "max_occupancy": 8, "preferred_occupancy": 6}]}
 

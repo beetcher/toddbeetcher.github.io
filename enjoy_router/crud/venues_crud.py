@@ -32,7 +32,7 @@ STAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 # RULES BLOCK: everything specific to venues that the schema cannot say
 # =============================================================================
 
-LOWERCASE_FIELDS = tuple(f for f in ("contact_email", "backup_contact_email") if f in VENUES.properties)
+LOWERCASE_FIELDS = tuple(f for f in ("email",) if f in VENUES.properties)
 
 
 def _rooms_labels_unique(doc: dict) -> list:

@@ -12,14 +12,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -30,11 +22,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -91,21 +80,16 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "private_home": {
       "name": "Private home, Louisville",
       "slug": "private_home_louisville",
       "status": "active",
       "is_public_venue": false,
-      "street_address": "1 Example Ct",
-      "city": "Louisville",
-      "state_region": "CO",
-      "postal_code": "80027",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "contact_name": "Host Name",
-      "contact_phone": "+13035550103",
+      "phone": "+13035550103",
       "rooms": [
         {
           "label": "Living room",
@@ -115,7 +99,8 @@
       "is_accessible": false,
       "allows_minors": true,
       "allows_animals": true,
-      "allows_alcohol": true
+      "allows_alcohol": true,
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f"
     },
     "free_venue": {
       "name": "Free community room",
@@ -123,14 +108,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -141,11 +118,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -200,7 +174,15 @@
       "cost_cents": 0,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "notes": "Ask for the room key at the front desk.",
-      "cost_basis": "per_session"
+      "cost_basis": "per_session",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
+    },
+    "park_minimal": {
+      "name": "Louisville Open Space Park",
+      "slug": "louisville_park",
+      "status": "active",
+      "is_public_venue": true
     }
   },
   "invalid": {
@@ -220,14 +202,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -238,98 +212,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room",
-          "preferred_occupancy": 12,
-          "max_occupancy": 20,
-          "is_accessible": true,
-          "seating_layout": "Tables in a U",
-          "equipment": [
-            "screen",
-            "projector",
-            "whiteboard",
-            "power strips"
-          ]
-        },
-        {
-          "label": "Side room",
-          "preferred_occupancy": 6,
-          "max_occupancy": 8,
-          "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "camel_case_field": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -387,21 +271,15 @@
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
       "notes": "Ask for the room key at the front desk.",
-      "streetAddress": "1 Example St"
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
-    "active_without_street_address": {
+    "camel_case_field": {
       "name": "Boulder Community Library",
       "slug": "boulder_community_library",
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -412,11 +290,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -473,398 +348,10 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "active_without_rooms": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "active_with_empty_rooms": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "active_without_any_contact_channel": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room",
-          "preferred_occupancy": 12,
-          "max_occupancy": 20,
-          "is_accessible": true,
-          "seating_layout": "Tables in a U",
-          "equipment": [
-            "screen",
-            "projector",
-            "whiteboard",
-            "power strips"
-          ]
-        },
-        {
-          "label": "Side room",
-          "preferred_occupancy": 6,
-          "max_occupancy": 8,
-          "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "latitude_without_longitude": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room",
-          "preferred_occupancy": 12,
-          "max_occupancy": 20,
-          "is_accessible": true,
-          "seating_layout": "Tables in a U",
-          "equipment": [
-            "screen",
-            "projector",
-            "whiteboard",
-            "power strips"
-          ]
-        },
-        {
-          "label": "Side room",
-          "preferred_occupancy": 6,
-          "max_occupancy": 8,
-          "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "latitude_out_of_range": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 95,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room",
-          "preferred_occupancy": 12,
-          "max_occupancy": 20,
-          "is_accessible": true,
-          "seating_layout": "Tables in a U",
-          "equipment": [
-            "screen",
-            "projector",
-            "whiteboard",
-            "power strips"
-          ]
-        },
-        {
-          "label": "Side room",
-          "preferred_occupancy": 6,
-          "max_occupancy": 8,
-          "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "streetAddress": "1 Example St",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "entry_latitude_without_longitude": {
       "name": "Boulder Community Library",
@@ -872,14 +359,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -889,11 +368,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -950,7 +426,87 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
+    },
+    "entry_latitude_out_of_range": {
+      "name": "Boulder Community Library",
+      "slug": "boulder_community_library",
+      "status": "active",
+      "is_public_venue": true,
+      "description": "Public library with bookable meeting rooms.",
+      "parking_description": "Free lot behind the building; 2 hour limit.",
+      "parking_latitude": 40.0148,
+      "parking_longitude": -105.2711,
+      "entry_description": "Side door on the east wall, past the bike racks.",
+      "entry_latitude": 95,
+      "entry_longitude": -105.2699,
+      "transit_description": "Bus 204 stops one block away.",
+      "location_pin_ids": [
+        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
+      ],
+      "email": "venue@example.com",
+      "phone": "+13035550101",
+      "website_url": "https://example.com/library",
+      "booking_process": "Email the contact; confirm in writing.",
+      "booking_lead_days": 14,
+      "rooms": [
+        {
+          "label": "Main room",
+          "preferred_occupancy": 12,
+          "max_occupancy": 20,
+          "is_accessible": true,
+          "seating_layout": "Tables in a U",
+          "equipment": [
+            "screen",
+            "projector",
+            "whiteboard",
+            "power strips"
+          ]
+        },
+        {
+          "label": "Side room",
+          "preferred_occupancy": 6,
+          "max_occupancy": 8,
+          "is_accessible": false
+        }
+      ],
+      "has_wifi": true,
+      "wifi_notes": "Guest network, no password.",
+      "is_accessible": true,
+      "has_step_free_entry": true,
+      "has_elevator": true,
+      "has_accessible_restroom": true,
+      "accessibility_notes": "Main room is on the ground floor.",
+      "allows_minors": true,
+      "allows_animals": false,
+      "allows_food": true,
+      "allows_alcohol": false,
+      "requires_insurance": false,
+      "availability_hours": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "20:00"
+        },
+        {
+          "day_of_week": "saturday",
+          "opens_at": "10:00",
+          "closes_at": "16:00"
+        }
+      ],
+      "availability_notes": "Closed on public holidays.",
+      "setup_minutes_before": 30,
+      "teardown_minutes_after": 30,
+      "cost_cents": 7500,
+      "cost_basis": "per_hour",
+      "deposit_cents": 10000,
+      "cancellation_terms": "Free cancellation up to 7 days before.",
+      "cost_notes": "Nonprofit rate.",
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "room_without_max_occupancy": {
       "name": "Boulder Community Library",
@@ -958,14 +514,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -976,11 +524,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1021,7 +566,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "bad_hours_time": {
       "name": "Boulder Community Library",
@@ -1029,14 +576,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1047,11 +586,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1103,7 +639,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "bad_day_of_week": {
       "name": "Boulder Community Library",
@@ -1111,14 +649,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1129,11 +659,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1185,94 +712,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
-    },
-    "country_not_two_capitals": {
-      "name": "Boulder Community Library",
-      "slug": "boulder_community_library",
-      "status": "active",
-      "is_public_venue": true,
-      "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "USA",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
-      "parking_description": "Free lot behind the building; 2 hour limit.",
-      "parking_latitude": 40.0148,
-      "parking_longitude": -105.2711,
-      "entry_description": "Side door on the east wall, past the bike racks.",
-      "entry_latitude": 40.0151,
-      "entry_longitude": -105.2699,
-      "transit_description": "Bus 204 stops one block away.",
-      "location_pin_ids": [
-        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
-      ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
-      "website_url": "https://example.com/library",
-      "booking_process": "Email the contact; confirm in writing.",
-      "booking_lead_days": 14,
-      "rooms": [
-        {
-          "label": "Main room",
-          "preferred_occupancy": 12,
-          "max_occupancy": 20,
-          "is_accessible": true,
-          "seating_layout": "Tables in a U",
-          "equipment": [
-            "screen",
-            "projector",
-            "whiteboard",
-            "power strips"
-          ]
-        },
-        {
-          "label": "Side room",
-          "preferred_occupancy": 6,
-          "max_occupancy": 8,
-          "is_accessible": false
-        }
-      ],
-      "has_wifi": true,
-      "wifi_notes": "Guest network, no password.",
-      "is_accessible": true,
-      "has_step_free_entry": true,
-      "has_elevator": true,
-      "has_accessible_restroom": true,
-      "accessibility_notes": "Main room is on the ground floor.",
-      "allows_minors": true,
-      "allows_animals": false,
-      "allows_food": true,
-      "allows_alcohol": false,
-      "requires_insurance": false,
-      "availability_hours": [
-        {
-          "day_of_week": "tuesday",
-          "opens_at": "09:00",
-          "closes_at": "20:00"
-        },
-        {
-          "day_of_week": "saturday",
-          "opens_at": "10:00",
-          "closes_at": "16:00"
-        }
-      ],
-      "availability_notes": "Closed on public holidays.",
-      "setup_minutes_before": 30,
-      "teardown_minutes_after": 30,
-      "cost_cents": 7500,
-      "cost_basis": "per_hour",
-      "deposit_cents": 10000,
-      "cancellation_terms": "Free cancellation up to 7 days before.",
-      "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "negative_cost": {
       "name": "Boulder Community Library",
@@ -1280,14 +722,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1298,11 +732,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1359,7 +790,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "cost_without_basis": {
       "name": "Boulder Community Library",
@@ -1367,14 +800,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1385,11 +810,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1445,22 +867,16 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
-    "bad_contact_email": {
+    "bad_email": {
       "name": "Boulder Community Library",
       "slug": "boulder_community_library",
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1471,11 +887,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "not an email",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "not-an-email",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1532,7 +945,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "read_only_id_sent": {
       "name": "Boulder Community Library",
@@ -1540,14 +955,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1558,11 +965,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1620,7 +1024,9 @@
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
       "notes": "Ask for the room key at the front desk.",
-      "id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701"
+      "id": "4b7c1d2e-5f60-4a71-8b92-a3c4d5e6f701",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "read_only_review_count_sent": {
       "name": "Boulder Community Library",
@@ -1628,14 +1034,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1646,11 +1044,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1708,7 +1103,9 @@
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
       "notes": "Ask for the room key at the front desk.",
-      "review_count": 3
+      "review_count": 3,
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "status_not_known": {
       "name": "Boulder Community Library",
@@ -1716,14 +1113,6 @@
       "status": "archived",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1734,11 +1123,8 @@
       "location_pin_ids": [
         "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1795,7 +1181,9 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
     },
     "pin_not_uuid": {
       "name": "Boulder Community Library",
@@ -1803,14 +1191,6 @@
       "status": "active",
       "is_public_venue": true,
       "description": "Public library with bookable meeting rooms.",
-      "street_address": "1000 Example St",
-      "city": "Boulder",
-      "state_region": "CO",
-      "postal_code": "80302",
-      "country": "US",
-      "time_zone": "America/Denver",
-      "latitude": 40.015,
-      "longitude": -105.2705,
       "parking_description": "Free lot behind the building; 2 hour limit.",
       "parking_latitude": 40.0148,
       "parking_longitude": -105.2711,
@@ -1821,11 +1201,8 @@
       "location_pin_ids": [
         "not-a-uuid"
       ],
-      "contact_name": "Venue Contact",
-      "contact_email": "venue@example.com",
-      "contact_phone": "+13035550101",
-      "backup_contact_name": "Backup Contact",
-      "backup_contact_phone": "+13035550102",
+      "email": "venue@example.com",
+      "phone": "+13035550101",
       "website_url": "https://example.com/library",
       "booking_process": "Email the contact; confirm in writing.",
       "booking_lead_days": 14,
@@ -1882,7 +1259,244 @@
       "deposit_cents": 10000,
       "cancellation_terms": "Free cancellation up to 7 days before.",
       "cost_notes": "Nonprofit rate.",
-      "notes": "Ask for the room key at the front desk."
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
+    },
+    "contact_person_not_uuid": {
+      "name": "Boulder Community Library",
+      "slug": "boulder_community_library",
+      "status": "active",
+      "is_public_venue": true,
+      "description": "Public library with bookable meeting rooms.",
+      "parking_description": "Free lot behind the building; 2 hour limit.",
+      "parking_latitude": 40.0148,
+      "parking_longitude": -105.2711,
+      "entry_description": "Side door on the east wall, past the bike racks.",
+      "entry_latitude": 40.0151,
+      "entry_longitude": -105.2699,
+      "transit_description": "Bus 204 stops one block away.",
+      "location_pin_ids": [
+        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
+      ],
+      "email": "venue@example.com",
+      "phone": "+13035550101",
+      "website_url": "https://example.com/library",
+      "booking_process": "Email the contact; confirm in writing.",
+      "booking_lead_days": 14,
+      "rooms": [
+        {
+          "label": "Main room",
+          "preferred_occupancy": 12,
+          "max_occupancy": 20,
+          "is_accessible": true,
+          "seating_layout": "Tables in a U",
+          "equipment": [
+            "screen",
+            "projector",
+            "whiteboard",
+            "power strips"
+          ]
+        },
+        {
+          "label": "Side room",
+          "preferred_occupancy": 6,
+          "max_occupancy": 8,
+          "is_accessible": false
+        }
+      ],
+      "has_wifi": true,
+      "wifi_notes": "Guest network, no password.",
+      "is_accessible": true,
+      "has_step_free_entry": true,
+      "has_elevator": true,
+      "has_accessible_restroom": true,
+      "accessibility_notes": "Main room is on the ground floor.",
+      "allows_minors": true,
+      "allows_animals": false,
+      "allows_food": true,
+      "allows_alcohol": false,
+      "requires_insurance": false,
+      "availability_hours": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "20:00"
+        },
+        {
+          "day_of_week": "saturday",
+          "opens_at": "10:00",
+          "closes_at": "16:00"
+        }
+      ],
+      "availability_notes": "Closed on public holidays.",
+      "setup_minutes_before": 30,
+      "teardown_minutes_after": 30,
+      "cost_cents": 7500,
+      "cost_basis": "per_hour",
+      "deposit_cents": 10000,
+      "cancellation_terms": "Free cancellation up to 7 days before.",
+      "cost_notes": "Nonprofit rate.",
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "not-a-uuid",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70"
+    },
+    "backup_contact_person_not_uuid": {
+      "name": "Boulder Community Library",
+      "slug": "boulder_community_library",
+      "status": "active",
+      "is_public_venue": true,
+      "description": "Public library with bookable meeting rooms.",
+      "parking_description": "Free lot behind the building; 2 hour limit.",
+      "parking_latitude": 40.0148,
+      "parking_longitude": -105.2711,
+      "entry_description": "Side door on the east wall, past the bike racks.",
+      "entry_latitude": 40.0151,
+      "entry_longitude": -105.2699,
+      "transit_description": "Bus 204 stops one block away.",
+      "location_pin_ids": [
+        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
+      ],
+      "email": "venue@example.com",
+      "phone": "+13035550101",
+      "website_url": "https://example.com/library",
+      "booking_process": "Email the contact; confirm in writing.",
+      "booking_lead_days": 14,
+      "rooms": [
+        {
+          "label": "Main room",
+          "preferred_occupancy": 12,
+          "max_occupancy": 20,
+          "is_accessible": true,
+          "seating_layout": "Tables in a U",
+          "equipment": [
+            "screen",
+            "projector",
+            "whiteboard",
+            "power strips"
+          ]
+        },
+        {
+          "label": "Side room",
+          "preferred_occupancy": 6,
+          "max_occupancy": 8,
+          "is_accessible": false
+        }
+      ],
+      "has_wifi": true,
+      "wifi_notes": "Guest network, no password.",
+      "is_accessible": true,
+      "has_step_free_entry": true,
+      "has_elevator": true,
+      "has_accessible_restroom": true,
+      "accessibility_notes": "Main room is on the ground floor.",
+      "allows_minors": true,
+      "allows_animals": false,
+      "allows_food": true,
+      "allows_alcohol": false,
+      "requires_insurance": false,
+      "availability_hours": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "20:00"
+        },
+        {
+          "day_of_week": "saturday",
+          "opens_at": "10:00",
+          "closes_at": "16:00"
+        }
+      ],
+      "availability_notes": "Closed on public holidays.",
+      "setup_minutes_before": 30,
+      "teardown_minutes_after": 30,
+      "cost_cents": 7500,
+      "cost_basis": "per_hour",
+      "deposit_cents": 10000,
+      "cancellation_terms": "Free cancellation up to 7 days before.",
+      "cost_notes": "Nonprofit rate.",
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "not-a-uuid"
+    },
+    "address_on_venue_not_allowed": {
+      "name": "Boulder Community Library",
+      "slug": "boulder_community_library",
+      "status": "active",
+      "is_public_venue": true,
+      "description": "Public library with bookable meeting rooms.",
+      "parking_description": "Free lot behind the building; 2 hour limit.",
+      "parking_latitude": 40.0148,
+      "parking_longitude": -105.2711,
+      "entry_description": "Side door on the east wall, past the bike racks.",
+      "entry_latitude": 40.0151,
+      "entry_longitude": -105.2699,
+      "transit_description": "Bus 204 stops one block away.",
+      "location_pin_ids": [
+        "9a0b1c2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d"
+      ],
+      "email": "venue@example.com",
+      "phone": "+13035550101",
+      "website_url": "https://example.com/library",
+      "booking_process": "Email the contact; confirm in writing.",
+      "booking_lead_days": 14,
+      "rooms": [
+        {
+          "label": "Main room",
+          "preferred_occupancy": 12,
+          "max_occupancy": 20,
+          "is_accessible": true,
+          "seating_layout": "Tables in a U",
+          "equipment": [
+            "screen",
+            "projector",
+            "whiteboard",
+            "power strips"
+          ]
+        },
+        {
+          "label": "Side room",
+          "preferred_occupancy": 6,
+          "max_occupancy": 8,
+          "is_accessible": false
+        }
+      ],
+      "has_wifi": true,
+      "wifi_notes": "Guest network, no password.",
+      "is_accessible": true,
+      "has_step_free_entry": true,
+      "has_elevator": true,
+      "has_accessible_restroom": true,
+      "accessibility_notes": "Main room is on the ground floor.",
+      "allows_minors": true,
+      "allows_animals": false,
+      "allows_food": true,
+      "allows_alcohol": false,
+      "requires_insurance": false,
+      "availability_hours": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "20:00"
+        },
+        {
+          "day_of_week": "saturday",
+          "opens_at": "10:00",
+          "closes_at": "16:00"
+        }
+      ],
+      "availability_notes": "Closed on public holidays.",
+      "setup_minutes_before": 30,
+      "teardown_minutes_after": 30,
+      "cost_cents": 7500,
+      "cost_basis": "per_hour",
+      "deposit_cents": 10000,
+      "cancellation_terms": "Free cancellation up to 7 days before.",
+      "cost_notes": "Nonprofit rate.",
+      "notes": "Ask for the room key at the front desk.",
+      "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f",
+      "backup_contact_individual_id": "6c2a1d3f-8b5e-4d4c-8f7a-2b3c4d5e6f70",
+      "street_address": "1000 Example St"
     }
   }
 }

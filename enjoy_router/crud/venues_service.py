@@ -3,13 +3,62 @@
     * a venue that live classes point at cannot be deleted   (conflict, id:in_use)
     * a room a live class uses cannot be removed, renamed, or shrunk below that class's capacity_max
                                                                 (validation_failed, rooms:in_use)
+    * a venue becomes active only when it has a place: a live operates_at location_link to a location that is
+      active and has an address or a GPS point                   (validation_failed, status:place_required)
+      A link needs the venue to exist first, so a venue is created inactive, linked, then activated;
+      creating one already active is refused for the same reason.
+    * contact_individual_id and backup_contact_individual_id point at an individual that exists and is not erased
+      (a merged person is followed to the survivor)               (validation_failed, <field>:not_found)
+Reading and the one-window flows (Part 2, presentation):
+    * get / list with expand=True return each venue with `place` (the place it operates at: name, address, GPS flag, time
+      zone), `main_contact` and `backup_contact` (id and display_name) read from the linked records. Nothing is stored twice.
+    * create_with_place saves a venue (inactive), its place and the operates_at link together, or nothing.
+    * set_place moves a venue to another place: the old link ends today, the new one starts today, together.
 Everything else passes straight through to the handler file. Same function names as a handler file.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
+from . import individuals_crud as I
+from . import individuals_service as IS
+from . import location_links_crud as LK
+from . import locations_crud as LOC
 from . import venues_crud as V
 from .classes_service import _find_room, live_classes_at
-from .schema_kit import failure
+from .schema_kit import UUID_PATTERN, failure, success
+
+CONTACT_FIELDS = ("contact_individual_id", "backup_contact_individual_id")
+EXPANDABLE = True  # the endpoint passes expand=True only to modules that say so
+
+
+def contact_problems(store, data) -> list:
+    """Each contact pointer present must name an individual that exists and is not erased."""
+    out = []
+    for f in CONTACT_FIELDS:
+        v = data.get(f)
+        if isinstance(v, str) and UUID_PATTERN.match(v):
+            got = I.get(store, v)
+            if not got.ok or got.data.get("status") == "erased":
+                out.append({"field": f, "issue": "not_found"})
+    return out
+
+
+def has_place(store, venue_id: str) -> bool:
+    """True when a live operates_at link joins this venue to an active location that has an address or a GPS point."""
+    for link in LK.live_for(store, "subject_id", venue_id):
+        if link.get("subject_type") != "venue" or link.get("relationship") != "operates_at" or not LK.is_live(link):
+            continue
+        got = LOC.get(store, link["location_id"])
+        if got.ok and place_ok(got.data):
+            return True
+    return False
+
+
+def place_ok(loc: dict) -> bool:
+    """An active location that has an address (not a former one) or a GPS point."""
+    return loc.get("status") == "active" and bool(
+        loc.get("geometries") or any(a.get("usage") != "former" for a in loc.get("addresses", [])))
 
 
 def make_room_check(store, venue_id: str):
@@ -24,21 +73,95 @@ def make_room_check(store, venue_id: str):
     return check
 
 
+def _create_problems(store, data) -> list:
+    if not isinstance(data, dict):
+        return []
+    problems = contact_problems(store, data)
+    if data.get("status") == "active":  # no link can exist before the venue does
+        problems.append({"field": "status", "issue": "place_required"})
+    return problems
+
+
 def create(store, data, actor, source="dashboard", tx=None, now=None):
+    problems = _create_problems(store, data)
+    if problems:
+        return failure("validation_failed", problems)
     return V.create(store, data, actor, source, tx=tx, now=now)
 
 
-def get(store, id, include_deleted=False):
-    return V.get(store, id, include_deleted)
+def _live_place_link(store, venue_id):
+    links = [l for l in LK.live_for(store, "subject_id", venue_id)
+             if l.get("subject_type") == "venue" and l.get("relationship") == "operates_at" and LK.is_live(l)]
+    links.sort(key=lambda l: (not l.get("is_primary"), l.get("created_at", "")))
+    return links
 
 
-def list(store, filters=None, **kw):  # noqa: A001
-    return V.list(store, filters, **kw)
+def _place_view(store, venue_id):
+    for link in _live_place_link(store, venue_id):
+        got = LOC.get(store, link["location_id"])
+        if not got.ok:
+            continue
+        loc = got.data
+        addrs = [a for a in loc.get("addresses", []) if a.get("usage") != "former"]
+        addrs.sort(key=lambda a: not a.get("is_primary"))
+        view = {"location_id": loc["id"], "link_id": link["id"], "name": loc.get("name"),
+                "has_gps": bool(loc.get("geometries")), "status": loc.get("status")}
+        if addrs:
+            view["address"] = addrs[0]
+        if loc.get("time_zone"):
+            view["time_zone"] = loc["time_zone"]
+        return view
+    return None
+
+
+def _person_view(store, person_id):
+    got = IS.get(store, person_id)
+    if not got.ok or got.data.get("status") == "erased":
+        return {"id": person_id, "unavailable": True}
+    return {"id": got.data["id"], "display_name": got.data.get("display_name")}
+
+
+def expanded(store, rec: dict) -> dict:
+    """The venue with the records it points at read in: place, main_contact, backup_contact. Nothing here is stored."""
+    out = dict(rec)
+    place = _place_view(store, rec["id"])
+    if place:
+        out["place"] = place
+    if rec.get("contact_individual_id"):
+        out["main_contact"] = _person_view(store, rec["contact_individual_id"])
+    if rec.get("backup_contact_individual_id"):
+        out["backup_contact"] = _person_view(store, rec["backup_contact_individual_id"])
+    return out
+
+
+def get(store, id, include_deleted=False, expand=False):  # noqa: A002
+    r = V.get(store, id, include_deleted)
+    if r.ok and expand:
+        return success(expanded(store, r.data))
+    return r
+
+
+def list(store, filters=None, expand=False, **kw):  # noqa: A001, A002
+    r = V.list(store, filters, **kw)
+    if r.ok and expand:
+        return success({"records": [expanded(store, d) for d in r.data["records"]], "count": r.data["count"]})
+    return r
 
 
 def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=None):
-    check = make_room_check(store, id) if isinstance(id, str) else None
-    return V.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check, check_fields=("rooms",))
+    if not isinstance(id, str):
+        return V.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now)
+    rooms = make_room_check(store, id)
+    activating = isinstance(changes, dict) and changes.get("status") == "active"
+
+    def check(merged: dict) -> list:
+        changed = {f: merged[f] for f in CONTACT_FIELDS if isinstance(changes, dict) and f in changes and f in merged}
+        problems = rooms(merged) + contact_problems(store, changed)  # only pointers being changed, so an old one cannot block other edits
+        if activating and not has_place(store, id):
+            problems.append({"field": "status", "issue": "place_required"})
+        return problems
+    return V.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check,
+                    check_fields=("rooms", "status", *CONTACT_FIELDS))
 
 
 def soft_delete(store, id, actor, tx=None, now=None):
@@ -49,3 +172,117 @@ def soft_delete(store, id, actor, tx=None, now=None):
 
 def set_review_summary(store, id, review_count, average_rating, actor="system:reviews", tx=None, now=None):
     return V.set_review_summary(store, id, review_count, average_rating, actor, tx=tx, now=now)
+
+
+# =============================================================================
+# one-window flows: a venue and its place saved together
+# =============================================================================
+
+class _Abort(Exception):
+    """Raised inside a transaction block so nothing in it is written; carries the failure to return."""
+    def __init__(self, result):
+        self.result = result
+
+
+def _address_problems(problems: list) -> list:
+    return [{"field": "address" if p["field"] == "addresses" else p["field"], "issue": p["issue"]} for p in problems]
+
+
+def _place_args_problems(address, location_id) -> list:
+    if address is not None and location_id is not None:
+        return [{"field": "address", "issue": "choose_one"}]
+    if address is not None and not isinstance(address, dict):
+        return [{"field": "address", "issue": "invalid_type"}]
+    if location_id is not None and not (isinstance(location_id, str) and UUID_PATTERN.match(location_id)):
+        return [{"field": "location_id", "issue": "invalid_format"}]
+    return []
+
+
+def _saved_place_problems(store, location_id) -> list:
+    loc = store.get(LOC.LOCATIONS.name, location_id)
+    if loc is None or "deleted_at" in loc:
+        return [{"field": "location_id", "issue": "not_found"}]
+    if loc.get("status") != "active":
+        return [{"field": "location_id", "issue": "retired"}]
+    return []
+
+
+def _new_place(store, tx, name, address, actor, source, now):
+    """Create the place for a typed address inside the caller's transaction; returns its id."""
+    addr = {"usage": "civic", "is_primary": True, **address}
+    r = LOC.create(store, {"name": name, "kind": "site", "addresses": [addr]}, actor, source, tx=tx, now=now)
+    if not r.ok:
+        raise _Abort(failure("validation_failed", _address_problems(r.problems)))
+    return r.data["id"]
+
+
+def _link_to(store, tx, venue_id, location_id, actor, source, now, valid_from=None):
+    data = {"subject_type": "venue", "subject_id": venue_id, "location_id": location_id,
+            "relationship": "operates_at", "is_primary": True}
+    if valid_from:
+        data["valid_from"] = valid_from
+    r = LK.create(store, data, actor, source, tx=tx, now=now)
+    if not r.ok:
+        raise _Abort(failure("validation_failed", r.problems))
+    return r.data["id"]
+
+
+def create_with_place(store, data, actor, address=None, location_id=None, source="dashboard", now=None):
+    """Add a venue the way a person says it: a name and, if known, where. The venue is saved inactive; with an address a
+    new place is saved too (named after the venue), with location_id an existing place is used; either way the
+    operates_at link joins them. All saved together or none."""
+    problems = _create_problems(store, data) + _place_args_problems(address, location_id)
+    if not problems and location_id is not None:
+        problems = _saved_place_problems(store, location_id)
+    if problems:
+        return failure("validation_failed", problems)
+    out: dict = {}
+    try:
+        with store.transaction() as tx:
+            r = V.create(store, data, actor, source, tx=tx, now=now)
+            if not r.ok:
+                raise _Abort(r)
+            venue = r.data
+            loc_id = location_id
+            if address is not None:
+                loc_id = _new_place(store, tx, venue["name"], address, actor, source, now)
+            if loc_id is not None:
+                out["link_id"] = _link_to(store, tx, venue["id"], loc_id, actor, source, now)
+            out["venue"], out["location_id"] = venue, loc_id
+    except _Abort as stop:
+        return stop.result
+    return success({**expanded(store, out["venue"]), "created_place": address is not None})
+
+
+
+def set_place(store, id, actor, address=None, location_id=None, source="dashboard", now=None):
+    """Move a venue to another place. Its live operates_at links end today and the new one starts today, together.
+    An active venue must keep a place, so the new place needs an address or a GPS point."""
+    problems = _place_args_problems(address, location_id)
+    if address is None and location_id is None and not problems:
+        problems = [{"field": "address", "issue": "required"}]
+    got = V.get(store, id) if not problems else None
+    if got is not None and not got.ok:
+        return got
+    if not problems and location_id is not None:
+        problems = _saved_place_problems(store, location_id)
+        if not problems and got.data.get("status") == "active" and not place_ok(store.get(LOC.LOCATIONS.name, location_id)):
+            problems = [{"field": "status", "issue": "place_required"}]
+    if problems:
+        return failure("validation_failed", problems)
+    venue = got.data
+    old = _live_place_link(store, id)
+    if location_id is not None and any(l["location_id"] == location_id for l in old):
+        return success({**expanded(store, venue), "changed": False})  # already there
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d") if now is None else now.strftime("%Y-%m-%d")
+    try:
+        with store.transaction() as tx:
+            for link in old:
+                r = LK.update(store, link["id"], {"valid_to": today}, actor, tx=tx, now=now)
+                if not r.ok:
+                    raise _Abort(failure("validation_failed", r.problems))
+            loc_id = location_id if location_id is not None else _new_place(store, tx, venue["name"], address, actor, source, now)
+            _link_to(store, tx, id, loc_id, actor, source, now, valid_from=today)
+    except _Abort as stop:
+        return stop.result
+    return success({**expanded(store, V.get(store, id).data), "changed": True})

@@ -32,6 +32,7 @@ REQUESTS = load_collection("registration_request")
 ASSIGNMENTS = load_collection("registration_assignment")
 TRANSACTIONS = load_collection("transaction_record")
 LOCATION_LINKS = load_collection("location_link")
+VENUES = load_collection("venue")
 INDIVIDUALS = I.INDIVIDUALS
 DETAILS = R.DETAILS
 HISTORY = I.HISTORY
@@ -49,6 +50,8 @@ LINKS = (
     (TRANSACTIONS.name, "payer.party_id", "scalar"),
     (TRANSACTIONS.name, "payee.party_id", "scalar"),
     (LOCATION_LINKS.name, "subject_id", "scalar"),  # only links whose subject_type is individual (see _find_links)
+    (VENUES.name, "contact_individual_id", "scalar"),
+    (VENUES.name, "backup_contact_individual_id", "scalar"),
 )
 
 SKIP = frozenset({"id", "schema_version", "created_at", "created_by", "updated_at", "updated_by", "source", "status",

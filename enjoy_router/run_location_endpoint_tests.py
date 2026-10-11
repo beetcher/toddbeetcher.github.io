@@ -110,8 +110,7 @@ store = MemoryDocStore("")
 r = A("locations", "create", data={"name": "Library", "kind": "site", "time_zone": "America/Denver"})
 check("admin door: create location in the real collection", r.status == 200 and r.body["data"]["created_by"] == "user:admin" and sorted(store.data) == ["locations"], str(r.body))
 lib = r.body["data"]
-vid = A("venues", "create", data={"name": "Library", "slug": "library", "status": "active", "is_public_venue": True, "street_address": "1 Main St", "city": "Boulder", "state_region": "CO",
-                                   "postal_code": "80302", "country": "US", "time_zone": "America/Denver", "contact_name": "Pat", "contact_email": "pat@example.com",
+vid = A("venues", "create", data={"name": "Library", "slug": "library", "status": "inactive", "is_public_venue": True, "email": "pat@example.com",
                                    "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": [{"label": "Main", "max_occupancy": 40}]}).body["data"]["id"]
 r = A("location_links", "create", data={"subject_type": "venue", "subject_id": vid, "location_id": lib["id"], "relationship": "operates_at", "valid_from": "2005"})
 check("admin door: venue operates_at link", r.status == 200, str(r.body))

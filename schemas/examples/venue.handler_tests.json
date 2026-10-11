@@ -2,8 +2,8 @@
   "about": "Handler test records for enjoy_router/crud/venues_crud.py. Read by enjoy_router/run_crud_tests.py. Every valid example in venue.examples.json must create; every invalid one must be refused. The scenarios below are stateful: each runs against a fresh in-memory store, the clock moves one second per step, and \"$name\" refers to a venue made earlier in the scenario (\"$name\" is its id, \"$name.field\" is a stored field). A data value {\"$example\": \"x\", \"set\": {...}, \"unset\": [...]} starts from the valid example x. Expect keys: ok, code, problems (exact set of field:issue), problems_include (subset), reads (store reads made by the step), stored (fields on the stored record; {\"$absent\": true} means the field is not there), data (fields in the returned data; dotted paths allowed).",
   "scenarios": [
     {"name": "create trims, drops blanks, lowercases email, stamps server fields", "steps": [
-      {"op": "create", "as": "a", "data": {"name": "  Cafe  ", "slug": "cafe", "status": "inactive", "is_public_venue": true, "description": "   ", "contact_email": "  Host@Example.COM "},
-       "expect": {"ok": true, "stored": {"name": "Cafe", "description": {"$absent": true}, "contact_email": "host@example.com", "review_count": 0, "source": "dashboard", "created_by": "user:todd", "schema_version": 1}}}
+      {"op": "create", "as": "a", "data": {"name": "  Cafe  ", "slug": "cafe", "status": "inactive", "is_public_venue": true, "description": "   ", "email": "  Host@Example.COM "},
+       "expect": {"ok": true, "stored": {"name": "Cafe", "description": {"$absent": true}, "email": "host@example.com", "review_count": 0, "source": "dashboard", "created_by": "user:todd", "schema_version": 1}}}
     ]},
     {"name": "create refuses a bad actor, a bad source and a non-object", "steps": [
       {"op": "create", "data": {"$example": "idea_only"}, "actor": "todd", "expect": {"ok": false, "code": "validation_failed", "problems": ["actor:invalid_format"]}},
@@ -42,7 +42,7 @@
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
       {"op": "update", "id": "$a", "changes": {"name": "  New Name "}, "actor": "user:sam",
        "expect": {"ok": true, "reads": 0, "data": {"changed": ["name"], "removed": [], "updated_by": "user:sam"}, "stored": {"name": "New Name", "updated_by": "user:sam", "created_by": "user:todd"}}},
-      {"op": "update", "id": "$a", "changes": {"contact_email": "nope"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["contact_email:invalid_format"], "reads": 0, "stored": {"contact_email": "venue@example.com"}}},
+      {"op": "update", "id": "$a", "changes": {"email": "nope"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["email:invalid_format"], "reads": 0, "stored": {"email": "venue@example.com"}}},
       {"op": "update", "id": "$a", "changes": {"description": null}, "expect": {"ok": true, "reads": 0, "data": {"removed": ["description"]}, "stored": {"description": {"$absent": true}}}}
     ]},
     {"name": "update refuses server fields, slug, unknown fields, empty changes, required removal", "steps": [
@@ -59,18 +59,18 @@
     ]},
     {"name": "update, whole-record path: reads once and checks the other fields", "steps": [
       {"op": "create", "as": "idea", "data": {"$example": "idea_only"}, "expect": {"ok": true}},
-      {"op": "update", "id": "$idea", "changes": {"status": "active"}, "expect": {"ok": false, "code": "validation_failed", "reads": 1, "problems_include": ["street_address:required", "rooms:required", "allows_minors:required"]}},
+      {"op": "update", "id": "$idea", "changes": {"status": "active"}, "expect": {"ok": true, "reads": 0, "stored": {"status": "active"}}},
       {"op": "update", "id": "$idea", "changes": {"cost_cents": 500}, "expect": {"ok": false, "reads": 1, "problems": ["cost_basis:required"]}},
       {"op": "update", "id": "$idea", "changes": {"cost_cents": 500, "cost_basis": "per_hour"}, "expect": {"ok": true, "reads": 1, "stored": {"cost_cents": 500, "cost_basis": "per_hour"}}},
-      {"op": "update", "id": "$idea", "changes": {"latitude": 40.0}, "expect": {"ok": false, "reads": 1, "problems": ["longitude:required"]}},
-      {"op": "update", "id": "$idea", "changes": {"latitude": 40.0, "longitude": -105.0}, "expect": {"ok": true, "reads": 1}}
+      {"op": "update", "id": "$idea", "changes": {"entry_latitude": 40.0}, "expect": {"ok": false, "reads": 1, "problems": ["entry_longitude:required"]}},
+      {"op": "update", "id": "$idea", "changes": {"entry_latitude": 40.0, "entry_longitude": -105.0}, "expect": {"ok": true, "reads": 1}}
     ]},
     {"name": "update, whole-record path: removing a field other rules need", "steps": [
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
-      {"op": "update", "id": "$a", "changes": {"contact_email": null}, "expect": {"ok": true, "reads": 1, "stored": {"contact_email": {"$absent": true}}}},
-      {"op": "update", "id": "$a", "changes": {"contact_phone": null}, "expect": {"ok": false, "reads": 1, "problems_include": ["contact_phone:choose_one"]}},
-      {"op": "update", "id": "$a", "changes": {"street_address": null}, "expect": {"ok": false, "reads": 1, "problems": ["street_address:required"]}},
-      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expect": {"ok": true, "reads": 1, "stored": {"status": "inactive"}}}
+      {"op": "update", "id": "$a", "changes": {"cost_cents": null}, "expect": {"ok": false, "reads": 1, "problems_include": ["cost_cents:required"]}},
+      {"op": "update", "id": "$a", "changes": {"cost_basis": null}, "expect": {"ok": false, "reads": 1, "problems_include": ["cost_basis:required"]}},
+      {"op": "update", "id": "$a", "changes": {"cost_cents": null, "cost_basis": null}, "expect": {"ok": true, "reads": 1, "stored": {"cost_cents": {"$absent": true}, "cost_basis": {"$absent": true}}}},
+      {"op": "update", "id": "$a", "changes": {"email": null, "phone": null, "contact_individual_id": null, "status": "inactive"}, "expect": {"ok": true, "reads": 0, "stored": {"email": {"$absent": true}, "status": "inactive"}}}
     ]},
     {"name": "update, code rules run on the whole-record path", "steps": [
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
@@ -82,14 +82,14 @@
     {"name": "expected_updated_at: stale is a conflict on both paths", "steps": [
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
       {"op": "update", "id": "$a", "changes": {"name": "X"}, "expected_updated_at": "2020-01-01T00:00:00Z", "expect": {"ok": false, "code": "conflict", "reads": 0}},
-      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expected_updated_at": "2020-01-01T00:00:00Z", "expect": {"ok": false, "code": "conflict", "reads": 1}},
+      {"op": "update", "id": "$a", "changes": {"cost_cents": 100}, "expected_updated_at": "2020-01-01T00:00:00Z", "expect": {"ok": false, "code": "conflict", "reads": 1}},
       {"op": "update", "id": "$a", "changes": {"name": "X"}, "expected_updated_at": "$a.updated_at", "expect": {"ok": true, "reads": 0, "stored": {"name": "X"}}},
       {"op": "update", "id": "$a", "changes": {"name": "Y"}, "expected_updated_at": "yesterday", "expect": {"ok": false, "code": "validation_failed", "problems": ["expected_updated_at:invalid_format"]}}
     ]},
     {"name": "update on a soft-deleted venue: whole path refuses, simple path does not notice (documented)", "steps": [
       {"op": "create", "as": "a", "data": {"$example": "active_full_detail"}, "expect": {"ok": true}},
       {"op": "soft_delete", "id": "$a", "expect": {"ok": true}},
-      {"op": "update", "id": "$a", "changes": {"status": "inactive"}, "expect": {"ok": false, "code": "not_found"}},
+      {"op": "update", "id": "$a", "changes": {"cost_cents": 100}, "expect": {"ok": false, "code": "not_found"}},
       {"op": "update", "id": "$a", "changes": {"name": "Still here"}, "expect": {"ok": true, "reads": 0}}
     ]},
     {"name": "soft delete keeps the record and stamps who and when", "steps": [
@@ -114,10 +114,10 @@
       {"op": "list", "limit": 9999, "expect": {"ok": true, "data": {"count": 4}}},
       {"op": "soft_delete", "id": "$home", "expect": {"ok": true}},
       {"op": "list", "expect": {"ok": true, "data": {"count": 3}}},
-      {"op": "list", "filters": {"city": "Boulder"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["city:not_supported"]}},
+      {"op": "list", "filters": {"website_url": "x"}, "expect": {"ok": false, "code": "validation_failed", "problems": ["website_url:not_supported"]}},
       {"op": "list", "filters": {"status": "active", "is_public_venue": true}, "expect": {"ok": false, "problems": ["status:not_supported", "is_public_venue:not_supported"]}},
       {"op": "list", "filters": {"status": "weird"}, "expect": {"ok": false, "problems": ["status:invalid_value"]}},
-      {"op": "list", "order": "city", "expect": {"ok": false, "problems": ["order:not_supported"]}},
+      {"op": "list", "order": "website_url", "expect": {"ok": false, "problems": ["order:not_supported"]}},
       {"op": "list", "order": "-created_at", "filters": {"status": "active"}, "expect": {"ok": false, "problems": ["order:not_supported"]}},
       {"op": "list", "limit": "5", "expect": {"ok": false, "problems": ["limit:invalid_type"]}}
     ]},

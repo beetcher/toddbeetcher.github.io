@@ -10,7 +10,7 @@ Written October 6, 2026 from the venue design conversation (thread 11).
 
 A place where classes are held. A venue is created from the dashboard, never by a public page. A venue record can begin as an idea (a cafe someone mentioned) and be filled in as it is vetted.
 
-A venue holds where it is, how to get in, who to contact, its rooms, its accessibility, its house rules, when it is available and what it costs. A `scheduled_class` points at a venue with `venue_id` and names the room with `venue_room_label`. The venue does not store its classes; "all classes at this venue" is a lookup.
+A venue is an entity of its own. It holds its name, its own email and phone, how to get in, pointers to its contact people, its rooms, its accessibility, its house rules, when it is available and what it costs. It does not hold where it is: that is a `location` record, reached through a `location_link` (see section 3, Where). A `scheduled_class` points at a venue with `venue_id` and names the room with `venue_room_label`. The venue does not store its classes; "all classes at this venue" is a lookup.
 
 **Rooms live inside the venue record** (Todd): a room has no life apart from its venue. **Reviews live outside** (Todd): each review is its own record with a pointer back to the thing reviewed. The venue holds only the server-kept `review_count` and `average_rating`.
 
@@ -18,7 +18,9 @@ A venue holds where it is, how to get in, who to contact, its rooms, its accessi
 
 `status` is `active` or `inactive` **(proposal)**. Inactive means not usable (an idea, a retired venue) and keeps a venue out of the picker without deleting it.
 
-An `active` venue must have: `street_address`, `city`, `state_region`, `postal_code`, `country`, `time_zone`, `contact_name`, at least one of `contact_email` or `contact_phone`, at least one entry in `rooms`, and answers to `is_accessible`, `allows_minors` and `allows_animals`. An inactive venue needs only `name`, `slug`, `status` and `is_public_venue`.
+An `active` venue needs exactly one thing: a place, meaning a live `operates_at` location link to an active location that has an address or a GPS point (an endpoint rule, because it reads another collection). Everything else on the venue is optional, so a city park with no one to call, no rooms and no street address can be active. An inactive venue needs only `name`, `slug`, `status` and `is_public_venue`, so ideas can pile up as drafts with no place.
+
+Because a link needs the venue to exist first, a venue is created inactive, linked to its place, and then activated. (A later single "add venue" operation can do all three steps as one.)
 
 ## 3. Fields
 
@@ -27,9 +29,9 @@ An `active` venue must have: `street_address`, `city`, `state_region`, `postal_c
 - `is_public_venue` (Todd): a public venue (library, cafe, hall) versus a private one (a home, an office). Not the same as a class's `is_public`, which is whether the class is listed.
 
 ### Where
-- `street_address`, `address_line_2`, `city`, `state_region`, `postal_code`, `country` (two capital letters, ISO 3166, for example `US`). `street_address` and `address_line_2` are personal data when the venue is a private home (`x_pii`).
-- `time_zone`: an IANA name such as `America/Denver`. A class at this venue takes its `time_zone` from here **(proposal)**.
-- `latitude`, `longitude` (Todd): the GPS point of the venue. Each requires the other.
+- A venue stores no address, GPS point or time zone. Its place is a `location` record, linked by a `location_link` whose `relationship` is `operates_at` (marked primary, with dates). When a venue moves buildings, only the link changes. Every location detail (address, GPS, time zone) is read from the place when a screen needs it.
+- A class stores its own `time_zone`; the time zone of the venue's place is its natural default.
+- `availability_hours` are in the venue's local time, meaning the time zone of its place.
 
 ### How to get in (Todd)
 - `parking_description`, `parking_latitude`, `parking_longitude`: where to park, in words or GPS or both.
@@ -39,8 +41,8 @@ An `active` venue must have: `street_address`, `city`, `state_region`, `postal_c
 - Each GPS pair needs both numbers: `parking_latitude` with `parking_longitude`, `entry_latitude` with `entry_longitude`.
 
 ### Who to contact
-- `contact_name`, `contact_email`, `contact_phone` (Todd): the venue contact.
-- `backup_contact_name`, `backup_contact_email`, `backup_contact_phone`: the backup contact. All are personal data (`x_pii`).
+- `email`, `phone` (Todd): the venue's own email and phone, the business and not a person. Personal data when the venue is a private home (`x_pii`).
+- `contact_individual_id` (Todd): the main contact, a pointer to an `individual` record. The venue stores no name or personal details for that person; they are read from the individual record when a screen needs them. `backup_contact_individual_id` is the optional backup, same rules.
 - `website_url` **(proposal)**.
 - `booking_process`, `booking_lead_days` **(proposal)**: how to book the space and how much notice it needs.
 
@@ -88,7 +90,7 @@ An `active` venue must have: `street_address`, `city`, `state_region`, `postal_c
 3. Set provenance and start `review_count` at zero.
 4. When a class is saved with a `venue_id`: the venue must exist. If `venue_room_label` is present it must name a room in that venue, and the class's `capacity_max` must not be above that room's `max_occupancy` (**proposal**: a warning to the organizer first; make it a refusal only if Todd wants that).
 5. Never delete a venue that classes point at; set it `inactive` instead.
-6. Public pages and the class list never expose `contact_*`, `backup_contact_*` or a private venue's street address. What the class list may show (venue name, city, accessibility, address after a person has registered) is **(open)**.
+6. `contact_individual_id` and `backup_contact_individual_id`, when given, must point at an individual that exists and is not erased (a merged individual is followed to the survivor). Activating a venue requires a live `operates_at` link to a location that has an address or a GPS point; nothing else is required. Public pages and the class list never expose `email`, `phone`, the contact people or a private venue's address. What the class list may show (venue name, city, accessibility, address after a person has registered) is **(open)**.
 
 ## 5. Decisions
 

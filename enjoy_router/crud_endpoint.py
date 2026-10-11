@@ -10,8 +10,8 @@ main.py turns a Firebase request into one of these; tests call them directly.
 
 ops and their args:
     create             data, source (optional)
-    get                id, include_deleted (optional)
-    list               filters, order, limit (all optional)
+    get                id, include_deleted (optional), expand (optional, venues only: read in place and contacts)
+    list               filters, order, limit (all optional), expand (optional, venues only)
     update             id, changes, expected_updated_at (optional)
     soft_delete        id
     set_review_summary id, review_count, average_rating
@@ -23,6 +23,8 @@ ops and their args:
     erase              id                     (individuals only; the test door only, never the Console)
     end                valid_to, expected_updated_at (both optional)   (location_links only: ends the link, valid_to defaults to today)
     find_by_address    address, limit (optional)   (locations only: live locations that already hold this address)
+    create_with_place  data, address or location_id (optional), source (optional)   (venues only: venue, place and link saved together)
+    set_place          id, address or location_id   (venues only: moves the venue to another place, old link ends today)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
 never read or write a real collection. Its actor is always system:crud_test. The admin door works on the real
@@ -61,8 +63,8 @@ ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 # op -> (required args, optional args)
 OPS = {
     "create": ({"data"}, {"source"}),
-    "get": ({"id"}, {"include_deleted"}),
-    "list": (set(), {"filters", "order", "limit"}),
+    "get": ({"id"}, {"include_deleted", "expand"}),
+    "list": (set(), {"filters", "order", "limit", "expand"}),
     "update": ({"id", "changes"}, {"expected_updated_at"}),
     "soft_delete": ({"id"}, set()),
     "set_review_summary": ({"id", "review_count", "average_rating"}, set()),
@@ -74,18 +76,27 @@ OPS = {
     "erase": ({"id"}, set()),                          # only individuals; not in ADMIN_OPS
     "end": ({"id"}, {"valid_to", "expected_updated_at"}),   # only location_links
     "find_by_address": ({"address"}, {"limit"}),       # only locations
+    "create_with_place": ({"data"}, {"address", "location_id", "source"}),   # only venues
+    "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
-                       "merge", "unmerge", "end", "find_by_address"})
+                       "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
 def _run(module, store, op: str, a: dict, now: datetime, actor: str):
-    if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address"):
+    if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
+        return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
+    if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
+              "create_with_place", "set_place"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
+        if op == "create_with_place":
+            return module.create_with_place(store, a["data"], actor, a.get("address"), a.get("location_id"), a.get("source", "dashboard"), now=now)
+        if op == "set_place":
+            return module.set_place(store, a["id"], actor, a.get("address"), a.get("location_id"), now=now)
         if op == "end":
             return module.end(store, a["id"], actor, a.get("valid_to"), a.get("expected_updated_at"), now=now)
         if op == "find_by_address":
@@ -106,9 +117,11 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op == "create":
         return module.create(store, a["data"], actor, a.get("source", "dashboard"), now=now)
     if op == "get":
-        return module.get(store, a["id"], a.get("include_deleted", False))
+        return module.get(store, a["id"], a.get("include_deleted", False), **({"expand": True} if a.get("expand") else {}))
     if op == "list":
         kw = {k: a[k] for k in ("order", "limit") if k in a}
+        if a.get("expand"):
+            kw["expand"] = True
         return module.list(store, a.get("filters"), **kw)
     if op == "update":
         return module.update(store, a["id"], a["changes"], actor, a.get("expected_updated_at"), now=now)
