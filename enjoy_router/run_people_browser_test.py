@@ -54,11 +54,12 @@ with sync_playwright() as p:
     pg.click("#pAddBtn"); pg.click("#pSaveBtn")
     check("given name required message", pg.locator("#epaGiven").inner_text() == "Required.")
     pg.click("#pCancelBtn")
-    add("Ann", "Lee", "1961-04-17"); pg.wait_for_selector("#pList li")
+    add("Ann", "Lee", "04-17-1961"); pg.wait_for_selector("#pList li")
+    check("American date shown back as Apr 17, 1961", "Born Apr 17, 1961" in pg.locator("#pList").inner_text())
     check("added Ann", "Added Ann Lee" in pg.locator("#pNotice").inner_text())
-    pg.click("#pAddBtn"); pg.fill("#paGiven", "Bad"); pg.fill("#paBirth", "1961-13-45"); pg.click("#pSaveBtn")
+    pg.click("#pAddBtn"); pg.fill("#paGiven", "Bad"); pg.fill("#paBirth", "13-45-1961"); pg.click("#pSaveBtn")
     pg.wait_for_function("document.getElementById('epaBirth').textContent.length > 0")
-    check("bad birth date shown on its field", "YYYY" in pg.locator("#epaBirth").inner_text())
+    check("bad birth date shown on its field", "month first" in pg.locator("#epaBirth").inner_text())
     pg.click("#pCancelBtn")
     add("Annie", "Lee"); pg.wait_for_function("document.querySelectorAll('#pList li').length == 2")
     check("two people listed", pg.locator("#pCount").inner_text() == "2 people")
@@ -72,11 +73,14 @@ with sync_playwright() as p:
     li.get_by_role("button", name="Edit", exact=True).click()
     li.locator("input[id$='_given_name']") if False else None
     form = li.locator("form.eform")
-    form.locator("input").nth(5).fill("1961")        # birth_date
+    form.locator("input").nth(5).fill("4/5/1961")    # birth_date, typed with slashes and one-digit parts
+    pass
     form.locator("input").nth(3).fill("Annie L")      # name_to_use
     form.get_by_role("button", name="Save changes").click()
     pg.wait_for_function("document.getElementById('pNotice').textContent.indexOf('Saved') === 0")
     check("edit saved", True)
+    pg.wait_for_function("document.querySelectorAll('#pList li').length == 2")
+    check("4/5/1961 stored as April 5", "Born Apr 5, 1961" in pg.locator("#pList").inner_text())
     li = pg.locator("#pList li", has_text="Annie L")
     check("name_to_use shows as display name", li.count() == 1)
     li.locator("button.head").click()
@@ -84,14 +88,14 @@ with sync_playwright() as p:
     li.locator("form.eform input").nth(5).fill("19x1")
     li.locator("form.eform").get_by_role("button", name="Save changes").click()
     pg.wait_for_function("Array.from(document.querySelectorAll('.eform .ferr')).some(e => e.textContent.length)")
-    check("bad edit refused with a message", "YYYY" in li.locator("form.eform").inner_text())
+    check("bad edit refused with a message", "month first" in li.locator("form.eform").inner_text())
     li.locator("form.eform").get_by_role("button", name="Cancel").click()
 
     # merge Annie L into Ann Lee
     li.get_by_role("button", name="Merge into another person").click()
     li.get_by_role("button", name="Merge", exact=True).click()
     check("merge needs a choice and a reason", li.locator(".mergebox .ferr").first.inner_text() == "Choose one.")
-    li.locator(".mergebox select").select_option(label="Ann Lee (born 1961-04-17)")
+    li.locator(".mergebox select").select_option(label="Ann Lee (born Apr 17, 1961)")
     li.locator(".mergebox input").fill("same birth year and family, confirmed")
     li.get_by_role("button", name="Merge", exact=True).click()
     pg.wait_for_function("document.getElementById('pNotice').textContent.indexOf('Merged') === 0")

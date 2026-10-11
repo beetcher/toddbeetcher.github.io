@@ -588,7 +588,7 @@
       <div class="hint">What the person asks to be called. It shows instead of the given name.</div>
       <div class="ferr" id="epaUse"></div>
       <label class="f" for="paBirth">Birth date (optional)</label>
-      <input type="text" id="paBirth" maxlength="10" placeholder="YYYY, YYYY-MM or YYYY-MM-DD" autocomplete="off">
+      <input type="text" id="paBirth" maxlength="10" placeholder="MM-DD-YYYY, MM-YYYY or YYYY" autocomplete="off">
       <div class="ferr" id="epaBirth"></div>
       <div class="btns">
         <button type="submit" id="pSaveBtn">Save person</button>
@@ -774,7 +774,7 @@
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>The ship never merges two people on its own, and never because an email or phone matches. A person decides.</li>' +
-        '<li>A birth date can be a year alone. Whether someone is under 18 is worked out by the ship, never typed.</li>' +
+        '<li>Dates are typed month first: 04-17-1961, 04-1961, or just 1961 when that is all you know. Whether someone is under 18 is worked out by the ship, never typed.</li>' +
         '<li>Protected details (health and similar) have no screen here on purpose. They need a recorded purpose and consent first.</li>' +
         '<li>Erasing a person for good is not available here. It waits for sign-in roles.</li>' +
         '<li>If someone else changed the person while you were editing, you are asked to refresh. Nothing is overwritten.</li>' +
@@ -2956,7 +2956,7 @@
     { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },
     { k: "family_name", label: "Family name", t: "text" }, { k: "name_to_use", label: "Name to use", t: "text", hint: "What the person asks to be called. It shows instead of the given name." },
     { k: "pronouns", label: "Pronouns", t: "text", hint: "As the person says them, for example she/her." },
-    { k: "birth_date", label: "Birth date", t: "text", hint: "YYYY, YYYY-MM or YYYY-MM-DD. A year alone is fine." },
+    { k: "birth_date", label: "Birth date", t: "text", hint: "Month first: 04-17-1961, 04-1961 or just 1961. A year alone is fine." },
     { k: "birth_date_certainty", label: "How sure is the birth date?", t: "select", opts: [["", "Not stated (treated as exact)"], ["exact", "Exact"], ["approximate", "Approximate"], ["estimated", "Estimated"]] },
     { k: "preferred_language", label: "Preferred language", t: "text", hint: "A language tag such as en or es-MX." },
     { k: "time_zone", label: "Time zone", t: "text", hint: "For example America/Denver." },
@@ -2964,12 +2964,41 @@
     { k: "status", label: "Status", t: "select", opts: [["active", "Active"], ["inactive", "Inactive (kept, not offered in pickers)"]] },
     { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." }
   ];
+  // Dates: people type and read them the American way, month first (04-17-1961, 04-1961 or just 1961). The record stores YYYY, YYYY-MM or YYYY-MM-DD.
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var DATE_HELP = "Use 1961, 04-1961 or 04-17-1961 (month first).";
+  function pDateIn(s) {   // text typed by a person -> {iso} or {bad:true}; blank -> {iso:""}
+    var t = String(s || "").trim().replace(/[\/.\s]+/g, "-"), m;
+    if (t === "") return { iso: "" };
+    if (/^\d{4}$/.test(t)) return { iso: t };
+    if ((m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(t))) return pDateParts(m[1], m[2], m[3]);   // already stored style
+    if ((m = /^(\d{1,2})-(\d{4})$/.exec(t))) return pDateParts(m[2], m[1]);
+    if ((m = /^(\d{1,2})-(\d{1,2})-(\d{4})$/.exec(t))) return pDateParts(m[3], m[1], m[2]);
+    return { bad: true };
+  }
+  function pDateParts(y, mo, d) {
+    var M = parseInt(mo, 10), D = d === undefined ? 0 : parseInt(d, 10), Y = parseInt(y, 10);
+    if (M < 1 || M > 12 || Y < 1) return { bad: true };
+    if (D) { var dt = new Date(Date.UTC(Y, M - 1, D)); if (dt.getUTCFullYear() !== Y || dt.getUTCMonth() !== M - 1 || dt.getUTCDate() !== D) return { bad: true }; }
+    var z = function (n) { return (n < 10 ? "0" : "") + n; };
+    return { iso: y + "-" + z(M) + (D ? "-" + z(D) : "") };
+  }
+  function pDateOut(iso) {   // stored value -> "Apr 17, 1961", "Apr 1961" or "1961"
+    var m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(iso || ""));
+    if (!m) return String(iso || "");
+    return (m[2] ? MON[parseInt(m[2], 10) - 1] + " " : "") + (m[3] ? parseInt(m[3], 10) + ", " : "") + m[1];
+  }
+  function pDateField(iso) {   // stored value -> what the box shows: 04-17-1961, 04-1961 or 1961
+    var m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(iso || ""));
+    if (!m) return String(iso || "");
+    return m[3] ? m[2] + "-" + m[3] + "-" + m[1] : m[2] ? m[2] + "-" + m[1] : m[1];
+  }
   function pName(rec) { return rec.display_name || rec.given_name || "(no name)"; }
   function pById(id) { for (var i = 0; i < pAll.length; i++) if (pAll[i].id === id) return pAll[i]; return null; }
   function pProblems(res, map) {
     var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
     ps.forEach(function (p) {
-      var text = (p.field === "birth_date" && p.issue === "invalid_format") ? "Use YYYY, YYYY-MM or YYYY-MM-DD, and a date that exists."
+      var text = (p.field === "birth_date" && p.issue === "invalid_format") ? DATE_HELP + " It has to be a real date."
                : (PISSUE[p.issue] || "That value is not valid.");
       if (map && map[p.field]) mine[p.field] = text; else out.push((PLABEL[p.field] || p.field) + ": " + text);
     });
@@ -3010,7 +3039,7 @@
     top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
     head.appendChild(top);
     var bits = [];
-    if (rec.birth_date) bits.push("Born " + rec.birth_date);
+    if (rec.birth_date) bits.push("Born " + pDateOut(rec.birth_date));
     if (rec.is_minor) bits.push("Under 18");
     if (rec.life_status && rec.life_status !== "alive") bits.push(rec.life_status.replace(/_/g, " "));
     if (rec.record_privacy && rec.record_privacy !== "normal") bits.push(rec.record_privacy);
@@ -3071,7 +3100,7 @@
         opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
         el.value = f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
       } else if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur === undefined ? "" : cur; }
-      else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : cur; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : (f.k === "birth_date" ? pDateField(cur) : cur); }
       el.id = id; form.appendChild(el);
       if (f.hint) form.appendChild(mk("div", "hint", f.hint));
       var er = mk("div", "ferr"); form.appendChild(er);
@@ -3084,14 +3113,16 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault(); msg.textContent = "";
       Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
-      var changes = {};
+      var changes = {}, badDate = false;
       P_FIELDS.forEach(function (f) {
         var x = els[f.k], v = x.el.value.trim(), cur = rec[f.k];
+        if (f.k === "birth_date" && v !== "") { var pd = pDateIn(v); if (pd.bad) { x.err.textContent = DATE_HELP + " It has to be a real date."; badDate = true; return; } v = pd.iso; }
         var val = f.t === "bool" ? (v === "yes" ? true : v === "no" ? false : null) : (v === "" ? null : v);
         if (f.k === "status" && val === null) val = "active";
         if (val === null) { if (cur !== undefined) changes[f.k] = null; }
         else if (val !== cur) changes[f.k] = val;
       });
+      if (badDate) return;
       if (!Object.keys(changes).length) { host.textContent = ""; $("pNotice").textContent = "Nothing changed."; return; }
       save.disabled = true;
       admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_P).then(function (res) {
@@ -3114,7 +3145,7 @@
     var l1 = mk("label", "f", "Person to keep"); var sel = mk("select"); sel.id = "pm_" + rec.id; l1.htmlFor = sel.id;
     var o0 = mk("option", "", "Choose one"); o0.value = ""; sel.appendChild(o0);
     pAll.filter(function (p) { return p.id !== rec.id && p.status === "active"; }).forEach(function (p) {
-      var o = mk("option", "", pName(p) + (p.birth_date ? " (born " + p.birth_date + ")" : "")); o.value = p.id; sel.appendChild(o);
+      var o = mk("option", "", pName(p) + (p.birth_date ? " (born " + pDateOut(p.birth_date) + ")" : "")); o.value = p.id; sel.appendChild(o);
     });
     var e1 = mk("div", "ferr");
     var l2 = mk("label", "f", "Reason"); var why = mk("input"); why.type = "text"; why.maxLength = 500; why.id = "pr_" + rec.id; l2.htmlFor = why.id; why.placeholder = "For example: same phone and birth date, confirmed by phone";
@@ -3198,6 +3229,7 @@
     var data = {}, map = { given_name: "paGiven", family_name: "paFamily", name_to_use: "paUse", birth_date: "paBirth" };
     Object.keys(map).forEach(function (k) { var v = $(map[k]).value.trim(); if (v) data[k] = v; });
     if (!data.given_name) { $("epaGiven").textContent = "Required."; return; }
+    if (data.birth_date) { var pd = pDateIn(data.birth_date); if (pd.bad) { $("epaBirth").textContent = DATE_HELP + " It has to be a real date."; return; } data.birth_date = pd.iso; }
     $("pSaveBtn").disabled = true;
     admin("create", { data: data }, COLL_P).then(function (res) {
       $("pSaveBtn").disabled = false;
