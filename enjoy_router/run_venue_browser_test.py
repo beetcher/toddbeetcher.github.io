@@ -63,7 +63,7 @@ with sync_playwright() as p:
         pg.click("#addBtn"); pg.fill("#fName", name); pg.select_option("#fPublic", kind)
         if addr:
             host = pg.locator("#fPlaceHost")
-            host.get_by_label("Street number", exact=True).fill(addr[0]); host.get_by_label("Street", exact=True).fill(addr[1])
+            host.get_by_label("Street address", exact=True).fill(addr[0] + " " + addr[1])
             host.get_by_label("City", exact=True).fill("Boulder"); host.get_by_label("State", exact=True).fill("CO"); host.get_by_label("ZIP code", exact=True).fill("80302")
         pg.click("#saveBtn")
 
@@ -117,7 +117,7 @@ with sync_playwright() as p:
     # 6. add a place from the edit form (saves right away)
     pg.get_by_role("button", name="Add place", exact=True).click()
     sec = pg.locator("#editSections")
-    sec.get_by_label("Street number", exact=True).fill("500"); sec.get_by_label("Street", exact=True).fill("Spruce St")
+    sec.get_by_label("Street address", exact=True).fill("500 Spruce St")
     sec.get_by_label("City", exact=True).fill("Boulder"); sec.get_by_label("State", exact=True).fill("CO"); sec.get_by_label("ZIP code", exact=True).fill("80302")
     pg.get_by_role("button", name="Save place", exact=True).click()
     pg.wait_for_function("document.querySelector('#editSections').innerText.indexOf('500 Spruce St') >= 0")

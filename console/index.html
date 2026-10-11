@@ -3378,7 +3378,7 @@
       [["civic", "Street address"], ["mailing", "Mailing address"], ["po_box", "PO box"], ["former", "Former address"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; us.appendChild(op); });
       box.appendChild(ul); box.appendChild(us); f.usage = { el: us, err: mk("div", "ferr") };
     }
-    add("street_number", "Street number", "", 20); add("street", "Street", "For example: Walnut St", 120); add("unit", "Apartment or suite (optional)", "", 60);
+    add("street_line", "Street address", "For example: 123 Walnut St. Type it on one line.", 140); add("unit", "Apartment or suite (optional)", "", 60);
     if (opts.usageChoice) add("po_box", "PO box number (if it is a PO box)", "", 20);
     add("locality", "City", "", 120); add("region", "State", "Two letters, for example CO.", 60); add("postal_code", "ZIP code", "", 20);
     add("country", "Country", "Two letters. US for the United States.", 2);
@@ -3390,14 +3390,16 @@
       Object.keys(f).forEach(function (k) { f[k].err.textContent = ""; });
       var v = function (k) { return f[k] ? f[k].el.value.trim() : ""; }, ok = true, data = {}, a = {};
       var usage = f.usage ? f.usage.el.value : "civic";
-      ["street_number", "street", "unit", "po_box", "locality", "region", "postal_code"].forEach(function (k) { if (v(k)) a[k] = v(k); });
+      ["unit", "po_box", "locality", "region", "postal_code"].forEach(function (k) { if (v(k)) a[k] = v(k); });
+      var line = v("street_line"), sm = /^(\d+[A-Za-z]?(?:-\d+)?)\s+(\S.*)$/.exec(line);
+      if (sm) { a.street_number = sm[1]; a.street = sm[2]; } else if (line) a.street = line;
       if (a.street || a.po_box) {
         a.usage = usage; a.country = v("country").toUpperCase();
         if (usage === "civic" && !/^[A-Z]{2}$/.test(a.country)) { f.country.err.textContent = "Two capital letters, such as US."; ok = false; }
         else if (!/^[A-Z]{2}$/.test(a.country)) delete a.country;
         if (opts.primary) a.is_primary = true;
         data.addresses = [a];
-      } else if (a.street_number || a.unit || a.locality || a.region || a.postal_code) { f.street.err.textContent = "Add the street (or a PO box) to save an address."; ok = false; }
+      } else if (a.unit || a.locality || a.region || a.postal_code) { f.street_line.err.textContent = "Add the street address (or a PO box) to save an address."; ok = false; }
       if (opts.gps && (v("lat") || v("lon"))) {
         var la = Number(v("lat")), lo = Number(v("lon"));
         if (!v("lat") || isNaN(la) || la < -90 || la > 90) { f.lat.err.textContent = "A number from -90 to 90."; ok = false; }
@@ -3407,7 +3409,7 @@
       if (f.name && v("name")) data.name = v("name");
       if (f.description && v("description")) data.description = v("description");
       if (f.time_zone && v("time_zone")) data.time_zone = v("time_zone");
-      if (ok && !opts.optional && !data.name && !data.addresses && !data.geometries) { f.street.err.textContent = "Enter a street address, a name or GPS."; ok = false; }
+      if (ok && !opts.optional && !data.name && !data.addresses && !data.geometries) { f.street_line.err.textContent = "Enter a street address, a name or GPS."; ok = false; }
       return { ok: ok, data: data };
     };
     return box;
