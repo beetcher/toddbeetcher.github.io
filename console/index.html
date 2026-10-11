@@ -2351,6 +2351,7 @@
     document.querySelectorAll("#cEditSections details.more > summary").forEach(function (sm) { sm.className = ""; });
   }
   function cOpenSec(f) {
+    if (!f.sec) return;
     f.sec.open = true;
     var m = f.sec.closest("details.more");
     if (m) { m.open = true; m.firstChild.className = "haserr"; }
@@ -2441,7 +2442,7 @@
           var f = cCtx.fields[p.field];
           if (f) {
             $("ee_c_" + p.field).textContent = cIssueText(p, f);
-            cOpenSec(f); f.summary.className = "haserr"; n++;
+            cOpenSec(f); if (f.summary) f.summary.className = "haserr"; n++;
             if (!first) first = f.el;
           } else other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
         });
