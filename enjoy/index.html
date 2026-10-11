@@ -264,9 +264,19 @@
     <p>Pick one and we will take you to a short form. We save what you type on this device, so you can come back to it.</p>
     <ul class="steer__list">
       <li><a class="steer__card" href="register/private/"><img src="assets/price-private-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A one on one</strong><span>Just you, or you and a few people you choose.</span></span></a></li>
-      <li><a class="steer__card" href="register/group/"><img src="assets/price-group-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A small group</strong><span>Friends, family or a club. You bring the people.</span></span></a></li>
-      <li><a class="steer__card" href="register/class/"><img src="assets/price-class-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A workshop</strong><span>Join others. Tell us when and where you would like one.</span></span></a></li>
+      <li><a class="steer__card" href="register/group/" data-later><img src="assets/price-group-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A small group</strong><span>Friends, family or a club. You bring the people.</span></span></a></li>
+      <li><a class="steer__card" href="register/class/" data-later><img src="assets/price-class-mobile.webp" width="760" height="510" loading="lazy" decoding="async" alt=""><span class="steer__text"><strong>A workshop</strong><span>Join others. Tell us when and where you would like one.</span></span></a></li>
     </ul>
+  </dialog>
+
+  <dialog class="register steer" id="steer-later" aria-labelledby="steer-later-title">
+    <form method="dialog" class="register__close-form">
+      <button class="register__close" aria-label="Close">&times;</button>
+    </form>
+    <h2 id="steer-later-title" class="register__title">Still being built</h2>
+    <p>Small groups and workshops are still being built. Come back soon, or book a private session now.</p>
+    <p><a class="btn" href="register/private/">Book a private session</a></p>
+    <form method="dialog"><button class="btn btn--ghost">Come back later</button></form>
   </dialog>
 
   <dialog class="ask" id="ask" aria-labelledby="ask-title">
@@ -290,6 +300,6 @@
       <p class="wall__hint">Tap the picture to zoom</p>
     </div>
   </dialog>
-  <script src="main.js?v=20261007launch18"></script>
+  <script src="main.js?v=20261011launch19"></script>
 </body>
 </html>

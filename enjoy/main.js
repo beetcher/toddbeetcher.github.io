@@ -787,6 +787,22 @@ function initRegister() {
     steerDlg.querySelectorAll('.steer__card').forEach((a) => a.addEventListener('click', () => {
       try { sessionStorage.setItem('icdt_steer_y', String(Math.round(window.scrollY))); } catch (e) { /* ignore */ }
     }));
+    // Small group and workshop are paused (2026-10-11): those two cards open a "still being built" pop-up that
+    // offers the private session instead. Their request pages still exist; only the cards no longer lead there.
+    const laterDlg = document.getElementById('steer-later');
+    if (laterDlg) {
+      laterDlg.addEventListener('click', (e) => { if (e.target === laterDlg) laterDlg.close(); });
+      const saveY = () => {
+        try { sessionStorage.setItem('icdt_steer_y', String(Math.round(window.scrollY))); } catch (e) { /* ignore */ }
+      };
+      steerDlg.querySelectorAll('[data-later]').forEach((a) => a.addEventListener('click', (e) => {
+        e.preventDefault();
+        steerDlg.close();
+        if (typeof laterDlg.showModal === 'function') laterDlg.showModal();
+        else laterDlg.setAttribute('open', '');
+      }));
+      laterDlg.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', saveY));
+    }
   }
   if (location.hash === '#register') {
     if (target === steerDlg) {
