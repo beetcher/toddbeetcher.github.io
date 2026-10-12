@@ -133,6 +133,17 @@ check("confirmation number cannot be sent", ("confirmation_number", "not_allowed
 check("no request, no number", "confirmation_number" not in AT.create(s, {"individual_id": cy["id"], "scheduled_class_id": cq["id"], "role": "student"}, A, now=tick()).data)
 check("number stays through a status change", (AT.update(s, r.data["id"], {"status": "confirmed"}, A, now=tick()).ok) and AT.get(s, r.data["id"]).data["confirmation_number"] == "LCH-TEST-1234")
 check("removing the request removes the number", AT.update(s, r.data["id"], {"request_id": None}, A, now=tick()).ok and "confirmation_number" not in AT.get(s, r.data["id"]).data)
+# ---- every record has its own reference
+import re as _re
+r1 = AT.create(s, {"individual_id": bob["id"], "scheduled_class_id": cq["id"], "role": "student"}, A, now=tick())
+check("every record gets its own reference, no request needed", r1.ok and _re.fullmatch(r"ICDT-A-[A-Z2-9]{6}", r1.data.get("reference_number", "")) and "confirmation_number" not in r1.data, r1.data if r1.ok else r1.problems)
+eve = person("Eve")
+ra = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": eve["id"], "request_id": RQ}, A, now=tick())
+check("a record from a request has both numbers, and they differ", ra.ok and ra.data["reference_number"] != ra.data["confirmation_number"] and ra.data["confirmation_number"] == "LCH-TEST-1234", ra.data if ra.ok else ra.problems)
+check("references are unique", r1.data["reference_number"] != ra.data["reference_number"])
+check("reference cannot be sent", ("reference_number", "not_allowed") in issues(AT.create(s, {"individual_id": dee["id"], "scheduled_class_id": c2["id"], "role": "student", "reference_number": "ICDT-A-AAAAAA"}, A, now=tick())))
+check("reference cannot be changed", ("reference_number", "not_allowed") in issues(AT.update(s, r1.data["id"], {"reference_number": "ICDT-A-BBBBBB"}, A, now=tick())))
+check("reference stays through a status change", AT.update(s, r1.data["id"], {"status": "confirmed"}, A, now=tick()).ok and AT.get(s, r1.data["id"]).data["reference_number"] == r1.data["reference_number"])
 print(f"\n{total - len(fails)}/{total} checks passed")
 if fails: print("FAILED:", *fails, sep="\n  "); sys.exit(1)
 print("OK")

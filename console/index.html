@@ -126,6 +126,20 @@
   li .lchips { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; padding: 0 14px 4px; font-size: 14px; color: var(--muted); }
   dialog.lsdlg { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: calc(100vw - 24px); max-width: 560px; max-height: calc(100vh - 24px); background: var(--cream); color: var(--ink); }
   dialog.lsdlg[open] { display: flex; flex-direction: column; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .atband { margin: 8px 0 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; }
+  .atband .bandname { font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 6px; }
+  .atband.show { background: #e3ecf6; border-color: #b9cde4; font-size: 0.72em; }
+  .atband.inst { background: #e4f0e1; border-color: #b7d3b0; font-size: 0.72em; }
+  .atband.stu { background: #ffe9c4; border-color: #e6b866; border-width: 2px; }
+  .atband.stu .bandname { font-size: 1.05em; }
+  .atband.show select, .atband.inst select, .atband.inst button { min-height: 36px; padding: 4px 8px; }
+  .atband .arow { border-bottom-color: rgba(0,0,0,.12); }
+  .atband .arow .atop select { flex: 0 1 180px; width: auto; }
+  .atband .arow .atop button { flex: 0 0 auto; width: auto; }
+  .atband .aref { display: block; font-weight: 400; font-size: .85em; color: var(--muted); }
+  .atband.stu .rsum { margin: 10px 0 8px; font-weight: 600; }
+  .atband.stu .addbox { background: #fff8ec; }
   .arow { padding: 6px 0; border-bottom: 1px solid var(--line); }
   .arow .atop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .arow .aname { flex: 1 1 140px; font-weight: 600; }
@@ -779,7 +793,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled.</li>' +
         '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
@@ -3141,14 +3155,17 @@
   function attLine(r, withClass) {
     var row = mk("div", "rrow");
     row.appendChild(mk("span", "", withClass ? ((r.class && r.class.title) || "(class not found)") + (r.class && r.class.starts_at ? " · " + classWhen(r.class) : "") : attName(r)));
-    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status) + (r.confirmation_number ? " · " + r.confirmation_number : "")));
+    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status) + (r.reference_number ? " · " + r.reference_number : "") + (r.confirmation_number ? " · request " + r.confirmation_number : "")));
     return row;
   }
 
   function attRow(r, say, redraw) {
     var row = mk("div", "arow");
     var top = mk("div", "atop");
-    top.appendChild(mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : "") + (r.confirmation_number ? " · request " + r.confirmation_number : "")));
+    var nm = mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : ""));
+    var refs = [r.reference_number ? "ref " + r.reference_number : "", r.confirmation_number ? "request " + r.confirmation_number : ""].filter(Boolean).join(" · ");
+    if (refs) nm.appendChild(mk("span", "aref", refs));
+    top.appendChild(nm);
     var sel = mk("select"); sel.setAttribute("aria-label", "Status for " + attName(r));
     ATT_STATUSES.forEach(function (s) { var o = mk("option", "", ATT_WORD[s]); o.value = s; sel.appendChild(o); });
     sel.value = r.status;
@@ -3189,11 +3206,14 @@
       if (only) args.filters.status = only;
       admin("list", args, ATT).then(function (res) {
         body.textContent = "";
-        var fl = mk("label", "f", "Show"), fs = mk("select"); fs.id = "atOnly"; fl.htmlFor = "atOnly";
+        var bShow = mk("section", "atband show"), bInst = mk("section", "atband inst"), bStu = mk("section", "atband stu");
+        bShow.appendChild(mk("div", "bandname", "Show"));
+        var fl = mk("label", "f", "Who to show"), fs = mk("select"); fs.id = "atOnly"; fl.htmlFor = "atOnly"; fl.className = "sr";
         var o0 = mk("option", "", "Everyone"); o0.value = ""; fs.appendChild(o0);
         ATT_STATUSES.forEach(function (st) { var o = mk("option", "", ATT_WORD[st] + " only"); o.value = st; fs.appendChild(o); });
         fs.value = only; fs.addEventListener("change", function () { only = fs.value; draw(); });
-        body.appendChild(fl); body.appendChild(fs);
+        bShow.appendChild(fl); bShow.appendChild(fs);
+        body.appendChild(bShow); body.appendChild(bInst); body.appendChild(bStu);
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status !== 200 || !res.body.ok) { say("Could not load the attendance. " + adminProblem(res.status)); return; }
         var recs = res.body.data.records || [];
@@ -3202,18 +3222,18 @@
           return k(a) - k(b);
         });
         var stu = recs.filter(function (r) { return r.role === "student"; });
-        body.appendChild(mk("div", "rhead", "Instructors (" + inst.length + ")"));
-        inst.forEach(function (r) { body.appendChild(attRow(r, say, draw)); });
-        if (!inst.length) body.appendChild(mk("div", "empty", "No instructor yet."));
-        body.appendChild(mk("div", "rhead", "Students (" + stu.length + ")"));
-        stu.forEach(function (r) { body.appendChild(attRow(r, say, draw)); });
-        if (!stu.length) body.appendChild(mk("div", "empty", "No students yet."));
+        bInst.appendChild(mk("div", "bandname", "Instructors (" + inst.length + ")"));
+        inst.forEach(function (r) { bInst.appendChild(attRow(r, say, draw)); });
+        if (!inst.length) bInst.appendChild(mk("div", "empty", "No instructor yet."));
+        bStu.appendChild(mk("div", "bandname", "Students (" + stu.length + ")"));
+        stu.forEach(function (r) { bStu.appendChild(attRow(r, say, draw)); });
+        if (!stu.length) bStu.appendChild(mk("div", "empty", "No students yet."));
         var seats = stu.filter(function (r) { return !ATT_OFF[r.status]; }).length, wait = stu.filter(function (r) { return r.status === "waitlisted"; }).length;
-        body.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
+        bStu.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
         var det = mk("details", "addbox"); det.id = "atAddBox";
-        det.appendChild(mk("summary", "", "Add someone to this class"));
+        det.appendChild(mk("summary", "", "Add a student or instructor"));
         det.appendChild(assignForm({ cls: cls, onAdded: function (d, said) { say(said); draw(); } }));
-        body.appendChild(det);
+        bStu.appendChild(det);
       });
     }
     draw();

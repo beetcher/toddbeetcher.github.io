@@ -101,10 +101,17 @@
       "format": "uuid"
     },
     "confirmation_number": {
-      "description": "The confirmation number of the registration request this record came from, copied from the request by the server when request_id is set, so the number follows the person from request to class. Read only. Optional.",
+      "description": "The confirmation number of the registration request this record came from (ICDT- followed by six characters), copied from the request by the server when request_id is set, so the request can be traced from the class. Read only. Optional. This is the request's number, not this record's own: see reference_number.",
       "readOnly": true,
       "type": "string",
       "maxLength": 40
+    },
+    "reference_number": {
+      "description": "This person's own reference for this class, ICDT-A- followed by six characters (no vowels, no 0 or 1). Set by the server on every new record, whether or not it came from a request, and never changes. Read only. Records made before this field existed do not have one.",
+      "readOnly": true,
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 20
     },
     "notes": {
       "description": "Free text for the operator about this person in this class. Up to 2000 characters. Personal data. Optional.",

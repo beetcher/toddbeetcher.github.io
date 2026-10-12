@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import builtins
 import re
+import secrets
 from contextlib import contextmanager
 
 from . import individuals_service as IS
@@ -66,6 +67,17 @@ def _live_for(store, field, value):
 def _class(store, class_id):
     doc = store.get(CL.CLASSES.name, class_id)
     return None if doc is None or _deleted(doc) else doc
+
+
+_REF_ALPHABET = "BCDFGHJKLMNPQRSTVWXYZ23456789"   # no vowels, no 0 or 1: reads cleanly and is hard to guess
+
+
+def _new_reference(store):
+    for _ in range(20):
+        ref = "ICDT-A-" + "".join(secrets.choice(_REF_ALPHABET) for _ in range(6))
+        if not store.query(ATT.name, [("reference_number", "==", ref)], limit=1):
+            return ref
+    return "ICDT-A-" + "".join(secrets.choice(_REF_ALPHABET) for _ in range(8))
 
 
 def _confirmation_of(store, request_id):
@@ -135,6 +147,7 @@ def _create(store, data, actor, source, tx, now, person_known=False):
     number = _confirmation_of(store, doc.get("request_id"))
     if number:
         doc["confirmation_number"] = number
+    doc["reference_number"] = _new_reference(store)
     doc["status_history"] = [_history_entry(doc["status"], actor, now)]
     missing = [f for f in ATT.server_required if f not in doc]
     if check_document(ATT, doc) or missing:
