@@ -759,7 +759,7 @@
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer the person gave.</li>' +
-        '<li><b>Put in a class…</b> places the requester in a class. It starts filled in from the request (or uses the person already linked to it). Choose the class and the role, then <b>Add to class</b>. The request is remembered on the entry, so the card then lists where it was placed. You can add more people from the same request.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class. It starts filled in from the request (or uses the person already linked to it). Choose the class and the role, then <b>Add to class</b>. The request is remembered on the entry, so the card then lists where it was placed. You can add more people from the same request. Choose <b>A new class (build it now)</b> in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
         '<li><b>One touch.</b> Under each card the ship shows what it would do: an orange <b>Assign</b> button, for example "Accept 2 seats in Intro Workshop". Tap it and it is done. The ship decides between accepted, overflow and the waiting list from the seats left.</li>' +
@@ -803,6 +803,7 @@
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
         '<li><b>Registered</b> and <b>Waiting</b> on a card open the old seat roster. <b>Attendance</b> opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick a person already in People or add a new one. A new person is added to People and to the student or instructor list in the same step. A student joins as <b>enrolled</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself, and a full class never refuses anyone. <b>Remove</b> takes a mistaken entry out; the person stays in People.</li>' +
+        '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -2031,12 +2032,12 @@
   var CTYPES = { workshop: "Workshop", group: "Group", "private": "One on one" };
   var CPRIMARY = ["Basics", "When and where", "Capacity and price"];
   var CLAYOUT = [
-    ["Basics", ["title", "class_type", "status", "is_public", "description", "cancelled_reason"]],
+    ["Basics", ["title", "class_type", "curriculum_id", "series_id", "session_number", "status", "is_public", "description", "cancelled_reason"]],
     ["When and where", ["venue_id", "venue_room_label", "starts_at", "time_zone", "duration_minutes", "is_venue_confirmed", "venue_notes"]],
     ["Capacity and price", ["capacity_minimum", "capacity_target", "capacity_max", "is_waitlist_enabled", "waitlist_max", "price_cents", "price_basis"]],
     ["Program and organizer", ["program_slug", "accessibility_notes", "organizer_name", "organizer_email", "organizer_phone"]]
   ];
-  var CLABELS = { title: "Title", class_type: "Kind of class", is_public: "Show in the public list", program_slug: "Program",
+  var CLABELS = { title: "Title", class_type: "Kind of class", is_public: "Show in the public list", program_slug: "Program", session_number: "Session number in the series",
                   venue_id: "Venue", venue_room_label: "Room", starts_at: "Starts", duration_minutes: "Length (minutes)",
                   is_venue_confirmed: "Venue confirmed with them", venue_notes: "Notes about the venue for this class",
                   capacity_minimum: "Fewest people (needed to run)", capacity_target: "Target number", capacity_max: "Most people",
@@ -2046,6 +2047,9 @@
   var CISSUE = {
     venue_id: { not_found: "That venue was not found.", inactive: "That venue is not active. Make the venue active first, or keep this class as an idea.", required: "Choose a venue." },
     venue_room_label: { not_found: "That venue has no room with that name." },
+    curriculum_id: { not_found: "That curriculum was not found." },
+    series_id: { required: "Choose a series for the session number, or clear the session number." },
+    session_number: { duplicate: "Another class in this series already has that number.", out_of_range: "A whole number from 1 to 50." },
     capacity_minimum: { out_of_range: "The fewest people is above the target." },
     capacity_max: { out_of_range: "Check the numbers: fewest ≤ target ≤ most, and the most cannot be above the room's size." },
     cancelled_reason: { not_allowed: "Only for a cancelled class." }
@@ -2126,6 +2130,7 @@
     head.appendChild(mk("div", "sub", where));
     var chips = mk("div", "chips");
     chips.appendChild(mk("span", "", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", public" : ", not public")));
+    if (rec.session_number) chips.appendChild(mk("span", "", "Session " + rec.session_number));
     chips.appendChild(mk("span", "", "People: " + rec.capacity_minimum + " to " + rec.capacity_target + " (up to " + rec.capacity_max + ")"));
     var links = mk("div", "lchips");   // outside the card's head button: a button cannot sit inside a button
     var rl = mk("button", "chiplink", "Registered: " + (rec.registered_count || 0)); rl.type = "button";
@@ -2306,6 +2311,60 @@
     return u ? { value: u } : { bad: "That date or time is not valid." };
   }
 
+  // ---- what a class teaches, and which series it is in (piece 3)
+  var cCurricula = [];
+  function loadCurriculumChoices() {
+    return admin("list", { filters: { status: "active" }, limit: 200 }, "curriculums").then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return false; }
+      if (res.status !== 200 || !res.body.ok) return false;
+      cCurricula = (res.body.data.records || []).slice().sort(function (a, b) { return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1; });
+      return true;
+    });
+  }
+  function curriculumLabel(c) { return (c.title || "(no title)") + " (" + c.session_count + (c.session_count === 1 ? " session" : " sessions") + " of " + c.minutes_per_session + " min)"; }
+  function newUuid() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return "xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx".replace(/x/g, function () { return Math.floor(Math.random() * 16).toString(16); });
+  }
+  function buildCurriculumField(rec) {
+    var wrap = mk("div"), id = "ef_c_curriculum_id";
+    var l = mk("label", "f", "Curriculum (what is taught)"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
+    cCurricula.forEach(function (c) { var o = mk("option", "", curriculumLabel(c)); o.value = c.id; sel.appendChild(o); });
+    if (rec.curriculum_id && !cCurricula.some(function (c) { return c.id === rec.curriculum_id; })) { var ox = mk("option", "", "(inactive or removed curriculum)"); ox.value = rec.curriculum_id; sel.appendChild(ox); }
+    sel.value = rec.curriculum_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_curriculum_id"; wrap.appendChild(er);
+    cCtx.fields.curriculum_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.curriculum_id, sec: null, summary: null };
+    return wrap;
+  }
+  function buildSeriesField(rec) {
+    var wrap = mk("div"), id = "ef_c_series_id";
+    var l = mk("label", "f", "Series (a curriculum taught over several sessions)"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    function opt(v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    opt("", "Not part of a series");
+    var fresh = newUuid(); opt(fresh, "A new series (this class is its first session)");
+    var groups = {};
+    cAll.forEach(function (c) { if (c.series_id) (groups[c.series_id] = groups[c.series_id] || []).push(c); });
+    Object.keys(groups).forEach(function (sid) {
+      var list = groups[sid].slice().sort(function (a, b) { return (a.session_number || 99) - (b.session_number || 99); });
+      opt(sid, "Series of " + (list[0].title || "class") + " (" + list.length + (list.length === 1 ? " class" : " classes") + ")");
+    });
+    if (rec.series_id && !groups[rec.series_id]) opt(rec.series_id, "This class's series");
+    sel.value = rec.series_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    wrap.appendChild(mk("div", "hint", "Each session is its own class. Give each one its session number below."));
+    var er = mk("div", "ferr"); er.id = "ee_c_series_id"; wrap.appendChild(er);
+    cCtx.fields.series_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.series_id, sec: null, summary: null };
+    sel.addEventListener("change", function () {
+      var sn = cCtx.fields.session_number;
+      if (sel.value === fresh && sn && !sn.el.value) sn.el.value = "1";
+    });
+    return wrap;
+  }
+
   function buildVenueField(rec) {
     var wrap = mk("div"), id = "ef_c_venue_id";
     var l = mk("label", "f", "Venue"); l.htmlFor = id;
@@ -2371,6 +2430,8 @@
     function put(sec, n) {
       used[n] = 1; var node;
       if (n === "venue_id") node = buildVenueField(rec);
+      else if (n === "curriculum_id") node = buildCurriculumField(rec);
+      else if (n === "series_id") node = buildSeriesField(rec);
       else if (n === "venue_room_label") node = buildRoomPick(rec);
       else if (n === "starts_at") node = buildStartsField(rec);
       else { var df = props[n]; if (!df || df.readOnly || df.type === "array") return; node = buildField(n, df, rec, cCtx); }
@@ -2485,7 +2546,7 @@
   }
   function openClassEdit(rec) {
     $("cMsg").textContent = "";
-    Promise.all([getClassSchema(), loadVenueChoices()]).then(function (both) {
+    Promise.all([getClassSchema(), loadVenueChoices(), loadCurriculumChoices()]).then(function (both) {
       var schema = both[0];
       if (!schema) { $("cMsg").textContent = "Could not load the class form. Try again."; return; }
       cCtx.schema = schema; cRec = rec;
@@ -3104,21 +3165,95 @@
     return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; results.textContent = ""; } };
   }
 
+  function classFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (!ps.length) return adminProblem(res.status);
+    return ps.map(function (p) { return "Could not build the class: " + (LABELS[p.field] || p.field) + ": " + cIssueText(p, null); }).join(" ");
+  }
+
+  // The "build a class" part of Put in a class: curriculum, venue and room, date and time, and a lead instructor.
+  function buildClassBox(uid, req) {
+    var el = mk("div", "addbox"), titleTouched = false;
+    function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    function lab(text, node, key, hint) {
+      var l = mk("label", "f", text); node.id = uid + "n_" + key; l.htmlFor = node.id; el.appendChild(l); el.appendChild(node);
+      if (hint) el.appendChild(mk("div", "hint", hint));
+    }
+    el.appendChild(mk("div", "rhead", "Build the class"));
+    var cur = mk("select"); opt(cur, "", "No curriculum chosen");
+    cCurricula.forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
+    lab("Curriculum", cur, "cur");
+    var who = req ? [req.first_name, req.last_name].filter(Boolean).join(" ") : "";
+    var title = mk("input"); title.type = "text"; title.maxLength = 200; lab("Title of the class", title, "title");
+    title.addEventListener("input", function () { titleTouched = true; });
+    function curById() { var r = null; cCurricula.forEach(function (c) { if (c.id === cur.value) r = c; }); return r; }
+    function fillTitle() { if (!titleTouched) title.value = ((curById() || {}).title || "Private session") + (who ? " for " + who : ""); }
+    cur.addEventListener("change", fillTitle); fillTitle();
+    var kind = mk("select"); opt(kind, "private", "One on one"); opt(kind, "group", "Group"); opt(kind, "workshop", "Workshop"); lab("Kind of class", kind, "kind");
+    var ven = mk("select"); opt(ven, "", "Not chosen yet");
+    cVenues.forEach(function (v) { if (v.status === "active") opt(ven, v.id, v.name || "(no name)"); });
+    lab("Venue", ven, "ven");
+    var room = mk("select"); lab("Room", room, "room");
+    var date = mk("input"); date.type = "date"; lab("Date", date, "date");
+    var time = mk("input"); time.type = "time"; lab("Start time", time, "time");
+    var tzNote = mk("div", "hint"); el.appendChild(tzNote);
+    function tz() { var v = cVenueById[ven.value]; return (v && v.place && v.place.time_zone) || "America/Denver"; }
+    function syncVenue() {
+      room.textContent = ""; opt(room, "", "No room chosen");
+      var v = cVenueById[ven.value]; ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
+      tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (cVenueById[ven.value] && cVenueById[ven.value].place && cVenueById[ven.value].place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
+    }
+    ven.addEventListener("change", syncVenue); syncVenue();
+    el.appendChild(mk("div", "hint", "With a venue, a date and a time it is saved as scheduled. Without them it is saved as an idea you can finish later in Classes."));
+    var finder = personFinder(); el.appendChild(mk("div", "f", "Lead instructor (optional)")); el.appendChild(finder.el);
+    var CAP = { "private": [1, 2, 4], group: [2, 8, 15], workshop: [6, 10, 15] };
+    function collect() {
+      var t = title.value.trim();
+      if (!t) return { error: "Give the new class a title." };
+      var data = { title: t, slug: (slugify(t) || "class").slice(0, 80) + "_" + Math.random().toString(36).slice(2, 6), class_type: kind.value, program_slug: "launch", status: "identified", is_public: false,
+                   capacity_minimum: CAP[kind.value][0], capacity_target: CAP[kind.value][1], capacity_max: CAP[kind.value][2] };
+      var c = curById();
+      if (c) {
+        data.curriculum_id = c.id;
+        if (c.session_count > 1) { data.series_id = newUuid(); data.session_number = 1; }
+      }
+      if (date.value || time.value) {
+        if (!date.value || !time.value) return { error: "Give both a date and a time, or neither." };
+        if (!ven.value) return { error: "Choose a venue for a class with a date." };
+        var u = zonedToUtc(date.value, time.value, tz());
+        if (!u) return { error: "That date or time is not valid." };
+        data.starts_at = u; data.time_zone = tz();
+      }
+      if (ven.value) { data.venue_id = ven.value; if (room.value) data.venue_room_label = room.value; }
+      if (data.venue_id && data.starts_at) {
+        data.status = "scheduled"; data.is_venue_confirmed = false;
+        data.duration_minutes = Math.max(15, Math.min(600, c ? c.minutes_per_session : 60));
+      }
+      return { data: data, instructor: finder.id(), series: !!data.series_id && c.session_count > 1 ? c.session_count : 0 };
+    }
+    return { el: el, collect: collect };
+  }
+
   // The one way to put a person in a class. opts: cls (fixed class) or classes (list to choose from), req (a request record, optional),
-  // role (starting role), onAdded(data).
+  // role (starting role), canBuild (offer "a new class"), onAdded(data, said).
   function assignForm(opts) {
-    var uid = "af" + (++afSeq) + "_", req = opts.req || null;
+    var uid = "af" + (++afSeq) + "_", req = opts.req || null, BUILD = "__new__";
     var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
     function field(text, el, key, hint) {
       var l = mk("label", "f", text); el.id = uid + key; l.htmlFor = el.id; form.appendChild(l); form.appendChild(el);
       if (hint) form.appendChild(mk("div", "hint", hint));
     }
     function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
-    var clsSel = null;
+    var clsSel = null, bx = null;
     if (!opts.cls) {
       clsSel = mk("select"); opt(clsSel, "", "Choose a class");
+      if (opts.canBuild) opt(clsSel, BUILD, "A new class (build it now)");
       (opts.classes || []).slice().sort(function (a, b) { return (a.starts_at || "9") < (b.starts_at || "9") ? -1 : 1; }).forEach(function (c) { opt(clsSel, c.id, (c.title || "(no title)") + " · " + classWhen(c) + " (" + c.status + ")"); });
       field("Class", clsSel, "cls");
+      if (opts.canBuild) {
+        bx = buildClassBox(uid, req); bx.el.hidden = true; form.appendChild(bx.el);
+        clsSel.addEventListener("change", function () { bx.el.hidden = clsSel.value !== BUILD; });
+      }
     }
     var role = mk("select"); ["student", "primary_instructor", "instructor"].forEach(function (r) { opt(role, r, ROLE_WORD[r]); });
     role.value = opts.role || "student"; field("Role in this class", role, "role");
@@ -3148,7 +3283,7 @@
     var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
     form.addEventListener("submit", function (e) {
       e.preventDefault(); msg.textContent = "";
-      var cid = opts.cls ? opts.cls.id : clsSel.value;
+      var building = !opts.cls && clsSel.value === BUILD, cid = opts.cls ? opts.cls.id : clsSel.value, made = null;
       if (!cid) { msg.textContent = "Choose a class."; return; }
       var data = { scheduled_class_id: cid, role: role.value }, person = null;
       if (who.value === "request") data.individual_id = req.individual_id;
@@ -3161,22 +3296,42 @@
       if (status.value) data.status = status.value;
       if (role.value !== "student" && ord.value.trim()) data.order = Number(ord.value);
       if (req) data.request_id = req.id;
+      if (building) { made = bx.collect(); if (made.error) { msg.textContent = made.error; return; } }
       add.disabled = true;
-      var args = { data: data }; if (person) args.person = person;
-      admin("assign", args, ATT).then(function (res) {
+      function place(classId, prefix) {
+        data.scheduled_class_id = classId;
+        var args = { data: data }; if (person) args.person = person;
+        return admin("assign", args, ATT).then(function (res) {
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) {
+            var d = res.body.data;
+            if (d.created_person) peopleForPick = null;
+            var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
+              + (d.created_person ? " They were new, so they are now in People." : "") + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
+            if (!(made && made.instructor)) { finish(d, said); return; }
+            return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
+              finish(d, said + (r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance."));
+            });
+          }
+          add.disabled = false;
+          msg.textContent = (prefix ? prefix : "") + attFail(res);
+        });
+      }
+      function finish(d, said) {
         add.disabled = false;
+        finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = "";
+        if (opts.onAdded) opts.onAdded(d, said);
+      }
+      if (!building) { place(cid); return; }
+      admin("create", { data: made.data }, "scheduled_classes").then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
-          var d = res.body.data;
-          if (d.created_person) peopleForPick = null;
-          msg.textContent = "";
-          var said = "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
-            + (d.created_person ? " They were new, so they are now in People." : "") + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
-          finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = "";
-          if (opts.onAdded) opts.onAdded(d, said);
+          aClasses = []; cLoaded = false;
+          var nm = res.body.data.title;
+          place(res.body.data.id, "Built the class " + nm + (made.series ? " (session 1 of " + made.series + "; add the other sessions in Classes)" : "") + ". ");
           return;
         }
-        msg.textContent = attFail(res);
+        add.disabled = false; msg.textContent = classFail(res);
       });
     });
     return form;
@@ -3272,7 +3427,8 @@
   // On a registration request: put the requester (or anyone) into a class.
   function putInClass(rec, host, said) {
     host.textContent = "Loading…";
-    Promise.all([aClasses.length ? Promise.resolve() : loadClassChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (both) {
+    Promise.all([loadClassChoices(), loadVenueChoices(), loadCurriculumChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (all4) {
+      var both = [null, all4[3]];
       host.textContent = "";
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
@@ -3283,7 +3439,7 @@
         already.forEach(function (r) { var row = attLine(r, true); row.insertBefore(mk("span", "", attName(r)), row.firstChild); host.appendChild(row); });
       }
       var live = aClasses.filter(function (c) { return c.status !== "cancelled" && c.status !== "completed"; });
-      host.appendChild(assignForm({ classes: live, req: rec, role: "student", onAdded: function (d, s) { putInClass(rec, host, s); } }));
+      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) { putInClass(rec, host, s); } }));
     });
   }
 
@@ -4640,7 +4796,7 @@
   ROSTER_CFG.forEach(buildRoster);
 
   // ---- Curriculum station: what is taught. A class points at one curriculum; each session of a series is its own class.
-  var CISSUE = { required: "Required.", duplicate: "That identifier is already used.", invalid_format: "Use lowercase letters, digits and underscores.",
+  var RCISSUE = { required: "Required.", duplicate: "That identifier is already used.", invalid_format: "Use lowercase letters, digits and underscores.",
                  out_of_range: "That number is out of range.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
                  immutable: "That cannot be changed.", not_allowed: "Not allowed." };
   var CLABEL = { slug: "Identifier", title: "Title", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
@@ -4692,7 +4848,7 @@
     }
     function problems(res, els) {
       var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
-      ps.forEach(function (p) { var t = CISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((CLABEL[p.field] || p.field) + ": " + t); });
+      ps.forEach(function (p) { var t = RCISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((CLABEL[p.field] || p.field) + ": " + t); });
       if (!ps.length) out.push(adminProblem(res.status));
       return { fields: mine, other: out };
     }

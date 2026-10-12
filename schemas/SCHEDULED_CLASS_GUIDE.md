@@ -43,8 +43,14 @@ Registration requests point at a class with `scheduled_class_id`. The class does
 - `venue_notes`: anything specific to this class at this venue (for example, "use the side entrance"). Not for standing venue details.
 - `accessibility_notes`: anything about accessibility specific to this class **(proposal)**. The physical facts live on the venue record. Use the words "accessible" and "accessibility" in field names and visitor wording.
 
+### What it teaches, and which series it belongs to (added 2026-10-11, optional, schema version stays 2)
+- `curriculum_id`: the UUID of a curriculum (`CURRICULUM_GUIDE.md`). The curriculum must exist (one removed later still counts). It says what is taught, how many sessions and how long each; the class still holds its own `duration_minutes`.
+- `series_id`: when a curriculum has several sessions, each session is its own class, and the classes share one `series_id`. There is no series record; the id only groups them. Whoever creates the first class makes up the UUID and reuses it for the rest.
+- `session_number`: which session of the series this class is (1 to 50). It needs `series_id`, and two live classes in one series cannot share a number.
+- Who teaches and who attends is not stored on the class: it is the attendance records (`ATTENDANCE_GUIDE.md`).
+
 ### Who runs it
-- `instructor_ids`: a list of UUIDs of instructor identities. Contact details live in the other schema. One class, many instructors (up to 10).
+- `instructor_ids`: **no longer used** (2026-10-11). Instructors are attendance records with a role. The field stays in the schema for now so stored records stay valid, and is removed at the final cleanup.
 - `organizer_name`, `organizer_email`, `organizer_phone`: the class organizer's contact, "probably me." Later this could point to a person or role record instead.
 
 ### Attendance and capacity (Todd's design)

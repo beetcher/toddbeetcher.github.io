@@ -70,12 +70,19 @@ def _capacity_not_below_registered(doc: dict) -> list:
     return []
 
 
+def _session_needs_series(doc: dict) -> list:
+    if "session_number" in doc and "series_id" not in doc:
+        return [{"field": "series_id", "issue": "required"}]
+    return []
+
+
 # (name, fields it reads, function). The fields column decides when an update must use the whole-record path.
 CROSS_FIELD_RULES = (
     ("capacity_order", ("capacity_minimum", "capacity_target", "capacity_max"), _capacity_order),
     ("capacity_not_below_registered", ("capacity_max", "registered_count"), _capacity_not_below_registered),
     ("cancelled_reason_only_when_cancelled", ("cancelled_reason", "status"), _cancelled_reason_only_when_cancelled),
     ("source_request_only_private_or_group", ("source_request_id", "class_type"), _source_request_only_private_or_group),
+    ("session_needs_series", ("session_number", "series_id"), _session_needs_series),
 )
 RULE_FIELDS = frozenset(f for _, fields, _ in CROSS_FIELD_RULES for f in fields)
 

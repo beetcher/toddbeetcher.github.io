@@ -14,13 +14,14 @@ Problems name fields and never values (so the Console asks which classes are in 
 """
 from __future__ import annotations
 
+from . import curriculums_crud as CU
 from . import registration_assignments_crud as A
 from . import scheduled_classes_crud as C
 from . import venues_crud as V
 from .schema_kit import failure
 
 # What changes the answer of a class rule. An update touching none of these never reads the venue.
-CLASS_CHECK_FIELDS = ("venue_id", "venue_room_label", "status")
+CLASS_CHECK_FIELDS = ("venue_id", "venue_room_label", "status", "curriculum_id", "series_id", "session_number")
 LIVE_STATUSES_NEEDING_ACTIVE_VENUE = ("scheduled", "enrolling")
 
 
@@ -35,6 +36,9 @@ def _find_room(venue: dict, label: str):
 def make_class_check(store):
     """The rules that look at the venue, as one function(doc) -> problems."""
     def check(doc: dict) -> list:
+        return _curriculum_series_problems(store, doc) + _venue_problems(store, doc)
+
+    def _venue_problems(store, doc: dict) -> list:
         vid, label = doc.get("venue_id"), doc.get("venue_room_label")
         if label and not vid:
             return [{"field": "venue_id", "issue": "required"}]
@@ -53,6 +57,21 @@ def make_class_check(store):
                 problems.append({"field": "venue_room_label", "issue": "not_found"})
         return problems
     return check
+
+
+def _curriculum_series_problems(store, doc: dict) -> list:
+    """The curriculum exists (a removed one still counts, so the class stays editable); no two live classes in one series share a session number."""
+    out = []
+    cid = doc.get("curriculum_id")
+    if cid and not CU.get(store, cid, include_deleted=True).ok:
+        out.append({"field": "curriculum_id", "issue": "not_found"})
+    sid, num = doc.get("series_id"), doc.get("session_number")
+    if sid and num is not None:
+        for other in store.query(C.CLASSES.name, [("series_id", "==", sid)], limit=200):
+            if "deleted_at" not in other and other.get("id") != doc.get("id") and other.get("session_number") == num:
+                out.append({"field": "session_number", "issue": "duplicate"})
+                break
+    return out
 
 
 # ---- classes ---------------------------------------------------------------

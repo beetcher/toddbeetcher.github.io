@@ -274,6 +274,28 @@ check("venue service passes get/list/create/summary", VS.get(s, v["id"], True).o
       and VS.set_review_summary(s, VS.list(s).data["records"][0]["id"], 1, 5, now=tick()).ok)
 check("venue delete with bad id gives the handler's problem", pairs(VS.soft_delete(s, "x", "user:t").problems) == ["id:invalid_format"])
 
+# ---- curriculum, series and session number (piece 3)
+from crud import curriculums_crud as CU  # noqa: E402
+st = fresh()
+cur = CU.create(st, {"title": "Intro", "slug": "intro", "session_count": 2, "minutes_per_session": 60}, "user:t", now=tick()).data
+SER = "9e8d7c6b-5a49-4382-9170-6f5e4d3c2b1a"
+r = CS.create(st, klass(slug="s1", curriculum_id=cur["id"], series_id=SER, session_number=1), "user:t", now=tick())
+check("class with curriculum, series and session number", r.ok, r.problems)
+s1 = r.data
+check("unknown curriculum refused", pairs(CS.create(st, klass(slug="s2", curriculum_id="11111111-1111-4111-8111-111111111111"), "user:t", now=tick()).problems) == ["curriculum_id:not_found"])
+check("session number needs a series", pairs(CS.create(st, klass(slug="s3", session_number=2), "user:t", now=tick()).problems) == ["series_id:required"])
+check("same session number twice in a series refused", pairs(CS.create(st, klass(slug="s4", series_id=SER, session_number=1), "user:t", now=tick()).problems) == ["session_number:duplicate"])
+r2 = CS.create(st, klass(slug="s5", series_id=SER, session_number=2), "user:t", now=tick())
+check("next session in the series ok", r2.ok, r2.problems)
+check("session number out of range refused", pairs(CS.create(st, klass(slug="s6", series_id=SER, session_number=0), "user:t", now=tick()).problems) == ["session_number:out_of_range"])
+check("changing a session to a taken number refused", pairs(CS.update(st, r2.data["id"], {"session_number": 1}, "user:t", now=tick()).problems) == ["session_number:duplicate"])
+check("keeping its own number is fine", CS.update(st, s1["id"], {"session_number": 1, "title": "Intro 1"}, "user:t", now=tick()).ok)
+check("a removed curriculum does not block editing the class", CU.soft_delete(st, cur["id"], "user:t", now=tick()).ok and CS.update(st, s1["id"], {"title": "Intro one"}, "user:t", now=tick()).ok)
+CS.soft_delete(st, r2.data["id"], "user:t", now=tick())
+check("a deleted class frees its session number", CS.update(st, s1["id"], {"session_number": 2}, "user:t", now=tick()).ok)
+check("series and curriculum can be removed", CS.update(st, s1["id"], {"session_number": None, "series_id": None, "curriculum_id": None}, "user:t", now=tick()).ok)
+check("a class can drop only the series and keep the number refused", pairs(CS.update(st, s1["id"], {"session_number": 3}, "user:t", now=tick()).problems) == ["series_id:required"])
+
 print(f"\n{total - len(fails)}/{total} checks passed")
 if fails:
     print("FAILED:", ", ".join(fails))

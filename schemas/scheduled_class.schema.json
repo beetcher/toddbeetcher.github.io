@@ -90,6 +90,22 @@
       "minimum": 15,
       "maximum": 600
     },
+    "curriculum_id": {
+      "description": "UUID of the curriculum this class teaches (the curriculum says how many sessions and how long each). The curriculum must exist; one that was removed later still counts (an endpoint rule). Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "series_id": {
+      "description": "UUID shared by every class in one series (a curriculum with several sessions is taught as several classes, one per session). There is no series record: the id only groups the classes. The sender makes it up, once, for the first class of the series. Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "session_number": {
+      "description": "Which session of the series this class is: 1 first, a whole number from 1 to 50. Needs series_id; no two live classes in one series share it (an endpoint rule). Optional.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
     "venue_id": {
       "description": "UUID of the venue record where the class is held. The venue holds the address, contacts, rooms and standing details, so every class there reuses them. Required once scheduled.",
       "type": "string",

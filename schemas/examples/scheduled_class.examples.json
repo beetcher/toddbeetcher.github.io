@@ -115,6 +115,20 @@
       "capacity_minimum": 1,
       "capacity_target": 2,
       "capacity_max": 4
+    },
+    "series_session": {
+      "title": "Intro to AI, session 2",
+      "slug": "intro_ai_s2",
+      "class_type": "private",
+      "program_slug": "launch",
+      "status": "identified",
+      "is_public": false,
+      "capacity_minimum": 1,
+      "capacity_target": 2,
+      "capacity_max": 3,
+      "curriculum_id": "7c2d9e10-1a2b-4c3d-8e4f-5a6b7c8d9e01",
+      "series_id": "9e8d7c6b-5a49-4382-9170-6f5e4d3c2b1a",
+      "session_number": 2
     }
   },
   "invalid": {
