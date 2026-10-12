@@ -3074,7 +3074,13 @@
       var ins = role.value !== "student"; ord.hidden = !ins; ordL.hidden = !ins;
     }
     who.addEventListener("change", sync); role.addEventListener("change", sync); sync();
-    var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add); form.appendChild(btns);
+    var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add);
+    if (opts.onCancel) {
+      var back = mk("button", "quiet", "Cancel"); back.type = "button";
+      back.addEventListener("click", function () { opts.onCancel(); });
+      btns.appendChild(back);
+    }
+    form.appendChild(btns);
     var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
     var dupBox = mk("div", "confirm"); dupBox.hidden = true; form.appendChild(dupBox);
     var checked = false, forcedId = "";
@@ -3232,7 +3238,7 @@
         bStu.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
         var det = mk("details", "addbox"); det.id = "atAddBox";
         det.appendChild(mk("summary", "", "Add a student or instructor"));
-        det.appendChild(assignForm({ cls: cls, onAdded: function (d, said) { say(said); draw(); } }));
+        det.appendChild(assignForm({ cls: cls, onCancel: function () { det.open = false; }, onAdded: function (d, said) { say(said); draw(); } }));
         bStu.appendChild(det);
       });
     }
@@ -3271,7 +3277,7 @@
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
       var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
-      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) {
+      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onCancel: function () { host.hidden = true; host.textContent = ""; }, onAdded: function (d, s) {
         host.hidden = true; host.textContent = "";
         var num = d.confirmation_number || rec.confirmation_number;
         var bn = $("reqDone");
