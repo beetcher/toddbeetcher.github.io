@@ -137,6 +137,8 @@
   .putbox textarea { min-height: 96px; }
   .putbox .rhead { margin: 22px 0 4px; padding-top: 14px; border-top: 1px solid var(--line); }
   .putbox .rhead:first-child { margin-top: 8px; border-top: 0; padding-top: 0; }
+  #reqDone { margin: 8px 0; padding: 10px 12px; border: 1px solid var(--line, #cfd8dc); border-radius: 8px; font-weight: 600; }
+  #reqShow { margin-left: 6px; }
   .putbox .hint, .putbox .note { margin: 10px 0 0; line-height: 1.4; color: var(--muted); font-size: 14px; }
   .putbox button { min-height: 48px; padding: 8px 18px; }
   .putbox form button[type=submit], .putbox .go { margin-top: 18px; }
@@ -380,10 +382,12 @@
       <div>
         <div class="count" id="countText"></div>
         <div class="meta" id="checkedText"></div>
+        <label class="f" for="reqShow">Show <select id="reqShow"><option value="open">Open requests</option><option value="closed">Closed requests</option><option value="all">All requests</option></select></label>
       </div>
       <div class="actions"><button type="button" class="quiet infoBtn" id="reqInfo" aria-label="Help: how to place a request" title="How to place a request">ⓘ</button><button type="button" class="quiet manualBtn" data-m="requests">Manual</button><button id="refreshBtn" class="quiet">Refresh</button></div>
     </div>
     <div class="msg" id="listMsg" role="alert"></div>
+    <div class="note" id="reqDone" role="status" hidden></div>
     <ul id="list"></ul>
     <div class="empty" id="empty" hidden>No requests yet.</div>
   </section>
@@ -731,11 +735,11 @@
         '<div class="kicker">Station 1</div><h2>Registration requests</h2>' +
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
-        '<li><b>Tap a card</b> to open it and see every answer the person gave.</li>' +
-        '<li><b>Put in a class…</b> places the requester in a class. It starts filled in from the request (or uses the person already linked to it). Choose the class and the role, then <b>Add to class</b>. The request is remembered on the entry, so the card then lists where it was placed. You can add more people from the same request. Choose <b>A new class (build it now)</b> in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
+        '<li><b>Tap a card</b> to open it and see every answer they gave.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class. It says who will be added to the student roster. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>A new class (build it now)</b> in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
-        '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed once any person has been put in a class from it.</li>' +
+        '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>Nothing is placed by itself. You choose the class, so a full class never turns anyone away: a student simply starts on the waiting list unless you pick another status.</li>' +
@@ -750,7 +754,7 @@
         '<li><b>Status menu</b> filters the list to Active or Inactive.</li>' +
         '<li><b>Add venue</b> needs only a name, a short name and the kind of place. It starts <b>inactive</b>. Type an address too and the place is saved with it; if that address is already saved you are offered the saved place.</li>' +
         '<li><b>Tap a card</b> to read the details. <b>Edit</b> opens the form: Basics, Place and Contact first, everything else under More details. <b>Change place</b> saves right away; the old place is kept.</li>' +
-        '<li>The venue\'s <b>email and phone</b> are the venue\'s own. The <b>main and backup contacts</b> are people you choose from People; the venue keeps only a pointer, so their details stay in one place.</li>' +
+        '<li>The venue\'s <b>email and phone</b> are the venue\'s own. The <b>main and backup contacts</b> are contacts you choose by name; the venue keeps only a pointer, so their details stay in one place.</li>' +
         '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
         '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
         '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
@@ -773,7 +777,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick a person already in People or add a new one. A new person is added to People and to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; the person stays in People.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
         '</ul>' +
@@ -830,33 +834,33 @@
     { id: "instructors", name: "Instructors", short: "Instructors", blurb: "The people who teach: bio, what they teach, where and when.",
       manual:
         '<div class="kicker">Station 6</div><h2>Instructors</h2>' +
-        '<h3>Mission</h3><p>The instructor roster is the list of people who can teach a LAUNCH class. Each entry points at a person in People, so a name or phone number is kept in one place only, and adds what LAUNCH needs to know about them as an instructor.</p>' +
+        '<h3>Mission</h3><p>The instructor roster is the list of who can teach a LAUNCH class. A name or phone number is kept in one place only, and each entry adds what LAUNCH needs to know about them as an instructor.</p>' +
         '<h3>Controls</h3><ul>' +
-        '<li><b>Add instructor</b> is one window. Type a name and pick the person from the list, or choose <b>This is a new person</b> and fill in their name, email and phone. A new person is added to People at the same time. If anything is refused, nothing is saved.</li>' +
-        '<li><b>Tap a card</b> to read it. <b>Edit</b> changes the instructor details and the person\'s own name, email and phone together. The weekly hours are one row per day: leave a day empty if they cannot teach.</li>' +
-        '<li><b>Remove from instructors</b> takes them off the roster. They stay in People, the history is kept, and you can add them again later.</li>' +
+        '<li><b>Add instructor</b> is one window. Type a name and pick them from the list, or choose <b>Someone new</b> and fill in their name, email and phone. If anything is refused, nothing is saved.</li>' +
+        '<li><b>Tap a card</b> to read it. <b>Edit</b> changes the instructor details and their name, email and phone together. The weekly hours are one row per day: leave a day empty if they cannot teach.</li>' +
+        '<li><b>Remove from instructors</b> takes them off the roster. Their history is kept, and you can add them again later.</li>' +
         '<li>The status menu shows Active, Inactive or all. Inactive instructors are kept but will not be offered when assigning.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
-        '<li>A person is an instructor once. If you pick someone who already is, the window says so and opens their card.</li>' +
-        '<li>The ship never matches a typed name to a person on its own. You pick, or you say it is someone new.</li>' +
+        '<li>Someone is an instructor once. If you pick someone who already is, the window says so and opens their card.</li>' +
+        '<li>The ship never matches a typed name on its own. You pick, or you say it is someone new.</li>' +
         '<li>The weekly hours, bio and tags are optional. The roster is expected to grow more fields.</li>' +
-        '<li>Merging two people in People moves their roster entries to the person you keep. Erasing a person removes their entries.</li>' +
+        '<li>If two records for the same person are merged, their roster entries move to the one kept. Erasing someone removes their entries.</li>' +
         '</ul>' +
-        '<div class="tip"><b>Captain\'s tip:</b> a person can be both an instructor and a student. They have one entry on each roster.</div>' +
-        '<h3>Try this</h3><ul><li>Add an instructor who is not in People yet, then open their card and add a bio and Tuesday hours.</li></ul>' },
-    { id: "students", name: "Students", short: "Students", blurb: "The people who take classes: a simple roster that points at People.",
+        '<div class="tip"><b>Captain\'s tip:</b> someone can be both an instructor and a student. They have one entry on each roster.</div>' +
+        '<h3>Try this</h3><ul><li>Add a new instructor, then open their card and add a bio and Tuesday hours.</li></ul>' },
+    { id: "students", name: "Students", short: "Students", blurb: "Who takes classes: a simple roster with a status and a note.",
       manual:
         '<div class="kicker">Station 7</div><h2>Students</h2>' +
-        '<h3>Mission</h3><p>The student roster is the list of people who take LAUNCH classes. Each entry points at a person in People and holds a status and a note. It is deliberately thin and will grow.</p>' +
+        '<h3>Mission</h3><p>The student roster is the list of who takes LAUNCH classes. Each entry holds a status and a note. It is deliberately thin and will grow.</p>' +
         '<h3>Controls</h3><ul>' +
-        '<li><b>Add student</b> works like adding an instructor: type a name, pick the person, or choose <b>This is a new person</b>. A new person is added to People in the same step.</li>' +
-        '<li><b>Edit</b> changes the status, the note, and the person\'s own name, email and phone together.</li>' +
+        '<li><b>Add student</b> works like adding an instructor: type a name, pick them, or choose <b>Someone new</b>.</li>' +
+        '<li><b>Edit</b> changes the status, the note, and their name, email and phone together.</li>' +
         '<li><b>Remove from students</b> takes them off the roster but keeps the history. They can be added again later.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
-        '<li>A person is a student once. Nothing is matched for you.</li>' +
-        '<li>Merging and erasing in People carry over to this roster.</li>' +
+        '<li>Someone is a student once. Nothing is matched for you.</li>' +
+        '<li>Merging and erasing carry over to this roster.</li>' +
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> People and Places show in red in the station menu. They are the super-admin stations that will be hidden from other operators once sign-in exists.</div>' +
         '<h3>Try this</h3><ul><li>Add two friends as students, then remove one and add them back.</li></ul>' },
@@ -1044,6 +1048,7 @@
     var pb = document.createElement("button"); pb.type = "button"; pb.className = "quiet"; pb.textContent = "Put in a class…";
     var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
     pb.addEventListener("click", function () {
+      $("reqDone").hidden = true;
       if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
       phost.hidden = false; putInClass(rec, phost);
     });
@@ -1080,9 +1085,7 @@
       }).forEach(function (id) { list.appendChild(rows[id]); });
     }
     if (fresh.length && firstLoadDone) loadPlaced();
-    var n = Object.keys(known).length;
-    $("countText").textContent = n + (n === 1 ? " request" : " requests");
-    $("empty").hidden = n > 0;
+    applyReqFilter();
   }
 
   function problem(status) {
@@ -1158,7 +1161,7 @@
   var ADMIN_URL = "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_admin";
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
                 out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
-                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That person was not found.",
+                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That contact was not found.",
                 choose_one: "Choose one." };
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
   var slugTouched = false, addPlace = null;
@@ -2762,7 +2765,7 @@
 
 
   // ======== Placed requests: a request is placed once attendance exists for it (old seat decisions are retired) ========
-  var P = { loaded: false, ids: {}, reqs: [], error: "" };
+  var P = { loaded: false, ids: {}, cls: {}, num: {}, reqs: [], error: "" };
   var qSeq = 0;
   var aClasses = [], aClassById = {};
   function personOf(it) { return [it.first_name, it.last_name].filter(Boolean).join(" ") || "(no name)"; }
@@ -2770,28 +2773,46 @@
 
   function loadPlaced() {
     var my = ++qSeq;
-    return Promise.all([admin("list", { limit: 200 }, "attendances"), firstLoadDone ? Promise.resolve(null) : fetchRecords("")]).then(function (both) {
+    return Promise.all([admin("list", { limit: 200, expand: true }, "attendances"), firstLoadDone ? Promise.resolve(null) : fetchRecords("")]).then(function (both) {
       if (my !== qSeq || !key) return;
       var res = both[0];
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { P.error = adminProblem(res.status); P.loaded = P.loaded && true; }
       else {
-        P.error = ""; P.loaded = true; P.ids = {};
-        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; });
+        P.error = ""; P.loaded = true; P.ids = {}; P.cls = {}; P.num = {};
+        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) { P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; P.cls[r.request_id] = (r["class"] && r["class"].title) || P.cls[r.request_id] || "a class"; } });
       }
       if (both[1] && both[1].status === "ok") P.reqs = both[1].records || [];
       else if (firstLoadDone) P.reqs = Object.keys(known).map(function (id) { return known[id]; });
       decorateCards(); renderAttention();
     });
   }
-  function decorateCards() { Object.keys(rows).forEach(function (id) { if (rows[id]._q) fillQRow(rows[id]._q, known[id]); }); }
+  function decorateCards() { Object.keys(rows).forEach(function (id) { if (rows[id]._q) fillQRow(rows[id]._q, known[id]); }); applyReqFilter(); }
   function fillQRow(box, rec) {
     box.textContent = "";
     if (!P.loaded) { box.hidden = true; return; }
     box.hidden = false;
     var n = P.ids[rec.id];
-    box.appendChild(n ? mk("span", "qchip ok", "Placed · " + plural(n, "person", "people") + " in classes") : mk("span", "qchip warn", "Not placed yet"));
+    box.appendChild(n ? mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")) : mk("span", "qchip warn", "Open · not placed yet"));
   }
+  // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
+  function applyReqFilter() {
+    var mode = $("reqShow").value, shown = 0, open = 0;
+    Object.keys(rows).forEach(function (id) {
+      var closed = P.loaded && !!P.ids[id];
+      if (!closed) open++;
+      var show = mode === "all" || (mode === "closed" ? closed : !closed);
+      rows[id].style.display = show ? "" : "none";
+      if (show) shown++;
+    });
+    var n = Object.keys(known).length;
+    $("countText").textContent = !P.loaded ? n + (n === 1 ? " request" : " requests")
+      : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
+      : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
+    $("empty").textContent = mode === "open" ? "No open requests. Every request is in a class." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
+    $("empty").hidden = shown > 0;
+  }
+  $("reqShow").addEventListener("change", applyReqFilter);
 
   // Home: the "Waiting to be placed" panel.
   function renderAttention() {
@@ -2806,7 +2827,7 @@
     var waiting = P.reqs.filter(function (r) { return !P.ids[r.id]; }).sort(function (a, b) { return (a.created_at || "") < (b.created_at || "") ? 1 : -1; });
     badge.hidden = !waiting.length; badge.textContent = waiting.length;
     box.className = "attn" + (waiting.length ? " hot" : "");
-    if (!waiting.length) body.appendChild(mk("div", "", "All clear. Every request is in a class."));
+    if (!waiting.length) body.appendChild(mk("div", "", "All clear. Every request is closed: its student is in a class."));
     waiting.slice(0, 8).forEach(function (it) {
       var d = mk("div", "aitem");
       var t = mk("div", ""); t.appendChild(mk("b", "", personOf(it)));
@@ -2839,12 +2860,12 @@
     if (res.status === 409 && !ps.length) return "Someone changed this a moment ago. Close this window and open it again.";
     if (!ps.length) return adminProblem(res.status);
     return ps.map(function (p) {
-      if (p.issue === "duplicate") return "That person is already in this class in that role.";
-      if (p.issue === "choose_one") return "Choose an existing person or add a new one, not both.";
+      if (p.issue === "duplicate") return "They are already in this class in that role.";
+      if (p.issue === "choose_one") return "Choose someone we know or add someone new, not both.";
       if (/^person\./.test(p.field)) return (PLABEL[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (PISSUE[p.issue] || "That value is not valid."));
       if (p.field === "scheduled_class_id") return "Choose a class.";
       if (p.field === "role") return "Choose a role.";
-      if (p.field === "individual_id") return p.issue === "required" ? "Choose a person." : "That person was not found.";
+      if (p.field === "individual_id") return p.issue === "required" ? "Choose someone." : "We could not find them.";
       if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
       return p.field + ": " + (PISSUE[p.issue] || p.issue);
     }).join(" ");
@@ -2866,7 +2887,7 @@
   function personFinder() {
     var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
     var chosen = { id: "", name: "" };
-    search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search people by name");
+    search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search by name");
     search.addEventListener("input", function () {
       var q = search.value.trim().toLowerCase(); results.textContent = "";
       if (!q) return;
@@ -2879,7 +2900,7 @@
           b.addEventListener("click", function () { chosen.id = p.id; chosen.name = pFull(p); cur.textContent = "Chosen: " + chosen.name; results.textContent = ""; search.value = chosen.name; });
           results.appendChild(b);
         });
-        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Choose “A new person” to add them."));
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Choose “Someone new” to add them."));
       });
     });
     wrap.appendChild(cur); wrap.appendChild(search); wrap.appendChild(results);
@@ -2977,42 +2998,73 @@
       }
     }
     var role = mk("select"); ["student", "primary_instructor", "instructor"].forEach(function (r) { opt(role, r, ROLE_WORD[r]); });
-    role.value = opts.role || "student"; field("Role in this class", role, "role");
+    role.value = opts.role || "student";
     var who = mk("select");
-    if (req && req.individual_id) opt(who, "request", "The person on this request");
-    opt(who, "existing", "Someone already in People"); opt(who, "new", "A new person");
+    if (req) role.value = "student";            // from a request the person can only be a student; the lead instructor is chosen with the class
+    else field("Role in this class", role, "role");
+    if (req && req.individual_id) opt(who, "request", "The requester");
+    opt(who, "existing", req ? "Someone we already know" : "Someone we already know"); opt(who, "new", "Someone new");
     who.value = (req && req.individual_id) ? "request" : (req ? "new" : "existing");
-    field("Who", who, "who");
-    var finder = personFinder(); var exBox = mk("div"); exBox.appendChild(finder.el); form.appendChild(exBox);
+    if (!req) field("Who", who, "who");
+    var sumBox = null;
+    if (req) { sumBox = mk("div", "note"); sumBox.setAttribute("role", "status"); form.appendChild(sumBox); }
+    var finder = personFinder(); var exBox = mk("div"); if (!req) { exBox.appendChild(finder.el); form.appendChild(exBox); }
     var nb = mk("div"), nw = {};
     [["given_name", "Given name", req && req.first_name], ["family_name", "Family name", req && req.last_name], ["email", "Email", req && req.email], ["phone", "Phone", req && req.phone]].forEach(function (f) {
       var l = mk("label", "f", f[1]), el = mk("input"); el.type = "text"; el.maxLength = 200; el.id = uid + f[0]; l.htmlFor = el.id; el.value = f[2] || "";
       nb.appendChild(l); nb.appendChild(el); nw[f[0]] = el;
     });
-    nb.appendChild(mk("div", "hint", "A new person is added to People, and to the student or instructor list, as part of this step. Nothing is matched by name."));
-    form.appendChild(nb);
+    nb.appendChild(mk("div", "hint", req ? "These details are saved with the student." : "A new one is added to the student list (or the instructor list) as part of this step."));
+    if (req) {
+      var dt = mk("details", "addbox"); dt.appendChild(mk("summary", "", "Change the name or contact details")); dt.appendChild(nb); form.appendChild(dt);
+      var upd = function () {
+        var nm = [nw.given_name.value, nw.family_name.value].map(function (x) { return x.trim(); }).filter(Boolean).join(" ") || "This person", em = nw.email.value.trim();
+        sumBox.textContent = req.individual_id ? nm + " will be placed in this class as a student." : nm + (em ? " (" + em + ")" : "") + " will be added to the student roster and placed in this class as a student.";
+      };
+      Object.keys(nw).forEach(function (k) { nw[k].addEventListener("input", upd); }); upd();
+    } else form.appendChild(nb);
     var status = mk("select"); opt(status, "", "Automatic (assigned, or the waiting list if the class is full)");
     ATT_STATUSES.forEach(function (s) { opt(status, s, ATT_WORD[s]); }); field("Status", status, "status");
     var ord = mk("input"); ord.type = "number"; ord.min = "1"; ord.max = "50"; ord.step = "1";
     var ordL = mk("label", "f", "Place among the instructors (optional)"); ord.id = uid + "order"; ordL.htmlFor = ord.id; form.appendChild(ordL); form.appendChild(ord);
     function sync() {
-      exBox.hidden = who.value !== "existing"; nb.hidden = who.value !== "new";
+      exBox.hidden = who.value !== "existing"; nb.hidden = req ? false : who.value !== "new";
       var ins = role.value !== "student"; ord.hidden = !ins; ordL.hidden = !ins;
     }
     who.addEventListener("change", sync); role.addEventListener("change", sync); sync();
     var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add); form.appendChild(btns);
     var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+    var dupBox = mk("div", "confirm"); dupBox.hidden = true; form.appendChild(dupBox);
+    var checked = false, forcedId = "";
+    function resubmit() { setTimeout(function () { if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event("submit", { cancelable: true })); }, 0); }   // after the first submit has finished, or the browser ignores it
     form.addEventListener("submit", function (e) {
-      e.preventDefault(); msg.textContent = "";
+      e.preventDefault(); msg.textContent = ""; dupBox.hidden = true;
       var building = !opts.cls && clsSel.value === BUILD, cid = opts.cls ? opts.cls.id : clsSel.value, made = null;
       if (!cid) { msg.textContent = "Choose a class."; return; }
       var data = { scheduled_class_id: cid, role: role.value }, person = null;
-      if (who.value === "request") data.individual_id = req.individual_id;
-      else if (who.value === "existing") { if (!finder.id()) { msg.textContent = "Choose a person, or choose “A new person”."; return; } data.individual_id = finder.id(); }
+      if (forcedId) data.individual_id = forcedId;
+      else if (who.value === "request") data.individual_id = req.individual_id;
+      else if (who.value === "existing") { if (!finder.id()) { msg.textContent = "Choose someone, or choose “Someone new”."; return; } data.individual_id = finder.id(); }
       else {
         person = {};
         Object.keys(nw).forEach(function (k) { var v = nw[k].value.trim(); if (v) person[k] = v; });
-        if (!person.given_name) { msg.textContent = "A new person needs at least a given name."; return; }
+        if (!person.given_name) { msg.textContent = "A new student or instructor needs at least a given name."; if (req) dt.open = true; return; }
+        if (!checked) {   // before adding someone new, look for the same email or name on file and let the operator decide
+          add.disabled = true;
+          peopleList().then(function (list) {
+            add.disabled = false;
+            var em = (person.email || "").toLowerCase(), full = [person.given_name, person.family_name].filter(Boolean).join(" ").toLowerCase();
+            var hit = list.filter(function (x) { return x.status !== "erased" && ((em && (x.email || "").toLowerCase() === em) || (person.family_name && pFull(x).toLowerCase() === full)); })[0];
+            if (!hit) { checked = true; resubmit(); return; }
+            dupBox.textContent = ""; dupBox.hidden = false;
+            dupBox.appendChild(mk("div", "", "We already have " + pFull(hit) + (hit.email ? " (" + hit.email + ")" : "") + " on file. Use that one so they are not added twice?"));
+            var bs = mk("div", "btns"), yes = mk("button", "", "Use " + pFull(hit)), no = mk("button", "quiet", "No, add as someone new"); yes.type = "button"; no.type = "button";
+            yes.addEventListener("click", function () { forcedId = hit.id; checked = true; resubmit(); });
+            no.addEventListener("click", function () { checked = true; resubmit(); });
+            bs.appendChild(yes); bs.appendChild(no); dupBox.appendChild(bs);
+          });
+          return;
+        }
       }
       if (status.value) data.status = status.value;
       if (role.value !== "student" && ord.value.trim()) data.order = Number(ord.value);
@@ -3028,7 +3080,7 @@
             var d = res.body.data;
             if (d.created_person) peopleForPick = null;
             var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
-              + (d.created_person ? " They were new, so they are now in People." : "") + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
+              + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
             if (!(made && made.instructor)) { finish(d, said); return; }
             return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
               finish(d, said + (r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance."));
@@ -3040,7 +3092,7 @@
       }
       function finish(d, said) {
         add.disabled = false;
-        finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = "";
+        finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = ""; checked = false; forcedId = "";
         if (opts.onAdded) opts.onAdded(d, said);
       }
       if (!building) { place(cid); return; }
@@ -3061,14 +3113,14 @@
   function attLine(r, withClass) {
     var row = mk("div", "rrow");
     row.appendChild(mk("span", "", withClass ? ((r.class && r.class.title) || "(class not found)") + (r.class && r.class.starts_at ? " · " + classWhen(r.class) : "") : attName(r)));
-    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status)));
+    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status) + (r.confirmation_number ? " · " + r.confirmation_number : "")));
     return row;
   }
 
   function attRow(r, say, redraw) {
     var row = mk("div", "arow");
     var top = mk("div", "atop");
-    top.appendChild(mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : "")));
+    top.appendChild(mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : "") + (r.confirmation_number ? " · request " + r.confirmation_number : "")));
     var sel = mk("select"); sel.setAttribute("aria-label", "Status for " + attName(r));
     ATT_STATUSES.forEach(function (s) { var o = mk("option", "", ATT_WORD[s]); o.value = s; sel.appendChild(o); });
     sel.value = r.status;
@@ -3090,7 +3142,7 @@
       rm.disabled = true;
       admin("soft_delete", { id: r.id }, ATT).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. They are still in People."); loadPlaced(); redraw(); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept."); loadPlaced(); redraw(); return; }
         rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say(attFail(res));
       });
     });
@@ -3171,7 +3223,15 @@
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
       var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
-      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) { loadPlaced(); putInClass(rec, host, s); } }));
+      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) {
+        host.hidden = true; host.textContent = "";
+        var num = d.confirmation_number || rec.confirmation_number;
+        var bn = $("reqDone");
+        bn.textContent = "Request " + (num ? num + " " : "") + "is closed. " + attName(d) + " is in " + ((d["class"] && d["class"].title) || "the class") + ". You will find it in Classes."
+          + (d.created_roster_entry ? " Added to the student list." : "");
+        bn.hidden = false; $("reqShow").value = "open";
+        loadPlaced().then(function () { bn.scrollIntoView({ block: "nearest" }); });
+      } }));
     });
   }
 
@@ -3209,14 +3269,14 @@
     { id: "setup", title: "Set up before your first request", steps: [
       { t: "Add a venue and make it active (a place with an address).", go: "venues", b: "Open Venues" },
       { t: "Add a curriculum: what will be taught.", go: "curriculums", b: "Open Curriculum" },
-      { t: "Add the instructor as a person.", go: "people", b: "Open People" },
+      { t: "Add the instructor to the Instructors list.", go: "instructors", b: "Open Instructors" },
       { t: "Then wait for a request, or register on the website yourself.", go: "requests", b: "Open Requests" } ] },
     { id: "place_existing", title: "Place a request in an existing class", steps: [
       { t: "Open the request and tap Put in a class…", go: "requests", b: "Open Requests" },
       { t: "Choose the class and the role, then Add to class. The request leaves Waiting to be placed.", go: "requests", b: "Open Requests" },
       { t: "Check the result: Attendance on the class card shows the person and their status.", go: "classes", b: "Open Classes" } ] },
     { id: "build_class", title: "Build a class for a request", steps: [
-      { t: "Make sure the venue (active) and curriculum exist, and the instructor is in People.", go: "venues", b: "Open Venues" },
+      { t: "Make sure the venue (active) and curriculum exist, and the instructor is on the Instructors list.", go: "venues", b: "Open Venues" },
       { t: "On the request, tap Put in a class… and choose A new class (build it now).", go: "requests", b: "Open Requests" },
       { t: "Pick the curriculum, venue, date and time, and the lead instructor, then build. The requester is placed in it.", go: "requests", b: "Open Requests" },
       { t: "Open the class to confirm the details; change the status to confirmed when the person agrees.", go: "classes", b: "Open Classes" } ] },
@@ -3856,7 +3916,7 @@
     var wrap = mk("div"), l = mk("div", "f", label), idEl = mk("input"), cur = mk("div", "note"), results = mk("div");
     idEl.type = "hidden"; idEl.id = "ef_" + field; idEl.value = (editRec && editRec[field]) || "";
     var er = mk("div", "ferr"); er.id = "ee_" + field;
-    var pick = mk("button", "quiet", "Choose person"), clear = mk("button", "quiet", "Clear"); pick.type = "button"; clear.type = "button";
+    var pick = mk("button", "quiet", "Choose contact"), clear = mk("button", "quiet", "Clear"); pick.type = "button"; clear.type = "button";
     var search = mk("input"); search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.hidden = true; search.id = "ef_" + field + "_q";
     function show(name) {
       cur.textContent = idEl.value ? (name || "(unavailable)") : "Nobody chosen.";
@@ -3876,7 +3936,7 @@
           b.addEventListener("click", function () { idEl.value = p.id; show(pFull(p)); results.textContent = ""; search.value = ""; search.hidden = true; liveReady(); });
           results.appendChild(b);
         });
-        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Add them in People first."));
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name."));
       });
     });
     wrap.appendChild(l); wrap.appendChild(cur); wrap.appendChild(pick); wrap.appendChild(clear); wrap.appendChild(search); wrap.appendChild(results);
@@ -4287,7 +4347,7 @@
     if (!ps.length) out.push(adminProblem(res.status));
     return { fields: mine, other: out, existing: existing };
   }
-  function rName(rec) { var p = rec.person; return p && !p.unavailable ? (p.display_name || p.given_name || "(no name)") : "(person not available)"; }
+  function rName(rec) { var p = rec.person; return p && !p.unavailable ? (p.display_name || p.given_name || "(no name)") : "(not available)"; }
   function rContact(rec) { var p = rec.person; if (!p || p.unavailable) return ""; return [p.email, p.phone].filter(Boolean).join(" · "); }
   function rField(f, idp, cur) {
     var wrap = mk("div"), l = mk("label", "f", f.label), el;
@@ -4321,10 +4381,10 @@
       '<button type="button" class="quiet manualBtn" data-m="' + cfg.id + '">Manual</button><button id="' + P + 'Refresh" class="quiet" type="button">Refresh</button>' +
       '<button id="' + P + 'AddBtn" type="button">Add ' + cfg.one + '</button></div></div>' +
       '<form class="panel" id="' + P + 'AddForm" hidden autocomplete="off" novalidate><h2>Add ' + (cfg.one === "instructor" ? "an" : "a") + ' ' + cfg.one + '</h2>' +
-      '<div class="hint">Type a name. Pick the person from the list, or choose "This is a new person". Nothing is matched for you.</div>' +
+      '<div class="hint">Type a name. Pick them from the list, or choose "Someone new". Nothing is matched for you.</div>' +
       '<label class="f" for="' + P + 'Q">Name</label><input type="text" id="' + P + 'Q" maxlength="100" autocomplete="off">' +
       '<div id="' + P + 'Opts" class="ropts"></div><div class="note" id="' + P + 'Chosen"></div><div class="ferr" id="' + P + 'EPick"></div>' +
-      '<div id="' + P + 'New" class="eform" hidden><div class="hint">A new person is added to People at the same time.</div></div>' +
+      '<div id="' + P + 'New" class="eform" hidden><div class="hint">Their name, email and phone are saved with them.</div></div>' +
       '<div id="' + P + 'AddFields"></div>' +
       '<div class="btns"><button type="submit" id="' + P + 'SaveBtn">Add to ' + cfg.Many.toLowerCase() + '</button><button type="button" class="quiet" id="' + P + 'CancelBtn">Cancel</button></div>' +
       '<div class="msg" id="' + P + 'FMsg" role="alert"></div></form>' +
@@ -4365,7 +4425,7 @@
       shown.forEach(function (r) { list.appendChild(row(r)); });
       S.newId = ""; S.openId = "";
       var act = S.all.filter(function (r) { return r.status === "active"; }).length;
-      g("Count").textContent = S.all.length + (S.all.length === 1 ? " person" : " people") + (S.all.length ? " (" + act + " active)" : "");
+      g("Count").textContent = S.all.length + (S.all.length === 1 ? " entry" : " entries") + (S.all.length ? " (" + act + " active)" : "");
       g("Empty").hidden = S.all.length > 0;
       g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
     }
@@ -4406,7 +4466,7 @@
       var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Remove from " + cfg.Many.toLowerCase());
       ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
       var host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
-      box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? They stay in People and the history is kept. You can add them again later."));
+      box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? Their history is kept. You can add them again later."));
       var b = mk("div", "btns"), yes = mk("button", "danger", "Remove"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg");
       yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert"); b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
       ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
@@ -4430,7 +4490,7 @@
       var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
       var els = {}, pEls = {}, hEls = {}, havePerson = rec.person && !rec.person.unavailable;
       if (havePerson) {
-        form.appendChild(mk("div", "hint", "Name and contact are the person's own details and are shared with People."));
+        form.appendChild(mk("div", "hint", "Name and contact are saved with them and shared across LAUNCH."));
         RPERSON.forEach(function (pf) {
           var x = rField({ k: pf[0], label: pf[1], t: "text" }, "rp_" + rec.id + "_", rec.person[pf[0]]); form.appendChild(x.wrap); pEls["person." + pf[0]] = x; x.k = pf[0];
         });
@@ -4531,7 +4591,7 @@
     function choose(c) {
       S.choice = c; g("EPick").textContent = ""; g("Opts").textContent = "";
       g("New").hidden = !c.isNew;
-      g("Chosen").textContent = c.isNew ? "Adding a new person." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + "." + (c.noFamily ? " This person has no family name on file. Add it in People so they are not added twice." : "");
+      g("Chosen").textContent = c.isNew ? "Adding someone new." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + "." + (c.noFamily ? " They have no family name on file. A super admin can add it so they are not added twice." : "");
       if (c.isNew) {
         var parts = c.typed.split(/\s+/).filter(Boolean);
         newEls["person.given_name"].el.value = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
@@ -4556,7 +4616,7 @@
           } else b.addEventListener("click", function () { g("Q").value = pFull(p); choose({ id: p.id, name: pFull(p), contact: contact, noFamily: !p.family_name }); });
           rw.appendChild(b); box.appendChild(rw);
         });
-        var nb = mk("button", "", "This is a new person: " + g("Q").value.trim()); nb.type = "button";
+        var nb = mk("button", "", "Someone new: " + g("Q").value.trim()); nb.type = "button";
         nb.addEventListener("click", function () { choose({ isNew: true, typed: g("Q").value.trim() }); });
         var nr = mk("div", "pickrow"); nr.appendChild(nb); box.appendChild(nr);
       });
@@ -4570,7 +4630,7 @@
     g("AddForm").addEventListener("submit", function (e) {
       e.preventDefault(); g("FMsg").textContent = ""; g("EPick").textContent = "";
       Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
-      if (!S.choice) { g("EPick").textContent = 'Pick a person from the list, or choose "This is a new person".'; return; }
+      if (!S.choice) { g("EPick").textContent = 'Pick someone from the list, or choose "Someone new".'; return; }
       var data = {}, person = null;
       cfg.fields.forEach(function (f) { var v = rRead(addEls[f.k]); if (f.t === "tags" ? v.length : v) data[f.k] = v; });
       if (S.choice.isNew) {

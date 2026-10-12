@@ -186,7 +186,8 @@ with sync_playwright() as p:
     pg.click("#riSaveBtn"); pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Added') === 0")
     caps = [r.get("capabilities") for r in store.data.get("instructor_rosters", {}).values() if r.get("individual_id") == tb["id"]]
     check("tags split on commas, semicolons and new lines", caps == [["AI basics for beginners", "Prompting", "Voice and conversation with AI"]])
-    pg.click("#riAddBtn"); pg.fill("#riQ", "bob"); pg.wait_for_selector("#riOpts button"); pg.locator("#riOpts button", has_text="Bob Ray").first.click()
+    IS.create(store, {"given_name": "Dee", "family_name": "Short"}, "user:admin")
+    pg.click("#riAddBtn"); pg.fill("#riQ", "dee short"); pg.wait_for_selector("#riOpts button"); pg.locator("#riOpts button", has_text="Dee Short").first.click()
     pg.fill("#riA_capabilities", "x" * 70); pg.click("#riSaveBtn")
     pg.wait_for_function("document.querySelector('#riA_capabilities ~ .ferr').textContent.length > 0")
     check("a too-long tag explains the limit", "60 characters" in pg.locator("#riA_capabilities ~ .ferr").inner_text())

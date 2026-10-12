@@ -19,6 +19,7 @@ Nothing is stored twice. A class's roster (its instructors and students) is read
 - `order`: the place among the instructors (1 first). Optional.
 - `status`: assigned, waitlisted, confirmed, attended, late, no_show, declined, withdrawn or cancelled (see section 8). Optional; the server uses assigned.
 - `request_id`: the registration request this came from, when it did. Optional and not checked.
+- `confirmation_number`: read only. When `request_id` names a registration request that exists, the server copies that request's confirmation number here, so the number follows the person from request to class. Changing `request_id` changes it; removing `request_id` removes it.
 - `notes`: operator free text. Personal data. Optional.
 
 ### What the server sets (readOnly)

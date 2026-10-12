@@ -24,6 +24,7 @@ from .schema_kit import (
 from .store_errors import DocExists, DocMissing, StaleUpdate
 
 ATT = load_collection("attendance")
+REQUESTS = load_collection("registration_request")
 EXPANDABLE = True
 SOURCES = ("dashboard", "import")
 DEFAULT_LIMIT = 100
@@ -65,6 +66,12 @@ def _live_for(store, field, value):
 def _class(store, class_id):
     doc = store.get(CL.CLASSES.name, class_id)
     return None if doc is None or _deleted(doc) else doc
+
+
+def _confirmation_of(store, request_id):
+    """The confirmation number of a registration request, or None when the request is not found."""
+    req = store.get(REQUESTS.name, request_id) if request_id else None
+    return req.get("confirmation_number") if isinstance(req, dict) else None
 
 
 def _history_entry(status, actor, now):
@@ -125,6 +132,9 @@ def _create(store, data, actor, source, tx, now, person_known=False):
         if live:
             return _bad([{"field": "individual_id", "issue": "duplicate", "existing_id": live[0]["id"]}])
     doc = stamp_create(ATT, doc, actor, source, now)
+    number = _confirmation_of(store, doc.get("request_id"))
+    if number:
+        doc["confirmation_number"] = number
     doc["status_history"] = [_history_entry(doc["status"], actor, now)]
     missing = [f for f in ATT.server_required if f not in doc]
     if check_document(ATT, doc) or missing:
@@ -227,6 +237,11 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
     if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
         return failure("conflict")
     fields = dict(sets)
+    if "request_id" in sets:
+        number = _confirmation_of(store, sets["request_id"])
+        (fields.__setitem__("confirmation_number", number) if number else removals.append("confirmation_number"))
+    elif "request_id" in removals:
+        removals.append("confirmation_number")
     if "status" in sets and sets["status"] != cur.get("status"):
         fields["status_history"] = (cur.get("status_history") or [])[-(HISTORY_MAX - 1):] + [_history_entry(sets["status"], actor, now)]
     stamp = stamp_update(actor, now)

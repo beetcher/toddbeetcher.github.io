@@ -123,6 +123,16 @@ for door, st in ((handle_crud_test, MemoryDocStore("test_")), (handle_admin, Mem
     r = call(door, st, {"collection": "attendances", "op": "list", "args": {"filters": {"scheduled_class_id": cid}, "expand": True}}); check("endpoint list expand", r.status == 200 and r.body["data"]["records"][0]["person"]["display_name"], r.body)
     r = call(door, st, {"collection": "attendances", "op": "update", "args": {"id": rid, "changes": {"status": "attended"}}}); check("endpoint update", r.status == 200, r.body)
     r = call(door, st, {"collection": "venues", "op": "assign", "args": {"data": {}}}); check("other collections refuse assign", r.status == 400)
+# ---- the confirmation number follows the request into the class
+RQ = "5b1d2c3e-4f50-4a61-8b72-93a4b5c6d7e8"
+s.create(AT.REQUESTS.name, RQ, {"id": RQ, "confirmation_number": "LCH-TEST-1234"})
+cq = klass("cq")
+r = AT.assign(s, {"scheduled_class_id": cq["id"], "role": "student", "individual_id": dee["id"], "request_id": RQ}, A, now=tick())
+check("confirmation number copied from the request", r.ok and r.data.get("confirmation_number") == "LCH-TEST-1234", r.problems if not r.ok else r.data)
+check("confirmation number cannot be sent", ("confirmation_number", "not_allowed") in issues(AT.create(s, {"individual_id": cy["id"], "scheduled_class_id": cq["id"], "role": "student", "confirmation_number": "X"}, A, now=tick())))
+check("no request, no number", "confirmation_number" not in AT.create(s, {"individual_id": cy["id"], "scheduled_class_id": cq["id"], "role": "student"}, A, now=tick()).data)
+check("number stays through a status change", (AT.update(s, r.data["id"], {"status": "confirmed"}, A, now=tick()).ok) and AT.get(s, r.data["id"]).data["confirmation_number"] == "LCH-TEST-1234")
+check("removing the request removes the number", AT.update(s, r.data["id"], {"request_id": None}, A, now=tick()).ok and "confirmation_number" not in AT.get(s, r.data["id"]).data)
 print(f"\n{total - len(fails)}/{total} checks passed")
 if fails: print("FAILED:", *fails, sep="\n  "); sys.exit(1)
 print("OK")

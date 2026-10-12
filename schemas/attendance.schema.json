@@ -96,9 +96,15 @@
       }
     },
     "request_id": {
-      "description": "The registration request this record came from, when it came from one: the id of a registration_request. Optional. Not checked.",
+      "description": "The registration request this record came from, when it came from one: the id of a registration_request. Optional. When set, the server copies that request's confirmation_number onto this record. A request counts as placed while at least one record carrying its id is not declined, withdrawn or cancelled.",
       "type": "string",
       "format": "uuid"
+    },
+    "confirmation_number": {
+      "description": "The confirmation number of the registration request this record came from, copied from the request by the server when request_id is set, so the number follows the person from request to class. Read only. Optional.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 40
     },
     "notes": {
       "description": "Free text for the operator about this person in this class. Up to 2000 characters. Personal data. Optional.",
