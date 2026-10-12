@@ -120,6 +120,19 @@
   .addbox summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
   .putbox { padding: 0 14px 12px; }
   .putbox[hidden] { display: none; }
+  .putbox { margin: 4px 14px 14px; padding: 6px 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: #fffdf8; }
+  .putbox label.f { display: block; font-weight: 600; margin-top: 16px; margin-bottom: 6px; }
+  .putbox input, .putbox select, .putbox textarea { display: block; width: 100%; box-sizing: border-box; min-height: 48px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  .putbox textarea { min-height: 96px; }
+  .putbox .rhead { margin: 22px 0 4px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .putbox .rhead:first-child { margin-top: 8px; border-top: 0; padding-top: 0; }
+  .putbox .hint, .putbox .note { margin: 10px 0 0; line-height: 1.4; color: var(--muted); font-size: 14px; }
+  .putbox button { min-height: 48px; padding: 8px 18px; }
+  .putbox form button[type=submit], .putbox .go { margin-top: 18px; }
+  .putbox .btns { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .putbox details { margin-top: 14px; }
+  .putbox .addbox { margin-top: 14px; }
+  .putbox .ferr, .putbox .qmsg { margin-top: 6px; color: var(--err); font-weight: 600; font-size: 14px; }
   dialog.lsdlg::backdrop { background: rgba(0,0,0,.45); }
   .lshead { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--card); border-radius: 14px 14px 0 0; }
   .lshead button { white-space: nowrap; flex: none; padding: 0 14px; }
@@ -3091,7 +3104,7 @@
       var live = aClasses.filter(function (c) { return c.status !== "cancelled" && c.status !== "completed"; });
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
-      host.appendChild(hb);
+      var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
       host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) { loadPlaced(); putInClass(rec, host, s); } }));
     });
   }
