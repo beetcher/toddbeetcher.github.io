@@ -639,6 +639,41 @@
   <section id="studentsView" class="rostview" hidden></section>
   <section id="curriculumsView" class="rostview" hidden></section>
 
+  <section id="attendanceView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="aCount"></div>
+        <div class="meta" id="aChecked"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="quiet manualBtn" data-m="attendance">Manual</button>
+        <button id="aRefresh" type="button">Refresh</button>
+      </div>
+    </div>
+    <details class="more filters" id="aFilters" open>
+      <summary id="aFilterSummary">Filters: all records shown</summary>
+      <div class="mbody">
+        <label class="f" for="aSearch">Search</label>
+        <input type="search" id="aSearch" maxlength="100" placeholder="Name, class, ICDT-A-… or ICDT-… number" autocomplete="off">
+        <fieldset class="fs"><legend>Status</legend><div id="aStatusBoxes"></div></fieldset>
+        <fieldset class="fs"><legend>Role</legend>
+          <label class="chk"><input type="checkbox" data-f="role" value="student" checked> Student</label>
+          <label class="chk"><input type="checkbox" data-f="role" value="primary_instructor" checked> Lead instructor</label>
+          <label class="chk"><input type="checkbox" data-f="role" value="instructor" checked> Instructor</label>
+        </fieldset>
+        <fieldset class="fs"><legend>Came from</legend>
+          <label class="chk"><input type="checkbox" data-f="source" value="request" checked> A registration request</label>
+          <label class="chk"><input type="checkbox" data-f="source" value="direct" checked> Added by us</label>
+        </fieldset>
+        <div class="btns"><button type="button" id="aApply">Refresh with these filters</button> <button type="button" class="quiet" id="aShowAll">Show all</button></div>
+      </div>
+    </details>
+    <div class="notice" id="aNotice" role="status"></div>
+    <div class="msg" id="aMsg" role="alert"></div>
+    <ul id="aList"></ul>
+    <div class="empty" id="aEmpty" hidden>No attendance records match.</div>
+  </section>
+
   <section id="placesView" hidden>
     <div class="bar">
       <div>
@@ -900,6 +935,20 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> start with one or two curricula. You can add more any time.</div>' +
         '<h3>Try this</h3><ul><li>Add Introduction to AI Use as one session of 60 minutes.</li></ul>' },
+    { id: "attendance", name: "Attendance", short: "Attendance", blurb: "Everyone in every class: find, filter and change their status.",
+      manual:
+        '<div class="kicker">Station 9</div><h2>Attendance</h2>' +
+        '<h3>Mission</h3><p>One list of every student and instructor in every class. Use it to answer questions like who is waiting, who has not confirmed, or where a reference number went.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Filters</b> are tick boxes for status, role and where the record came from. Tick what you want to see, then tap <b>Refresh</b>. Nothing changes until you do.</li>' +
+        '<li><b>Search</b> looks at the name, the class title, and the reference or request number.</li>' +
+        '<li>Each row shows the class (tap it to open that class\'s attendance), the person, their reference and request numbers, and a status menu you can change right there.</li>' +
+        '<li><b>Remove</b> asks twice. The record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>A reference (ICDT-A-…) belongs to one person in one class. A request number (ICDT-…) is the sign-up it came from.</li>' +
+        '<li>The list shows the newest 200 records. If you see a note about that, narrow it with the filters or search.</li>' +
+        '</ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -972,11 +1021,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("attendanceView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "attendance" ? "attendance" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -994,6 +1043,8 @@
     $("instructorsView").hidden = r !== "instructors";
     $("studentsView").hidden = r !== "students";
     $("curriculumsView").hidden = r !== "curriculums";
+    $("attendanceView").hidden = r !== "attendance";
+    if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
     if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
   }
@@ -3250,6 +3301,73 @@
     }
     draw();
   }
+
+  // ---- Attendance station: every record, with tick-box filters that apply on Refresh
+  var AS = { recs: [], capped: false, loaded: false, seq: 0 };
+  function asBoxes() { return document.querySelectorAll("#aFilters input[type=checkbox]"); }
+  function asBuildStatusBoxes() {
+    var host = $("aStatusBoxes"); if (host.firstChild) return;
+    ATT_STATUSES.forEach(function (s) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + ATT_WORD[s])); host.appendChild(l);
+    });
+  }
+  function asSelected() {
+    var o = { status: {}, role: {}, source: {} };
+    Array.prototype.forEach.call(asBoxes(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
+    return o;
+  }
+  function asSummary(sel, q) {
+    var all = true; Array.prototype.forEach.call(asBoxes(), function (c) { if (!c.checked) all = false; });
+    $("aFilterSummary").textContent = all && !q ? "Filters: all records shown" : "Filters: " + (q ? "searching for “" + q + "”" : "some records are hidden");
+    $("aFilterSummary").className = all && !q ? "" : "some";
+  }
+  function asMatches(r, sel, q) {
+    if (!sel.status[r.status] || !sel.role[r.role] || !sel.source[r.request_id ? "request" : "direct"]) return false;
+    if (!q) return true;
+    var hay = [attName(r), r["class"] && r["class"].title, r.reference_number, r.confirmation_number, ROLE_WORD[r.role], ATT_WORD[r.status]].filter(Boolean).join(" ").toLowerCase();
+    return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+  // The tick boxes and search are read when the list is drawn (on load and on Refresh), not as they are ticked.
+  function asRender() {
+    var sel = asSelected(), q = $("aSearch").value.trim(), list = $("aList");
+    list.textContent = "";
+    var shown = AS.recs.filter(function (r) { return asMatches(r, sel, q); });
+    shown.forEach(function (r) {
+      var li = mk("li", "attrec");
+      var top = mk("div", "lchips");
+      var cl = mk("button", "chiplink", ((r["class"] && r["class"].title) || "(class not found)") + (r["class"] && r["class"].starts_at ? " · " + classWhen(r["class"]) : ""));
+      cl.type = "button";
+      cl.addEventListener("click", function () { var c = aClassById[r.scheduled_class_id]; if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
+      top.appendChild(cl); top.appendChild(mk("span", "", ROLE_WORD[r.role] || r.role));
+      li.appendChild(top);
+      var holder = mk("div", ""); holder.style.padding = "0 14px 8px";
+      holder.appendChild(attRow(r, function (m) { $("aNotice").textContent = m; }, loadAttendanceStation));
+      li.appendChild(holder);
+      list.appendChild(li);
+    });
+    $("aCount").textContent = shown.length + (shown.length === 1 ? " record" : " records") + (shown.length !== AS.recs.length ? " of " + AS.recs.length : "");
+    $("aEmpty").hidden = shown.length > 0 || !AS.loaded;
+    asSummary(sel, q);
+  }
+  function loadAttendanceStation() {
+    asBuildStatusBoxes();
+    var my = ++AS.seq;
+    $("aMsg").textContent = "";
+    Promise.all([loadClassChoices(), admin("list", { limit: 200, expand: true, order: "-created_at" }, ATT)]).then(function (both) {
+      if (my !== AS.seq || !key) return;
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body || !res.body.ok) { $("aMsg").textContent = "Could not load the attendance. " + adminProblem(res.status); return; }
+      AS.recs = res.body.data.records || []; AS.loaded = true; AS.capped = AS.recs.length >= 200;
+      $("aChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (AS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      asRender();
+    });
+  }
+  $("aRefresh").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
+  $("aApply").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
+  $("aShowAll").addEventListener("click", function () { Array.prototype.forEach.call(asBoxes(), function (c) { c.checked = true; }); $("aSearch").value = ""; loadAttendanceStation(); });
+  $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
   // On a person's card: every class they are in, in any role.
   function personHistory(rec, host) {
