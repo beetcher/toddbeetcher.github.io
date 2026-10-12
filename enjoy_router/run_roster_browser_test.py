@@ -49,7 +49,8 @@ with sync_playwright() as p:
     for n in ("Instructors", "Students"):
         check(n + " tile on Home", pg.locator("#stationTiles .tile", has_text=n).count() == 1)
     red = pg.evaluate("Array.from(document.querySelectorAll('#collPick option')).filter(o => o.style.color).map(o => o.textContent)")
-    check("People and Places are red in the station menu", sorted(red) == ["People", "Places"])
+    check("People and Places are red in the station menu", sorted(red) == ["People (admin)", "Places (admin)"])
+    check("People and Places tiles are red on Home", pg.locator("#stationTiles .tile.adm").count() == 2)
     check("manual buttons for both rosters", pg.locator("#homeManualBtns button", has_text="Instructors").count() == 1 and pg.locator("#homeManualBtns button", has_text="Students").count() == 1)
 
     bob = IS.create(store, {"given_name": "Bob", "family_name": "Ray", "email": "bob@example.com"}, "user:admin").data
@@ -61,7 +62,7 @@ with sync_playwright() as p:
 
     # nothing picked: refused with a plain message
     pg.click("#riAddBtn"); pg.click("#riSaveBtn")
-    check("must pick a person or say new", "Pick a person" in pg.locator("#riEPick").inner_text())
+    check("must pick a person or say new", "Pick someone" in pg.locator("#riEPick").inner_text())
     # a new person
     pg.fill("#riQ", "Ann Lee")
     pg.wait_for_selector("#riOpts button")

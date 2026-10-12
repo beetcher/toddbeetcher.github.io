@@ -128,7 +128,7 @@ with sync_playwright() as p:
     check("the new place and link were saved", len(rows("locations")) == n0[0] + 2)
 
     # 7. choose a contact person by name; the venue stores only the id
-    pg.get_by_role("button", name="Choose person").first.click()
+    pg.get_by_role("button", name="Choose contact").first.click()
     pg.fill("#ef_contact_individual_id_q", "sue")
     pg.get_by_role("button", name="Sue Miller").click()
     check("the chosen name is shown", "Sue Miller" in pg.locator("#editSections").inner_text())

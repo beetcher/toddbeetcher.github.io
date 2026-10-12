@@ -246,6 +246,10 @@
   .tile .tno { display: block; color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
   .tile .tname { display: block; font-size: 18px; font-weight: 800; margin: 2px 0; }
   .tile .tdesc { display: block; font-size: 14px; color: #b9c8ee; }
+  .tile.adm { background: #3a0d12; border: 2px solid #e5484d; }
+  .tile.adm .tno, .tile.adm .tname { color: #ff8a8f; }
+  .tile.adm:hover { border-color: #ff8a8f; }
+  select#collPick.adm { color: #c00000; font-weight: 800; border-color: #c00000; }
   .tile.soon { cursor: default; background: transparent; border: 2px dashed #b8ad98; color: var(--muted); }
   .tile.soon:hover { border-color: #b8ad98; }
   .tile.soon .tno { color: var(--muted); }
@@ -908,10 +912,10 @@
     var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
     var tiles = $("stationTiles");
     SURFACES.forEach(function (sf, i) {
-      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name; if (sf.admin) { op.style.color = "#c00000"; op.className = "adminstn"; } pick.appendChild(op);
-      var t = document.createElement("button"); t.type = "button"; t.className = "tile"; t.dataset.go = sf.id;
+      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "#c00000"; op.className = "adminstn"; } pick.appendChild(op);
+      var t = document.createElement("button"); t.type = "button"; t.className = "tile" + (sf.admin ? " adm" : ""); t.dataset.go = sf.id;
       t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
-      t.querySelector(".tname").textContent = sf.name; t.querySelector(".tdesc").textContent = sf.blurb;
+      t.querySelector(".tname").textContent = sf.name; if (sf.admin) t.querySelector(".tno").textContent += " · admin"; t.querySelector(".tdesc").textContent = sf.blurb;
       tiles.appendChild(t);
     });
     COMING.forEach(function (c) {
@@ -981,6 +985,7 @@
     if (r !== "venues") closeEdit();
     if (r !== "classes") closeClassEdit();
     $("collPick").value = r;
+    markPick();
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
     $("classesView").hidden = r !== "classes";
@@ -2792,7 +2797,8 @@
   $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
-  $("collPick").addEventListener("change", function () { goTo($("collPick").value); });
+  function markPick() { var o = $("collPick").selectedOptions[0]; $("collPick").classList.toggle("adm", !!(o && o.className === "adminstn")); }
+  $("collPick").addEventListener("change", function () { markPick(); goTo($("collPick").value); });
   $("brand").addEventListener("click", function (e) { e.preventDefault(); goTo("home"); });
   document.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target.closest("[data-go],[data-m]") : null;
