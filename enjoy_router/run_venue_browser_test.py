@@ -160,6 +160,30 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('vNotice').textContent.indexOf('Saved') === 0")
     check("clearing the contact removes the pointer", "contact_individual_id" not in venue("Park Draft"))
 
+    # 11. the Active/Inactive switch on the card: taps are collected, one save 1.5 seconds after the last tap
+    pg.click("#cancelBtn") if pg.locator("#editPanel:not([hidden])").count() and pg.locator("#cancelBtn").is_visible() else None
+    pg.select_option("#vFilter", "") if pg.locator("#vFilter").count() else None
+    pg.wait_for_function("document.querySelectorAll('#vList li').length >= 2")
+    import re as _re
+    li = pg.locator("#vList li").filter(has=pg.locator(".vname", has_text=_re.compile("^Amante Coffee$"))); sw = li.locator("button.stoggle")
+    check("the card has an Inactive switch", sw.get_attribute("aria-checked") == "false" and "Inactive" in sw.inner_text())
+    t0 = venue("Amante Coffee")["updated_at"]
+    sw.click(); sw.click()
+    pg.wait_for_timeout(2300)
+    check("two quick taps cancel out and nothing is sent", venue("Amante Coffee")["updated_at"] == t0 and venue("Amante Coffee")["status"] == "inactive")
+    sw.click()
+    pg.wait_for_timeout(700)
+    check("nothing is saved before the pause ends", venue("Amante Coffee")["status"] == "inactive")
+    sw.click(); sw.click()   # three taps in all: ends on Active
+    pg.wait_for_function("document.querySelector('#vList li button.stoggle[aria-checked=true]') !== null", timeout=6000)
+    pg.wait_for_timeout(2300)
+    check("saved once after the last tap: now active", venue("Amante Coffee")["status"] == "active" and "Active" in sw.inner_text())
+    li2 = pg.locator("#vList li").filter(has=pg.locator(".vname", has_text=_re.compile("^Park Draft$"))); sw2 = li2.locator("button.stoggle")
+    sw2.click(); pg.wait_for_timeout(2300)
+    check("an active venue can be set back and forth", sw2.get_attribute("aria-checked") in ("true", "false"))
+    sw.click(); pg.wait_for_timeout(2300)
+    check("it can be set inactive again from the card", venue("Amante Coffee")["status"] == "inactive" and "Inactive" in sw.inner_text())
+
     check("no page errors", not errors)
     if errors: print(errors[:3])
     b.close()

@@ -51,6 +51,16 @@
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; transition: background 1.2s ease; }
   li.isnew { background: var(--new); border-color: var(--lime); }
+  li.hasToggle { position: relative; }
+  li.hasToggle .top { padding-right: 132px; }
+  .stoggle { position: absolute; top: 10px; right: 12px; min-width: 112px; min-height: 44px; padding: 4px 12px 4px 10px; border-radius: 999px; border: 2px solid var(--muted); background: #e9e4d8; color: #4a443a; font: inherit; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .stoggle .knob { width: 18px; height: 18px; border-radius: 50%; background: #8a8478; flex: 0 0 auto; }
+  .stoggle.on { background: var(--new); border-color: #5c9a00; color: #1d4d00; }
+  .stoggle.on .knob { background: #3d7a00; }
+  .stoggle.pending { border-style: dashed; }
+  .stoggle:disabled { opacity: .6; cursor: progress; }
+  .stoggle:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .stmsg { color: var(--err); font-weight: 600; font-size: 14px; flex: 1 1 100%; }
   li > button.head {
     all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 14px; cursor: pointer; min-height: 44px;
   }
@@ -1167,6 +1177,48 @@
     return "Something went wrong. Try again.";
   }
 
+  // A one-tap status switch on a card. Taps are collected: 1.5 seconds after the LAST tap the server is asked once, and only if the
+  // final choice differs from what is saved (two taps cancel out). opts: coll (admin collection or undefined), on, off (status words), problem(res).
+  var TOGGLE_WAIT = 1500;
+  function statusToggle(rec, li, opts) {
+    var b = mk("button", "stoggle"); b.type = "button"; b.setAttribute("role", "switch");
+    var knob = mk("span", "knob"), word = mk("span", "");
+    b.appendChild(knob); b.appendChild(word);
+    var want = rec.status === opts.on, timer = null, busy = false;
+    var msg = mk("div", "stmsg"); msg.setAttribute("role", "alert");
+    function draw() {
+      var saved = rec.status === opts.on;
+      b.classList.toggle("on", want); b.classList.toggle("pending", want !== saved || !!timer);
+      b.setAttribute("aria-checked", want ? "true" : "false");
+      word.textContent = want ? "Active" : "Inactive";
+      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? "active" : "inactive") + (timer ? ", saving soon" : "") + ". Tap to change.");
+    }
+    function send() {
+      timer = null;
+      if (want === (rec.status === opts.on)) { draw(); return; }
+      busy = true; b.disabled = true; msg.textContent = "";
+      var args = { id: rec.id, changes: { status: want ? opts.on : opts.off }, expected_updated_at: rec.updated_at };
+      (opts.coll ? admin("update", args, opts.coll) : admin("update", args)).then(function (res) {
+        busy = false; b.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          rec.status = want ? opts.on : opts.off;
+          var u = res.body.data && res.body.data.updated_at; if (u) rec.updated_at = u;
+          draw(); return;
+        }
+        want = rec.status === opts.on; draw();
+        msg.textContent = res.status === 409 ? "This changed somewhere else. Tap Refresh, then try again." : res.status === 400 ? opts.problem(res) : adminProblem(res.status);
+      });
+    }
+    b.addEventListener("click", function () {
+      if (busy) return;
+      want = !want; if (timer) clearTimeout(timer);
+      timer = setTimeout(send, TOGGLE_WAIT); draw();
+    });
+    li.classList.add("hasToggle"); draw();
+    return { btn: b, msg: msg };
+  }
+
   function venueRow(rec, isNew) {
     var li = document.createElement("li");
     if (isNew) li.className = "isnew";
@@ -1175,8 +1227,7 @@
 
     var top = document.createElement("div"); top.className = "top";
     var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
-    var st = document.createElement("span"); st.className = "type" + (rec.status === "active" ? " on" : ""); st.textContent = rec.status || "";
-    top.appendChild(nm); top.appendChild(st);
+    top.appendChild(nm);
 
     var kind = document.createElement("div"); kind.className = "who";
     kind.textContent = rec.is_public_venue ? "Public venue" : "Private space";
@@ -1202,7 +1253,8 @@
       var open = li.classList.toggle("open");
       head.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    li.appendChild(head); li.appendChild(chips); li.appendChild(detail);
+    var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
+    li.appendChild(head); li.appendChild(tg.btn); chips.appendChild(tg.msg); li.appendChild(chips); li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
