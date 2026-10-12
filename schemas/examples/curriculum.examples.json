@@ -6,7 +6,8 @@
    "description": "A relaxed first hour with an AI assistant.",
    "session_count": 1,
    "minutes_per_session": 60,
-   "status": "active"
+   "status": "active",
+   "tagline": "A relaxed first hour that makes AI feel easy."
   },
   "series": {
    "slug": "ai_for_everyday_life",
@@ -69,6 +70,16 @@
   "title_too_long": {
    "slug": "abc",
    "title": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+  "tagline_too_long": {
+   "slug": "abc",
+   "title": "x",
+   "tagline": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+  "tagline_empty": {
+   "slug": "abc",
+   "title": "x",
+   "tagline": ""
   }
  }
 }

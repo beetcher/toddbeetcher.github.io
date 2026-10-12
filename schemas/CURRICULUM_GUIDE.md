@@ -15,6 +15,7 @@ Todd's rule: each session of a multi-session curriculum is its own class. The cu
 ### What the sender provides
 - `slug`: short unique identifier (lowercase letters, digits, underscores). Required. Never changes once set.
 - `title`: what people see. Required.
+- `tagline`: one short marketing line shown with the title (up to 120 characters). Optional. Sending an empty tagline removes it.
 - `description`: what it covers. Optional.
 - `session_count`: how many sessions. Optional; absent means one session.
 - `minutes_per_session`: how long each session lasts. Optional.

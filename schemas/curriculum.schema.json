@@ -28,6 +28,12 @@
       "minLength": 1,
       "maxLength": 200
     },
+    "tagline": {
+      "description": "One short marketing line shown with the title, for example 'Put down the keyboard. Pick up the conversation.' Up to 120 characters. Optional.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
     "description": {
       "description": "What the curriculum covers, in a few sentences. Up to 2000 characters. Optional.",
       "type": "string",

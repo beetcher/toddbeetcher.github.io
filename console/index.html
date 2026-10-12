@@ -4500,7 +4500,7 @@
   var RCISSUE = { required: "Required.", duplicate: "That identifier is already used.", invalid_format: "Use lowercase letters, digits and underscores.",
                  out_of_range: "That number is out of range.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
                  immutable: "That cannot be changed.", not_allowed: "Not allowed." };
-  var CLABEL = { slug: "Identifier", title: "Title", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
+  var CLABEL = { slug: "Identifier", title: "Title", tagline: "Tagline", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
   function currLine(rec) {
     var bits = [rec.slug];
     var n = rec.session_count || 1;
@@ -4526,6 +4526,7 @@
     var FIELDS = [
       { k: "title", label: "Title", t: "text", add: true, hint: "What people see, for example Introduction to AI Use." },
       { k: "slug", label: "Short identifier", t: "text", add: true, addOnly: true, hint: "Lowercase letters, digits and underscores. It cannot be changed later." },
+      { k: "tagline", label: "Tagline (optional)", t: "text", add: true, max: 120, hint: "One short marketing line shown with the title." },
       { k: "description", label: "Description (optional)", t: "area", add: true },
       { k: "session_count", label: "Number of sessions (optional)", t: "num", add: true, hint: "1 for a single session. Each session becomes its own class." },
       { k: "minutes_per_session", label: "Minutes per session (optional)", t: "num", add: true },
@@ -4534,7 +4535,7 @@
     function mkF(f, idp, cur) {
       var wrap = mk("div"), l = mk("label", "f", f.label), el;
       if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
-      else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "num" ? 4 : 200; el.value = cur == null ? "" : String(cur); if (f.t === "num") el.inputMode = "numeric"; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "num" ? 4 : (f.max || 200); el.value = cur == null ? "" : String(cur); if (f.t === "num") el.inputMode = "numeric"; }
       el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
       if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
       var er = mk("div", "ferr"); wrap.appendChild(er);
@@ -4578,7 +4579,9 @@
     function row(rec) {
       var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
       var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.title || "(no title)")); top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
-      head.appendChild(top); head.appendChild(mk("div", "sub", currLine(rec)));
+      head.appendChild(top);
+      if (rec.tagline) head.appendChild(mk("div", "sub", rec.tagline));
+      head.appendChild(mk("div", "sub", currLine(rec)));
       var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
       var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
       box.appendChild(mk("div", "", "Delete " + (rec.title || "this curriculum") + "? It disappears from the list but the record is kept. To stop offering it without deleting, set it to inactive."));

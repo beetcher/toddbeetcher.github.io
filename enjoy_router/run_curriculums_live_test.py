@@ -33,7 +33,7 @@ def check(label, ok, detail=""):
     print(("ok   " if ok else "FAIL ") + label + ("" if ok else "  " + str(detail)[:300]))
 
 import time
-r = T("curriculums", "create", data={"slug": "livetest_" + str(int(time.time())), "title": "Livetest Curriculum", "session_count": 3, "minutes_per_session": 90})
+r = T("curriculums", "create", data={"slug": "livetest_" + str(int(time.time())), "title": "Livetest Curriculum", "session_count": 3, "minutes_per_session": 90, "tagline": "Livetest tagline"})
 check("create", r[0] == 200 and data(r).get("status") == "active", r)
 cid = data(r).get("id"); slug = data(r).get("slug")
 r = T("curriculums", "create", data={"slug": slug, "title": "Again"}); check("duplicate slug refused", r[0] == 400 and "duplicate" in json.dumps(r[1]), r)
