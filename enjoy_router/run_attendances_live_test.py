@@ -38,7 +38,7 @@ cls = T("scheduled_classes", "create", data={"title": "Livetest class", "slug": 
 check("create a test class", cls[0] == 200, cls)
 cid = data(cls).get("id")
 r = T("attendances", "assign", data={"scheduled_class_id": cid, "role": "student"}, person={"given_name": "Livetest", "family_name": "Student", "email": "Live@Example.com"})
-check("assign a new person: person, roster entry and record together", r[0] == 200 and data(r).get("created_person") and data(r).get("created_roster_entry") and data(r).get("status") == "enrolled", r)
+check("assign a new person: person, roster entry and record together", r[0] == 200 and data(r).get("created_person") and data(r).get("created_roster_entry") and data(r).get("status") == "assigned", r)
 a1, p1 = data(r).get("id"), data(r).get("individual_id")
 r = T("attendances", "assign", data={"scheduled_class_id": cid, "role": "student", "individual_id": p1}); check("same person again is refused", r[0] == 400 and "duplicate" in json.dumps(r[1]), r)
 r = T("attendances", "assign", data={"scheduled_class_id": cid, "role": "student"}, person={"given_name": "Livetest", "family_name": "Second"})

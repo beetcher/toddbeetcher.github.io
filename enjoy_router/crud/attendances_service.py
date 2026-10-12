@@ -9,9 +9,11 @@ from __future__ import annotations
 
 import builtins
 import re
+from contextlib import contextmanager
 
 from . import individuals_service as IS
 from . import instructor_rosters_service as INS
+from . import journal_events_crud as JR
 from . import scheduled_classes_crud as CL
 from . import student_rosters_service as STU
 from .roster_kit import PERSON_NEW, _Abort
@@ -29,9 +31,13 @@ MAX_LIMIT = 200
 SCAN = 500
 STAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 _LIST_FILTERS = ("scheduled_class_id", "individual_id", "request_id")
+_INDEX_FILTERS = _LIST_FILTERS
 STUDENT = "student"
 IMMUTABLE = ("individual_id", "scheduled_class_id")
 HISTORY_MAX = 100
+STATUS_OFF = frozenset({"declined", "withdrawn", "cancelled"})      # no longer a placement
+NO_SEAT = STATUS_OFF | {"waitlisted"}                                 # does not hold a seat
+OPEN = frozenset({"assigned", "waitlisted", "confirmed"})             # what a cancelled or deleted class cancels
 
 
 def _bad(problems):
@@ -65,6 +71,30 @@ def _history_entry(status, actor, now):
     return {"status": status, "at": utc_stamp(now), "by": actor}
 
 
+@contextmanager
+def _tx(store, tx):
+    """Join the caller's transaction, or open one, so a change and its journal lines are written together."""
+    if tx is not None:
+        yield tx
+    else:
+        with store.transaction() as t:
+            yield t
+
+
+def _journal(store, event_type, actor, tx, now, **fields):
+    return JR.record(store, {"event_type": event_type, **fields}, actor, tx=tx, now=now)
+
+
+def _still_placed(store, request_id, excluding):
+    """Does the request keep an active placement apart from the records in `excluding`? (A request is assigned when it does.)"""
+    return any(d["id"] not in excluding and d.get("status") not in STATUS_OFF for d in _live_for(store, "request_id", request_id))
+
+
+def _unassigned_if_left(store, request_id, class_id, excluding, actor, tx, now):
+    if request_id and not _still_placed(store, request_id, excluding):
+        _journal(store, "request_unassigned", actor, tx, now, request_id=request_id, scheduled_class_id=class_id)
+
+
 # ---- create -----------------------------------------------------------------
 
 def _create(store, data, actor, source, tx, now, person_known=False):
@@ -79,7 +109,7 @@ def _create(store, data, actor, source, tx, now, person_known=False):
     if ro:
         return _bad(ro)
     doc = drop_empty({k: clean(v) for k, v in data.items()})
-    doc.setdefault("status", "enrolled")
+    doc.setdefault("status", "assigned")
     problems = check_document(ATT, doc)
     if problems:
         return _bad(problems)
@@ -100,7 +130,10 @@ def _create(store, data, actor, source, tx, now, person_known=False):
     if check_document(ATT, doc) or missing:
         return failure("server_error")
     try:
-        store.create(ATT.name, doc["id"], doc, tx=tx)
+        with _tx(store, tx) as t:
+            store.create(ATT.name, doc["id"], doc, tx=t)
+            _journal(store, "placed", actor, t, now, request_id=doc.get("request_id"), scheduled_class_id=doc["scheduled_class_id"],
+                     individual_id=doc["individual_id"], attendance_id=doc["id"], role=doc["role"], to_status=doc["status"])
     except DocExists:
         return failure("server_error")
     return success(doc)
@@ -135,20 +168,26 @@ def get(store, id, include_deleted=False, expand=False):  # noqa: A002
 
 
 def list(store, filters=None, order="-created_at", limit=DEFAULT_LIMIT, expand=False):  # noqa: A001
-    """Optional ONE filter: scheduled_class_id, individual_id or request_id. Order -created_at or created_at. Removed records are left out."""
+    """Optional ONE of scheduled_class_id, individual_id or request_id, and optionally `status` as well (status alone works too).
+    Order -created_at or created_at. Removed records are left out."""
     filters = dict(filters or {})
     problems = []
     for k, v in filters.items():
-        problems += [{"field": k, "issue": "not_supported"}] if k not in _LIST_FILTERS else check_field(ATT, k, v)
-    if len(filters) > 1:
-        problems += [{"field": k, "issue": "not_supported"} for k in filters]
+        problems += [{"field": k, "issue": "not_supported"}] if k not in _LIST_FILTERS + ("status",) else check_field(ATT, k, v)
+    index = [k for k in filters if k in _INDEX_FILTERS]
+    if len(index) > 1:
+        problems += [{"field": k, "issue": "not_supported"} for k in index]
     if order not in ("-created_at", "created_at"):
         problems.append({"field": "order", "issue": "not_supported"})
     if isinstance(limit, bool) or not isinstance(limit, int):
         problems.append({"field": "limit", "issue": "invalid_type"})
     if problems:
         return _bad(problems)
-    docs = [d for d in store.query(ATT.name, [(k, "==", v) for k, v in filters.items()], limit=SCAN) if not _deleted(d)]
+    key = index[0] if index else ("status" if "status" in filters else None)
+    where = [(key, "==", filters[key])] if key else []
+    docs = [d for d in store.query(ATT.name, where, limit=SCAN) if not _deleted(d)]
+    if "status" in filters:
+        docs = [d for d in docs if d.get("status") == filters["status"]]
     docs.sort(key=lambda d: d.get("created_at", ""), reverse=order.startswith("-"))
     docs = docs[:max(1, min(limit, MAX_LIMIT))]
     if expand:
@@ -192,7 +231,13 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         fields["status_history"] = (cur.get("status_history") or [])[-(HISTORY_MAX - 1):] + [_history_entry(sets["status"], actor, now)]
     stamp = stamp_update(actor, now)
     try:
-        store.update(ATT.name, id, {**fields, **stamp}, removals, expected_updated_at=cur["updated_at"], tx=tx)
+        with _tx(store, tx) as t:
+            store.update(ATT.name, id, {**fields, **stamp}, removals, expected_updated_at=cur["updated_at"], tx=t)
+            if "status" in sets and sets["status"] != cur.get("status"):
+                _journal(store, "status_changed", actor, t, now, request_id=cur.get("request_id"), scheduled_class_id=cur["scheduled_class_id"],
+                         individual_id=cur["individual_id"], attendance_id=id, role=cur.get("role"), from_status=cur.get("status"), to_status=sets["status"])
+                if sets["status"] in STATUS_OFF and cur.get("status") not in STATUS_OFF:
+                    _unassigned_if_left(store, cur.get("request_id"), cur["scheduled_class_id"], {id}, actor, t, now)
     except DocMissing:
         return failure("not_found")
     except StaleUpdate:
@@ -211,8 +256,13 @@ def soft_delete(store, id, actor, tx=None, now=None):
         return failure("not_found")
     stamp = utc_stamp(now)
     try:
-        store.update(ATT.name, id, {"deleted_at": stamp, "deleted_by": actor, "updated_at": stamp, "updated_by": actor}, (),
-                     expected_updated_at=cur["updated_at"], tx=tx)
+        with _tx(store, tx) as t:
+            store.update(ATT.name, id, {"deleted_at": stamp, "deleted_by": actor, "updated_at": stamp, "updated_by": actor}, (),
+                         expected_updated_at=cur["updated_at"], tx=t)
+            _journal(store, "removed", actor, t, now, request_id=cur.get("request_id"), scheduled_class_id=cur["scheduled_class_id"],
+                     individual_id=cur["individual_id"], attendance_id=id, role=cur.get("role"), from_status=cur.get("status"))
+            if cur.get("status") not in STATUS_OFF:
+                _unassigned_if_left(store, cur.get("request_id"), cur["scheduled_class_id"], {id}, actor, t, now)
     except DocMissing:
         return failure("not_found")
     except StaleUpdate:
@@ -223,11 +273,28 @@ def soft_delete(store, id, actor, tx=None, now=None):
 # ---- assign: the one-window flow ---------------------------------------------
 
 def _starting_status(store, cls, role):
-    """enrolled, or waitlisted for a student when the class already has as many enrolled students as capacity_max."""
+    """assigned, or waitlisted for a student when the class already has as many seat-holding students as capacity_max."""
     if role != STUDENT:
-        return "enrolled"
-    full = sum(1 for d in _live_for(store, "scheduled_class_id", cls["id"]) if d.get("role") == STUDENT and d.get("status") == "enrolled")
-    return "waitlisted" if full >= cls.get("capacity_max", 10 ** 9) else "enrolled"
+        return "assigned"
+    full = sum(1 for d in _live_for(store, "scheduled_class_id", cls["id"]) if d.get("role") == STUDENT and d.get("status") not in NO_SEAT)
+    return "waitlisted" if full >= cls.get("capacity_max", 10 ** 9) else "assigned"
+
+
+def end_class(store, class_id, actor, event_type, tx, now=None):
+    """A class was cancelled or deleted: every open attendance (assigned, waitlisted, confirmed) becomes `cancelled`, each with a journal
+    line, and a request left with no active placement gets a `request_unassigned` line. Writes join `tx`, the same transaction as the
+    class change. People who already have an outcome or have left are untouched. Returns how many records were cancelled."""
+    recs = [d for d in _live_for(store, "scheduled_class_id", class_id) if d.get("status") in OPEN]
+    ids = {d["id"] for d in recs}
+    for d in recs:
+        hist = (d.get("status_history") or [])[-(HISTORY_MAX - 1):] + [_history_entry("cancelled", actor, now)]
+        store.update(ATT.name, d["id"], {"status": "cancelled", "status_history": hist, **stamp_update(actor, now)}, (),
+                     expected_updated_at=d["updated_at"], tx=tx)
+        _journal(store, event_type, actor, tx, now, request_id=d.get("request_id"), scheduled_class_id=class_id, individual_id=d["individual_id"],
+                 attendance_id=d["id"], role=d.get("role"), from_status=d["status"], to_status="cancelled")
+    for rid in sorted({d["request_id"] for d in recs if d.get("request_id")}):
+        _unassigned_if_left(store, rid, class_id, ids, actor, tx, now)
+    return len(recs)
 
 
 def assign(store, data, actor, person=None, source="dashboard", now=None):

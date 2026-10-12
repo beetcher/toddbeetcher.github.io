@@ -36,6 +36,7 @@ VENUES = load_collection("venue")
 INSTRUCTOR_ROSTERS = load_collection("instructor_roster")
 STUDENT_ROSTERS = load_collection("student_roster")
 ATTENDANCES = load_collection("attendance")
+JOURNAL_EVENTS = load_collection("journal_event")
 INDIVIDUALS = I.INDIVIDUALS
 DETAILS = R.DETAILS
 HISTORY = I.HISTORY
@@ -57,6 +58,7 @@ LINKS = (
     (VENUES.name, "backup_contact_individual_id", "scalar"),
     (INSTRUCTOR_ROSTERS.name, "individual_id", "scalar"),  # merging may leave two entries for one person; unmerge restores
     (STUDENT_ROSTERS.name, "individual_id", "scalar"),
+    (JOURNAL_EVENTS.name, "individual_id", "scalar"),  # the log keeps pointing at the person
     (ATTENDANCES.name, "individual_id", "scalar"),  # a class may then hold two records for one person; unmerge restores
 )
 

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/attendance.schema.json",
   "title": "attendance",
-  "description": "One person in one class, in one role, and where they stand: the record that puts someone in a class. Assigning a person to a class creates this record (starting enrolled); withdrawing, attending, being late and the rest are later statuses on the same record, kept in status_history. Students and instructors are both attendance records. A class's roster is read from the records for that class; a person's history is read from the records for that person. Nothing here is stored twice. Rules the schema cannot express: the individual exists and is not erased; the class exists and is not deleted; one live record per individual per class; individual_id and scheduled_class_id never change; status defaults to enrolled and each status is added to status_history.",
+  "description": "One person in one class, in one role, and where they stand: the record that puts someone in a class. Assigning a person to a class creates this record (starting assigned); withdrawing, attending, being late and the rest are later statuses on the same record, kept in status_history. Students and instructors are both attendance records. A class's roster is read from the records for that class; a person's history is read from the records for that person. Nothing here is stored twice. Rules the schema cannot express: the individual exists and is not erased; the class exists and is not deleted; one live record per individual per class; individual_id and scheduled_class_id never change; status defaults to assigned (or waitlisted for a student when the class is full) and each status is added to status_history.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -41,16 +41,17 @@
       "maximum": 50
     },
     "status": {
-      "description": "Where the person stands: enrolled, waitlisted, declined, withdrawn, cancelled (the class or the booking was cancelled), attended, late or no_show. Optional on create (the server uses enrolled); every change is added to status_history.",
+      "description": "Where the person stands: assigned (the operator placed them), waitlisted (the class was full), confirmed (they said they are coming), attended, late, no_show, declined (they said no), withdrawn (they left) or cancelled (the class or the booking was cancelled). Optional on create (the server uses assigned, or waitlisted for a student when the class is full); every change is added to status_history. Reviews are a separate record, not a status.",
       "enum": [
-        "enrolled",
+        "assigned",
         "waitlisted",
-        "declined",
-        "withdrawn",
-        "cancelled",
+        "confirmed",
         "attended",
         "late",
-        "no_show"
+        "no_show",
+        "declined",
+        "withdrawn",
+        "cancelled"
       ]
     },
     "status_history": {
@@ -70,14 +71,15 @@
           "status": {
             "description": "The status set.",
             "enum": [
-              "enrolled",
+              "assigned",
               "waitlisted",
-              "declined",
-              "withdrawn",
-              "cancelled",
+              "confirmed",
               "attended",
               "late",
-              "no_show"
+              "no_show",
+              "declined",
+              "withdrawn",
+              "cancelled"
             ]
           },
           "at": {
@@ -111,9 +113,9 @@
       "format": "uuid"
     },
     "schema_version": {
-      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "description": "Version of this schema the record was written under (currently 2). Set by the server.",
       "readOnly": true,
-      "const": 1
+      "const": 2
     },
     "created_at": {
       "description": "When the record was created (UTC). Set by the server.",

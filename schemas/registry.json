@@ -111,6 +111,14 @@
       "schema": "attendance.schema.json",
       "guide": "ATTENDANCE_GUIDE.md",
       "examples": "examples/attendance.examples.json",
+      "schema_version": 2
+    },
+    {
+      "name": "journal_event",
+      "collection": "journal_events",
+      "schema": "journal_event.schema.json",
+      "guide": "JOURNAL_EVENT_GUIDE.md",
+      "examples": "examples/journal_event.examples.json",
       "schema_version": 1
     }
   ]

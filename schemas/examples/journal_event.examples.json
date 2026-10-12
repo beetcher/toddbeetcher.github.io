@@ -1,0 +1,59 @@
+{
+  "valid": {
+    "placed": {
+      "event_type": "placed",
+      "request_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e",
+      "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "attendance_id": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
+      "role": "student",
+      "to_status": "assigned"
+    },
+    "status_changed": {
+      "event_type": "status_changed",
+      "request_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e",
+      "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "attendance_id": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
+      "role": "student",
+      "from_status": "assigned",
+      "to_status": "confirmed",
+      "note": "Called to confirm."
+    },
+    "class_cancelled": {
+      "event_type": "class_cancelled",
+      "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "attendance_id": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
+      "from_status": "assigned",
+      "to_status": "cancelled"
+    },
+    "request_unassigned": {
+      "event_type": "request_unassigned",
+      "request_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e",
+      "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c"
+    }
+  },
+  "invalid": {
+    "empty": {},
+    "bad_event": {
+      "event_type": "deleted"
+    },
+    "bad_status": {
+      "event_type": "placed",
+      "to_status": "enrolled"
+    },
+    "id_not_uuid": {
+      "event_type": "placed",
+      "request_id": "x"
+    },
+    "note_too_long": {
+      "event_type": "placed",
+      "note": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "unknown_field": {
+      "event_type": "placed",
+      "who": "me"
+    }
+  }
+}

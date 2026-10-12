@@ -14,10 +14,12 @@ Problems name fields and never values (so the Console asks which classes are in 
 """
 from __future__ import annotations
 
+from . import attendances_service as AT
 from . import curriculums_crud as CU
 from . import registration_assignments_crud as A
 from . import scheduled_classes_crud as C
 from . import venues_crud as V
+from .roster_kit import _Abort
 from .schema_kit import failure
 
 # What changes the answer of a class rule. An update touching none of these never reads the venue.
@@ -89,6 +91,11 @@ def list(store, filters=None, **kw):  # noqa: A001
 
 
 def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=None):
+    if tx is None and isinstance(changes, dict) and changes.get("status") == "cancelled" and isinstance(id, str):
+        cur = store.get(C.CLASSES.name, id)
+        if cur is not None and "deleted_at" not in cur and cur.get("status") != "cancelled":
+            return _with_cascade(store, "class_cancelled", actor, now, lambda t: C.update(
+                store, id, changes, actor, expected_updated_at, tx=t, now=now, check=make_class_check(store), check_fields=CLASS_CHECK_FIELDS), id)
     return C.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now,
                     check=make_class_check(store), check_fields=CLASS_CHECK_FIELDS)
 
@@ -96,7 +103,24 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
 def soft_delete(store, id, actor, tx=None, now=None):
     if isinstance(id, str) and holding_assignments(store, id):
         return failure("conflict", [{"field": "id", "issue": "in_use"}])
+    if tx is None and isinstance(id, str):
+        cur = store.get(C.CLASSES.name, id)
+        if cur is not None and "deleted_at" not in cur:
+            return _with_cascade(store, "class_removed", actor, now, lambda t: C.soft_delete(store, id, actor, tx=t, now=now), id)
     return C.soft_delete(store, id, actor, tx=tx, now=now)
+
+
+def _with_cascade(store, event_type, actor, now, change, class_id):
+    """The class change and the cancelling of everyone's open attendance (with its journal) happen together or not at all."""
+    try:
+        with store.transaction() as t:
+            r = change(t)
+            if not r.ok:
+                raise _Abort(r)
+            n = AT.end_class(store, class_id, actor, event_type, t, now)
+    except _Abort as stop:
+        return stop.result
+    return r
 
 
 def set_review_summary(store, id, review_count, average_rating, actor="system:reviews", tx=None, now=None):

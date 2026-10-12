@@ -241,6 +241,15 @@
   .qrow .go { min-height: 44px; background: var(--orange); border-color: var(--orange); color: #1a0d00; }
   .qrow .go:disabled { opacity: .6; }
   .qrow .qmsg { flex: 1 1 100%; color: var(--err); font-weight: 600; font-size: 14px; }
+  .jline { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .jline .jwhen { color: var(--muted); font-size: 13px; }
+  .jline .jwhat { font-weight: 600; }
+  .infoBtn { min-width: 44px; min-height: 44px; border-radius: 999px; font-weight: 700; }
+  .wfcard { border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; margin: 8px 0; background: #fff; }
+  .wfcard summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+  .wfcard ol { margin: 4px 0 8px; padding-left: 22px; }
+  .wfcard li { padding: 6px 0; }
+  .wfcard li .wfgo { margin-left: 8px; min-height: 44px; }
   .attn { border: 2px solid #27397a; background: #0b1226; color: #dbe7ff; border-radius: 14px; padding: 12px 14px; margin: 12px 0; }
   .attn.hot { border-color: var(--orange); }
   .attn h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 8px; }
@@ -320,6 +329,11 @@
       <h3>Stations</h3>
       <div class="tiles" id="stationTiles"></div>
     </div>
+    <div class="dash" id="wfHome">
+      <h3>Workflows</h3>
+      <p class="mhint">Step by step, with a button that jumps to the right station.</p>
+      <div id="wfHomeList"></div>
+    </div>
     <div class="dash">
       <h3>Ship's manual</h3>
       <p class="mhint">Tap a button to open its manual. Tap it again to close. Only one is open at a time.</p>
@@ -343,7 +357,7 @@
         <div class="count" id="countText"></div>
         <div class="meta" id="checkedText"></div>
       </div>
-      <div class="actions"><button type="button" class="quiet manualBtn" data-m="requests">Manual</button><button id="refreshBtn" class="quiet">Refresh</button></div>
+      <div class="actions"><button type="button" class="quiet infoBtn" id="reqInfo" aria-label="Help: how to place a request" title="How to place a request">ⓘ</button><button type="button" class="quiet manualBtn" data-m="requests">Manual</button><button id="refreshBtn" class="quiet">Refresh</button></div>
     </div>
     <div class="msg" id="listMsg" role="alert"></div>
     <ul id="list"></ul>
@@ -619,6 +633,15 @@
   <div class="dmsg" id="atMsg" role="status"></div>
   <div class="lsbody" id="atBody"></div>
 </dialog>
+<dialog class="lsdlg" id="jrDlg" aria-labelledby="jrTitle">
+  <div class="lshead"><h2 id="jrTitle">Journal</h2><button type="button" class="quiet" id="jrClose">Close</button></div>
+  <div class="dmsg" id="jrMsg" role="status"></div>
+  <div class="lsbody" id="jrBody"></div>
+</dialog>
+<dialog class="lsdlg" id="wfDlg" aria-labelledby="wfTitle">
+  <div class="lshead"><h2 id="wfTitle">Workflow</h2><button type="button" class="quiet" id="wfClose">Close</button></div>
+  <div class="lsbody" id="wfBody"></div>
+</dialog>
 <div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
   <div class="mhead">
     <div class="mbtns" id="overlayBtns"></div>
@@ -726,7 +749,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick a person already in People or add a new one. A new person is added to People and to the student or instructor list in the same step. A student joins as <b>enrolled</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself, and a full class never refuses anyone. <b>Remove</b> takes a mistaken entry out; the person stays in People.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick a person already in People or add a new one. A new person is added to People and to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; the person stays in People.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
         '</ul>' +
@@ -1001,6 +1024,12 @@
       phost.hidden = false; putInClass(rec, phost);
     });
     putrow.appendChild(pb);
+    var jb = document.createElement("button"); jb.type = "button"; jb.className = "quiet"; jb.textContent = "Journal";
+    jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
+    putrow.appendChild(jb);
+    var ib = document.createElement("button"); ib.type = "button"; ib.className = "quiet infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
+    ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
+    putrow.appendChild(ib);
     li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(detail);
     li._q = qrow; li._rec = rec;
     fillQRow(qrow, rec);
@@ -2037,6 +2066,9 @@
     var at = mk("button", "chiplink", "Attendance"); at.type = "button";
     at.addEventListener("click", function () { openAttendance(rec); });
     links.appendChild(at);
+    var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
+    jl.addEventListener("click", function () { openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
+    links.appendChild(jl);
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
 
@@ -2679,7 +2711,7 @@
       if (res.status !== 200 || !res.body.ok) { P.error = adminProblem(res.status); P.loaded = P.loaded && true; }
       else {
         P.error = ""; P.loaded = true; P.ids = {};
-        (res.body.data.records || []).forEach(function (r) { if (r.request_id) P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; });
+        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; });
       }
       if (both[1] && both[1].status === "ok") P.reqs = both[1].records || [];
       else if (firstLoadDone) P.reqs = Object.keys(known).map(function (id) { return known[id]; });
@@ -2730,8 +2762,9 @@
   // ================= Attendance: who is in which class =================
   var ATT = "attendances";
   var ROLE_WORD = { student: "Student", primary_instructor: "Lead instructor", instructor: "Instructor" };
-  var ATT_STATUSES = ["enrolled", "waitlisted", "declined", "withdrawn", "cancelled", "attended", "late", "no_show"];
-  var ATT_WORD = { enrolled: "Enrolled", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
+  var ATT_STATUSES = ["assigned", "waitlisted", "confirmed", "attended", "late", "no_show", "declined", "withdrawn", "cancelled"];
+  var ATT_WORD = { assigned: "Assigned", confirmed: "Confirmed", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
+  var ATT_GONE = { declined: 1, withdrawn: 1, cancelled: 1 };   // a request with only these is back to waiting
   var ATT_OFF = { waitlisted: 1, declined: 1, withdrawn: 1, cancelled: 1 };   // statuses that do not hold a seat
   var afSeq = 0;
 
@@ -2879,7 +2912,7 @@
     });
     nb.appendChild(mk("div", "hint", "A new person is added to People, and to the student or instructor list, as part of this step. Nothing is matched by name."));
     form.appendChild(nb);
-    var status = mk("select"); opt(status, "", "Automatic (enrolled, or the waiting list if the class is full)");
+    var status = mk("select"); opt(status, "", "Automatic (assigned, or the waiting list if the class is full)");
     ATT_STATUSES.forEach(function (s) { opt(status, s, ATT_WORD[s]); }); field("Status", status, "status");
     var ord = mk("input"); ord.type = "number"; ord.min = "1"; ord.max = "50"; ord.step = "1";
     var ordL = mk("label", "f", "Place among the instructors (optional)"); ord.id = uid + "order"; ordL.htmlFor = ord.id; form.appendChild(ordL); form.appendChild(ord);
@@ -2991,9 +3024,17 @@
     msg.textContent = ""; body.textContent = "Loading…";
     if (!dlg.open) dlg.showModal();
     function say(t) { msg.textContent = t; }
+    var only = "";
     function draw() {
-      admin("list", { filters: { scheduled_class_id: cls.id }, limit: 200, expand: true, order: "created_at" }, ATT).then(function (res) {
+      var args = { filters: { scheduled_class_id: cls.id }, limit: 200, expand: true, order: "created_at" };
+      if (only) args.filters.status = only;
+      admin("list", args, ATT).then(function (res) {
         body.textContent = "";
+        var fl = mk("label", "f", "Show"), fs = mk("select"); fs.id = "atOnly"; fl.htmlFor = "atOnly";
+        var o0 = mk("option", "", "Everyone"); o0.value = ""; fs.appendChild(o0);
+        ATT_STATUSES.forEach(function (st) { var o = mk("option", "", ATT_WORD[st] + " only"); o.value = st; fs.appendChild(o); });
+        fs.value = only; fs.addEventListener("change", function () { only = fs.value; draw(); });
+        body.appendChild(fl); body.appendChild(fs);
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status !== 200 || !res.body.ok) { say("Could not load the attendance. " + adminProblem(res.status)); return; }
         var recs = res.body.data.records || [];
@@ -3048,14 +3089,90 @@
         already.forEach(function (r) { var row = attLine(r, true); row.insertBefore(mk("span", "", attName(r)), row.firstChild); host.appendChild(row); });
       }
       var live = aClasses.filter(function (c) { return c.status !== "cancelled" && c.status !== "completed"; });
+      var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
+      hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
+      host.appendChild(hb);
       host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onAdded: function (d, s) { loadPlaced(); putInClass(rec, host, s); } }));
     });
   }
 
+  // ---- Journal: the append-only log of placing, status changes and cancellations
+  var JR_WORD = { placed: "Placed in a class", status_changed: "Status changed", removed: "Removed from a class", class_cancelled: "Class cancelled", class_removed: "Class deleted", request_unassigned: "Request back to waiting to be placed" };
+  function openJournal(filter, title) {
+    var dlg = $("jrDlg"), body = $("jrBody"), msg = $("jrMsg");
+    $("jrTitle").textContent = title || "Journal"; msg.textContent = ""; body.textContent = "Loading…";
+    if (!dlg.open) dlg.showModal();
+    admin("list", { filters: filter, limit: 200, expand: true, order: "-created_at" }, "journal_events").then(function (res) {
+      body.textContent = "";
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { msg.textContent = "Could not load the journal. " + adminProblem(res.status); return; }
+      var recs = res.body.data.records || [];
+      if (!recs.length) { body.appendChild(mk("div", "empty", "Nothing has happened here yet.")); return; }
+      recs.forEach(function (e) {
+        var d = mk("div", "jline");
+        d.appendChild(mk("div", "jwhen", when(e.created_at) + (e.created_by ? " · " + e.created_by : "")));
+        d.appendChild(mk("div", "jwhat", JR_WORD[e.event_type] || e.event_type));
+        var bits = [];
+        if (e.person && e.person.display_name) bits.push(e.person.display_name);
+        if (e.role) bits.push((ROLE_WORD[e.role] || e.role).toLowerCase());
+        if (e["class"] && e["class"].title) bits.push(e["class"].title);
+        if (e.from_status || e.to_status) bits.push((e.from_status ? ATT_WORD[e.from_status] || e.from_status : "new") + " → " + (ATT_WORD[e.to_status] || e.to_status || ""));
+        if (bits.length) d.appendChild(mk("div", "", bits.join(" · ")));
+        if (e.note) d.appendChild(mk("div", "note", e.note));
+        body.appendChild(d);
+      });
+    });
+  }
+  $("jrClose").addEventListener("click", function () { $("jrDlg").close(); });
+
+  // ---- Workflows: step cards with a jump button to the right station
+  var WORKFLOWS = [
+    { id: "setup", title: "Set up before your first request", steps: [
+      { t: "Add a venue and make it active (a place with an address).", go: "venues", b: "Open Venues" },
+      { t: "Add a curriculum: what will be taught.", go: "curriculums", b: "Open Curriculum" },
+      { t: "Add the instructor as a person.", go: "people", b: "Open People" },
+      { t: "Then wait for a request, or register on the website yourself.", go: "requests", b: "Open Requests" } ] },
+    { id: "place_existing", title: "Place a request in an existing class", steps: [
+      { t: "Open the request and tap Put in a class…", go: "requests", b: "Open Requests" },
+      { t: "Choose the class and the role, then Add to class. The request leaves Waiting to be placed.", go: "requests", b: "Open Requests" },
+      { t: "Check the result: Attendance on the class card shows the person and their status.", go: "classes", b: "Open Classes" } ] },
+    { id: "build_class", title: "Build a class for a request", steps: [
+      { t: "Make sure the venue (active) and curriculum exist, and the instructor is in People.", go: "venues", b: "Open Venues" },
+      { t: "On the request, tap Put in a class… and choose A new class (build it now).", go: "requests", b: "Open Requests" },
+      { t: "Pick the curriculum, venue, date and time, and the lead instructor, then build. The requester is placed in it.", go: "requests", b: "Open Requests" },
+      { t: "Open the class to confirm the details; change the status to confirmed when the person agrees.", go: "classes", b: "Open Classes" } ] },
+    { id: "class_cancelled", title: "When a class is cancelled", steps: [
+      { t: "Open the class, Edit, set its status to cancelled and add the reason.", go: "classes", b: "Open Classes" },
+      { t: "Everyone in it, students and instructors, is cancelled automatically and each request returns to Waiting to be placed.", go: "requests", b: "Open Requests" },
+      { t: "Read the Journal on the class or the request to see exactly what changed, then place the request again.", go: "requests", b: "Open Requests" } ] }
+  ];
+  function wfCard(wf, host, open) {
+    var det = mk("details", "wfcard"); det.dataset.wf = wf.id; if (open) det.open = true;
+    det.appendChild(mk("summary", "", wf.title));
+    var ol = mk("ol");
+    wf.steps.forEach(function (st) {
+      var li = mk("li", "", st.t);
+      var b = mk("button", "quiet wfgo", st.b); b.type = "button";
+      b.addEventListener("click", function () { var dl = $("wfDlg"); if (dl.open) dl.close(); goTo(st.go); });
+      li.appendChild(b); ol.appendChild(li);
+    });
+    det.appendChild(ol); host.appendChild(det);
+  }
+  function openWorkflows(ids) {
+    var body = $("wfBody"); body.textContent = "";
+    $("wfTitle").textContent = "How to do this";
+    WORKFLOWS.forEach(function (wf) { if (!ids || ids.indexOf(wf.id) >= 0) wfCard(wf, body, ids && ids[0] === wf.id); });
+    if (!$("wfDlg").open) $("wfDlg").showModal();
+  }
+  function buildWorkflows() { var h = $("wfHomeList"); h.textContent = ""; WORKFLOWS.forEach(function (wf) { wfCard(wf, h, false); }); }
+  buildWorkflows();
+  $("wfClose").addEventListener("click", function () { $("wfDlg").close(); });
+  $("reqInfo").addEventListener("click", function () { openWorkflows(["place_existing", "build_class", "class_cancelled", "setup"]); });
+
   function resetPlaced() {
     P = { loaded: false, ids: {}, reqs: [], error: "" }; qSeq++;
     aClasses = []; aClassById = {};
-    try { $("atDlg").close(); } catch (e) {}
+    try { $("atDlg").close(); } catch (e) {} try { $("jrDlg").close(); $("wfDlg").close(); } catch (e) {}
     $("attnBody").textContent = "Checking the requests…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";
   }
   $("atClose").addEventListener("click", function () { $("atDlg").close(); });

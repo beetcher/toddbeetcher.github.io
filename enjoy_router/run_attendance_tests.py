@@ -39,7 +39,7 @@ ann, bob, cy, dee = person("Ann"), person("Bob"), person("Cy"), person("Dee")
 
 r = AT.create(s, {"individual_id": ann["id"], "scheduled_class_id": c1["id"], "role": "student"}, A, now=tick())
 check("create", r.ok, r.problems)
-check("status defaults to enrolled with a one-entry history", r.ok and r.data["status"] == "enrolled" and [h["status"] for h in r.data["status_history"]] == ["enrolled"])
+check("status defaults to assigned with a one-entry history", r.ok and r.data["status"] == "assigned" and [h["status"] for h in r.data["status_history"]] == ["assigned"])
 aid = r.data["id"]
 d = AT.create(s, {"individual_id": ann["id"], "scheduled_class_id": c1["id"], "role": "student"}, A, now=tick())
 check("same person in the same class refused, names the existing record", not d.ok and ("individual_id", "duplicate") in issues(d) and d.problems[0].get("existing_id") == aid)
@@ -56,7 +56,7 @@ check("history not editable", not AT.update(s, aid, {"status_history": []}, A, n
 u = AT.update(s, aid, {"status": "attended", "notes": "great"}, A, now=tick()); check("status update", u.ok and "status" in u.data["changed"], u.problems)
 u = AT.update(s, aid, {"status": "attended"}, A, now=tick())
 h = AT.get(s, aid).data["status_history"]
-check("history appends each change, not repeats", [x["status"] for x in h] == ["enrolled", "attended"], h)
+check("history appends each change, not repeats", [x["status"] for x in h] == ["assigned", "attended"], h)
 check("history keeps who", all(x["by"] == A and x["at"] for x in h))
 check("status cannot be removed", not AT.update(s, aid, {"status": None}, A, now=tick()).ok)
 check("stale update conflicts", AT.update(s, aid, {"notes": "x"}, A, expected_updated_at="2020-01-01T00:00:00Z", now=tick()).code == "conflict")
@@ -70,7 +70,7 @@ check("deleted record frees the seat for a new one", AT.create(s, {"individual_i
 
 # assign
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "primary_instructor", "order": 1, "individual_id": bob["id"]}, A, now=tick())
-check("assign existing person as instructor", r.ok and r.data["status"] == "enrolled" and r.data["created_roster_entry"] and not r.data["created_person"], r.problems)
+check("assign existing person as instructor", r.ok and r.data["status"] == "assigned" and r.data["created_roster_entry"] and not r.data["created_person"], r.problems)
 check("instructor roster entry made", INS.list(s, {"individual_id": bob["id"]}).data["count"] == 1 and STU.list(s, {"individual_id": bob["id"]}).data["count"] == 0)
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "instructor", "individual_id": bob["id"]}, A, now=tick())
 check("assign twice refused as duplicate", not r.ok and ("individual_id", "duplicate") in issues(r) and r.problems[0].get("existing_id"))
@@ -82,12 +82,12 @@ check("person and student roster entry exist", IS.list(s, None, limit=200).data[
 check("roster entry is not duplicated for a person already on it", True)
 STU.create(s, {"individual_id": cy["id"]}, A, now=tick())
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": cy["id"]}, A, now=tick())
-check("already-on-roster person: no second roster entry, record enrolled", r.ok and not r.data["created_roster_entry"] and r.data["status"] == "enrolled" and STU.list(s, {"individual_id": cy["id"]}).data["count"] == 1, r.problems)
+check("already-on-roster person: no second roster entry, record assigned", r.ok and not r.data["created_roster_entry"] and r.data["status"] == "assigned" and STU.list(s, {"individual_id": cy["id"]}).data["count"] == 1, r.problems)
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": dee["id"]}, A, now=tick())
-check("a full class waitlists a student (capacity 2, two enrolled) and does not refuse", r.ok and r.data["status"] == "waitlisted", r.data if r.ok else r.problems)
+check("a full class waitlists a student (capacity 2, two assigned) and does not refuse", r.ok and r.data["status"] == "waitlisted", r.data if r.ok else r.problems)
 check("waitlisted history starts at waitlisted", r.ok and [h["status"] for h in r.data["status_history"]] == ["waitlisted"])
-r2 = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": ann["id"], "status": "enrolled"}, A, now=tick())
-check("the operator can set the status explicitly", r2.ok and r2.data["status"] == "enrolled")
+r2 = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": ann["id"], "status": "assigned"}, A, now=tick())
+check("the operator can set the status explicitly", r2.ok and r2.data["status"] == "assigned")
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student"}, A, now=tick()); check("assign needs a person", not r.ok and ("individual_id", "required") in issues(r))
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "student", "individual_id": bob["id"]}, A, person={"given_name": "Z"}, now=tick()); check("id and person together refused", ("person", "choose_one") in issues(r))
 n = IS.list(s, None, limit=200).data["count"]
@@ -117,7 +117,7 @@ for door, st in ((handle_crud_test, MemoryDocStore("test_")), (handle_admin, Mem
     cl = call(door, st, {"collection": "scheduled_classes", "op": "create", "args": {"data": {**BASE, "slug": "e1"}}}); check("endpoint: class", cl.status == 200, cl.body)
     cid = cl.body["data"]["id"]
     r = call(door, st, {"collection": "attendances", "op": "assign", "args": {"data": {"scheduled_class_id": cid, "role": "student"}, "person": {"given_name": "Pat", "email": "p@x.com"}}})
-    check("endpoint assign", r.status == 200 and r.body["data"]["created_person"] and r.body["data"]["status"] == "enrolled", r.body)
+    check("endpoint assign", r.status == 200 and r.body["data"]["created_person"] and r.body["data"]["status"] == "assigned", r.body)
     rid, pid = r.body["data"]["id"], r.body["data"]["individual_id"]
     r = call(door, st, {"collection": "attendances", "op": "assign", "args": {"data": {"scheduled_class_id": cid, "role": "student", "individual_id": pid}}}); check("endpoint duplicate is 400 with existing_id", r.status == 400 and r.body["error"]["problems"][0].get("existing_id") == rid, r.body)
     r = call(door, st, {"collection": "attendances", "op": "list", "args": {"filters": {"scheduled_class_id": cid}, "expand": True}}); check("endpoint list expand", r.status == 200 and r.body["data"]["records"][0]["person"]["display_name"], r.body)
