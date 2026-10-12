@@ -104,6 +104,14 @@
       "guide": "CURRICULUM_GUIDE.md",
       "examples": "examples/curriculum.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "attendance",
+      "collection": "attendances",
+      "schema": "attendance.schema.json",
+      "guide": "ATTENDANCE_GUIDE.md",
+      "examples": "examples/attendance.examples.json",
+      "schema_version": 1
     }
   ]
 }

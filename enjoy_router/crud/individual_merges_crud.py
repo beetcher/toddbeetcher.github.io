@@ -35,6 +35,7 @@ LOCATION_LINKS = load_collection("location_link")
 VENUES = load_collection("venue")
 INSTRUCTOR_ROSTERS = load_collection("instructor_roster")
 STUDENT_ROSTERS = load_collection("student_roster")
+ATTENDANCES = load_collection("attendance")
 INDIVIDUALS = I.INDIVIDUALS
 DETAILS = R.DETAILS
 HISTORY = I.HISTORY
@@ -56,6 +57,7 @@ LINKS = (
     (VENUES.name, "backup_contact_individual_id", "scalar"),
     (INSTRUCTOR_ROSTERS.name, "individual_id", "scalar"),  # merging may leave two entries for one person; unmerge restores
     (STUDENT_ROSTERS.name, "individual_id", "scalar"),
+    (ATTENDANCES.name, "individual_id", "scalar"),  # a class may then hold two records for one person; unmerge restores
 )
 
 SKIP = frozenset({"id", "schema_version", "created_at", "created_by", "updated_at", "updated_by", "source", "status",

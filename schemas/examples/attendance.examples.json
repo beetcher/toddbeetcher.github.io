@@ -1,0 +1,84 @@
+{
+ "valid": {
+  "student": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student"
+  },
+  "student_late": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student",
+   "status": "late",
+   "notes": "Traffic."
+  },
+  "primary": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "primary_instructor",
+   "order": 1
+  },
+  "second": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "instructor",
+   "order": 2,
+   "request_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e"
+  }
+ },
+ "invalid": {
+  "empty": {},
+  "missing_person": {
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student"
+  },
+  "missing_class": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "role": "student"
+  },
+  "missing_role": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c"
+  },
+  "bad_role": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "mentor"
+  },
+  "bad_status": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student",
+   "status": "present"
+  },
+  "person_not_uuid": {
+   "individual_id": "x",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student"
+  },
+  "order_zero": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "instructor",
+   "order": 0
+  },
+  "history_not_sendable": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student",
+   "status_history": "x"
+  },
+  "notes_too_long": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student",
+   "notes": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+  "unknown_field": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "scheduled_class_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "role": "student",
+   "rating": 5
+  }
+ }
+}

@@ -1,0 +1,285 @@
+"""Handler and service for `attendances`: one person in one class, in one role, and where they stand (see ATTENDANCE_GUIDE.md).
+
+The ONLY refusals: the person exists and is not erased (a merged person is followed), the class exists and is not deleted,
+one live record per person per class, individual_id and scheduled_class_id never change, the schema's own limits.
+Capacity never refuses. `assign` is the one-window flow: person (if new) + roster entry (if missing) + attendance, all or nothing.
+Same function names as a handler file, plus assign and EXPANDABLE. list needs no index: one equality filter, sorted here.
+"""
+from __future__ import annotations
+
+import builtins
+import re
+
+from . import individuals_service as IS
+from . import instructor_rosters_service as INS
+from . import scheduled_classes_crud as CL
+from . import student_rosters_service as STU
+from .roster_kit import PERSON_NEW, _Abort
+from .schema_kit import (
+    UUID_PATTERN, check_actor, check_document, check_field, clean, drop_empty, failure,
+    load_collection, stamp_create, stamp_update, success, utc_stamp,
+)
+from .store_errors import DocExists, DocMissing, StaleUpdate
+
+ATT = load_collection("attendance")
+EXPANDABLE = True
+SOURCES = ("dashboard", "import")
+DEFAULT_LIMIT = 100
+MAX_LIMIT = 200
+SCAN = 500
+STAMP = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+_LIST_FILTERS = ("scheduled_class_id", "individual_id", "request_id")
+STUDENT = "student"
+IMMUTABLE = ("individual_id", "scheduled_class_id")
+HISTORY_MAX = 100
+
+
+def _bad(problems):
+    seen, out = set(), []
+    for p in problems:
+        k = (p["field"], p["issue"])
+        if k not in seen:
+            seen.add(k)
+            out.append(p)
+    return failure("validation_failed", out)
+
+
+def _id_problem(id):
+    return [] if isinstance(id, str) and UUID_PATTERN.match(id) else [{"field": "id", "issue": "invalid_format"}]
+
+
+def _deleted(doc):
+    return "deleted_at" in doc
+
+
+def _live_for(store, field, value):
+    return [d for d in store.query(ATT.name, [(field, "==", value)], limit=SCAN) if not _deleted(d)]
+
+
+def _class(store, class_id):
+    doc = store.get(CL.CLASSES.name, class_id)
+    return None if doc is None or _deleted(doc) else doc
+
+
+def _history_entry(status, actor, now):
+    return {"status": status, "at": utc_stamp(now), "by": actor}
+
+
+# ---- create -----------------------------------------------------------------
+
+def _create(store, data, actor, source, tx, now, person_known=False):
+    problems = check_actor(actor)
+    if source not in SOURCES:
+        problems.append({"field": "source", "issue": "invalid_value"})
+    if problems:
+        return _bad(problems)
+    if not isinstance(data, dict):
+        return _bad([{"field": "body", "issue": "invalid_type"}])
+    ro = [{"field": k, "issue": "not_allowed"} for k in data if k in ATT.read_only]
+    if ro:
+        return _bad(ro)
+    doc = drop_empty({k: clean(v) for k, v in data.items()})
+    doc.setdefault("status", "enrolled")
+    problems = check_document(ATT, doc)
+    if problems:
+        return _bad(problems)
+    if not person_known:
+        got = IS.get(store, doc["individual_id"])
+        if not got.ok or got.data.get("status") == "erased":
+            return _bad([{"field": "individual_id", "issue": "not_found"}])
+        doc["individual_id"] = got.data["id"]
+    if _class(store, doc["scheduled_class_id"]) is None:
+        return _bad([{"field": "scheduled_class_id", "issue": "not_found"}])
+    if not person_known:
+        live = [d for d in _live_for(store, "individual_id", doc["individual_id"]) if d["scheduled_class_id"] == doc["scheduled_class_id"]]
+        if live:
+            return _bad([{"field": "individual_id", "issue": "duplicate", "existing_id": live[0]["id"]}])
+    doc = stamp_create(ATT, doc, actor, source, now)
+    doc["status_history"] = [_history_entry(doc["status"], actor, now)]
+    missing = [f for f in ATT.server_required if f not in doc]
+    if check_document(ATT, doc) or missing:
+        return failure("server_error")
+    try:
+        store.create(ATT.name, doc["id"], doc, tx=tx)
+    except DocExists:
+        return failure("server_error")
+    return success(doc)
+
+
+def create(store, data, actor, source="dashboard", tx=None, now=None):
+    return _create(store, data, actor, source, tx, now)
+
+
+# ---- reading ----------------------------------------------------------------
+
+def expanded(store, rec):
+    out = dict(rec)
+    if rec.get("individual_id"):
+        out["person"] = INS.R._person_view(store, rec["individual_id"])
+    c = store.get(CL.CLASSES.name, rec.get("scheduled_class_id", ""))
+    if c is not None and not _deleted(c):
+        out["class"] = {k: c[k] for k in ("id", "title", "starts_at", "time_zone", "status", "class_type", "venue_id", "capacity_max") if k in c}
+    else:
+        out["class"] = {"id": rec.get("scheduled_class_id"), "unavailable": True}
+    return out
+
+
+def get(store, id, include_deleted=False, expand=False):  # noqa: A002
+    problems = _id_problem(id)
+    if problems:
+        return _bad(problems)
+    doc = store.get(ATT.name, id)
+    if doc is None or (_deleted(doc) and not include_deleted):
+        return failure("not_found")
+    return success(expanded(store, doc) if expand else doc)
+
+
+def list(store, filters=None, order="-created_at", limit=DEFAULT_LIMIT, expand=False):  # noqa: A001
+    """Optional ONE filter: scheduled_class_id, individual_id or request_id. Order -created_at or created_at. Removed records are left out."""
+    filters = dict(filters or {})
+    problems = []
+    for k, v in filters.items():
+        problems += [{"field": k, "issue": "not_supported"}] if k not in _LIST_FILTERS else check_field(ATT, k, v)
+    if len(filters) > 1:
+        problems += [{"field": k, "issue": "not_supported"} for k in filters]
+    if order not in ("-created_at", "created_at"):
+        problems.append({"field": "order", "issue": "not_supported"})
+    if isinstance(limit, bool) or not isinstance(limit, int):
+        problems.append({"field": "limit", "issue": "invalid_type"})
+    if problems:
+        return _bad(problems)
+    docs = [d for d in store.query(ATT.name, [(k, "==", v) for k, v in filters.items()], limit=SCAN) if not _deleted(d)]
+    docs.sort(key=lambda d: d.get("created_at", ""), reverse=order.startswith("-"))
+    docs = docs[:max(1, min(limit, MAX_LIMIT))]
+    if expand:
+        docs = [expanded(store, d) for d in docs]
+    return success({"records": docs, "count": len(docs)})
+
+
+# ---- update / delete --------------------------------------------------------
+
+def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=None):
+    """Change role, order, status, request_id or notes. None (or "") removes an optional field. A status change is added to status_history."""
+    problems = check_actor(actor) + _id_problem(id)
+    if expected_updated_at is not None and not (isinstance(expected_updated_at, str) and STAMP.match(expected_updated_at)):
+        problems.append({"field": "expected_updated_at", "issue": "invalid_format"})
+    if not isinstance(changes, dict) or not changes:
+        problems.append({"field": "changes", "issue": "required"})
+    if problems:
+        return _bad(problems)
+    sets, removals = {}, []
+    for name, raw in changes.items():
+        if name in IMMUTABLE:
+            problems.append({"field": name, "issue": "immutable"})
+        elif name not in ATT.properties or name in ATT.read_only:
+            problems.append({"field": name, "issue": "not_allowed"})
+        else:
+            value = clean(raw)
+            if value is None:
+                (problems.append({"field": name, "issue": "required"}) if name in ATT.required or name == "status" else removals.append(name))
+            else:
+                problems += check_field(ATT, name, value)
+                sets[name] = value
+    if problems:
+        return _bad(problems)
+    cur = store.get(ATT.name, id)
+    if cur is None or _deleted(cur):
+        return failure("not_found")
+    if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
+        return failure("conflict")
+    fields = dict(sets)
+    if "status" in sets and sets["status"] != cur.get("status"):
+        fields["status_history"] = (cur.get("status_history") or [])[-(HISTORY_MAX - 1):] + [_history_entry(sets["status"], actor, now)]
+    stamp = stamp_update(actor, now)
+    try:
+        store.update(ATT.name, id, {**fields, **stamp}, removals, expected_updated_at=cur["updated_at"], tx=tx)
+    except DocMissing:
+        return failure("not_found")
+    except StaleUpdate:
+        return failure("conflict")
+    return success({"id": id, "changed": sorted(sets), "removed": sorted(removals),
+                    "updated_at": stamp["updated_at"], "updated_by": actor})
+
+
+def soft_delete(store, id, actor, tx=None, now=None):
+    """For a mistake. A person who leaves is `withdrawn`, not deleted."""
+    problems = check_actor(actor) + _id_problem(id)
+    if problems:
+        return _bad(problems)
+    cur = store.get(ATT.name, id)
+    if cur is None or _deleted(cur):
+        return failure("not_found")
+    stamp = utc_stamp(now)
+    try:
+        store.update(ATT.name, id, {"deleted_at": stamp, "deleted_by": actor, "updated_at": stamp, "updated_by": actor}, (),
+                     expected_updated_at=cur["updated_at"], tx=tx)
+    except DocMissing:
+        return failure("not_found")
+    except StaleUpdate:
+        return failure("conflict")
+    return success({"id": id, "deleted_at": stamp})
+
+
+# ---- assign: the one-window flow ---------------------------------------------
+
+def _starting_status(store, cls, role):
+    """enrolled, or waitlisted for a student when the class already has as many enrolled students as capacity_max."""
+    if role != STUDENT:
+        return "enrolled"
+    full = sum(1 for d in _live_for(store, "scheduled_class_id", cls["id"]) if d.get("role") == STUDENT and d.get("status") == "enrolled")
+    return "waitlisted" if full >= cls.get("capacity_max", 10 ** 9) else "enrolled"
+
+
+def assign(store, data, actor, person=None, source="dashboard", now=None):
+    """Put a person in a class. data: scheduled_class_id, role, and individual_id (an existing person) OR `person` (a new one:
+    given_name, family_name, email, phone); optional status, order, request_id, notes. Creates the person if new, adds them to the
+    student or instructor roster if missing, and creates the record, together or not at all. Never matches a typed name to a person."""
+    data = dict(data) if isinstance(data, dict) else {}
+    problems = []
+    if person is not None and data.get("individual_id") is not None:
+        problems.append({"field": "person", "issue": "choose_one"})
+    if person is not None and not isinstance(person, dict):
+        problems.append({"field": "person", "issue": "invalid_type"})
+    elif isinstance(person, dict):
+        problems += [{"field": "person." + k, "issue": "not_allowed"} for k in person if k not in PERSON_NEW]
+    if person is None and data.get("individual_id") is None:
+        problems.append({"field": "individual_id", "issue": "required"})
+    cid = data.get("scheduled_class_id")
+    cls = _class(store, cid) if isinstance(cid, str) and UUID_PATTERN.match(cid) else None
+    if cls is None and not any(p["field"] == "scheduled_class_id" for p in problems):
+        problems.append({"field": "scheduled_class_id", "issue": "not_found" if cid else "required"})
+    if data.get("role") not in ATT.properties["role"]["enum"]:
+        problems.append({"field": "role", "issue": "required" if data.get("role") is None else "invalid_value"})
+    if problems:
+        return _bad(problems)
+    roster = STU.R if data["role"] == STUDENT else INS.R
+    out = {"created_roster_entry": False}
+    try:
+        with store.transaction() as tx:
+            if person is not None:
+                p = IS.create(store, person, actor, source, tx=tx, now=now)
+                if not p.ok:
+                    raise _Abort(failure("validation_failed", [{"field": "person." + x["field"], "issue": x["issue"]} for x in p.problems]
+                                         if p.code == "validation_failed" else p.problems))
+                pid, known = p.data["id"], True
+            else:
+                pid, known = data["individual_id"], False
+                got = IS.get(store, pid)
+                if not got.ok or got.data.get("status") == "erased":
+                    raise _Abort(_bad([{"field": "individual_id", "issue": "not_found"}]))
+                pid = got.data["id"]
+            if known or not roster._live_entries(store, pid):
+                r = roster._create(store, {"individual_id": pid}, actor, source, tx, now, person_known=True)
+                if not r.ok:
+                    raise _Abort(r)
+                out["created_roster_entry"] = True
+            body = {**data, "individual_id": pid}
+            if not body.get("status"):
+                body["status"] = _starting_status(store, cls, data["role"])
+            r = _create(store, body, actor, source, tx, now, person_known=known)
+            if not r.ok:
+                raise _Abort(r)
+            out["rec"] = r.data
+    except _Abort as stop:
+        return stop.result
+    return success({**expanded(store, out["rec"]), "created_person": person is not None, "created_roster_entry": out["created_roster_entry"]})

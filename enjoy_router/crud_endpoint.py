@@ -26,6 +26,7 @@ ops and their args:
     create_with_place  data, address or location_id (optional), source (optional)   (venues only: venue, place and link saved together)
     set_place          id, address or location_id   (venues only: moves the venue to another place, old link ends today)
     create_with_person data, person (optional), source (optional)   (the rosters only: data.individual_id for an existing person, or person for a new one; saved together)
+    assign             data, person (optional), source (optional)   (attendances only: put a person in a class: person, roster entry and record together)
     update_with_person id, changes and/or person, expected_updated_at (optional)   (the rosters only: roster fields and the person's name and contact, saved together)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
@@ -43,7 +44,7 @@ import logging
 from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (assignments_service, classes_service, curriculums_crud, individual_restricted_details_service,
+from crud import (assignments_service, attendances_service, classes_service, curriculums_crud, individual_restricted_details_service,
                   individuals_service, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, student_rosters_service, venues_service)
 from crud.schema_kit import failure
@@ -60,7 +61,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "individuals": individuals_service, "individual_restricted_details": individual_restricted_details_service,
             "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service,
             "instructor_rosters": instructor_rosters_service, "student_rosters": student_rosters_service,
-            "curriculums": curriculums_crud}
+            "curriculums": curriculums_crud, "attendances": attendances_service}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 
@@ -83,13 +84,14 @@ OPS = {
     "create_with_place": ({"data"}, {"address", "location_id", "source"}),   # only venues
     "create_with_person": ({"data"}, {"person", "source"}),                  # only the rosters
     "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
+    "assign": ({"data"}, {"person", "source"}),                              # only attendances: person + roster entry + attendance together
     "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place",
-                       "create_with_person", "update_with_person"})
+                       "create_with_person", "update_with_person", "assign"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -97,11 +99,13 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place", "create_with_person", "update_with_person"):
+              "create_with_place", "set_place", "create_with_person", "update_with_person", "assign"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
             return module.create_with_place(store, a["data"], actor, a.get("address"), a.get("location_id"), a.get("source", "dashboard"), now=now)
+        if op == "assign":
+            return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":
             return module.create_with_person(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "update_with_person":
