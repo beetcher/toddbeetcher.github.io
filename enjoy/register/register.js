@@ -323,8 +323,23 @@
     });
     needBox.appendChild(needHead); needBox.appendChild(needList);
     needBox._count = needHead.querySelector('.rf__need-count');
+    needHead.addEventListener('click', function () { needBox.setAttribute('data-open', needBox.getAttribute('data-open') === '1' ? '0' : '1'); });
+    var sentinel = h('div', { class: 'rf__need-sentinel', 'aria-hidden': 'true' });
+    var stickQueued = false;
+    function checkStuck() {
+      stickQueued = false;
+      var stuck = sentinel.getBoundingClientRect().top < 0;
+      if (needBox.getAttribute('data-stuck') === (stuck ? '1' : '0')) return;
+      needBox.setAttribute('data-stuck', stuck ? '1' : '0');
+      if (!stuck) needBox.setAttribute('data-open', '0');
+    }
+    function queueStuck() { if (!stickQueued) { stickQueued = true; (window.requestAnimationFrame || setTimeout)(checkStuck); } }
+    window.addEventListener('scroll', queueStuck, { passive: true });
+    window.addEventListener('resize', queueStuck);
 
+    form.appendChild(sentinel);
     form.appendChild(needBox);
+    queueStuck();
     parts.forEach(function (p) { form.appendChild(p); });
     form.appendChild(hp);
     form.appendChild(summary);

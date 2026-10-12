@@ -90,3 +90,29 @@
 .rf__more-title { display: block; font: 800 1.2rem/1.2 var(--font-heading); }
 .rf__more-sub { display: block; font-size: var(--type-small); color: var(--color-text-secondary); margin-top: 2px; }
 .rf__more-body > :first-child { margin-top: 0; }
+
+/* Checklist that follows the scroll.
+   Wide screens (1000px and up): the box sits in a side column and stays in view while the form scrolls.
+   Narrower screens: a slim bar sticks to the top; once the person has scrolled past the top of the form it shows just the count,
+   and tapping it opens the full list. */
+.rf__need-sentinel { height: 1px; margin-top: -1px; }
+.rf__need { position: sticky; top: 68px; z-index: 30; }   /* sits just under the sticky "Pick a different option" bar */
+.rf__need-head { cursor: default; }
+@media (max-width: 999px) {
+  .rf__need { top: 58px; margin-left: calc(var(--content-padding) * -1); margin-right: calc(var(--content-padding) * -1); border-radius: 0 0 18px 18px; box-shadow: 0 6px 16px rgba(27,19,64,.14); }
+  .rf__need[data-stuck="1"] .rf__need-head { margin-bottom: 0; cursor: pointer; }
+  .rf__need[data-stuck="1"] .rf__need-head::after { content: ' \25BE'; }
+  .rf__need[data-stuck="1"][data-open="1"] .rf__need-head { margin-bottom: 10px; }
+  .rf__need[data-stuck="1"][data-open="1"] .rf__need-head::after { content: ' \25B4'; }
+  .rf__need[data-stuck="1"]:not([data-open="1"]) .rf__need-list { display: none; }
+  .rf__need[data-stuck="1"] { padding-top: 10px; padding-bottom: 10px; }
+}
+@media (min-width: 1000px) {
+  .reg { max-width: 1000px; }
+  .rf { display: grid; grid-template-columns: minmax(0, 1fr) 260px; column-gap: var(--sp-lg); align-items: start; }
+  .rf > * { grid-column: 1; }
+  .rf > .rf__need { grid-column: 2; grid-row: 1 / span 40; align-self: start; position: sticky; top: 78px; margin-top: var(--sp-lg); }
+  .rf > .rf__need-sentinel { display: none; }
+  .rf__need-list { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+  .rf__need-item { width: 100%; text-align: left; }
+}
