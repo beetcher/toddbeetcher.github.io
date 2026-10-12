@@ -95,7 +95,10 @@ with sync_playwright() as p:
 
     # 4. a bad address saves nothing
     pg.click("#addBtn"); pg.fill("#fName", "Broken"); pg.select_option("#fPublic", "public")
-    pg.locator("#fPlaceHost").get_by_label("City", exact=True).fill("Boulder"); pg.click("#saveBtn")
+    ph = pg.locator("#fPlaceHost")
+    check("recent city, state and ZIP are prefilled from the last saved address", ph.get_by_label("City", exact=True).input_value() == "Boulder" and ph.get_by_label("State", exact=True).input_value() == "CO" and ph.get_by_label("ZIP code", exact=True).input_value() == "80302")
+    check("a recent list is offered", ph.get_by_label("Recent city, state and ZIP").locator("option", has_text="Boulder, CO 80302").count() == 1)
+    ph.get_by_label("City", exact=True).fill("Denver"); pg.click("#saveBtn")
     pg.wait_for_function("document.querySelector('#fPlaceHost').innerText.indexOf('street') >= 0")
     check("a city without a street is refused on the form, nothing saved", not any(v["name"] == "Broken" for v in rows("venues")))
     pg.click("#cancelBtn")

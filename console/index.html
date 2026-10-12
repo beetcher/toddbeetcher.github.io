@@ -3557,6 +3557,19 @@
     return t || loc.name || "(details removed)";
   }
 
+  // Recently used city / state / ZIP, newest first, kept in this browser only (never the street, never sent anywhere).
+  var CSZ_KEY = "launch_console_recent_csz";
+  function cszRead() { try { var a = JSON.parse(localStorage.getItem(CSZ_KEY) || "[]"); return Array.isArray(a) ? a.filter(function (x) { return x && (x.c || x.s); }) : []; } catch (e) { return []; } }
+  function cszRemember(c, st, z) {
+    if (!c && !st) return;
+    try {
+      var key = function (x) { return [x.c, x.s, x.z].join("|").toLowerCase(); }, cur = { c: c || "", s: st || "", z: z || "" };
+      var all = [cur].concat(cszRead().filter(function (x) { return key(x) !== key(cur); })).slice(0, 20);
+      localStorage.setItem(CSZ_KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function cszLabel(x) { return [x.c, [x.s, x.z].filter(Boolean).join(" ")].filter(Boolean).join(", "); }
+
   // A reusable block of address boxes. opts: name, description, tz, gps, usageChoice. block.read() -> {ok, data}.
   function addrForm(opts) {
     var box = mk("div"), f = {};
@@ -3577,6 +3590,23 @@
     add("locality", "City", "", 120); add("region", "State", "Two letters, for example CO.", 60); add("postal_code", "ZIP code", "", 20);
     add("country", "Country", "Two letters. US for the United States.", 2);
     f.country.el.value = "US";
+    // Recent city / state / ZIP: the newest fills the boxes; a list lets you pick another. Every box stays free to overwrite.
+    var recent = cszRead(), auto = null;   // auto: the values we filled in, so an untouched fill never counts as an address
+    if (recent.length) {
+      var rl = mk("label", "f", "Recent city, state and ZIP"), rs = mk("select"); rs.id = "af" + (++afSeq) + "_recent"; rl.htmlFor = rs.id;
+      recent.forEach(function (x, i) { var o = mk("option", "", cszLabel(x)); o.value = String(i); rs.appendChild(o); });
+      var oo = mk("option", "", "Type a different one"); oo.value = ""; rs.appendChild(oo);
+      function fillRecent() {
+        var x = rs.value === "" ? null : recent[Number(rs.value)];
+        if (!x) return;
+        f.locality.el.value = x.c || ""; f.region.el.value = x.s || ""; f.postal_code.el.value = x.z || ""; auto = { c: x.c || "", s: x.s || "", z: x.z || "" };
+      }
+      rs.addEventListener("change", fillRecent);
+      var anchor = f.locality.el.previousSibling;
+      box.insertBefore(rl, anchor); box.insertBefore(rs, anchor);
+      box.insertBefore(mk("div", "hint", "From your recent entries. Change any box to overwrite."), anchor);
+      rs.value = "0"; fillRecent();
+    }
     if (opts.gps) { add("lat", "GPS latitude (optional)", "A number from -90 to 90, for example 40.0150.", 20); add("lon", "GPS longitude (optional)", "A number from -180 to 180, for example -105.2705.", 20); }
     if (opts.description) { var dl = mk("label", "f", "Description (optional)"), dt = mk("textarea"); dt.maxLength = 2000; dt.id = "af" + (++afSeq) + "_desc"; dl.htmlFor = dt.id; box.appendChild(dl); box.appendChild(dt); f.description = { el: dt, err: mk("div", "ferr") }; box.appendChild(mk("div", "hint", "About the place itself, for example: brick building, parking behind. Never who lives there.")); }
     if (opts.tz) add("time_zone", "Time zone (optional)", "For example America/Denver.", 64);
@@ -3585,7 +3615,9 @@
       var v = function (k) { return f[k] ? f[k].el.value.trim() : ""; }, ok = true, data = {}, a = {};
       var usage = f.usage ? f.usage.el.value : "civic";
       ["unit", "po_box", "locality", "region", "postal_code"].forEach(function (k) { if (v(k)) a[k] = v(k); });
-      var line = v("street_line"), sm = /^(\d+[A-Za-z]?(?:-\d+)?)\s+(\S.*)$/.exec(line);
+      var line = v("street_line");
+      if (auto && !line && !v("po_box") && !v("unit") && v("locality") === auto.c && v("region") === auto.s && v("postal_code") === auto.z) { delete a.locality; delete a.region; delete a.postal_code; }
+      var sm = /^(\d+[A-Za-z]?(?:-\d+)?)\s+(\S.*)$/.exec(line);
       if (sm) { a.street_number = sm[1]; a.street = sm[2]; } else if (line) a.street = line;
       if (a.street || a.po_box) {
         a.usage = usage; a.country = v("country").toUpperCase();
@@ -3600,6 +3632,7 @@
         if (!v("lon") || isNaN(lo) || lo < -180 || lo > 180) { f.lon.err.textContent = "A number from -180 to 180."; ok = false; }
         if (ok) data.geometries = [{ role: "center", geometry: { type: "Point", coordinates: [lo, la] } }];
       }
+      if (ok && (a.street || a.po_box)) cszRemember(a.locality, a.region, a.postal_code);
       if (f.name && v("name")) data.name = v("name");
       if (f.description && v("description")) data.description = v("description");
       if (f.time_zone && v("time_zone")) data.time_zone = v("time_zone");
