@@ -141,6 +141,10 @@ with sync_playwright() as p:
     li.get_by_role("button", name="Remove from instructors").click()
     li.get_by_role("button", name="Remove", exact=True).click()
     pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Removed') === 0")
+    try:
+        pg.wait_for_function("!document.getElementById('riList').innerText.includes('Bob Ray')", timeout=5000)
+    except Exception:
+        pass
     check("removed from list", pg.locator("#riList li", has_text="Bob Ray").count() == 0)
     check("Bob is still in People", any(x.get("given_name") == "Bob" for x in people()))
     pg.click("#riAddBtn"); pg.fill("#riQ", "bob"); pg.wait_for_selector("#riOpts button")

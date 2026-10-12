@@ -113,6 +113,13 @@
   li .lchips { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; padding: 0 14px 4px; font-size: 14px; color: var(--muted); }
   dialog.lsdlg { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: calc(100vw - 24px); max-width: 560px; max-height: calc(100vh - 24px); background: var(--cream); color: var(--ink); }
   dialog.lsdlg[open] { display: flex; flex-direction: column; }
+  .arow { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .arow .atop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .arow .aname { flex: 1 1 140px; font-weight: 600; }
+  .addbox { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+  .addbox summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+  .putbox { padding: 0 14px 12px; }
+  .putbox[hidden] { display: none; }
   dialog.lsdlg::backdrop { background: rgba(0,0,0,.45); }
   .lshead { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--card); border-radius: 14px 14px 0 0; }
   .lshead button { white-space: nowrap; flex: none; padding: 0 14px; }
@@ -681,6 +688,11 @@
   <div class="dmsg" id="rosterMsg" role="status"></div>
   <div class="lsbody" id="rosterBody"></div>
 </dialog>
+<dialog class="lsdlg" id="atDlg" aria-labelledby="atTitle">
+  <div class="lshead"><h2 id="atTitle">Attendance</h2><button type="button" class="quiet" id="atClose">Close</button></div>
+  <div class="dmsg" id="atMsg" role="status"></div>
+  <div class="lsbody" id="atBody"></div>
+</dialog>
 <div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
   <div class="mhead">
     <div class="mbtns" id="overlayBtns"></div>
@@ -747,6 +759,7 @@
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer the person gave.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class. It starts filled in from the request (or uses the person already linked to it). Choose the class and the role, then <b>Add to class</b>. The request is remembered on the entry, so the card then lists where it was placed. You can add more people from the same request.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
         '<li><b>One touch.</b> Under each card the ship shows what it would do: an orange <b>Assign</b> button, for example "Accept 2 seats in Intro Workshop". Tap it and it is done. The ship decides between accepted, overflow and the waiting list from the seats left.</li>' +
@@ -789,7 +802,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Registered</b> and <b>Waiting</b> on a card open the class roster: who is in, who is waiting.</li>' +
+        '<li><b>Registered</b> and <b>Waiting</b> on a card open the old seat roster. <b>Attendance</b> opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick a person already in People or add a new one. A new person is added to People and to the student or instructor list in the same step. A student joins as <b>enrolled</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself, and a full class never refuses anyone. <b>Remove</b> takes a mistaken entry out; the person stays in People.</li>' +
         '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -830,6 +843,7 @@
         '<h3>Controls</h3><ul>' +
         '<li><b>Status menu</b> shows Active, Inactive, or all. <b>Find by name</b> narrows the list as you type.</li>' +
         '<li><b>Add person</b> needs only a given name.</li>' +
+        '<li><b>History</b> on a card lists every class the person is in, as a student or an instructor, and how it went.</li>' +
         '<li><b>Tap a card</b> to read everything on file. <b>Edit</b> changes names, birth date, language, status and notes. Clear a box to remove that value.</li>' +
         '<li><b>Merge into another person</b> is for duplicates. Pick who to keep and say why. Gaps on the kept person are filled from the duplicate, records pointing at the duplicate move over, and the duplicate is marked merged.</li>' +
         '<li><b>Addresses</b> opens the person\'s addresses: where they live, mail goes, and so on, each with dates. <b>Add an address</b> finds the place if it is already saved, or saves it, and links the person. <b>End</b> records a move; <b>Remove</b> is only for a mistake.</li>' +
@@ -1077,7 +1091,15 @@
     });
 
     var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
-    li.appendChild(head); li.appendChild(qrow); li.appendChild(detail);
+    var putrow = document.createElement("div"); putrow.className = "qrow";
+    var pb = document.createElement("button"); pb.type = "button"; pb.className = "quiet"; pb.textContent = "Put in a class…";
+    var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
+    pb.addEventListener("click", function () {
+      if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
+      phost.hidden = false; putInClass(rec, phost);
+    });
+    putrow.appendChild(pb);
+    li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(detail);
     li._q = qrow; li._rec = rec;
     fillQRow(qrow, rec);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
@@ -2109,6 +2131,9 @@
     var rl = mk("button", "chiplink", "Registered: " + (rec.registered_count || 0)); rl.type = "button";
     rl.addEventListener("click", function () { openRoster(rec); });
     links.appendChild(rl);
+    var at = mk("button", "chiplink", "Attendance"); at.type = "button";
+    at.addEventListener("click", function () { openAttendance(rec); });
+    links.appendChild(at);
     if (rec.waitlist_count) { var wl = mk("button", "chiplink", "Waiting: " + rec.waitlist_count); wl.type = "button"; wl.addEventListener("click", function () { openRoster(rec); }); links.appendChild(wl); }
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
@@ -3032,12 +3057,243 @@
     });
   }
 
+  // ================= Attendance: who is in which class =================
+  var ATT = "attendances";
+  var ROLE_WORD = { student: "Student", primary_instructor: "Lead instructor", instructor: "Instructor" };
+  var ATT_STATUSES = ["enrolled", "waitlisted", "declined", "withdrawn", "cancelled", "attended", "late", "no_show"];
+  var ATT_WORD = { enrolled: "Enrolled", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
+  var ATT_OFF = { waitlisted: 1, declined: 1, withdrawn: 1, cancelled: 1 };   // statuses that do not hold a seat
+  var afSeq = 0;
+
+  function attFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (res.status === 409 && !ps.length) return "Someone changed this a moment ago. Close this window and open it again.";
+    if (!ps.length) return adminProblem(res.status);
+    return ps.map(function (p) {
+      if (p.issue === "duplicate") return "That person is already in this class in that role.";
+      if (p.issue === "choose_one") return "Choose an existing person or add a new one, not both.";
+      if (/^person\./.test(p.field)) return (PLABEL[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (PISSUE[p.issue] || "That value is not valid."));
+      if (p.field === "scheduled_class_id") return "Choose a class.";
+      if (p.field === "role") return "Choose a role.";
+      if (p.field === "individual_id") return p.issue === "required" ? "Choose a person." : "That person was not found.";
+      if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
+      return p.field + ": " + (PISSUE[p.issue] || p.issue);
+    }).join(" ");
+  }
+  function attName(r) { return (r.person && r.person.display_name) || "(person not found)"; }
+
+  // A small person finder: type part of a name, pick one.
+  function personFinder() {
+    var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
+    var chosen = { id: "", name: "" };
+    search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search people by name");
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase(); results.textContent = "";
+      if (!q) return;
+      peopleList().then(function (list) {
+        results.textContent = "";
+        list.filter(function (p) { return pName(p).toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pName(p)); b.type = "button";
+          b.addEventListener("click", function () { chosen.id = p.id; chosen.name = pName(p); cur.textContent = "Chosen: " + chosen.name; results.textContent = ""; search.value = ""; });
+          results.appendChild(b);
+        });
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Choose “A new person” to add them."));
+      });
+    });
+    wrap.appendChild(cur); wrap.appendChild(search); wrap.appendChild(results);
+    return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; results.textContent = ""; } };
+  }
+
+  // The one way to put a person in a class. opts: cls (fixed class) or classes (list to choose from), req (a request record, optional),
+  // role (starting role), onAdded(data).
+  function assignForm(opts) {
+    var uid = "af" + (++afSeq) + "_", req = opts.req || null;
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    function field(text, el, key, hint) {
+      var l = mk("label", "f", text); el.id = uid + key; l.htmlFor = el.id; form.appendChild(l); form.appendChild(el);
+      if (hint) form.appendChild(mk("div", "hint", hint));
+    }
+    function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    var clsSel = null;
+    if (!opts.cls) {
+      clsSel = mk("select"); opt(clsSel, "", "Choose a class");
+      (opts.classes || []).slice().sort(function (a, b) { return (a.starts_at || "9") < (b.starts_at || "9") ? -1 : 1; }).forEach(function (c) { opt(clsSel, c.id, (c.title || "(no title)") + " · " + classWhen(c) + " (" + c.status + ")"); });
+      field("Class", clsSel, "cls");
+    }
+    var role = mk("select"); ["student", "primary_instructor", "instructor"].forEach(function (r) { opt(role, r, ROLE_WORD[r]); });
+    role.value = opts.role || "student"; field("Role in this class", role, "role");
+    var who = mk("select");
+    if (req && req.individual_id) opt(who, "request", "The person on this request");
+    opt(who, "existing", "Someone already in People"); opt(who, "new", "A new person");
+    who.value = (req && req.individual_id) ? "request" : (req ? "new" : "existing");
+    field("Who", who, "who");
+    var finder = personFinder(); var exBox = mk("div"); exBox.appendChild(finder.el); form.appendChild(exBox);
+    var nb = mk("div"), nw = {};
+    [["given_name", "Given name", req && req.first_name], ["family_name", "Family name", req && req.last_name], ["email", "Email", req && req.email], ["phone", "Phone", req && req.phone]].forEach(function (f) {
+      var l = mk("label", "f", f[1]), el = mk("input"); el.type = "text"; el.maxLength = 200; el.id = uid + f[0]; l.htmlFor = el.id; el.value = f[2] || "";
+      nb.appendChild(l); nb.appendChild(el); nw[f[0]] = el;
+    });
+    nb.appendChild(mk("div", "hint", "A new person is added to People, and to the student or instructor list, as part of this step. Nothing is matched by name."));
+    form.appendChild(nb);
+    var status = mk("select"); opt(status, "", "Automatic (enrolled, or the waiting list if the class is full)");
+    ATT_STATUSES.forEach(function (s) { opt(status, s, ATT_WORD[s]); }); field("Status", status, "status");
+    var ord = mk("input"); ord.type = "number"; ord.min = "1"; ord.max = "50"; ord.step = "1";
+    var ordL = mk("label", "f", "Place among the instructors (optional)"); ord.id = uid + "order"; ordL.htmlFor = ord.id; form.appendChild(ordL); form.appendChild(ord);
+    function sync() {
+      exBox.hidden = who.value !== "existing"; nb.hidden = who.value !== "new";
+      var ins = role.value !== "student"; ord.hidden = !ins; ordL.hidden = !ins;
+    }
+    who.addEventListener("change", sync); role.addEventListener("change", sync); sync();
+    var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add); form.appendChild(btns);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); msg.textContent = "";
+      var cid = opts.cls ? opts.cls.id : clsSel.value;
+      if (!cid) { msg.textContent = "Choose a class."; return; }
+      var data = { scheduled_class_id: cid, role: role.value }, person = null;
+      if (who.value === "request") data.individual_id = req.individual_id;
+      else if (who.value === "existing") { if (!finder.id()) { msg.textContent = "Choose a person, or choose “A new person”."; return; } data.individual_id = finder.id(); }
+      else {
+        person = {};
+        Object.keys(nw).forEach(function (k) { var v = nw[k].value.trim(); if (v) person[k] = v; });
+        if (!person.given_name) { msg.textContent = "A new person needs at least a given name."; return; }
+      }
+      if (status.value) data.status = status.value;
+      if (role.value !== "student" && ord.value.trim()) data.order = Number(ord.value);
+      if (req) data.request_id = req.id;
+      add.disabled = true;
+      var args = { data: data }; if (person) args.person = person;
+      admin("assign", args, ATT).then(function (res) {
+        add.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var d = res.body.data;
+          if (d.created_person) peopleForPick = null;
+          msg.textContent = "";
+          var said = "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
+            + (d.created_person ? " They were new, so they are now in People." : "") + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
+          finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = "";
+          if (opts.onAdded) opts.onAdded(d, said);
+          return;
+        }
+        msg.textContent = attFail(res);
+      });
+    });
+    return form;
+  }
+
+  function attLine(r, withClass) {
+    var row = mk("div", "rrow");
+    row.appendChild(mk("span", "", withClass ? ((r.class && r.class.title) || "(class not found)") + (r.class && r.class.starts_at ? " · " + classWhen(r.class) : "") : attName(r)));
+    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status)));
+    return row;
+  }
+
+  function attRow(r, say, redraw) {
+    var row = mk("div", "arow");
+    var top = mk("div", "atop");
+    top.appendChild(mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : "")));
+    var sel = mk("select"); sel.setAttribute("aria-label", "Status for " + attName(r));
+    ATT_STATUSES.forEach(function (s) { var o = mk("option", "", ATT_WORD[s]); o.value = s; sel.appendChild(o); });
+    sel.value = r.status;
+    var rm = mk("button", "quiet", "Remove"); rm.type = "button";
+    top.appendChild(sel); top.appendChild(rm);
+    row.appendChild(top);
+    sel.addEventListener("change", function () {
+      sel.disabled = true;
+      admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
+        sel.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[sel.value].toLowerCase() + "."); redraw(); return; }
+        sel.value = r.status; say(attFail(res));
+      });
+    });
+    var armed = false;
+    rm.addEventListener("click", function () {
+      if (!armed) { armed = true; rm.textContent = "Really remove?"; rm.className = "danger"; return; }
+      rm.disabled = true;
+      admin("soft_delete", { id: r.id }, ATT).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. They are still in People."); redraw(); return; }
+        rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say(attFail(res));
+      });
+    });
+    return row;
+  }
+
+  function openAttendance(cls) {
+    var dlg = $("atDlg"), body = $("atBody"), msg = $("atMsg");
+    $("atTitle").textContent = "Attendance: " + (cls.title || "class");
+    msg.textContent = ""; body.textContent = "Loading…";
+    if (!dlg.open) dlg.showModal();
+    function say(t) { msg.textContent = t; }
+    function draw() {
+      admin("list", { filters: { scheduled_class_id: cls.id }, limit: 200, expand: true, order: "created_at" }, ATT).then(function (res) {
+        body.textContent = "";
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { say("Could not load the attendance. " + adminProblem(res.status)); return; }
+        var recs = res.body.data.records || [];
+        var inst = recs.filter(function (r) { return r.role !== "student"; }).sort(function (a, b) {
+          function k(r) { return (r.role === "primary_instructor" ? 0 : 1) * 1000 + (r.order || 999); }
+          return k(a) - k(b);
+        });
+        var stu = recs.filter(function (r) { return r.role === "student"; });
+        body.appendChild(mk("div", "rhead", "Instructors (" + inst.length + ")"));
+        inst.forEach(function (r) { body.appendChild(attRow(r, say, draw)); });
+        if (!inst.length) body.appendChild(mk("div", "empty", "No instructor yet."));
+        body.appendChild(mk("div", "rhead", "Students (" + stu.length + ")"));
+        stu.forEach(function (r) { body.appendChild(attRow(r, say, draw)); });
+        if (!stu.length) body.appendChild(mk("div", "empty", "No students yet."));
+        var seats = stu.filter(function (r) { return !ATT_OFF[r.status]; }).length, wait = stu.filter(function (r) { return r.status === "waitlisted"; }).length;
+        body.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
+        var det = mk("details", "addbox"); det.id = "atAddBox";
+        det.appendChild(mk("summary", "", "Add someone to this class"));
+        det.appendChild(assignForm({ cls: cls, onAdded: function (d, said) { say(said); draw(); } }));
+        body.appendChild(det);
+      });
+    }
+    draw();
+  }
+
+  // On a person's card: every class they are in, in any role.
+  function personHistory(rec, host) {
+    host.textContent = "Loading…";
+    admin("list", { filters: { individual_id: rec.id }, limit: 200, expand: true }, ATT).then(function (res) {
+      host.textContent = "";
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { host.appendChild(mk("div", "msg", "Could not load the history. " + adminProblem(res.status))); return; }
+      var recs = (res.body.data.records || []).sort(function (a, b) { return ((b.class && b.class.starts_at) || "") < ((a.class && a.class.starts_at) || "") ? -1 : 1; });
+      host.appendChild(mk("div", "rhead", "Classes (" + recs.length + ")"));
+      recs.forEach(function (r) { host.appendChild(attLine(r, true)); });
+      if (!recs.length) host.appendChild(mk("div", "empty", "Not in any class yet."));
+    });
+  }
+
+  // On a registration request: put the requester (or anyone) into a class.
+  function putInClass(rec, host, said) {
+    host.textContent = "Loading…";
+    Promise.all([aClasses.length ? Promise.resolve() : loadClassChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (both) {
+      host.textContent = "";
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (said) { var n = mk("div", "note", said); n.setAttribute("role", "status"); host.appendChild(n); }
+      var already = (res.status === 200 && res.body.ok) ? (res.body.data.records || []) : [];
+      if (already.length) {
+        host.appendChild(mk("div", "rhead", "Placed from this request"));
+        already.forEach(function (r) { var row = attLine(r, true); row.insertBefore(mk("span", "", attName(r)), row.firstChild); host.appendChild(row); });
+      }
+      var live = aClasses.filter(function (c) { return c.status !== "cancelled" && c.status !== "completed"; });
+      host.appendChild(assignForm({ classes: live, req: rec, role: "student", onAdded: function (d, s) { putInClass(rec, host, s); } }));
+    });
+  }
+
   function resetAssign() {
     Q = { loaded: false, items: [], by: {}, counts: null, error: "" }; qSeq++; aSeq++;
     aAll = []; aClasses = []; aClassById = {}; aLoaded = false; aPrefill = null; aNewId = "";
     $("aList").textContent = ""; $("aCount").textContent = ""; $("aChecked").textContent = ""; $("aMsg").textContent = ""; $("aNotice").textContent = "";
     $("aEmpty").hidden = true; $("aNoMatch").hidden = true; $("aRetry").hidden = true; closeAssignForm();
     try { $("rosterDlg").close(); } catch (e) {}
+    try { $("atDlg").close(); } catch (e) {}
     $("attnBody").textContent = "Checking the queue…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";
   }
 
@@ -3049,6 +3305,7 @@
   Array.prototype.forEach.call(document.querySelectorAll("#aFilters input[type=checkbox]"), function (c) { c.addEventListener("change", function () { aSaveFilters(); renderAssignments(); }); });
   $("aShowAll").addEventListener("click", aShowEverything);
   $("rosterClose").addEventListener("click", function () { $("rosterDlg").close(); });
+  $("atClose").addEventListener("click", function () { $("atDlg").close(); });
   $("aAddForm").addEventListener("submit", function (e) {
     e.preventDefault(); aClearErrs();
     var n = Number($("aSeats").value), data = { request_id: $("aReq").value, scheduled_class_id: $("aCls").value };
@@ -3206,6 +3463,9 @@
     var mg = mk("button", "quiet", "Merge into another person"); mg.type = "button";
     var del = mk("button", "danger", "Delete"); del.type = "button";
     row.appendChild(ed); row.appendChild(ad); row.appendChild(mg); row.appendChild(del);
+    var hi = mk("button", "quiet", "History"); hi.type = "button"; row.appendChild(hi);
+    var histHost = mk("div");
+    hi.addEventListener("click", function () { if (histHost.firstChild) histHost.textContent = ""; else personHistory(rec, histHost); });
     var editHost = mk("div"), mergeHost = mk("div"), addrHost = mk("div");
     var box = mk("div", "confirm"); box.hidden = true;
     box.appendChild(mk("div", "", "Delete " + pName(rec) + "? They are hidden from the lists but the record is kept."));
@@ -3229,7 +3489,7 @@
         else err.textContent = pProblems(res).other.join(" ");
       });
     });
-    wrap.appendChild(row); wrap.appendChild(editHost); wrap.appendChild(mergeHost); wrap.appendChild(addrHost); wrap.appendChild(box);
+    wrap.appendChild(row); wrap.appendChild(histHost); wrap.appendChild(editHost); wrap.appendChild(mergeHost); wrap.appendChild(addrHost); wrap.appendChild(box);
     return wrap;
   }
 
