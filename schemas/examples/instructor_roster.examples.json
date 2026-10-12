@@ -23,7 +23,10 @@
     }
    ],
    "availability_notes": "Not the first week of June.",
-   "notes": "Prefers email."
+   "notes": "Prefers email.",
+   "curriculum_ids": [
+    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+   ]
   },
   "pointer_only": {
    "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
@@ -83,6 +86,19 @@
   "unknown_field": {
    "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
    "email": "a@b.com"
+  },
+  "curriculum_ids_not_uuid": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "curriculum_ids": [
+    "abc"
+   ]
+  },
+  "curriculum_ids_duplicate": {
+   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "curriculum_ids": [
+    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+   ]
   }
  }
 }

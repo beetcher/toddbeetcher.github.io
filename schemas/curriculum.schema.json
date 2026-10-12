@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/curriculum.schema.json",
+  "title": "curriculum",
+  "description": "What is taught: one curriculum in the LAUNCH portfolio, such as an introduction to AI use. A class points at one curriculum (class.curriculum_id). The record says how long the teaching takes (sessions and minutes per session); who may teach it is kept on the instructor roster. Each session of a multi-session curriculum is its own class. Rules the schema cannot express: slug is unique (soft-deleted records count) and never changes; status defaults to active.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Keep curricula until the owner deletes them; a deleted curriculum stays in the database. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "slug",
+    "title"
+  ],
+  "properties": {
+    "slug": {
+      "description": "A short unique identifier for the curriculum: lowercase letters, digits and underscores, such as intro_ai_use. Never changes once set. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "title": {
+      "description": "What people see: 'Introduction to AI Use'. Up to 200 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "description": {
+      "description": "What the curriculum covers, in a few sentences. Up to 2000 characters. Optional.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "session_count": {
+      "description": "How many sessions the curriculum takes: 1 for a single session, more for a series. A whole number from 1 to 50. Optional; when absent it is one session.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "minutes_per_session": {
+      "description": "How long each session lasts, in minutes. A whole number from 5 to 600. Optional.",
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 600
+    },
+    "status": {
+      "description": "active (offered when building a class) or inactive (kept, not offered). Optional on create; the server sets active when absent.",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "notes": {
+      "description": "Free text for the operator. Up to 2000 characters. Optional.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. A deleted link is a mistake corrected, not a relationship that ended. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ]
+}

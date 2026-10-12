@@ -1,0 +1,74 @@
+{
+ "valid": {
+  "single": {
+   "slug": "intro_ai_use",
+   "title": "Introduction to AI Use",
+   "description": "A relaxed first hour with an AI assistant.",
+   "session_count": 1,
+   "minutes_per_session": 60,
+   "status": "active"
+  },
+  "series": {
+   "slug": "ai_for_everyday_life",
+   "title": "AI for Everyday Life",
+   "session_count": 3,
+   "minutes_per_session": 90,
+   "notes": "Weekly, same group."
+  },
+  "minimal": {
+   "slug": "abc",
+   "title": "Curriculum ABC"
+  }
+ },
+ "invalid": {
+  "empty": {},
+  "missing_title": {
+   "slug": "abc"
+  },
+  "missing_slug": {
+   "title": "x"
+  },
+  "slug_uppercase": {
+   "slug": "ABC",
+   "title": "x"
+  },
+  "slug_dash": {
+   "slug": "a-b",
+   "title": "x"
+  },
+  "sessions_zero": {
+   "slug": "abc",
+   "title": "x",
+   "session_count": 0
+  },
+  "sessions_fraction": {
+   "slug": "abc",
+   "title": "x",
+   "session_count": 1.5
+  },
+  "sessions_too_many": {
+   "slug": "abc",
+   "title": "x",
+   "session_count": 51
+  },
+  "minutes_zero": {
+   "slug": "abc",
+   "title": "x",
+   "minutes_per_session": 0
+  },
+  "bad_status": {
+   "slug": "abc",
+   "title": "x",
+   "status": "retired"
+  },
+  "unknown_field": {
+   "slug": "abc",
+   "title": "x",
+   "price": 5
+  },
+  "title_too_long": {
+   "slug": "abc",
+   "title": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  }
+ }
+}

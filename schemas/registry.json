@@ -96,6 +96,14 @@
       "guide": "STUDENT_ROSTER_GUIDE.md",
       "examples": "examples/student_roster.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "curriculum",
+      "collection": "curriculums",
+      "schema": "curriculum.schema.json",
+      "guide": "CURRICULUM_GUIDE.md",
+      "examples": "examples/curriculum.examples.json",
+      "schema_version": 1
     }
   ]
 }

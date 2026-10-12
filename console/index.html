@@ -638,6 +638,7 @@
   </section>
   <section id="instructorsView" class="rostview" hidden></section>
   <section id="studentsView" class="rostview" hidden></section>
+  <section id="curriculumsView" class="rostview" hidden></section>
 
   <section id="placesView" hidden>
     <div class="bar">
@@ -894,6 +895,21 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> People and Places show in red in the station menu. They are the super-admin stations that will be hidden from other operators once sign-in exists.</div>' +
         '<h3>Try this</h3><ul><li>Add two friends as students, then remove one and add them back.</li></ul>' },
+    { id: "curriculums", name: "Curriculum", short: "Curriculum", blurb: "What is taught: the portfolio of curricula a class points at.",
+      manual:
+        '<div class="kicker">Station 9</div><h2>Curriculum</h2>' +
+        '<h3>Mission</h3><p>A curriculum is what is taught, such as Introduction to AI Use. A class is a place at a time with one curriculum. LAUNCH keeps a small portfolio of them; which instructors can teach which is set on each instructor\'s card.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add curriculum</b> needs a title and a short identifier (it fills itself in from the title; lowercase letters, digits and underscores). Sessions and minutes per session are optional.</li>' +
+        '<li><b>Edit</b> changes everything except the identifier. Setting a curriculum to <b>inactive</b> keeps it but stops offering it when a class is built.</li>' +
+        '<li><b>Delete</b> asks first. The curriculum disappears from the list but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The short identifier is unique and cannot be changed once saved.</li>' +
+        '<li>Each session of a multi-session curriculum is its own class. The curriculum only says how many sessions there are and how long each lasts.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> start with one or two curricula. You can add more any time.</div>' +
+        '<h3>Try this</h3><ul><li>Add Introduction to AI Use as one session of 60 minutes.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -966,11 +982,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; }
+    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -987,6 +1003,7 @@
     $("placesView").hidden = r !== "places";
     $("instructorsView").hidden = r !== "instructors";
     $("studentsView").hidden = r !== "students";
+    $("curriculumsView").hidden = r !== "curriculums";
     if (r === "home" || r === "requests" || r === "assignments") loadQueue();
     if (r === "assignments") openAssignView();
     if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
@@ -4019,7 +4036,7 @@
   var RDAYS = [["monday", "Mon"], ["tuesday", "Tue"], ["wednesday", "Wed"], ["thursday", "Thu"], ["friday", "Fri"], ["saturday", "Sat"], ["sunday", "Sun"]];
   var RPERSON = [["given_name", "Given name"], ["family_name", "Family name"], ["email", "Email"], ["phone", "Phone (text messages)"]];
   var ROSTER_CFG = [
-    { id: "instructors", coll: "instructor_rosters", pre: "ri", one: "instructor", Many: "Instructors", hours: true,
+    { id: "instructors", coll: "instructor_rosters", pre: "ri", one: "instructor", Many: "Instructors", hours: true, curricula: true,
       fields: [
         { k: "bio", label: "Bio", t: "area", hint: "A short paragraph written for people choosing a class." },
         { k: "capabilities", label: "What they can teach or do", t: "tags", hint: "Short tags separated by commas, for example prompting basics, large rooms." },
@@ -4063,6 +4080,7 @@
     return RDAYS.filter(function (d) { return by[d[0]]; }).map(function (d) { return d[1] + " " + by[d[0]].opens_at + "–" + by[d[0]].closes_at; }).join(", ");
   }
 
+  function currTitle(S, id) { var l = S.curr || []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i].title; return "(removed curriculum)"; }
   function buildRoster(cfg) {
     var P = cfg.pre, S = { cfg: cfg, all: [], loaded: false, seq: 0, newId: "", openId: "", choice: null };
     ROSTER[cfg.id] = S;
@@ -4101,8 +4119,10 @@
         if (my !== S.seq) return;
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
-        S.all = res.body.data.records || []; S.loaded = true; render();
-        g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+        S.all = res.body.data.records || []; S.loaded = true;
+        var done = function () { render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
+        if (!cfg.curricula) { done(); return; }
+        return admin("list", { limit: 200 }, "curriculums").then(function (cr) { S.curr = (cr.status === 200 && cr.body.ok) ? (cr.body.data.records || []) : []; done(); });
       });
     }
     S.load = load;
@@ -4133,6 +4153,8 @@
       if (rec.capabilities && rec.capabilities.length) more.push(rec.capabilities.join(", "));
       if (rec.service_area) more.push(rec.service_area);
       if (more.length) head.appendChild(mk("div", "sub", more.join(" · ")));
+      var teach = cfg.curricula ? (rec.curriculum_ids || []).map(function (id) { return currTitle(S, id); }) : [];
+      if (teach.length) head.appendChild(mk("div", "sub", "Can teach: " + teach.join(", ")));
       var detail = mk("div", "detail");
       detail.appendChild(actions(rec));
       cfg.fields.forEach(function (f) {
@@ -4184,6 +4206,17 @@
         });
       }
       cfg.fields.forEach(function (f) { var x = rField(f, "re_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
+      var cEls = {};
+      if (cfg.curricula) {
+        form.appendChild(mk("div", "f", "Curricula they can teach")); form.appendChild(mk("div", "hint", "A guide for choosing an instructor. Nothing is refused if you pick someone who is not ticked."));
+        var chosen = rec.curriculum_ids || [], box2 = mk("div"); form.appendChild(box2);
+        (S.curr || []).filter(function (c) { return c.status === "active" || chosen.indexOf(c.id) >= 0; }).forEach(function (c) {
+          var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = chosen.indexOf(c.id) >= 0; cb.value = c.id;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode(c.title)); box2.appendChild(lab); cEls[c.id] = cb;
+        });
+        chosen.forEach(function (id) { if (!cEls[id]) { var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = true; cb.value = id; lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode("(removed curriculum)")); box2.appendChild(lab); cEls[id] = cb; } });
+        if (!Object.keys(cEls).length) box2.appendChild(mk("div", "hint", "No curricula yet. Add some in the Curriculum station."));
+      }
       if (cfg.hours) {
         form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
         var by = {}; (rec.availability || []).forEach(function (h) { by[h.day_of_week] = h; });
@@ -4217,6 +4250,10 @@
           else if (v !== cur) changes[f.k] = v;
         });
         if (ss.value !== (rec.status || "active")) changes.status = ss.value;
+        if (cfg.curricula) {
+          var picked = Object.keys(cEls).filter(function (id) { return cEls[id].checked; }).sort(), was = (rec.curriculum_ids || []).slice().sort();
+          if (JSON.stringify(picked) !== JSON.stringify(was)) changes.curriculum_ids = picked.length ? picked : null;
+        }
         if (havePerson) Object.keys(pEls).forEach(function (k) {
           var v = pEls[k].el.value.trim(), cur = rec.person[pEls[k].k];
           if (v === "") { if (cur !== undefined) person[pEls[k].k] = null; } else if (v !== cur) person[pEls[k].k] = v;
@@ -4341,6 +4378,183 @@
     };
   }
   ROSTER_CFG.forEach(buildRoster);
+
+  // ---- Curriculum station: what is taught. A class points at one curriculum; each session of a series is its own class.
+  var CISSUE = { required: "Required.", duplicate: "That identifier is already used.", invalid_format: "Use lowercase letters, digits and underscores.",
+                 out_of_range: "That number is out of range.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
+                 immutable: "That cannot be changed.", not_allowed: "Not allowed." };
+  var CLABEL = { slug: "Identifier", title: "Title", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
+  function currLine(rec) {
+    var bits = [rec.slug];
+    var n = rec.session_count || 1;
+    bits.push(n + (n === 1 ? " session" : " sessions") + (rec.minutes_per_session ? " of " + rec.minutes_per_session + " min" : ""));
+    return bits.join(" · ");
+  }
+  function buildCurriculum() {
+    var P = "rc", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
+    ROSTER.curriculums = S;
+    var root = $("curriculumsView");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="rcCount"></div><div class="meta" id="rcChecked"></div></div>' +
+      '<div class="actions"><select id="rcFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
+      '<button type="button" class="quiet manualBtn" data-m="curriculums">Manual</button><button id="rcRefresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="rcAddBtn" type="button">Add curriculum</button></div></div>' +
+      '<form class="panel" id="rcAddForm" hidden autocomplete="off" novalidate><h2>Add a curriculum</h2>' +
+      '<div class="hint">A title and a short identifier are needed. Sessions and length can be added now or later.</div>' +
+      '<div id="rcAddFields"></div>' +
+      '<div class="btns"><button type="submit" id="rcSaveBtn">Save curriculum</button><button type="button" class="quiet" id="rcCancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="rcFMsg" role="alert"></div></form>' +
+      '<div class="notice" id="rcNotice" role="status"></div><div class="msg" id="rcMsg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="rcRetry" hidden>Retry</button><ul id="rcList"></ul><div class="empty" id="rcEmpty" hidden>No curricula yet.</div>';
+    var FIELDS = [
+      { k: "title", label: "Title", t: "text", add: true, hint: "What people see, for example Introduction to AI Use." },
+      { k: "slug", label: "Short identifier", t: "text", add: true, addOnly: true, hint: "Lowercase letters, digits and underscores. It cannot be changed later." },
+      { k: "description", label: "Description (optional)", t: "area", add: true },
+      { k: "session_count", label: "Number of sessions (optional)", t: "num", add: true, hint: "1 for a single session. Each session becomes its own class." },
+      { k: "minutes_per_session", label: "Minutes per session (optional)", t: "num", add: true },
+      { k: "notes", label: "Notes (optional)", t: "area", add: false, hint: "Visible to operators only." }
+    ];
+    function mkF(f, idp, cur) {
+      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "num" ? 4 : 200; el.value = cur == null ? "" : String(cur); if (f.t === "num") el.inputMode = "numeric"; }
+      el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+      if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); wrap.appendChild(er);
+      return { wrap: wrap, el: el, err: er, f: f };
+    }
+    function val(x) {   // -> {v} or {bad}
+      var s = x.el.value.trim();
+      if (x.f.t !== "num") return { v: s };
+      if (s === "") return { v: "" };
+      if (!/^\d+$/.test(s)) return { bad: "Use a whole number." };
+      return { v: parseInt(s, 10) };
+    }
+    function problems(res, els) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+      ps.forEach(function (p) { var t = CISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((CLABEL[p.field] || p.field) + ": " + t); });
+      if (!ps.length) out.push(adminProblem(res.status));
+      return { fields: mine, other: out };
+    }
+    var addEls = {}, slugTouched = false;
+    FIELDS.forEach(function (f) { if (!f.add) return; var x = mkF(f, "rcA_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+    addEls.title.el.addEventListener("input", function () { if (!slugTouched) addEls.slug.el.value = slugify(addEls.title.el.value); });
+    addEls.slug.el.addEventListener("input", function () { slugTouched = true; });
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { limit: 200 }, "curriculums").then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the curricula. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    }
+    S.load = load;
+    function render() {
+      var f = g("Filter").value, list = g("List"); list.textContent = "";
+      S.all.filter(function (r) { return !f || r.status === f; }).forEach(function (r) { list.appendChild(row(r)); });
+      S.newId = "";
+      g("Count").textContent = S.all.length + (S.all.length === 1 ? " curriculum" : " curricula");
+      g("Empty").hidden = S.all.length > 0;
+    }
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.title || "(no title)")); top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+      head.appendChild(top); head.appendChild(mk("div", "sub", currLine(rec)));
+      var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      box.appendChild(mk("div", "", "Delete " + (rec.title || "this curriculum") + "? It disappears from the list but the record is kept. To stop offering it without deleting, set it to inactive."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete curriculum"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true;
+        admin("soft_delete", { id: rec.id }, "curriculums").then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Deleted " + rec.title + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That curriculum was already gone."; load(); }
+          else err.textContent = problems(res, {}).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box); detail.appendChild(wrap);
+      if (rec.description) detail.appendChild(line("Description", rec.description));
+      if (rec.notes) detail.appendChild(line("Notes", rec.notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); li.appendChild(detail);
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+    function editForm(rec, host) {
+      var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
+      FIELDS.forEach(function (f) { if (f.addOnly) return; var x = mkF(f, "rce_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rcst_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = ""; var changes = {}, bad = false;
+        Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+        Object.keys(els).forEach(function (k) {
+          var x = els[k], v = val(x), cur = rec[k];
+          if (v.bad) { x.err.textContent = v.bad; bad = true; return; }
+          if (v.v === "") { if (cur !== undefined) { if (k === "title") { x.err.textContent = "Required."; bad = true; } else changes[k] = null; } }
+          else if (v.v !== cur) changes[k] = v.v;
+        });
+        if (ss.value !== (rec.status || "active")) changes.status = ss.value;
+        if (bad) return;
+        if (!Object.keys(changes).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        save.disabled = true;
+        admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, "curriculums").then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + (changes.title || rec.title) + "."; load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this curriculum while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That curriculum is gone. Tap Refresh."; return; }
+          var pr = problems(res, els); Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+    g("AddBtn").addEventListener("click", function () { g("AddForm").reset(); slugTouched = false; Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; }); g("FMsg").textContent = ""; g("Notice").textContent = ""; g("AddForm").hidden = false; g("AddBtn").hidden = true; addEls.title.el.focus(); });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; var data = {}, bad = false;
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) {
+        var x = addEls[k], v = val(x);
+        if (v.bad) { x.err.textContent = v.bad; bad = true; return; }
+        if (v.v !== "") data[k] = v.v;
+      });
+      if (!data.title) { addEls.title.err.textContent = "Required."; bad = true; }
+      if (!data.slug) { addEls.slug.err.textContent = "Required."; bad = true; }
+      if (bad) return;
+      g("SaveBtn").disabled = true;
+      admin("create", { data: data }, "curriculums").then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.title + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+          if (g("Filter").value === "inactive") g("Filter").value = "active"; load(); return;
+        }
+        var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+  }
+  buildCurriculum();
+
   function resetRosters() { Object.keys(ROSTER).forEach(function (k) { ROSTER[k].reset(); }); }
 
   var saved = getKey();

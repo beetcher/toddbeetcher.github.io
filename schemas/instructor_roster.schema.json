@@ -42,6 +42,16 @@
         "maxLength": 60
       }
     },
+    "curriculum_ids": {
+      "description": "The curricula this instructor can teach: ids of curriculum records. A hint for choosing an instructor, never a rule; nothing is refused for teaching something not listed. Up to 50. Optional.",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
     "service_area": {
       "description": "Where the instructor will travel to teach, in plain words: 'Denver metro', 'online only'. Up to 300 characters. Optional.",
       "type": "string",
