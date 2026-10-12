@@ -64,6 +64,9 @@ with sync_playwright() as p:
     pg.goto(PAGE)
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn")
     pg.wait_for_selector("#homeView:not([hidden])")
+    pg.wait_for_function("document.getElementById('attnBadge').textContent === '1'")
+    check("Home lists the unplaced request", "Chuck Norris" in pg.locator("#attnBody").inner_text() and "waiting to be placed" in pg.locator("#attnBox").inner_text().lower(), pg.locator("#attnBox").inner_text())
+    check("no Assignments station any more", pg.locator("#stationTiles .tile .tname", has_text="Assignments").count() == 0 and pg.locator("#collPick option", has_text="Assignments").count() == 0)
     # ---- class Attendance dialog
     pg.select_option("#collPick", "classes"); pg.wait_for_selector("#cList li")
     li = pg.locator("#cList li", has_text="Evening Basics")
@@ -100,6 +103,10 @@ with sync_playwright() as p:
     f.get_by_role("button", name="Add to class").click()
     pg.wait_for_function("document.getElementById('atMsg').textContent.indexOf('Added Cy') === 0")
     check("third student goes to the waiting list", "on the waiting list" in pg.locator("#atMsg").inner_text())
+    try:
+        pg.wait_for_function("document.getElementById('atBody').innerText.indexOf('2 of up to 2 seats taken, 1 waiting') >= 0", timeout=5000)
+    except Exception:
+        pass
     check("seat summary", "2 of up to 2 seats taken, 1 waiting" in pg.locator("#atBody").inner_text(), pg.locator("#atBody").inner_text())
     pg.locator("#atAddBox summary").click()
     f = pg.locator("#atBody form")
@@ -146,6 +153,8 @@ with sync_playwright() as p:
     check("requester placed, new person created", "Added Chuck Norris" in t and "They were new" in t and "Placed from this request" in t, t)
     placed = AT.list(store, {"request_id": REQ["id"]})
     check("attendance records the request", placed.ok and placed.data["count"] == 1 and placed.data["records"][0]["role"] == "student", placed.problems if not placed.ok else "")
+    check("request card chip says placed", "Placed" in pg.locator("#list li", has_text="Chuck Norris").locator(".qrow .qchip").inner_text(), pg.locator("#list li", has_text="Chuck Norris").inner_text()[:300])
+    check("no old Assign button or roster chips", pg.locator("#list li .qrow .go").count() == 0)
     # ---- build a class from the request
     f = pg.locator("#list li", has_text="Chuck Norris").locator(".putbox form")
     f.locator("select[id$='_cls']").select_option(label="A new class (build it now)")
@@ -168,6 +177,11 @@ with sync_playwright() as p:
     check("built class is scheduled with curriculum, series and session 1", c0.get("status") == "scheduled" and c0.get("curriculum_id") == cu["id"] and c0.get("session_number") == 1 and c0.get("series_id") and c0.get("venue_room_label") == "Room A" and c0.get("duration_minutes") == 90, c0)
     n_att = AT.list(store, {"scheduled_class_id": c0.get("id")}).data["count"] if c0 else 0
     check("two attendance records on the built class", n_att == 2, n_att)
+    pg.select_option("#collPick", "classes"); pg.wait_for_selector("#cList li")
+    check("class cards have no Registered chip", "Registered:" not in pg.locator("#cList").inner_text())
+    pg.select_option("#collPick", "home")
+    pg.wait_for_function("document.getElementById('attnBody').innerText.indexOf('All clear') >= 0")
+    check("Home is clear once placed", True)
     # ---- class edit form: curriculum, series, session number
     pg.select_option("#collPick", "classes"); pg.wait_for_selector("#cList li")
     li = pg.locator("#cList li", has_text="Evening Basics"); li.locator("button.head").click()
