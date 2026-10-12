@@ -60,6 +60,7 @@
   .stoggle.pending { border-style: dashed; }
   .stoggle:disabled { opacity: .6; cursor: progress; }
   .stoggle:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  li > .stmsg { padding: 0 14px 6px; }
   .stmsg { color: var(--err); font-weight: 600; font-size: 14px; flex: 1 1 100%; }
   li > button.head {
     all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 14px; cursor: pointer; min-height: 44px;
@@ -1190,8 +1191,8 @@
       var saved = rec.status === opts.on;
       b.classList.toggle("on", want); b.classList.toggle("pending", want !== saved || !!timer);
       b.setAttribute("aria-checked", want ? "true" : "false");
-      word.textContent = want ? "Active" : "Inactive";
-      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? "active" : "inactive") + (timer ? ", saving soon" : "") + ". Tap to change.");
+      word.textContent = want ? (opts.onWord || "Active") : (opts.offWord || "Inactive");
+      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? (opts.onWord || "Active") : (opts.offWord || "Inactive")).toLowerCase() + (timer ? ", saving soon" : "") + ". Tap to change.");
     }
     function send() {
       timer = null;
@@ -3346,7 +3347,8 @@
     var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
     var top = mk("div", "top");
     top.appendChild(mk("span", "vname", pName(rec)));
-    top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+    var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: COLL_P, on: "active", off: "inactive", label: "Person", problem: function (res) { return pProblems(res).other.join(" "); } }) : null;
+    if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
     head.appendChild(top);
     var bits = [];
     if (rec.birth_date) bits.push("Born " + pDateOut(rec.birth_date));
@@ -3360,7 +3362,7 @@
     ["display_name", "given_name", "family_name", "status", "birth_date", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
     Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
     head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
-    li.appendChild(head); li.appendChild(detail);
+    li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -4048,7 +4050,8 @@
     var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
     var top = mk("div", "top");
     top.appendChild(mk("span", "vname", locSummary(rec)));
-    top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+    var tgl = (rec.status === "active" || rec.status === "retired") ? statusToggle(rec, li, { coll: COLL_L, on: "active", off: "retired", offWord: "Retired", label: "Place", problem: function (res) { return lProblems(res); } }) : null;
+    if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
     head.appendChild(top);
     var bits = [];
     if (rec.kind) bits.push(rec.kind);
@@ -4068,7 +4071,7 @@
     wb.addEventListener("click", function () { wb.disabled = true; showLinked(rec, who, wb); });
     detail.appendChild(who);
     head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
-    li.appendChild(head); li.appendChild(detail);
+    li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -4348,7 +4351,8 @@
       var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
       var top = mk("div", "top");
       top.appendChild(mk("span", "vname", rName(rec)));
-      top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: cfg.coll, on: "active", off: "inactive", label: cfg.one, problem: function (res) { return rosterProblems(res).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
       head.appendChild(top);
       if (rContact(rec)) head.appendChild(mk("div", "sub", rContact(rec)));
       var more = [];
@@ -4367,7 +4371,7 @@
       if (cfg.hours && rec.availability_notes) detail.appendChild(line("Availability notes", rec.availability_notes));
       detail.appendChild(line("Added", when(rec.created_at)));
       head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
-      li.appendChild(head); li.appendChild(detail);
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
       if (rec.id === S.openId) { li.classList.add("open"); head.setAttribute("aria-expanded", "true"); setTimeout(function () { try { li.scrollIntoView({ block: "center" }); } catch (e) {} }, 0); }
       if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
       return li;
@@ -4663,7 +4667,9 @@
     }
     function row(rec) {
       var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
-      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.title || "(no title)")); top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.title || "(no title)"));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: "curriculums", on: "active", off: "inactive", label: "Curriculum", problem: function (res) { return problems(res, {}).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
       head.appendChild(top);
       if (rec.tagline) head.appendChild(mk("div", "sub", rec.tagline));
       head.appendChild(mk("div", "sub", currLine(rec)));
@@ -4690,7 +4696,7 @@
       if (rec.notes) detail.appendChild(line("Notes", rec.notes));
       detail.appendChild(line("Added", when(rec.created_at)));
       head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
-      li.appendChild(head); li.appendChild(detail);
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
       if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
       return li;
     }
