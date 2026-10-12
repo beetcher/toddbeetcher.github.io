@@ -1,7 +1,7 @@
 """Browser test for the People station: drives the real Console page in headless Chromium against the real admin endpoint
 code with an in-memory store. Needs playwright and a Chromium (skips when they are not there). Nothing touches Firebase.
 Run from enjoy_router/:  python3 run_people_browser_test.py"""
-import sys, json, os, pathlib
+import sys, json, os, pathlib, re
 HERE = pathlib.Path(__file__).resolve().parent
 PAGE = (HERE.parent / "console" / "index.html").as_uri()
 from datetime import datetime, timezone
@@ -43,7 +43,7 @@ with sync_playwright() as p:
     pg.goto(PAGE)
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn")
     pg.wait_for_selector("#homeView:not([hidden])")
-    check("People tile on Home", pg.locator("#stationTiles .tile", has_text="People").count() == 1)
+    check("People tile on Home", pg.locator("#stationTiles .tile .tname", has_text=re.compile(r"^People$")).count() == 1)
     pg.select_option("#collPick", "people")
     pg.wait_for_selector("#peopleView:not([hidden])")
     pg.wait_for_function("document.getElementById('pChecked').textContent.length > 0")

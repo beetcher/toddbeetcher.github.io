@@ -269,6 +269,14 @@
   #placesView .panel label.f, #placesView li label.f, #peopleView li .eform label.f { display: block; font-weight: 600; margin-top: 10px; }
   #placesView li .eform, #placesView li .mergebox { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; }
   #peopleView li input[type=checkbox], #peopleView li input[type=radio], #placesView input[type=checkbox], #placesView input[type=radio] { width: 22px; height: 22px; min-height: 0; }
+  .rostview .panel input[type=text], .rostview .panel select, .rostview li input[type=text], .rostview li input[type=time], .rostview li select { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
+  .rostview .panel textarea, .rostview li textarea { width: 100%; min-height: 72px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
+  .rostview .panel label.f, .rostview li label.f, .rostview li div.f { display: block; font-weight: 600; margin-top: 10px; }
+  .rostview li .eform, .rostview .panel .eform { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+  .rostview .pickrow { margin-top: 6px; }
+  .rostview .pickrow button { width: 100%; text-align: left; min-height: 48px; }
+  .rostview .hrow { display: grid; grid-template-columns: 44px 1fr 1fr; gap: 8px; align-items: center; margin-top: 6px; }
+  .rostview .note { margin-top: 8px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -628,6 +636,9 @@
       </div>
     </details>
   </section>
+  <section id="instructorsView" class="rostview" hidden></section>
+  <section id="studentsView" class="rostview" hidden></section>
+
   <section id="placesView" hidden>
     <div class="bar">
       <div>
@@ -811,7 +822,7 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> Needs attention on Home lists every request the ship could not place by itself.</div>' +
         '<h3>Try this</h3><ul><li>Fill a class to its biggest size, then assign one more request and watch it turn up under Needs attention.</li></ul>' },
-    { id: "people", name: "People", short: "People", blurb: "The people behind the sign-ups: names, birth dates, merging duplicates.",
+    { id: "people", admin: true, name: "People", short: "People", blurb: "The people behind the sign-ups: names, birth dates, merging duplicates.",
       manual:
         '<div class="kicker">Station 5</div><h2>People</h2>' +
         '<h3>Mission</h3><p>A person is one human, recorded once, whatever they do with LAUNCH: a student, a payer, a leader, a guest. Roles and details that change over time are kept elsewhere and point back here.</p>' +
@@ -833,7 +844,7 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> a name like "Bob Smith" twice is not proof of one person. Check a birth date or ask before merging.</div>' +
         '<h3>Try this</h3><ul><li>Add two people with nearly the same name, merge one into the other, then undo it from Merge history.</li></ul>' },
-    { id: "places", name: "Places", short: "Places", blurb: "Locations on Earth: addresses, GPS points, and who is linked.",
+    { id: "places", admin: true, name: "Places", short: "Places", blurb: "Locations on Earth: addresses, GPS points, and who is linked.",
       manual:
         '<div class="kicker">Station 6</div><h2>Places</h2>' +
         '<h3>Mission</h3><p>A place is somewhere on Earth, big or small: a doorway, a street address, a whole property with several GPS points. It never says who lives, owns or works there. People and venues are <b>linked</b> to a place, with dates, so a move ends one link and starts another while the places stay as they are.</p>' +
@@ -850,6 +861,39 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> use End, not Remove, when someone moves. Remove is for a mistake.</div>' +
         '<h3>Try this</h3><ul><li>Add an address to a person, then add a second person at the same address and see the ship offer the saved place.</li></ul>' },
+    { id: "instructors", name: "Instructors", short: "Instructors", blurb: "The people who teach: bio, what they teach, where and when.",
+      manual:
+        '<div class="kicker">Station 7</div><h2>Instructors</h2>' +
+        '<h3>Mission</h3><p>The instructor roster is the list of people who can teach a LAUNCH class. Each entry points at a person in People, so a name or phone number is kept in one place only, and adds what LAUNCH needs to know about them as an instructor.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add instructor</b> is one window. Type a name and pick the person from the list, or choose <b>This is a new person</b> and fill in their name, email and phone. A new person is added to People at the same time. If anything is refused, nothing is saved.</li>' +
+        '<li><b>Tap a card</b> to read it. <b>Edit</b> changes the instructor details and the person\'s own name, email and phone together. The weekly hours are one row per day: leave a day empty if they cannot teach.</li>' +
+        '<li><b>Remove from instructors</b> takes them off the roster. They stay in People, the history is kept, and you can add them again later.</li>' +
+        '<li>The status menu shows Active, Inactive or all. Inactive instructors are kept but will not be offered when assigning.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>A person is an instructor once. If you pick someone who already is, the window says so and opens their card.</li>' +
+        '<li>The ship never matches a typed name to a person on its own. You pick, or you say it is someone new.</li>' +
+        '<li>The weekly hours, bio and tags are optional. The roster is expected to grow more fields.</li>' +
+        '<li>Merging two people in People moves their roster entries to the person you keep. Erasing a person removes their entries.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> a person can be both an instructor and a student. They have one entry on each roster.</div>' +
+        '<h3>Try this</h3><ul><li>Add an instructor who is not in People yet, then open their card and add a bio and Tuesday hours.</li></ul>' },
+    { id: "students", name: "Students", short: "Students", blurb: "The people who take classes: a simple roster that points at People.",
+      manual:
+        '<div class="kicker">Station 8</div><h2>Students</h2>' +
+        '<h3>Mission</h3><p>The student roster is the list of people who take LAUNCH classes. Each entry points at a person in People and holds a status and a note. It is deliberately thin and will grow.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add student</b> works like adding an instructor: type a name, pick the person, or choose <b>This is a new person</b>. A new person is added to People in the same step.</li>' +
+        '<li><b>Edit</b> changes the status, the note, and the person\'s own name, email and phone together.</li>' +
+        '<li><b>Remove from students</b> takes them off the roster but keeps the history. They can be added again later.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>A person is a student once. Nothing is matched for you.</li>' +
+        '<li>Merging and erasing in People carry over to this roster.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> People and Places show in red in the station menu. They are the super-admin stations that will be hidden from other operators once sign-in exists.</div>' +
+        '<h3>Try this</h3><ul><li>Add two friends as students, then remove one and add them back.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -862,7 +906,7 @@
     var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
     var tiles = $("stationTiles");
     SURFACES.forEach(function (sf, i) {
-      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name; pick.appendChild(op);
+      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name; if (sf.admin) { op.style.color = "#c00000"; op.className = "adminstn"; } pick.appendChild(op);
       var t = document.createElement("button"); t.type = "button"; t.className = "tile"; t.dataset.go = sf.id;
       t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
       t.querySelector(".tname").textContent = sf.name; t.querySelector(".tdesc").textContent = sf.blurb;
@@ -922,11 +966,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; }
+    if (locked) { closeManual(); $("assignView").hidden = true; $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : h === "people" ? "people" : h === "places" ? "places" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "assignments" ? "assignments" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -941,9 +985,11 @@
     $("assignView").hidden = r !== "assignments";
     $("peopleView").hidden = r !== "people";
     $("placesView").hidden = r !== "places";
+    $("instructorsView").hidden = r !== "instructors";
+    $("studentsView").hidden = r !== "students";
     if (r === "home" || r === "requests" || r === "assignments") loadQueue();
     if (r === "assignments") openAssignView();
-    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); }
+    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
@@ -1087,7 +1133,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetAssign(); resetPeople(); resetPlaces();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetAssign(); resetPeople(); resetPlaces(); resetRosters();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -3961,6 +4007,341 @@
   $("lRefresh").addEventListener("click", function () { $("lNotice").textContent = ""; loadPlaces(); });
   $("lRetry").addEventListener("click", loadPlaces);
   $("lSearch").addEventListener("input", renderPlaces);
+
+  // ---- Instructors and Students stations. One builder, two configs. A roster entry points at a person: name and contact stay in
+  // People and are read in. Adding is one window (pick an existing person or make a new one); nothing is matched for you.
+  var RISSUE = { required: "Required.", duplicate: "Already on this roster.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
+                 invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_found: "That person was not found.",
+                 immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed." };
+  var RLABEL = { individual_id: "Person", status: "Status", bio: "Bio", capabilities: "What they can teach or do", service_area: "Where they will travel",
+                 availability: "Weekly hours", availability_notes: "Availability notes", notes: "Notes", person: "Person",
+                 "person.given_name": "Given name", "person.family_name": "Family name", "person.email": "Email", "person.phone": "Phone" };
+  var RDAYS = [["monday", "Mon"], ["tuesday", "Tue"], ["wednesday", "Wed"], ["thursday", "Thu"], ["friday", "Fri"], ["saturday", "Sat"], ["sunday", "Sun"]];
+  var RPERSON = [["given_name", "Given name"], ["family_name", "Family name"], ["email", "Email"], ["phone", "Phone (text messages)"]];
+  var ROSTER_CFG = [
+    { id: "instructors", coll: "instructor_rosters", pre: "ri", one: "instructor", Many: "Instructors", hours: true,
+      fields: [
+        { k: "bio", label: "Bio", t: "area", hint: "A short paragraph written for people choosing a class." },
+        { k: "capabilities", label: "What they can teach or do", t: "tags", hint: "Short tags separated by commas, for example prompting basics, large rooms." },
+        { k: "service_area", label: "Where they will travel", t: "text", hint: "For example Denver metro, or online only." },
+        { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." } ] },
+    { id: "students", coll: "student_rosters", pre: "rs", one: "student", Many: "Students", hours: false,
+      fields: [ { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." } ] }
+  ];
+  var ROSTER = {};
+
+  function rosterProblems(res, map) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {}, existing = "";
+    ps.forEach(function (p) {
+      var text = (/email$/.test(p.field) && p.issue === "invalid_format") ? "That email address does not look right."
+               : (/phone$/.test(p.field) && p.issue === "invalid_format") ? "That phone number does not look right. Use digits, for example 303-555-0142."
+               : (RISSUE[p.issue] || "That value is not valid.");
+      if (p.existing_id) existing = p.existing_id;
+      if (map && map[p.field]) mine[p.field] = text; else out.push((RLABEL[p.field] || p.field) + ": " + text);
+    });
+    if (!ps.length) out.push(adminProblem(res.status));
+    return { fields: mine, other: out, existing: existing };
+  }
+  function rName(rec) { var p = rec.person; return p && !p.unavailable ? (p.display_name || p.given_name || "(no name)") : "(person not available)"; }
+  function rContact(rec) { var p = rec.person; if (!p || p.unavailable) return ""; return [p.email, p.phone].filter(Boolean).join(" · "); }
+  function rField(f, idp, cur) {
+    var wrap = mk("div"), l = mk("label", "f", f.label), el;
+    if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
+    else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "tags" ? 1800 : 300; el.value = f.t === "tags" ? (cur || []).join(", ") : (cur == null ? "" : cur); }
+    el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+    if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+    var er = mk("div", "ferr"); wrap.appendChild(er);
+    return { wrap: wrap, el: el, err: er, t: f.t };
+  }
+  function rRead(x) {
+    var v = x.el.value.trim();
+    if (x.t === "tags") return v ? v.split(",").map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    return v;
+  }
+  function rHoursText(av) {
+    var by = {}; (av || []).forEach(function (h) { by[h.day_of_week] = h; });
+    return RDAYS.filter(function (d) { return by[d[0]]; }).map(function (d) { return d[1] + " " + by[d[0]].opens_at + "–" + by[d[0]].closes_at; }).join(", ");
+  }
+
+  function buildRoster(cfg) {
+    var P = cfg.pre, S = { cfg: cfg, all: [], loaded: false, seq: 0, newId: "", openId: "", choice: null };
+    ROSTER[cfg.id] = S;
+    var g = function (s) { return $(P + s); };
+    var root = $(cfg.id + "View");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="' + P + 'Count"></div><div class="meta" id="' + P + 'Checked"></div></div>' +
+      '<div class="actions"><select id="' + P + 'Filter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
+      '<button type="button" class="quiet manualBtn" data-m="' + cfg.id + '">Manual</button><button id="' + P + 'Refresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="' + P + 'AddBtn" type="button">Add ' + cfg.one + '</button></div></div>' +
+      '<form class="panel" id="' + P + 'AddForm" hidden autocomplete="off" novalidate><h2>Add ' + (cfg.one === "instructor" ? "an" : "a") + ' ' + cfg.one + '</h2>' +
+      '<div class="hint">Type a name. Pick the person from the list, or choose "This is a new person". Nothing is matched for you.</div>' +
+      '<label class="f" for="' + P + 'Q">Name</label><input type="text" id="' + P + 'Q" maxlength="100" autocomplete="off">' +
+      '<div id="' + P + 'Opts" class="ropts"></div><div class="note" id="' + P + 'Chosen"></div><div class="ferr" id="' + P + 'EPick"></div>' +
+      '<div id="' + P + 'New" class="eform" hidden><div class="hint">A new person is added to People at the same time.</div></div>' +
+      '<div id="' + P + 'AddFields"></div>' +
+      '<div class="btns"><button type="submit" id="' + P + 'SaveBtn">Add to ' + cfg.Many.toLowerCase() + '</button><button type="button" class="quiet" id="' + P + 'CancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="' + P + 'FMsg" role="alert"></div></form>' +
+      '<input type="search" id="' + P + 'Search" class="psearch" placeholder="Find by name" aria-label="Find by name" autocomplete="off">' +
+      '<div class="notice" id="' + P + 'Notice" role="status"></div><div class="msg" id="' + P + 'Msg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="' + P + 'Retry" hidden>Retry</button><ul id="' + P + 'List"></ul>' +
+      '<div class="empty" id="' + P + 'Empty" hidden>Nobody on this roster yet.</div><div class="empty" id="' + P + 'NoMatch" hidden>Nobody matches that name.</div>';
+
+    // new-person boxes and roster fields of the add window
+    var newEls = {}, addEls = {};
+    RPERSON.forEach(function (pf) {
+      var l = mk("label", "f", pf[1] + (pf[0] === "given_name" ? "" : " (optional)")), el = mk("input"); el.type = "text"; el.maxLength = 200; el.autocomplete = "off";
+      el.id = P + "N_" + pf[0]; l.htmlFor = el.id; var er = mk("div", "ferr");
+      g("New").appendChild(l); g("New").appendChild(el); g("New").appendChild(er); newEls["person." + pf[0]] = { el: el, err: er, k: pf[0] };
+    });
+    cfg.fields.forEach(function (f) { var x = rField(f, P + "A_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { order: "name", expand: true, limit: 200 }, cfg.coll).then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; render();
+        g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    }
+    S.load = load;
+    function onRoster(personId) { for (var i = 0; i < S.all.length; i++) if (S.all[i].individual_id === personId) return S.all[i]; return null; }
+    function render() {
+      var q = g("Search").value.trim().toLowerCase(), f = g("Filter").value, list = g("List");
+      var shown = S.all.filter(function (r) {
+        return (!f || r.status === f) && (!q || [rName(r), rContact(r)].join(" ").toLowerCase().indexOf(q) >= 0);
+      });
+      list.textContent = "";
+      shown.forEach(function (r) { list.appendChild(row(r)); });
+      S.newId = ""; S.openId = "";
+      var act = S.all.filter(function (r) { return r.status === "active"; }).length;
+      g("Count").textContent = S.all.length + (S.all.length === 1 ? " person" : " people") + (S.all.length ? " (" + act + " active)" : "");
+      g("Empty").hidden = S.all.length > 0;
+      g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
+    }
+
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : "");
+      var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top");
+      top.appendChild(mk("span", "vname", rName(rec)));
+      top.appendChild(mk("span", "type" + (rec.status === "active" ? " on" : ""), rec.status || ""));
+      head.appendChild(top);
+      if (rContact(rec)) head.appendChild(mk("div", "sub", rContact(rec)));
+      var more = [];
+      if (rec.capabilities && rec.capabilities.length) more.push(rec.capabilities.join(", "));
+      if (rec.service_area) more.push(rec.service_area);
+      if (more.length) head.appendChild(mk("div", "sub", more.join(" · ")));
+      var detail = mk("div", "detail");
+      detail.appendChild(actions(rec));
+      cfg.fields.forEach(function (f) {
+        if (rec[f.k] === undefined) return;
+        detail.appendChild(line(f.label, f.t === "tags" ? rec[f.k].join(", ") : String(rec[f.k])));
+      });
+      if (cfg.hours && rec.availability && rec.availability.length) detail.appendChild(line("Weekly hours", rHoursText(rec.availability)));
+      if (cfg.hours && rec.availability_notes) detail.appendChild(line("Availability notes", rec.availability_notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); li.appendChild(detail);
+      if (rec.id === S.openId) { li.classList.add("open"); head.setAttribute("aria-expanded", "true"); setTimeout(function () { try { li.scrollIntoView({ block: "center" }); } catch (e) {} }, 0); }
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+
+    function actions(rec) {
+      var wrap = mk("div"), r = mk("div", "actions-row");
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Remove from " + cfg.Many.toLowerCase());
+      ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      var host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? They stay in People and the history is kept. You can add them again later."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Remove"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg");
+      yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert"); b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true; err.textContent = "";
+        admin("soft_delete", { id: rec.id }, cfg.coll).then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Removed " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That entry was already gone."; load(); }
+          else err.textContent = rosterProblems(res).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box);
+      return wrap;
+    }
+
+    function editForm(rec, host) {
+      var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+      var els = {}, pEls = {}, hEls = {}, havePerson = rec.person && !rec.person.unavailable;
+      if (havePerson) {
+        form.appendChild(mk("div", "hint", "Name and contact are the person's own details and are shared with People."));
+        RPERSON.forEach(function (pf) {
+          var x = rField({ k: pf[0], label: pf[1], t: "text" }, "rp_" + rec.id + "_", rec.person[pf[0]]); form.appendChild(x.wrap); pEls["person." + pf[0]] = x; x.k = pf[0];
+        });
+      }
+      cfg.fields.forEach(function (f) { var x = rField(f, "re_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
+      if (cfg.hours) {
+        form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
+        var by = {}; (rec.availability || []).forEach(function (h) { by[h.day_of_week] = h; });
+        RDAYS.forEach(function (d) {
+          var rw = mk("div", "hrow"), a = mk("input"), z = mk("input"); a.type = "time"; z.type = "time";
+          a.value = by[d[0]] ? by[d[0]].opens_at : ""; z.value = by[d[0]] ? by[d[0]].closes_at : "";
+          a.setAttribute("aria-label", d[1] + " from"); z.setAttribute("aria-label", d[1] + " until");
+          rw.appendChild(mk("span", "", d[1])); rw.appendChild(a); rw.appendChild(z); form.appendChild(rw); hEls[d[0]] = { a: a, z: z, label: d[1] };
+        });
+        var he = mk("div", "ferr"); form.appendChild(he); hEls._err = he;
+        var an = rField({ k: "availability_notes", label: "Availability notes", t: "area", hint: "Anything the weekly hours cannot say." }, "re_" + rec.id + "_", rec.availability_notes);
+        form.appendChild(an.wrap); els.availability_notes = an;
+      }
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rst_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
+      var se = mk("div", "ferr"); form.appendChild(se); els.status = { el: ss, err: se, t: "select" };
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+      save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = "";
+        [els, pEls].forEach(function (m) { Object.keys(m).forEach(function (k) { m[k].err.textContent = ""; }); });
+        if (cfg.hours) hEls._err.textContent = "";
+        var changes = {}, person = {}, bad = false;
+        cfg.fields.concat(cfg.hours ? [{ k: "availability_notes", t: "area" }] : []).forEach(function (f) {
+          var x = els[f.k], v = rRead(x), cur = rec[f.k];
+          if (f.t === "tags") { if (!v.length) { if (cur !== undefined) changes[f.k] = null; } else if (JSON.stringify(v) !== JSON.stringify(cur || [])) changes[f.k] = v; }
+          else if (v === "") { if (cur !== undefined) changes[f.k] = null; }
+          else if (v !== cur) changes[f.k] = v;
+        });
+        if (ss.value !== (rec.status || "active")) changes.status = ss.value;
+        if (havePerson) Object.keys(pEls).forEach(function (k) {
+          var v = pEls[k].el.value.trim(), cur = rec.person[pEls[k].k];
+          if (v === "") { if (cur !== undefined) person[pEls[k].k] = null; } else if (v !== cur) person[pEls[k].k] = v;
+        });
+        if (cfg.hours) {
+          var list = [];
+          RDAYS.forEach(function (d) {
+            var h = hEls[d[0]], a = h.a.value, z = h.z.value;
+            if (!a && !z) return;
+            if (!a || !z) { hEls._err.textContent = "Give both a start and an end time for " + h.label + ", or clear both."; bad = true; return; }
+            if (a >= z) { hEls._err.textContent = h.label + ": the start has to be before the end."; bad = true; return; }
+            list.push({ day_of_week: d[0], opens_at: a, closes_at: z });
+          });
+          if (!bad && JSON.stringify(list) !== JSON.stringify((rec.availability || []).slice().sort(function (p, q) {
+            return RDAYS.map(function (d) { return d[0]; }).indexOf(p.day_of_week) - RDAYS.map(function (d) { return d[0]; }).indexOf(q.day_of_week); }).map(function (h) {
+            return { day_of_week: h.day_of_week, opens_at: h.opens_at, closes_at: h.closes_at }; }))) changes.availability = list.length ? list : null;
+        }
+        if (bad) return;
+        if (!Object.keys(changes).length && !Object.keys(person).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        var args = { id: rec.id, expected_updated_at: rec.updated_at };
+        if (Object.keys(changes).length) args.changes = changes;
+        if (Object.keys(person).length) args.person = person;
+        save.disabled = true;
+        admin("update_with_person", args, cfg.coll).then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + rName(rec) + "."; if (Object.keys(person).length) { pLoaded = false; peopleForPick = null; } load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this entry while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That entry is gone. Tap Refresh."; return; }
+          var map = {}; Object.keys(els).forEach(function (k) { map[k] = els[k]; }); Object.keys(pEls).forEach(function (k) { map[k] = pEls[k]; });
+          var pr = rosterProblems(res, map);
+          Object.keys(pr.fields).forEach(function (k) { map[k].err.textContent = pr.fields[k]; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+
+    // ---- the one add window
+    function clearAdd() {
+      g("AddForm").reset(); S.choice = null; g("Opts").textContent = ""; g("Chosen").textContent = ""; g("EPick").textContent = ""; g("FMsg").textContent = ""; g("New").hidden = true;
+      Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+    }
+    function choose(c) {
+      S.choice = c; g("EPick").textContent = ""; g("Opts").textContent = "";
+      g("New").hidden = !c.isNew;
+      g("Chosen").textContent = c.isNew ? "Adding a new person." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + ".";
+      if (c.isNew) {
+        var parts = c.typed.split(/\s+/).filter(Boolean);
+        newEls["person.given_name"].el.value = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
+        newEls["person.family_name"].el.value = parts.length > 1 ? parts[parts.length - 1] : "";
+        newEls["person.given_name"].el.focus();
+      }
+    }
+    function showOpts() {
+      var q = g("Q").value.trim().toLowerCase(), box = g("Opts"); box.textContent = ""; S.choice = null; g("Chosen").textContent = ""; g("New").hidden = true;
+      if (!q) return;
+      peopleList().then(function (people) {
+        if (g("Q").value.trim().toLowerCase() !== q) return;
+        box.textContent = "";
+        people.filter(function (p) { return p.status !== "erased" && [pName(p), p.email, p.phone].join(" ").toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
+          var on = onRoster(p.id), rw = mk("div", "pickrow"), contact = [p.email, p.phone].filter(Boolean).join(" · ");
+          var b = mk("button", "quiet", pName(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
+          if (on) {
+            b.textContent = pName(p) + (contact ? " — " + contact : "") + " (already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ")";
+            b.addEventListener("click", function () { openCard(on.id); });
+          } else b.addEventListener("click", function () { choose({ id: p.id, name: pName(p), contact: contact }); });
+          rw.appendChild(b); box.appendChild(rw);
+        });
+        var nb = mk("button", "", "This is a new person: " + g("Q").value.trim()); nb.type = "button";
+        nb.addEventListener("click", function () { choose({ isNew: true, typed: g("Q").value.trim() }); });
+        var nr = mk("div", "pickrow"); nr.appendChild(nb); box.appendChild(nr);
+      });
+    }
+    function openCard(id) {
+      g("AddForm").hidden = true; g("AddBtn").hidden = false; g("Filter").value = ""; g("Search").value = ""; S.openId = id; render();
+    }
+    g("AddBtn").addEventListener("click", function () { clearAdd(); g("Notice").textContent = ""; peopleForPick = null; g("AddForm").hidden = false; g("AddBtn").hidden = true; g("Q").focus(); });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("Q").addEventListener("input", showOpts);
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; g("EPick").textContent = "";
+      Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
+      if (!S.choice) { g("EPick").textContent = 'Pick a person from the list, or choose "This is a new person".'; return; }
+      var data = {}, person = null;
+      cfg.fields.forEach(function (f) { var v = rRead(addEls[f.k]); if (f.t === "tags" ? v.length : v) data[f.k] = v; });
+      if (S.choice.isNew) {
+        person = {};
+        RPERSON.forEach(function (pf) { var v = newEls["person." + pf[0]].el.value.trim(); if (v) person[pf[0]] = v; });
+        if (!person.given_name) { newEls["person.given_name"].err.textContent = "Required."; return; }
+      } else data.individual_id = S.choice.id;
+      var args = { data: data }; if (person) args.person = person;
+      g("SaveBtn").disabled = true;
+      admin("create_with_person", args, cfg.coll).then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + rName(res.body.data) + " to the " + cfg.Many.toLowerCase() + ".";
+          g("AddForm").hidden = true; g("AddBtn").hidden = false; if (g("Filter").value === "inactive") g("Filter").value = "active";
+          if (res.body.data.created_person) { pLoaded = false; peopleForPick = null; }
+          load(); return;
+        }
+        var map = {}; Object.keys(newEls).forEach(function (k) { map[k] = newEls[k]; }); Object.keys(addEls).forEach(function (k) { map[k] = addEls[k]; });
+        var pr = rosterProblems(res, map);
+        Object.keys(pr.fields).forEach(function (k) { map[k].err.textContent = pr.fields[k]; });
+        if (pr.existing) {
+          g("FMsg").textContent = "That person is already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ". ";
+          var ob = mk("button", "quiet", "Open their card"); ob.type = "button"; ob.addEventListener("click", function () { openCard(pr.existing); load(); });
+          g("FMsg").appendChild(ob);
+        } else if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    g("Search").addEventListener("input", render);
+    S.reset = function () {
+      S.loaded = false; S.all = []; S.newId = ""; S.openId = "";
+      g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = "";
+      g("Empty").hidden = true; g("NoMatch").hidden = true; g("Search").value = ""; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+    };
+  }
+  ROSTER_CFG.forEach(buildRoster);
+  function resetRosters() { Object.keys(ROSTER).forEach(function (k) { ROSTER[k].reset(); }); }
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);

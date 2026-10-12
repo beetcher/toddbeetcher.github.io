@@ -80,6 +80,22 @@
       "guide": "LOCATION_LINK_GUIDE.md",
       "examples": "examples/location_link.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "instructor_roster",
+      "collection": "instructor_rosters",
+      "schema": "instructor_roster.schema.json",
+      "guide": "INSTRUCTOR_ROSTER_GUIDE.md",
+      "examples": "examples/instructor_roster.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "student_roster",
+      "collection": "student_rosters",
+      "schema": "student_roster.schema.json",
+      "guide": "STUDENT_ROSTER_GUIDE.md",
+      "examples": "examples/student_roster.examples.json",
+      "schema_version": 1
     }
   ]
 }

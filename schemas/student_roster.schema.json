@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "required": [
+    "individual_id"
+  ],
+  "$id": "https://beetcher.com/schemas/student_roster.schema.json",
+  "title": "student_roster",
+  "description": "One person on the LAUNCH student roster. The record points at an individual (name and contact live there, never copied) and holds only what LAUNCH needs to know about them as a student, which today is a status and a note. A person is on the roster once; removing them is a soft delete and they can be added again later. Rules the schema cannot express: the individual exists and is not erased; no two live entries for one individual; individual_id never changes after creation; status defaults to active.",
+  "x_retention": "Kept for history after a person is removed from the roster. When the individual is erased the entry is removed from the roster and everything that describes it is deleted, leaving an anonymous tombstone. (A written policy only; nothing enforces it yet.)",
+  "properties": {
+    "individual_id": {
+      "description": "The person on this roster: the id of an individual. Required. Must exist and not be erased. Never changes once set. One live roster entry per person.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "description": "active (on the roster and available to be enrolled) or inactive (kept for history, not offered). Optional on create; the server sets active when absent.",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "notes": {
+      "description": "Free text for the operator. Up to 2000 characters. Personal data. Optional.",
+      "type": "string",
+      "maxLength": 2000,
+      "x_pii": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. A deleted link is a mistake corrected, not a relationship that ended. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ]
+}

@@ -10,8 +10,8 @@ main.py turns a Firebase request into one of these; tests call them directly.
 
 ops and their args:
     create             data, source (optional)
-    get                id, include_deleted (optional), expand (optional, venues only: read in place and contacts)
-    list               filters, order, limit (all optional), expand (optional, venues only)
+    get                id, include_deleted (optional), expand (optional, venues and the rosters: read in what each record points at)
+    list               filters, order, limit (all optional), expand (optional, venues and the rosters)
     update             id, changes, expected_updated_at (optional)
     soft_delete        id
     set_review_summary id, review_count, average_rating
@@ -25,6 +25,8 @@ ops and their args:
     find_by_address    address, limit (optional)   (locations only: live locations that already hold this address)
     create_with_place  data, address or location_id (optional), source (optional)   (venues only: venue, place and link saved together)
     set_place          id, address or location_id   (venues only: moves the venue to another place, old link ends today)
+    create_with_person data, person (optional), source (optional)   (the rosters only: data.individual_id for an existing person, or person for a new one; saved together)
+    update_with_person id, changes and/or person, expected_updated_at (optional)   (the rosters only: roster fields and the person's name and contact, saved together)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
 never read or write a real collection. Its actor is always system:crud_test. The admin door works on the real
@@ -42,8 +44,8 @@ from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (assignments_service, classes_service, individual_restricted_details_service,
-                  individuals_service, location_links_service, locations_service, merge_events_service,
-                  venues_service)
+                  individuals_service, instructor_rosters_service, location_links_service, locations_service,
+                  merge_events_service, student_rosters_service, venues_service)
 from crud.schema_kit import failure
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
@@ -56,7 +58,8 @@ MAX_BODY_BYTES = 100_000
 # collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
 HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "registration_assignments": assignments_service,
             "individuals": individuals_service, "individual_restricted_details": individual_restricted_details_service,
-            "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service}
+            "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service,
+            "instructor_rosters": instructor_rosters_service, "student_rosters": student_rosters_service}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 
@@ -77,12 +80,15 @@ OPS = {
     "end": ({"id"}, {"valid_to", "expected_updated_at"}),   # only location_links
     "find_by_address": ({"address"}, {"limit"}),       # only locations
     "create_with_place": ({"data"}, {"address", "location_id", "source"}),   # only venues
+    "create_with_person": ({"data"}, {"person", "source"}),                  # only the rosters
     "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
+    "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
-                       "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place"})
+                       "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place",
+                       "create_with_person", "update_with_person"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -90,11 +96,15 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place"):
+              "create_with_place", "set_place", "create_with_person", "update_with_person"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
             return module.create_with_place(store, a["data"], actor, a.get("address"), a.get("location_id"), a.get("source", "dashboard"), now=now)
+        if op == "create_with_person":
+            return module.create_with_person(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
+        if op == "update_with_person":
+            return module.update_with_person(store, a["id"], a.get("changes"), actor, a.get("person"), a.get("expected_updated_at"), now=now)
         if op == "set_place":
             return module.set_place(store, a["id"], actor, a.get("address"), a.get("location_id"), now=now)
         if op == "end":

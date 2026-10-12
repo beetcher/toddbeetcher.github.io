@@ -17,6 +17,7 @@ from __future__ import annotations
 from . import individual_merges_crud as M
 from . import individuals_crud as I
 from . import location_links_service as LINKS
+from . import roster_links as ROSTER_LINKS
 from .schema_kit import UUID_PATTERN, failure, load_collection, success
 
 RESTRICTED = load_collection("individual_restricted_detail")
@@ -88,6 +89,7 @@ def erase(store, id, actor, tx=None, now=None, as_admin=False):
         r = M.erase(store, id, actor, tx=t, now=now)
         if r.ok:  # the person's links go in the same write, and any location left with nobody linked is scrubbed
             r.data.update(LINKS.scrub_for_individual(store, id, actor, t, now=now))
+            r.data.update(ROSTER_LINKS.scrub_for_individual(store, id, actor, t, now=now))
         return r
 
     if tx is not None:
