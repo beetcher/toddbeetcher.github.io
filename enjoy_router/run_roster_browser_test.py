@@ -174,9 +174,34 @@ with sync_playwright() as p:
     pg.select_option("#collPick", "people"); pg.wait_for_selector("#peopleView:not([hidden])")
     pg.wait_for_function("document.querySelectorAll('#pList li').length >= 3")
     check("People station shows the people added from the rosters", "Ann Lee" in pg.locator("#pList").inner_text())
+    # a person whose display name is only the first name is still found by the full name, and picking shows the full name
+    tb = IS.create(store, {"given_name": "Tod", "family_name": "Beecherman", "name_to_use": "Toddy"}, "user:admin").data
+    pg.select_option("#collPick", "instructors")
+    pg.click("#riAddBtn"); pg.fill("#riQ", "Tod Beecherman"); pg.wait_for_selector("#riOpts button")
+    ot = pg.locator("#riOpts").inner_text()
+    check("the full name finds a person whose display name is short", "Beecherman" in ot and "Closest matches" not in ot)
+    pg.locator("#riOpts button", has_text="Beecherman").first.click()
+    check("the name box shows the full name after the pick", "Beecherman" in pg.input_value("#riQ"))
+    pg.fill("#riA_capabilities", "AI basics for beginners\nPrompting; Voice and conversation with AI")
+    pg.click("#riSaveBtn"); pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Added') === 0")
+    caps = [r.get("capabilities") for r in store.data.get("instructor_rosters", {}).values() if r.get("individual_id") == tb["id"]]
+    check("tags split on commas, semicolons and new lines", caps == [["AI basics for beginners", "Prompting", "Voice and conversation with AI"]])
+    pg.click("#riAddBtn"); pg.fill("#riQ", "bob"); pg.wait_for_selector("#riOpts button"); pg.locator("#riOpts button", has_text="Bob Ray").first.click()
+    pg.fill("#riA_capabilities", "x" * 70); pg.click("#riSaveBtn")
+    pg.wait_for_function("document.querySelector('#riA_capabilities ~ .ferr').textContent.length > 0")
+    check("a too-long tag explains the limit", "60 characters" in pg.locator("#riA_capabilities ~ .ferr").inner_text())
+    pg.click("#riCancelBtn")
     # manual opens
     pg.select_option("#collPick", "instructors"); pg.click("#instructorsView .manualBtn")
     check("Instructors manual opens", pg.locator("#manual h2", has_text="Instructors").is_visible())
+    # one-tap switch on the card
+    pg.select_option("#collPick", "instructors")
+    pg.wait_for_selector("#riList li button.stoggle")
+    sw = pg.locator("#riList li button.stoggle").first
+    was = sw.get_attribute("aria-checked")
+    sw.click(); pg.wait_for_timeout(2400)
+    st = [r["status"] for r in store.data.get("instructor_rosters", {}).values()]
+    check("the roster switch changes the saved status after the pause", sw.get_attribute("aria-checked") != was and ("inactive" in st) == (was == "true"))
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()

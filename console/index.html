@@ -2851,6 +2851,17 @@
   }
   function attName(r) { return (r.person && r.person.display_name) || "(person not found)"; }
 
+  // People that fit what was typed. Every word must appear somewhere in the name, email or phone (any order), so "Todd Beecher" finds a Todd Beecher.
+  // If nobody fits every word, people who fit ANY word are offered as "close" matches, so a record with only a first name is not missed and then duplicated.
+  function peopleMatches(list, q) {
+    var words = q.toLowerCase().split(/\s+/).filter(Boolean), live = list.filter(function (p) { return p.status !== "erased"; });
+    var text = function (p) { return [pName(p), p.given_name, p.name_to_use, p.family_name, p.email, p.phone].join(" ").toLowerCase(); };
+    var all = live.filter(function (p) { var t = text(p); return words.every(function (w) { return t.indexOf(w) >= 0; }); });
+    if (all.length || words.length < 2) return { exact: all, near: [] };
+    var any = live.filter(function (p) { var t = text(p); return words.some(function (w) { return w.length >= 2 && t.indexOf(w) >= 0; }); });
+    return { exact: [], near: any };
+  }
+
   // A small person finder: type part of a name, pick one.
   function personFinder() {
     var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
@@ -2861,9 +2872,11 @@
       if (!q) return;
       peopleList().then(function (list) {
         results.textContent = "";
-        list.filter(function (p) { return pName(p).toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
-          var b = mk("button", "quiet", pName(p)); b.type = "button";
-          b.addEventListener("click", function () { chosen.id = p.id; chosen.name = pName(p); cur.textContent = "Chosen: " + chosen.name; results.textContent = ""; search.value = ""; });
+        var m = peopleMatches(list, q), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) results.appendChild(mk("div", "hint", "No one matches every word. Closest matches:"));
+        shown.slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pFull(p)); b.type = "button";
+          b.addEventListener("click", function () { chosen.id = p.id; chosen.name = pFull(p); cur.textContent = "Chosen: " + chosen.name; results.textContent = ""; search.value = chosen.name; });
           results.appendChild(b);
         });
         if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Choose “A new person” to add them."));
@@ -3303,6 +3316,12 @@
     return m[3] ? m[2] + "-" + m[3] + "-" + m[1] : m[2] ? m[2] + "-" + m[1] : m[1];
   }
   function pName(rec) { return rec.display_name || rec.given_name || "(no name)"; }
+  // The whole name for pickers: the display name, plus the family name when the display name leaves it out.
+  function pFull(rec) {
+    var d = pName(rec), fam = rec.family_name;
+    if (fam && d.toLowerCase().indexOf(fam.toLowerCase()) < 0) return (rec.name_to_use || rec.given_name || d) + " " + fam;
+    return d;
+  }
   function pById(id) { for (var i = 0; i < pAll.length; i++) if (pAll[i].id === id) return pAll[i]; return null; }
   function pProblems(res, map) {
     var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
@@ -3850,9 +3869,11 @@
       var q = search.value.trim().toLowerCase(); results.textContent = "";
       if (!q) return;
       peopleList().then(function (list) {
-        list.filter(function (p) { return pName(p).toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
-          var b = mk("button", "quiet", pName(p)); b.type = "button";
-          b.addEventListener("click", function () { idEl.value = p.id; show(pName(p)); results.textContent = ""; search.value = ""; search.hidden = true; liveReady(); });
+        var m = peopleMatches(list, search.value.trim()), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) results.appendChild(mk("div", "hint", "No one matches every word. Closest matches:"));
+        shown.slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pFull(p)); b.type = "button";
+          b.addEventListener("click", function () { idEl.value = p.id; show(pFull(p)); results.textContent = ""; search.value = ""; search.hidden = true; liveReady(); });
           results.appendChild(b);
         });
         if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Add them in People first."));
@@ -4232,7 +4253,9 @@
 
   // ---- Instructors and Students stations. One builder, two configs. A roster entry points at a person: name and contact stay in
   // People and are read in. Adding is one window (pick an existing person or make a new one); nothing is matched for you.
-  var RISSUE = { required: "Required.", duplicate: "Already on this roster.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
+  var RISSUE = { "capabilities:out_of_range": "Use up to 30 tags, each up to 60 characters, separated by commas.", "capabilities:invalid_value": "Each tag needs a few characters, separated by commas.",
+                 "bio:out_of_range": "The bio can be up to 2000 characters.", "service_area:out_of_range": "Up to 300 characters.", "notes:out_of_range": "Up to 2000 characters.",
+                 required: "Required.", duplicate: "Already on this roster.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
                  invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_found: "That person was not found.",
                  immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed." };
   var RLABEL = { individual_id: "Person", status: "Status", bio: "Bio", capabilities: "What they can teach or do", service_area: "Where they will travel",
@@ -4244,7 +4267,7 @@
     { id: "instructors", coll: "instructor_rosters", pre: "ri", one: "instructor", Many: "Instructors", hours: true, curricula: true,
       fields: [
         { k: "bio", label: "Bio", t: "area", hint: "A short paragraph written for people choosing a class." },
-        { k: "capabilities", label: "What they can teach or do", t: "tags", hint: "Short tags separated by commas, for example prompting basics, large rooms." },
+        { k: "capabilities", label: "What they can teach or do", t: "tags", hint: "Separate tags with commas or put each on its own line. Each tag is a few words (up to 60 characters); up to 30 tags. For example: prompting basics, large rooms, voice and images." },
         { k: "service_area", label: "Where they will travel", t: "text", hint: "For example Denver metro, or online only." },
         { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." } ] },
     { id: "students", coll: "student_rosters", pre: "rs", one: "student", Many: "Students", hours: false,
@@ -4257,7 +4280,7 @@
     ps.forEach(function (p) {
       var text = (/email$/.test(p.field) && p.issue === "invalid_format") ? "That email address does not look right."
                : (/phone$/.test(p.field) && p.issue === "invalid_format") ? "That phone number does not look right. Use digits, for example 303-555-0142."
-               : (RISSUE[p.issue] || "That value is not valid.");
+               : (RISSUE[p.field + ":" + p.issue] || RISSUE[p.issue] || "That value is not valid.");
       if (p.existing_id) existing = p.existing_id;
       if (map && map[p.field]) mine[p.field] = text; else out.push((RLABEL[p.field] || p.field) + ": " + text);
     });
@@ -4269,7 +4292,8 @@
   function rField(f, idp, cur) {
     var wrap = mk("div"), l = mk("label", "f", f.label), el;
     if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
-    else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "tags" ? 1800 : 300; el.value = f.t === "tags" ? (cur || []).join(", ") : (cur == null ? "" : cur); }
+    else if (f.t === "tags") { el = mk("textarea"); el.rows = 3; el.maxLength = 1800; el.value = (cur || []).join(", "); el.style.minHeight = "72px"; }
+    else { el = mk("input"); el.type = "text"; el.maxLength = 300; el.value = (cur == null ? "" : cur); }
     el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
     if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
     var er = mk("div", "ferr"); wrap.appendChild(er);
@@ -4277,7 +4301,7 @@
   }
   function rRead(x) {
     var v = x.el.value.trim();
-    if (x.t === "tags") return v ? v.split(",").map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    if (x.t === "tags") return v ? v.split(/[,;\n]+/).map(function (s) { return s.trim(); }).filter(Boolean) : [];
     return v;
   }
   function rHoursText(av) {
@@ -4507,7 +4531,7 @@
     function choose(c) {
       S.choice = c; g("EPick").textContent = ""; g("Opts").textContent = "";
       g("New").hidden = !c.isNew;
-      g("Chosen").textContent = c.isNew ? "Adding a new person." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + ".";
+      g("Chosen").textContent = c.isNew ? "Adding a new person." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + "." + (c.noFamily ? " This person has no family name on file. Add it in People so they are not added twice." : "");
       if (c.isNew) {
         var parts = c.typed.split(/\s+/).filter(Boolean);
         newEls["person.given_name"].el.value = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
@@ -4521,13 +4545,15 @@
       peopleList().then(function (people) {
         if (g("Q").value.trim().toLowerCase() !== q) return;
         box.textContent = "";
-        people.filter(function (p) { return p.status !== "erased" && [pName(p), p.email, p.phone].join(" ").toLowerCase().indexOf(q) >= 0; }).slice(0, 8).forEach(function (p) {
+        var m = peopleMatches(people, g("Q").value.trim()), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) box.appendChild(mk("div", "hint", "No one matches every word you typed. Closest matches, so you do not add the same person twice:"));
+        shown.slice(0, 8).forEach(function (p) {
           var on = onRoster(p.id), rw = mk("div", "pickrow"), contact = [p.email, p.phone].filter(Boolean).join(" · ");
-          var b = mk("button", "quiet", pName(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
+          var b = mk("button", "quiet", pFull(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
           if (on) {
-            b.textContent = pName(p) + (contact ? " — " + contact : "") + " (already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ")";
+            b.textContent = pFull(p) + (contact ? " — " + contact : "") + " (already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ")";
             b.addEventListener("click", function () { openCard(on.id); });
-          } else b.addEventListener("click", function () { choose({ id: p.id, name: pName(p), contact: contact }); });
+          } else b.addEventListener("click", function () { g("Q").value = pFull(p); choose({ id: p.id, name: pFull(p), contact: contact, noFamily: !p.family_name }); });
           rw.appendChild(b); box.appendChild(rw);
         });
         var nb = mk("button", "", "This is a new person: " + g("Q").value.trim()); nb.type = "button";

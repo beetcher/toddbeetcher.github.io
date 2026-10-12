@@ -106,6 +106,14 @@ with sync_playwright() as p:
     check("a deleted curriculum shows as removed on the instructor", True)
     pg.select_option("#collPick", "curriculums"); pg.click("#curriculumsView .manualBtn")
     check("Curriculum manual opens", pg.locator("#manual h2", has_text="Curriculum").is_visible())
+    # one-tap switch on the card
+    pg.select_option("#collPick", "curriculums"); pg.select_option("#rcFilter", "")
+    pg.wait_for_selector("#rcList li button.stoggle")
+    sw = pg.locator("#rcList li button.stoggle").first
+    was = sw.get_attribute("aria-checked")
+    sw.click(); pg.wait_for_timeout(2400)
+    st = sorted(r["status"] for r in store.data.get("curriculums", {}).values())
+    check("the curriculum switch changes the saved status after the pause", sw.get_attribute("aria-checked") != was and ("inactive" in st) == (was == "true"), (was, st))
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()
