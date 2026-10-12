@@ -97,6 +97,8 @@
   .vname { font-size: 19px; font-weight: 800; }
   .type.on { color: #1d4d00; background: var(--new); }
   button.danger { background: var(--err); border-color: var(--err); }
+  li .tilebtns { padding: 0 14px 10px; }
+  li .tilebtns .confirm input { width: 100%; margin: 8px 0; }
   .actions-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 10px; }
   .confirm { background: #fff3f1; border: 1px solid #f0c4be; border-radius: 10px; padding: 10px 12px; margin: 0 0 10px; }
   .confirm .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
@@ -779,7 +781,8 @@
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
         '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add someone to this class</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
-        '<li><b>Delete</b> asks first. The class disappears from the list but the record is kept.</li>' +
+        '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled.</li>' +
+        '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>Fewest people, target and biggest size must go in order: fewest, then target, then biggest.</li>' +
@@ -2142,7 +2145,6 @@
     head.appendChild(chips);
 
     var detail = mk("div", "detail");
-    detail.appendChild(classActions(rec));
     var done = {};
     ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
       if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
@@ -2152,36 +2154,62 @@
       var open = li.classList.toggle("open");
       head.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    li.appendChild(head); li.appendChild(links); li.appendChild(detail);
+    li.appendChild(head); li.appendChild(links); li.appendChild(classActions(rec)); li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
 
   function classActions(rec) {
-    var wrap = document.createElement("div");
+    var wrap = document.createElement("div"); wrap.className = "tilebtns";
     var row = mk("div", "actions-row");
     var ed = mk("button", "", "Edit"); ed.type = "button";
+    var cn = mk("button", "", "Cancel class"); cn.type = "button";
     var del = mk("button", "danger", "Delete"); del.type = "button";
-    row.appendChild(ed); row.appendChild(del);
+    row.appendChild(ed);
+    if (rec.status !== "cancelled" && rec.status !== "completed") row.appendChild(cn);
+    row.appendChild(del);
     var box = mk("div", "confirm"); box.hidden = true;
-    box.appendChild(mk("div", "", "Delete this class? It is hidden from the lists but kept in the database. People's attendance records stay. Cancel the class instead if it should still show."));
+    var what = mk("div", ""), why = mk("input"); why.type = "text"; why.maxLength = 200; why.setAttribute("aria-label", "Why is it cancelled?"); why.placeholder = "Why? (optional)";
     var btns = mk("div", "btns");
-    var yes = mk("button", "danger", "Delete class"); yes.type = "button";
-    var no = mk("button", "quiet", "Cancel"); no.type = "button";
+    var yes = mk("button", "danger", ""); yes.type = "button";
+    var no = mk("button", "quiet", "Never mind"); no.type = "button";
     var err = mk("div", "msg"); err.setAttribute("role", "alert");
-    btns.appendChild(yes); btns.appendChild(no); box.appendChild(btns); box.appendChild(err);
+    btns.appendChild(yes); btns.appendChild(no);
+    box.appendChild(what); box.appendChild(why); box.appendChild(btns); box.appendChild(err);
+    var mode = "";
+    function show(m) {
+      if (!box.hidden && mode === m) { box.hidden = true; return; }
+      mode = m; box.hidden = false; err.textContent = ""; why.hidden = m !== "cancel";
+      what.textContent = m === "cancel"
+        ? "Cancel this class? It stays in the list marked cancelled. Everyone in it, students and instructors, is cancelled and their requests go back to waiting to be placed. Use this when a real class does not happen."
+        : "Delete this class? Use this for a class built by mistake or a duplicate. It disappears from the lists, everyone in it is cancelled, and their requests go back to waiting to be placed. The record is kept.";
+      yes.textContent = m === "cancel" ? "Cancel class" : "Delete class";
+    }
+    function problem(res) {
+      var e = res.body && res.body.error;
+      var code = e && (e.code || (e.problems && e.problems[0] && (e.problems[0].field + " " + e.problems[0].issue)));
+      return adminProblem(res.status) + (code ? " (" + res.status + ": " + code + ")" : " (" + res.status + ")");
+    }
     ed.addEventListener("click", function () { openClassEdit(rec); });
-    del.addEventListener("click", function () { box.hidden = !box.hidden; err.textContent = ""; });
+    cn.addEventListener("click", function () { show("cancel"); });
+    del.addEventListener("click", function () { show("delete"); });
     no.addEventListener("click", function () { box.hidden = true; });
     yes.addEventListener("click", function () {
       yes.disabled = true; err.textContent = "";
-      admin("soft_delete", { id: rec.id }, "scheduled_classes").then(function (res) {
+      var p = mode === "cancel"
+        ? admin("update", { id: rec.id, changes: Object.assign({ status: "cancelled" }, why.value.trim() ? { cancelled_reason: why.value.trim() } : {}), expected_updated_at: rec.updated_at }, "scheduled_classes")
+        : admin("soft_delete", { id: rec.id }, "scheduled_classes");
+      p.then(function (res) {
         yes.disabled = false;
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { $("cNotice").textContent = "Deleted " + (rec.title || "class") + "."; loadClasses(); }
+        if (res.status === 200 && res.body && res.body.ok) {
+          $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled.";
+          loadPlaced(); loadClasses();
+        }
         else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
-        else if (res.status === 409) err.textContent = "This class still holds old seat decisions from before attendance existed, so it cannot be deleted. Set its status to cancelled instead.";
-        else err.textContent = adminProblem(res.status);
+        else if (res.status === 409 && mode === "cancel") err.textContent = "This class changed since the list loaded. Refresh and try again.";
+        else if (res.status === 409) err.textContent = "This class still holds old seat decisions from before attendance existed, so it cannot be deleted. Cancel it instead.";
+        else err.textContent = problem(res);
       });
     });
     wrap.appendChild(row); wrap.appendChild(box);
