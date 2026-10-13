@@ -569,8 +569,7 @@ a.fab { display: inline-block; text-decoration: none; }
 .hello__hike { display: grid; grid-template-columns: 54fr 43fr; gap: 3%; align-items: center; }
 .hello__duo { display: flex; flex-direction: column; gap: var(--sp-md); }
 .hello__family .hello__cap span { font-size: clamp(1.05rem, 4vw, 1.3rem); }
-.hello .hello__li { margin: var(--sp-xs) 0 0; font-size: .95rem; font-weight: 600; }
-.hello .hello__li a { color: var(--color-nav); text-decoration: underline; text-underline-offset: 3px; }
+.hello .hello__li { margin: var(--sp-xs) 0 var(--sp-xs); }
 .hello__family .hello__cap span { font-size: clamp(1.15rem, 4.4vw, 1.5rem); }
 .hello__p4 .hello__cap, .webpad .hello__cap { padding-top: 6px; }
 .hello__p4 .hello__cap span, .webpad .hello__cap span { font-size: clamp(1rem, 3.6vw, 1.25rem); }
