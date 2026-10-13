@@ -117,7 +117,7 @@ const STORIES = [
     note: 'The air conditioner lives between two houses in a bit of a hot box.',
     callout: 'Electric bill: $346 in July, $180 in August.',
     promptLabel: 'See how I asked Doc',
-    prompt: '\u201cThe only thing I\u2019m thinking about is the air conditioner lives between two houses in a bit of a hot box. I\u2019m sure that the air temperature around the air conditioner is very hot. I could put a fan outside on the 100-degree day to try and move some cooler air into that pocket so that it\u2019s, you know, not just stagnant air. Think about the hot air being rejected from the air conditioner is coming back down and staying in that hot box around the air conditioner. So it\u2019s kind of warming the external area around it instead of cool air moving past it.\u201d',
+    prompt: '\u201cYou\u2019re a 35-year HVAC veteran. My AC is making a weird noise, there\u2019s ice on it, water on the floor, and the house won\u2019t cool. Talk me through it. What\u2019s wrong, and what can I fix myself?\u201d',
     payoff: 'A new air conditioner would have cost thousands. I did it for about $30 in parts, about $100 in tools, and my chat subscription.',
     bigLine: 'It\u2019s really %#@&! amazing.',
     colors: ['#2bb8ff', '#19c37d'],
