@@ -96,7 +96,7 @@ Every handler replies in this shape:
 - Success: `{ "ok": true, "data": { ... } }`
 - Failure: `{ "ok": false, "error": { "code": "...", "message": "...",
   "fields": [ { "field": "...", "code": "...", "message": "..." } ] } }`
-- Error codes: `validation_failed`, `over_capacity`, `class_not_found`,
+- Error codes: `validation_failed`, `over_capacity`, `class_not_found`, `venue_not_found`,
   `class_closed`, `rate_limited`, `not_found`, `server_error`.
 - A repeated idempotency key is not an error: return the original success.
   A repeat submission is not an error either: it is saved and flagged.

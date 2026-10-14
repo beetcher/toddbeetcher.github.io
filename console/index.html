@@ -1103,6 +1103,11 @@
     var ppl = document.createElement("span"); ppl.textContent = "People: " + (rec.attendee_count != null ? rec.attendee_count : "—");
     var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
     chips.appendChild(ppl); chips.appendChild(st);
+    if (rec.preferred_venue_id) {
+      var vc = document.createElement("span"); vc.className = "venuechip";
+      vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");
+      chips.appendChild(vc);
+    }
 
     [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
 
@@ -2148,6 +2153,14 @@
     });
   }
 
+  // "Name, Town" for a venue the requester picked on the form. Empty until the venues are loaded or when it is gone.
+  function venueAsked(id) {
+    var v = id ? cVenueById[id] : null;
+    if (!v) return "";
+    var town = v.place && v.place.address && v.place.address.locality;
+    return (v.name || "(no name)") + (town ? ", " + town : "");
+  }
+
   // ---- time zone helpers: the time is typed in the class's time zone and saved as UTC
   function zoneParts(ms, tz) {
     var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
@@ -3034,6 +3047,15 @@
     var ven = mk("select"); opt(ven, "", "Not chosen yet");
     cVenues.forEach(function (v) { if (v.status === "active") opt(ven, v.id, v.name || "(no name)"); });
     lab("Venue", ven, "ven");
+    if (req && req.preferred_venue_id) {   // the requester picked a venue on the form: offer it, the operator may keep it or change it
+      var asked = venueAsked(req.preferred_venue_id), askedV = cVenueById[req.preferred_venue_id];
+      if (askedV && askedV.status === "active") {
+        ven.value = askedV.id;
+        el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + asked + ". It is filled in; change it if it does not suit."));
+      } else {
+        el.appendChild(mk("div", "hint", "The requester asked for a venue that is no longer active" + (asked ? " (" + asked + ")" : "") + ". Choose another."));
+      }
+    }
     var room = mk("select"); lab("Room", room, "room");
     var date = mk("input"); date.type = "date"; lab("Date", date, "date");
     var time = mk("input"); time.type = "time"; lab("Start time", time, "time");
@@ -3401,6 +3423,7 @@
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
       var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
+      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose A new class (build it now) to start from that venue."));
       host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onCancel: function () { host.hidden = true; host.textContent = ""; }, onAdded: function (d, s) {
         host.hidden = true; host.textContent = "";
         var num = d.confirmation_number || rec.confirmation_number;

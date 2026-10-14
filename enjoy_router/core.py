@@ -40,6 +40,7 @@ CONFIRMATION_LENGTH = 6
 HTTP_STATUS = {
     "validation_failed": 400,
     "class_not_found": 404,
+    "venue_not_found": 404,
     "not_found": 404,
     "class_closed": 409,
     "over_capacity": 409,
@@ -106,6 +107,7 @@ class DuplicateIdempotencyKey(Exception):
 
 class Store(Protocol):
     def get_class(self, class_id: str) -> Optional[dict]: ...
+    def get_venue(self, venue_id: str) -> Optional[dict]: ...
     def find_by_idempotency_key(self, key: str) -> Optional[dict]: ...
     def find_latest_by_email_and_type(self, email: str, registration_type: str) -> Optional[dict]: ...
     def confirmation_number_exists(self, number: str) -> bool: ...
@@ -313,6 +315,14 @@ def handle_registration_request(
             "class_registered_at_request": cls["registered_count"],
             "seats_available_at_request": max(0, cls["capacity_max"] - cls["registered_count"]),
         }
+
+    # 8b. A preferred venue: it must exist, be active and be a public venue. It is a preference, not a booking.
+    venue_id = body.get("preferred_venue_id")
+    if venue_id:
+        venue = store.get_venue(venue_id)
+        if (venue is None or venue.get("deleted_at") or venue.get("status") != "active"
+                or venue.get("is_public_venue") is not True):
+            return _err("venue_not_found", "That venue was not found.")
 
     # 9. Repeats are flagged, never blocked.
     previous = store.find_latest_by_email_and_type(body["email"], body["registration_type"])

@@ -7,12 +7,16 @@ from core import DuplicateIdempotencyKey
 
 
 class MemoryStore:
-    def __init__(self, classes: list):
+    def __init__(self, classes: list, venues: Optional[list] = None):
         self.classes = {c["id"]: c for c in classes}
+        self.venues = {v["id"]: v for v in (venues or [])}
         self.requests: list = []  # stored documents, oldest first
 
     def get_class(self, class_id: str) -> Optional[dict]:
         return self.classes.get(class_id)
+
+    def get_venue(self, venue_id: str) -> Optional[dict]:
+        return self.venues.get(venue_id)
 
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:
         return next((d for d in self.requests if d.get("idempotency_key") == key), None)

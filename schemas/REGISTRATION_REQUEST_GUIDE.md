@@ -98,6 +98,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 - `requested_date`, `alternate_requested_date`, `requested_time_of_day` (morning, afternoon, evening), `preferred_times` (free text for anything else). Optional, because someone may be flexible. For a "none fit" class request these act as a demand signal.
 - `location_type`: `home` or `off_site`. Required for private and group.
 - `preferred_location`: where, in their words. Used by private, group and class ("none fit").
+- `preferred_venue_id`: the venue the requester picked from the public list on the form (the list shows each active public venue as "Name, Town"). Private and group only, and only with `location_type` `off_site`; a home request or a class request may not carry it. The endpoint checks the venue exists, is active and is public (`venue_not_found`). It is a preference, not a booking: when the operator builds the class for a one-to-one request, the Console offers this venue first and the operator may accept it or choose another.
 - `venue_arrangement`: `we_have_space` or `need_suggestion`. Who arranges the space.
 - `sessions_requested`: 1 to 52, for a series. Optional.
 
@@ -127,11 +128,12 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 1. **Honeypot first.** Remove the hidden field `website` before anything else. If it held anything, reply as if the request succeeded and store nothing. (It is not in the schema, which rejects unknown fields, so it must be removed before validating.)
 2. Reject any submission containing a readOnly field.
 3. Normalize the email (trim, lowercase) so validation and matching see the clean value. Do this before validating, or surrounding spaces would fail the email format.
-4. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
+4. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `venue_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
 5. Honor the idempotency key: the same key twice returns the original success and creates nothing. This is not an error.
 6. Dates: `requested_date` and `alternate_requested_date` must not be in the past (Mountain time). Otherwise `validation_failed` with a field error.
 7. Names versus count: the names in `participants`, plus the requester if attending, must not exceed `attendee_count`.
 8. For a class pick: load the class. Not found, or a class that is not a public workshop, gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
+8b. For a `preferred_venue_id`: load the venue. Not found, deleted, not `active`, or not a public venue (`is_public_venue` true) gives `venue_not_found`. Otherwise the id is stored as sent; nothing else about the venue is copied.
 9. **Repeats are flagged, never blocked.** Look for an earlier request with the same normalized email and the same type. If one exists, save the new request as a new record with `previous_id` pointing at the earlier one, and reply with a normal success. Because it is only a flag, a false match (a couple sharing one email) does no harm. Repeats are not errors.
 10. Generate `id`, `program_slug` (`launch` for the /enjoy pages), timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`.
 11. Check the full record against the schema and confirm every `x_server_required` field is present.

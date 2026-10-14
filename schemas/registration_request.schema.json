@@ -222,6 +222,11 @@
       "maxLength": 200,
       "x_pii": true
     },
+    "preferred_venue_id": {
+      "description": "UUID of the venue the requester picked from the public list on the form. Private and group requests only, and only with location_type off_site (a home request has no venue). The venue must exist, be active and be a public venue (venue_not_found otherwise). It is a preference, not a booking: the operator may accept it when building the class or choose another place. Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
     "what_they_want": {
       "description": "In the requester's words: what they would love to do with AI. Free text up to 2000 characters. The best signal of what a person cares about. Optional.",
       "type": "string",
@@ -509,6 +514,23 @@
     {
       "if": {
         "properties": {
+          "location_type": {
+            "const": "home"
+          }
+        },
+        "required": [
+          "location_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "preferred_venue_id": false
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
           "registration_type": {
             "const": "class"
           }
@@ -521,6 +543,7 @@
         "properties": {
           "duration_minutes_requested": false,
           "location_type": false,
+          "preferred_venue_id": false,
           "venue_arrangement": false,
           "sessions_requested": false,
           "group_type": false

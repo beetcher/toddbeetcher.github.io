@@ -24,9 +24,14 @@ class FirestoreStore:
         self.requests = client.collection(schemas.collection)
         self.classes = client.collection(schemas.class_collection)
         self.keys = client.collection(KEYS_COLLECTION)
+        self.venues = client.collection("venues")
 
     def get_class(self, class_id: str) -> Optional[dict]:
         snap = self.classes.document(class_id).get()
+        return snap.to_dict() if snap.exists else None
+
+    def get_venue(self, venue_id: str) -> Optional[dict]:
+        snap = self.venues.document(venue_id).get()
         return snap.to_dict() if snap.exists else None
 
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:

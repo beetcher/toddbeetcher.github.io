@@ -38,6 +38,34 @@
     if (isLocalPage()) return LOCAL_EMULATOR;
     return PROD_ENDPOINT;
   }
+  // The venue list (private and group pages): active public venues as "Name, Town", read from our server.
+  var VENUES_URL = 'https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_public_venues';
+  function venuesUrl() {
+    var e = endpoint();
+    return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_venues') : VENUES_URL;
+  }
+  var pendingWhere = '';   // a venue choice saved in the draft, applied once the list has loaded
+  function loadVenues() {
+    if (!CFG.showWhere || !window.fetch) return;
+    var ctl = ('AbortController' in window) ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(venuesUrl(), { method: 'GET', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(to);
+        var list = j && j.ok && j.data && Array.isArray(j.data.venues) ? j.data.venues : [];
+        var f = FIELDS.location_type; if (!f || !list.length) return;   // no list: the two plain choices stay
+        list.forEach(function (v) {
+          if (!v || typeof v.id !== 'string' || typeof v.name !== 'string') return;
+          var i = h('input', { type: 'radio', name: 'location_type', value: 'venue:' + v.id });
+          f.els.push(i);
+          f.box.appendChild(h('label', { class: 'rf__choice' }, [i, h('span', { text: v.town ? v.name + ', ' + v.town : v.name })]));
+        });
+        if (pendingWhere && !val('location_type')) setVal('location_type', pendingWhere);
+        updateNeeds();
+      })
+      .catch(function () { clearTimeout(to); });
+  }
   function configured() { return endpoint().indexOf('REPLACE') !== 0; }
 
   // ---------- tiny helpers ----------
@@ -116,7 +144,7 @@
     });
     fs.appendChild(box);
     fs.appendChild(errorBox(name));
-    FIELDS[name] = { kind: 'radio', els: inputs, wrap: fs, required: !!o.required, label: label };
+    FIELDS[name] = { kind: 'radio', els: inputs, box: box, name: name, wrap: fs, required: !!o.required, label: label };
     return fs;
   }
   function checkField(name, label, o) {
@@ -247,7 +275,7 @@
     FIELDS.attendee_count.el.setAttribute('min', String(CFG.minCount));
     FIELDS.attendee_count.el.setAttribute('max', '50');
     if (CFG.showWhere) {
-      need.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'Somewhere else (a library, cafe, hall, office)']], { required: true }));
+      need.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: true }));
     }
     var parts = [section('What we need', need)];
 
@@ -427,6 +455,7 @@
     var any = false;
     Object.keys(d.fields || {}).forEach(function (n) {
       var v = d.fields[n]; if (v === '' || v === false || v == null) return;
+      if (n === 'location_type' && String(v).indexOf('venue:') === 0) pendingWhere = v;
       setVal(n, v); any = true;
     });
     (d.people || []).forEach(function (p) { addPerson(p, true); any = true; });
@@ -522,6 +551,10 @@
     var strs = ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times',
       'what_they_want', 'how_heard', 'preferred_contact_method', 'venue_arrangement', 'location_type', 'group_type', 'organization_name'];
     strs.forEach(function (n) { if (FIELDS[n] && val(n)) r[n] = val(n); });
+    if (String(r.location_type || '').indexOf('venue:') === 0) {   // a venue from the list: a public place, plus which one
+      r.preferred_venue_id = r.location_type.slice(6);
+      r.location_type = 'off_site';
+    }
     if (FIELDS.proficiency && val('proficiency')) r.proficiency = parseInt(val('proficiency'), 10);
     if (FIELDS.needs_invoice && val('needs_invoice')) r.needs_invoice = true;
     if (TYPE === 'class') r.no_class_fits = true; // no classes are scheduled yet: this is a request to build one
@@ -600,6 +633,7 @@
   form.addEventListener('input', onChange);
   form.addEventListener('change', onChange);
   var restored = loadDraft();
+  loadVenues();
   openMoreIfFilled();
   updateNeeds();
   if (restored && draftNote) {
