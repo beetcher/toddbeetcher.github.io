@@ -72,6 +72,7 @@
   .when { color: var(--muted); font-size: 14px; margin-top: 2px; }
   .who { margin-top: 6px; font-weight: 600; }
   .sub { color: var(--muted); font-size: 14px; }
+  select.buildnew { border-color: #17692f; box-shadow: 0 0 0 2px #17692f; background: #eefaf1; }
   .chips { margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
   .detail { display: none; border-top: 1px solid var(--line); padding: 10px 14px 12px; background: #fcfaf5; font-size: 14px; }
   li.open .detail { display: block; }
@@ -427,6 +428,7 @@
         </select>
         <button type="button" class="quiet manualBtn" data-m="venues">Manual</button>
         <button id="vRefresh" class="quiet" type="button">Refresh</button>
+        <button id="vGps" class="quiet" type="button">Find missing GPS</button>
         <button id="addBtn" type="button">Add venue</button>
       </div>
     </div>
@@ -791,7 +793,7 @@
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer they gave.</li>' +
-        '<li><b>Put in a class…</b> places the requester in a class. It says who will be added to the student roster. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>A new class (build it now)</b> in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class. It says who will be added to the student roster. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
         '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
@@ -1107,7 +1109,9 @@
     if (rec.preferred_venue_id) {
       var vc = document.createElement("span"); vc.className = "venuechip";
       vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");
+      vc.setAttribute("data-vid", rec.preferred_venue_id);
       chips.appendChild(vc);
+      if (!cVenues.length && !venueChipFetch) venueChipFetch = loadVenueChoices().then(refreshVenueChips);
     }
 
     [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
@@ -1400,12 +1404,34 @@
   function humanize(n) { if (LABELS[n]) return LABELS[n]; var t = n.replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); }
   function firstSentence(t) { if (!t) return ""; var m = t.match(/^.*?[.!?](\s|$)/); return (m ? m[0] : t).trim(); }
 
+  var GPS_SAID = {
+    found: "GPS found and saved (looked up from the address).",
+    no_match: "the lookup did not find that address. Enter a point by hand in Places if you need one.",
+    skipped_entered: "this place already has a point someone entered, so it was left alone.",
+    skipped_not_public: "private spaces are not looked up.",
+    skipped_no_address: "this place has no street address to look up.",
+    skipped_off: "the lookup is not turned on."
+  };
   function venueActions(rec) {
     var wrap = document.createElement("div");
     var row = document.createElement("div"); row.className = "actions-row";
     var ed = document.createElement("button"); ed.type = "button"; ed.textContent = "Edit";
     var del = document.createElement("button"); del.type = "button"; del.className = "danger"; del.textContent = "Delete";
-    row.appendChild(ed); row.appendChild(del);
+    row.appendChild(ed);
+    if (rec.is_public_venue && rec.place) {
+      var gb = document.createElement("button"); gb.type = "button"; gb.textContent = "Find GPS";
+      gb.addEventListener("click", function () {
+        gb.disabled = true; $("vNotice").textContent = "Looking up GPS for " + (rec.name || "the venue") + "…";
+        admin("find_gps", { id: rec.id }).then(function (res) {
+          gb.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { $("vNotice").textContent = (rec.name || "Venue") + ": " + GPS_SAID[res.body.data.gps]; loadVenues(); }
+          else $("vNotice").textContent = adminProblem(res.status);
+        });
+      });
+      row.appendChild(gb);
+    }
+    row.appendChild(del);
 
     var box = document.createElement("div"); box.className = "confirm"; box.hidden = true;
     var q = document.createElement("div");
@@ -2154,6 +2180,12 @@
     });
   }
 
+  var venueChipFetch = null;
+  function refreshVenueChips() {   // the venue names arrive after the request cards are drawn
+    Array.prototype.forEach.call(document.querySelectorAll(".venuechip[data-vid]"), function (c) {
+      var n = venueAsked(c.getAttribute("data-vid")); if (n) c.textContent = "Venue asked for: " + n;
+    });
+  }
   // "Name, Town" for a venue the requester picked on the form. Empty until the venues are loaded or when it is gone.
   function venueAsked(id) {
     var v = id ? cVenueById[id] : null;
@@ -2810,6 +2842,25 @@
   $("addBtn").addEventListener("click", openForm);
   $("cancelBtn").addEventListener("click", closeForm);
   $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; loadVenues(); });
+  $("vGps").addEventListener("click", function () {   // look up GPS for every public venue that has an address but no point
+    var b = $("vGps"); b.disabled = true; $("vNotice").textContent = "Looking for venues without GPS…";
+    admin("list", { limit: 200, expand: true }).then(function (res) {
+      if (res.status === 401) { b.disabled = false; lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { b.disabled = false; $("vNotice").textContent = adminProblem(res.status); return; }
+      var todo = (res.body.data.records || []).filter(function (v) { return v.is_public_venue && v.place && !v.place.has_gps; });
+      if (!todo.length) { b.disabled = false; $("vNotice").textContent = "Every public venue already has GPS."; return; }
+      var tally = {}, i = 0;
+      (function next() {
+        if (i >= todo.length) {
+          b.disabled = false;
+          $("vNotice").textContent = "Checked " + todo.length + (todo.length === 1 ? " venue" : " venues") + ": " + (tally.found || 0) + " found, " + (tally.no_match || 0) + " not found by the lookup, " + ((todo.length - (tally.found || 0) - (tally.no_match || 0))) + " skipped.";
+          loadVenues(); return;
+        }
+        $("vNotice").textContent = "Looking up " + (i + 1) + " of " + todo.length + "…";
+        admin("find_gps", { id: todo[i++].id }).then(function (r) { var k = (r.status === 200 && r.body.ok) ? r.body.data.gps : "skipped_off"; tally[k] = (tally[k] || 0) + 1; next(); });
+      })();
+    });
+  });
   $("vFilter").addEventListener("change", function () { $("vNotice").textContent = ""; loadVenues(); });
 
   $("addForm").addEventListener("submit", function (e) {
@@ -3111,12 +3162,12 @@
     var clsSel = null, bx = null;
     if (!opts.cls) {
       clsSel = mk("select"); opt(clsSel, "", "Choose a class");
-      if (opts.canBuild) opt(clsSel, BUILD, "A new class (build it now)");
+      if (opts.canBuild) { opt(clsSel, BUILD, "+ A new class (build it now)"); var nb = clsSel.lastChild; nb.style.color = "#17692f"; nb.style.fontWeight = "700"; }
       (opts.classes || []).slice().sort(function (a, b) { return (a.starts_at || "9") < (b.starts_at || "9") ? -1 : 1; }).forEach(function (c) { opt(clsSel, c.id, (c.title || "(no title)") + " · " + classWhen(c) + " (" + c.status + ")"); });
       field("Class", clsSel, "cls");
       if (opts.canBuild) {
         bx = buildClassBox(uid, req); bx.el.hidden = true; form.appendChild(bx.el);
-        clsSel.addEventListener("change", function () { bx.el.hidden = clsSel.value !== BUILD; });
+        clsSel.addEventListener("change", function () { bx.el.hidden = clsSel.value !== BUILD; clsSel.classList.toggle("buildnew", clsSel.value === BUILD); });
       }
     }
     var role = mk("select"); ["student", "primary_instructor", "instructor"].forEach(function (r) { opt(role, r, ROLE_WORD[r]); });
@@ -3424,7 +3475,7 @@
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
       var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
-      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose A new class (build it now) to start from that venue."));
+      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose + A new class (build it now) to start from that venue."));
       host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onCancel: function () { host.hidden = true; host.textContent = ""; }, onAdded: function (d, s) {
         host.hidden = true; host.textContent = "";
         var num = d.confirmation_number || rec.confirmation_number;
@@ -3479,7 +3530,7 @@
       { t: "Check the result: Attendance on the class card shows the person and their status.", go: "classes", b: "Open Classes" } ] },
     { id: "build_class", title: "Build a class for a request", steps: [
       { t: "Make sure the venue (active) and curriculum exist, and the instructor is on the Instructors list.", go: "venues", b: "Open Venues" },
-      { t: "On the request, tap Put in a class… and choose A new class (build it now).", go: "requests", b: "Open Requests" },
+      { t: "On the request, tap Put in a class… and choose + A new class (build it now).", go: "requests", b: "Open Requests" },
       { t: "Pick the curriculum, venue, date and time, and the lead instructor, then build. The requester is placed in it.", go: "requests", b: "Open Requests" },
       { t: "Open the class to confirm the details; change the status to confirmed when the person agrees.", go: "classes", b: "Open Classes" } ] },
     { id: "class_cancelled", title: "When a class is cancelled", steps: [
@@ -3989,6 +4040,7 @@
     if (!pl) parts.push("No place yet");
     else if (pl.address && (pl.address.locality || pl.address.region)) parts.push([pl.address.locality, pl.address.region].filter(Boolean).join(", "));
     else parts.push(pl.name || "Place saved");
+    if (pl) parts.push(pl.has_gps ? "GPS: " + (pl.gps_source === "entered" ? "entered" : "looked up") : "No GPS");
     if (rec.main_contact) parts.push("Contact: " + (rec.main_contact.display_name || "(unavailable)"));
     return parts.join(" · ");
   }

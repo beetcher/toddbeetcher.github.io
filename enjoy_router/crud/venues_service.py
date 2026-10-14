@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from . import geocoder
 from . import individuals_crud as I
 from . import individuals_service as IS
 from . import location_links_crud as LK
@@ -106,6 +107,8 @@ def _place_view(store, venue_id):
         addrs.sort(key=lambda a: not a.get("is_primary"))
         view = {"location_id": loc["id"], "link_id": link["id"], "name": loc.get("name"),
                 "has_gps": bool(loc.get("geometries")), "status": loc.get("status")}
+        if loc.get("geometries"):
+            view["gps_source"] = "looked_up" if all(g.get("source") == "geocoder" for g in loc["geometries"]) else "entered"
         if addrs:
             view["address"] = addrs[0]
         if loc.get("time_zone"):
@@ -251,8 +254,68 @@ def create_with_place(store, data, actor, address=None, location_id=None, source
             out["venue"], out["location_id"] = venue, loc_id
     except _Abort as stop:
         return stop.result
-    return success({**expanded(store, out["venue"]), "created_place": address is not None})
+    if address is not None:
+        _try_gps(store, out["venue"]["id"], actor, now)
+    return success({**expanded(store, V.get(store, out["venue"]["id"]).data), "created_place": address is not None})
 
+
+
+def _civic_address(loc: dict):
+    addrs = [a for a in loc.get("addresses", []) if a.get("usage") == "civic"]
+    addrs.sort(key=lambda a: not a.get("is_primary"))
+    return addrs[0] if addrs else None
+
+
+def find_gps(store, id, actor, now=None):  # noqa: A002
+    """Look up GPS for a venue's place from its street address and save it as a center point marked source geocoder.
+    Best effort, never an error for the venue: the result says what happened in `gps`:
+      found | no_match | skipped_not_public | skipped_entered (a point someone entered is kept) | skipped_no_address | skipped_off
+    Only points this lookup made (source geocoder) are ever replaced."""
+    got = V.get(store, id)
+    if not got.ok:
+        return got
+    venue = got.data
+
+    def done(status, **extra):
+        return success({**expanded(store, V.get(store, id).data), "gps": status, **extra})
+
+    if geocoder.lookup is None:
+        return done("skipped_off")
+    if venue.get("is_public_venue") is not True:
+        return done("skipped_not_public")
+    links = _live_place_link(store, id)
+    loc = None
+    for link in links:
+        r = LOC.get(store, link["location_id"])
+        if r.ok:
+            loc = r.data
+            break
+    if loc is None:
+        return done("skipped_no_address")
+    manual = [g for g in loc.get("geometries", []) if g.get("source") != "geocoder"]
+    if manual:
+        return done("skipped_entered")
+    addr = _civic_address(loc)
+    if addr is None or not geocoder.one_line(addr):
+        return done("skipped_no_address")
+    point = geocoder.lookup(addr)
+    if point is None:
+        return done("no_match")
+    today = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
+    geo = {"role": "center", "geometry": {"type": "Point", "coordinates": [round(point[1], 6), round(point[0], 6)]},
+           "source": "geocoder", "as_of": today}
+    up = LOC.update(store, loc["id"], {"geometries": [geo]}, actor, now=now)
+    if not up.ok:
+        return done("no_match")
+    return done("found")
+
+
+def _try_gps(store, venue_id, actor, now):
+    """After a venue or its place is saved: look up GPS without ever failing the save."""
+    try:
+        find_gps(store, venue_id, actor, now=now)
+    except Exception:   # the save already happened; GPS can be found later with Find GPS
+        pass
 
 
 def set_place(store, id, actor, address=None, location_id=None, source="dashboard", now=None):
@@ -285,4 +348,5 @@ def set_place(store, id, actor, address=None, location_id=None, source="dashboar
             _link_to(store, tx, id, loc_id, actor, source, now, valid_from=today)
     except _Abort as stop:
         return stop.result
+    _try_gps(store, id, actor, now)
     return success({**expanded(store, V.get(store, id).data), "changed": True})

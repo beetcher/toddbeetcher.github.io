@@ -28,6 +28,7 @@ from datetime import datetime, timezone
 from firebase_functions import https_fn, options
 
 from core import Schemas
+from crud import geocoder
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
 from handler import handle_http
@@ -49,6 +50,8 @@ ADMIN_KEY = os.environ.get("ICDT_ADMIN_KEY", "")  # the Console lock; never logg
 LOCAL_TESTING = os.environ.get("FUNCTIONS_EMULATOR") == "true" or os.environ.get("ICDT_STORE") == "memory"
 
 _schemas = Schemas.load()
+if not LOCAL_TESTING:
+    geocoder.lookup = geocoder.census_lookup   # the deployed functions look up venue GPS; tests and the emulator never do
 _rate_rules = os.environ.get("ICDT_RATE_RULES")
 if _rate_rules:
     logging.getLogger("enjoy_router").warning("ICDT_RATE_RULES is set (%s): the public rate limit is overridden", _rate_rules)

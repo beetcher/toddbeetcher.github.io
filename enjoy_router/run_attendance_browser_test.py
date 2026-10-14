@@ -182,7 +182,7 @@ with sync_playwright() as p:
     li2.get_by_role("button", name="Put in a class…").click()
     pg.wait_for_selector("#list li:has-text('Dana Fox') .putbox form")
     f = li2.locator(".putbox form")
-    f.locator("select[id$='_cls']").select_option(label="A new class (build it now)")
+    f.locator("select[id$='_cls']").select_option(label="+ A new class (build it now)")
     check("build box appears", f.locator(".addbox").first.is_visible())
     f.locator("select[id$='_n_cur']").select_option(index=1)
     check("title fills from curriculum and requester", f.locator("input[id$='_n_title']").input_value() == "Intro to AI for Dana Fox", f.locator("input[id$='_n_title']").input_value())
