@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/organization.schema.json",
+  "title": "organization",
+  "description": "A persistent organized entity with its own identity: a company, a nonprofit, a school district, a school, a board, a club, a training provider. It holds only what is true of every organization: names, kinds, a short description, a web page, public contact, outside identifiers, dates and its own status. It holds NO addresses, people, parent organization or LAUNCH workshop concepts: places are location_link records, people and leadership and affiliations are organization_link records (a later schema), and facts that belong to one kind only (a school's grade levels, a nonprofit's tax status) are separate profile records added when a product needs them. An organization is not a venue (a destination with rooms and rules) and not a location (a place); a venue or location may be linked to it. It may have no location at all (a virtual organization) or many. A sender never provides readOnly fields. Endpoint rules the schema cannot express: a sender may set status only to active, inactive or closed (merged comes only from a future merge handler). Nothing refuses a save beyond the schema: names are never unique, dates are not compared, and an organization is never merged or de-duplicated by name alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept until the owner deletes it. Contact details of a sole proprietor can be personal data; delete or blank them on request. (A written policy only; nothing enforces it yet.)",
+  "x_history": "in_place",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "description": "What people call the organization, such as 'Ozo Coffee' or 'Boulder Valley School District'. Required, 1 to 200 characters.",
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 1
+    },
+    "legal_name": {
+      "description": "The registered legal name, when it differs from the name people use. Optional.",
+      "type": "string",
+      "maxLength": 200
+    },
+    "short_name": {
+      "description": "A short everyday name or abbreviation, such as 'BVSD'. Optional, up to 60 characters.",
+      "type": "string",
+      "maxLength": 60
+    },
+    "aliases": {
+      "description": "Other names the organization is or was known by: former names, trade names, abbreviations. For search and matching only; never unique and never an identity. Up to 20.",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "description": "One name.",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "kinds": {
+      "description": "What sort of organization this is. Several may apply at once (a nonprofit that is also a school). One or more of: business, nonprofit, school, school_district, college_university, government, governing_body (a board or council), association, club, training_provider, community_group, other. Optional, up to 5, no repeats. A short list that can grow.",
+      "type": "array",
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "business",
+          "nonprofit",
+          "school",
+          "school_district",
+          "college_university",
+          "government",
+          "governing_body",
+          "association",
+          "club",
+          "training_provider",
+          "community_group",
+          "other"
+        ]
+      }
+    },
+    "description": {
+      "description": "What the organization is and does, in words. About the organization only. Optional, up to 2000 characters.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "website_url": {
+      "description": "The organization's main web page, starting with http:// or https://. Optional.",
+      "type": "string",
+      "maxLength": 300,
+      "pattern": "^https?://[^\\s]+$"
+    },
+    "email": {
+      "description": "The organization's public contact email. Optional. Lowercase. Not a person's address; a person is an individual linked to the organization. A sole proprietor's contact details can be personal data.",
+      "type": "string",
+      "maxLength": 200,
+      "format": "email",
+      "x_pii": true
+    },
+    "phone": {
+      "description": "The organization's public contact phone. Optional. Digits with an optional leading plus, spaces, dashes, dots and brackets.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[+]?[0-9 ().-]{7,25}$",
+      "x_pii": true
+    },
+    "identifiers": {
+      "description": "Outside identifiers for the organization: an EIN (type ein), a state or district code, a registration number. Each has a type, a value and an optional description. Up to 20. Government ids of people never go here.",
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "description": "What kind of identifier, lowercase words and underscores, such as ein. Required.",
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "value": {
+            "description": "The identifier. Required.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "description": {
+            "description": "A few words about it. Optional.",
+            "type": "string",
+            "maxLength": 300
+          }
+        }
+      }
+    },
+    "founded_date": {
+      "description": "When the organization began, as YYYY, YYYY-MM or YYYY-MM-DD. Optional.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "closed_date": {
+      "description": "When the organization ended, as YYYY, YYYY-MM or YYYY-MM-DD. Optional. Nothing checks it against founded_date.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "status": {
+      "description": "Where the organization stands in the real world: active (default when omitted), inactive (dormant or not currently working with anyone) or closed (ended). merged is set only by a future merge handler and a sender may not set it. This is the organization's own state, never its state with LAUNCH.",
+      "enum": [
+        "active",
+        "inactive",
+        "closed",
+        "merged"
+      ]
+    },
+    "merged_into_id": {
+      "description": "When status is merged: the id of the organization this record was folded into. Reserved: set only by a future merge handler; no merge exists yet.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "notes": {
+      "description": "Operator notes about the organization, free text. Optional, up to 2000 characters.",
+      "type": "string",
+      "maxLength": 2000,
+      "x_pii": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ]
+}

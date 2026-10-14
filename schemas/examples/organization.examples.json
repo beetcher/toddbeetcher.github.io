@@ -1,0 +1,207 @@
+{
+  "valid": {
+    "minimal_named": {
+      "name": "Ozo Coffee"
+    },
+    "business_with_profile": {
+      "name": "Ozo Coffee",
+      "legal_name": "Example Coffee Company, LLC",
+      "short_name": "Ozo",
+      "kinds": [
+        "business"
+      ],
+      "description": "A coffee company with several shops and a roastery.",
+      "website_url": "https://example.com/coffee",
+      "email": "hello@example.com",
+      "phone": "(303) 555-0100",
+      "identifiers": [
+        {
+          "type": "ein",
+          "value": "00-0000000",
+          "description": "Example value, not a real EIN."
+        }
+      ],
+      "founded_date": "2005",
+      "status": "active"
+    },
+    "school_district": {
+      "name": "Boulder Valley School District",
+      "short_name": "BVSD",
+      "aliases": [
+        "Boulder Valley SD",
+        "BVSD RE-2"
+      ],
+      "kinds": [
+        "school_district",
+        "government"
+      ],
+      "website_url": "https://example.org/district",
+      "status": "active"
+    },
+    "governing_body": {
+      "name": "Board of Education",
+      "kinds": [
+        "governing_body"
+      ],
+      "description": "The elected board of a school district."
+    },
+    "school_and_nonprofit": {
+      "name": "Example Learning Foundation",
+      "kinds": [
+        "nonprofit",
+        "school"
+      ],
+      "founded_date": "1998-09"
+    },
+    "closed_club": {
+      "name": "Front Range Pickleball Club",
+      "kinds": [
+        "club"
+      ],
+      "founded_date": "2019-03-15",
+      "closed_date": "2024",
+      "status": "closed"
+    },
+    "closed_before_founded_is_allowed": {
+      "name": "Odd Dates Inc",
+      "founded_date": "2020",
+      "closed_date": "2019",
+      "status": "closed"
+    },
+    "virtual_no_address": {
+      "name": "Online Learners Association",
+      "kinds": [
+        "association"
+      ],
+      "website_url": "https://example.net/learners",
+      "status": "inactive"
+    }
+  },
+  "invalid": {
+    "empty": {},
+    "no_name": {
+      "kinds": [
+        "business"
+      ]
+    },
+    "empty_name": {
+      "name": ""
+    },
+    "name_too_long": {
+      "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "alias_too_long": {
+      "name": "A",
+      "aliases": [
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      ]
+    },
+    "too_many_aliases": {
+      "name": "A",
+      "aliases": [
+        "a0",
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "a6",
+        "a7",
+        "a8",
+        "a9",
+        "a10",
+        "a11",
+        "a12",
+        "a13",
+        "a14",
+        "a15",
+        "a16",
+        "a17",
+        "a18",
+        "a19",
+        "a20"
+      ]
+    },
+    "bad_kind": {
+      "name": "A",
+      "kinds": [
+        "company"
+      ]
+    },
+    "too_many_kinds": {
+      "name": "A",
+      "kinds": [
+        "business",
+        "nonprofit",
+        "school",
+        "club",
+        "other",
+        "government"
+      ]
+    },
+    "repeated_kind": {
+      "name": "A",
+      "kinds": [
+        "club",
+        "club"
+      ]
+    },
+    "bad_email": {
+      "name": "A",
+      "email": "not an email"
+    },
+    "bad_phone": {
+      "name": "A",
+      "phone": "call me"
+    },
+    "bad_website": {
+      "name": "A",
+      "website_url": "not a url"
+    },
+    "bad_status": {
+      "name": "A",
+      "status": "dormant"
+    },
+    "bad_founded_date": {
+      "name": "A",
+      "founded_date": "2020-13"
+    },
+    "bad_closed_date_format": {
+      "name": "A",
+      "closed_date": "last year"
+    },
+    "identifier_without_value": {
+      "name": "A",
+      "identifiers": [
+        {
+          "type": "ein"
+        }
+      ]
+    },
+    "identifier_bad_type": {
+      "name": "A",
+      "identifiers": [
+        {
+          "type": "EIN",
+          "value": "1"
+        }
+      ]
+    },
+    "unknown_field": {
+      "name": "A",
+      "address": "12 Main St"
+    },
+    "server_field_sent_id": {
+      "name": "A",
+      "id": "11111111-1111-4111-8111-111111111111"
+    },
+    "server_field_sent_created_at": {
+      "name": "A",
+      "created_at": "2026-10-14T00:00:00Z"
+    },
+    "notes_too_long": {
+      "name": "A",
+      "notes": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  }
+}

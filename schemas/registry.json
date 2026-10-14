@@ -120,6 +120,14 @@
       "guide": "JOURNAL_EVENT_GUIDE.md",
       "examples": "examples/journal_event.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "organization",
+      "collection": "organizations",
+      "schema": "organization.schema.json",
+      "guide": "ORGANIZATION_GUIDE.md",
+      "examples": "examples/organization.examples.json",
+      "schema_version": 1
     }
   ]
 }
