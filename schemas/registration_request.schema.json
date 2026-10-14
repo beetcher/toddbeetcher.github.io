@@ -222,6 +222,12 @@
       "maxLength": 200,
       "x_pii": true
     },
+    "postal_code": {
+      "description": "The Colorado ZIP code where the requester would like the session, five digits (80000 to 81999). Private and group requests only, with any location_type. Used to put the nearest venues first on the form; the form remembers it on the requester's device. Optional.",
+      "type": "string",
+      "pattern": "^8[01][0-9]{3}$",
+      "x_pii": true
+    },
     "preferred_venue_id": {
       "description": "UUID of the venue the requester picked from the public list on the form. Private and group requests only, and only with location_type off_site (a home request has no venue). The venue must exist, be active and be a public venue (venue_not_found otherwise). It is a preference, not a booking: the operator may accept it when building the class or choose another place. Optional.",
       "type": "string",
@@ -543,6 +549,7 @@
         "properties": {
           "duration_minutes_requested": false,
           "location_type": false,
+          "postal_code": false,
           "preferred_venue_id": false,
           "venue_arrangement": false,
           "sessions_requested": false,

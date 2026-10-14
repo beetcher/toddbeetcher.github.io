@@ -1103,6 +1103,7 @@
     var ppl = document.createElement("span"); ppl.textContent = "People: " + (rec.attendee_count != null ? rec.attendee_count : "—");
     var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
     chips.appendChild(ppl); chips.appendChild(st);
+    if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
     if (rec.preferred_venue_id) {
       var vc = document.createElement("span"); vc.className = "venuechip";
       vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");

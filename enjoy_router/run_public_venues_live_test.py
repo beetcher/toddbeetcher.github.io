@@ -54,5 +54,17 @@ home = {**example, "idempotency_key": str(uuid.uuid4()), "email": "livetest-venu
 st4, b4, _ = http(BASE + "enjoy_registration_request", home, {"Content-Type": "application/json"}, "POST")
 check("a home request with a venue is refused: 400 validation_failed", st4 == 400 and (b4.get("error") or {}).get("code") == "validation_failed", (st4, b4))
 
+st5, z, _ = http(BASE + "enjoy_public_venues?zip=80027", method="GET")
+zv = (z.get("data") or {}).get("venues") or []
+check("GET with a ZIP: 200 and the same venues", st5 == 200 and sorted(v["id"] for v in zv) == expect, (st5, len(zv)))
+ms = [v["miles"] for v in zv if "miles" in v]
+check("with a ZIP the venues are nearest first, with miles", ms == sorted(ms) and (not zv or len(ms) >= 1), ms)
+check("a venue with no known position (if any) comes last", all("miles" in v for v in zv[:len(ms)]) and all("miles" not in v for v in zv[len(ms):]))
+st6, z2, _ = http(BASE + "enjoy_public_venues?zip=90210", method="GET")
+check("a non-Colorado ZIP is ignored: alphabetical, no miles", st6 == 200 and all("miles" not in v for v in (z2.get("data") or {}).get("venues", [])), z2)
+badzip = {**example, "idempotency_key": str(uuid.uuid4()), "email": "livetest-venue@example.com", "location_type": "home", "postal_code": "90210"}
+st7, b7, _ = http(BASE + "enjoy_registration_request", badzip, {"Content-Type": "application/json"}, "POST")
+check("a ZIP outside Colorado on a request is refused: 400 validation_failed", st7 == 400 and (b7.get("error") or {}).get("code") == "validation_failed", (st7, b7))
+
 print(f"\n{'OK' if not fails else 'FAILED'}: {total - len(fails)}/{total} live checks passed")
 sys.exit(1 if fails else 0)

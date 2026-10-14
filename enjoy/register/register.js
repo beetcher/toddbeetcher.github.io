@@ -45,26 +45,81 @@
     return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_venues') : VENUES_URL;
   }
   var pendingWhere = '';   // a venue choice saved in the draft, applied once the list has loaded
-  function loadVenues() {
+  var ZIP_KEY = 'icdt_zip', ZIP_RE = /^8[01][0-9]{3}$/;   // Colorado ZIP codes
+  function rememberedZip() { try { var z = window.localStorage.getItem(ZIP_KEY); return z && ZIP_RE.test(z) ? z : ''; } catch (e) { return ''; } }
+  function rememberZip(z) { try { if (z) window.localStorage.setItem(ZIP_KEY, z); else window.localStorage.removeItem(ZIP_KEY); } catch (e) { /* storage blocked: no memory, still works */ } }
+  var venueLabels = [], moreSel = null, moreWrap = null, shownZip = null, venueSeq = 0, zipTimer = null;
+  function venueText(v) {
+    var t = v.town ? v.name + ', ' + v.town : v.name;
+    if (typeof v.miles === 'number') t += v.miles < 1 ? ' (under 1 mile)' : ' (' + Math.round(v.miles) + (Math.round(v.miles) === 1 ? ' mile)' : ' miles)');
+    return t;
+  }
+  function clearVenueChoices() {
+    var f = FIELDS.location_type; if (!f) return;
+    venueLabels.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+    venueLabels = []; f.els = f.els.slice(0, 2);
+    if (moreWrap && moreWrap.parentNode) moreWrap.parentNode.removeChild(moreWrap);
+    moreSel = null; moreWrap = null;
+  }
+  function syncMore() {   // the dropdown shows a pick that is one of its own, and rests otherwise
+    if (!moreSel) return;
+    var on = FIELDS.location_type.els.filter(function (e) { return e.checked; })[0];
+    var has = on && Array.prototype.some.call(moreSel.options, function (o) { return o.value === on.value; });
+    moreSel.value = has ? on.value : '';
+  }
+  // list: venues from the server. ranked: they came nearest first (the person gave a ZIP code).
+  // Up to 5 show as choices; with a ZIP the rest sit in a "More places" dropdown, without one they all sit in a dropdown.
+  function renderVenues(list, ranked) {
+    var f = FIELDS.location_type; if (!f) return;
+    var cur = val('location_type') || pendingWhere;
+    clearVenueChoices();
+    list = list.filter(function (v) { return v && typeof v.id === 'string' && typeof v.name === 'string'; });
+    if (!list.length) return;
+    var shown = (list.length <= 5) ? list : (ranked ? list.slice(0, 5) : []);
+    var rest = list.slice(shown.length);
+    function add(v, hidden) {
+      var i = h('input', { type: 'radio', name: 'location_type', value: 'venue:' + v.id });
+      f.els.push(i);
+      var lab = h('label', { class: 'rf__choice' }, [i, h('span', { text: venueText(v) })]);
+      if (hidden) lab.hidden = true;
+      f.box.appendChild(lab); venueLabels.push(lab);
+      return i;
+    }
+    shown.forEach(function (v) { add(v, false); });
+    if (rest.length) {
+      moreSel = h('select', { id: nextId('more_venues'), 'aria-label': ranked ? 'More places, nearest first' : 'Choose a place from the list' });
+      moreSel.appendChild(h('option', { value: '', text: ranked ? 'More places…' : 'Choose a place from the list…' }));
+      rest.forEach(function (v) { var i = add(v, true); moreSel.appendChild(h('option', { value: i.value, text: venueText(v) })); });
+      function pick() { if (moreSel.value) setVal('location_type', moreSel.value); }
+      moreSel.addEventListener('input', function (e) { e.stopPropagation(); pick(); onChange(); });   // before the form-wide listener could rest the dropdown
+      moreSel.addEventListener('change', pick);
+      moreWrap = h('div', { class: 'rf__field', style: 'margin-top:10px' }, [moreSel]);
+      f.box.parentNode.insertBefore(moreWrap, f.box.nextSibling);
+    }
+    if (cur && f.els.some(function (e) { return e.value === cur; })) setVal('location_type', cur);
+    syncMore(); updateNeeds();
+  }
+  function loadVenues(zip) {
     if (!CFG.showWhere || !window.fetch) return;
+    var mine = ++venueSeq;
     var ctl = ('AbortController' in window) ? new AbortController() : null;
     var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
-    fetch(venuesUrl(), { method: 'GET', signal: ctl ? ctl.signal : undefined })
+    fetch(venuesUrl() + (zip ? '?zip=' + encodeURIComponent(zip) : ''), { method: 'GET', signal: ctl ? ctl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         clearTimeout(to);
-        var list = j && j.ok && j.data && Array.isArray(j.data.venues) ? j.data.venues : [];
-        var f = FIELDS.location_type; if (!f || !list.length) return;   // no list: the two plain choices stay
-        list.forEach(function (v) {
-          if (!v || typeof v.id !== 'string' || typeof v.name !== 'string') return;
-          var i = h('input', { type: 'radio', name: 'location_type', value: 'venue:' + v.id });
-          f.els.push(i);
-          f.box.appendChild(h('label', { class: 'rf__choice' }, [i, h('span', { text: v.town ? v.name + ', ' + v.town : v.name })]));
-        });
-        if (pendingWhere && !val('location_type')) setVal('location_type', pendingWhere);
-        updateNeeds();
+        if (mine !== venueSeq || !(j && j.ok && j.data && Array.isArray(j.data.venues))) return;   // failed or out of date: leave things as they are
+        shownZip = zip || '';
+        renderVenues(j.data.venues, !!zip && j.data.venues.some(function (v) { return typeof v.miles === 'number'; }));
       })
       .catch(function () { clearTimeout(to); });
+  }
+  function onZipInput() {   // remember a good ZIP on this device; refresh the list when it changes
+    var z = val('postal_code'), target;
+    if (z === '') target = ''; else if (ZIP_RE.test(z)) target = z; else return;   // half-typed: wait
+    rememberZip(target);
+    if (target === shownZip) return;
+    clearTimeout(zipTimer); zipTimer = setTimeout(function () { loadVenues(target); }, 350);
   }
   function configured() { return endpoint().indexOf('REPLACE') !== 0; }
 
@@ -275,6 +330,8 @@
     FIELDS.attendee_count.el.setAttribute('min', String(CFG.minCount));
     FIELDS.attendee_count.el.setAttribute('max', '50');
     if (CFG.showWhere) {
+      need.push(textField('postal_code', 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: 'Enter the ZIP code where you would like it, and we will show the closest places first.' }));
+      FIELDS.postal_code.noDraft = true;   // remembered on its own, below
       need.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: true }));
     }
     var parts = [section('What we need', need)];
@@ -466,13 +523,13 @@
     var s = storage(); if (s) { try { s.removeItem(DRAFT_KEY); } catch (e) {} }
     idemKey = null;
   }
-  function onChange() { syncMinors(); saveDraft(); updateNeeds(); }
+  function onChange() { syncMinors(); syncMore(); saveDraft(); updateNeeds(); }
 
   // ---------- checking ----------
   var FRIENDLY = {
     first_name: 'your first name', last_name: 'your last name', email: 'a valid email address',
     is_requester_attending: 'whether you will be taking part', attendee_count: 'how many people in total',
-    has_minors_present: 'whether anyone under 18 will be there', location_type: 'where you would like it',
+    has_minors_present: 'whether anyone under 18 will be there', location_type: 'where you would like it', postal_code: 'a Colorado ZIP code',
     consent_to_contact: 'your OK for us to contact you', participants: 'the people you are arranging this for',
     requested_date: 'a date that is today or later', alternate_requested_date: 'a date that is today or later',
   };
@@ -504,6 +561,7 @@
     need('is_requester_attending', 'Please choose one.');
     need('has_minors_present', 'Please choose one.');
     if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
+    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please enter a 5-digit Colorado ZIP code, or leave it blank.']);
     var cnt = parseInt(val('attendee_count'), 10);
     var attending = val('is_requester_attending') === 'yes';
     if (!(cnt >= CFG.minCount && cnt <= 50)) bad.push(['attendee_count', TYPE === 'group' ? 'Please enter a number from 2 to 50.' : 'Please enter a number from 1 to 50.']);
@@ -551,6 +609,7 @@
     var strs = ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times',
       'what_they_want', 'how_heard', 'preferred_contact_method', 'venue_arrangement', 'location_type', 'group_type', 'organization_name'];
     strs.forEach(function (n) { if (FIELDS[n] && val(n)) r[n] = val(n); });
+    if (CFG.showWhere && ZIP_RE.test(val('postal_code'))) r.postal_code = val('postal_code');
     if (String(r.location_type || '').indexOf('venue:') === 0) {   // a venue from the list: a public place, plus which one
       r.preferred_venue_id = r.location_type.slice(6);
       r.location_type = 'off_site';
@@ -633,7 +692,11 @@
   form.addEventListener('input', onChange);
   form.addEventListener('change', onChange);
   var restored = loadDraft();
-  loadVenues();
+  if (FIELDS.postal_code) {
+    FIELDS.postal_code.el.value = rememberedZip();   // what this device remembers from last time
+    FIELDS.postal_code.el.addEventListener('input', onZipInput);
+  }
+  loadVenues(FIELDS.postal_code ? rememberedZip() : '');
   openMoreIfFilled();
   updateNeeds();
   if (restored && draftNote) {
@@ -641,7 +704,8 @@
     var startOver = draftNote.querySelector('button');
     if (startOver) startOver.addEventListener('click', function () {
       clearDraft(); form.reset(); peopleRows.splice(0).forEach(function (r) { r.node.remove(); });
-      draftNote.removeAttribute('data-show'); clearFlags(); if (moreBox) moreBox.open = false; updateNeeds();
+      if (FIELDS.postal_code) FIELDS.postal_code.el.value = rememberedZip();
+      draftNote.removeAttribute('data-show'); clearFlags(); if (moreBox) moreBox.open = false; syncMore(); updateNeeds();
     });
   }
   if (CFG.minCount > 1 && !val('attendee_count')) setVal('attendee_count', '');

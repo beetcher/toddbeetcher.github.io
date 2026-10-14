@@ -1114,6 +1114,186 @@
           "preferred_venue_id"
         ]
       }
+    },
+    {
+      "name": "t39_private_with_zip",
+      "layer": "endpoint",
+      "description": "Private request with a Colorado ZIP is stored with it.",
+      "request": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000039",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "zip39@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 2,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "off_site",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ],
+        "postal_code": "80027"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "postal_code": "80027"
+        }
+      }
+    },
+    {
+      "name": "t40_home_with_zip",
+      "layer": "endpoint",
+      "description": "A home request may carry a ZIP.",
+      "request": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000040",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "zip40@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 2,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ],
+        "postal_code": "80301"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "postal_code": "80301"
+        }
+      }
+    },
+    {
+      "name": "t41_zip_not_colorado",
+      "layer": "schema",
+      "description": "A ZIP outside Colorado is refused.",
+      "request": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000041",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "zip41@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 2,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ],
+        "postal_code": "90210"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "stored": false,
+        "field_errors": [
+          "postal_code"
+        ]
+      }
+    },
+    {
+      "name": "t42_zip_not_five_digits",
+      "layer": "schema",
+      "description": "A ZIP that is not five digits is refused.",
+      "request": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000042",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "zip42@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "private",
+        "attendee_count": 2,
+        "presented_cost_cents": 50000,
+        "presented_cost_basis": "per_session",
+        "duration_minutes_requested": 120,
+        "location_type": "home",
+        "requested_date": "2026-11-14",
+        "requested_time_of_day": "morning",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ],
+        "postal_code": "8030"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "stored": false,
+        "field_errors": [
+          "postal_code"
+        ]
+      }
+    },
+    {
+      "name": "t43_class_with_zip",
+      "layer": "schema",
+      "description": "A class request may not carry a ZIP.",
+      "request": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000043",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "zip43@example.com",
+        "consent_to_contact": true,
+        "is_requester_attending": true,
+        "has_minors_present": false,
+        "registration_type": "class",
+        "attendee_count": 1,
+        "presented_cost_cents": 5000,
+        "presented_cost_basis": "per_person",
+        "no_class_fits": true,
+        "preferred_location": "Denver",
+        "requested_time_of_day": "evening",
+        "postal_code": "80027"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "stored": false,
+        "field_errors": [
+          "postal_code"
+        ]
+      }
     }
   ]
 }

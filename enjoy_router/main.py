@@ -232,6 +232,7 @@ def enjoy_public_venues(req: https_fn.Request) -> https_fn.Response:
         store=_get_admin_store(),
         limiter=_venues_limiter,
         now=_now(),
+        zip_code=req.args.get("zip"),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
                              headers={"Content-Type": "application/json", **result.headers})

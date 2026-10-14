@@ -79,5 +79,46 @@ class Boom:
 r = handle_public_venues("GET", "v4", Boom(), RateLimiter(rules=((600, 5),)), START)
 check("a crash gives a plain 500 that reveals nothing", r.status == 500 and "x" not in json.dumps(r.body).replace("Could not load the list.", ""))
 
+
+# ---- ranking by ZIP
+from crud import locations_crud as L
+from crud import location_links_crud as H
+
+
+def venue_at(name, slug, zip_code, gps=None, public=True):
+    addr = {"street": "1 Main St", "locality": "Town", "region": "CO", "postal_code": zip_code, "country": "US", "usage": "civic"}
+    r = VS.create_with_place(s, {"name": name, "slug": slug, "status": "inactive", "is_public_venue": public}, "user:todd", address={k: v for k, v in addr.items() if k != "usage"}, now=tick())
+    assert r.ok, r.problems
+    if gps:
+        loc = r.data["place"]["location_id"]
+        u = L.update(s, loc, {"geometries": [{"role": "center", "geometry": {"type": "Point", "coordinates": [gps[1], gps[0]]}}]}, "user:todd", now=tick())
+        assert u.ok, u.problems
+    assert VS.update(s, r.data["id"], {"status": "active"}, "user:todd", now=tick()).ok
+    return r.data
+
+
+r2 = MemoryDocStore("")
+s_main = s
+s = r2
+near = venue_at("Near Louisville", "near_lou", "80027")
+mid = venue_at("Mid Denver", "mid_den", "80202")
+far = venue_at("Far Grand Junction", "far_gj", "81501")
+gps = venue_at("Gps Boulder Spot", "gps_bou", "81501", gps=(40.015, -105.27))   # ZIP says Grand Junction, GPS says Boulder
+nopos = venue_at("Nowhere Hall", "nowhere", "99999")
+ranked = public_list(s, "80301")
+nm = [v["name"] for v in ranked]
+check("a ZIP puts the nearest first (Boulder area before Denver before Grand Junction)", nm[:4] == ["Gps Boulder Spot", "Near Louisville", "Mid Denver", "Far Grand Junction"], str(nm))
+check("a venue with no known position goes last, with no miles", nm[-1] == "Nowhere Hall" and "miles" not in ranked[-1], str(ranked[-1]))
+check("GPS beats the ZIP centre (miles are small for the GPS venue)", ranked[0]["miles"] < 5, str(ranked[0]))
+check("miles are numbers with one decimal", all(isinstance(v["miles"], float) for v in ranked[:-1]))
+check("Louisville is about 12 miles from 80301", 5 < ranked[1]["miles"] < 20, str(ranked[1]))
+check("no ZIP: alphabetical and no miles", [v["name"] for v in public_list(s)] == sorted(v["name"] for v in public_list(s)) and all("miles" not in v for v in public_list(s)))
+check("an unknown ZIP is ignored (alphabetical, no miles)", all("miles" not in v for v in public_list(s, "80999")))
+check("a non-Colorado ZIP is ignored", all("miles" not in v for v in public_list(s, "90210")))
+check("junk in the ZIP is ignored", all("miles" not in v for v in public_list(s, "80301; drop")))
+res = handle_public_venues("GET", "z1", s, RateLimiter(rules=((600, 5),)), START, zip_code="80301")
+check("the handler passes the ZIP through", res.status == 200 and "miles" in res.body["data"]["venues"][0])
+s = s_main
+
 print(f"{'OK' if not fails else 'FAILED'}: {total - len(fails)}/{total} checks")
 sys.exit(1 if fails else 0)
