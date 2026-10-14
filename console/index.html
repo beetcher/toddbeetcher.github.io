@@ -3110,7 +3110,7 @@
         results.appendChild(b);
       });
       if (!shown.length) results.appendChild(mk("div", "hint", eligible.length ? "No instructor matches that name." :
-        (state ? "No active instructor lives in " + state + ". Add an address for each instructor in People, or add instructors in the Instructors station."
+        (state ? "No active instructor lives in " + state + ". Open an instructor in the Instructors station and tap Add address."
                : "No active instructors yet. Add them in the Instructors station.")));
     }
     search.addEventListener("input", draw);
@@ -4706,6 +4706,45 @@
   }
 
   function currTitle(S, id) { var l = S.curr || []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i].title; return "(removed curriculum)"; }
+  // Write-only address for an instructor, for operators who may not open People. It shows the state only (never the address),
+  // saves a Lives-here link, and ends any earlier Lives-here link. It never lists or shows existing places or addresses.
+  function instructorAddressBox(rec, done) {
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    form.appendChild(mk("div", "hint", "Where " + rName(rec) + " lives. Saved privately: after you save, only the state is shown here. A new address replaces the old one."));
+    var block = addrForm({}); form.appendChild(block);
+    var btns = mk("div", "btns"), save = mk("button", "", "Save address"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button";
+    btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+    var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+    cancel.addEventListener("click", function () { form.remove(); });
+    function fail(r, what) { save.disabled = false; if (r.status === 401) { lock("That key did not work."); return; } fm.textContent = what + lProblems(r); }
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); fm.textContent = "";
+      var rd = block.read();
+      if (!rd.ok) return;
+      if (!rd.data.addresses) { fm.textContent = "A person's address needs a street or a PO box."; return; }
+      save.disabled = true;
+      admin("list", { filters: { subject_id: rec.individual_id }, limit: 50 }, COLL_LK).then(function (old) {
+        if (old.status === 401) { lock("That key did not work."); return; }
+        var olds = (old.status === 200 && old.body.ok ? old.body.data.records || [] : []).filter(function (l) { return l.relationship === "resides_at" && l.status === "active"; });
+        admin("find_by_address", { address: rd.data.addresses[0] }, COLL_L).then(function (f) {
+          if (f.status === 401) { lock("That key did not work."); return; }
+          var found = (f.status === 200 && f.body.ok) ? (f.body.data.records || []) : [];
+          var place = found.length ? Promise.resolve({ status: 200, body: { ok: true, data: found[0] } }) : admin("create", { data: rd.data }, COLL_L);
+          place.then(function (c) {
+            if (!(c.status === 200 && c.body.ok)) { fail(c, "Could not save the address: "); return; }
+            admin("create", { data: { subject_type: "individual", subject_id: rec.individual_id, relationship: "resides_at", location_id: c.body.data.id, is_primary: true } }, COLL_LK).then(function (k) {
+              if (!(k.status === 200 && k.body.ok)) { fail(k, "Could not save the address: "); return; }
+              Promise.all(olds.filter(function (l) { return l.location_id !== c.body.data.id; }).map(function (l) {
+                return admin("end", { id: l.id }, COLL_LK);   // no stale-check: saving the new main link may just have touched this one
+              })).then(function () { refreshPlaces(); form.remove(); if (done) done(); });
+            });
+          });
+        });
+      });
+    });
+    return form;
+  }
+
   function buildRoster(cfg) {
     var P = cfg.pre, S = { cfg: cfg, all: [], loaded: false, seq: 0, newId: "", openId: "", choice: null };
     ROSTER[cfg.id] = S;
@@ -4787,6 +4826,12 @@
         if (rec[f.k] === undefined) return;
         detail.appendChild(line(f.label, f.t === "tags" ? rec[f.k].join(", ") : String(rec[f.k])));
       });
+      if (cfg.curricula) {
+        var lv = line("Lives in", rec.residence_state || "No address on file"); lv.id = "live_" + rec.id; detail.appendChild(lv);
+        var ab = mk("button", "quiet", rec.residence_state ? "Replace address" : "Add address"); ab.type = "button"; ab.id = "addaddr_" + rec.id;
+        var ah = mk("div"); detail.appendChild(ab); detail.appendChild(ah);
+        ab.addEventListener("click", function () { if (ah.firstChild) ah.textContent = ""; else ah.appendChild(instructorAddressBox(rec, function () { g("Notice").textContent = "Saved the address for " + rName(rec) + "."; S.openId = rec.id; load(); })); });
+      }
       if (cfg.hours && rec.availability && rec.availability.length) detail.appendChild(line("Weekly hours", rHoursText(rec.availability)));
       if (cfg.hours && rec.availability_notes) detail.appendChild(line("Availability notes", rec.availability_notes));
       detail.appendChild(line("Added", when(rec.created_at)));
