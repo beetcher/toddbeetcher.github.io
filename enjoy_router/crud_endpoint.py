@@ -11,7 +11,7 @@ main.py turns a Firebase request into one of these; tests call them directly.
 ops and their args:
     create             data, source (optional)
     get                id, include_deleted (optional), expand (optional, venues and the rosters: read in what each record points at)
-    list               filters, order, limit (all optional), expand (optional, venues and the rosters)
+    list               filters, order, limit (all optional), expand (optional, venues and the rosters), near_zip (optional, venues with expand: nearest first, each with miles)
     update             id, changes, expected_updated_at (optional)
     soft_delete        id
     set_review_summary id, review_count, average_rating
@@ -71,7 +71,7 @@ ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 OPS = {
     "create": ({"data"}, {"source"}),
     "get": ({"id"}, {"include_deleted", "expand"}),
-    "list": (set(), {"filters", "order", "limit", "expand"}),
+    "list": (set(), {"filters", "order", "limit", "expand", "near_zip"}),
     "update": ({"id", "changes"}, {"expected_updated_at"}),
     "soft_delete": ({"id"}, set()),
     "set_review_summary": ({"id", "review_count", "average_rating"}, set()),
@@ -142,6 +142,10 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
         kw = {k: a[k] for k in ("order", "limit") if k in a}
         if a.get("expand"):
             kw["expand"] = True
+        if "near_zip" in a:
+            if not hasattr(module, "_position") or not isinstance(a["near_zip"], str):   # only venues rank by distance
+                return failure("validation_failed", [{"field": "near_zip", "issue": "not_supported"}])
+            kw["near_zip"] = a["near_zip"]
         return module.list(store, a.get("filters"), **kw)
     if op == "update":
         return module.update(store, a["id"], a["changes"], actor, a.get("expected_updated_at"), now=now)

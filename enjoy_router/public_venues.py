@@ -13,16 +13,13 @@ main.py turns a Firebase request into handle_public_venues(); tests call it dire
 """
 from __future__ import annotations
 
-import json
 import logging
-import math
-import pathlib
-import re
 from datetime import datetime
 
 from crud import locations_crud as LOC
 from crud import venues_crud as V
 from crud import venues_service as VS
+from geo_rank import ZIP_RE, miles_between, position_of_place, zip_origin, zip_table  # noqa: F401  (re-exported for callers and tests)
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -31,55 +28,15 @@ MAX_VENUES = 200
 CACHE = "public, max-age=60"
 
 
-ZIP_RE = re.compile(r"^8[01][0-9]{3}$")
-_zips = None
-
-
-def zip_table() -> dict:
-    """Colorado ZIP -> [lat, lon], read once from co_zips.json."""
-    global _zips
-    if _zips is None:
-        _zips = json.loads((pathlib.Path(__file__).resolve().parent / "co_zips.json").read_text())
-    return _zips
-
-
-def miles_between(a, b) -> float:
-    """Straight-line miles between two [lat, lon] points."""
-    (la1, lo1), (la2, lo2) = a, b
-    p1, p2 = math.radians(la1), math.radians(la2)
-    d = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(math.radians(lo2 - lo1) / 2) ** 2
-    return 3958.8 * 2 * math.asin(math.sqrt(d))
-
-
-def _gps_of(loc: dict):
-    """[lat, lon] of the place's best GPS point (centre, then entrance, then any point), or None."""
-    best = None
-    for rank, role in enumerate(("center", "entrance")):
-        for g in loc.get("geometries", []):
-            geo = g.get("geometry") or {}
-            if g.get("role") == role and geo.get("type") == "Point" and len(geo.get("coordinates", [])) >= 2:
-                return [geo["coordinates"][1], geo["coordinates"][0]]
-    for g in loc.get("geometries", []):
-        geo = g.get("geometry") or {}
-        if geo.get("type") == "Point" and len(geo.get("coordinates", [])) >= 2:
-            best = [geo["coordinates"][1], geo["coordinates"][0]]
-            break
-    return best
-
-
 def _position(store, venue_id: str):
     """Where the venue is: its place's GPS, else the centre of its place's ZIP, else None."""
     for link in VS._live_place_link(store, venue_id):
         got = LOC.get(store, link["location_id"])
         if not got.ok:
             continue
-        gps = _gps_of(got.data)
-        if gps:
-            return gps
-        for a in got.data.get("addresses", []):
-            z = str(a.get("postal_code") or "")[:5]
-            if a.get("usage") != "former" and z in zip_table():
-                return zip_table()[z]
+        pos = position_of_place(got.data)
+        if pos:
+            return pos
     return None
 
 
@@ -89,7 +46,7 @@ def public_list(store, zip_code=None) -> list:
     got = V.list(store, {"status": "active"}, order="name", limit=MAX_VENUES)
     if not got.ok:
         return []
-    origin = zip_table().get(str(zip_code)) if zip_code and ZIP_RE.match(str(zip_code)) else None
+    origin = zip_origin(zip_code)
     out, positions = [], {}
     for venue in got.data["records"]:
         if venue.get("is_public_venue") is not True:

@@ -29,6 +29,8 @@ from . import venues_crud as V
 from .classes_service import _find_room, live_classes_at
 from .schema_kit import UUID_PATTERN, failure, success
 
+import geo_rank  # top-level module of enjoy_router: distances from a Colorado ZIP
+
 CONTACT_FIELDS = ("contact_individual_id", "backup_contact_individual_id")
 EXPANDABLE = True  # the endpoint passes expand=True only to modules that say so
 
@@ -144,10 +146,34 @@ def get(store, id, include_deleted=False, expand=False):  # noqa: A002
     return r
 
 
-def list(store, filters=None, expand=False, **kw):  # noqa: A001, A002
+def _position(store, venue_id):
+    """[lat, lon] of the venue's place: its GPS, else the centre of its address ZIP, else None."""
+    for link in _live_place_link(store, venue_id):
+        got = LOC.get(store, link["location_id"])
+        if got.ok:
+            pos = geo_rank.position_of_place(got.data)
+            if pos:
+                return pos
+    return None
+
+
+def list(store, filters=None, expand=False, near_zip=None, **kw):  # noqa: A001, A002
+    """With expand and a known Colorado near_zip: each record also carries miles (one decimal, straight line, when its
+    position is known) and the list is nearest first, venues with no position last by name. An unknown or invalid
+    near_zip is ignored: the list stays in the order asked for. near_zip without expand is not_supported."""
+    if near_zip is not None and not expand:
+        return failure("validation_failed", [{"field": "near_zip", "issue": "requires_expand"}])
     r = V.list(store, filters, **kw)
     if r.ok and expand:
-        return success({"records": [expanded(store, d) for d in r.data["records"]], "count": r.data["count"]})
+        recs = [expanded(store, d) for d in r.data["records"]]
+        origin = geo_rank.zip_origin(near_zip)
+        if origin:
+            for d in recs:
+                pos = _position(store, d["id"])
+                if pos:
+                    d["miles"] = round(geo_rank.miles_between(origin, pos), 1)
+            recs.sort(key=lambda d: (d.get("miles") is None, d.get("miles", 0), (d.get("name") or "").lower()))
+        return success({"records": recs, "count": r.data["count"]})
     return r
 
 

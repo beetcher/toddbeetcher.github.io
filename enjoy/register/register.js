@@ -366,8 +366,9 @@
     }
     var whereAsk = [];
     if (CFG.showWhere) {
-      whereAsk.push(textField('postal_code', 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: 'Enter the ZIP code where you would like it, and we will show the closest places first.' }));
+      var zipField = textField('postal_code', LEAN ? 'ZIP code' : 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: LEAN ? 'Helps us find a place near you, and shows us where people want classes. Not required, but it helps a lot.' : 'Enter the ZIP code where you would like it, and we will show the closest places first.' });
       FIELDS.postal_code.noDraft = true;   // remembered on its own, below
+      if (LEAN) need.push(zipField); else whereAsk.push(zipField);
       whereAsk.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: !LEAN }));
       if (!LEAN) { need = need.concat(whereAsk); whereAsk = []; }
     }
@@ -603,7 +604,7 @@
       need('has_minors_present', 'Please choose one.');
       if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
     }
-    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please enter a 5-digit Colorado ZIP code, or leave it blank.']);
+    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'We are starting in Colorado, so for now please use a Colorado ZIP code, or leave it blank.']);
     var cnt = parseInt(val('attendee_count'), 10);
     var attending = val('is_requester_attending') === 'yes';
     var cntGiven = !isNaN(cnt) || !LEAN;

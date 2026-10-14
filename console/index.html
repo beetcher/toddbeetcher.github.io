@@ -3131,6 +3131,7 @@
         el.appendChild(mk("div", "hint", "The requester asked for a venue that is no longer active" + (asked ? " (" + asked + ")" : "") + ". Choose another."));
       }
     }
+    var zipHint = mk("div", "hint"); el.appendChild(zipHint);   // says when the list is nearest-first or a nearest place was filled in
     var room = mk("select"); lab("Room", room, "room");
     var date = mk("input"); date.type = "date"; lab("Date", date, "date");
     var time = mk("input"); time.type = "time"; lab("Start time", time, "time");
@@ -3141,7 +3142,32 @@
       var v = cVenueById[ven.value]; ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
       tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (cVenueById[ven.value] && cVenueById[ven.value].place && cVenueById[ven.value].place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
     }
-    ven.addEventListener("change", syncVenue); syncVenue();
+    var venTouched = false;
+    ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
+    // The request has a Colorado ZIP: ask the server for the venues nearest first, show the distances, and (unless the requester
+    // picked a venue, or chose a home) fill in the nearest public place. The operator may change it. Without a ZIP nothing changes.
+    if (req && /^8[01][0-9]{3}$/.test(req.postal_code || "")) {
+      admin("list", { filters: { status: "active" }, limit: 200, expand: true, near_zip: req.postal_code }, "venues").then(function (res) {
+        if (res.status !== 200 || !res.body.ok) return;
+        var recs = res.body.data.records || [], keep = ven.value, pickedByRequester = !!(req.preferred_venue_id && keep === req.preferred_venue_id);
+        if (!recs.some(function (v) { return typeof v.miles === "number"; })) return;
+        while (ven.options.length > 1) ven.remove(1);
+        recs.forEach(function (v) {
+          if (v.status !== "active") return;
+          var m = typeof v.miles === "number" ? (v.miles < 1 ? " (under 1 mile)" : " (" + Math.round(v.miles) + (Math.round(v.miles) === 1 ? " mile)" : " miles)")) : "";
+          opt(ven, v.id, (v.name || "(no name)") + m);
+        });
+        ven.value = keep;
+        if (!ven.value) ven.value = "";
+        if (pickedByRequester) { zipHint.textContent = "Places are listed nearest first to ZIP " + req.postal_code + "."; return; }
+        var near = null;
+        recs.forEach(function (v) { if (!near && v.status === "active" && v.is_public_venue === true && typeof v.miles === "number") near = v; });
+        if (!venTouched && !ven.value && near && req.location_type !== "home") {
+          ven.value = near.id; syncVenue();
+          zipHint.textContent = "Nearest public place to ZIP " + req.postal_code + " is filled in. Change it if it does not suit.";
+        } else zipHint.textContent = "Places are listed nearest first to ZIP " + req.postal_code + ".";
+      });
+    }
     el.appendChild(mk("div", "hint", "With a venue, a date and a time it is saved as scheduled. Without them it is saved as an idea you can finish later in Classes."));
     var finder = personFinder(); el.appendChild(mk("div", "f", "Lead instructor (optional)")); el.appendChild(finder.el);
     var CAP = { "private": [1, 2, 4], group: [2, 8, 15], workshop: [6, 10, 15] };
