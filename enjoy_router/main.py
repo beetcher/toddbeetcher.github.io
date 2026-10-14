@@ -13,7 +13,7 @@ Settings (environment variables, none required):
                          A warning is logged at startup whenever it is set. Leave it unset for real use.
   ICDT_ADMIN_KEY         the one key that locks the Console and the CRUD test endpoint (32+ characters)
   ICDT_CMS_ENABLED       true enables CMS only outside local testing; default false
-Secret Manager (bound only to the enabled registration function):
+Secret Manager (always bound to the registration function, independent of the runtime switch):
   ICDT_BREVO_SMTP_KEY    SMTP key, read only after a newly created request is saved
 Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
   ICDT_FIXED_NOW         a fixed UTC clock, so date rules are repeatable in tests (set on the emulator's command line, see README)
@@ -44,6 +44,10 @@ from public_venues import handle_public_venues
 from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
 logging.basicConfig(level=logging.INFO)
+# Firebase may install root handlers before this module is imported, making
+# basicConfig a no-op. Set our application logger explicitly; its calls use
+# record IDs, statuses and sanitized codes, never submitted values or secrets.
+logging.getLogger("enjoy_router").setLevel(logging.INFO)
 
 DEFAULT_ORIGINS = (
     "https://beetcher.com",
@@ -167,7 +171,9 @@ if CMS_ENABLED:
     max_instances=5,
     memory=options.MemoryOption.MB_256,
     timeout_sec=30,
-    secrets=[BREVO_SMTP_KEY] if CMS_ENABLED else [],
+    # Discovery runs before project dotenv settings are loaded. Secret bindings
+    # must not depend on the runtime send switch.
+    secrets=[BREVO_SMTP_KEY],
 )
 def enjoy_registration_request(req: https_fn.Request) -> https_fn.Response:
     result = handle_http(

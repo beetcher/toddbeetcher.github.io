@@ -97,8 +97,11 @@ never put its value in a command, chat or environment file:
 
 Set `ICDT_CMS_ENABLED=true` in the git-ignored `.env.launch-ai-workshop`, keeping
 the existing settings intact. The SMTP key stays in Secret Manager. Only the
-registration function binds the secret when CMS is enabled; it is read at request
-time, after saving. Setting the enable flag alone never enables CMS in the emulator.
+registration function always binds the secret, even when CMS is disabled during
+deployment discovery. The runtime enable flag controls sending; the secret is
+read only at request time, after saving. Setting the enable flag alone never
+enables CMS in the emulator. The application logger explicitly enables INFO
+records containing IDs, statuses and sanitized codes, never submitted values.
 
 Sync the deployable schema copy before deploying:
 

@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 import smtplib
 import ssl
+import subprocess
+import sys
 import time
 import unittest
 from datetime import datetime
@@ -314,6 +316,48 @@ class TransportChecks(unittest.TestCase):
 
 
 class WiringChecks(unittest.TestCase):
+    def check_discovery(self, enabled):
+        # A fresh interpreter models Firebase discovery: project dotenv values
+        # are not loaded yet. Preinstalled root logging models the runtime.
+        code = '''
+import io, logging, os
+from unittest.mock import patch, PropertyMock
+import smtp_transport as smtp
+import registration_service as service
+from firebase_functions.params import SecretParam
+output = io.StringIO()
+logging.basicConfig(level=logging.WARNING, stream=output)
+fake = lambda *args: smtp.SendResult(True, "accepted")
+with patch("socket.create_connection", side_effect=AssertionError("Network forbidden")), patch.object(smtp, "send_brevo", fake), patch.object(SecretParam, "value", new_callable=PropertyMock, side_effect=AssertionError("Discovery must not read secrets")):
+    import main
+    expected = os.environ.get("ICDT_CMS_ENABLED") == "true"
+    assert main.CMS_ENABLED is expected
+    bindings = main.enjoy_registration_request.__firebase_endpoint__.secretEnvironmentVariables
+    assert bindings == [{"key": "ICDT_BREVO_SMTP_KEY"}], "Secret binding missing during discovery"
+    assert not main.enjoy_console_records.__firebase_endpoint__.secretEnvironmentVariables
+    assert (service.acknowledge is not None) is expected
+    assert (smtp.transport is fake) is expected
+    app_log = logging.getLogger("enjoy_router")
+    assert app_log.getEffectiveLevel() == logging.INFO, "Application INFO logging suppressed"
+    app_log.info("cms id=synthetic_id status=failed code=missing_key")
+    assert "cms id=synthetic_id status=failed code=missing_key" in output.getvalue()
+'''
+        env = dict(os.environ)
+        for name in ('ICDT_CMS_ENABLED', 'FUNCTIONS_EMULATOR', 'ICDT_STORE', 'ICDT_BREVO_SMTP_KEY'):
+            env.pop(name, None)
+        env['PYTHONDONTWRITEBYTECODE'] = '1'
+        if enabled:
+            env['ICDT_CMS_ENABLED'] = 'true'
+        result = subprocess.run([sys.executable, '-c', code], cwd=Path(__file__).resolve().parent,
+                                env=env, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_discovery_without_flag_still_binds_secret_and_logs_info(self):
+        self.check_discovery(False)
+
+    def test_runtime_flag_enables_only_fake_transport(self):
+        self.check_discovery(True)
+
     def test_emulator_overrides_enable_flag(self):
         with patch.dict(os.environ, {'ICDT_STORE':'memory','FUNCTIONS_EMULATOR':'true','ICDT_CMS_ENABLED':'true'}):
             import main
