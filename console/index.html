@@ -340,6 +340,11 @@
   .rostview .panel input[type=text], .rostview .panel select, .rostview li input[type=text], .rostview li input[type=time], .rostview li select { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
   .rostview .panel textarea, .rostview li textarea { width: 100%; min-height: 72px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); box-sizing: border-box; }
   .rostview .panel label.f, .rostview li label.f, .rostview li div.f { display: block; font-weight: 600; margin-top: 10px; }
+  .olinks { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--muted); }
+  .olinks .hint { margin-top: 8px; }
+  .olrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; padding: 6px 0; border-bottom: 1px solid #e6e6e6; }
+  .olrow .olact { display: flex; gap: 6px; }
+  .olinks .empty2 { color: #555; padding: 4px 0; }
   .rostview li .eform, .rostview .panel .eform { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
   .rostview .pickrow { margin-top: 6px; }
   .rostview .pickrow button { width: 100%; text-align: left; min-height: 48px; }
@@ -5535,10 +5540,189 @@
       if (rec.status === "active" || rec.status === "inactive") { /* shown by the switch */ }
       if (rec.notes) detail.appendChild(line("Notes", rec.notes));
       detail.appendChild(line("Added", when(rec.created_at)));
+      detail.appendChild(linksPanel(rec));
       head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
       li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
       if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
       return li;
+    }
+    // ---- Links on the card: people, venues and other organizations (organization_links), and places (location_links) ----
+    var COLL_OL = "organization_links";
+    var OREL = [["leads", "Leads"], ["works_for", "Works for"], ["member_of", "Member of"], ["volunteers_for", "Volunteers for"], ["teaches_for", "Teaches for"],
+                ["contact_for", "Contact for"], ["part_of", "Part of"], ["affiliated_with", "Affiliated with"], ["sponsored_by", "Sponsored by"],
+                ["operated_by", "Operated by"], ["succeeded_by", "Succeeded by"], ["other", "Other"]];
+    var OREL_LABEL = {}; OREL.forEach(function (r) { OREL_LABEL[r[0]] = r[1]; });
+    var OSUBJ = { individual: ["Person", "individuals"], venue: ["Venue", "venues"], organization: ["Organization", "organizations"] };
+    var PLACE_RELS = ["operates_at", "owns", "manages", "works_at", "mailing_address_for", "billing_address_for", "delivers_to", "other"];
+    var LINK_ISSUE = { required: "Required.", not_found: "That one was not found.", invalid_format: "Check the format (YYYY, YYYY-MM or YYYY-MM-DD).", invalid_value: "That value is not allowed.",
+                       out_of_range: "That is too long or out of order.", duplicate: "That link already exists for these dates.", retired: "That place is retired.", not_allowed: "Not allowed.", immutable: "That cannot be changed." };
+    var nameCache = {};
+    function subjName(type, id) {
+      var key = type + ":" + id;
+      if (nameCache[key]) return Promise.resolve(nameCache[key]);
+      return admin("get", { id: id }, type === "location" ? "locations" : OSUBJ[type][1]).then(function (r) {
+        var d = r.status === 200 && r.body && r.body.ok ? r.body.data : null;
+        var nm = d ? (d.display_name || d.name || d.given_name || (type === "location" && d.addresses && d.addresses[0] ? locAddr(d.addresses[0]) : "") || "(no name)") : "(not available)";
+        if (d) nameCache[key] = nm;
+        return nm;
+      });
+    }
+    function todayStr() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+    function span(l) { return (l.valid_from ? " from " + pDateOut(l.valid_from) : "") + (l.valid_to ? " until " + pDateOut(l.valid_to) : ""); }
+    function linkProblems(res) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [];
+      if (!ps.length) return adminProblem(res.status);
+      return ps.map(function (p) { return ((LAB[p.field] || { subject_id: "Who", organization_id: "Organization", relationship: "Kind of link", valid_from: "From", valid_to: "Until", title: "Title", location_id: "Place" }[p.field] || p.field)) + ": " + (LINK_ISSUE[p.issue] || "not valid."); }).join(" ");
+    }
+    function labeled(parent, text, el, idv) { var l = mk("label", "f", text); if (idv) { el.id = idv; l.htmlFor = idv; } parent.appendChild(l); parent.appendChild(el); return el; }
+    function selectOf(opts) { var s = mk("select"); opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; s.appendChild(op); }); return s; }
+    function textIn(max, ph) { var i = mk("input"); i.type = "text"; i.maxLength = max; if (ph) i.placeholder = ph; i.autocomplete = "off"; return i; }
+
+    function linksPanel(rec) {
+      var wrap = mk("div", "olinks"), row2 = mk("div", "actions-row"), host = mk("div"), msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+      function btn(label, cls) { var b = mk("button", cls || "quiet", label); b.type = "button"; row2.appendChild(b); return b; }
+      var bShow = btn("Show links"), bAdd = btn("Add link"), bPl = btn("Show places"), bAddPl = btn("Add place");
+      wrap.appendChild(mk("div", "hint", "Links: who and what belongs to this organization, and where it is.")); wrap.appendChild(row2); wrap.appendChild(host); wrap.appendChild(msg);
+      function open(builder) { msg.textContent = ""; if (host.firstChild && host.dataset.k === builder.k) { host.textContent = ""; host.dataset.k = ""; return; } host.textContent = ""; host.dataset.k = builder.k; builder(); }
+      function actions(l, coll, li, reload) {
+        var r = mk("span", "olact");
+        if (!l.valid_to) {
+          var e = mk("button", "quiet", "End"); e.type = "button"; r.appendChild(e);
+          e.addEventListener("click", function () {
+            e.disabled = true;
+            var p = coll === COLL_LK ? admin("end", { id: l.id }, coll) : admin("update", { id: l.id, changes: { valid_to: todayStr() }, expected_updated_at: l.updated_at }, coll);
+            p.then(function (res) { if (res.status === 401) { lock("That key did not work."); return; } if (res.status === 200 && res.body.ok) { reload(); } else { e.disabled = false; msg.textContent = res.status === 409 ? "This changed somewhere else. Show the list again." : linkProblems(res); } });
+          });
+        }
+        var d = mk("button", "danger", "Delete"); d.type = "button"; r.appendChild(d);
+        d.addEventListener("click", function () {
+          if (d.dataset.sure !== "1") { d.dataset.sure = "1"; d.textContent = "Tap again to delete"; setTimeout(function () { d.dataset.sure = ""; d.textContent = "Delete"; }, 4000); return; }
+          d.disabled = true;
+          admin("soft_delete", { id: l.id }, coll).then(function (res) { if (res.status === 401) { lock("That key did not work."); return; } if (res.status === 200 || res.status === 404) reload(); else { d.disabled = false; msg.textContent = linkProblems(res); } });
+        });
+        li.appendChild(r);
+      }
+      function showLinks() {
+        host.textContent = ""; host.dataset.k = "show"; host.appendChild(mk("div", "hint", "Loading..."));
+        Promise.all([admin("list", { filters: { organization_id: rec.id }, limit: 100 }, COLL_OL), admin("list", { filters: { subject_id: rec.id }, limit: 100 }, COLL_OL)]).then(function (rs) {
+          if (rs[0].status === 401 || rs[1].status === 401) { lock("That key did not work."); return; }
+          host.textContent = ""; host.dataset.k = "show";
+          if (rs.some(function (r) { return r.status !== 200 || !r.body.ok; })) { host.appendChild(mk("div", "msg", "Could not load. " + adminProblem(rs[0].status !== 200 ? rs[0].status : rs[1].status))); return; }
+          var into = (rs[0].body.data.records || []).filter(function (l) { return !(l.subject_type === "organization" && l.subject_id === rec.id); }), outof = rs[1].body.data.records || [];
+          host.appendChild(mk("div", "hint", "Linked to " + rec.name + ":"));
+          if (!into.length) host.appendChild(mk("div", "empty2", "Nobody and nothing yet."));
+          into.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName(l.subject_type, l.subject_id).then(function (nm) { t.textContent = nm + " (" + OSUBJ[l.subject_type][0].toLowerCase() + ") · " + (OREL_LABEL[l.relationship] || l.relationship) + (l.title ? " · " + l.title : "") + span(l); });
+            actions(l, COLL_OL, li, showLinks);
+          });
+          host.appendChild(mk("div", "hint", rec.name + " is linked to:"));
+          if (!outof.length) host.appendChild(mk("div", "empty2", "No other organization yet."));
+          outof.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName("organization", l.organization_id).then(function (nm) { t.textContent = (OREL_LABEL[l.relationship] || l.relationship) + ": " + nm + (l.title ? " · " + l.title : "") + span(l); });
+            actions(l, COLL_OL, li, showLinks);
+          });
+        });
+      }
+      showLinks.k = "show";
+      function showPlaces() {
+        host.textContent = ""; host.dataset.k = "places"; host.appendChild(mk("div", "hint", "Loading..."));
+        admin("list", { filters: { subject_id: rec.id }, limit: 100 }, COLL_LK).then(function (res) {
+          if (res.status === 401) { lock("That key did not work."); return; }
+          host.textContent = ""; host.dataset.k = "places";
+          if (res.status !== 200 || !res.body.ok) { host.appendChild(mk("div", "msg", "Could not load. " + adminProblem(res.status))); return; }
+          var links = res.body.data.records || [];
+          if (!links.length) { host.appendChild(mk("div", "empty2", "No place is linked to " + rec.name + ".")); return; }
+          links.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName("location", l.location_id).then(function (nm) { t.textContent = nm + " · " + (REL[l.relationship] || l.relationship) + (l.is_primary ? " (main)" : "") + (l.description ? " · " + l.description : "") + span(l); });
+            actions(l, COLL_LK, li, showPlaces);
+          });
+        });
+      }
+      showPlaces.k = "places";
+      function addLink() {
+        var form = mk("form", "eform"), pid = rec.id + "_al_"; form.noValidate = true; form.autocomplete = "off";
+        var type = labeled(form, "What is being linked to " + rec.name + "?", selectOf([["individual", "A person"], ["venue", "A venue"], ["organization", "Another organization"]]), pid + "t");
+        var q = labeled(form, "Find it by name", textIn(100, "type to search"), pid + "q"), opts = mk("div"), chosen = mk("div", "note", "Nothing chosen."), cid = "";
+        form.appendChild(opts); form.appendChild(chosen);
+        var rel = labeled(form, "How is it linked?", selectOf(OREL), pid + "r");
+        var title = labeled(form, "Role or title (optional)", textIn(100, "for example Superintendent"), pid + "ti");
+        var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
+        var to = labeled(form, "Until (optional, leave empty if it still applies)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
+        var btns = mk("div", "btns"), s = mk("button", "", "Save link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+        function source() {
+          if (type.value === "individual") return peopleList().then(function (l) { return l.map(function (p) { return { id: p.id, name: p.display_name || p.given_name || "(no name)" }; }); });
+          if (type.value === "venue") return admin("list", { limit: 200 }, "venues").then(function (r) { return (r.status === 200 && r.body.ok ? r.body.data.records : []).map(function (v) { return { id: v.id, name: v.name }; }); });
+          return Promise.resolve(S.all.filter(function (o) { return o.id !== rec.id; }).map(function (o) { return { id: o.id, name: o.name }; }));
+        }
+        function find() {
+          var term = q.value.trim().toLowerCase(), kind = type.value; opts.textContent = "";
+          source().then(function (list) {
+            if (type.value !== kind || q.value.trim().toLowerCase() !== term) return;
+            var m = list.filter(function (x) { return !term || (x.name || "").toLowerCase().indexOf(term) >= 0; }).slice(0, 8);
+            if (!m.length) opts.appendChild(mk("div", "hint", "Nothing found."));
+            m.forEach(function (x) { var b = mk("button", "quiet", x.name); b.type = "button"; b.addEventListener("click", function () { cid = x.id; chosen.textContent = "Chosen: " + x.name; opts.textContent = ""; }); opts.appendChild(b); });
+          });
+        }
+        q.addEventListener("input", find); type.addEventListener("change", function () { cid = ""; chosen.textContent = "Nothing chosen."; q.value = ""; opts.textContent = ""; find(); });
+        c.addEventListener("click", function () { host.textContent = ""; host.dataset.k = ""; });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); fm.textContent = "";
+          if (!cid) { fm.textContent = "Choose who or what to link first."; return; }
+          var data = { subject_type: type.value, subject_id: cid, organization_id: rec.id, relationship: rel.value };
+          if (title.value.trim()) data.title = title.value.trim(); if (from.value.trim()) data.valid_from = from.value.trim(); if (to.value.trim()) data.valid_to = to.value.trim();
+          s.disabled = true;
+          admin("create", { data: data }, COLL_OL).then(function (res) {
+            s.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body.ok) { g("Notice").textContent = "Link saved."; showLinks(); return; }
+            fm.textContent = "Could not save: " + linkProblems(res);
+          });
+        });
+        host.appendChild(form); find();
+      }
+      addLink.k = "add";
+      function addPlace() {
+        var form = mk("form", "eform"), pid = rec.id + "_ap_"; form.noValidate = true; form.autocomplete = "off";
+        var sel = labeled(form, "Which place?", selectOf([["", "Loading places..."]]), pid + "p"), places = [];
+        admin("list", { limit: 200 }, "locations").then(function (r) {
+          places = (r.status === 200 && r.body.ok ? r.body.data.records : []).filter(function (p) { return p.status !== "retired"; });
+          sel.textContent = "";
+          var first = mk("option", "", places.length ? "Choose a place" : "No places yet. Add one in Places."); first.value = ""; sel.appendChild(first);
+          places.forEach(function (p) { var op = mk("option", "", p.name || (p.addresses && p.addresses[0] ? locAddr(p.addresses[0]) : "(no name)")); op.value = p.id; sel.appendChild(op); });
+        });
+        var rel = labeled(form, "How is it linked?", selectOf(PLACE_RELS.map(function (k) { return [k, REL[k] || k]; })), pid + "r");
+        var prim = mk("input"); prim.type = "checkbox"; var pl = mk("label", "f"); pl.style.display = "flex"; pl.style.gap = "8px"; pl.style.alignItems = "center"; pl.appendChild(prim); pl.appendChild(document.createTextNode("This is the main place (for example headquarters)")); form.appendChild(pl);
+        var desc = labeled(form, "A few words (optional)", textIn(300, "for example headquarters, factory"), pid + "d");
+        var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
+        var to = labeled(form, "Until (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
+        var btns = mk("div", "btns"), s = mk("button", "", "Save place link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+        c.addEventListener("click", function () { host.textContent = ""; host.dataset.k = ""; });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); fm.textContent = "";
+          if (!sel.value) { fm.textContent = "Choose a place first."; return; }
+          var data = { subject_type: "organization", subject_id: rec.id, location_id: sel.value, relationship: rel.value };
+          if (prim.checked) data.is_primary = true; if (desc.value.trim()) data.description = desc.value.trim(); if (from.value.trim()) data.valid_from = from.value.trim(); if (to.value.trim()) data.valid_to = to.value.trim();
+          s.disabled = true;
+          admin("create", { data: data }, COLL_LK).then(function (res) {
+            s.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body.ok) { g("Notice").textContent = "Place linked."; refreshPlaces(); showPlaces(); return; }
+            fm.textContent = "Could not save: " + linkProblems(res);
+          });
+        });
+        host.appendChild(form);
+      }
+      addPlace.k = "addplace";
+      bShow.addEventListener("click", function () { open(showLinks); });
+      bAdd.addEventListener("click", function () { open(addLink); });
+      bPl.addEventListener("click", function () { open(showPlaces); });
+      bAddPl.addEventListener("click", function () { open(addPlace); });
+      return wrap;
     }
     function editForm(rec, host) {
       var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
