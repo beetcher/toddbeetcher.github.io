@@ -42,6 +42,7 @@ from crud_endpoint import handle_admin, handle_crud_test
 from handler import handle_http
 from public_venues import handle_public_venues
 from public_curriculums import handle_public_curriculums
+from request_completion import handle_completion
 from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
 logging.basicConfig(level=logging.INFO)
@@ -76,6 +77,7 @@ _crud_limiter = make_failure_limiter()
 _admin_limiter = make_failure_limiter()
 _venues_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _curriculums_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
+_completion_limiter = RateLimiter(rules=((600, 60), (86400, 500)))
 _admin_store = None
 _store = None
 _doc_store = None
@@ -149,10 +151,14 @@ def _client_address(req) -> str:
     return forwarded[-1] if forwarded else (req.remote_addr or "unknown")
 
 
+COMPLETION_LINK = "https://beetcher.com/enjoy/register/private/?r="
+
+
 def _acknowledge(doc):
+    link = COMPLETION_LINK + doc["completion_token"] if doc.get("registration_type") == "private" and doc.get("completion_token") else None
     return cms_service.acknowledge(
         " ".join((doc["first_name"], doc["last_name"])), doc["email"],
-        doc["confirmation_number"], BREVO_SMTP_KEY.value,
+        doc["confirmation_number"], BREVO_SMTP_KEY.value, link,
     )
 
 
@@ -294,6 +300,29 @@ def enjoy_public_curriculums(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_admin_store(),
         limiter=_curriculums_limiter,
+        now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["GET", "POST", "OPTIONS"]),
+    max_instances=3,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_request_completion(req: https_fn.Request) -> https_fn.Response:
+    """The completion link from the receipt email: GET ?t=<token> reads the request's answers, POST {t, changes} fills in its optional details."""
+    result = handle_completion(
+        method=req.method,
+        params=req.args.to_dict(),
+        raw_body=req.get_data(),
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        schemas=_schemas,
+        limiter=_completion_limiter,
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,

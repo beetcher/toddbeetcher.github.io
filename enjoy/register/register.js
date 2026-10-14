@@ -22,6 +22,7 @@
   var CFG = TYPES[TYPE];
   if (!CFG) return;
   var LEAN = TYPE === 'private';   // the small ask: name and email up top, the rest is "add details now"
+  var resumeToken = (function () { if (!LEAN) return ''; var t = new URLSearchParams(location.search).get('r'); return t && /^[A-Za-z0-9_-]{43}$/.test(t) ? t : ''; })();   // the receipt-email link
   var form = document.getElementById('rf');
   if (!form) return;
 
@@ -538,6 +539,7 @@
     return d;
   }
   function saveDraft(now) {
+    if (resumeToken) return;   // finishing an existing request through its email link: nothing is saved on this device
     var s = storage(); if (!s) return;
     clearTimeout(timer);
     var write = function () { try { s.setItem(DRAFT_KEY, JSON.stringify(collect())); } catch (e) {} };
@@ -693,7 +695,8 @@
     clearDraft();
     form.style.display = 'none';
     var d = document.getElementById('rf-done');
-    d.querySelector('.reg__conf').textContent = data.confirmation_number || '';
+    d.querySelector('.reg__conf').textContent = (data && data.confirmation_number) || resumeConf || '';
+    if (resumeAnswers) { d.querySelector('h2').textContent = 'Thank you. Your details are saved.'; }
     d.setAttribute('data-show', '1');
     d.scrollIntoView({ behavior: 'smooth', block: 'start' });
     var hd = d.querySelector('h2'); hd.setAttribute('tabindex', '-1'); hd.focus({ preventScroll: true });
@@ -708,15 +711,18 @@
     if (!idemKey) idemKey = uuid();
     saveDraft(true); // keep the key, so a retry after a failure cannot create a second request
     var body = buildRequest();
-    submit.disabled = true; say('Sending your request...', '');
+    var url = endpoint(), payload = body;
+    if (resumeAnswers) { url = completionUrl(); payload = { t: resumeToken, changes: diffChanges(body) }; if (body.website) payload.website = body.website; }
+    submit.disabled = true; say(resumeAnswers ? 'Saving your details...' : 'Sending your request...', '');
     var ctl = ('AbortController' in window) ? new AbortController() : null;
     var to = setTimeout(function () { if (ctl) ctl.abort(); }, 25000);
-    fetch(endpoint(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined })
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined })
       .then(function (res) { return res.json().catch(function () { return null; }).then(function (j) { return { status: res.status, body: j }; }); })
       .then(function (r) {
         clearTimeout(to);
         if (r.body && r.body.ok) { done(r.body.data); return; }
         var err = r.body && r.body.error || {};
+        if (err.code === 'already_scheduled') { failure('This request has already been scheduled, so it cannot be changed here. Please reply to the email we sent you.'); return; }
         if (r.status === 429 || err.code === 'rate_limited') { failure('That was a lot of tries in a short time. Please wait a few minutes and try again.'); return; }
         if (err.code === 'validation_failed' && err.field_errors && err.field_errors.length) {
           var shown = 0;
@@ -733,10 +739,77 @@
       .then(function () { submit.disabled = false; });
   });
 
+  // ---------- the completion link (?r=<token>), private page only ----------
+  // The receipt email links back to the SAME request. We read its answers, fill the form, and save changes to that request; a second request is never made.
+  var COMPLETION_URL = 'https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_request_completion';
+  function completionUrl() { var e = endpoint(); return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_request_completion') : COMPLETION_URL; }
+  var LOCKED_KEYS = ['registration_type', 'idempotency_key', 'first_name', 'last_name', 'email', 'consent_to_contact', 'presented_cost_cents', 'presented_cost_basis',
+    'scheduled_class_id', 'no_class_fits', 'website'];
+  var MANAGED_KEYS = ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times', 'what_they_want',
+    'how_heard', 'preferred_contact_method', 'venue_arrangement', 'location_type', 'preferred_venue_id', 'postal_code', 'curriculum_id', 'is_requester_attending',
+    'has_minors_present', 'attendee_count', 'proficiency', 'needs_invoice', 'participants'];   // the questions this page can show; anything else is never cleared
+  function canon(v) { return JSON.stringify(v, function (k, x) { if (x && typeof x === 'object' && !Array.isArray(x)) { var o = {}; Object.keys(x).sort().forEach(function (key) { o[key] = x[key]; }); return o; } return x; }); }
+  function diffChanges(r) {
+    var a = resumeAnswers, ch = {};
+    // keep what this page could not show (the lists did not load): never turn it into a change
+    if (a.curriculum_id && !r.curriculum_id && !(FIELDS.curriculum_id && FIELDS.curriculum_id.el.options.length > 1)) r.curriculum_id = a.curriculum_id;
+    if (a.preferred_venue_id && !r.preferred_venue_id && !val('location_type')) { r.preferred_venue_id = a.preferred_venue_id; r.location_type = a.location_type || 'off_site'; }
+    Object.keys(r).forEach(function (k) { if (LOCKED_KEYS.indexOf(k) < 0 && canon(r[k]) !== canon(a[k])) ch[k] = r[k]; });
+    MANAGED_KEYS.forEach(function (k) { if (k in a && !(k in r)) ch[k] = null; });
+    return ch;
+  }
+  function fillFromAnswers(a) {
+    ['first_name', 'last_name', 'email'].forEach(function (n) { setVal(n, a[n]); FIELDS[n].el.readOnly = true; });
+    FIELDS.email.wrap.appendChild(h('span', { class: 'rf__hint', text: 'To change your name or email, just reply to the email we sent you.' }));
+    setVal('consent_to_contact', true);
+    FIELDS.consent_to_contact.wrap.parentNode.hidden = true;   // already agreed when the request was sent
+    if (needBox) needBox.hidden = true;
+    ['is_requester_attending', 'has_minors_present'].forEach(function (n) { if (typeof a[n] === 'boolean') setVal(n, a[n] ? 'yes' : 'no'); });
+    ['attendee_count', 'proficiency'].forEach(function (n) { if (a[n] != null) setVal(n, String(a[n])); });
+    ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times', 'what_they_want', 'how_heard',
+      'preferred_contact_method', 'venue_arrangement', 'postal_code'].forEach(function (n) { if (a[n] != null && FIELDS[n]) setVal(n, String(a[n])); });
+    if (a.needs_invoice === true && FIELDS.needs_invoice) setVal('needs_invoice', true);
+    if (a.curriculum_id) pendingCurriculum = a.curriculum_id;
+    if (a.preferred_venue_id) pendingWhere = 'venue:' + a.preferred_venue_id; else if (a.location_type) setVal('location_type', a.location_type);
+    (a.participants || []).forEach(function (p) { addPerson({ first: p.first_name, last: p.last_name, email: p.email, age: p.age_band }, true); });
+    if (FIELDS.postal_code) FIELDS.postal_code.el.addEventListener('input', onZipInput);   // a changed ZIP re-ranks the places
+    if (moreBox) moreBox.open = true;
+    submit.textContent = 'Save my details';
+  }
+  function startResume() {
+    var title = document.querySelector('.reg__title'); if (title) title.textContent = 'Finish your request';
+    var lede = document.querySelector('.reg__lede'); if (lede) lede.textContent = 'Thank you for sending your request. Add whatever you like below. What you already told us is filled in.';
+    form.style.display = 'none';
+    var note = h('p', { class: 'reg__note', role: 'status', text: 'Opening your request...' });
+    form.parentNode.insertBefore(note, form);
+    fetch(completionUrl() + '?t=' + encodeURIComponent(resumeToken), { method: 'GET' })
+      .then(function (res) { return res.json().catch(function () { return null; }).then(function (j) { return { status: res.status, body: j }; }); })
+      .then(function (r) {
+        if (r.status === 404) {   // not a link we know: carry on as an ordinary new request
+          note.textContent = 'That link did not open a request, so you can send a new one here.';
+          if (title) title.textContent = 'Schedule a one on one';
+          resumeToken = ''; form.style.display = ''; startNormal(); return;
+        }
+        if (!(r.body && r.body.ok && r.body.data)) { note.textContent = 'We could not open your request just now. Please reload this page to try again.'; return; }
+        var d = r.body.data; resumeConf = d.confirmation_number || '';
+        if (!d.editable) { note.textContent = 'Your request ' + resumeConf + ' has already been scheduled, so it cannot be changed here. Please reply to the email we sent you.'; return; }
+        resumeAnswers = d.answers || {};
+        note.textContent = 'Your request ' + resumeConf + '. Add details below, then tap Save my details.';
+        fillFromAnswers(resumeAnswers);
+        form.style.display = '';
+        loadVenues(ZIP_RE.test(resumeAnswers.postal_code || '') ? resumeAnswers.postal_code : '');
+        loadCurriculums(); updateNeeds();
+      })
+      .catch(function () { note.textContent = 'We could not reach the server. Please reload this page to try again.'; });
+  }
+
   // ---------- start ----------
+  var resumeAnswers = null, resumeConf = '';
   build();
   form.addEventListener('input', onChange);
   form.addEventListener('change', onChange);
+  if (resumeToken) startResume(); else startNormal();
+  function startNormal() {
   var restored = loadDraft();
   if (FIELDS.postal_code) {
     FIELDS.postal_code.el.value = rememberedZip();   // what this device remembers from last time
@@ -756,4 +829,5 @@
     });
   }
   if (CFG.minCount > 1 && !val('attendee_count')) setVal('attendee_count', '');
+  }
 })();

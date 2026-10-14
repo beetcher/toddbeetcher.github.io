@@ -431,6 +431,12 @@
       "maxLength": 20,
       "readOnly": true
     },
+    "completion_token": {
+      "description": "A long random secret, set by the server when the request is saved and sent only in the receipt email link. Whoever holds the link may read the answers and fill in the optional details of THIS request while it is not yet placed in a class. Never shown in the Console, never in a reply to the page. Absent on requests saved before the link existed.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "readOnly": true
+    },
     "processing_status": {
       "description": "Where the request is in processing: not_processed (always at creation), partially_processed or processed. Set by the server and later by handlers.",
       "enum": [

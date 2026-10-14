@@ -358,6 +358,7 @@ def handle_registration_request(
         "source": SOURCE,
         "confirmation_number": number,
         "processing_status": "not_processed",
+        "completion_token": secrets.token_urlsafe(32),   # the secret in the receipt-email link; never sent back to the page
     })
     if previous is not None:
         doc["previous_id"] = previous["id"]

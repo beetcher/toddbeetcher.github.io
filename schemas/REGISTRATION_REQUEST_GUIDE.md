@@ -210,3 +210,15 @@ After a newly created request is saved, CMS attempts one acknowledgment. It says
 All three fields are readOnly. A browser supplying one is refused. They contain no additional personal data and are kept with the request, with no separate expiry (Todd). The request's overall retention period remains undecided; use synthetic data for the proof of concept. `x_history` is `in_place`: email metadata is updated on the saved record, stamping updated_at and updated_by (`system:cms`). The original submitted fields, confirmation and creation stamps are preserved. No general request-edit endpoint is added.
 
 When the transport hook is disabled, no attempt or email metadata is written. An absent status means no result was recorded; a process crash or failed metadata write can also leave it absent. `stored_examples` in the examples file illustrates these server-written fields; the CMS tests validate those complete documents.
+
+## The completion link (October 14, 2026)
+
+The receipt email for a private request carries a link back to the SAME request, so the person can fill in the optional details without retyping anything and without a reply email.
+
+- `completion_token`: optional server-only string, 43 URL-safe characters (a random 256-bit secret), set by the server when the request is saved. It is readOnly, so a browser supplying it is refused. It is sent only inside the receipt-email link (`https://beetcher.com/enjoy/register/private/?r=<token>`). It is never returned to the page that sent the request, never shown in the Console, and never logged. Requests saved before the link existed do not have one.
+- `GET enjoy_request_completion?t=<token>` returns the confirmation number, whether the request can still be changed (`editable`), and the answers: the optional details plus first name, last name and email (shown, not editable). A token that does not match a live private request is `not_found`. Nothing is revealed about why.
+- `POST enjoy_request_completion` with `{"t": token, "changes": {...}}` fills in optional details of that request. It never creates a request, and the confirmation number stays the same. The whole request is validated again with the changes applied, with the same rules as a new request (Colorado ZIP, dates not in the past, headcount, the venue must be an active public venue, the curriculum must be active). A value of `null` removes an answer.
+- Name, email, consent, the agreed cost, `registration_type`, `idempotency_key` and any class pick cannot be changed through the link (`not_allowed`).
+- Once the request has an active placement in a class the link stops accepting changes (`already_scheduled`, 409). If the placement is withdrawn or cancelled the link works again.
+- The link does not expire. Whoever holds it can read and complete that one request; that is the intended trade for a link with nothing to type. Only private requests have a link in M1.
+- `updated_by` is `web:completion` after a change made through the link.

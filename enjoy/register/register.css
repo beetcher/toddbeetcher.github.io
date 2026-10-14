@@ -118,3 +118,4 @@
   .rf__need-list { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
   .rf__need-item { width: 100%; text-align: left; }
 }
+.rf input[readonly] { opacity: .75; cursor: not-allowed; }
