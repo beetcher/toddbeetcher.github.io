@@ -40,6 +40,8 @@ REQ = {"id": "11111111-1111-4111-8111-111111111111", "confirmation_number": "ICD
        "location_type": "off_site", "preferred_venue_id": lib["id"], "postal_code": "80027"}
 REQ2 = {**REQ, "id": "22222222-2222-4222-8222-222222222222", "confirmation_number": "ICDT-BBBBBB", "first_name": "Dana", "last_name": "Fox", "email": "dana@example.com", "preferred_venue_id": hall["id"]}
 store.create(AT.REQUESTS.name, REQ["id"], dict(REQ)); store.create(AT.REQUESTS.name, REQ2["id"], dict(REQ2))
+def OPEN(pg):   # the optional details sit in a closed section; these tests are about what is inside it
+    pg.add_init_script("document.addEventListener('DOMContentLoaded', function () { var d = document.querySelector('details.rf__more'); if (d) d.open = true; })")
 CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
 
 def admin_route(route):
@@ -71,7 +73,7 @@ with sync_playwright() as p:
     pg.on("pageerror", lambda e: errors.append(str(e)))
     pg.route("**/enjoy_public_venues", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"venues": LIST}})))
     pg.route(re.compile(r"enjoy-registration-request"), reg_route)
-    pg.goto(FORM)
+    OPEN(pg); pg.goto(FORM)
     pg.wait_for_selector("input[name=location_type][value^='venue:']", state="attached")
     labels = pg.eval_on_selector_all("input[name=location_type]", "els => els.map(e => e.parentElement.textContent.trim())")
     check("order: home, public place, then venues as 'Name, Town'", len(labels) == 4 and labels[0] == "At a home" and labels[1].startswith("A public place")
@@ -84,19 +86,19 @@ with sync_playwright() as p:
     # plain choices send no venue id
     sent.clear(); pg2 = b.new_page(viewport={"width": 1280, "height": 1000})
     pg2.route("**/enjoy_public_venues", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"venues": LIST}})))
-    pg2.route(re.compile(r"enjoy-registration-request"), reg_route); pg2.goto(FORM)
+    pg2.route(re.compile(r"enjoy-registration-request"), reg_route); OPEN(pg2); pg2.goto(FORM)
     pg2.wait_for_selector("input[name=location_type][value^='venue:']", state="attached")
     fill_form(pg2); pg2.check("input[name=location_type][value=off_site]", force=True)
     pg2.click("button[type=submit]"); pg2.wait_for_function("document.getElementById('rf-done').getAttribute('data-show') === '1'")
     check("'A public place' sends off_site only", sent and sent[0].get("location_type") == "off_site" and "preferred_venue_id" not in sent[0], sent)
     # list fails: two plain choices
     pg3 = b.new_page(viewport={"width": 420, "height": 900})
-    pg3.route("**/enjoy_public_venues", lambda r: r.fulfill(status=500, headers=CORS, body="{}")); pg3.goto(FORM); pg3.wait_for_timeout(800)
+    pg3.route("**/enjoy_public_venues", lambda r: r.fulfill(status=500, headers=CORS, body="{}")); OPEN(pg3); pg3.goto(FORM); pg3.wait_for_timeout(800)
     check("a failed list leaves the two plain choices", pg3.locator("input[name=location_type]").count() == 2)
     pg4 = b.new_page(viewport={"width": 420, "height": 900})
-    pg4.route("**/enjoy_public_venues", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"venues": []}}))); pg4.goto(FORM); pg4.wait_for_timeout(800)
+    pg4.route("**/enjoy_public_venues", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"venues": []}}))); OPEN(pg4); pg4.goto(FORM); pg4.wait_for_timeout(800)
     check("an empty list leaves the two plain choices", pg4.locator("input[name=location_type]").count() == 2)
-    pg5 = b.new_page(viewport={"width": 420, "height": 900}); pg5.route("**/enjoy_public_venues", lambda r: r.abort()); pg5.goto(FORM); pg5.wait_for_timeout(800)
+    pg5 = b.new_page(viewport={"width": 420, "height": 900}); pg5.route("**/enjoy_public_venues", lambda r: r.abort()); OPEN(pg5); pg5.goto(FORM); pg5.wait_for_timeout(800)
     check("an unreachable list leaves the two plain choices", pg5.locator("input[name=location_type]").count() == 2)
     check("no script errors on the form", not errors, errors)
 
@@ -115,7 +117,7 @@ with sync_playwright() as p:
     zp = z1.new_page(); zerr = []
     zp.on("pageerror", lambda e: zerr.append(str(e)))
     zp.route("**/enjoy_public_venues*", venues_route); zp.route(re.compile(r"enjoy-registration-request"), reg_route)
-    zp.goto(FORM)
+    OPEN(zp); zp.goto(FORM)
     zp.wait_for_selector("select[aria-label^='Choose a place']", state="attached")
     check("no ZIP, seven venues: only home, public place and one dropdown", zp.locator("input[name=location_type]:visible").count() == 2 and zp.locator("select[aria-label^='Choose a place'] option").count() == 8, zp.locator("select[aria-label^='Choose a place'] option").count())
     check("the ZIP field starts empty on a first visit", zp.input_value("input[name=postal_code]") == "")
@@ -136,23 +138,23 @@ with sync_playwright() as p:
     check("the request carries the ZIP and a venue from the dropdown", sent and sent[-1].get("postal_code") == "80027" and sent[-1].get("preferred_venue_id") and sent[-1].get("location_type") == "off_site", sent[-1:] )
     # a bad ZIP is stopped on the form
     zq = z1.new_page(); zq.route("**/enjoy_public_venues*", venues_route); zq.route(re.compile(r"enjoy-registration-request"), reg_route)
-    zq.goto(FORM)
+    OPEN(zq); zq.goto(FORM)
     check("the next visit remembers the ZIP on this device", zq.input_value("input[name=postal_code]") == "80027")
     zq.wait_for_selector("select[aria-label^='More places']", state="attached")
     check("and loads the nearby list straight away", "Louisville Library" in zq.eval_on_selector_all("input[name=location_type]", "els => els.filter(e => !e.parentElement.hidden).map(e => e.parentElement.textContent)")[2])
     zq.fill("input[name=postal_code]", "")
     zq.wait_for_selector("select[aria-label^='Choose a place']", state="attached")
-    zq.goto(FORM)
+    OPEN(zq); zq.goto(FORM)
     check("clearing the field forgets it", zq.input_value("input[name=postal_code]") == "")
     zr = z1.new_page(); zr.route("**/enjoy_public_venues*", venues_route); zr.route(re.compile(r"enjoy-registration-request"), reg_route); sent.clear()
-    zr.goto(FORM); fill_form(zr); zr.check("input[name=location_type][value=home]", force=True); zr.fill("input[name=postal_code]", "90210")
+    OPEN(zr); zr.goto(FORM); fill_form(zr); zr.check("input[name=location_type][value=home]", force=True); zr.fill("input[name=postal_code]", "90210")
     zr.click("button[type=submit]"); zr.wait_for_timeout(500)
     check("a ZIP outside Colorado is stopped on the form", not sent and "Colorado ZIP" in zr.locator("form").inner_text())
     zr.fill("input[name=postal_code]", "80301"); zr.click("button[type=submit]"); zr.wait_for_function("document.getElementById('rf-done').getAttribute('data-show') === '1'")
     check("a home request can carry a ZIP", sent and sent[-1].get("postal_code") == "80301" and "preferred_venue_id" not in sent[-1] and sent[-1].get("location_type") == "home", sent[-1:])
     # storage blocked: still works
     z2 = b.new_context(viewport={"width": 1280, "height": 1000}); z2.add_init_script("Object.defineProperty(window, 'localStorage', { get() { throw new Error('blocked'); } })")
-    zs = z2.new_page(); serr = []; zs.on("pageerror", lambda e: serr.append(str(e))); zs.route("**/enjoy_public_venues*", venues_route); zs.goto(FORM)
+    zs = z2.new_page(); serr = []; zs.on("pageerror", lambda e: serr.append(str(e))); zs.route("**/enjoy_public_venues*", venues_route); OPEN(zs); zs.goto(FORM)
     zs.fill("input[name=postal_code]", "80027"); zs.wait_for_selector("select[aria-label^='More places']", state="attached")
     check("blocked storage: the form still works", not serr and zs.locator("select[aria-label^='More places']").count() == 1, serr)
     check("no script errors in the ZIP pages", not zerr, zerr)

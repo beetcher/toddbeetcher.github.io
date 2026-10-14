@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/registration_request.schema.json",
   "title": "registration_request",
-  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private and group need a duration and location type. A class request either picks a scheduled class (scheduled_class_id; it must be a public workshop) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule). Payment is not stored on a request: payments are transaction_records, and the registration_assignment holds their ids. The requester is linked to a person record by individual_id once identity review decides.",
+  "description": "A request to register. A request, not a registration. registration_type is private, group or class. The requester is the person filling it in; participants are everyone else being trained (for a gift, the recipient); attendee_count is the total number of people wanting seats; has_minors_present says whether anyone under 18 will be on site, and age_band (child, teen, adult) can mark the requester and each participant. Private needs only a duration besides the contact basics, so the small ask stays small (everything about people, place and timing is optional detail); group also needs a location type, and group and class need the people counts and the under-18 answer. A class request either picks a scheduled class (scheduled_class_id; it must be a public workshop) or says none fit (no_class_fits). Fields marked readOnly are set by the server only: the endpoint rejects any submission that includes one, then adds them before storing. x_server_required lists the readOnly fields every stored record must have. The class seat snapshot fields (target and maximum capacity, registered, seats available up to the maximum) are required only when scheduled_class_id is present and must be absent otherwise (endpoint rule). Payment is not stored on a request: payments are transaction_records, and the registration_assignment holds their ids. The requester is linked to a person record by individual_id once identity review decides.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -12,15 +12,12 @@
   "required": [
     "registration_type",
     "idempotency_key",
-    "attendee_count",
     "first_name",
     "last_name",
     "email",
     "consent_to_contact",
     "presented_cost_cents",
-    "presented_cost_basis",
-    "is_requester_attending",
-    "has_minors_present"
+    "presented_cost_basis"
   ],
   "properties": {
     "registration_type": {
@@ -32,7 +29,7 @@
       ]
     },
     "attendee_count": {
-      "description": "The TOTAL number of people wanting seats, including the requester when attending. 1 to 50. Required on every type. Names in participants (plus the requester if attending) must not exceed it, but the count may be higher than the names given.",
+      "description": "The TOTAL number of people wanting seats, including the requester when attending. 1 to 50. Required on group and class requests; optional on a private request, where absent means not answered (the requester can add it in the details section or later). Names in participants (plus the requester if attending) must not exceed it when it is given, but the count may be higher than the names given.",
       "type": "integer",
       "minimum": 1,
       "maximum": 50
@@ -156,7 +153,7 @@
       "maxLength": 100
     },
     "is_requester_attending": {
-      "description": "Whether the requester will take part. False for a gift or when arranging for others; then participants must list at least one person. Required.",
+      "description": "Whether the requester will take part. False for a gift or when arranging for others; then participants must list at least one person. Required on group and class requests; optional on a private request, where absent means not answered.",
       "type": "boolean"
     },
     "participants": {
@@ -210,7 +207,7 @@
       }
     },
     "location_type": {
-      "description": "Where a private or group session should happen: home (a private home) or off_site (a library, cafe, hall, office). Required for private and group; not allowed on a class request.",
+      "description": "Where a private or group session should happen: home (a private home) or off_site (a library, cafe, hall, office). Required for group; optional for private, where absent means not answered. Not allowed on a class request.",
       "enum": [
         "home",
         "off_site"
@@ -230,6 +227,11 @@
     },
     "preferred_venue_id": {
       "description": "UUID of the venue the requester picked from the public list on the form. Private and group requests only, and only with location_type off_site (a home request has no venue). The venue must exist, be active and be a public venue (venue_not_found otherwise). It is a preference, not a booking: the operator may accept it when building the class or choose another place. Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "curriculum_id": {
+      "description": "UUID of the curriculum the requester says they are interested in, picked from the list of active curriculums on the form (the form's default is \"not sure yet\", which sends nothing). Private and group requests only; a class request may not carry it. The curriculum must exist, not be deleted and be active (curriculum_not_found otherwise). It is a preference, not a booking: the operator may offer something else. Optional.",
       "type": "string",
       "format": "uuid"
     },
@@ -303,7 +305,7 @@
       "const": true
     },
     "has_minors_present": {
-      "description": "Whether anyone under 18 will be on site. Required, true or false. Must be true when any listed person is a child or teen. Vital information for later planning.",
+      "description": "Whether anyone under 18 will be on site. True or false. Required on group and class requests; optional on a private request, where absent means not answered (never read it as \"no\"). Must be present and true when any listed person is a child or teen. Vital information for later planning.",
       "type": "boolean"
     },
     "requester_age_band": {
@@ -544,8 +546,7 @@
       },
       "then": {
         "required": [
-          "duration_minutes_requested",
-          "location_type"
+          "duration_minutes_requested"
         ],
         "properties": {
           "scheduled_class_id": false,
@@ -589,7 +590,8 @@
           "preferred_venue_id": false,
           "venue_arrangement": false,
           "sessions_requested": false,
-          "group_type": false
+          "group_type": false,
+          "curriculum_id": false
         },
         "oneOf": [
           {
@@ -660,7 +662,49 @@
           "has_minors_present": {
             "const": true
           }
-        }
+        },
+        "required": [
+          "has_minors_present"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "registration_type": {
+            "const": "group"
+          }
+        },
+        "required": [
+          "registration_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "location_type"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "registration_type": {
+            "enum": [
+              "group",
+              "class"
+            ]
+          }
+        },
+        "required": [
+          "registration_type"
+        ]
+      },
+      "then": {
+        "required": [
+          "attendee_count",
+          "is_requester_attending",
+          "has_minors_present"
+        ]
       }
     }
   ],

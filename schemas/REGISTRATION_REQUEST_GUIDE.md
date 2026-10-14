@@ -56,12 +56,14 @@ A class request can bring others: "I've got three more people." Same `participan
 ## 4. Rules the schema enforces itself
 
 - All field names are snake_case. Unknown fields are rejected.
-- Required for every request: `registration_type`, `idempotency_key`, `attendee_count` (1 to 50), `first_name`, `last_name`, `email`, `consent_to_contact` (must be true), `presented_cost_cents`, `presented_cost_basis`, `is_requester_attending`, `has_minors_present`.
-- Private and group require `duration_minutes_requested` and `location_type`, and forbid `scheduled_class_id` and `no_class_fits`.
-- Class requires exactly one of `scheduled_class_id` or `no_class_fits`, and forbids `duration_minutes_requested`, `location_type`, `venue_arrangement`, `sessions_requested` and `group_type`.
+- Required for every request: `registration_type`, `idempotency_key`, `first_name`, `last_name`, `email`, `consent_to_contact` (must be true), `presented_cost_cents`, `presented_cost_basis`.
+- A PRIVATE request is the small ask: besides the list above it needs only `duration_minutes_requested` (the page sends the fixed session length; it is not a question). `attendee_count`, `is_requester_attending`, `has_minors_present`, `location_type` and everything else about people, place and timing are optional details the requester may add now (the form's "Add details now" section) or later. Absent means not answered, never "no".
+- Group requires `duration_minutes_requested` and `location_type`. Group and class also require `attendee_count` (1 to 50), `is_requester_attending` and `has_minors_present`.
+- Private and group forbid `scheduled_class_id` and `no_class_fits`.
+- Class requires exactly one of `scheduled_class_id` or `no_class_fits`, and forbids `duration_minutes_requested`, `location_type`, `venue_arrangement`, `sessions_requested`, `group_type` and `curriculum_id`.
 - `group_type` is allowed only on group requests.
 - If `is_requester_attending` is false, `participants` must be present with at least one person (for example a gift recipient).
-- If any participant has `age_band` child or teen, `has_minors_present` must be true.
+- If any participant has `age_band` child or teen, `has_minors_present` must be sent and true.
 - `no_class_fits` can only be sent as true. Omit it otherwise.
 - Fields marked `readOnly` are set by the server only. A submission containing one is rejected (the endpoint enforces this; JSON Schema itself only annotates it).
 
@@ -87,19 +89,20 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 - Todd wanted this light: "I don't want to make this a super rich thing, maybe some yes or no's." Collected only for the requester. Each participant's level is collected later, after they are invited, through a separate surface linked back to the request. "You're not going to have somebody fill out all this on a web surface about all the different people." That later record is out of scope here. (The scale 1 to 10 differs from the older form's 1 to 5; **open** whether to unify.)
 
 ### Who is attending
-- `is_requester_attending`: required. False for a gift or when someone is arranging for others.
+- `is_requester_attending`: required on group and class; optional on private (absent means not answered). False for a gift or when someone is arranging for others.
 - `participants`: everyone else being trained, up to 50. Each has a `first_name` or a `last_name` (at least one; Todd: "one or the other is good enough"), optional `email`, optional `age_band`. The requester still gives both names. For a gift, the recipient is a participant. For a couple, the spouse.
-- `attendee_count`: the TOTAL number of people wanting seats, including the requester if attending. Required on every type (even a private session can be two or three). Names are optional, so the count can exceed the names. Endpoint rule: names given (plus the requester if attending) must not exceed the count.
-- `has_minors_present`: required, true or false. Todd: "you need to know if someone's going to bring a kid on site. It's a vital piece of information for use later."
+- `attendee_count`: the TOTAL number of people wanting seats, including the requester if attending. Required on group and class; optional on private (a private session can be two or three, and the small ask does not ask). Names are optional, so the count can exceed the names. Endpoint rule: when a count is given, names given (plus the requester if attending) must not exceed it.
+- `has_minors_present`: true or false; required on group and class, optional on private (absent means not answered; never read it as "no"). Todd: "you need to know if someone's going to bring a kid on site. It's a vital piece of information for use later."
 - `age_band` on requester and participants: in the schema on purpose. The web surface need not ask for it. Todd's policy on whether minors may attend at all is **(open)**; if they do, an adult should be the requester.
 - `is_gift`: true when the request is a gift. The recipient is a participant, so no separate recipient fields exist.
 
 ### When and where (private and group)
 - `requested_date`, `alternate_requested_date`, `requested_time_of_day` (morning, afternoon, evening), `preferred_times` (free text for anything else). Optional, because someone may be flexible. For a "none fit" class request these act as a demand signal.
-- `location_type`: `home` or `off_site`. Required for private and group.
+- `location_type`: `home` or `off_site`. Required for group; optional for private (absent means not answered).
 - `preferred_location`: where, in their words. Used by private, group and class ("none fit").
 - `postal_code`: the Colorado ZIP where the requester would like the session, five digits starting 80 or 81. Private and group only, with any `location_type` (a home too); a class request may not carry it. The form asks for it first and uses it to list the nearest venues; the form also remembers it on the requester's device and fills it in next time. Stored as sent; it is personal data (area of the requester). Optional.
 - `preferred_venue_id`: the venue the requester picked from the public list on the form (the list shows each active public venue as "Name, Town"). Private and group only, and only with `location_type` `off_site`; a home request or a class request may not carry it. The endpoint checks the venue exists, is active and is public (`venue_not_found`). It is a preference, not a booking: when the operator builds the class for a one-to-one request, the Console offers this venue first and the operator may accept it or choose another.
+- `curriculum_id`: the curriculum the requester says they are interested in, picked from the list of ACTIVE curriculums on the form (the form lists title and tagline and defaults to "not sure yet", which sends nothing). Private and group only; a class request may not carry it. The endpoint checks the curriculum exists, is not deleted and is active (`curriculum_not_found`). A curriculum is what a person chooses to learn; a class is a moment in time, so this is not a class pick. It is a preference, not a booking: the Console shows it on the request card and offers it first when the operator builds the class.
 - `venue_arrangement`: `we_have_space` or `need_suggestion`. Who arranges the space.
 - `sessions_requested`: 1 to 52, for a series. Optional.
 
@@ -129,12 +132,13 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 1. **Honeypot first.** Remove the hidden field `website` before anything else. If it held anything, reply as if the request succeeded and store nothing. (It is not in the schema, which rejects unknown fields, so it must be removed before validating.)
 2. Reject any submission containing a readOnly field.
 3. Normalize the email (trim, lowercase) so validation and matching see the clean value. Do this before validating, or surrounding spaces would fail the email format.
-4. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `venue_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
+4. Validate against the schema. Reply with the standard envelope (SCHEMA_RULES section 8): `ok`, then `data` or `error` with a `code` and field-level errors. Codes: `validation_failed`, `over_capacity`, `class_not_found`, `venue_not_found`, `curriculum_not_found`, `class_closed`, `rate_limited`, `not_found`, `server_error`.
 5. Honor the idempotency key: the same key twice returns the original success and creates nothing. This is not an error.
 6. Dates: `requested_date` and `alternate_requested_date` must not be in the past (Mountain time). Otherwise `validation_failed` with a field error.
-7. Names versus count: the names in `participants`, plus the requester if attending, must not exceed `attendee_count`.
+7. Names versus count: when `attendee_count` is given, the names in `participants`, plus the requester if attending, must not exceed it. With no count there is nothing to compare.
 8. For a class pick: load the class. Not found, or a class that is not a public workshop, gives `class_not_found`. A status other than `enrolling` gives `class_closed`. A count over `capacity_max` gives `over_capacity`. Otherwise store the four-field seat snapshot. A class at its maximum still accepts the request.
 8b. For a `preferred_venue_id`: load the venue. Not found, deleted, not `active`, or not a public venue (`is_public_venue` true) gives `venue_not_found`. Otherwise the id is stored as sent; nothing else about the venue is copied.
+8c. For a `curriculum_id`: load the curriculum. Not found, deleted, or not `active` gives `curriculum_not_found`. Otherwise the id is stored as sent; nothing else about the curriculum is copied.
 9. **Repeats are flagged, never blocked.** Look for an earlier request with the same normalized email and the same type. If one exists, save the new request as a new record with `previous_id` pointing at the earlier one, and reply with a normal success. Because it is only a flag, a false match (a couple sharing one email) does no harm. Repeats are not errors.
 10. Generate `id`, `program_slug` (`launch` for the /enjoy pages), timestamps, `created_by` and `updated_by` (`web:enjoy`), `source` (`web_enjoy`), `schema_version`, `confirmation_number`, `processing_status` = `not_processed`.
 11. Check the full record against the schema and confirm every `x_server_required` field is present.

@@ -46,7 +46,7 @@ class CoreEndpoint:
     def __init__(self, schemas, setup):
         self.schemas = schemas
         self.now = datetime.fromisoformat(setup["now"].replace("Z", "+00:00"))
-        self.store = MemoryStore(setup["scheduled_classes"], setup.get("registration_venues", []))
+        self.store = MemoryStore(setup["scheduled_classes"], setup.get("registration_venues", []), setup.get("registration_curriculums", []))
         self.last_outcome = None
 
     def send(self, body):

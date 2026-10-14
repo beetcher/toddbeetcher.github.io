@@ -1114,6 +1114,14 @@
       if (!cVenues.length && !venueChipFetch) venueChipFetch = loadVenueChoices().then(refreshVenueChips);
     }
 
+    if (rec.curriculum_id) {   // the topic the requester picked on the form
+      var cc = document.createElement("span"); cc.className = "curchip";
+      cc.textContent = "Interested in: " + (curriculumAsked(rec.curriculum_id) || "picked on the form");
+      cc.setAttribute("data-cid", rec.curriculum_id);
+      chips.appendChild(cc);
+      if (!cCurricula.length && !curChipFetch) curChipFetch = loadCurriculumChoices().then(refreshCurriculumChips);
+    }
+
     [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
 
     var detail = document.createElement("div"); detail.className = "detail";
@@ -2180,7 +2188,17 @@
     });
   }
 
-  var venueChipFetch = null;
+  var venueChipFetch = null, curChipFetch = null;
+  function refreshCurriculumChips() {   // the curriculum titles arrive after the request cards are drawn
+    Array.prototype.forEach.call(document.querySelectorAll(".curchip[data-cid]"), function (c) {
+      var n = curriculumAsked(c.getAttribute("data-cid")); if (n) c.textContent = "Interested in: " + n;
+    });
+  }
+  function curriculumAsked(id) {
+    var r = "";
+    cCurricula.forEach(function (c) { if (c.id === id) r = c.title || "(no title)"; });
+    return r;
+  }
   function refreshVenueChips() {   // the venue names arrive after the request cards are drawn
     Array.prototype.forEach.call(document.querySelectorAll(".venuechip[data-vid]"), function (c) {
       var n = venueAsked(c.getAttribute("data-vid")); if (n) c.textContent = "Venue asked for: " + n;
@@ -3089,6 +3107,11 @@
     var cur = mk("select"); opt(cur, "", "No curriculum chosen");
     cCurricula.forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
     lab("Curriculum", cur, "cur");
+    if (req && req.curriculum_id) {   // the requester picked a topic on the form: offer it, the operator may keep it or change it
+      var askedC = curriculumAsked(req.curriculum_id);
+      if (askedC) { cur.value = req.curriculum_id; el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + askedC + ". It is filled in; change it if it does not suit.")); }
+      else el.appendChild(mk("div", "hint", "The requester picked a curriculum that is no longer active. Choose another, or none."));
+    }
     var who = req ? [req.first_name, req.last_name].filter(Boolean).join(" ") : "";
     var title = mk("input"); title.type = "text"; title.maxLength = 200; lab("Title of the class", title, "title");
     title.addEventListener("input", function () { titleTouched = true; });

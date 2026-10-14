@@ -41,6 +41,7 @@ HTTP_STATUS = {
     "validation_failed": 400,
     "class_not_found": 404,
     "venue_not_found": 404,
+    "curriculum_not_found": 404,
     "not_found": 404,
     "class_closed": 409,
     "over_capacity": 409,
@@ -108,6 +109,7 @@ class DuplicateIdempotencyKey(Exception):
 class Store(Protocol):
     def get_class(self, class_id: str) -> Optional[dict]: ...
     def get_venue(self, venue_id: str) -> Optional[dict]: ...
+    def get_curriculum(self, curriculum_id: str) -> Optional[dict]: ...
     def find_by_idempotency_key(self, key: str) -> Optional[dict]: ...
     def find_latest_by_email_and_type(self, email: str, registration_type: str) -> Optional[dict]: ...
     def confirmation_number_exists(self, number: str) -> bool: ...
@@ -292,9 +294,9 @@ def handle_registration_request(
         return _err("validation_failed", "A requested date is in the past.",
                     [{"field": k, "issue": "out_of_range"} for k in past])
 
-    # 7. Names listed may not exceed the headcount.
+    # 7. Names listed may not exceed the headcount (when a headcount was given: a private small ask may leave it out).
     named = len(body.get("participants", [])) + (1 if body.get("is_requester_attending") else 0)
-    if named > body["attendee_count"]:
+    if "attendee_count" in body and named > body["attendee_count"]:
         return _err("validation_failed", "More people are named than the attendee count.",
                     [{"field": "participants", "issue": "out_of_range"}])
 
@@ -323,6 +325,13 @@ def handle_registration_request(
         if (venue is None or venue.get("deleted_at") or venue.get("status") != "active"
                 or venue.get("is_public_venue") is not True):
             return _err("venue_not_found", "That venue was not found.")
+
+    # 8c. A curriculum the requester is interested in: it must exist, not be deleted and be active. A preference, not a booking.
+    curriculum_id = body.get("curriculum_id")
+    if curriculum_id:
+        curriculum = store.get_curriculum(curriculum_id)
+        if curriculum is None or curriculum.get("deleted_at") or curriculum.get("status") != "active":
+            return _err("curriculum_not_found", "That curriculum was not found.")
 
     # 9. Repeats are flagged, never blocked.
     previous = store.find_latest_by_email_and_type(body["email"], body["registration_type"])

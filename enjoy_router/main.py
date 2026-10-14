@@ -41,6 +41,7 @@ from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
 from handler import handle_http
 from public_venues import handle_public_venues
+from public_curriculums import handle_public_curriculums
 from ratelimit import DEFAULT_RULES, RateLimiter, parse_rules, visitor_key
 
 logging.basicConfig(level=logging.INFO)
@@ -74,6 +75,7 @@ _console_limiter = make_failure_limiter()
 _crud_limiter = make_failure_limiter()
 _admin_limiter = make_failure_limiter()
 _venues_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
+_curriculums_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _admin_store = None
 _store = None
 _doc_store = None
@@ -87,7 +89,8 @@ def _get_store():
         if os.environ.get("ICDT_STORE") == "memory":
             from memory_store import MemoryStore
             records = pathlib.Path(__file__).resolve().parent.parent / "schemas" / "examples" / "registration_request.test_records.json"
-            _store = MemoryStore(json.loads(records.read_text())["setup"]["scheduled_classes"], json.loads(records.read_text())["setup"].get("registration_venues", []))
+            _setup = json.loads(records.read_text())["setup"]
+            _store = MemoryStore(_setup["scheduled_classes"], _setup.get("registration_venues", []), _setup.get("registration_curriculums", []))
         else:
             import firebase_admin
             from firebase_admin import firestore
@@ -272,6 +275,26 @@ def enjoy_public_venues(req: https_fn.Request) -> https_fn.Response:
         limiter=_venues_limiter,
         now=_now(),
         zip_code=req.args.get("zip"),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["GET", "OPTIONS"]),
+    max_instances=3,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_public_curriculums(req: https_fn.Request) -> https_fn.Response:
+    """The registration form's curriculum list: active curriculums as id, title and tagline. Read only, no sign-in."""
+    result = handle_public_curriculums(
+        method=req.method,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        limiter=_curriculums_limiter,
+        now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
                              headers={"Content-Type": "application/json", **result.headers})

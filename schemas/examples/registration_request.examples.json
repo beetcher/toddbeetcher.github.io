@@ -137,6 +137,18 @@
           "first_name": "Joe"
         }
       ]
+    },
+    "private_small_ask": {
+      "idempotency_key": "5d2f7a31-9c4e-4b86-8a10-3e6b9c1d7f52",
+      "first_name": "Gladys",
+      "last_name": "Hart",
+      "email": "gladys@example.com",
+      "consent_to_contact": true,
+      "registration_type": "private",
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201"
     }
   },
   "invalid": {
@@ -556,6 +568,70 @@
         }
       ],
       "acknowledgment_email_error_code": "unknown"
+    },
+    "class_with_curriculum": {
+      "idempotency_key": "6e3a8b42-ad5f-4c97-9b21-4f7c0d2e8a63",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "jane@example.com",
+      "consent_to_contact": true,
+      "is_requester_attending": true,
+      "has_minors_present": false,
+      "registration_type": "class",
+      "attendee_count": 3,
+      "presented_cost_cents": 5000,
+      "presented_cost_basis": "per_person",
+      "scheduled_class_id": "7d444840-9dc0-41d3-8d6f-6a2b3f1c9e55",
+      "participants": [
+        {
+          "first_name": "Ann",
+          "last_name": "Lee"
+        },
+        {
+          "first_name": "Bob",
+          "last_name": "Lee"
+        }
+      ],
+      "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201"
+    },
+    "group_without_count": {
+      "idempotency_key": "7f4b9c53-be60-4da8-8c32-508d1e3f9b74",
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "email": "jane@example.com",
+      "consent_to_contact": true,
+      "is_requester_attending": true,
+      "has_minors_present": false,
+      "registration_type": "group",
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "location_type": "off_site",
+      "preferred_location": "Boulder",
+      "venue_arrangement": "need_suggestion",
+      "organization_name": "Boulder Garden Club",
+      "group_type": "club_or_nonprofit",
+      "needs_invoice": true,
+      "sessions_requested": 3
+    },
+    "private_child_without_minors_answer": {
+      "idempotency_key": "805c0d64-cf71-4eb9-9d43-619e2f40ac85",
+      "first_name": "Gladys",
+      "last_name": "Hart",
+      "email": "gladys@example.com",
+      "consent_to_contact": true,
+      "registration_type": "private",
+      "presented_cost_cents": 50000,
+      "presented_cost_basis": "per_session",
+      "duration_minutes_requested": 120,
+      "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201",
+      "participants": [
+        {
+          "first_name": "Sam",
+          "last_name": "Hart",
+          "age_band": "child"
+        }
+      ]
     }
   },
   "stored_examples": {

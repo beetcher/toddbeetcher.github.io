@@ -53,7 +53,7 @@ def fake_smtp_worker(connection, *args):
 
 class SharedStore(MemoryStore):
     def __init__(self, docs):
-        super().__init__(RECORDS['setup']['scheduled_classes'], RECORDS['setup']['registration_venues'])
+        super().__init__(RECORDS['setup']['scheduled_classes'], RECORDS['setup']['registration_venues'], RECORDS['setup'].get('registration_curriculums', []))
         self.docs = docs
 
     def put_request(self, doc):

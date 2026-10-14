@@ -21,6 +21,7 @@
   var TYPE = root.getAttribute('data-type');
   var CFG = TYPES[TYPE];
   if (!CFG) return;
+  var LEAN = TYPE === 'private';   // the small ask: name and email up top, the rest is "add details now"
   var form = document.getElementById('rf');
   if (!form) return;
 
@@ -43,6 +44,32 @@
   function venuesUrl() {
     var e = endpoint();
     return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_venues') : VENUES_URL;
+  }
+  // The curriculum list (private page): active curriculums by title, read from our server.
+  var CURRICULUMS_URL = 'https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_public_curriculums';
+  function curriculumsUrl() {
+    var e = endpoint();
+    return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_curriculums') : CURRICULUMS_URL;
+  }
+  var pendingCurriculum = '';   // a curriculum saved in the draft, applied once the list has loaded
+  function loadCurriculums() {
+    if (!LEAN || !FIELDS.curriculum_id || !window.fetch) return;
+    var ctl = ('AbortController' in window) ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(curriculumsUrl(), { method: 'GET', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(to);
+        if (!(j && j.ok && j.data && Array.isArray(j.data.curriculums))) return;   // failed: the box stays hidden
+        var sel = FIELDS.curriculum_id.el, cur = sel.value || pendingCurriculum;
+        j.data.curriculums.forEach(function (c) {
+          if (c && typeof c.id === 'string' && typeof c.title === 'string') sel.appendChild(h('option', { value: c.id, text: c.title }));
+        });
+        if (sel.options.length < 2) return;
+        if (cur) sel.value = cur;
+        FIELDS.curriculum_id.wrap.hidden = false;
+      })
+      .catch(function () { clearTimeout(to); });
   }
   var pendingWhere = '';   // a venue choice saved in the draft, applied once the list has loaded
   var ZIP_KEY = 'icdt_zip', ZIP_RE = /^8[01][0-9]{3}$/;   // Colorado ZIP codes
@@ -323,21 +350,31 @@
         textField('last_name', 'Last name', { required: true, max: 100, autocomplete: 'family-name' }),
       ]),
       textField('email', 'Email', { type: 'email', required: true, max: 200, autocomplete: 'email', hint: 'We will write to you here.' }),
-      radioField('is_requester_attending', 'Will you be taking part?', [['yes', 'Yes, I will be there'], ['no', 'No, I am arranging this for someone else']], { required: true }),
-      textField('attendee_count', 'How many people in total?', { type: 'number', required: true, inputmode: 'numeric', hint: 'Count everyone who would like a seat, including you if you are coming.' }),
-      radioField('has_minors_present', 'Will anyone under 18 be there?', [['no', 'No'], ['yes', 'Yes']], { required: true, hint: 'We ask so we can plan for it.' }),
+    ];
+    var detailAsk = [
+      radioField('is_requester_attending', 'Will you be taking part?', [['yes', 'Yes, I will be there'], ['no', 'No, I am arranging this for someone else']], { required: !LEAN }),
+      textField('attendee_count', 'How many people in total?', { type: 'number', required: !LEAN, inputmode: 'numeric', hint: 'Count everyone who would like a seat, including you if you are coming.' }),
+      radioField('has_minors_present', 'Will anyone under 18 be there?', [['no', 'No'], ['yes', 'Yes']], { required: !LEAN, hint: 'We ask so we can plan for it.' }),
     ];
     FIELDS.attendee_count.el.setAttribute('min', String(CFG.minCount));
     FIELDS.attendee_count.el.setAttribute('max', '50');
+    if (LEAN) {
+      need.push(selectField('curriculum_id', 'What would you like to learn?', [], { blank: 'Not sure yet / any', hint: 'Pick a topic, or leave it and we will help you choose.' }));
+      FIELDS.curriculum_id.wrap.hidden = true;   // shown once the list arrives; if it never does, the form works without it
+    } else {
+      need = need.concat(detailAsk); detailAsk = [];
+    }
+    var whereAsk = [];
     if (CFG.showWhere) {
-      need.push(textField('postal_code', 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: 'Enter the ZIP code where you would like it, and we will show the closest places first.' }));
+      whereAsk.push(textField('postal_code', 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: 'Enter the ZIP code where you would like it, and we will show the closest places first.' }));
       FIELDS.postal_code.noDraft = true;   // remembered on its own, below
-      need.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: true }));
+      whereAsk.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: !LEAN }));
+      if (!LEAN) { need = need.concat(whereAsk); whereAsk = []; }
     }
     var parts = [section('What we need', need)];
 
     // ===== A little more (all optional, closed to begin with) =====
-    var more = [];
+    var more = detailAsk.concat(whereAsk);
     more.push(textField('phone', 'Phone (optional)', { type: 'tel', max: 40, autocomplete: 'tel' }));
     more.push(radioField('preferred_contact_method', 'How would you like to hear from us? (optional)', [['email', 'Email'], ['phone', 'Phone']]));
 
@@ -374,7 +411,7 @@
     more.push(textField('how_heard', 'How did you hear about this? (optional)', { max: 200 }));
 
     moreBox = h('details', { class: 'rf__more' }, [
-      h('summary', {}, [h('span', { class: 'rf__more-title', text: 'A little more, if you like' }), h('span', { class: 'rf__more-sub', text: 'All optional. Dates, names of others, and a few questions about you.' })]),
+      h('summary', {}, [h('span', { class: 'rf__more-title', text: LEAN ? 'Add details now, if you like' : 'A little more, if you like' }), h('span', { class: 'rf__more-sub', text: LEAN ? 'All optional. How many, where, dates, and a few questions about you. You can finish these later.' : 'All optional. Dates, names of others, and a few questions about you.' })]),
       h('div', { class: 'rf__more-body' }, more),
     ]);
     parts.push(moreBox);
@@ -389,12 +426,14 @@
     // ===== The checklist at the top =====
     NEEDS = [
       { label: 'Your name', field: 'first_name', done: function () { return !!(val('first_name') && val('last_name')); } },
-      { label: 'Your email', field: 'email', done: function () { return /^\S+@\S+\.\S+$/.test(val('email')); } },
-      { label: 'Taking part?', field: 'is_requester_attending', done: function () { return !!val('is_requester_attending'); } },
-      { label: 'How many people', field: 'attendee_count', done: function () { var c = parseInt(val('attendee_count'), 10); return c >= CFG.minCount && c <= 50; } },
-      { label: 'Anyone under 18?', field: 'has_minors_present', done: function () { return !!val('has_minors_present'); } },
+      { label: 'Your email', field: 'email', done: function () { return /^\S+@\S+\.\S+$/.test(val('email')); } }
     ];
-    if (CFG.showWhere) NEEDS.push({ label: 'Where', field: 'location_type', done: function () { return !!val('location_type'); } });
+    if (!LEAN) {
+      NEEDS.push({ label: 'Taking part?', field: 'is_requester_attending', done: function () { return !!val('is_requester_attending'); } });
+      NEEDS.push({ label: 'How many people', field: 'attendee_count', done: function () { var c = parseInt(val('attendee_count'), 10); return c >= CFG.minCount && c <= 50; } });
+      NEEDS.push({ label: 'Anyone under 18?', field: 'has_minors_present', done: function () { return !!val('has_minors_present'); } });
+      if (CFG.showWhere) NEEDS.push({ label: 'Where', field: 'location_type', done: function () { return !!val('location_type'); } });
+    }
     NEEDS.push({ label: 'OK to contact you', field: 'consent_to_contact', done: function () { return !!val('consent_to_contact'); } });
 
     needBox = h('div', { class: 'rf__need', id: 'rf-need' });
@@ -457,7 +496,7 @@
     var filled = peopleRows.length > 0;
     Object.keys(FIELDS).forEach(function (n) {
       var f = FIELDS[n];
-      if (f.noDraft || NEEDS.some(function (x) { return x.field === n; }) || n === 'last_name' || n === 'location_type') return;
+      if (f.noDraft || NEEDS.some(function (x) { return x.field === n; }) || n === 'last_name' || n === 'location_type' || n === 'curriculum_id') return;
       var v = val(n); if (v && v !== '') filled = true;
     });
     if (filled) moreBox.open = true;
@@ -513,6 +552,7 @@
     Object.keys(d.fields || {}).forEach(function (n) {
       var v = d.fields[n]; if (v === '' || v === false || v == null) return;
       if (n === 'location_type' && String(v).indexOf('venue:') === 0) pendingWhere = v;
+      if (n === 'curriculum_id') { pendingCurriculum = v; return; }
       setVal(n, v); any = true;
     });
     (d.people || []).forEach(function (p) { addPerson(p, true); any = true; });
@@ -530,7 +570,7 @@
     first_name: 'your first name', last_name: 'your last name', email: 'a valid email address',
     is_requester_attending: 'whether you will be taking part', attendee_count: 'how many people in total',
     has_minors_present: 'whether anyone under 18 will be there', location_type: 'where you would like it', postal_code: 'a Colorado ZIP code',
-    consent_to_contact: 'your OK for us to contact you', participants: 'the people you are arranging this for',
+    curriculum_id: 'what you would like to learn', consent_to_contact: 'your OK for us to contact you', participants: 'the people you are arranging this for',
     requested_date: 'a date that is today or later', alternate_requested_date: 'a date that is today or later',
   };
   function flag(name, msg) {
@@ -558,13 +598,16 @@
     var em = val('email');
     if (!em) bad.push(['email', 'Please add your email address.']);
     else if (!/^\S+@\S+\.\S+$/.test(em)) bad.push(['email', 'That email address does not look right.']);
-    need('is_requester_attending', 'Please choose one.');
-    need('has_minors_present', 'Please choose one.');
-    if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
+    if (!LEAN) {
+      need('is_requester_attending', 'Please choose one.');
+      need('has_minors_present', 'Please choose one.');
+      if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
+    }
     if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please enter a 5-digit Colorado ZIP code, or leave it blank.']);
     var cnt = parseInt(val('attendee_count'), 10);
     var attending = val('is_requester_attending') === 'yes';
-    if (!(cnt >= CFG.minCount && cnt <= 50)) bad.push(['attendee_count', TYPE === 'group' ? 'Please enter a number from 2 to 50.' : 'Please enter a number from 1 to 50.']);
+    var cntGiven = !isNaN(cnt) || !LEAN;
+    if (cntGiven && !(cnt >= CFG.minCount && cnt <= 50)) bad.push(['attendee_count', TYPE === 'group' ? 'Please enter a number from 2 to 50.' : 'Please enter a number from 1 to 50.']);
     var ppl = people();
     var named = ppl.filter(function (p) { return p.first || p.last || p.email; });
     named.forEach(function (p, i) {
@@ -601,9 +644,11 @@
     var r = { registration_type: TYPE, idempotency_key: idemKey };
     r.first_name = val('first_name'); r.last_name = val('last_name'); r.email = val('email');
     r.consent_to_contact = true;
-    r.is_requester_attending = val('is_requester_attending') === 'yes';
-    r.has_minors_present = val('has_minors_present') === 'yes';
-    r.attendee_count = parseInt(val('attendee_count'), 10);
+    // Only what was answered is sent. An unanswered question is never sent as "no" or "zero".
+    if (val('is_requester_attending')) r.is_requester_attending = val('is_requester_attending') === 'yes';
+    if (val('has_minors_present')) r.has_minors_present = val('has_minors_present') === 'yes';
+    if (val('attendee_count')) r.attendee_count = parseInt(val('attendee_count'), 10);
+    if (FIELDS.curriculum_id && val('curriculum_id')) r.curriculum_id = val('curriculum_id');
     r.presented_cost_cents = CFG.cents; r.presented_cost_basis = CFG.basis;
     if (CFG.duration) r.duration_minutes_requested = CFG.duration;
     var strs = ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times',
@@ -697,6 +742,7 @@
     FIELDS.postal_code.el.addEventListener('input', onZipInput);
   }
   loadVenues(FIELDS.postal_code ? rememberedZip() : '');
+  loadCurriculums();
   openMoreIfFilled();
   updateNeeds();
   if (restored && draftNote) {

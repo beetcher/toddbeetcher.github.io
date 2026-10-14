@@ -1,5 +1,5 @@
 {
-  "description": "Test records for the registration_request endpoint. Run in order. Each test has a name, a layer (schema = the schema alone decides; endpoint = the schema passes but the endpoint must refuse or transform), the request to send, and the expected outcome. request_from means: start from that earlier test's request, then apply override (set fields) and remove (drop fields). Emails are distinct per test unless a repeat is the point. setup.scheduled_classes holds stored scheduled_class records (checked against that schema): one enrolling workshop with room (target 10, maximum 15, 9 registered), one enrolling and at its maximum, one workshop that is not enrolling, and one private class (enrolling but not a workshop, so a class request cannot pick it). setup.venues holds stored venue records (checked against that schema): an active public venue with a main room (maximum 20) and a side room (maximum 8), and an inactive private one. Every seed class must point at a seed venue, and a seed class's venue_room_label must name a room there with a maximum occupancy at or above the class maximum. setup.now is the clock the runner gives the endpoint (UTC), so date rules do not depend on the day the tests are run.",
+  "description": "Test records for the registration_request endpoint. Run in order. Each test has a name, a layer (schema = the schema alone decides; endpoint = the schema passes but the endpoint must refuse or transform), the request to send, and the expected outcome. request_from means: start from that earlier test's request, then apply override (set fields) and remove (drop fields). Emails are distinct per test unless a repeat is the point. setup.scheduled_classes holds stored scheduled_class records (checked against that schema): one enrolling workshop with room (target 10, maximum 15, 9 registered), one enrolling and at its maximum, one workshop that is not enrolling, and one private class (enrolling but not a workshop, so a class request cannot pick it). setup.venues holds stored venue records (checked against that schema): an active public venue with a main room (maximum 20) and a side room (maximum 8), and an inactive private one. Every seed class must point at a seed venue, and a seed class's venue_room_label must name a room there with a maximum occupancy at or above the class maximum. setup.now is the clock the runner gives the endpoint (UTC), so date rules do not depend on the day the tests are run. setup.registration_curriculums holds stored curriculum records for the curriculum pick: one active, one inactive, one deleted (status active but deleted_at set).",
   "setup": {
     "now": "2026-10-06T17:00:00Z",
     "scheduled_classes": [
@@ -218,6 +218,55 @@
         "updated_at": "2026-09-01T17:00:00Z",
         "updated_by": "user:test",
         "source": "dashboard"
+      }
+    ],
+    "registration_curriculums": [
+      {
+        "id": "a1b2c3d4-0000-4000-8000-000000000201",
+        "slug": "intro_ai_use",
+        "title": "Introduction to AI Use",
+        "tagline": "A relaxed first hour.",
+        "session_count": 1,
+        "minutes_per_session": 60,
+        "status": "active",
+        "schema_version": 1,
+        "created_at": "2026-09-01T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-01T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard"
+      },
+      {
+        "id": "a1b2c3d4-0000-4000-8000-000000000202",
+        "slug": "retired_course",
+        "title": "A Retired Course",
+        "tagline": "A relaxed first hour.",
+        "session_count": 1,
+        "minutes_per_session": 60,
+        "status": "inactive",
+        "schema_version": 1,
+        "created_at": "2026-09-01T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-01T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard"
+      },
+      {
+        "id": "a1b2c3d4-0000-4000-8000-000000000203",
+        "slug": "removed_course",
+        "title": "A Removed Course",
+        "tagline": "A relaxed first hour.",
+        "session_count": 1,
+        "minutes_per_session": 60,
+        "status": "active",
+        "schema_version": 1,
+        "created_at": "2026-09-01T17:00:00Z",
+        "created_by": "user:test",
+        "updated_at": "2026-09-01T17:00:00Z",
+        "updated_by": "user:test",
+        "source": "dashboard",
+        "deleted_at": "2026-09-01T17:00:00Z",
+        "deleted_by": "user:test"
       }
     ]
   },
@@ -1419,6 +1468,223 @@
         "field_errors": [
           "acknowledgment_email_error_code"
         ]
+      }
+    },
+    {
+      "name": "t47_private_small_ask",
+      "layer": "endpoint",
+      "description": "The small ask: a private request with only the contact basics, the price and the session length. No count, no attending answer, no minors answer, no place. It is stored.",
+      "request_from": "t01_private_couple",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000047",
+        "email": "small47@example.com"
+      },
+      "remove": [
+        "attendee_count",
+        "is_requester_attending",
+        "has_minors_present",
+        "location_type",
+        "participants",
+        "requested_date",
+        "requested_time_of_day"
+      ],
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "email": "small47@example.com",
+          "processing_status": "not_processed"
+        }
+      }
+    },
+    {
+      "name": "t48_private_picks_curriculum",
+      "layer": "endpoint",
+      "description": "A small-ask private request that picks an active curriculum stores its id.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000048",
+        "email": "curr48@example.com",
+        "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201"
+        }
+      }
+    },
+    {
+      "name": "t49_curriculum_unknown",
+      "layer": "endpoint",
+      "description": "A curriculum id that does not exist is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000049",
+        "email": "curr49@example.com",
+        "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000299"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "curriculum_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t50_curriculum_inactive",
+      "layer": "endpoint",
+      "description": "An inactive curriculum is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000050",
+        "email": "curr50@example.com",
+        "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000202"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "curriculum_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t51_curriculum_deleted",
+      "layer": "endpoint",
+      "description": "A deleted curriculum is refused even when its status says active.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000051",
+        "email": "curr51@example.com",
+        "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000203"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "curriculum_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t52_class_with_curriculum",
+      "layer": "schema",
+      "description": "A class request may not carry a curriculum.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000052",
+        "curriculum_id": "a1b2c3d4-0000-4000-8000-000000000201"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "curriculum_id"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t53_group_missing_count",
+      "layer": "schema",
+      "description": "A group request still needs the number of people.",
+      "request_from": "t03_group_organization",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000053"
+      },
+      "remove": [
+        "attendee_count"
+      ],
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "attendee_count"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t54_class_missing_minors_answer",
+      "layer": "schema",
+      "description": "A class request still needs the under-18 answer.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000054"
+      },
+      "remove": [
+        "has_minors_present"
+      ],
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "has_minors_present"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t55_group_missing_where",
+      "layer": "schema",
+      "description": "A group request still needs where (home or off site).",
+      "request_from": "t03_group_organization",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000055"
+      },
+      "remove": [
+        "location_type"
+      ],
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "location_type"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t56_private_child_listed_no_minors_answer",
+      "layer": "schema",
+      "description": "A private request that lists a child must also say minors are present; leaving the answer out is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000056",
+        "email": "kid56@example.com",
+        "participants": [
+          {
+            "first_name": "Sam",
+            "last_name": "Doe",
+            "age_band": "child"
+          }
+        ]
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "has_minors_present"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t57_private_names_without_count",
+      "layer": "endpoint",
+      "description": "A private request that names people but gives no count is stored: with no count there is nothing to compare.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000057",
+        "email": "names57@example.com",
+        "participants": [
+          {
+            "first_name": "Joe",
+            "last_name": "Doe",
+            "age_band": "adult"
+          }
+        ]
+      },
+      "expect": {
+        "ok": true,
+        "stored": true
       }
     }
   ]
