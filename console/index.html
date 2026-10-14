@@ -92,6 +92,12 @@
   .panel label.f { display: block; font-weight: 600; margin-top: 12px; }
   .panel input[type=text], .panel select { width: 100%; min-height: 48px; padding: 0 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
   .panel .hint { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .wishbox { border: 1px solid var(--line, #cfd8dc); border-left: 4px solid #17692f; border-radius: 8px; padding: 8px 12px; margin: 6px 0 12px; background: #f6faf7; }
+  .wishhead { font-weight: 700; margin-bottom: 2px; }
+  .wishline { font-size: 15px; }
+  .todpills { display: flex; gap: 6px; margin-top: 6px; }
+  .todpill { border: 1px solid #b8c2c8; border-radius: 999px; padding: 3px 12px; font-size: 14px; color: #5b6870; }
+  .todpill.on { background: #17692f; border-color: #17692f; color: #fff; font-weight: 700; }
   .panel .btns { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
   .ferr { color: var(--err); font-weight: 600; font-size: 14px; min-height: 1.2em; }
   .notice { color: #2f5d00; font-weight: 600; margin: 0 0 8px; }
@@ -3139,6 +3145,20 @@
       if (hint) el.appendChild(mk("div", "hint", hint));
     }
     el.appendChild(mk("div", "rhead", "Build the class"));
+    var TOD = { morning: "Morning", afternoon: "Afternoon", evening: "Evening" };
+    if (req) {   // what the requester said about timing: shown so the operator sees it; only the first choice date is filled in
+      var asks = [];
+      if (req.requested_date) asks.push("First choice date: " + req.requested_date);
+      if (req.alternate_requested_date) asks.push("Second choice date: " + req.alternate_requested_date);
+      if (TOD[req.requested_time_of_day]) asks.push("Best time of day: " + TOD[req.requested_time_of_day]);
+      if (req.preferred_times) asks.push("Other timing notes: " + req.preferred_times);
+      if (asks.length) {
+        var wish = mk("div", "wishbox"); wish.setAttribute("data-wishes", "1");
+        wish.appendChild(mk("div", "wishhead", "They asked for"));
+        asks.forEach(function (t) { wish.appendChild(mk("div", "wishline", t)); });
+        el.appendChild(wish);
+      }
+    }
     var cur = mk("select"); opt(cur, "", "No curriculum chosen");
     cCurricula.forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
     lab("Curriculum", cur, "cur");
@@ -3169,7 +3189,18 @@
     var zipHint = mk("div", "hint"); el.appendChild(zipHint);   // says when the list is nearest-first or a nearest place was filled in
     var room = mk("select"); lab("Room", room, "room");
     var date = mk("input"); date.type = "date"; lab("Date", date, "date");
+    if (req && req.requested_date) date.value = req.requested_date;
     var time = mk("input"); time.type = "time"; lab("Start time", time, "time");
+    if (req && TOD[req.requested_time_of_day]) {   // display only: shows which part of the day they asked for, never fills the start time
+      var pills = mk("div", "todpills"); pills.setAttribute("data-tod", req.requested_time_of_day);
+      Object.keys(TOD).forEach(function (k) {
+        var pl = mk("span", "todpill" + (k === req.requested_time_of_day ? " on" : ""), TOD[k]); pl.setAttribute("data-k", k);
+        if (k === req.requested_time_of_day) pl.setAttribute("aria-label", TOD[k] + ", asked for by the requester");
+        pills.appendChild(pl);
+      });
+      el.appendChild(pills);
+      el.appendChild(mk("div", "hint", "They asked for: " + TOD[req.requested_time_of_day] + ". Pick the actual start time yourself."));
+    }
     var tzNote = mk("div", "hint"); el.appendChild(tzNote);
     function tz() { var v = cVenueById[ven.value]; return (v && v.place && v.place.time_zone) || "America/Denver"; }
     function syncVenue() {
