@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/location_link.schema.json",
   "title": "location_link",
-  "description": "One relationship between a thing and a location, with dates: this individual resides at that location from 2019 to 2024; this venue operates at that location from 2005 on. The location never changes when a relationship does: a venue that moves buildings gets its old link ended and a new link made. A link says nothing about family: two people linked to one location are not thereby related. The link, never the location, is what makes a place residential. Endpoint rules the schema cannot express: the subject exists in the right collection and is live; the location exists and is active; subject_type and relationship fit (resides_at only for an individual, operates_at only for a venue); valid_from not after valid_to; no two links with the same subject, location and relationship overlap in time; one primary per subject and relationship among active links; subject_type, subject_id, location_id and relationship never change after creation; status follows valid_to.",
+  "description": "One relationship between a thing and a location, with dates: this individual resides at that location from 2019 to 2024; this venue operates at that location from 2005 on. The location never changes when a relationship does: a venue that moves buildings gets its old link ended and a new link made. A link says nothing about family: two people linked to one location are not thereby related. The link, never the location, is what makes a place residential. Endpoint rules the schema cannot express: the subject exists in the right collection and is live; the location exists and is active; subject_type and relationship fit (resides_at only for an individual, operates_at only for a venue or an organization); valid_from not after valid_to; no two links with the same subject, location and relationship overlap in time; one primary per subject and relationship among active links; subject_type, subject_id, location_id and relationship never change after creation; status follows valid_to.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -18,7 +18,7 @@
   ],
   "properties": {
     "subject_type": {
-      "description": "What kind of thing is related to the location: individual, venue or organization. Required. (organization is reserved until organizations have their own schema; the service refuses it for now.)",
+      "description": "What kind of thing is related to the location: individual, venue or organization. Required.",
       "enum": [
         "individual",
         "venue",

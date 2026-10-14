@@ -15,6 +15,7 @@ from crud import location_links_crud as H  # noqa: E402
 from crud import location_links_service as S  # noqa: E402
 from crud import locations_crud as L  # noqa: E402
 from crud import locations_service as LS  # noqa: E402
+from crud import organizations_crud as ORG  # noqa: E402
 from crud import venues_crud as V  # noqa: E402
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
 from crud.schema_kit import find_schema_dir  # noqa: E402
@@ -141,9 +142,23 @@ r = link(venue, lib, "operates_at", "venue", valid_from="2005")
 check("service: venue operates_at created", r.ok, str(r))
 v_lib = r.data
 check("service: venue link does not make it residential", raw("locations", lib["id"])["is_residential"] is False)
-check("service: organization reserved", pairs(link({"id": NOPE}, home, "owns", st="organization").problems) == ["subject_type:not_supported"])
+ozo = ORG.create(s, {"name": "Ozo Coffee"}, ACT, now=tick()).data
+r = link(ozo, lib, "operates_at", "organization", valid_from="2010")
+check("service: organization operates_at created", r.ok, str(r))
+check("service: organization link does not make it residential", raw("locations", lib["id"])["is_residential"] is False)
+r = link(ozo, home, "owns", "organization", is_primary=True, description="headquarters")
+check("service: organization owns with is_primary (headquarters)", r.ok and r.data.get("is_primary") is True, str(r))
+first_id = r.data["id"]
+r2 = link(ozo, cabin, "owns", "organization", is_primary=True)
+check("service: a new primary owns link for an organization demotes the old one", r2.ok and r2.data.get("demoted_link_ids") == [first_id] and not raw("location_links", first_id).get("is_primary"), str(r2))
+check("service: organization cannot resides_at", pairs(link(ozo, home, "resides_at", "organization").problems) == ["relationship:invalid_value"])
+check("service: unknown organization", pairs(link({"id": NOPE}, home, "owns", st="organization").problems) == ["subject_id:not_found"])
+check("service: a venue id used as an organization", pairs(link(venue, home, "owns", st="organization").problems) == ["subject_id:not_found"])
+gone_org = ORG.create(s, {"name": "Gone Co"}, ACT, now=tick()).data; ORG.soft_delete(s, gone_org["id"], ACT, now=tick())
+check("service: deleted organization", pairs(link(gone_org, home, "owns", "organization").problems) == ["subject_id:not_found"])
+check("service: list by organization subject", S.list(s, {"subject_id": ozo["id"]}).data["count"] >= 2)
 check("service: resides_at needs an individual", pairs(link(venue, home, "resides_at", "venue").problems) == ["relationship:invalid_value"])
-check("service: operates_at needs a venue", pairs(link(todd, home, "operates_at").problems) == ["relationship:invalid_value"])
+check("service: operates_at needs a venue or an organization", pairs(link(todd, home, "operates_at").problems) == ["relationship:invalid_value"])
 check("service: owns fits both", link(venue, cabin, "owns", "venue").ok and link(todd, cabin, "owns").ok)
 check("service: unknown individual", pairs(link({"id": NOPE}, home).problems) == ["subject_id:not_found"])
 check("service: unknown venue", pairs(link({"id": NOPE}, lib, "operates_at", "venue").problems) == ["subject_id:not_found"])

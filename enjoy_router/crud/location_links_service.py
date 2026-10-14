@@ -1,9 +1,8 @@
 """Service for location links: the rules that look at other collections, on top of location_links_crud.
 
-    * the subject exists in the right collection and is live (individuals, venues); a merged individual is followed to
+    * the subject exists in the right collection and is live (individuals, venues, organizations); a merged individual is followed to
       the survivor and the link is made for the survivor; a sealed individual is `not_found` unless `as_admin`
-    * subject_type organization is reserved (subject_type:not_supported) until organizations have a schema
-    * resides_at needs an individual, operates_at needs a venue (relationship:invalid_value)
+    * resides_at needs an individual, operates_at needs a venue or an organization (relationship:invalid_value)
     * the location exists, is not deleted and is active (location_id:not_found, location_id:retired)
     * no two live links with the same subject, location and relationship overlap in time (location_id:duplicate)
     * one primary per subject and relationship among active links: making one primary demotes the other in the same
@@ -20,11 +19,12 @@ from datetime import datetime, timezone
 from . import individuals_crud as I
 from . import location_links_crud as H
 from . import locations_crud as LOC
+from . import organizations_crud as ORG
 from . import venues_crud as V
 from .schema_kit import UUID_PATTERN, check_actor, failure, stamp_update, success
 
 RESIDENCE = "resides_at"
-FIT = {"resides_at": "individual", "operates_at": "venue"}
+FIT = {"resides_at": ("individual",), "operates_at": ("venue", "organization")}
 
 
 def _uuid(v) -> bool:
@@ -50,20 +50,18 @@ def _sealed_individual(store, subject_id) -> bool:
 def _subject_problems(store, doc, as_admin):
     """(problems, subject_id to use). Follows a merged individual to the survivor."""
     st, sid = doc["subject_type"], doc["subject_id"]
-    if st == "organization":
-        return [{"field": "subject_type", "issue": "not_supported"}], sid
     if st == "individual":
         got = I.get(store, sid)
         if not got.ok or got.data.get("status") == "erased" or (got.data.get("record_privacy") == "sealed" and not as_admin):
             return [{"field": "subject_id", "issue": "not_found"}], sid
         return [], got.data["id"]
-    got = V.get(store, sid)
+    got = ORG.get(store, sid) if st == "organization" else V.get(store, sid)
     return ([] if got.ok else [{"field": "subject_id", "issue": "not_found"}]), sid
 
 
 def _fit_problems(doc):
     need = FIT.get(doc["relationship"])
-    return [{"field": "relationship", "issue": "invalid_value"}] if need and need != doc["subject_type"] else []
+    return [{"field": "relationship", "issue": "invalid_value"}] if need and doc["subject_type"] not in need else []
 
 
 def _location_problems(store, location_id):

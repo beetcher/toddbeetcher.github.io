@@ -15,7 +15,7 @@ A link says nothing about family. Two people linked to the same location are not
 ## 2. Fields
 
 ### What the sender provides
-- `subject_type`: individual, venue or organization. Required. Organization is reserved; the service refuses it until organizations have a schema.
+- `subject_type`: individual, venue or organization. Required. The service checks an organization exists in `organizations` and is live.
 - `subject_id`: The id of the subject. Required. A merged individual is followed to the survivor.
 - `location_id`: The location. Required, active, and never changes once set.
 - `relationship`: resides_at, mailing_address_for, billing_address_for, works_at, operates_at, owns, manages, delivers_to or other. Required, and never changes once set.
@@ -34,7 +34,7 @@ A link says nothing about family. Two people linked to the same location are not
 
 1. The subject exists in the right collection (individuals, venues) and is live. An erased, deleted or missing subject is refused. A merged individual is followed to the survivor and the link is made for the survivor.
 2. The location exists, is not deleted and is active.
-3. `resides_at` is only for an individual; `operates_at` only for a venue. Other pairs are allowed.
+3. `resides_at` is only for an individual; `operates_at` only for a venue or an organization (an organization's factory or headquarters). Other pairs are allowed.
 4. `valid_from` is not after `valid_to`.
 5. No two live links with the same subject, location and relationship overlap in time. A period is the whole of its year or month: 2020 means 2020-01-01 through 2020-12-31. A missing `valid_from` starts at the beginning of time; a missing `valid_to` never ends.
 6. At most one active link per subject and relationship has `is_primary`; making a link primary demotes the other and reports which.
