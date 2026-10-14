@@ -3089,6 +3089,39 @@
     return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; results.textContent = ""; } };
   }
 
+  // The lead-instructor picker: only people on the instructor roster with an active entry. When the request has a Colorado ZIP only
+  // instructors who live in that ZIP's state show (the server derives residence_state from the person's address; only the state comes
+  // here). Without a ZIP all active instructors show, and one with no address on file says so. Nothing here creates anyone.
+  function stateOfZip(zip) { return /^8[01][0-9]{3}$/.test(zip || "") ? "CO" : ""; }   // Colorado only for now; another state adds its rule here
+  function instructorFinder(state) {
+    var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
+    var chosen = { id: "", name: "" }, roster = null;
+    search.type = "text"; search.placeholder = "Search instructors by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search instructors by name");
+    function nameOf(r) { var p = r.person || {}; return p.display_name || [p.given_name, p.family_name].filter(Boolean).join(" ") || "(no name)"; }
+    function draw() {
+      results.textContent = "";
+      if (roster === null) { results.appendChild(mk("div", "hint", "Loading instructors…")); return; }
+      var q = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      var eligible = roster.filter(function (r) { return !(r.person && r.person.unavailable) && (!state || r.residence_state === state); });
+      var shown = eligible.filter(function (r) { var n = nameOf(r).toLowerCase(); return q.every(function (w) { return n.indexOf(w) >= 0; }); });
+      shown.slice(0, 12).forEach(function (r) {
+        var b = mk("button", "quiet", nameOf(r) + (!state && !r.residence_state ? " (no address on file)" : "")); b.type = "button";
+        b.addEventListener("click", function () { chosen.id = r.individual_id; chosen.name = nameOf(r); cur.textContent = "Chosen: " + chosen.name; search.value = ""; draw(); });
+        results.appendChild(b);
+      });
+      if (!shown.length) results.appendChild(mk("div", "hint", eligible.length ? "No instructor matches that name." :
+        (state ? "No active instructor lives in " + state + ". Add an address for each instructor in People, or add instructors in the Instructors station."
+               : "No active instructors yet. Add them in the Instructors station.")));
+    }
+    search.addEventListener("input", draw);
+    admin("list", { filters: { status: "active" }, limit: 200, expand: true }, "instructor_rosters").then(function (r) {
+      roster = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      draw();
+    });
+    wrap.appendChild(cur); wrap.appendChild(search); wrap.appendChild(results); draw();
+    return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; draw(); } };
+  }
+
   function classFail(res) {
     var ps = (res.body && res.body.error && res.body.error.problems) || [];
     if (!ps.length) return adminProblem(res.status);
@@ -3169,7 +3202,7 @@
       });
     }
     el.appendChild(mk("div", "hint", "With a venue, a date and a time it is saved as scheduled. Without them it is saved as an idea you can finish later in Classes."));
-    var finder = personFinder(); el.appendChild(mk("div", "f", "Lead instructor (optional)")); el.appendChild(finder.el);
+    var finder = instructorFinder(req ? stateOfZip(req.postal_code) : ""); el.appendChild(mk("div", "f", "Lead instructor (optional)")); el.appendChild(finder.el);
     var CAP = { "private": [1, 2, 4], group: [2, 8, 15], workshop: [6, 10, 15] };
     function collect() {
       var t = title.value.trim();

@@ -189,7 +189,7 @@ with sync_playwright() as p:
     f.locator("select[id$='_n_ven']").select_option(label="Library")
     f.locator("select[id$='_n_room']").select_option("Room A")
     f.locator("input[id$='_n_date']").fill("2026-11-12"); f.locator("input[id$='_n_time']").fill("18:00")
-    f.locator(".addbox input[placeholder='Search by name']").fill("ina")
+    f.locator(".addbox input[placeholder='Search instructors by name']").fill("ina")
     f.locator(".addbox button", has_text="Ina Teach").first.click()
     f.get_by_role("button", name="Add to class").click()
     pg.wait_for_function("document.getElementById('reqDone').innerText.indexOf('LCH-0002 is closed') >= 0")

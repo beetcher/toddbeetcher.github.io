@@ -14,6 +14,8 @@ import builtins
 import re
 
 from . import individuals_service as IS
+from . import location_links_crud as LK
+from . import locations_crud as LOC
 from .schema_kit import (
     UUID_PATTERN, check_actor, check_document, check_field, clean, drop_empty, failure,
     load_collection, stamp_create, stamp_update, success, utc_stamp,
@@ -63,6 +65,28 @@ def _prune(value):
     if isinstance(value, builtins.list):
         return [_prune(v) for v in value if v is not None]
     return value
+
+
+def residence_state(store, individual_id):
+    """The two-letter state of where the person lives, read from their live resides_at links (the primary one first), then
+    the place's current addresses (the primary one first). None when there is no such address or it has no region.
+    Derived on every read; nothing is stored."""
+    got = LK.list(store, {"subject_id": individual_id}, limit=50)
+    if not got.ok:
+        return None
+    links = [d for d in got.data["records"] if LK.is_live(d) and d.get("subject_type") == "individual" and d.get("relationship") == "resides_at"]
+    links.sort(key=lambda d: not d.get("is_primary"))
+    for link in links:
+        loc = LOC.get(store, link["location_id"])
+        if not loc.ok or loc.data.get("status") != "active":
+            continue
+        addrs = [a for a in loc.data.get("addresses", []) if a.get("usage") != "former"]
+        addrs.sort(key=lambda a: not a.get("is_primary"))
+        for a in addrs:
+            region = str(a.get("region") or "").strip().upper()
+            if re.fullmatch(r"[A-Z]{2}", region):
+                return region
+    return None
 
 
 class Roster:
@@ -118,6 +142,10 @@ class Roster:
         out = dict(rec)
         if rec.get("individual_id"):
             out["person"] = self._person_view(store, rec["individual_id"])
+            if self.type_name == "instructor_roster":
+                state = residence_state(store, rec["individual_id"])
+                if state:
+                    out["residence_state"] = state   # derived, never stored: only the state leaves, not the address
         return out
 
     # ---- create ------------------------------------------------------------
