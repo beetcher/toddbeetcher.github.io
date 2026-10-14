@@ -17,6 +17,32 @@ The registration endpoint for /enjoy, as its own Python codebase (separate from 
 
 ## Run the tests
 
+### Standalone Brevo SMTP test (manual, sends one real email)
+
+No packages beyond Python's standard library are needed. This is independent of
+registration and Firebase. The SMTP transport is disabled by default; the script
+enables it only with `--send`. Do not run the send command until Todd approves
+the real test. From the repository root, in a local interactive terminal:
+
+    python3 enjoy_router/run_smtp_test.py --send
+
+Enter the SMTP key at the hidden prompt (an SMTP key, not a Brevo API key).
+Never paste it into chat or the command itself. Input is refused if the terminal
+cannot hide it. The key is used only in process memory, never written or logged.
+
+The test uses `smtp-relay.brevo.com:587`, requires certificate-verified STARTTLS,
+logs in as `bdeb44001@smtp-brevo.com`, and sends from
+`Launch <toddbeetcher17@gmail.com>` to `toddbeetcher17@gmail.com`.
+There is one attempt, with an eight-second socket timeout and no automatic retry.
+
+`PASS` (exit 0) means Brevo accepted the message; check the inbox and spam folder
+to verify delivery. `FAIL` or `UNKNOWN` exits nonzero and contains no server
+response or credentials. An unknown result may already have sent the message:
+check for delivery before retrying. Running without `--send` exits 2 without
+prompting or connecting. No registration record is created or changed.
+
+### Registration tests
+
     python3 -m venv venv && source venv/bin/activate
     pip install -r requirements.txt
     python3 run_tests.py              # core, in memory, plus extra checks
