@@ -79,7 +79,7 @@ class MemoryDocStore:
         (tx.pending.append(apply) if tx is not None else apply())
 
     def update(self, base: str, id: str, set_fields: dict, delete_fields=(), expected_updated_at: Optional[str] = None,
-               tx: Optional[_Tx] = None) -> None:
+               tx: Optional[_Tx] = None, timeout: Optional[float] = None) -> None:
         def apply():
             cur = self._c(base).get(id)
             if cur is None:

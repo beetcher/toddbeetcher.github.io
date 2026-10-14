@@ -33,7 +33,9 @@ cannot hide it. The key is used only in process memory, never written or logged.
 The test uses `smtp-relay.brevo.com:587`, requires certificate-verified STARTTLS,
 logs in as `bdeb44001@smtp-brevo.com`, and sends from
 `Launch <toddbeetcher17@gmail.com>` to `toddbeetcher17@gmail.com`.
-There is one attempt, with an eight-second socket timeout and no automatic retry.
+There is one attempt, capped at about ten seconds overall, with no automatic retry.
+The SMTP worker is stopped at the deadline; no send continues in a background
+thread. A timeout at any stage is reported as unknown.
 
 `PASS` (exit 0) means Brevo accepted the message; check the inbox and spam folder
 to verify delivery. `FAIL` or `UNKNOWN` exits nonzero and contains no server
@@ -47,6 +49,69 @@ prompting or connecting. No registration record is created or changed.
     pip install -r requirements.txt
     python3 run_tests.py              # core, in memory, plus extra checks
     python3 run_tests.py --handler    # core plus HTTP handler, in memory
+
+## CMS Feature 1: acknowledgment (proof of concept)
+
+`registration_service.py` calls the existing registration core, then calls CMS
+only for outcome `created`, after the atomic request/idempotency save completes.
+`cms_service.py` fills a basic acknowledgment using the saved name, email and
+confirmation. It sends plain text plus escaped HTML, allowing Brevo's existing
+open tracking. No tracking or unsubscribe overrides are added. Sender and
+Reply-To both derive from `smtp_transport.FROM_ADDRESS` (the Phase 1 Gmail).
+
+`crud/registration_requests_crud.py` records optional acknowledgment status,
+attempt time and sanitized error code on the same request, via the existing
+document-store adapter. It stamps `updated_at` and `updated_by=system:cms`.
+Email metadata stays with the request without separate expiry. This is a narrow
+server-only setter; legacy creation and its atomic save remain in `core.py`.
+
+The hook is off by default. Replays, spam and rejected requests do not send.
+Email, secret-access and result-recording failures preserve the saved request
+and the original success response. SMTP acceptance is not delivery or an open.
+There is one attempt, no automatic retry, no sending trigger, and no email outbox.
+The total SMTP attempt (including worker startup, DNS, connection, TLS, login and
+submission) is capped at approximately 10 seconds, plus at most a short worker
+cleanup interval. Timeouts record `unknown`. A crash or failed result write can
+leave status absent. No guaranteed delivery or automatic recovery is promised.
+The post-save status write has a two-second RPC timeout and no retry; an error
+is logged by record ID and code only, and registration success is preserved.
+
+### Local verification: no email
+
+From `enjoy_router/`, use the existing project Python:
+
+    venv/bin/python run_cms_tests.py
+
+SMTP is fake in this suite. A harmless sleeping process verifies deadline
+enforcement and worker cleanup; another child process uses fake SMTP to verify
+the real worker/pipe round trip. No key, network connection or real data is used.
+Tests and the emulator keep CMS disabled even if the enable flag is true.
+
+### Later provisioning and deployment (Todd's approval required)
+
+No new dependencies. The existing Firebase SDK supplies SecretParam. After
+approval, from `enjoy_router/`, create the secret with the CLI's hidden prompt;
+never put its value in a command, chat or environment file:
+
+    firebase functions:secrets:set ICDT_BREVO_SMTP_KEY --project launch-ai-workshop
+
+Set `ICDT_CMS_ENABLED=true` in the git-ignored `.env.launch-ai-workshop`, keeping
+the existing settings intact. The SMTP key stays in Secret Manager. Only the
+registration function binds the secret when CMS is enabled; it is read at request
+time, after saving. Setting the enable flag alone never enables CMS in the emulator.
+
+Sync the deployable schema copy before deploying:
+
+    venv/bin/python sync_schemas.py
+
+Then, only after approval:
+
+    firebase deploy --only functions:enjoy --project launch-ai-workshop
+
+Deploy the server before Todd publishes the updated static schema and guide.
+An enabled deployed registration endpoint sends real acknowledgments for new
+requests. Do not run live tests or enable/deploy without approval. No live test
+is part of the local verification above.
 
 ## Run the emulator and test it over HTTP
 

@@ -57,7 +57,7 @@ class FirestoreDocStore:
             raise DocExists()
 
     def update(self, base: str, id: str, set_fields: dict, delete_fields=(), expected_updated_at: Optional[str] = None,
-               tx: Optional[_Tx] = None) -> None:
+               tx: Optional[_Tx] = None, timeout: Optional[float] = None) -> None:
         ref = self._col(base).document(id)
         changes = _encode(dict(set_fields))
         for f in delete_fields:
@@ -74,7 +74,12 @@ class FirestoreDocStore:
             return
         if expected_updated_at is None:
             try:
-                ref.update(changes)
+                # Optional bound for a post-save side effect (CMS). Keep normal
+                # CRUD behavior when omitted; do not retry a bounded write.
+                if timeout is None:
+                    ref.update(changes)
+                else:
+                    ref.update(changes, retry=None, timeout=timeout)
             except NotFound:
                 raise DocMissing()
             return

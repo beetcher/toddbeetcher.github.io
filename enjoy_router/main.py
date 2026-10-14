@@ -12,6 +12,9 @@ Settings (environment variables, none required):
                          For a test deployment only (a live test run sends 30 requests from one address).
                          A warning is logged at startup whenever it is set. Leave it unset for real use.
   ICDT_ADMIN_KEY         the one key that locks the Console and the CRUD test endpoint (32+ characters)
+  ICDT_CMS_ENABLED       true enables CMS only outside local testing; default false
+Secret Manager (bound only to the enabled registration function):
+  ICDT_BREVO_SMTP_KEY    SMTP key, read only after a newly created request is saved
 Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
   ICDT_FIXED_NOW         a fixed UTC clock, so date rules are repeatable in tests (set on the emulator's command line, see README)
   ICDT_STORE=memory      use the in-memory store seeded from the test records, no Firestore needed
@@ -26,8 +29,13 @@ import time
 from datetime import datetime, timezone
 
 from firebase_functions import https_fn, options
+from firebase_functions.params import SecretParam
 
 from core import Schemas
+import cms_service
+import registration_service
+import smtp_transport
+from crud import registration_requests_crud
 from crud import geocoder
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
@@ -48,6 +56,8 @@ ORIGINS = [o.strip() for o in os.environ.get("ICDT_ALLOWED_ORIGINS", ",".join(DE
 SALT = os.environ.get("ICDT_VISITOR_SALT", "icdt-enjoy")
 ADMIN_KEY = os.environ.get("ICDT_ADMIN_KEY", "")  # the Console lock; never logged
 LOCAL_TESTING = os.environ.get("FUNCTIONS_EMULATOR") == "true" or os.environ.get("ICDT_STORE") == "memory"
+CMS_ENABLED = not LOCAL_TESTING and os.environ.get("ICDT_CMS_ENABLED", "false").lower() == "true"
+BREVO_SMTP_KEY = SecretParam("ICDT_BREVO_SMTP_KEY")
 
 _schemas = Schemas.load()
 if not LOCAL_TESTING:
@@ -132,12 +142,32 @@ def _client_address(req) -> str:
     return forwarded[-1] if forwarded else (req.remote_addr or "unknown")
 
 
+def _acknowledge(doc):
+    return cms_service.acknowledge(
+        " ".join((doc["first_name"], doc["last_name"])), doc["email"],
+        doc["confirmation_number"], BREVO_SMTP_KEY.value,
+    )
+
+
+def _record_acknowledgment(id, status, attempted_at, error_code):
+    return registration_requests_crud.set_acknowledgment_result(
+        _get_admin_store(), id, status, attempted_at, error_code,
+    )
+
+
+if CMS_ENABLED:
+    smtp_transport.transport = smtp_transport.send_brevo
+    registration_service.acknowledge = _acknowledge
+    registration_service.record_result = _record_acknowledgment
+
+
 @https_fn.on_request(
     invoker="public",
     cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
     max_instances=5,
     memory=options.MemoryOption.MB_256,
     timeout_sec=30,
+    secrets=[BREVO_SMTP_KEY] if CMS_ENABLED else [],
 )
 def enjoy_registration_request(req: https_fn.Request) -> https_fn.Response:
     result = handle_http(

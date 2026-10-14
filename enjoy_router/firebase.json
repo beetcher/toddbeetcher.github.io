@@ -11,6 +11,7 @@
         "*.local",
         "README.md",
         "run_smtp_test.py",
+        "run_cms_tests.py",
         "run_tests.py",
         "run_http_tests.py",
         "run_console_tests.py",

@@ -467,6 +467,42 @@
       "type": "integer",
       "minimum": 0,
       "readOnly": true
+    },
+    "acknowledgment_email_status": {
+      "description": "Result of the single acknowledgment attempt: accepted by SMTP (not proof of delivery), failed, or unknown. Optional and server-set; retained with the request.",
+      "type": "string",
+      "enum": [
+        "accepted",
+        "failed",
+        "unknown"
+      ],
+      "readOnly": true
+    },
+    "acknowledgment_email_attempted_at": {
+      "description": "UTC time the acknowledgment attempt began. Optional and server-set; retained with the request.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true,
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|\\+00:00)$"
+    },
+    "acknowledgment_email_error_code": {
+      "description": "Sanitized failure code, never an address, message, credential or raw SMTP response. Omitted on acceptance. Optional and server-set; retained with the request.",
+      "type": "string",
+      "maxLength": 40,
+      "enum": [
+        "missing_key",
+        "authentication_failed",
+        "recipient_rejected",
+        "sender_rejected",
+        "message_rejected",
+        "tls_failed",
+        "smtp_feature_unavailable",
+        "connection_failed",
+        "smtp_failed",
+        "unknown",
+        "configuration_failed"
+      ],
+      "readOnly": true
     }
   },
   "allOf": [
@@ -645,5 +681,6 @@
     "class_capacity_max_at_request",
     "class_registered_at_request",
     "seats_available_at_request"
-  ]
+  ],
+  "x_history": "in_place"
 }

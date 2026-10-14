@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import smtplib
 import ssl
+import multiprocessing
+import time
 from dataclasses import dataclass
 from email.message import EmailMessage
 from typing import Callable, Optional
@@ -15,8 +17,7 @@ HOST = "smtp-relay.brevo.com"
 PORT = 587
 LOGIN = "bdeb44001@smtp-brevo.com"
 FROM_ADDRESS = "toddbeetcher17@gmail.com"
-FROM_HEADER = "Launch <toddbeetcher17@gmail.com>"
-TIMEOUT_SECONDS = 8
+TIMEOUT_SECONDS = 10
 
 
 @dataclass(frozen=True)
@@ -25,20 +26,24 @@ class SendResult:
     code: str
 
 
-transport: Optional[Callable[[str, str, str, str], SendResult]] = None
+transport: Optional[Callable[..., SendResult]] = None
 
 
-def send(key: str, recipient: str, subject: str, body: str) -> SendResult:
+def send(key: str, recipient: str, subject: str, body: str, html_body=None) -> SendResult:
     """Use the explicitly enabled transport; never expose exception details."""
     if transport is None:
         return SendResult(False, "disabled")
     try:
-        return transport(key, recipient, subject, body)
+        if html_body is None:
+            return transport(key, recipient, subject, body)
+        return transport(key, recipient, subject, body, html_body)
+    except TimeoutError:
+        return SendResult(False, "unknown")
     except Exception:
         return SendResult(False, "unknown")
 
 
-def send_brevo(key: str, recipient: str, subject: str, body: str) -> SendResult:
+def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None) -> SendResult:
     """One attempt: certificate-verified STARTTLS before login, with no retry.
 
     A connection loss during submission is ambiguous and returns `unknown`.
@@ -50,10 +55,13 @@ def send_brevo(key: str, recipient: str, subject: str, body: str) -> SendResult:
     submitting = False
     try:
         message = EmailMessage()
-        message["From"] = FROM_HEADER
+        message["From"] = f"Launch <{FROM_ADDRESS}>"
+        message["Reply-To"] = FROM_ADDRESS
         message["To"] = recipient
         message["Subject"] = subject
         message.set_content(body)
+        if html_body is not None:
+            message.add_alternative(html_body, subtype="html")
         client = smtplib.SMTP(HOST, PORT, timeout=TIMEOUT_SECONDS)
         client.set_debuglevel(0)
         client.ehlo_or_helo_if_needed()
@@ -75,6 +83,8 @@ def send_brevo(key: str, recipient: str, subject: str, body: str) -> SendResult:
         return SendResult(False, "unknown" if submitting else "tls_failed")
     except smtplib.SMTPNotSupportedError:
         return SendResult(False, "smtp_feature_unavailable")
+    except TimeoutError:
+        return SendResult(False, "unknown")
     except (OSError, smtplib.SMTPServerDisconnected):
         return SendResult(False, "unknown" if submitting else "connection_failed")
     except Exception:
@@ -85,3 +95,52 @@ def send_brevo(key: str, recipient: str, subject: str, body: str) -> SendResult:
                 client.close()
             except Exception:
                 pass
+
+
+def _smtp_worker(connection, key, recipient, subject, body, html_body):
+    """Worker credentials travel in memory, never in command arguments or files."""
+    try:
+        connection.send(_send_once(key, recipient, subject, body, html_body))
+    except BaseException:
+        # No traceback: exception text can contain SMTP replies or submitted data.
+        pass
+    finally:
+        connection.close()
+
+
+def send_brevo(key: str, recipient: str, subject: str, body: str, html_body=None) -> SendResult:
+    """Cap the entire attempt, including DNS/connect/TLS/auth/DATA, at about 10s.
+
+    A separate worker lets us stop blocked I/O instead of leaving a thread that
+    might send later. No retries. The parent never logs credentials or replies.
+    """
+    if not key or not key.strip():
+        return SendResult(False, "missing_key")
+    deadline = time.monotonic() + TIMEOUT_SECONDS
+    context = multiprocessing.get_context("spawn")
+    receiver, sender = context.Pipe(duplex=False)
+    worker = context.Process(target=_smtp_worker, args=(sender, key, recipient, subject, body, html_body))
+    started = False
+    try:
+        worker.start()
+        started = True
+        sender.close()
+        remaining = max(0, deadline - time.monotonic())
+        if receiver.poll(remaining):
+            return receiver.recv()
+        return SendResult(False, "unknown")
+    except Exception:
+        return SendResult(False, "unknown")
+    finally:
+        sender.close()
+        receiver.close()
+        if started:
+            worker.join(timeout=0)
+            if worker.is_alive():
+                worker.terminate()
+                worker.join(timeout=0.2)
+            if worker.is_alive():
+                worker.kill()
+                worker.join(timeout=0.2)
+            if not worker.is_alive():
+                worker.close()

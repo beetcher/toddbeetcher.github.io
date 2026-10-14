@@ -2,7 +2,8 @@
 
 main.py turns a Firebase request into handle_http(); tests call it directly.
 It does what is not a registration rule: method, size, JSON, rate limit, and the
-last-resort catch so a crash never leaks details. Everything else is core.py.
+last-resort catch so a crash never leaks details. registration_service.py wraps
+core.py's unchanged creation rules with the optional post-save acknowledgment.
 """
 from __future__ import annotations
 
@@ -12,7 +13,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
-from core import HTTP_STATUS, Schemas, Store, handle_registration_request
+from core import HTTP_STATUS, Schemas, Store
+from registration_service import register
 from ratelimit import RateLimiter
 
 MAX_BODY_BYTES = 64 * 1024
@@ -59,7 +61,7 @@ def handle_http(
         return _error(400, "validation_failed", "The request body must be JSON.")
 
     try:
-        result = handle_registration_request(body, store, schemas, now=now)
+        result = register(body, store, schemas, now=now)
     except Exception as exc:  # last resort: say nothing about the cause to the visitor
         log.error("registration_request code=server_error exception=%s", type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")

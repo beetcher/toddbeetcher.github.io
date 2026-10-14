@@ -194,3 +194,15 @@ A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUID
 ## Individual link (added October 10, 2026)
 
 `individual_id` (server-set, readOnly): the person record this request's requester was matched to. It is absent until identity review decides, and it is never set by matching on email or phone alone (couples share both). A sender may not send it; the endpoint rejects it like any readOnly field. The name, email and phone on the request stay exactly as submitted. Setting `individual_id` is the identity matcher's job (a later step); until then no request carries it.
+
+## Acknowledgment email (CMS proof of concept, October 14, 2026)
+
+After a newly created request is saved, CMS attempts one acknowledgment. It says a request was received, not that the person is registered. Replays, rejected requests and honeypot responses send nothing. The normal success response contains only the confirmation number and registration type, even when email or recording the result fails. There is no automatic retry or email outbox.
+
+- `acknowledgment_email_status`: optional server-only string, `accepted`, `failed` or `unknown`. Accepted means SMTP acceptance, not delivery or an open. A timeout anywhere in the approximately ten-second SMTP attempt is unknown.
+- `acknowledgment_email_attempted_at`: optional server-only UTC date-time string, when the attempt began.
+- `acknowledgment_email_error_code`: optional server-only bounded string enum of sanitized transport/configuration codes; omitted on acceptance. It never contains personal data, credentials, message text or a raw SMTP response.
+
+All three fields are readOnly. A browser supplying one is refused. They contain no additional personal data and are kept with the request, with no separate expiry (Todd). The request's overall retention period remains undecided; use synthetic data for the proof of concept. `x_history` is `in_place`: email metadata is updated on the saved record, stamping updated_at and updated_by (`system:cms`). The original submitted fields, confirmation and creation stamps are preserved. No general request-edit endpoint is added.
+
+When the transport hook is disabled, no attempt or email metadata is written. An absent status means no result was recorded; a process crash or failed metadata write can also leave it absent. `stored_examples` in the examples file illustrates these server-written fields; the CMS tests validate those complete documents.
