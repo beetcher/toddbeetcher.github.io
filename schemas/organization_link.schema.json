@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/organization_link.schema.json",
+  "title": "organization_link",
+  "description": "One relationship between a thing and an organization, with dates: this individual leads that school district from 2021 with the title Superintendent; this venue is operated by that company from 2005 on; this school is part of that district. The organization never changes when a relationship does: a person who changes employer gets the old link ended (valid_to) and a new link made. A link says nothing about family or about permissions: two people linked to one organization are not thereby related, and being linked gives no access. Rules the schema cannot express: the subject exists in the right collection and is live; the organization exists and is live; an organization cannot be linked to itself; subject_type, subject_id and organization_id never change after creation. Nothing else refuses a save: no overlap, loop, primary or word-fit rules.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_retention": "Kept as long as the subject and the organization exist, for history. (A written policy only; nothing enforces it yet. The erase and privacy hooks for individuals are not built.)",
+  "x_history": "in_place",
+  "required": [
+    "subject_type",
+    "subject_id",
+    "organization_id",
+    "relationship"
+  ],
+  "properties": {
+    "subject_type": {
+      "description": "What kind of thing is related to the organization: individual, organization or venue. Required. Never changes once set.",
+      "enum": [
+        "individual",
+        "organization",
+        "venue"
+      ]
+    },
+    "subject_id": {
+      "description": "The id of that individual, organization or venue. Required. The service checks it exists in the right collection. Never changes once set.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "organization_id": {
+      "description": "The organization the subject is related to. Required. Must exist and be live. Never changes once set.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "relationship": {
+      "description": "How the subject relates to the organization: works_for, member_of, volunteers_for, teaches_for, leads, contact_for, part_of, affiliated_with, sponsored_by, operated_by, succeeded_by or other. Required. One list for all subject types; nothing checks which word fits which subject.",
+      "enum": [
+        "works_for",
+        "member_of",
+        "volunteers_for",
+        "teaches_for",
+        "leads",
+        "contact_for",
+        "part_of",
+        "affiliated_with",
+        "sponsored_by",
+        "operated_by",
+        "succeeded_by",
+        "other"
+      ]
+    },
+    "title": {
+      "description": "The role or title in this relationship, such as Superintendent or Board Chair. Up to 100 characters. Optional.",
+      "type": "string",
+      "maxLength": 100
+    },
+    "description": {
+      "description": "A few words about this relationship. Up to 1000 characters. Optional.",
+      "type": "string",
+      "maxLength": 1000,
+      "x_pii": true
+    },
+    "valid_from": {
+      "description": "First day the relationship applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "valid_to": {
+      "description": "Last day the relationship applies, as YYYY, YYYY-MM or YYYY-MM-DD. Optional; absent means it still applies. Nothing compares it with valid_from.",
+      "type": "string",
+      "maxLength": 10,
+      "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. A deleted link is a mistake corrected, not a relationship that ended. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ]
+}

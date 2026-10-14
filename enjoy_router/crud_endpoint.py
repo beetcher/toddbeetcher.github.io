@@ -48,7 +48,7 @@ from datetime import datetime
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (assignments_service, attendances_service, classes_service, curriculums_crud, individual_restricted_details_service,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
-                  merge_events_service, organizations_crud, student_rosters_service, venues_service)
+                  merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service)
 from crud.schema_kit import failure
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
@@ -64,7 +64,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service,
             "instructor_rosters": instructor_rosters_service, "student_rosters": student_rosters_service,
             "curriculums": curriculums_crud, "attendances": attendances_service, "journal_events": journal_events_crud,
-            "organizations": organizations_crud}
+            "organizations": organizations_crud, "organization_links": organization_links_service}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 

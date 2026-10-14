@@ -1,0 +1,144 @@
+{
+  "valid": {
+    "person_leads": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "title": "Superintendent",
+      "valid_from": "2021-07"
+    },
+    "person_former_employee": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "works_for",
+      "title": "Teacher",
+      "valid_from": "2008",
+      "valid_to": "2021-06-30"
+    },
+    "venue_operated_by": {
+      "subject_type": "venue",
+      "subject_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "operated_by",
+      "valid_from": "2005"
+    },
+    "school_part_of_district": {
+      "subject_type": "organization",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "part_of"
+    },
+    "sponsor": {
+      "subject_type": "organization",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "sponsored_by",
+      "description": "Sponsors the fall workshop series."
+    },
+    "minimal": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "other"
+    },
+    "valid_before_valid_from_is_allowed": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "member_of",
+      "valid_from": "2020",
+      "valid_to": "2010"
+    }
+  },
+  "invalid": {
+    "empty": {},
+    "missing_subject_type": {
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads"
+    },
+    "missing_subject_id": {
+      "subject_type": "individual",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads"
+    },
+    "missing_organization_id": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "relationship": "leads"
+    },
+    "missing_relationship": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f"
+    },
+    "bad_subject_type": {
+      "subject_type": "household",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads"
+    },
+    "bad_relationship": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "lives_with"
+    },
+    "subject_id_not_uuid": {
+      "subject_type": "individual",
+      "subject_id": "todd",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads"
+    },
+    "bad_date": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "valid_from": "06/2021"
+    },
+    "title_too_long": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "title": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "description_too_long": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "description": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "status_sent": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "status": "active"
+    },
+    "server_field_sent_id": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+    },
+    "camel_case": {
+      "subject_type": "individual",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "subjectId": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+    },
+    "unknown_field": {
+      "subject_type": "individual",
+      "subject_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "organization_id": "7d6f2a5c-1e8b-4c93-9f0e-5a6b7c8d9e0f",
+      "relationship": "leads",
+      "is_primary": true
+    }
+  }
+}
