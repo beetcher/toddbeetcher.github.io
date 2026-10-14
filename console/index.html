@@ -650,6 +650,7 @@
   <section id="instructorsView" class="rostview" hidden></section>
   <section id="studentsView" class="rostview" hidden></section>
   <section id="curriculumsView" class="rostview" hidden></section>
+  <section id="organizationsView" class="rostview" hidden></section>
 
   <section id="attendanceView" hidden>
     <div class="bar">
@@ -962,6 +963,25 @@
         '<li>A reference (ICDT-A-…) belongs to one person in one class. A request number (ICDT-…) is the sign-up it came from.</li>' +
         '<li>The list shows the newest 200 records. If you see a note about that, narrow it with the filters or search.</li>' +
         '</ul>' },
+    { id: "organizations", name: "Organizations", short: "Organizations", blurb: "Companies, schools, districts and other organized groups.",
+      manual:
+        '<div class="kicker">Station 10</div><h2>Organizations</h2>' +
+        '<h3>Mission</h3><p>An organization is a company, nonprofit, school, school district, board, club or other organized group, such as Ozo Coffee or Boulder Valley School District. It is not a place and not a venue: a place is on Earth, a venue is somewhere a class happens. An organization may <b>sponsor</b> a class, but a shop it runs is a venue. Only the name is needed.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add organization</b> needs a name. Tick every kind that fits (one organization can be a nonprofit and a school). Short name, web address, email and phone are optional.</li>' +
+        '<li><b>Search</b> looks at the name, short name, legal name and other names. The status menu narrows the list; choose All to see everything.</li>' +
+        '<li><b>Tap a card</b> for the details. <b>Edit</b> shows the main fields, with <b>More details</b> for the legal name, other names, description, outside identifiers, dates and notes.</li>' +
+        '<li><b>Outside identifiers</b> go one per line as <i>type: value</i>, for example <i>ein: 00-0000000</i>.</li>' +
+        '<li>The <b>switch</b> on a card sets it active or inactive. In Edit you can also choose <b>Closed</b> for an organization that no longer exists.</li>' +
+        '<li><b>Delete</b> asks first. The organization disappears from the list but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Two organizations can share a name; nothing warns you. One organization can have many other names.</li>' +
+        '<li>No date check: the closing date is not compared with the founding date.</li>' +
+        '<li>Addresses, people and the schools that belong to a district are not typed here. They are <b>links</b>, which come next in this station.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> start with the few organizations LAUNCH deals with. More can be added any time.</div>' +
+        '<h3>Try this</h3><ul><li>Add Ozo Coffee as a business, then search for it.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1034,11 +1054,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("attendanceView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "attendance" ? "attendance" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1056,6 +1076,7 @@
     $("instructorsView").hidden = r !== "instructors";
     $("studentsView").hidden = r !== "students";
     $("curriculumsView").hidden = r !== "curriculums";
+    $("organizationsView").hidden = r !== "organizations";
     $("attendanceView").hidden = r !== "attendance";
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
@@ -5361,6 +5382,235 @@
     S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
   }
   buildCurriculum();
+
+  var OISSUE = { required: "Required.", invalid_format: "Check the format.", out_of_range: "That is too long, too short or out of range.", invalid_type: "That value is not valid.",
+                 invalid_value: "That value is not valid.", not_allowed: "Not allowed.", immutable: "That cannot be changed.", duplicate: "Already used." };
+  var OKINDS = [["business", "Business"], ["nonprofit", "Nonprofit"], ["school", "School"], ["school_district", "School district"], ["college_university", "College or university"],
+                ["government", "Government"], ["governing_body", "Governing body (a board)"], ["association", "Association"], ["club", "Club"],
+                ["training_provider", "Training provider"], ["community_group", "Community group"], ["other", "Other"]];
+  var OKIND_LABEL = {}; OKINDS.forEach(function (k) { OKIND_LABEL[k[0]] = k[1]; });
+  function buildOrganization() {
+    var P = "ro", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
+    ROSTER.organizations = S;
+    var root = $("organizationsView");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="roCount"></div><div class="meta" id="roChecked"></div></div>' +
+      '<div class="actions"><select id="roFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="closed">Closed</option><option value="">All</option></select>' +
+      '<input type="search" id="roSearch" placeholder="Search by name" aria-label="Search by name" autocomplete="off">' +
+      '<button type="button" class="quiet manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="roAddBtn" type="button">Add organization</button></div></div>' +
+      '<form class="panel" id="roAddForm" hidden autocomplete="off" novalidate><h2>Add an organization</h2>' +
+      '<div class="hint">Only the name is needed. Everything else can be added later.</div>' +
+      '<div id="roAddFields"></div>' +
+      '<div class="btns"><button type="submit" id="roSaveBtn">Save organization</button><button type="button" class="quiet" id="roCancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="roFMsg" role="alert"></div></form>' +
+      '<div class="notice" id="roNotice" role="status"></div><div class="msg" id="roMsg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
+    // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
+    var FIELDS = [
+      { k: "name", label: "Name", t: "text", add: true, max: 200, hint: "What people call it, for example Ozo Coffee." },
+      { k: "kinds", label: "Kind (tick all that fit)", t: "kinds", add: true },
+      { k: "short_name", label: "Short name (optional)", t: "text", add: true, max: 60, hint: "For example BVSD." },
+      { k: "website_url", label: "Web address (optional)", t: "text", add: true, max: 300, hint: "Starts with http:// or https://" },
+      { k: "email", label: "Email (optional)", t: "text", add: true, max: 200 },
+      { k: "phone", label: "Phone (optional)", t: "text", add: true, max: 40 },
+      { k: "legal_name", label: "Legal name (optional)", t: "text", add: false, max: 200, more: true },
+      { k: "aliases", label: "Other names (optional)", t: "lines", add: false, more: true, hint: "One per line: former names, trade names, abbreviations." },
+      { k: "description", label: "Description (optional)", t: "area", add: false, more: true, max: 2000 },
+      { k: "identifiers", label: "Outside identifiers (optional)", t: "ids", add: false, more: true, hint: "One per line as type: value, for example ein: 00-0000000." },
+      { k: "founded_date", label: "Founded (optional)", t: "date", add: false, more: true, hint: "YYYY, YYYY-MM or YYYY-MM-DD." },
+      { k: "closed_date", label: "Closed (optional)", t: "date", add: false, more: true, hint: "YYYY, YYYY-MM or YYYY-MM-DD." },
+      { k: "notes", label: "Notes (optional)", t: "area", add: false, more: true, max: 2000, hint: "Visible to operators only." }
+    ];
+    var LAB = { name: "Name", kinds: "Kind", short_name: "Short name", website_url: "Web address", email: "Email", phone: "Phone", legal_name: "Legal name", aliases: "Other names",
+                description: "Description", identifiers: "Identifiers", founded_date: "Founded", closed_date: "Closed", notes: "Notes", status: "Status" };
+    function idsText(list) { return (list || []).map(function (i) { return i.type + ": " + i.value; }).join("\n"); }
+    function mkF(f, idp, cur) {
+      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      if (f.t === "kinds") {
+        el = mk("div"); el.id = idp + f.k; el.setAttribute("role", "group"); el.setAttribute("aria-label", f.label); l.removeAttribute("for");
+        OKINDS.forEach(function (kk) {
+          var lab = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = kk[0]; cb.checked = (cur || []).indexOf(kk[0]) >= 0;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.style.padding = "2px 0";
+          lab.appendChild(cb); lab.appendChild(document.createTextNode(kk[1])); el.appendChild(lab);
+        });
+      } else if (f.t === "area" || f.t === "lines" || f.t === "ids") {
+        el = mk("textarea"); el.maxLength = f.max || 2000; el.value = f.t === "lines" ? (cur || []).join("\n") : f.t === "ids" ? idsText(cur) : (cur == null ? "" : cur);
+        if (f.t !== "area") el.rows = 3;
+      } else {
+        el = mk("input"); el.type = "text"; el.maxLength = f.t === "date" ? 10 : (f.max || 200); el.value = cur == null ? "" : String(cur);
+        if (f.k === "email") el.inputMode = "email"; if (f.k === "website_url") el.inputMode = "url";
+      }
+      el.id = idp + f.k; if (f.t !== "kinds") l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+      if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); wrap.appendChild(er);
+      return { wrap: wrap, el: el, err: er, f: f };
+    }
+    function val(x, rec) {   // -> {v} (v = "" means empty) or {bad}
+      var f = x.f, el = x.el;
+      if (f.t === "kinds") { var ks = []; Array.prototype.forEach.call(el.querySelectorAll("input"), function (cb) { if (cb.checked) ks.push(cb.value); }); return ks.length ? { v: ks } : { v: "" }; }
+      if (f.t === "lines") { var ls = el.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean); return ls.length ? { v: ls } : { v: "" }; }
+      if (f.t === "ids") {
+        var out = [], bad = false;
+        el.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (s) {
+          var m = /^([A-Za-z][A-Za-z0-9_ ]*?)\s*:\s*(.+)$/.exec(s);
+          if (!m) { bad = true; return; }
+          var type = m[1].trim().toLowerCase().replace(/\s+/g, "_"), value = m[2].trim(), o = { type: type, value: value };
+          ((rec && rec.identifiers) || []).forEach(function (old) { if (old.type === type && old.value === value && old.description) o.description = old.description; });
+          out.push(o);
+        });
+        if (bad) return { bad: "Use type: value on each line, for example ein: 00-0000000." };
+        return out.length ? { v: out } : { v: "" };
+      }
+      return { v: el.value.trim() };
+    }
+    function problems(res, els) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+      ps.forEach(function (p) { var t = OISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((LAB[p.field] || p.field) + ": " + t); });
+      if (!ps.length) out.push(adminProblem(res.status));
+      return { fields: mine, other: out };
+    }
+    var addEls = {};
+    FIELDS.forEach(function (f) { if (!f.add) return; var x = mkF(f, "roA_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { limit: 200 }, "organizations").then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the organizations. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    }
+    S.load = load;
+    function matches(r, q) {
+      if (!q) return true;
+      var hay = [r.name, r.short_name, r.legal_name].concat(r.aliases || []).join(" ").toLowerCase();
+      return hay.indexOf(q) >= 0;
+    }
+    function render() {
+      var f = g("Filter").value, q = g("Search").value.trim().toLowerCase(), list = g("List"), n = 0; list.textContent = "";
+      S.all.filter(function (r) { return (!f || r.status === f) && matches(r, q); }).forEach(function (r) { list.appendChild(row(r)); n++; });
+      S.newId = "";
+      g("Count").textContent = n + (n === 1 ? " organization" : " organizations") + (n !== S.all.length ? " shown of " + S.all.length : "");
+      g("Empty").hidden = S.all.length > 0;
+    }
+    function kindsLine(rec) { return (rec.kinds || []).map(function (k) { return OKIND_LABEL[k] || k; }).join(", "); }
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.name || "(no name)"));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: "organizations", on: "active", off: "inactive", label: "Organization", problem: function (res) { return problems(res, {}).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+      head.appendChild(top);
+      var sub = [kindsLine(rec), rec.short_name].filter(Boolean).join(" · ");
+      if (sub) head.appendChild(mk("div", "sub", sub));
+      var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      box.appendChild(mk("div", "", "Delete " + (rec.name || "this organization") + "? It disappears from the list but the record is kept. To stop using it without deleting, set it to inactive or closed."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete organization"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true;
+        admin("soft_delete", { id: rec.id }, "organizations").then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Deleted " + rec.name + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That organization was already gone."; load(); }
+          else err.textContent = problems(res, {}).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box); detail.appendChild(wrap);
+      if (rec.legal_name) detail.appendChild(line("Legal name", rec.legal_name));
+      if (rec.aliases && rec.aliases.length) detail.appendChild(line("Also known as", rec.aliases.join(", ")));
+      if (rec.description) detail.appendChild(line("Description", rec.description));
+      if (rec.website_url) detail.appendChild(line("Web", rec.website_url));
+      if (rec.email) detail.appendChild(line("Email", rec.email));
+      if (rec.phone) detail.appendChild(line("Phone", rec.phone));
+      (rec.identifiers || []).forEach(function (i) { detail.appendChild(line(i.type, i.value)); });
+      if (rec.founded_date) detail.appendChild(line("Founded", rec.founded_date));
+      if (rec.closed_date) detail.appendChild(line("Closed", rec.closed_date));
+      if (rec.status === "active" || rec.status === "inactive") { /* shown by the switch */ }
+      if (rec.notes) detail.appendChild(line("Notes", rec.notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+    function editForm(rec, host) {
+      var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
+      var more = mk("details"); more.appendChild(mk("summary", "", "More details"));
+      FIELDS.forEach(function (f) { var x = mkF(f, "roe_" + rec.id + "_", rec[f.k]); (f.more ? more : form).appendChild(x.wrap); els[f.k] = x; });
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rost_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not used)"], ["closed", "Closed (no longer exists)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status === "merged" ? "active" : (rec.status || "active");
+      var sw = mk("div"); sw.appendChild(sl); sw.appendChild(ss); form.appendChild(sw);
+      form.appendChild(more);
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = ""; var changes = {}, bad = false;
+        Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+        Object.keys(els).forEach(function (k) {
+          var x = els[k], v = val(x, rec), cur = rec[k];
+          if (v.bad) { x.err.textContent = v.bad; bad = true; more.open = true; return; }
+          if (v.v === "") { if (cur !== undefined) { if (k === "name") { x.err.textContent = "Required."; bad = true; } else changes[k] = null; } }
+          else if (JSON.stringify(v.v) !== JSON.stringify(cur)) changes[k] = v.v;
+        });
+        if (ss.value !== (rec.status === "merged" ? "merged" : (rec.status || "active"))) changes.status = ss.value;
+        if (bad) return;
+        if (!Object.keys(changes).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        save.disabled = true;
+        admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, "organizations").then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + (changes.name || rec.name) + "."; load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this organization while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That organization is gone. Tap Refresh."; return; }
+          var pr = problems(res, els); Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; if (FIELDS.filter(function (f) { return f.k === k && f.more; }).length) more.open = true; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+    g("AddBtn").addEventListener("click", function () {
+      g("AddForm").reset(); Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; }); g("FMsg").textContent = ""; g("Notice").textContent = "";
+      g("AddForm").hidden = false; g("AddBtn").hidden = true; addEls.name.el.focus();
+    });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; var data = {}, bad = false;
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) {
+        var v = val(addEls[k], null);
+        if (v.bad) { addEls[k].err.textContent = v.bad; bad = true; return; }
+        if (v.v !== "") data[k] = v.v;
+      });
+      if (!data.name) { addEls.name.err.textContent = "Required."; bad = true; }
+      if (bad) return;
+      g("SaveBtn").disabled = true;
+      admin("create", { data: data }, "organizations").then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.name + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+          g("Filter").value = "active"; g("Search").value = ""; load(); return;
+        }
+        var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Search").addEventListener("input", render);
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+  }
+  buildOrganization();
 
   function resetRosters() { Object.keys(ROSTER).forEach(function (k) { ROSTER[k].reset(); }); }
 
