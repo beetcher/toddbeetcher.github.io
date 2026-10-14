@@ -83,6 +83,7 @@ with sync_playwright() as p:
     check("typing narrows the list", buttons(li2) == ["Colo Rado"], buttons(li2))
     box(li2).locator("input[aria-label='Search instructors by name'] ~ div button").first.click()
     check("choosing one shows who was chosen", "Chosen: Colo Rado" in box(li2).inner_text())
+    check("choosing one puts the name in the box and clears the list", box(li2).locator("input[aria-label='Search instructors by name']").input_value() == "Colo Rado" and buttons(li2) == [], (box(li2).locator("input[aria-label='Search instructors by name']").input_value(), buttons(li2)))
     li = build("Nozip")
     wait(lambda: "Loading" not in box(li).inner_text())
     got = buttons(li)

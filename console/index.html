@@ -3106,7 +3106,7 @@
       var shown = eligible.filter(function (r) { var n = nameOf(r).toLowerCase(); return q.every(function (w) { return n.indexOf(w) >= 0; }); });
       shown.slice(0, 12).forEach(function (r) {
         var b = mk("button", "quiet", nameOf(r) + (!state && !r.residence_state ? " (no address on file)" : "")); b.type = "button";
-        b.addEventListener("click", function () { chosen.id = r.individual_id; chosen.name = nameOf(r); cur.textContent = "Chosen: " + chosen.name; search.value = ""; draw(); });
+        b.addEventListener("click", function () { chosen.id = r.individual_id; chosen.name = nameOf(r); cur.textContent = "Chosen: " + chosen.name; search.value = chosen.name; results.textContent = ""; });
         results.appendChild(b);
       });
       if (!shown.length) results.appendChild(mk("div", "hint", eligible.length ? "No instructor matches that name." :
