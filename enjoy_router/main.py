@@ -35,7 +35,8 @@ from core import Schemas
 import cms_service
 import registration_service
 import smtp_transport
-from crud import registration_requests_crud
+from crud import attendances_service, registration_requests_crud
+import placement_email
 from crud import geocoder
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
@@ -174,6 +175,14 @@ if CMS_ENABLED:
     registration_service.record_result = _record_acknowledgment
 
 
+def _placement_notify(store, attendance_id, actor, now, manual):
+    return placement_email.send_for(store, attendance_id, actor, BREVO_SMTP_KEY.value, now, manual)
+
+
+if CMS_ENABLED:   # the placement confirmation email (with the calendar file) is sent by the admin function
+    attendances_service.notify = _placement_notify
+
+
 @https_fn.on_request(
     invoker="public",
     cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
@@ -247,7 +256,9 @@ def enjoy_crud_test(req: https_fn.Request) -> https_fn.Response:
     cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
     max_instances=3,
     memory=options.MemoryOption.MB_256,
-    timeout_sec=30,
+    timeout_sec=60,
+    # The placement confirmation email needs the SMTP key. Bound unconditionally (see the CMS deploy-discovery note above).
+    secrets=[BREVO_SMTP_KEY],
 )
 def enjoy_admin(req: https_fn.Request) -> https_fn.Response:
     """The Console's door to the real collections through the CRUD handler files. Locked by the admin key."""

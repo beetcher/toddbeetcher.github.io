@@ -148,6 +148,10 @@
   .atband.stu .rsum { margin: 10px 0 8px; font-weight: 600; }
   .atband.stu .addbox { background: #fff8ec; }
   .arow { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .alog { margin: 4px 0 2px; font-size: 14px; color: var(--muted); }
+  .alog .alogh { font-weight: 600; }
+  .alog .alogline.bad { color: #9a2a1a; font-weight: 600; }
+  .arow .asend { margin-top: 4px; }
   .arow .atop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .arow .aname { flex: 1 1 140px; font-weight: 600; }
   .addbox { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
@@ -3368,21 +3372,31 @@
       function place(classId, prefix) {
         data.scheduled_class_id = classId;
         var args = { data: data }; if (person) args.person = person;
-        return admin("assign", args, ATT).then(function (res) {
-          if (res.status === 401) { lock("That key did not work."); return; }
-          if (res.status === 200 && res.body && res.body.ok) {
-            var d = res.body.data;
-            if (d.created_person) peopleForPick = null;
-            var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
-              + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "");
-            if (!(made && made.instructor)) { finish(d, said); return; }
-            return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
-              finish(d, said + (r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance."));
-            });
-          }
-          add.disabled = false;
-          msg.textContent = (prefix ? prefix : "") + attFail(res);
-        });
+        // A new class with a lead instructor: the instructor goes in FIRST, so the student's confirmation email can name them.
+        function placeStudent(instructorSaid) {
+          return admin("assign", args, ATT).then(function (res) {
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body && res.body.ok) {
+              var d = res.body.data;
+              if (d.created_person) peopleForPick = null;
+              var log = d.correspondence || [], last = log.length ? log[log.length - 1] : null;
+              var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
+                + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "")
+                + (instructorSaid || "")
+                + (last ? (last.result === "sent" ? " A confirmation email with the calendar file went to " + last.to + "." : " The confirmation email did not go (see the log on their row); you can send it again there.") : "");
+              finish(d, said);
+              return;
+            }
+            add.disabled = false;
+            msg.textContent = (prefix ? prefix : "") + attFail(res);
+          });
+        }
+        if (made && made.instructor) {
+          return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
+            placeStudent(r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance.");
+          });
+        }
+        return placeStudent("");
       }
       function finish(d, said) {
         add.disabled = false;
@@ -3411,6 +3425,46 @@
     return row;
   }
 
+  var SEND_WHY = { not_a_student: "Only students get this email.", not_placed: "They are not placed right now (waiting, or no longer in the class).",
+                   class_not_scheduled: "The class has no date and start time yet. Finish it in Classes first.", no_venue: "The class has no venue yet.",
+                   no_email: "This person has no email address on file.", class_not_found: "The class could not be found.", not_found: "That record could not be found." };
+  function sendFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (ps.length && ps[0].field === "email" && ps[0].issue === "not_enabled") return "Email is turned off on the server, so nothing was sent.";
+    if (ps.length && ps[0].field === "id") return SEND_WHY[ps[0].issue] || "That email cannot be sent.";
+    return attFail(res);
+  }
+  var CORR_KIND = { placement_confirmation: "Placement confirmation" };
+  function corrLine(e) {
+    var when = e.at ? new Date(e.at).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    var res = e.result === "sent" ? "Sent" : e.result === "failed" ? "Failed" + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : "Unknown, may not have been sent" + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "");
+    var line = mk("div", "alogline" + (e.result === "sent" ? "" : " bad"), [when, CORR_KIND[e.kind] || e.kind, (e.channel === "email" ? "Email to " : "") + e.to, res, e.trigger === "manual" ? "sent by hand" : "automatic"].filter(Boolean).join(" · "));
+    return line;
+  }
+  // Students only: the record's correspondence log (newest first) and a button to send the confirmation email now.
+  function attCorrespondence(r, row, say, redraw) {
+    var box = mk("div", "alog"); box.setAttribute("data-corr", r.id);
+    box.appendChild(mk("div", "alogh", "Messages sent"));
+    var log = (r.correspondence || []).slice().reverse();
+    if (!log.length) box.appendChild(mk("div", "alogline none", "None yet."));
+    log.forEach(function (e) { box.appendChild(corrLine(e)); });
+    row.appendChild(box);
+    var b = mk("button", "quiet asend", "Send confirmation email"); b.type = "button";
+    b.addEventListener("click", function () {
+      b.disabled = true; b.textContent = "Sending…";
+      admin("send_confirmation", { id: r.id }, ATT).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var out = res.body.data.result;
+          say(out === "sent" ? "Confirmation email sent to " + attName(r) + "." : "The email was not sent (" + String(res.body.data.code || out).replace(/_/g, " ") + "). It is noted in the log.");
+          redraw(); return;
+        }
+        b.disabled = false; b.textContent = "Send confirmation email"; say(sendFail(res));
+      });
+    });
+    row.appendChild(b);
+  }
+
   function attRow(r, say, redraw) {
     var row = mk("div", "arow");
     var top = mk("div", "atop");
@@ -3424,6 +3478,7 @@
     var rm = mk("button", "quiet", "Remove"); rm.type = "button";
     top.appendChild(sel); top.appendChild(rm);
     row.appendChild(top);
+    if (r.role === "student") attCorrespondence(r, row, say, redraw);
     sel.addEventListener("change", function () {
       sel.disabled = true;
       admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {

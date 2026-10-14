@@ -95,6 +95,78 @@
         }
       }
     },
+    "correspondence": {
+      "description": "Every message the system sent about this placement, oldest first: a small log. Each line says when it was sent (UTC), what kind it was, the channel, the address it went to, the subject, how it came out, and who or what sent it. The message text is not kept. Set by the server only (the Console never writes it); a record with no lines has had no messages. Up to 100 entries.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "kind",
+          "channel",
+          "to",
+          "result",
+          "by"
+        ],
+        "properties": {
+          "at": {
+            "description": "When it was sent or tried (UTC).",
+            "type": "string",
+            "format": "date-time"
+          },
+          "kind": {
+            "description": "What the message was: placement_confirmation (you are scheduled, with the calendar file).",
+            "enum": [
+              "placement_confirmation"
+            ]
+          },
+          "channel": {
+            "description": "How it was sent: email.",
+            "enum": [
+              "email"
+            ]
+          },
+          "to": {
+            "description": "The address it was sent to.",
+            "type": "string",
+            "maxLength": 254
+          },
+          "subject": {
+            "description": "The subject line.",
+            "type": "string",
+            "maxLength": 300
+          },
+          "result": {
+            "description": "sent (the mail service accepted it; this is not proof of delivery), failed (it was not sent; see error_code) or unknown (the connection ended before we could tell).",
+            "enum": [
+              "sent",
+              "failed",
+              "unknown"
+            ]
+          },
+          "error_code": {
+            "description": "A short sanitized reason when result is failed or unknown (for example missing_key or recipient_rejected). Never contains personal data.",
+            "type": "string",
+            "maxLength": 60
+          },
+          "by": {
+            "description": "Who triggered it, as an actor string: the person who placed them, or who pressed Send.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "trigger": {
+            "description": "automatic (sent when the person was placed) or manual (someone pressed Send confirmation email).",
+            "enum": [
+              "automatic",
+              "manual"
+            ]
+          }
+        }
+      }
+    },
     "request_id": {
       "description": "The registration request this record came from, when it came from one: the id of a registration_request. Optional. When set, the server copies that request's confirmation_number onto this record. A request counts as placed while at least one record carrying its id is not declined, withdrawn or cancelled.",
       "type": "string",

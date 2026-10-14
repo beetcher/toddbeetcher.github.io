@@ -8,6 +8,7 @@ Same function names as a handler file, plus assign and EXPANDABLE. list needs no
 from __future__ import annotations
 
 import builtins
+import logging
 import re
 import secrets
 from contextlib import contextmanager
@@ -40,6 +41,21 @@ HISTORY_MAX = 100
 STATUS_OFF = frozenset({"declined", "withdrawn", "cancelled"})      # no longer a placement
 NO_SEAT = STATUS_OFF | {"waitlisted"}                                 # does not hold a seat
 OPEN = frozenset({"assigned", "waitlisted", "confirmed"})             # what a cancelled or deleted class cancels
+SEND_STATUSES = ("assigned", "confirmed")
+LOG = logging.getLogger("enjoy_router")
+# The confirmation-email sender: callable(store, attendance_id, actor, now, manual) -> dict. None until main.py turns it on
+# (only when CMS email is enabled), so tests and local runs send nothing.
+notify = None
+
+
+def _auto_notify(store, rec, actor, now):
+    """A student was just placed: send the confirmation (never raises, never undoes the placement)."""
+    if notify is None or rec.get("role") != STUDENT or rec.get("status") not in SEND_STATUSES:
+        return
+    try:
+        notify(store, rec["id"], actor, now, False)
+    except Exception:   # a mail problem must never fail a placement; no details are logged
+        LOG.warning("placement email failed attendance=%s", rec.get("id"))
 
 
 def _bad(problems):
@@ -163,7 +179,33 @@ def _create(store, data, actor, source, tx, now, person_known=False):
 
 
 def create(store, data, actor, source="dashboard", tx=None, now=None):
-    return _create(store, data, actor, source, tx, now)
+    r = _create(store, data, actor, source, tx, now)
+    if r.ok and tx is None:
+        _auto_notify(store, r.data, actor, now)
+        fresh = store.get(ATT.name, r.data["id"])
+        if fresh:
+            return success(fresh)
+    return r
+
+
+_SEND_REASONS = {"not_found": "not_found", "not_a_student": "not_a_student", "not_placed": "not_placed", "class_not_found": "class_not_found",
+                 "class_not_scheduled": "class_not_scheduled", "no_venue": "no_venue", "no_email": "no_email"}
+
+
+def send_confirmation(store, id, actor, now=None):  # noqa: A002
+    """Send the placement confirmation email for one student record now (adds a line to its correspondence log)."""
+    problems = check_actor(actor) + _id_problem(id)
+    if problems:
+        return _bad(problems)
+    if notify is None:
+        return _bad([{"field": "email", "issue": "not_enabled"}])
+    cur = store.get(ATT.name, id)
+    if cur is None or _deleted(cur):
+        return failure("not_found")
+    out = notify(store, id, actor, now, True)
+    if not out.get("ok"):
+        return _bad([{"field": "id", "issue": _SEND_REASONS.get(out.get("reason"), "not_allowed")}])
+    return success({"id": id, "result": out["result"], "code": out.get("code"), "correspondence": out.get("correspondence", [])})
 
 
 # ---- reading ----------------------------------------------------------------
@@ -377,4 +419,6 @@ def assign(store, data, actor, person=None, source="dashboard", now=None):
             out["rec"] = r.data
     except _Abort as stop:
         return stop.result
+    _auto_notify(store, out["rec"], actor, now)
+    out["rec"] = store.get(ATT.name, out["rec"]["id"]) or out["rec"]
     return success({**expanded(store, out["rec"]), "created_person": person is not None, "created_roster_entry": out["created_roster_entry"]})

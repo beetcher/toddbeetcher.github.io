@@ -28,6 +28,7 @@ ops and their args:
     find_gps           id                           (venues only: looks up GPS from the place's street address; best effort, says what happened in `gps`)
     create_with_person data, person (optional), source (optional)   (the rosters only: data.individual_id for an existing person, or person for a new one; saved together)
     assign             data, person (optional), source (optional)   (attendances only: put a person in a class: person, roster entry and record together)
+    send_confirmation  id                     (attendances only: send the placement confirmation email now)
     update_with_person id, changes and/or person, expected_updated_at (optional)   (the rosters only: roster fields and the person's name and contact, saved together)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
@@ -88,13 +89,14 @@ OPS = {
     "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
     "find_gps": ({"id"}, set()),                                             # only venues: look up GPS from the place's address
     "assign": ({"data"}, {"person", "source"}),                              # only attendances: person + roster entry + attendance together
+    "send_confirmation": ({"id"}, set()),                                    # only attendances: send the placement confirmation email now
     "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
-                       "create_with_person", "update_with_person", "assign"})
+                       "create_with_person", "update_with_person", "assign", "send_confirmation"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -102,11 +104,13 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign"):
+              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "send_confirmation"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
             return module.create_with_place(store, a["data"], actor, a.get("address"), a.get("location_id"), a.get("source", "dashboard"), now=now)
+        if op == "send_confirmation":
+            return module.send_confirmation(store, a["id"], actor, now=now)
         if op == "assign":
             return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":
