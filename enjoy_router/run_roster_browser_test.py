@@ -9,6 +9,7 @@ sys.path.insert(0, str(HERE))
 from crud.memory_doc_store import MemoryDocStore
 from crud import individuals_service as IS
 from crud_endpoint import handle_admin, make_failure_limiter
+from test_helpers import give_address
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
@@ -75,6 +76,14 @@ with sync_playwright() as p:
     pg.fill("#riN_given_name", "Ann"); pg.fill("#riN_email", "ANN@Example.com"); pg.fill("#riN_phone", "303-555-0142")
     pg.fill("#riA_bio", "Retired nurse."); pg.fill("#riA_capabilities", "prompting basics, large rooms")
     pg.click("#riSaveBtn")
+    check("a new instructor needs an address", "needs an address" in pg.locator("#riFMsg").inner_text())
+    check("and no person was made without one", not any(x.get("given_name") == "Ann" for x in people()))
+    def fill_addr(street, city, st, zip_):
+        f = pg.locator("#riAddForm")
+        f.get_by_label("Street address", exact=True).first.fill(street); f.get_by_label("City", exact=True).first.fill(city)
+        f.get_by_label("State", exact=True).first.fill(st); f.get_by_label("ZIP code", exact=True).first.fill(zip_)
+    fill_addr("12 Oak St", "Boulder", "CO", "80302")
+    pg.click("#riSaveBtn")
     pg.wait_for_selector("#riList li")
     txt = pg.locator("#riList").inner_text()
     check("new instructor listed with contact", "Ann Lee" in txt and "ann@example.com" in txt and "prompting basics, large rooms" in txt)
@@ -88,6 +97,10 @@ with sync_playwright() as p:
     check("existing person offered with contact", "bob@example.com" in pg.locator("#riOpts").inner_text())
     pg.locator("#riOpts button", has_text="Bob Ray").click()
     check("chosen line shown", "Adding Bob Ray" in pg.locator("#riChosen").inner_text())
+    pg.click("#riSaveBtn")
+    pg.wait_for_function("document.getElementById('riFMsg').textContent.indexOf('address') >= 0")
+    check("an existing person with no address is refused with a plain message", "address" in pg.locator("#riFMsg").inner_text() and pg.locator("#riList li").count() == 1)
+    fill_addr("5 Elm St", "Denver", "CO", "80202")
     pg.click("#riSaveBtn")
     pg.wait_for_function("document.querySelectorAll('#riList li').length == 2")
     check("existing person added; no extra person made", len([x for x in people() if x.get("given_name") == "Bob"]) == 1)
@@ -177,6 +190,7 @@ with sync_playwright() as p:
     check("People station shows the people added from the rosters", "Ann Lee" in pg.locator("#pList").inner_text())
     # a person whose display name is only the first name is still found by the full name, and picking shows the full name
     tb = IS.create(store, {"given_name": "Tod", "family_name": "Beecherman", "name_to_use": "Toddy"}, "user:admin").data
+    give_address(store, tb["id"])   # an instructor needs an address; this person already has one
     pg.select_option("#collPick", "instructors")
     pg.click("#riAddBtn"); pg.fill("#riQ", "Tod Beecherman"); pg.wait_for_selector("#riOpts button")
     ot = pg.locator("#riOpts").inner_text()

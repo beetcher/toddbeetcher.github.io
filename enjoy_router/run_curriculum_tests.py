@@ -8,6 +8,7 @@ sys.path.insert(0, str(HERE))
 from crud import curriculums_crud as C  # noqa: E402
 from crud import individuals_service as IS  # noqa: E402
 from crud import instructor_rosters_service as INS  # noqa: E402
+INS.R.needs_address = False   # these checks are about something else; the address rule has its own tests (run_instructor_address_rule_tests.py)
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
 from crud_endpoint import handle_admin, handle_crud_test, make_failure_limiter  # noqa: E402
 

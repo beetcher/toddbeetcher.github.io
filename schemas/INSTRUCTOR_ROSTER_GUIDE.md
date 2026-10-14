@@ -35,6 +35,7 @@ These are the ONLY refusals. Nothing else blocks a save.
 3. `individual_id` never changes (`individual_id:immutable`).
 4. `availability` entries open before they close (`availability:out_of_range`).
 5. `status` is active or inactive, and every limit in the schema holds.
+6. An instructor must live somewhere (`individual_id:address_required`). A new entry, or an entry set from inactive back to active, is refused unless the person has a live Lives-here place (a `resides_at` location link) whose address has a two-letter state. Entries made before this rule keep working, and can be edited or set inactive, but cannot be set active again until the person has an address. The student roster has no such rule. The address itself is never on the roster: expanded reads carry only the derived `residence_state`, and the Instructors station adds an address through a write-only form so operators who may not open People never see it.
 
 `status` defaults to active on create. Inactive instructors stay on the list and are simply not offered when assigning.
 

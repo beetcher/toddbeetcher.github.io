@@ -96,6 +96,8 @@ class Roster:
         self.C = load_collection(type_name)
         self.type_name = type_name
         self.rule_fields = frozenset(f for f in ("availability",) if f in self.C.properties)
+        # An instructor must live somewhere (slice B, Todd 2026-10-14): no roster entry, and no reactivation, without a Lives-here place that has a state.
+        self.needs_address = type_name == "instructor_roster"
 
     # ---- helpers -----------------------------------------------------------
     def _normalize(self, name, value):
@@ -173,6 +175,8 @@ class Roster:
             live = self._live_entries(store, resolved)
             if live:
                 return _bad([{"field": "individual_id", "issue": "duplicate", "existing_id": live[0]["id"]}])
+        if self.needs_address and not residence_state(store, doc["individual_id"]):
+            return _bad([{"field": "individual_id", "issue": "address_required"}])
         doc = stamp_create(self.C, doc, actor, source, now)
         missing = [{"field": f, "issue": "required"} for f in self.C.server_required if f not in doc]
         if check_document(self.C, doc) + missing:
@@ -291,6 +295,9 @@ class Roster:
             return failure("not_found")
         if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
             return failure("conflict")
+        if (self.needs_address and sets.get("status") == "active" and cur.get("status") != "active"
+                and not residence_state(store, cur["individual_id"])):
+            return _bad([{"field": "individual_id", "issue": "address_required"}])
         merged = {**cur, **sets}
         for f in removals:
             merged.pop(f, None)

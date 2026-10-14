@@ -9,6 +9,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from crud import individuals_crud as I  # noqa: E402
 from crud import instructor_rosters_service as INS  # noqa: E402
+INS.R.needs_address = False   # these checks are about something else; the address rule has its own tests (run_instructor_address_rule_tests.py)
 from crud import location_links_service as S  # noqa: E402
 from crud import locations_crud as L  # noqa: E402
 from crud import student_rosters_service as STU  # noqa: E402

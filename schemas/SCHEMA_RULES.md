@@ -116,6 +116,8 @@ Every handler replies in this shape:
 - Personal data about people other than the requester (a referrer, participants,
   minors) is collected only as needed. Nobody is contacted from it without the
   requester's say-so.
+- An instructor must have a Lives-here address (a place linked to the person) before joining the instructor roster. Only the derived state
+  leaves the server, never the street; operators who may not open People add the address through a write-only form.
 - Records are read only by the dashboard behind sign-in. A public page may
   read only through a named endpoint that returns public fields (for example,
   the list of open classes).

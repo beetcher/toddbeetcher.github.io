@@ -8,6 +8,7 @@ sys.path.insert(0, str(HERE))
 from crud import attendances_service as AT  # noqa: E402
 from crud import individuals_service as IS  # noqa: E402
 from crud import instructor_rosters_service as INS  # noqa: E402
+from test_helpers import give_address  # noqa: E402
 from crud import scheduled_classes_crud as CL  # noqa: E402
 from crud import student_rosters_service as STU  # noqa: E402
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
@@ -69,6 +70,7 @@ check("soft delete is for mistakes", AT.soft_delete(s, aid, A, now=tick()).ok an
 check("deleted record frees the seat for a new one", AT.create(s, {"individual_id": ann["id"], "scheduled_class_id": c1["id"], "role": "student"}, A, now=tick()).ok)
 
 # assign
+give_address(s, bob["id"])
 r = AT.assign(s, {"scheduled_class_id": c2["id"], "role": "primary_instructor", "order": 1, "individual_id": bob["id"]}, A, now=tick())
 check("assign existing person as instructor", r.ok and r.data["status"] == "assigned" and r.data["created_roster_entry"] and not r.data["created_person"], r.problems)
 check("instructor roster entry made", INS.list(s, {"individual_id": bob["id"]}).data["count"] == 1 and STU.list(s, {"individual_id": bob["id"]}).data["count"] == 0)

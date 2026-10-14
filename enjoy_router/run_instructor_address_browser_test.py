@@ -14,6 +14,7 @@ except ImportError:
     print("skip: playwright is not installed here"); sys.exit(0)
 CONSOLE = (HERE.parent / "console" / "index.html").as_uri()
 KEY = "k" * 16 + "Z" * 16 + "-browser-test-key"
+INS.R.needs_address = False   # setup makes grandfathered instructors; this test is about something else
 store = MemoryDocStore(""); limiter = make_failure_limiter(); fails = []; A = "user:admin"
 def check(label, ok, detail=""):
     print(("ok   " if ok else "FAIL ") + label + ("" if ok else "  " + str(detail)))

@@ -16,6 +16,7 @@ except ImportError:
 
 CONSOLE = (HERE.parent / "console" / "index.html").as_uri()
 KEY = "k" * 16 + "Z" * 16 + "-browser-test-key"
+INS.R.needs_address = False   # setup makes grandfathered instructors; this test is about something else
 store = MemoryDocStore(""); limiter = make_failure_limiter(); fails = []
 A = "user:admin"
 def check(label, ok, detail=""):

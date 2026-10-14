@@ -898,6 +898,7 @@
         '<li><b>Tap a card</b> to read it. <b>Edit</b> changes the instructor details and their name, email and phone together. The weekly hours are one row per day: leave a day empty if they cannot teach.</li>' +
         '<li><b>Remove from instructors</b> takes them off the roster. Their history is kept, and you can add them again later.</li>' +
         '<li>The status menu shows Active, Inactive or all. Inactive instructors are kept but will not be offered when assigning.</li>' +
+        '<li>An instructor needs an address. When you add one, enter where they live (saved privately; only the state is shown afterwards). A card that says <b>No address on file</b> has an <b>Add address</b> button, and an instructor without an address cannot be made active again until you add one.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>Someone is an instructor once. If you pick someone who already is, the window says so and opens their card.</li>' +
@@ -3047,6 +3048,7 @@
       if (/^person\./.test(p.field)) return (PLABEL[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (PISSUE[p.issue] || "That value is not valid."));
       if (p.field === "scheduled_class_id") return "Choose a class.";
       if (p.field === "role") return "Choose a role.";
+      if (p.field === "individual_id" && p.issue === "address_required") return "An instructor needs an address first. Add the person in the Instructors station with their address, then add them here.";
       if (p.field === "individual_id") return p.issue === "required" ? "Choose someone." : "We could not find them.";
       if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
       return p.field + ": " + (PISSUE[p.issue] || p.issue);
@@ -4653,7 +4655,8 @@
                  "bio:out_of_range": "The bio can be up to 2000 characters.", "service_area:out_of_range": "Up to 300 characters.", "notes:out_of_range": "Up to 2000 characters.",
                  required: "Required.", duplicate: "Already on this roster.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
                  invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_found: "That person was not found.",
-                 immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed." };
+                 immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed.",
+                 address_required: "An instructor needs an address first. Use Add address on their card, or enter it in the form." };
   var RLABEL = { individual_id: "Person", status: "Status", bio: "Bio", capabilities: "What they can teach or do", service_area: "Where they will travel",
                  availability: "Weekly hours", availability_notes: "Availability notes", notes: "Notes", person: "Person",
                  "person.given_name": "Given name", "person.family_name": "Family name", "person.email": "Email", "person.phone": "Phone" };
@@ -4706,8 +4709,31 @@
   }
 
   function currTitle(S, id) { var l = S.curr || []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i].title; return "(removed curriculum)"; }
-  // Write-only address for an instructor, for operators who may not open People. It shows the state only (never the address),
-  // saves a Lives-here link, and ends any earlier Lives-here link. It never lists or shows existing places or addresses.
+  // Write-only address for an instructor, for operators who may not open People. It never lists or shows existing places or addresses.
+  // saveResidence saves a Lives-here link (reusing the place if the address is already saved, silently) and then ends older live Lives-here links,
+  // so the person is never left without an address. Resolves {ok, text}.
+  function saveResidence(individualId, addr) {
+    return admin("list", { filters: { subject_id: individualId }, limit: 50 }, COLL_LK).then(function (old) {
+      if (old.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+      var olds = (old.status === 200 && old.body.ok ? old.body.data.records || [] : []).filter(function (l) { return l.relationship === "resides_at" && l.status === "active"; });
+      return admin("find_by_address", { address: addr.addresses[0] }, COLL_L).then(function (f) {
+        if (f.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+        var found = (f.status === 200 && f.body.ok) ? (f.body.data.records || []) : [];
+        var place = found.length ? Promise.resolve({ status: 200, body: { ok: true, data: found[0] } }) : admin("create", { data: addr }, COLL_L);
+        return place.then(function (c) {
+          if (c.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+          if (!(c.status === 200 && c.body.ok)) return { ok: false, text: "Could not save the address: " + lProblems(c) };
+          return admin("create", { data: { subject_type: "individual", subject_id: individualId, relationship: "resides_at", location_id: c.body.data.id, is_primary: true } }, COLL_LK).then(function (k) {
+            if (k.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+            if (!(k.status === 200 && k.body.ok)) return { ok: false, text: "Could not save the address: " + lProblems(k) };
+            return Promise.all(olds.filter(function (l) { return l.location_id !== c.body.data.id; }).map(function (l) {
+              return admin("end", { id: l.id }, COLL_LK);   // no stale-check: saving the new main link may just have touched this one
+            })).then(function () { refreshPlaces(); return { ok: true, text: "" }; });
+          });
+        });
+      });
+    });
+  }
   function instructorAddressBox(rec, done) {
     var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
     form.appendChild(mk("div", "hint", "Where " + rName(rec) + " lives. Saved privately: after you save, only the state is shown here. A new address replaces the old one."));
@@ -4716,30 +4742,16 @@
     btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
     var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
     cancel.addEventListener("click", function () { form.remove(); });
-    function fail(r, what) { save.disabled = false; if (r.status === 401) { lock("That key did not work."); return; } fm.textContent = what + lProblems(r); }
     form.addEventListener("submit", function (e) {
       e.preventDefault(); fm.textContent = "";
       var rd = block.read();
       if (!rd.ok) return;
       if (!rd.data.addresses) { fm.textContent = "A person's address needs a street or a PO box."; return; }
       save.disabled = true;
-      admin("list", { filters: { subject_id: rec.individual_id }, limit: 50 }, COLL_LK).then(function (old) {
-        if (old.status === 401) { lock("That key did not work."); return; }
-        var olds = (old.status === 200 && old.body.ok ? old.body.data.records || [] : []).filter(function (l) { return l.relationship === "resides_at" && l.status === "active"; });
-        admin("find_by_address", { address: rd.data.addresses[0] }, COLL_L).then(function (f) {
-          if (f.status === 401) { lock("That key did not work."); return; }
-          var found = (f.status === 200 && f.body.ok) ? (f.body.data.records || []) : [];
-          var place = found.length ? Promise.resolve({ status: 200, body: { ok: true, data: found[0] } }) : admin("create", { data: rd.data }, COLL_L);
-          place.then(function (c) {
-            if (!(c.status === 200 && c.body.ok)) { fail(c, "Could not save the address: "); return; }
-            admin("create", { data: { subject_type: "individual", subject_id: rec.individual_id, relationship: "resides_at", location_id: c.body.data.id, is_primary: true } }, COLL_LK).then(function (k) {
-              if (!(k.status === 200 && k.body.ok)) { fail(k, "Could not save the address: "); return; }
-              Promise.all(olds.filter(function (l) { return l.location_id !== c.body.data.id; }).map(function (l) {
-                return admin("end", { id: l.id }, COLL_LK);   // no stale-check: saving the new main link may just have touched this one
-              })).then(function () { refreshPlaces(); form.remove(); if (done) done(); });
-            });
-          });
-        });
+      saveResidence(rec.individual_id, rd.data).then(function (r) {
+        save.disabled = false;
+        if (!r.ok) { if (r.text) fm.textContent = r.text; return; }
+        form.remove(); if (done) done();
       });
     });
     return form;
@@ -4776,6 +4788,12 @@
       g("New").appendChild(l); g("New").appendChild(el); g("New").appendChild(er); newEls["person." + pf[0]] = { el: el, err: er, k: pf[0] };
     });
     cfg.fields.forEach(function (f) { var x = rField(f, P + "A_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+    var addrBlock = null;
+    if (cfg.curricula) {   // an instructor needs an address (slice B); saved privately, only the state is shown afterwards
+      var ah = mk("div", "eform"); ah.appendChild(mk("div", "f", "Where they live"));
+      ah.appendChild(mk("div", "hint", "Required for someone new. Saved privately: only the state is shown afterwards. Leave it blank only if this person already has an address on file."));
+      addrBlock = addrForm({ optional: true }); ah.appendChild(addrBlock); g("AddFields").parentNode.insertBefore(ah, g("AddFields"));
+    }
 
     function load() {
       var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
@@ -4968,6 +4986,7 @@
       g("AddForm").reset(); S.choice = null; g("Opts").textContent = ""; g("Chosen").textContent = ""; g("EPick").textContent = ""; g("FMsg").textContent = ""; g("New").hidden = true;
       Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
       Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      if (addrBlock) { var ci = addrBlock.querySelector("input[id$='_country']"); if (ci) ci.value = "US"; }   // reset() blanks the default country
     }
     function choose(c) {
       S.choice = c; g("EPick").textContent = ""; g("Opts").textContent = "";
@@ -5020,6 +5039,30 @@
         if (!person.given_name) { newEls["person.given_name"].err.textContent = "Required."; return; }
       } else data.individual_id = S.choice.id;
       var args = { data: data }; if (person) args.person = person;
+      if (addrBlock) { prepareInstructor(args, person, S.choice); return; }
+      sendAdd(args);
+    });
+    // Instructors: a new person is made first (People), then the address, then the roster entry, so the server rule is met without ever showing an address.
+    function prepareInstructor(args, person, choice) {
+      var rd = addrBlock.read(); if (!rd.ok) return;
+      var addr = rd.data.addresses ? rd.data : null;
+      if (choice.isNew && !addr) { g("FMsg").textContent = "An instructor needs an address. Enter where they live."; return; }
+      g("SaveBtn").disabled = true;
+      function afterPerson(pid) {
+        function next() { sendAdd({ data: Object.assign({}, args.data, { individual_id: pid }) }); }
+        if (!addr) { next(); return; }
+        saveResidence(pid, addr).then(function (r) { if (!r.ok) { g("SaveBtn").disabled = false; if (r.text) g("FMsg").textContent = r.text; return; } next(); });
+      }
+      if (!choice.isNew) { afterPerson(choice.id); return; }
+      admin("create", { data: person }, COLL_P).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (!(res.status === 200 && res.body && res.body.ok)) { g("SaveBtn").disabled = false; g("FMsg").textContent = "Could not save the person: " + pProblems(res).other.join(" "); return; }
+        pLoaded = false; peopleForPick = null;
+        S.choice = { id: res.body.data.id, name: person.given_name, contact: "" };   // a retry now uses the person just made, not a second copy
+        afterPerson(res.body.data.id);
+      });
+    }
+    function sendAdd(args) {
       g("SaveBtn").disabled = true;
       admin("create_with_person", args, cfg.coll).then(function (res) {
         g("SaveBtn").disabled = false;
@@ -5039,7 +5082,7 @@
           g("FMsg").appendChild(ob);
         } else if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
       });
-    });
+    }
     g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
     g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
     g("Retry").addEventListener("click", load);

@@ -13,6 +13,7 @@ from crud import attendances_service as AT
 from crud import curriculums_crud as CU
 from crud import venues_crud as VS
 from crud_endpoint import handle_admin, make_failure_limiter
+from test_helpers import give_address
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
@@ -45,6 +46,7 @@ assert cl.ok, cl.problems
 cls = cl.data
 ann = IS.create(store, {"given_name": "Ann", "family_name": "Able"}, A).data
 ina = IS.create(store, {"given_name": "Ina", "family_name": "Teach"}, A).data
+give_address(store, ina["id"])   # an instructor needs an address (slice B)
 cu = CU.create(store, {"title": "Intro to AI", "slug": "intro_ai", "session_count": 3, "minutes_per_session": 90}, A).data
 ven = VS.create(store, {"name": "Library", "slug": "library", "status": "active", "is_public_venue": True, "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f", "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": [{"label": "Room A", "max_occupancy": 10}]}, A)
 assert ven.ok, ven.problems

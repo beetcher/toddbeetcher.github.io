@@ -9,6 +9,7 @@ sys.path.insert(0, str(HERE))
 from crud.memory_doc_store import MemoryDocStore
 from crud import individuals_service as IS
 from crud_endpoint import handle_admin, make_failure_limiter
+from test_helpers import give_address
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
@@ -46,7 +47,7 @@ with sync_playwright() as p:
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn")
     pg.wait_for_selector("#homeView:not([hidden])")
     check("Curriculum tile on Home", pg.locator("#stationTiles .tile .tname", has_text="Curriculum").count() == 1)
-    IS.create(store, {"given_name": "Ina", "family_name": "Teach"}, "user:admin")
+    give_address(store, IS.create(store, {"given_name": "Ina", "family_name": "Teach"}, "user:admin").data["id"])   # an instructor needs an address
     pg.select_option("#collPick", "curriculums")
     pg.wait_for_selector("#curriculumsView:not([hidden])")
     pg.wait_for_function("document.getElementById('rcChecked').textContent.length > 0")

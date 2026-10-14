@@ -11,6 +11,7 @@ from crud import classes_service as CS  # noqa: E402
 from crud import individuals_service as IS  # noqa: E402
 from crud import journal_events_crud as JR  # noqa: E402
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
+from test_helpers import give_address  # noqa: E402
 from crud_endpoint import handle_admin, handle_crud_test, make_failure_limiter  # noqa: E402
 
 START = datetime(2026, 10, 12, 12, 0, 0, tzinfo=timezone.utc)
@@ -39,6 +40,7 @@ def types(**f): return [e["event_type"] for e in events(**f)]
 REQ, REQ2 = "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"
 c1, c2, c3 = klass("c1"), klass("c2"), klass("c3")
 ann, bob, ina = person("Ann"), person("Bob"), person("Ina")
+give_address(s, ina["id"])
 
 # ---- placing writes a journal line
 r = AT.assign(s, {"scheduled_class_id": c1["id"], "role": "student", "individual_id": ann["id"], "request_id": REQ}, A, now=tick())
