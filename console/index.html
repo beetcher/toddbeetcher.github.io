@@ -876,6 +876,7 @@
         '<li><b>Tap a card</b> to read everything on file. <b>Edit</b> changes names, birth date, language, status and notes. Clear a box to remove that value.</li>' +
         '<li><b>Merge into another person</b> is for duplicates. Pick who to keep and say why. Gaps on the kept person are filled from the duplicate, records pointing at the duplicate move over, and the duplicate is marked merged.</li>' +
         '<li><b>Addresses</b> opens the person\'s addresses: where they live, mail goes, and so on, each with dates. <b>Add an address</b> finds the place if it is already saved, or saves it, and links the person. <b>End</b> records a move; <b>Remove</b> is only for a mistake.</li>' +
+        '<li>To link a person to an organization (a superintendent, a teacher, a volunteer), open the organization in <b>Organizations</b> and tap <b>Add link</b>. The person\'s card does not show it yet.</li>' +
         '<li><b>Merge history</b> lists every merge. <b>Undo this merge</b> puts the records back. Values changed since the merge are left alone.</li>' +
         '<li><b>Delete</b> asks first. The person is hidden from the lists but the record is kept.</li>' +
         '</ul>' +
@@ -894,7 +895,7 @@
         '<h3>Mission</h3><p>A place is somewhere on Earth, big or small: a doorway, a street address, a whole property with several GPS points. It never says who lives, owns or works there. People and venues are <b>linked</b> to a place, with dates, so a move ends one link and starts another while the places stay as they are.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Add place</b> saves a place by itself. To give a person an address, open their card in <b>People</b> and tap <b>Addresses</b>: that finds the place if it is already saved, or saves it, and links the person with a start date.</li>' +
-        '<li><b>Tap a card</b> to see every address and GPS point. <b>Add address</b> and <b>Add GPS point</b> put more on the same place. <b>Show who is linked here</b> lists the people and venues.</li>' +
+        '<li><b>Tap a card</b> to see every address and GPS point. <b>Add address</b> and <b>Add GPS point</b> put more on the same place. <b>Show who is linked here</b> lists the people, venues and organizations. An organization is linked to a place from its own card in <b>Organizations</b> (<b>Add place</b>).</li>' +
         '<li><b>Retire</b> hides a place that is no longer used. <b>Delete</b> hides a mistake. Neither works while anyone is still linked: end those links first.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -979,11 +980,14 @@
         '<li><b>Outside identifiers</b> go one per line as <i>type: value</i>, for example <i>ein: 00-0000000</i>.</li>' +
         '<li>The <b>switch</b> on a card sets it active or inactive. In Edit you can also choose <b>Closed</b> for an organization that no longer exists.</li>' +
         '<li><b>Delete</b> asks first. The organization disappears from the list but the record is kept.</li>' +
+        '<li><b>Show links</b> lists what is linked to the organization (people, venues, other organizations) and what the organization is itself linked to, such as a school that is <i>part of</i> a district. <b>Add link</b> picks a person, venue or organization, then how they are linked, with an optional title (Superintendent) and dates. <b>End</b> sets the last day to today; <b>Delete</b> (tap twice) is for a mistake.</li>' +
+        '<li><b>Show places</b> and <b>Add place</b> link the organization to a place, for example <i>Operates here</i> for a factory, with the main-place tick for headquarters.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>Two organizations can share a name; nothing warns you. One organization can have many other names.</li>' +
         '<li>No date check: the closing date is not compared with the founding date.</li>' +
-        '<li>Addresses, people and the schools that belong to a district are not typed here. They are <b>links</b>, which come next in this station.</li>' +
+        '<li>Addresses, people and the schools that belong to a district are not typed on the organization. They are <b>links</b>, added from its card.</li>' +
+        '<li>A link is never an access right. Linking a person to an organization gives them no permission to anything.</li>' +
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> start with the few organizations LAUNCH deals with. More can be added any time.</div>' +
         '<h3>Try this</h3><ul><li>Add Ozo Coffee as a business, then search for it.</li></ul>' },
@@ -4614,7 +4618,7 @@
       var links = res.body.data.records || [];
       if (!links.length) { host.appendChild(mk("div", "hint", "Nobody is linked to this place.")); return; }
       links.forEach(function (l) {
-        var coll = l.subject_type === "venue" ? "venues" : COLL_P, d = mk("div");
+        var coll = l.subject_type === "venue" ? "venues" : l.subject_type === "organization" ? "organizations" : COLL_P, d = mk("div");
         d.textContent = "Loading...";
         host.appendChild(d);
         admin("get", { id: l.subject_id }, coll).then(function (r) {

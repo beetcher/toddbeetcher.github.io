@@ -169,6 +169,16 @@ with sync_playwright() as p:
     li.locator(".olrow", has_text="Ozo roastery").get_by_role("button", name="End").click()
     pg.wait_for_function("[...document.querySelectorAll('#roList > li')].find(function(x){return x.querySelector('.vname').textContent==='Ozo Coffee'}).querySelector('.olinks').textContent.indexOf('until') >= 0")
     check("place link ended", all("valid_to" in r for r in store.data["location_links"].values()))
+    # Places station shows the organization
+    pg.select_option("#collPick", "places"); pg.wait_for_selector("#placesView:not([hidden])")
+    pg.wait_for_function("document.querySelectorAll('#placesView li').length > 0")
+    pli = pg.locator("#placesView li", has_text="Ozo roastery"); pli.locator("button.head").click()
+    pli.get_by_role("button", name="Show who is linked here").click()
+    pg.wait_for_function("document.getElementById('placesView').textContent.indexOf('Ozo Coffee ·') >= 0")
+    check("Places station lists the organization by name", "Operates here" in pli.inner_text() or "Operates here" in pg.locator("#placesView").inner_text())
+    pg.select_option("#collPick", "organizations"); pg.wait_for_selector("#organizationsView:not([hidden])")
+    pg.wait_for_function("document.querySelectorAll('#roList > li').length > 0")
+    li = pg.locator("#roList > li").filter(has=pg.locator(".vname", has_text="Ozo Coffee"))
     # delete a link: two taps
     li.get_by_role("button", name="Show links").click()
     pg.wait_for_selector("#roList .olrow")
