@@ -158,6 +158,33 @@ ch.sent.clear()
 c8 = klass("c8", title="Idea", status="identified")
 check("a class with no date: nobody is told anything", AT.assign_request(s, {"request_id": request([{"first_name": "Zed", "email": "zed@example.com"}], attending=False)["id"], "scheduled_class_id": c8["id"]}, A, now=tick()).ok and not ch.sent, str(ch.sent))
 
+check("students added: the email says how full the class is", "3 of 3 seats taken" in body, body[:600])
+# an instructor placed as part of putting a request in a class: the log entry carries that request, the instructor's own record does not
+c9 = room("c9", capacity_max=4)
+lead2 = person("Mo", "Lead", email="mo@example.com"); give_address(s, lead2["id"])
+ch = wire()
+r = AT.assign(s, {"scheduled_class_id": c9["id"], "role": "primary_instructor", "individual_id": lead2["id"]}, A, now=tick(), via_request_id=rq8["id"])
+ent = [l for l in log_of() if l["kind"] == "instructor_placed" and l.get("attendance_id") == r.data["id"]]
+check("instructor placed via a request: the log entry carries the request id", len(ent) == 1 and ent[0].get("request_id") == rq8["id"], str(ent))
+check("...and the instructor's own attendance record does not", "request_id" not in s.get("attendances", r.data["id"]) or not s.get("attendances", r.data["id"]).get("request_id"))
+lead3 = person("Nia", "Lead", email="nia@example.com"); give_address(s, lead3["id"])
+r = AT.assign(s, {"scheduled_class_id": c9["id"], "role": "instructor", "individual_id": lead3["id"]}, A, now=tick(), via_request_id="not-a-uuid")
+ent = [l for l in log_of() if l["kind"] == "instructor_placed" and l.get("attendance_id") == r.data["id"]]
+check("a bad via_request_id is ignored, not an error", r.ok and len(ent) == 1 and not ent[0].get("request_id"), str(ent))
+# the seed script can publish changed wording as a new version
+import seed_comms
+s2 = MemoryDocStore("r_")
+old = [dict(x) for x in SEED if x["kind"] == "students_added"][0]
+old = {**old, "blocks": [{**b, "rows": [r_ for r_ in b["rows"] if r_["label"] != "Seats"]} if b["type"] == "facts_table" else b for b in old["blocks"]]}
+r0 = MT.create(s2, {k: old[k] for k in ("kind", "channel", "audience", "name", "subject", "blocks", "is_active")}, A, now=tick()); assert r0.ok, r0.problems
+assert MT.publish(s2, r0.data["id"], A, now=tick()).ok
+check("seed refresh: the changed template is found", [t_["kind"] for _c, t_ in seed_comms.changed(s2)] == ["students_added"] or "students_added" in [t_["kind"] for _c, t_ in seed_comms.changed(s2)])
+check("seed refresh: nothing changes for a kind not named", seed_comms.refresh(s2, {"class_cancelled"}) == [])
+got = seed_comms.refresh(s2, {"students_added"})
+stand = MT.standing(s2, old)
+check("seed refresh: a new version is published and the old one is kept", len(got) == 1 and stand["version"] == 2 and any(r_["label"] == "Seats" for b in stand["blocks"] if b["type"] == "facts_table" for r_ in b["rows"]) and len(MT._same_key(s2, old)) == 2, str(got))
+check("seed refresh: running it again does nothing", seed_comms.refresh(s2, {"students_added"}) == [])
+
 # the endpoint door
 from crud_endpoint import handle_admin  # noqa: E402
 c6 = room("c6", capacity_max=5)

@@ -100,6 +100,12 @@ with sync_playwright() as p:
     sel2 = pg.locator("#atBody .arow", has_text="Ann Able").locator("select")
     sel2.select_option("confirmed"); pg.wait_for_timeout(700)
     check("a harmless change asks no question", "unexpected" not in dialogs)
+    # the Messages log names the people in an entry (it stores ids only)
+    pg.click("#atClose"); pg.select_option("#collPick", "messages"); pg.wait_for_selector("#mList li")
+    li = pg.locator("#mList li", has_text="Participant left").first
+    li.locator("button.mhead").click()
+    d = li.locator(".mdetail").inner_text()
+    check("a 'student left' entry names who left, who it went to, and the class", "Student who left" in d and "Ann Able" in d and "Sent to" in d and "Ina Teach" in d and "Evening Basics" in d, d[:400])
     check("no script errors", not errors, errors)
     b.close()
 print("\n" + ("FAILED: " + "; ".join(fails) if fails else "OK: all feedback browser checks pass")); sys.exit(1 if fails else 0)

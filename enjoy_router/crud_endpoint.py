@@ -91,7 +91,7 @@ OPS = {
     "create_with_person": ({"data"}, {"person", "source"}),                  # only the rosters
     "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
     "find_gps": ({"id"}, set()),                                             # only venues: look up GPS from the place's address
-    "assign": ({"data"}, {"person", "source"}),                              # only attendances: person + roster entry + attendance together
+    "assign": ({"data"}, {"person", "source", "via_request_id"}),                              # only attendances: person + roster entry + attendance together
     "send_confirmation": ({"id"}, set()),                                    # only attendances: send the placement confirmation email now
     "assign_request": ({"data"}, {"requester", "source"}),                   # only attendances: everyone named on a request into one class
     "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
@@ -129,7 +129,7 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
         if op == "add_note":
             return module.add_note(store, a["id"], actor, a.get("text"), now=now)
         if op == "assign":
-            return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
+            return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now, via_request_id=a.get("via_request_id"))
         if op == "assign_request":
             return module.assign_request(store, a["data"], actor, a.get("requester"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":

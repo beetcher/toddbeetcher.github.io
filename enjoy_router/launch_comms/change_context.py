@@ -80,7 +80,7 @@ def _item(kind, audience, individual_id, facts, att, actor, event):
                 dedupe_key=f"{kind}:{individual_id}:{att['id']}:{event}"[:300])
 
 
-def instructor_placed_items(store, rec, actor):
+def instructor_placed_items(store, rec, actor, via_request_id=None):
     """An instructor was just placed (assigned or confirmed): told they are assigned to teach, with a calendar file (P-41)."""
     cls = store.get(CL.CLASSES.name, rec.get("scheduled_class_id", ""))
     base = class_view(store, cls) if cls is not None else None
@@ -88,7 +88,10 @@ def instructor_placed_items(store, rec, actor):
         return []
     facts = {**base, "name": _first_name(_person(store, rec["individual_id"])), "uid": rec["id"],
              "role_word": "lead instructor" if rec.get("role") == "primary_instructor" else "instructor"}
-    return [_item("instructor_placed", "instructor", rec["individual_id"], facts, rec, actor, _event(rec))]
+    item = _item("instructor_placed", "instructor", rec["individual_id"], facts, rec, actor, _event(rec))
+    if via_request_id:      # placed as part of putting a request in a class: the log entry carries that request's number (not stored on the instructor's record)
+        item["refs"] = {**item["refs"], "request_id": via_request_id}
+    return [item]
 
 
 def _full_name(person):
@@ -120,6 +123,11 @@ def students_added_items(store, recs, actor):
         parts.append(f"{_and(waiting)} {'is' if len(waiting) == 1 else 'are'} on the waiting list.")
     facts = {k: v for k, v in base.items() if k in ("title", "when_day", "when_span", "when_short", "time_zone", "venue", "room", "where", "address")}
     facts["summary"] = " ".join(parts)
+    cap = (cls or {}).get("capacity_max")
+    if isinstance(cap, int) and cap > 0:
+        taken = sum(1 for d in store.query(ATT_NAME, [("scheduled_class_id", "==", recs[0]["scheduled_class_id"])], limit=200)
+                    if not _deleted(d) and d.get("role") == "student" and d.get("status") not in OFF and d.get("status") != "waitlisted")
+        facts["seats"] = f"{taken} of {cap} seats taken"
     digest = hashlib.sha1(":".join(sorted(r["id"] for r in recs)).encode()).hexdigest()[:20]
     out = []
     for d in store.query(ATT_NAME, [("scheduled_class_id", "==", recs[0]["scheduled_class_id"])], limit=200):

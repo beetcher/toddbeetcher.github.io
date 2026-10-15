@@ -126,6 +126,15 @@
       "examples": [
         "Bob Guest and Cy were added to your class."
       ]
+    },
+    "seats": {
+      "description": "How full the class is after this placement, for example: 3 of 4 seats taken. Students holding a seat (not declined, withdrawn, cancelled or waiting) against the class maximum. Omitted when the class has no maximum.",
+      "type": "string",
+      "maxLength": 60,
+      "x_derived": true,
+      "examples": [
+        "3 of 4 seats taken"
+      ]
     }
   }
 }

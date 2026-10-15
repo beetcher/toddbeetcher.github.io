@@ -85,12 +85,12 @@ def _send_notices(build, *args):
         return []
 
 
-def _notify_instructors(store, recs, actor):
+def _notify_instructors(store, recs, actor, via_request_id=None):
     """After a placement is saved: a placed instructor is told they are assigned; the instructors of the class are told which students were
     added (one message for everyone placed together). Never raises (R-3)."""
     for rec in recs:
         if rec.get("role") != STUDENT:
-            _send_notices("instructor_placed_items", store, rec, actor)
+            _send_notices("instructor_placed_items", store, rec, actor, via_request_id)
     students = [r for r in recs if r.get("role") == STUDENT]
     if students:
         _send_notices("students_added_items", store, students, actor)
@@ -533,7 +533,7 @@ def assign_request(store, data, actor, requester=None, source="dashboard", now=N
     return success({"records": [expanded(store, r) for r in fresh], "created_people": made})
 
 
-def assign(store, data, actor, person=None, source="dashboard", now=None):
+def assign(store, data, actor, person=None, source="dashboard", now=None, via_request_id=None):
     """Put a person in a class. data: scheduled_class_id, role, and individual_id (an existing person) OR `person` (a new one:
     given_name, family_name, email, phone); optional status, order, request_id, notes. Creates the person if new, adds them to the
     student or instructor roster if missing, and creates the record, together or not at all. Never matches a typed name to a person."""
@@ -564,5 +564,5 @@ def assign(store, data, actor, person=None, source="dashboard", now=None):
         return stop.result
     _auto_notify(store, out["rec"], actor, now)
     out["rec"] = store.get(ATT.name, out["rec"]["id"]) or out["rec"]
-    _notify_instructors(store, [out["rec"]], actor)
+    _notify_instructors(store, [out["rec"]], actor, via_request_id if isinstance(via_request_id, str) and UUID_PATTERN.match(via_request_id) else None)
     return success({**expanded(store, out["rec"]), "created_person": person is not None, "created_roster_entry": out["created_roster_entry"]})

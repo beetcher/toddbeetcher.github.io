@@ -466,6 +466,11 @@
               "label": "Address",
               "value": "{address}",
               "show_if": "address"
+            },
+            {
+              "label": "Seats",
+              "value": "{seats}",
+              "show_if": "seats"
             }
           ]
         },

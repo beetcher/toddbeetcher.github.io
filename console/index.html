@@ -3566,7 +3566,7 @@
           });
         }
         if (made && made.instructor) {
-          return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
+          return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor }, via_request_id: req ? req.id : undefined }, ATT).then(function (r2) {
             (many ? placeMany : placeStudent)(r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance.");
           });
         }
@@ -3838,7 +3838,7 @@
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
   // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy
-  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {} };
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {} };
   function mConf(e) { return MS.conf[e.id] || ""; }   // the request's confirmation number, worked out when the log loads
   var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
   var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
@@ -3883,13 +3883,23 @@
     if ($("mRedir").checked && !e.is_redirected) return false;
     return true;
   }
+  // Names for the ids in a log entry, worked out when the log loads (the log itself keeps ids, never names).
+  function mWho(e) {
+    var rows = [], me = MS.person[e.individual_id], a = e.attendance_id ? MS.att[e.attendance_id] : null;
+    if (me) rows.push(["Sent to", me + (e.audience ? " (" + e.audience + ")" : "")]);
+    if (a && a.name && (a.name !== me || e.kind === "participant_left")) rows.push([e.kind === "participant_left" ? (a.role === "student" ? "Student who left" : "Left") : a.role === "student" ? "Student" : "Instructor", a.name]);
+    var c = e.scheduled_class_id && aClassById && aClassById[e.scheduled_class_id];
+    if (c) rows.push(["Class", (c.title || "(no title)") + (c.starts_at ? " · " + fmtTime.format(new Date(c.starts_at)) : "")]);
+    if (mConf(e)) rows.push(["Confirmation number", mConf(e)]);
+    return rows;
+  }
   function mFactsText(e) {
-    var L = [["When", e.created_at], ["Message", mKindWord(e.kind) + " (" + e.kind + ")"], ["For", e.audience], ["Channel", e.channel],
+    var L = mWho(e).concat([["When", e.created_at], ["Message", mKindWord(e.kind) + " (" + e.kind + ")"], ["For", e.audience], ["Channel", e.channel],
       ["To", e.to ? e.to + (e.is_redirected ? " (test address, not the real recipient)" : "") : ""], ["Subject", e.subject],
       ["Status", (M_STATUS_WORD[e.status] || e.status) + " (" + e.status + ")"], ["Why", e.reason + (mReasonWord(e.reason) !== e.reason ? ": " + mReasonWord(e.reason) : "")],
       ["Error code", e.error_code], ["Template version", e.template_version], ["Message-ID", e.message_ref], ["How", e.trigger === "manual" ? "By hand" : "Automatic"],
       ["Caused by", e.created_by], ["Class id", e.scheduled_class_id], ["Attendance id", e.attendance_id], ["Request id", e.request_id], ["Person id", e.individual_id],
-      ["Log id", e.id]];
+      ["Log id", e.id]]);
     if (e.handled_at) L.push(["Handled", e.handled_at + " by " + (e.handled_by || "")]);
     return L.filter(function (x) { return x[1] !== undefined && x[1] !== null && x[1] !== ""; });
   }
@@ -4010,13 +4020,15 @@
     $("mMsg").textContent = "";
     mBuildBoxes();
     Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
-                 (Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; })), admin("list", { limit: 200, order: "-created_at" }, "attendances")]).then(function (both) {
+                 (Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; })), admin("list", { limit: 200, order: "-created_at", expand: true }, "attendances"), admin("list", { limit: 200 }, "individuals")]).then(function (both) {
       if (my !== MS.seq || !key) return;
       var res = both[1];
       // Confirmation numbers: a log entry names its request directly, or (older entries) through its attendance.
       var rq = {}, at = {}, got = function (r) { return r.status === 200 && r.body && r.body.ok ? r.body.data.records || [] : []; };
       (both[2] || []).forEach(function (r) { rq[r.id] = r.confirmation_number; });
-      got(both[3]).forEach(function (a) { at[a.id] = a.request_id; });
+      MS.person = {}; MS.att = {};
+      got(both[4]).forEach(function (p) { MS.person[p.id] = p.display_name || [p.given_name, p.family_name].filter(Boolean).join(" "); });
+      got(both[3]).forEach(function (a) { at[a.id] = a.request_id; var nm = attName(a); if (a.person) { MS.att[a.id] = { name: nm, role: a.role }; MS.person[a.individual_id] = MS.person[a.individual_id] || nm; } });
       MS.conf = {};
       (res.body && res.body.data && res.body.data.records || []).forEach(function (e) {
         var c = rq[e.request_id] || rq[at[e.attendance_id]]; if (c) MS.conf[e.id] = c;
