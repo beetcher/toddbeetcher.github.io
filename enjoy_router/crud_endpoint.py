@@ -93,6 +93,7 @@ OPS = {
     "find_gps": ({"id"}, set()),                                             # only venues: look up GPS from the place's address
     "assign": ({"data"}, {"person", "source"}),                              # only attendances: person + roster entry + attendance together
     "send_confirmation": ({"id"}, set()),                                    # only attendances: send the placement confirmation email now
+    "assign_request": ({"data"}, {"requester", "source"}),                   # only attendances: everyone named on a request into one class
     "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
     "publish": ({"id"}, {"expected_updated_at"}),      # only message_templates: a draft becomes the standing version
     "draft_from": ({"id"}, set()),                     # only message_templates: copy a published version into a new draft
@@ -103,7 +104,7 @@ OPS = {
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
-                       "create_with_person", "update_with_person", "assign", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note"})
+                       "create_with_person", "update_with_person", "assign", "assign_request", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -111,7 +112,7 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "send_confirmation",
+              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "assign_request", "send_confirmation",
               "publish", "draft_from", "mark_handled", "add_note"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
@@ -129,6 +130,8 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
             return module.add_note(store, a["id"], actor, a.get("text"), now=now)
         if op == "assign":
             return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
+        if op == "assign_request":
+            return module.assign_request(store, a["data"], actor, a.get("requester"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":
             return module.create_with_person(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "update_with_person":

@@ -20,7 +20,7 @@ notify(kind, recipient, context, by, trigger, refs, audience=None, suppress=None
 notify_many(items, time_budget_s) -> list[Result]
 ```
 
-- `kind`: a registered kind. Today `request_received` and `placement_confirmation`.
+- `kind`: a registered kind. Today `request_received`, `placement_confirmation`, `class_cancelled`, `placement_ended` and `participant_left`.
 - `recipient`: `{type: "individual", individual_id}` or `{type: "adhoc", name, email?, phone?}` (the receipt goes out before the requester has an individual record).
 - `context`: the facts of the event, plain JSON, validated against the kind's fact schema (`schemas/message_kinds/<kind>.facts.schema.json`). Facts only: no wording, no channel.
 - `by`: who caused it. `trigger`: `automatic` or `manual`.
@@ -86,6 +86,9 @@ See `COMMUNICATION_LOG_GUIDE.md`. Message history on an attendance row or a requ
 |---|---|---|---|
 | `request_received` | `requester` | adhoc (name and email on the request) | a registration request is saved for the first time |
 | `placement_confirmation` | `student` | individual | a student is placed (assigned or confirmed) in a scheduled class with venue and start time; or an operator presses Send confirmation email |
+| `class_cancelled` | `student`, `instructor` | individual | an operator cancels or deletes a class: everyone whose placement was open is told, with a calendar cancel file |
+| `placement_ended` | `student`, `instructor` | individual | one person's placement goes from open to declined, withdrawn or cancelled, or is removed; the class itself stands |
+| `participant_left` | `instructor` | individual | a student who held a seat leaves a class: every instructor still placed in it is told |
 
 ## 10. Rules (each becomes a named test)
 

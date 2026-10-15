@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/participant_left.facts.schema.json",
+  "title": "participant_left",
+  "description": "The facts the message kind participant_left (a student left your class) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Participant left (a student left your class)",
+    "audiences": [
+      "instructor"
+    ],
+    "triggers": [
+      "A student who held a seat (assigned or confirmed) is declined, withdrawn, cancelled or removed from a class (automatic). Every instructor still placed in that class is told."
+    ],
+    "recipient": "individual: each instructor placed in the class (primary and secondary).",
+    "dedupe": "explicit key: kind + instructor + attendance id + the placement's status history length (or the removal time)",
+    "refs": [
+      "attendance_id",
+      "scheduled_class_id"
+    ]
+  },
+  "required": [
+    "name",
+    "student_name",
+    "how",
+    "title",
+    "when_day",
+    "when_span",
+    "when_short",
+    "time_zone"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the instructor: their given name, else their display name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Gladys"
+      ]
+    },
+    "title": {
+      "description": "The title of the class.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys's AI Happy Hour"
+      ]
+    },
+    "when_day": {
+      "description": "The day in words, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "Saturday, October 17, 2026"
+      ],
+      "x_derived": true
+    },
+    "when_span": {
+      "description": "The start and end times with the zone abbreviation, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "5:00 PM to 6:30 PM MDT"
+      ],
+      "x_derived": true
+    },
+    "when_short": {
+      "description": "A short day and start time for subject lines.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "Sat Oct 17, 5:00 PM"
+      ],
+      "x_derived": true
+    },
+    "time_zone": {
+      "description": "The class's time zone as an IANA name; America/Denver if none is set. An unknown name shows times in UTC.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "America/Denver"
+      ]
+    },
+    "venue": {
+      "description": "The venue's name. Absent when none.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Ozo's Coffee, East Pearl"
+      ]
+    },
+    "room": {
+      "description": "The room label at the venue. Absent when none.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Back room"
+      ]
+    },
+    "where": {
+      "description": "Venue and room together, joined with a middle dot. Absent when both are absent.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "Ozo's Coffee, East Pearl · Back room"
+      ],
+      "x_derived": true
+    },
+    "address": {
+      "description": "The venue's address on one line. Absent when none.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "1500 Pearl St, Boulder, CO 80302"
+      ],
+      "x_derived": true
+    },
+    "student_name": {
+      "description": "The display name of the student who left the class.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys Rowan"
+      ]
+    },
+    "how": {
+      "description": "What happened, in words: is no longer scheduled, withdrew, declined, was removed. One short phrase that follows the student's name.",
+      "type": "string",
+      "maxLength": 80,
+      "examples": [
+        "withdrew"
+      ],
+      "x_derived": true
+    }
+  }
+}

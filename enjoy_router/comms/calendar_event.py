@@ -50,5 +50,12 @@ def make_ics(ev: dict, now=None, uid_domain: str = "beetcher.com", method: str =
              f"SUMMARY:{_ics_escape(ev['title'])}"]
     if where:
         lines.append(f"LOCATION:{_ics_escape(where)}")
-    lines += [f"DESCRIPTION:{_ics_escape(chr(10).join(desc))}", "STATUS:CONFIRMED", "END:VEVENT", "END:VCALENDAR"]
+    cancel = method == "CANCEL"
+    lines += [f"DESCRIPTION:{_ics_escape(chr(10).join(desc))}"]
+    # A PUBLISH with no sequence is the original event (output unchanged). An update or a cancel carries a SEQUENCE higher than any earlier one
+    # (seconds since 1970 of `now`), which is what makes a calendar replace or remove the event it already holds.
+    seq = ev.get("sequence") if ev.get("sequence") is not None else (int((now or datetime.now(timezone.utc)).timestamp()) if cancel else None)
+    if seq is not None:
+        lines.append(f"SEQUENCE:{int(seq)}")
+    lines += ["STATUS:CANCELLED" if cancel else "STATUS:CONFIRMED", "END:VEVENT", "END:VCALENDAR"]
     return ("\r\n".join(_fold(x) for x in lines) + "\r\n").encode("utf-8")

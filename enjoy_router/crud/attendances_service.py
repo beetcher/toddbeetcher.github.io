@@ -67,6 +67,39 @@ def _auto_notify(store, rec, actor, now):
         LOG.warning("placement email failed attendance=%s", rec.get("id"))
 
 
+NOTICE_BUDGET_S = 30      # the admin function allows 60 s and one send can take up to 10 s; whoever is not reached in time is logged not_sent / time_budget (CMS rule R-22)
+
+
+def _send_notices(build, *args):
+    """Tell the people a material change touches (Todd, 2026-10-15: notify abundantly). Runs only AFTER the change is saved (R-4), never
+    raises and never undoes the change (R-3). `build` is a function of launch_comms.change_context returning notify calls."""
+    import comms
+    if not comms.is_configured():
+        return []
+    try:
+        from launch_comms import change_context as CC
+        items = getattr(CC, build)(*args)
+        return comms.notify_many(items, NOTICE_BUDGET_S) if items else []
+    except Exception:   # a mail problem must never fail a cancel or a removal; no details are logged
+        LOG.warning("change notices failed kind=%s", build)
+        return []
+
+
+def open_placements(store, class_id):
+    """The class's placements as they stand now that a cancel would end (assigned, waitlisted, confirmed), copied before they change."""
+    return [dict(d) for d in _live_for(store, "scheduled_class_id", class_id) if d.get("status") in OPEN]
+
+
+def notify_class_ended(store, cls, recs, actor):
+    """The class was cancelled or deleted and `recs` (from open_placements, taken before) lost their placement: tell each of them."""
+    return _send_notices("class_cancelled_items", store, cls, recs, actor)
+
+
+def _notify_left(store, before, how, actor):
+    """One person's open placement ended but the class stands: tell the person and, for a student who held a seat, the instructors."""
+    return _send_notices("placement_ended_items", store, before, how, actor)
+
+
 def _bad(problems):
     seen, out = set(), []
     for p in problems:
@@ -323,6 +356,8 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         return failure("not_found")
     except StaleUpdate:
         return failure("conflict")
+    if tx is None and cur.get("status") in OPEN and sets.get("status") in STATUS_OFF:
+        _notify_left(store, cur, sets["status"], actor)
     return success({"id": id, "changed": sorted(sets), "removed": sorted(removals),
                     "updated_at": stamp["updated_at"], "updated_by": actor})
 
@@ -348,6 +383,8 @@ def soft_delete(store, id, actor, tx=None, now=None):
         return failure("not_found")
     except StaleUpdate:
         return failure("conflict")
+    if tx is None and cur.get("status") in OPEN:
+        _notify_left(store, cur, "removed", actor)
     return success({"id": id, "deleted_at": stamp})
 
 
@@ -378,6 +415,112 @@ def end_class(store, class_id, actor, event_type, tx, now=None):
     return len(recs)
 
 
+def _place(store, tx, cls, data, person, actor, source, now):
+    """Inside a transaction: the person (if new), their roster entry (if missing) and the attendance record, together or not at all.
+    `data` has scheduled_class_id, role and either individual_id or (when `person` is given) nothing yet; `status` is chosen here
+    when `data` does not carry one. Returns (the record, whether a roster entry was made). Raises _Abort with the refusal."""
+    roster = STU.R if data["role"] == STUDENT else INS.R
+    made_entry = False
+    if person is not None:
+        p = IS.create(store, person, actor, source, tx=tx, now=now)
+        if not p.ok:
+            raise _Abort(failure("validation_failed", [{"field": "person." + x["field"], "issue": x["issue"]} for x in p.problems]
+                                 if p.code == "validation_failed" else p.problems))
+        pid, known = p.data["id"], True
+    else:
+        pid, known = data["individual_id"], False
+        got = IS.get(store, pid)
+        if not got.ok or got.data.get("status") == "erased":
+            raise _Abort(_bad([{"field": "individual_id", "issue": "not_found"}]))
+        pid = got.data["id"]
+    if known or not roster._live_entries(store, pid):
+        r = roster._create(store, {"individual_id": pid}, actor, source, tx, now, person_known=True)
+        if not r.ok:
+            raise _Abort(r)
+        made_entry = True
+    body = {**data, "individual_id": pid}
+    if not body.get("status"):
+        body["status"] = _starting_status(store, cls, data["role"])
+    r = _create(store, body, actor, source, tx, now, person_known=known)
+    if not r.ok:
+        raise _Abort(r)
+    return r.data, made_entry
+
+
+
+def _participant_person(item):
+    """A participant as a new person. A participant needs a first OR a last name (the request schema); the person record needs a given name,
+    so a participant with only a last name has it as the given name. Only name and email are carried (nothing else is known)."""
+    first, last = (item.get("first_name") or "").strip(), (item.get("last_name") or "").strip()
+    person = {"given_name": first or last}
+    if first and last:
+        person["family_name"] = last
+    if item.get("email"):
+        person["email"] = item["email"]
+    return person
+
+
+def assign_request(store, data, actor, requester=None, source="dashboard", now=None):
+    """Put EVERYONE named on a registration request in one class, as students, together or not at all: the requester (when `requester`
+    is given: {"individual_id"} for a person we have, or {"person": {...}} for a new one) and every person in the request's
+    `participants`. data: request_id, scheduled_class_id, optional status (applies to everyone; default automatic, which fills seats
+    in order and puts the rest on the waiting list). Every participant is a NEW person (a typed name is never matched to a person).
+    A participant with no email is placed and simply cannot be told (the message log says so). Refuses when the class already holds
+    a student from this request (add the others from the class Attendance). Each placed student is then sent the placement email."""
+    data = dict(data) if isinstance(data, dict) else {}
+    problems = []
+    rid, cid = data.get("request_id"), data.get("scheduled_class_id")
+    req = store.get(REQUESTS.name, rid) if isinstance(rid, str) and UUID_PATTERN.match(rid) else None
+    if req is None or _deleted(req):
+        problems.append({"field": "request_id", "issue": "not_found" if rid else "required"})
+    cls = _class(store, cid) if isinstance(cid, str) and UUID_PATTERN.match(cid) else None
+    if cls is None:
+        problems.append({"field": "scheduled_class_id", "issue": "not_found" if cid else "required"})
+    status = data.get("status")
+    if status is not None:
+        problems += check_field(ATT, "status", status)
+    if requester is not None:
+        if not isinstance(requester, dict) or (("individual_id" in requester) == ("person" in requester)):
+            problems.append({"field": "requester", "issue": "choose_one"})
+        elif isinstance(requester.get("person"), dict):
+            problems += [{"field": "requester.person." + k, "issue": "not_allowed"} for k in requester["person"] if k not in PERSON_NEW]
+    if problems:
+        return _bad(problems)
+    people = []                                    # (label, individual_id or None, new-person dict or None)
+    if requester is not None:
+        people.append(("requester", requester.get("individual_id"), requester.get("person")))
+    for i, item in enumerate(req.get("participants") or [], 1):
+        people.append((f"participant_{i}", None, _participant_person(item)))
+    if not people:
+        return _bad([{"field": "request_id", "issue": "no_people"}])
+    if any(d.get("role") == STUDENT and d.get("request_id") == rid and d.get("status") not in STATUS_OFF
+           for d in _live_for(store, "scheduled_class_id", cid)):
+        return _bad([{"field": "request_id", "issue": "already_in_class"}])
+    seats = sum(1 for d in _live_for(store, "scheduled_class_id", cid) if d.get("role") == STUDENT and d.get("status") not in NO_SEAT)
+    recs, made = [], 0
+    try:
+        with store.transaction() as tx:
+            for label, individual_id, person in people:
+                row = {"scheduled_class_id": cid, "role": STUDENT, "request_id": rid}
+                if individual_id:
+                    row["individual_id"] = individual_id
+                row["status"] = status or ("waitlisted" if seats >= cls.get("capacity_max", 10 ** 9) else "assigned")
+                try:
+                    rec, _entry = _place(store, tx, cls, row, person, actor, source, now)
+                except _Abort as stop:     # name the person by position, never by value
+                    raise _Abort(_bad([{"field": f"{label}.{p['field']}", "issue": p["issue"]} for p in (stop.result.problems or [{"field": "person", "issue": "refused"}])])
+                                 if stop.result.code == "validation_failed" else stop.result)
+                seats += rec["status"] not in NO_SEAT
+                recs.append(rec)
+                made += person is not None
+    except _Abort as stop:
+        return stop.result
+    for rec in recs:
+        _auto_notify(store, rec, actor, now)
+    fresh = [store.get(ATT.name, r["id"]) or r for r in recs]
+    return success({"records": [expanded(store, r) for r in fresh], "created_people": made})
+
+
 def assign(store, data, actor, person=None, source="dashboard", now=None):
     """Put a person in a class. data: scheduled_class_id, role, and individual_id (an existing person) OR `person` (a new one:
     given_name, family_name, email, phone); optional status, order, request_id, notes. Creates the person if new, adds them to the
@@ -400,34 +543,11 @@ def assign(store, data, actor, person=None, source="dashboard", now=None):
         problems.append({"field": "role", "issue": "required" if data.get("role") is None else "invalid_value"})
     if problems:
         return _bad(problems)
-    roster = STU.R if data["role"] == STUDENT else INS.R
     out = {"created_roster_entry": False}
     try:
         with store.transaction() as tx:
-            if person is not None:
-                p = IS.create(store, person, actor, source, tx=tx, now=now)
-                if not p.ok:
-                    raise _Abort(failure("validation_failed", [{"field": "person." + x["field"], "issue": x["issue"]} for x in p.problems]
-                                         if p.code == "validation_failed" else p.problems))
-                pid, known = p.data["id"], True
-            else:
-                pid, known = data["individual_id"], False
-                got = IS.get(store, pid)
-                if not got.ok or got.data.get("status") == "erased":
-                    raise _Abort(_bad([{"field": "individual_id", "issue": "not_found"}]))
-                pid = got.data["id"]
-            if known or not roster._live_entries(store, pid):
-                r = roster._create(store, {"individual_id": pid}, actor, source, tx, now, person_known=True)
-                if not r.ok:
-                    raise _Abort(r)
-                out["created_roster_entry"] = True
-            body = {**data, "individual_id": pid}
-            if not body.get("status"):
-                body["status"] = _starting_status(store, cls, data["role"])
-            r = _create(store, body, actor, source, tx, now, person_known=known)
-            if not r.ok:
-                raise _Abort(r)
-            out["rec"] = r.data
+            rec, made_entry = _place(store, tx, cls, data, person, actor, source, now)
+            out["rec"], out["created_roster_entry"] = rec, made_entry
     except _Abort as stop:
         return stop.result
     _auto_notify(store, out["rec"], actor, now)

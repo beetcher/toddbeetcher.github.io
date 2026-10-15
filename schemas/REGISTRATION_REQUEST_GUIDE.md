@@ -144,7 +144,7 @@ Each field below says what it is for. Todd's own words are quoted where they exi
 11. Check the full record against the schema and confirm every `x_server_required` field is present.
 12. Store one document. Reply with `confirmation_number` and `registration_type` and nothing else. The wording shown to the visitor says a request was received, never that they are registered.
 13. Protect the public form: rate limit per visitor, Firebase App Check once live. Never put personal data in logs; log ids and codes.
-14. **People other than the requester.** Referrer, participant and minor details are stored as given but are not used to contact anyone without the requester's say-so. Collect the minimum. Wording on the web surface should make the requester responsible for having permission to share them.
+14. **People other than the requester.** Referrer, participant and minor details are stored as given but are not used to contact anyone without the requester's say-so. Exception, decided 2026-10-15: when an operator puts the request in a class (Console, Put in a class), every participant is placed as a student and, if an email was given, sent the placement email. Naming them with an email on the request is the say-so. A participant without an email is placed and logged not_sent (no_contact); the requester is not emailed in their place. Collect the minimum. Wording on the web surface should make the requester responsible for having permission to share them.
 
 ## 7. Not in this guide's scope
 

@@ -112,6 +112,7 @@ def soft_delete(store, id, actor, tx=None, now=None):
 
 def _with_cascade(store, event_type, actor, now, change, class_id):
     """The class change and the cancelling of everyone's open attendance (with its journal) happen together or not at all."""
+    cls, recs = store.get(C.CLASSES.name, class_id), AT.open_placements(store, class_id)      # as they are BEFORE the change
     try:
         with store.transaction() as t:
             r = change(t)
@@ -120,6 +121,8 @@ def _with_cascade(store, event_type, actor, now, change, class_id):
             n = AT.end_class(store, class_id, actor, event_type, t, now)
     except _Abort as stop:
         return stop.result
+    if recs and cls is not None:
+        AT.notify_class_ended(store, cls, recs, actor)       # only after the cancel is saved; a mail problem never undoes it
     return r
 
 

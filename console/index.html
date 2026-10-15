@@ -871,7 +871,7 @@
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer they gave.</li>' +
-        '<li><b>Put in a class…</b> places the requester in a class. It says who will be added to the student roster. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
         '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
@@ -912,9 +912,9 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept. <b>People are emailed when a placement ends</b>: everyone in a cancelled or deleted class gets a cancel notice (with a calendar file that removes the event); a person set to declined, withdrawn or cancelled, or removed, is told, and when a student who held a seat leaves, every instructor of the class is told. The status menu acts at once, so pick carefully. Messages shows every one of these emails, including any that could not be sent.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
-        '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled.</li>' +
+        '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled and emailed (students and instructors).</li>' +
         '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -2438,8 +2438,8 @@
       if (!box.hidden && mode === m) { box.hidden = true; return; }
       mode = m; box.hidden = false; err.textContent = ""; why.hidden = m !== "cancel";
       what.textContent = m === "cancel"
-        ? "Cancel this class? It stays in the list marked cancelled. Everyone in it, students and instructors, is cancelled and their requests go back to waiting to be placed. Use this when a real class does not happen."
-        : "Delete this class? Use this for a class built by mistake or a duplicate. It disappears from the lists, everyone in it is cancelled, and their requests go back to waiting to be placed. The record is kept.";
+        ? "Cancel this class? It stays in the list marked cancelled. Everyone in it, students and instructors, is cancelled and their requests go back to waiting to be placed. Each of them is also emailed that it is cancelled, with a calendar file that removes it. Use this when a real class does not happen."
+        : "Delete this class? Use this for a class built by mistake or a duplicate. It disappears from the lists, everyone in it is cancelled, and their requests go back to waiting to be placed. Each of them is also emailed that it is cancelled. The record is kept.";
       yes.textContent = m === "cancel" ? "Cancel class" : "Delete class";
     }
     function problem(res) {
@@ -2460,7 +2460,7 @@
         yes.disabled = false;
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
-          $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled.";
+          $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled and emailed. Messages shows any email that could not be sent.";
           loadPlaced(); loadClasses();
         }
         else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
@@ -3157,6 +3157,8 @@
   var ATT_STATUSES = ["assigned", "waitlisted", "confirmed", "attended", "late", "no_show", "declined", "withdrawn", "cancelled"];
   var ATT_WORD = { assigned: "Assigned", confirmed: "Confirmed", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
   var ATT_GONE = { declined: 1, withdrawn: 1, cancelled: 1 };   // a request with only these is back to waiting
+  var ATT_OPEN = { assigned: 1, waitlisted: 1, confirmed: 1 };   // a placement still open: ending it sends emails
+  function leftOpen(from, to) { return !!ATT_OPEN[from] && !!ATT_GONE[to]; }
   var ATT_OFF = { waitlisted: 1, declined: 1, withdrawn: 1, cancelled: 1 };   // statuses that do not hold a seat
   var afSeq = 0;
 
@@ -3384,6 +3386,9 @@
   // role (starting role), canBuild (offer "a new class"), onAdded(data, said).
   function assignForm(opts) {
     var uid = "af" + (++afSeq) + "_", req = opts.req || null, BUILD = "__new__";
+    // A request that names other people (participants) puts them ALL in the class, together; the requester too unless they are not attending.
+    var folks = req && Array.isArray(req.participants) ? req.participants : [], attending = !req || req.is_requester_attending !== false;
+    function folkName(x) { return [x.first_name, x.last_name].filter(Boolean).join(" ").trim() || "Guest"; }
     var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
     function field(text, el, key, hint) {
       var l = mk("label", "f", text); el.id = uid + key; l.htmlFor = el.id; form.appendChild(l); form.appendChild(el);
@@ -3423,6 +3428,11 @@
       var dt = mk("details", "addbox"); dt.appendChild(mk("summary", "", "Change the name or contact details")); dt.appendChild(nb); form.appendChild(dt);
       var upd = function () {
         var nm = [nw.given_name.value, nw.family_name.value].map(function (x) { return x.trim(); }).filter(Boolean).join(" ") || "This person", em = nw.email.value.trim();
+        if (folks.length) {
+          var all = (attending ? [nm] : []).concat(folks.map(folkName));
+          sumBox.textContent = "Everyone on this request will be placed in this class as students: " + all.join(", ") + " (" + all.length + "). Each person with an email is sent the confirmation; anyone without one is placed and not told.";
+          return;
+        }
         sumBox.textContent = req.individual_id ? nm + " will be placed in this class as a student." : nm + (em ? " (" + em + ")" : "") + " will be added to the student roster and placed in this class as a student.";
       };
       Object.keys(nw).forEach(function (k) { nw[k].addEventListener("input", upd); }); upd();
@@ -3452,7 +3462,9 @@
       var building = !opts.cls && clsSel.value === BUILD, cid = opts.cls ? opts.cls.id : clsSel.value, made = null;
       if (!cid) { msg.textContent = "Choose a class."; return; }
       var data = { scheduled_class_id: cid, role: role.value }, person = null;
-      if (forcedId) data.individual_id = forcedId;
+      var many = folks.length > 0 && role.value === "student";
+      if (many && !attending) { /* only the other people on the request are placed */ }
+      else if (forcedId) data.individual_id = forcedId;
       else if (who.value === "request") data.individual_id = req.individual_id;
       else if (who.value === "existing") { if (!finder.id()) { msg.textContent = "Choose someone, or choose “Someone new”."; return; } data.individual_id = finder.id(); }
       else {
@@ -3513,10 +3525,37 @@
         }
         if (made && made.instructor) {
           return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor } }, ATT).then(function (r2) {
-            placeStudent(r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance.");
+            (many ? placeMany : placeStudent)(r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance.");
           });
         }
-        return placeStudent("");
+        function placeMany(instructorSaid) {
+          var a = { data: { request_id: req.id, scheduled_class_id: classId } };
+          if (data.status) a.data.status = data.status;
+          if (attending) a.requester = data.individual_id ? { individual_id: data.individual_id } : { person: person };
+          return admin("assign_request", a, ATT).then(function (res) {
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body && res.body.ok) {
+              var recs = res.body.data.records || [];
+              if (res.body.data.created_people) peopleForPick = null;
+              return Promise.all(recs.map(function (r) { return admin("list", { filters: { attendance_id: r.id } }, "communication_logs"); })).then(function (lrs) {
+                var parts = recs.map(function (r, i) {
+                  var l = ((lrs[i].body && lrs[i].body.data && lrs[i].body.data.records) || [])[0];
+                  var how = !l || l.status === "skipped" ? "" : l.status === "sent" ? "emailed" : l.status === "not_sent" ? "not told (" + (REASON_WORD[l.reason] || String(l.reason).replace(/_/g, " ")) + ")" : "email did not go";
+                  return attName(r) + " (" + ATT_WORD[r.status].toLowerCase() + (how ? ", " + how : "") + ")";
+                });
+                var d = recs[0]; d.everyone = recs.map(attName); d.created_roster_entry = true;
+                finish(d, (prefix || "") + "Placed " + recs.length + " students: " + parts.join("; ") + "." + (instructorSaid || ""));
+              });
+            }
+            add.disabled = false;
+            var probs = (res.body && res.body.error && res.body.error.problems) || [];
+            msg.textContent = (prefix || "") + (probs.some(function (p) { return p.issue === "already_in_class"; })
+              ? "Someone from this request is already in that class, so nobody was added. Add the others from the class Attendance."
+              : probs.length ? "Nobody was added. Check the details: " + probs.map(function (p) { return String(p.field).replace(/_/g, " ").replace(/\./g, " ") + " (" + String(p.issue).replace(/_/g, " ") + ")"; }).join(", ") + "."
+              : attFail(res));
+          });
+        }
+        return many ? placeMany("") : placeStudent("");
       }
       function finish(d, said) {
         add.disabled = false;
@@ -3626,7 +3665,7 @@
       admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
         sel.disabled = false;
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[sel.value].toLowerCase() + "."); redraw(); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[sel.value].toLowerCase() + "." + (leftOpen(r.status, sel.value) ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); redraw(); return; }
         sel.value = r.status; say(attFail(res));
       });
     });
@@ -3636,7 +3675,7 @@
       rm.disabled = true;
       admin("soft_delete", { id: r.id }, ATT).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept."); loadPlaced(); redraw(); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept." + (ATT_OPEN[r.status] ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); loadPlaced(); redraw(); return; }
         rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say(attFail(res));
       });
     });
@@ -3980,7 +4019,7 @@
         host.hidden = true; host.textContent = "";
         var num = d.confirmation_number || rec.confirmation_number;
         var bn = $("reqDone");
-        bn.textContent = "Request " + (num ? num + " " : "") + "is closed. " + attName(d) + " is in " + ((d["class"] && d["class"].title) || "the class") + ". You will find it in Classes."
+        bn.textContent = "Request " + (num ? num + " " : "") + "is closed. " + (d.everyone ? d.everyone.join(", ") + " are in " : attName(d) + " is in ") + ((d["class"] && d["class"].title) || "the class") + ". You will find it in Classes."
           + (d.created_roster_entry ? " Added to the student list." : "");
         bn.hidden = false; $("reqShow").value = "open";
         loadPlaced().then(function () { bn.scrollIntoView({ block: "nearest" }); });

@@ -1,7 +1,7 @@
-"""Seed the CMS in live Firestore: the settings record and the two starting message templates. Todd runs this; Claude never does.
+"""Seed the CMS in live Firestore: the settings record and the starting message templates (the receipt, the placement confirmation and the change notices). Todd runs this; Claude never does.
 
 It writes ONLY to `comms_settings` and `message_templates`, through the same handlers the Console uses, so every rule applies.
-The templates are today's receipt and placement emails, word for word (schemas/examples/message_template.seed.json), published as
+The first two templates are today's receipt and placement emails, word for word (schemas/examples/message_template.seed.json), published as
 version 1. It is safe to run twice: anything already there is left alone.
 
 Default is a dry run: it says what it would create and creates nothing.

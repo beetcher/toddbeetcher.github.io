@@ -1,5 +1,5 @@
 {
-  "description": "The two seed templates: today's receipt and placement emails, word for word, as blocks. The seed script (step 3) writes these as published records. Golden masters in message_kinds/golden_masters.json prove they render exactly as the pre-refactor code did.",
+  "description": "The seed templates: today's receipt and placement emails word for word, plus the change notices (class cancelled, placement ended, participant left), as blocks. The seed script writes these as published records. Golden masters in message_kinds/golden_masters.json prove the first two render exactly as the pre-refactor code did.",
   "templates": [
     {
       "kind": "request_received",
@@ -113,6 +113,263 @@
         {
           "type": "paragraph",
           "text": "Need to change something? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "class_cancelled",
+      "channel": "email",
+      "audience": "student",
+      "name": "Class cancelled (student)",
+      "subject": "Launch — cancelled: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "We're sorry: this workshop has been cancelled."
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "Was scheduled for",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If this was on your calendar, the attached calendar file removes it."
+        },
+        {
+          "type": "paragraph",
+          "text": "If you would still like a session, just reply to this email and we will find another time."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "class_cancelled",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Class cancelled (instructor)",
+      "subject": "Launch — class cancelled: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "This class has been cancelled, so you are no longer scheduled to teach it:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "Was scheduled for",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If this was on your calendar, the attached calendar file removes it."
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "placement_ended",
+      "channel": "email",
+      "audience": "student",
+      "name": "Placement ended (student)",
+      "subject": "Launch — you are no longer scheduled: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "You are no longer scheduled for this workshop:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "Was scheduled for",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If this was on your calendar, the attached calendar file removes it."
+        },
+        {
+          "type": "paragraph",
+          "text": "If this is a surprise, just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "placement_ended",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Placement ended (instructor)",
+      "subject": "Launch — you are no longer assigned: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "You are no longer assigned to teach this class:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "Was scheduled for",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "If this was on your calendar, the attached calendar file removes it."
+        },
+        {
+          "type": "paragraph",
+          "text": "If this is a surprise, just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "participant_left",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Participant left (instructor)",
+      "subject": "Launch — a student left: {title}, {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "{student_name} {how}. Here is the class:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
         },
         {
           "type": "paragraph",

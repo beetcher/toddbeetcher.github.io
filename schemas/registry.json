@@ -175,6 +175,18 @@
       {
         "kind": "placement_confirmation",
         "facts": "message_kinds/placement_confirmation.facts.schema.json"
+      },
+      {
+        "kind": "class_cancelled",
+        "facts": "message_kinds/class_cancelled.facts.schema.json"
+      },
+      {
+        "kind": "placement_ended",
+        "facts": "message_kinds/placement_ended.facts.schema.json"
+      },
+      {
+        "kind": "participant_left",
+        "facts": "message_kinds/participant_left.facts.schema.json"
       }
     ]
   }

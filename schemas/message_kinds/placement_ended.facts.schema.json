@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/placement_ended.facts.schema.json",
+  "title": "placement_ended",
+  "description": "The facts the message kind placement_ended (you are no longer scheduled for this class) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Placement ended (you are no longer scheduled)",
+    "audiences": [
+      "student",
+      "instructor"
+    ],
+    "triggers": [
+      "A student's or an instructor's placement goes from open (assigned, waitlisted or confirmed) to declined, withdrawn or cancelled, or the placement is removed (automatic). The person is told; the class itself is not cancelled."
+    ],
+    "recipient": "individual: the person whose placement ended.",
+    "dedupe": "explicit key: kind + person + attendance id + the placement's status history length (or the removal time)",
+    "refs": [
+      "attendance_id",
+      "scheduled_class_id"
+    ],
+    "attachments": [
+      {
+        "kind": "calendar_event",
+        "filename": "workshop.ics",
+        "mime_type": "text/calendar",
+        "method": "CANCEL",
+        "event_fields": {
+          "uid": "uid",
+          "title": "title",
+          "start": "start_utc",
+          "end": "end_utc",
+          "venue": "venue",
+          "room": "room",
+          "address": "address"
+        },
+        "uid_domain": "beetcher.com"
+      }
+    ]
+  },
+  "required": [
+    "name",
+    "title",
+    "start_utc",
+    "end_utc",
+    "time_zone",
+    "when_day",
+    "when_span",
+    "when_short",
+    "uid"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: their given name, else their display name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Gladys"
+      ]
+    },
+    "title": {
+      "description": "The title of the class.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys's AI Happy Hour"
+      ]
+    },
+    "start_utc": {
+      "description": "When the class starts (UTC, to the second). Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-17T23:00:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "end_utc": {
+      "description": "When the class ends (UTC). Start plus the duration, 60 minutes if none is set. Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-18T00:30:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "time_zone": {
+      "description": "The class's time zone as an IANA name; America/Denver if none is set. An unknown name shows times in UTC.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "America/Denver"
+      ]
+    },
+    "when_day": {
+      "description": "The day in words, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "Saturday, October 17, 2026"
+      ],
+      "x_derived": true
+    },
+    "when_span": {
+      "description": "The start and end times with the zone abbreviation, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "5:00 PM to 6:30 PM MDT"
+      ],
+      "x_derived": true
+    },
+    "when_short": {
+      "description": "A short day and start time for subject lines.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "Sat Oct 17, 5:00 PM"
+      ],
+      "x_derived": true
+    },
+    "uid": {
+      "description": "The id the calendar file uses to recognize the event, so the cancel removes the event the placement email added. The attendance record's id.",
+      "type": "string",
+      "maxLength": 36,
+      "examples": [
+        "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f"
+      ],
+      "format": "uuid"
+    },
+    "venue": {
+      "description": "The venue's name. Absent when none.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Ozo's Coffee, East Pearl"
+      ]
+    },
+    "room": {
+      "description": "The room label at the venue. Absent when none.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Back room"
+      ]
+    },
+    "where": {
+      "description": "Venue and room together, joined with a middle dot. Absent when both are absent.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "Ozo's Coffee, East Pearl · Back room"
+      ],
+      "x_derived": true
+    },
+    "address": {
+      "description": "The venue's address on one line. Absent when none.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "1500 Pearl St, Boulder, CO 80302"
+      ],
+      "x_derived": true
+    },
+    "map_url": {
+      "description": "A map search link for the venue and address. Absent when there is neither.",
+      "type": "string",
+      "maxLength": 500,
+      "examples": [
+        "https://www.google.com/maps/search/?api=1&query=Ozo%27s+Coffee"
+      ],
+      "format": "uri",
+      "x_derived": true
+    }
+  }
+}
