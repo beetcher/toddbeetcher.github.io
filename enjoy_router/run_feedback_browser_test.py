@@ -23,9 +23,9 @@ store = MemoryDocStore(""); limiter = make_failure_limiter(); fails = []
 def check(label, ok, detail=""):
     print(("ok   " if ok else "FAIL ") + label + ("" if ok else " " + str(detail)))
     if not ok: fails.append(label)
-sent, mode = [], ["accept"]
+sent, inst, mode = [], [], ["accept"]
 def fake(key, to, subject, body, html=None, attachments=None, headers=None):
-    sent.append({"to": to, "body": body, "att": attachments})
+    (inst if to == "ina@example.com" else sent).append({"to": to, "body": body, "att": attachments})   # the instructor's own emails are counted apart
     return T.SendResult(True, "accepted") if mode[0] == "accept" else T.SendResult(False, "recipient_rejected")
 T.transport = fake
 _need, _todo = seed_comms.plan(store); seed_comms.apply(store, _need, _todo)

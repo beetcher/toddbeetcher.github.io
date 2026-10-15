@@ -86,7 +86,7 @@ with sync_playwright() as p:
     check("the banner names all three", "Ann Requester" in done and "Bob Guest" in done and "Cy" in done, done)
     rows = [d for d in store.data["attendances"].values() if d["role"] == "student"] if "attendances" in store.data else [d for d in store.data[next(k for k in store.data if k.endswith("attendances"))].values() if d["role"] == "student"]
     check("three students are on the attendance list, all from this request", len(rows) == 3 and all(d.get("request_id") == R1["id"] for d in rows), len(rows))
-    to = sorted(m["to"] for m in sent)
+    to = sorted(m["to"] for m in sent if m["to"] != "ina@example.com")
     check("Ann and Bob were emailed; Cy has no email and nothing went to anyone else", to == ["ann@example.com", "bob@example.com"], to)
     # a request where the requester is not attending
     n = len(sent)
@@ -96,7 +96,7 @@ with sync_playwright() as p:
     check("not attending: the requester is not in the list", "Dora" not in said2 and "Eve" in said2 and "(1)" in said2, said2)
     li2.get_by_role("button", name="Add to class").click()
     c.wait_for_function("document.getElementById('reqDone').textContent.indexOf('Eve') >= 0")
-    check("Eve was emailed, Dora was not", sorted(m["to"] for m in sent)[n:] == [] or [m["to"] for m in sent][n:] == ["eve@example.com"], [m["to"] for m in sent][n:])
+    check("Eve was emailed, Dora was not", [m["to"] for m in sent][n:] == ["eve@example.com", "ina@example.com"], [m["to"] for m in sent][n:])
     # the Messages log shows the confirmation number on every entry that belongs to a request
     c.select_option("#collPick", "messages"); c.wait_for_selector("#mList li")
     confs = c.locator("#mList li .mconf").all_inner_texts()
