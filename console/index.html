@@ -215,6 +215,29 @@
   .ready .ok { color: #2f5d00; }
   .ready .todo { color: var(--muted); }
   details.more { margin-bottom: 10px; }
+  .msumm { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .mrec { list-style: none; border: 1px solid var(--line); border-left-width: 6px; border-radius: 12px; margin: 0 0 10px; padding: 0; background: #fff; }
+  .mrec.bad { border-left-color: var(--err); }
+  .mrec.ok { border-left-color: #2f7d32; }
+  .mrec.mid { border-left-color: var(--orange); }
+  .mrec .mhead { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 10px 14px; cursor: pointer; min-height: 44px; }
+  .mrec .mhead:focus-visible { outline: 3px solid var(--orange); }
+  .mrec .mline1 { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; font-weight: 700; }
+  .mrec .mline2 { color: var(--muted); font-size: 14px; margin-top: 2px; word-break: break-word; }
+  .mchip { font-size: 13px; font-weight: 800; border-radius: 999px; padding: 1px 10px; border: 1px solid var(--line); }
+  .mchip.sent { color: #1f5d22; border-color: #2f7d32; }
+  .mchip.failed, .mchip.unknown, .mchip.not_sent { color: var(--err); border-color: var(--err); }
+  .mchip.skipped { color: var(--muted); }
+  .mtag { font-size: 13px; color: #7a3a00; font-weight: 700; }
+  .mdetail { padding: 4px 14px 14px; border-top: 1px dashed var(--line); }
+  .mdetail dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 10px 0; }
+  .mdetail dt { color: var(--muted); }
+  .mdetail dd { margin: 0; word-break: break-word; }
+  .mnotes { margin: 10px 0; }
+  .mnote { background: #fff8ec; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; margin: 0 0 6px; }
+  .mnote .who { color: var(--muted); font-size: 13px; }
+  .mdetail textarea { width: 100%; min-height: 70px; box-sizing: border-box; font: inherit; padding: 8px; }
+  .mdetail .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
   fieldset.fs { border: none; margin: 0 0 6px; padding: 0; min-width: 0; }
   fieldset.fs legend { font-weight: 700; padding: 8px 0 0; }
   label.chk { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
@@ -692,6 +715,43 @@
     <div class="empty" id="aEmpty" hidden>No attendance records match.</div>
   </section>
 
+  <section id="messagesView" hidden>
+    <div class="bar">
+      <div>
+        <div class="count" id="mCount"></div>
+        <div class="meta" id="mChecked"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="quiet manualBtn" data-m="messages">Manual</button>
+        <button id="mRefresh" type="button">Refresh</button>
+      </div>
+    </div>
+    <div class="msumm" id="mSummary" role="status"></div>
+    <details class="more filters" id="mFilters" open>
+      <summary id="mFilterSummary">Filters: all messages shown</summary>
+      <div class="mbody">
+        <label class="f" for="mSearch">Search</label>
+        <input type="search" id="mSearch" maxlength="100" placeholder="Email address, subject, reason, note or id" autocomplete="off">
+        <fieldset class="fs"><legend>Status</legend><div id="mStatusBoxes"></div></fieldset>
+        <fieldset class="fs"><legend>Message</legend><div id="mKindBoxes"></div></fieldset>
+        <fieldset class="fs"><legend>How it was sent</legend>
+          <label class="chk"><input type="checkbox" data-f="how" value="automatic" checked> Automatic</label>
+          <label class="chk"><input type="checkbox" data-f="how" value="manual" checked> By hand</label>
+        </fieldset>
+        <fieldset class="fs"><legend>Only show</legend>
+          <label class="chk"><input type="checkbox" id="mAttn"> Needs attention (failed, unknown, or not sent and not yet handled)</label>
+          <label class="chk"><input type="checkbox" id="mNotes"> Has notes</label>
+          <label class="chk"><input type="checkbox" id="mRedir"> Went to a test address</label>
+        </fieldset>
+        <div class="btns"><button type="button" class="quiet" id="mShowAll">Show all</button></div>
+      </div>
+    </details>
+    <div class="notice" id="mNotice" role="status"></div>
+    <div class="msg" id="mMsg" role="alert"></div>
+    <ul id="mList"></ul>
+    <div class="empty" id="mEmpty" hidden>No messages match.</div>
+  </section>
+
   <section id="placesView" hidden>
     <div class="bar">
       <div>
@@ -991,6 +1051,24 @@
         '</ul>' +
         '<div class="tip"><b>Captain\'s tip:</b> start with the few organizations LAUNCH deals with. More can be added any time.</div>' +
         '<h3>Try this</h3><ul><li>Add Ozo Coffee as a business, then search for it.</li></ul>' },
+    { id: "messages", name: "Messages", short: "Messages", blurb: "Every message the system sent or tried to send, with notes.",
+      manual:
+        '<div class="kicker">Station 11</div><h2>Messages</h2>' +
+        '<h3>Mission</h3><p>One list of every message the system tried to send: receipts, placement confirmations and whatever comes next. Use it to check that a message went out, to see why one did not, and to leave a note so the next person does not repeat your investigation.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li>The newest message is first. The coloured edge shows trouble: red means it needs attention, orange is skipped, green is sent.</li>' +
+        '<li><b>Filters</b> are tick boxes for status, which message, and how it was sent. They apply as you tick them. <b>Needs attention</b> shows failed and unknown messages and anything not sent that nobody has handled yet.</li>' +
+        '<li><b>Search</b> looks at the address, subject, reason, notes and ids.</li>' +
+        '<li><b>Tap a message</b> for everything we recorded about it. The text of the message itself is never kept.</li>' +
+        '<li><b>Add a note</b> saves a comment on that message. Notes can be added but never edited or removed; to correct one, add another.</li>' +
+        '<li><b>Mark handled</b> appears on a message that was not sent: say what you did, for example phoned her.</li>' +
+        '<li><b>Copy entry</b> and <b>Copy as JSON</b> put the whole message, notes included, on your clipboard.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Messages cannot be edited or deleted here. This is the record of what happened.</li>' +
+        '<li>The list shows the newest 200. If you see a note about that, narrow it with the filters or search.</li>' +
+        '<li>A message with a test-address mark went to our own test inbox, not to the person.</li>' +
+        '</ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1063,11 +1141,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1087,6 +1165,8 @@
     $("curriculumsView").hidden = r !== "curriculums";
     $("organizationsView").hidden = r !== "organizations";
     $("attendanceView").hidden = r !== "attendance";
+    $("messagesView").hidden = r !== "messages";
+    if (r === "messages") loadMessagesStation();
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
     if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
@@ -3672,6 +3752,188 @@
   $("aApply").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
   $("aShowAll").addEventListener("click", function () { Array.prototype.forEach.call(asBoxes(), function (c) { c.checked = true; }); $("aSearch").value = ""; loadAttendanceStation(); });
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
+
+  // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {} };
+  var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
+  var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
+  function mKindWord(k) { return CORR_KIND[k] || String(k || "").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }); }
+  function mReasonWord(r) { return REASON_WORD[r] || String(r || "").replace(/_/g, " "); }
+  function mNeedsAttention(e) { return e.status === "failed" || e.status === "unknown" || (e.status === "not_sent" && !e.handled_at); }
+  function mWhen(e) { return e.created_at ? fmtTime.format(new Date(e.created_at)) : ""; }
+  function mBoxes() { return document.querySelectorAll("#mFilters input[type=checkbox]"); }
+  function mBuildBoxes() {
+    var host = $("mStatusBoxes");
+    if (!host.firstChild) M_STATUS.forEach(function (s) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + M_STATUS_WORD[s])); host.appendChild(l);
+    });
+    // The kinds come from the log itself, so a new kind of message appears here without changing this page. A kind the user has unticked stays unticked.
+    var kh = $("mKindBoxes"), off = {};
+    Array.prototype.forEach.call(kh.querySelectorAll("input"), function (c) { if (!c.checked) off[c.value] = 1; });
+    var kinds = {}; MS.recs.forEach(function (e) { if (e.kind) kinds[e.kind] = 1; });
+    kh.textContent = "";
+    Object.keys(kinds).sort().forEach(function (k) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = !off[k]; c.value = k; c.setAttribute("data-f", "kind");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + mKindWord(k))); kh.appendChild(l);
+    });
+  }
+  function mSelected() {
+    var o = { status: {}, kind: {}, how: {} };
+    Array.prototype.forEach.call(mBoxes(), function (c) { var f = c.getAttribute("data-f"); if (f && c.checked) o[f][c.value] = 1; });
+    return o;
+  }
+  function mText(e) {
+    return [e.to, e.subject, e.kind, mKindWord(e.kind), e.status, M_STATUS_WORD[e.status], e.reason, mReasonWord(e.reason), e.error_code, e.message_ref, e.id, e.request_id,
+      e.attendance_id, e.scheduled_class_id, e.individual_id].concat((e.notes || []).map(function (n) { return n.text; })).filter(Boolean).join(" ").toLowerCase();
+  }
+  function mMatches(e, sel, q) {
+    if (!sel.status[e.status] || !sel.kind[e.kind] || !sel.how[e.trigger === "manual" ? "manual" : "automatic"]) return false;
+    if ($("mAttn").checked && !mNeedsAttention(e)) return false;
+    if ($("mNotes").checked && !(e.notes && e.notes.length)) return false;
+    if ($("mRedir").checked && !e.is_redirected) return false;
+    if (!q) return true;
+    var hay = mText(e);
+    return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+  function mFactsText(e) {
+    var L = [["When", e.created_at], ["Message", mKindWord(e.kind) + " (" + e.kind + ")"], ["For", e.audience], ["Channel", e.channel],
+      ["To", e.to ? e.to + (e.is_redirected ? " (test address, not the real recipient)" : "") : ""], ["Subject", e.subject],
+      ["Status", (M_STATUS_WORD[e.status] || e.status) + " (" + e.status + ")"], ["Why", e.reason + (mReasonWord(e.reason) !== e.reason ? ": " + mReasonWord(e.reason) : "")],
+      ["Error code", e.error_code], ["Template version", e.template_version], ["Message-ID", e.message_ref], ["How", e.trigger === "manual" ? "By hand" : "Automatic"],
+      ["Caused by", e.created_by], ["Class id", e.scheduled_class_id], ["Attendance id", e.attendance_id], ["Request id", e.request_id], ["Person id", e.individual_id],
+      ["Log id", e.id]];
+    if (e.handled_at) L.push(["Handled", e.handled_at + " by " + (e.handled_by || "")]);
+    return L.filter(function (x) { return x[1] !== undefined && x[1] !== null && x[1] !== ""; });
+  }
+  function mCopy(text, what) {
+    var done = function () { $("mNotice").textContent = what + " copied."; };
+    var fallback = function () {
+      var t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (x) { ok = false; }
+      document.body.removeChild(t);
+      if (ok) done(); else $("mMsg").textContent = "Could not copy. Select the text and copy it yourself.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+  }
+  function mEntryText(e) {
+    var t = mFactsText(e).map(function (x) { return x[0] + ": " + x[1]; });
+    (e.notes || []).forEach(function (n) { t.push("Note (" + n.at + ", " + n.by + "): " + n.text); });
+    return t.join("\n");
+  }
+  function mDetail(e) {
+    var box = mk("div", "mdetail");
+    var dl = mk("dl", ""); mFactsText(e).forEach(function (x) { dl.appendChild(mk("dt", "", x[0])); dl.appendChild(mk("dd", "", String(x[1]))); });
+    box.appendChild(dl);
+    var nb = mk("div", "mnotes"); nb.appendChild(mk("b", "", "Notes (" + (e.notes ? e.notes.length : 0) + ")"));
+    (e.notes || []).forEach(function (n) {
+      var d = mk("div", "mnote"); d.appendChild(mk("div", "", n.text));
+      d.appendChild(mk("div", "who", (n.at ? fmtTime.format(new Date(n.at)) : "") + " · " + (n.by || ""))); nb.appendChild(d);
+    });
+    if (!(e.notes && e.notes.length)) nb.appendChild(mk("div", "empty2", "No notes yet."));
+    box.appendChild(nb);
+    var lab = mk("label", "f", "Add a note"); var ta = document.createElement("textarea"); ta.maxLength = 1000; ta.id = "mNote-" + e.id; lab.htmlFor = ta.id;
+    ta.placeholder = "What did you find out? The next person will read this.";
+    box.appendChild(lab); box.appendChild(ta);
+    var err = mk("div", "msg", ""); err.setAttribute("role", "alert");
+    var btns = mk("div", "btns");
+    var add = mk("button", "", "Add note"); add.type = "button";
+    add.addEventListener("click", function () {
+      var text = ta.value.trim(); err.textContent = "";
+      if (!text) { err.textContent = "Write the note first."; return; }
+      add.disabled = true;
+      admin("add_note", { id: e.id, text: text }, "communication_logs").then(function (res) {
+        add.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body || !res.body.ok) { err.textContent = res.status === 409 ? "Someone else changed this message. Refresh and try again." : "The note was not saved. " + adminProblem(res.status); return; }
+        e.notes = res.body.data.notes; $("mNotice").textContent = "Note added."; mRender();
+      });
+    });
+    btns.appendChild(add);
+    if (e.status === "not_sent" && !e.handled_at) {
+      var h = mk("button", "quiet", "Mark handled"); h.type = "button";
+      h.title = "Say what you did about it, for example phoned her. The note box above is used as the comment.";
+      h.addEventListener("click", function () {
+        err.textContent = ""; h.disabled = true;
+        var args = { id: e.id }; if (ta.value.trim()) args.note = ta.value.trim().slice(0, 500);
+        admin("mark_handled", args, "communication_logs").then(function (res) {
+          h.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status !== 200 || !res.body || !res.body.ok) { err.textContent = "Could not mark it handled. " + adminProblem(res.status); return; }
+          $("mNotice").textContent = "Marked handled."; loadMessagesStation();
+        });
+      });
+      btns.appendChild(h);
+    }
+    var c1 = mk("button", "quiet", "Copy entry"); c1.type = "button"; c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry"); });
+    var c2 = mk("button", "quiet", "Copy as JSON"); c2.type = "button"; c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON"); });
+    btns.appendChild(c1); btns.appendChild(c2);
+    if (e.scheduled_class_id) {
+      var j = mk("button", "quiet", "Open the class attendance"); j.type = "button";
+      j.addEventListener("click", function () { var c = aClassById[e.scheduled_class_id]; if (c) openAttendance(c); else $("mMsg").textContent = "That class could not be found."; });
+      btns.appendChild(j);
+    }
+    box.appendChild(btns); box.appendChild(err);
+    return box;
+  }
+  function mRender() {
+    var sel = mSelected(), q = $("mSearch").value.trim(), list = $("mList");
+    list.textContent = "";
+    var shown = MS.recs.filter(function (e) { return mMatches(e, sel, q); });
+    shown.forEach(function (e) {
+      var tone = mNeedsAttention(e) ? "bad" : e.status === "sent" ? "ok" : "mid";
+      var li = mk("li", "mrec " + tone); li.setAttribute("data-log", e.id);
+      var head = mk("button", "mhead"); head.type = "button"; head.setAttribute("aria-expanded", MS.open[e.id] ? "true" : "false");
+      var l1 = mk("div", "mline1");
+      l1.appendChild(mk("span", "", mWhen(e)));
+      l1.appendChild(mk("span", "", mKindWord(e.kind)));
+      l1.appendChild(mk("span", "mchip " + e.status, M_STATUS_WORD[e.status] || e.status));
+      if (e.trigger === "manual") l1.appendChild(mk("span", "mtag", "by hand"));
+      if (e.is_redirected) l1.appendChild(mk("span", "mtag", "test address"));
+      if (e.handled_at) l1.appendChild(mk("span", "mtag", "handled"));
+      if (e.notes && e.notes.length) l1.appendChild(mk("span", "mtag", "📝 " + e.notes.length + (e.notes.length === 1 ? " note" : " notes")));
+      head.appendChild(l1);
+      var why = e.status === "sent" ? "" : (e.status === "failed" || e.status === "unknown" ? M_STATUS_WORD[e.status] + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : mReasonWord(e.reason));
+      head.appendChild(mk("div", "mline2", [e.to ? "To " + e.to : "", e.subject || "", why].filter(Boolean).join(" · ")));
+      head.addEventListener("click", function () {
+        MS.open[e.id] = !MS.open[e.id]; mRender();
+        var again = $("mList").querySelector('[data-log="' + e.id + '"] .mhead'); if (again) again.focus();
+      });
+      li.appendChild(head);
+      if (MS.open[e.id]) li.appendChild(mDetail(e));
+      list.appendChild(li);
+    });
+    $("mCount").textContent = shown.length + (shown.length === 1 ? " message" : " messages") + (shown.length !== MS.recs.length ? " of " + MS.recs.length : "");
+    $("mEmpty").hidden = shown.length > 0 || !MS.loaded;
+    var n = {}; MS.recs.forEach(function (e) { n[e.status] = (n[e.status] || 0) + 1; });
+    var attn = MS.recs.filter(mNeedsAttention).length;
+    $("mSummary").textContent = MS.recs.length ? M_STATUS.filter(function (s) { return n[s]; }).map(function (s) { return n[s] + " " + M_STATUS_WORD[s].toLowerCase(); }).join(" · ") + (attn ? " · " + attn + " need" + (attn === 1 ? "s" : "") + " attention" : " · nothing needs attention") : "";
+    var all = true; Array.prototype.forEach.call(mBoxes(), function (c) { if (c.getAttribute("data-f") && !c.checked) all = false; });
+    var some = !all || q || $("mAttn").checked || $("mNotes").checked || $("mRedir").checked;
+    $("mFilterSummary").textContent = some ? "Filters: some messages are hidden" + (q ? " (searching for “" + q + "”)" : "") : "Filters: all messages shown";
+    $("mFilterSummary").className = some ? "some" : "";
+  }
+  function loadMessagesStation() {
+    var my = ++MS.seq;
+    $("mMsg").textContent = "";
+    mBuildBoxes();
+    Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs")]).then(function (both) {
+      if (my !== MS.seq || !key) return;
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body || !res.body.ok) { $("mMsg").textContent = "Could not load the messages. " + adminProblem(res.status); return; }
+      MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;
+      $("mChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      mBuildBoxes(); mRender();
+    });
+  }
+  $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });
+  $("mFilters").addEventListener("change", function () { mRender(); });
+  $("mSearch").addEventListener("input", function () { mRender(); });
+  $("mShowAll").addEventListener("click", function () {
+    Array.prototype.forEach.call(mBoxes(), function (c) { c.checked = !(c.id === "mAttn" || c.id === "mNotes" || c.id === "mRedir"); });
+    $("mSearch").value = ""; mRender();
+  });
 
   // On a person's card: every class they are in, in any role.
   function personHistory(rec, host) {

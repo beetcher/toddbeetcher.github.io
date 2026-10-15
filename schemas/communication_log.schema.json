@@ -2,14 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/communication_log.schema.json",
   "title": "communication_log",
-  "description": "One line in the send log: one attempt to tell one person one thing, with what came of it (see CMS_GUIDE.md and COMMUNICATION_LOG_GUIDE.md). Written only by the server (the CMS), once per recipient per call, whatever the outcome. The message text is never stored: the kind, the template version and the facts identify what was sent. Append-only, with one exception: an operator marks a not_sent entry handled (the handled_ fields), and later provider status may be attached. The per-attendance and per-request message history is a view of these entries. Rules the schema cannot express: entries are written only by the server; create, update and soft delete through the endpoints are refused (only get, list and the mark-handled operation work); merging two people repoints individual_id; erasing a person removes what describes the entry (to, subject, handled_note) and leaves an anonymous tombstone.",
+  "description": "One line in the send log: one attempt to tell one person one thing, with what came of it (see CMS_GUIDE.md and COMMUNICATION_LOG_GUIDE.md). Written only by the server (the CMS), once per recipient per call, whatever the outcome. The message text is never stored: the kind, the template version and the facts identify what was sent. Append-only, with one exception: an operator marks a not_sent entry handled (the handled_ fields), an operator may add notes (the notes list, add only), and later provider status may be attached. The per-attendance and per-request message history is a view of these entries. Rules the schema cannot express: entries are written only by the server; create, update and soft delete through the endpoints are refused (only get, list and the mark-handled operation work); a merge, an erase or a delete of a person never changes, hides or removes an entry: the log is history.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
     "pattern": "^[a-z][a-z0-9_]*$"
   },
   "x_history": "append_only",
-  "x_retention": "Kept. When the individual is erased the entry is soft deleted and everything that describes it is removed, leaving an anonymous tombstone. (A written policy only; the erase code does it. Same policy as attendance, P-08.)",
+  "x_retention": "Kept, never edited, scrubbed or removed, whatever happens to the person it names: the log is history (Todd, 2026-10-15). Its retention is the same undecided policy as the rest (P-08).",
   "required": [
     "kind",
     "channel",
@@ -46,7 +46,7 @@
       "pattern": "^[a-z][a-z0-9_]*$"
     },
     "individual_id": {
-      "description": "The person told, when the recipient was a known individual. Optional. Not checked. Repointed when people are merged.",
+      "description": "The person told, when the recipient was a known individual. Optional. Not checked. Never changed afterwards, not even when people are merged (the old id still resolves to the survivor).",
       "type": "string",
       "format": "uuid"
     },
@@ -166,6 +166,40 @@
       "type": "string",
       "maxLength": 500,
       "x_pii": true
+    },
+    "notes": {
+      "description": "Operators' comments on this entry, oldest first, so the next person does not repeat the same investigation (for example: went to Promotions, not a bug). Add only: a note is never edited or removed, and a correction is a new note. Set by the server through the add-note operation. Up to 50 notes. Personal data, kept with the entry.",
+      "readOnly": true,
+      "type": "array",
+      "maxItems": 50,
+      "x_pii": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "at",
+          "by",
+          "text"
+        ],
+        "properties": {
+          "at": {
+            "description": "When the note was added (UTC).",
+            "type": "string",
+            "format": "date-time"
+          },
+          "by": {
+            "description": "Who wrote it, as an actor string.",
+            "type": "string",
+            "maxLength": 100
+          },
+          "text": {
+            "description": "The comment. 1 to 1000 characters.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        }
+      }
     },
     "id": {
       "description": "UUID v4, set by the server; also the Firestore document id.",

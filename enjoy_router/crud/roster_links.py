@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from .schema_kit import load_collection, stamp_update
 
-ROSTER_TYPES = ("instructor_roster", "student_roster", "attendance", "journal_event", "communication_log")  # attendance rides along: same pointer, same scrub
+ROSTER_TYPES = ("instructor_roster", "student_roster", "attendance", "journal_event")  # attendance rides along: same pointer, same scrub. communication_log is NOT here: the message log is history and is never edited or scrubbed (Todd, 2026-10-15)
 ROSTERS = tuple(load_collection(t) for t in ROSTER_TYPES)
 KEEP = frozenset({"id", "schema_version", "created_at", "created_by", "updated_at", "updated_by", "source", "status",
                   "deleted_at", "deleted_by"})

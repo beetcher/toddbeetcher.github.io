@@ -97,12 +97,13 @@ OPS = {
     "publish": ({"id"}, {"expected_updated_at"}),      # only message_templates: a draft becomes the standing version
     "draft_from": ({"id"}, set()),                     # only message_templates: copy a published version into a new draft
     "mark_handled": ({"id"}, {"note"}),                # only communication_logs: a person dealt with a not_sent message
+    "add_note": ({"id", "text"}, set()),               # only communication_logs: a comment on an entry (add only)
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
-                       "create_with_person", "update_with_person", "assign", "send_confirmation", "publish", "draft_from", "mark_handled"})
+                       "create_with_person", "update_with_person", "assign", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -111,7 +112,7 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
               "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "send_confirmation",
-              "publish", "draft_from", "mark_handled"):
+              "publish", "draft_from", "mark_handled", "add_note"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
@@ -124,6 +125,8 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
             return module.draft_from(store, a["id"], actor, now=now)
         if op == "mark_handled":
             return module.mark_handled(store, a["id"], actor, a.get("note"), now=now)
+        if op == "add_note":
+            return module.add_note(store, a["id"], actor, a.get("text"), now=now)
         if op == "assign":
             return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":

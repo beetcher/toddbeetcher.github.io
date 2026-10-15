@@ -15,7 +15,7 @@ The log never stores the message text. The kind, the template version and the fa
 - `kind` (required): the message kind attempted.
 - `template_version`: the version of the template used. Absent when no template was found or the attempt stopped earlier.
 - `audience`: the audience label the caller gave.
-- `individual_id`: the person told, when the recipient was a known individual. Repointed when people are merged. Receipts to a requester who has no individual record yet carry `request_id` and `to` instead.
+- `individual_id`: the person told, when the recipient was a known individual. Never changed afterwards, not even when people are merged: a merged person's old id still resolves to the survivor. Receipts to a requester who has no individual record yet carry `request_id` and `to` instead.
 - `channel` (required): `email`, `text`, or `none` when no channel could be chosen.
 - `to`: where it went (the redirect address when a test redirect was on). Personal data.
 - `is_redirected`: true when the test redirect replaced the real address.
@@ -29,6 +29,7 @@ The log never stores the message text. The kind, the template version and the fa
 - `dedupe_key`: the key that stops one event being sent twice.
 - `contract_version` (required): the version of the CMS call contract.
 - `handled_at`, `handled_by`, `handled_note`: set when an operator marks a `not_sent` entry as dealt with. Server only.
+- `notes`: operators' comments on the entry, oldest first, up to 50, add only. Each note has `at` (when, UTC), `by` (who, an actor string) and `text` (1 to 1000 characters). A note is never edited or removed; a correction is a new note. Server only, through the add-note operation. Personal data, kept with the entry.
 - Server fields: `id`, `schema_version`, `created_at` (for a log entry, when the attempt happened), `created_by` (who caused it: the operator, or `system:` for automatic), `updated_at`, `updated_by`, `source`, `deleted_at`, `deleted_by`.
 
 ## 3. Status and reason (a closed map)
@@ -49,8 +50,8 @@ Each reason belongs to exactly one status; the schema enforces it.
 
 ## 4. Rules the schema cannot say
 
-1. Entries are written only by the server (the CMS), not through the endpoints. `create`, `update` and `soft_delete` are refused (`op:not_supported`). Only `get`, `list` and the mark-handled operation work.
+1. Entries are written only by the server (the CMS), not through the endpoints. `create`, `update` and `soft_delete` are refused (`op:not_supported`). Only `get`, `list`, the mark-handled operation and the add-note operation work.
 2. `list` takes ONE filter at a time: `individual_id`, `request_id`, `scheduled_class_id`, `attendance_id`, `status` or `kind`, newest first by default.
-3. Append-only, with these exceptions: `handled_at`, `handled_by` and `handled_note` are set once by the mark-handled operation, and provider status may be attached later.
-4. Merging two people repoints `individual_id` on their entries. Erasing a person removes `to`, `subject` and `handled_note` and leaves an anonymous tombstone (soft deleted).
+3. Append-only, with these exceptions: `handled_at`, `handled_by` and `handled_note` are set once by the mark-handled operation, `notes` only grows (the add-note operation, any entry, any status), and provider status may be attached later. The facts of the message are never changed.
+4. The log is history. Merging two people, erasing a person, or deleting one never changes, hides or removes a log entry (Todd's rule, 2026-10-15). The only changes an entry ever gets are the add-only `notes`, the one-time mark-handled fields, and a provider status later.
 5. A log write failure never undoes anything and never raises into the caller.

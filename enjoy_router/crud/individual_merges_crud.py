@@ -37,7 +37,6 @@ INSTRUCTOR_ROSTERS = load_collection("instructor_roster")
 STUDENT_ROSTERS = load_collection("student_roster")
 ATTENDANCES = load_collection("attendance")
 JOURNAL_EVENTS = load_collection("journal_event")
-COMMUNICATION_LOGS = load_collection("communication_log")
 INDIVIDUALS = I.INDIVIDUALS
 DETAILS = R.DETAILS
 HISTORY = I.HISTORY
@@ -60,7 +59,7 @@ LINKS = (
     (INSTRUCTOR_ROSTERS.name, "individual_id", "scalar"),  # merging may leave two entries for one person; unmerge restores
     (STUDENT_ROSTERS.name, "individual_id", "scalar"),
     (JOURNAL_EVENTS.name, "individual_id", "scalar"),  # the log keeps pointing at the person
-    (COMMUNICATION_LOGS.name, "individual_id", "scalar"),  # what was sent to the person stays with the person (R-16)
+    # communication_log is deliberately NOT here: the message log is history and is never edited by a merge (Todd, 2026-10-15)
     (ATTENDANCES.name, "individual_id", "scalar"),  # a class may then hold two records for one person; unmerge restores
 )
 

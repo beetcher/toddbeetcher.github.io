@@ -1,7 +1,7 @@
 """Handler for `communication_logs`: the append-only record of every message the CMS tried to send (see COMMUNICATION_LOG_GUIDE.md).
 
 Entries are written only by the server (`record`, called by launch_comms.stores.LogStore). Through the endpoints only `get`, `list` and
-`mark_handled` work; `create`, `update` and `soft_delete` are refused. list needs no index: one equality filter, sorted here.
+`mark_handled` and `add_note` work; `create`, `update` and `soft_delete` are refused. list needs no index: one equality filter, sorted here.
 """
 from __future__ import annotations
 
@@ -20,6 +20,8 @@ SCAN = 500
 _LIST_FILTERS = ("individual_id", "request_id", "scheduled_class_id", "attendance_id", "status", "kind", "reason", "dedupe_key")
 _FIELDS = tuple(f for f in LOG.properties if f not in LOG.read_only)
 NOTE_MAX = 500
+COMMENT_MAX = 1000
+MAX_NOTES = 50
 
 
 def _bad(problems):
@@ -86,6 +88,9 @@ def mark_handled(store, id, actor, note=None, tx=None, now=None):   # noqa: A002
     sets = {"handled_at": stamp, "handled_by": actor, "updated_at": stamp, "updated_by": actor}
     if note:
         sets["handled_note"] = note
+        notes = [*(cur.get("notes") or [])]
+        if len(notes) < MAX_NOTES:   # the comment also reads as a note, so there is one place to look
+            sets["notes"] = notes + [{"at": stamp, "by": actor, "text": "Handled: " + note}]
     try:
         store.update(LOG.name, id, sets, (), expected_updated_at=cur["updated_at"], tx=tx)
     except DocMissing:
@@ -93,6 +98,38 @@ def mark_handled(store, id, actor, note=None, tx=None, now=None):   # noqa: A002
     except StaleUpdate:
         return failure("conflict")
     return success({"id": id, "handled_at": stamp, "handled_by": actor})
+
+
+def add_note(store, id, actor, text, tx=None, now=None):   # noqa: A002
+    """An operator comments on an entry (any status) so the next person need not repeat the investigation. Add only: a note is never
+    edited or removed. The facts of the entry do not change."""
+    problems = check_actor(actor)
+    if not (isinstance(id, str) and UUID_PATTERN.match(id)):
+        problems.append({"field": "id", "issue": "invalid_format"})
+    text = clean(text) if isinstance(text, str) else text
+    if not isinstance(text, str) or not text:
+        problems.append({"field": "text", "issue": "required"})
+    elif len(text) > COMMENT_MAX:
+        problems.append({"field": "text", "issue": "too_long"})
+    if problems:
+        return _bad(problems)
+    cur = store.get(LOG.name, id)
+    if cur is None or "deleted_at" in cur:
+        return failure("not_found")
+    notes = [*(cur.get("notes") or [])]
+    if len(notes) >= MAX_NOTES:
+        return _bad([{"field": "notes", "issue": "too_many"}])
+    stamp = utc_stamp(now)
+    notes.append({"at": stamp, "by": actor, "text": text})
+    if check_field(LOG, "notes", notes, allow_read_only=True):
+        return failure("server_error")
+    try:
+        store.update(LOG.name, id, {"notes": notes, "updated_at": stamp, "updated_by": actor}, (), expected_updated_at=cur["updated_at"], tx=tx)
+    except DocMissing:
+        return failure("not_found")
+    except StaleUpdate:
+        return failure("conflict")
+    return success({"id": id, "notes": notes})
 
 
 def _refused(*_a, **_k):

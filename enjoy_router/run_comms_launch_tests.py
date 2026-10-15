@@ -243,6 +243,24 @@ check("the hand-contact entry appears in the log filtered by reason", any(x["ind
 mh = LG.mark_handled(s, r.log_id, B, "Called Tex on the phone", now=tick())
 check("mark_handled sets handled_at/by/note once", mh.ok and LG.get(s, r.log_id).data["handled_by"] == B and LG.get(s, r.log_id).data["handled_note"] == "Called Tex on the phone", mh.problems if not mh.ok else "")
 check("mark_handled a second time is a conflict", LG.mark_handled(s, r.log_id, B, "again", now=tick()).code == "conflict")
+# notes: add only, any status, facts never change
+before = dict(LG.get(s, r.log_id).data)
+check("mark_handled with a comment also leaves it as a note", [n["text"] for n in before.get("notes", [])] == ["Handled: Called Tex on the phone"] and before["notes"][0]["by"] == B)
+sent_first = LG.list(s, {"status": "sent"}).data["records"][0]
+n1 = LG.add_note(s, sent_first["id"], B, "  Landed in Promotions; not a bug.  ", now=tick())
+n2 = LG.add_note(s, sent_first["id"], "user:other", "Fixed by dropping our Message-ID.", now=tick())
+got = LG.get(s, sent_first["id"]).data
+check("add_note works on a sent entry, oldest first, trimmed, with author and time", n1.ok and n2.ok and [n["text"] for n in got["notes"]] == ["Landed in Promotions; not a bug.", "Fixed by dropping our Message-ID."] and [n["by"] for n in got["notes"]] == [B, "user:other"] and all(n["at"] for n in got["notes"]))
+check("add_note never changes the facts of the entry", all(got.get(k) == sent_first.get(k) for k in ("kind", "to", "subject", "status", "reason", "channel", "trigger", "created_at", "individual_id", "attendance_id")))
+check("add_note: empty text is refused", ("text", "required") in issues(LG.add_note(s, sent_first["id"], B, "   ", now=tick())))
+check("add_note: 1001 characters is refused, 1000 is fine", ("text", "too_long") in issues(LG.add_note(s, sent_first["id"], B, "x" * 1001, now=tick())) and LG.add_note(s, sent_first["id"], B, "y" * 1000, now=tick()).ok)
+check("add_note: unknown or malformed id", LG.add_note(s, "00000000-0000-4000-8000-000000000000", B, "hi", now=tick()).code == "not_found" and ("id", "invalid_format") in issues(LG.add_note(s, "nope", B, "hi", now=tick())))
+check("add_note: a bad actor is refused", not LG.add_note(s, sent_first["id"], "", "hi", now=tick()).ok)
+full = LG.get(s, sent_first["id"]).data
+for i in range(LG.MAX_NOTES - len(full["notes"])):
+    LG.add_note(s, sent_first["id"], B, "n%d" % i, now=tick())
+check("add_note: the 51st note is refused", ("notes", "too_many") in issues(LG.add_note(s, sent_first["id"], B, "one more", now=tick())) and len(LG.get(s, sent_first["id"]).data["notes"]) == LG.MAX_NOTES)
+check("update and soft_delete stay refused, so a note cannot be edited or removed", not LG.update(s).ok and not LG.soft_delete(s).ok)
 sent_entry = LG.list(s, {"status": "sent"}).data["records"][0]
 check("mark_handled on a sent entry is refused", ("status", "not_allowed") in issues(LG.mark_handled(s, sent_entry["id"], B, None, now=tick())))
 # a person with no contact at all
@@ -287,20 +305,23 @@ check("R-18 TemplateStore: a published one is found and a draft never is", ts.fi
 add_tpl(ts, {**base_rec, "status": "published", "version": 2, "previous_id": old["id"]})
 check("R-18 TemplateStore: the standing version is the one nobody supersedes", ts.find_published("placement_confirmation", "email", "student")["version"] == 2 and ts.find_published("placement_confirmation", "email", "other") is None)
 
-# ------------------------------------------------------------------ R-16 merge and erase reach the log
+# ------------------------------------------------------------------ R-16 the log is history: a merge and an erase never touch it (Todd, 2026-10-15)
 dupe = person("Gladys", "Hart", email="gladys2@example.com")
 att_d = assign(std, dupe)
 cd, _ = PC.call_for(s, att_d["id"], A); c.notify(**cd)
-before = LG.list(s, {"individual_id": dupe["id"]}).data["count"]
+snap_dupe = {x["id"]: dict(x) for x in LG.list(s, {"individual_id": dupe["id"]}).data["records"]}
 m = IS.merge(s, glad["id"], dupe["id"], "same person", A, None, now=tick())
-check("R-16 merge repoints the duplicate's log entries to the survivor", m is not None and m.ok and before >= 1 and LG.list(s, {"individual_id": dupe["id"]}).data["count"] == 0
-      and any(x["attendance_id"] == att_d["id"] for x in LG.list(s, {"individual_id": glad["id"]}).data["records"]), (m.problems if m is not None and not m.ok else ""))
+now_dupe = {x["id"]: dict(x) for x in LG.list(s, {"individual_id": dupe["id"]}).data["records"]}
+check("R-16 merge leaves the duplicate's log entries exactly as they were (still pointing at the duplicate)", m is not None and m.ok and snap_dupe and now_dupe == snap_dupe,
+      (m.problems if m is not None and not m.ok else ""))
 ids_before = [x["id"] for x in LG.list(s, {"individual_id": txt["id"]}).data["records"]]
-n_before = len(ids_before)
+snap_tex = {i: dict(s.get("communication_logs", i)) for i in ids_before}
+had_notes = any(d.get("notes") for d in snap_tex.values())
 er = IS.erase(s, txt["id"], A, now=tick()) if hasattr(IS, "erase") else None
-left = [s.get("communication_logs", i) for i in ids_before]
-check("R-16 erase soft-deletes the person's log entries and removes what describes them", er is not None and er.ok and n_before >= 1 and all("deleted_at" in d and not ({"to", "subject", "handled_note", "individual_id"} & set(d)) for d in left),
-      (er.problems if er is not None and not er.ok else str(left)))
+after_tex = {i: dict(s.get("communication_logs", i)) for i in ids_before}
+check("R-16 erase leaves the person's log entries exactly as they were: nothing removed, nothing hidden, notes kept", er is not None and er.ok and ids_before and had_notes and after_tex == snap_tex and not any("deleted_at" in d for d in after_tex.values())
+      and all(x["id"] in {y["id"] for y in LG.list(s, {"status": "not_sent"}).data["records"]} for x in snap_tex.values() if x["status"] == "not_sent"),
+      (er.problems if er is not None and not er.ok else ""))
 
 # ------------------------------------------------------------------ the endpoint (admin door) reaches the new collections and ops
 lim = make_failure_limiter(); ts_ = tick()
@@ -324,6 +345,14 @@ r = call_ep("venues", "publish", {"id": d.body["data"]["id"]})
 check("endpoint: only templates have publish", r.status == 400, r.body)
 r = call_ep("venues", "mark_handled", {"id": unh["id"]})
 check("endpoint: only the log has mark_handled", r.status == 400, r.body)
+r = call_ep("communication_logs", "add_note", {"id": unh["id"], "text": "Checked the Console, phoned her."})
+check("endpoint: add_note works and returns the notes", r.status == 200 and r.body["data"]["notes"][-1]["text"] == "Checked the Console, phoned her." and r.body["data"]["notes"][-1]["by"] == "user:admin", r.body)
+r = call_ep("communication_logs", "add_note", {"id": unh["id"]})
+check("endpoint: add_note needs the text", r.status == 400, r.body)
+r = call_ep("venues", "add_note", {"id": unh["id"], "text": "x"})
+check("endpoint: only the log has add_note", r.status == 400, r.body)
+r = call_ep("communication_logs", "list", {"filters": {"status": "not_sent"}})
+check("endpoint: list returns the notes", any(x.get("notes") for x in r.body["data"]["records"]), r.body)
 
 print(f"\n{total - len(fails)}/{total} checks passed" + ("" if not fails else "\nFAILED:\n - " + "\n - ".join(fails)))
 sys.exit(1 if fails else 0)

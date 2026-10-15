@@ -109,6 +109,7 @@ with sync_playwright() as p:
     # a rejected email
     mode[0] = "reject"
     add_student("bea", "Bea Bad")
+    wait_msg("did not go")   # the email result is appended a moment after "Added ..."
     check("a failed email is said plainly, and the person is still placed", "did not go" in pg.locator("#atMsg").inner_text() and row("Bea Bad").count() == 1, pg.locator("#atMsg").inner_text())
     pg.wait_for_selector("#atBody .alogline.bad")
     bt = row("Bea Bad").locator(".alogline.bad").inner_text()
