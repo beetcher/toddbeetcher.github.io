@@ -1090,3 +1090,15 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .say__more { margin: 4px 0 0; }
 .say__pink { color: var(--say-pink); }
 @media (min-width: 900px) { .say { min-height: 62vh; } .say__inner { max-width: 40rem; } }
+
+/* Todd panel: small framed headshot to the right of the LinkedIn pill */
+.hello__id { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.hello .hello__id .hello__li { margin: 0; }
+.hello .hello__id .hello__me { position: relative; flex: none; width: 98px; padding: 5px; border-radius: 6px; --rot: 3deg; box-shadow: 0 8px 18px rgba(20,8,40,.3); }
+@media (max-width: 899px) { .hello__id .btn { padding: 10px 16px; font-size: .95rem; } }
+@media (min-width: 900px) {
+  .hello__id { justify-content: flex-start; gap: var(--sp-lg); }
+  .hello .hello__id .hello__me { width: 124px; padding: 6px; }
+}
+.hello__id .btn { white-space: nowrap; }
+@media (max-width: 389px) { .hello__id { gap: 8px; } .hello__id .btn { padding: 9px 12px; font-size: .88rem; } .hello .hello__id .hello__me { width: 84px; } }
