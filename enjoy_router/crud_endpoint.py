@@ -46,7 +46,8 @@ import logging
 from datetime import datetime
 
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (assignments_service, attendances_service, classes_service, curriculums_crud, individual_restricted_details_service,
+from crud import (assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
+                  individual_restricted_details_service, message_templates_crud,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service)
 from crud.schema_kit import failure
@@ -64,7 +65,9 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service,
             "instructor_rosters": instructor_rosters_service, "student_rosters": student_rosters_service,
             "curriculums": curriculums_crud, "attendances": attendances_service, "journal_events": journal_events_crud,
-            "organizations": organizations_crud, "organization_links": organization_links_service}
+            "organizations": organizations_crud, "organization_links": organization_links_service,
+            "message_templates": message_templates_crud, "communication_logs": communication_logs_crud,
+            "comms_settings": comms_settings_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})
 
@@ -91,12 +94,15 @@ OPS = {
     "assign": ({"data"}, {"person", "source"}),                              # only attendances: person + roster entry + attendance together
     "send_confirmation": ({"id"}, set()),                                    # only attendances: send the placement confirmation email now
     "update_with_person": ({"id"}, {"changes", "person", "expected_updated_at"}),   # only the rosters
+    "publish": ({"id"}, {"expected_updated_at"}),      # only message_templates: a draft becomes the standing version
+    "draft_from": ({"id"}, set()),                     # only message_templates: copy a published version into a new draft
+    "mark_handled": ({"id"}, {"note"}),                # only communication_logs: a person dealt with a not_sent message
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
-                       "create_with_person", "update_with_person", "assign", "send_confirmation"})
+                       "create_with_person", "update_with_person", "assign", "send_confirmation", "publish", "draft_from", "mark_handled"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -104,13 +110,20 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "send_confirmation"):
+              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "send_confirmation",
+              "publish", "draft_from", "mark_handled"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
             return module.create_with_place(store, a["data"], actor, a.get("address"), a.get("location_id"), a.get("source", "dashboard"), now=now)
         if op == "send_confirmation":
             return module.send_confirmation(store, a["id"], actor, now=now)
+        if op == "publish":
+            return module.publish(store, a["id"], actor, a.get("expected_updated_at"), now=now)
+        if op == "draft_from":
+            return module.draft_from(store, a["id"], actor, now=now)
+        if op == "mark_handled":
+            return module.mark_handled(store, a["id"], actor, a.get("note"), now=now)
         if op == "assign":
             return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now)
         if op == "create_with_person":

@@ -85,7 +85,7 @@
       ]
     },
     "reason": {
-      "description": "The closed reason code. Each reason belongs to exactly one status: ok is sent; adapter_error is failed; timeout is unknown; unknown_kind, invalid_context, no_contact, channel_unavailable, no_template, incomplete and time_budget are not_sent; cms_off, log_only, duplicate, excluded and muted are skipped. Required.",
+      "description": "The closed reason code. Each reason belongs to exactly one status: ok is sent; adapter_error is failed; timeout is unknown; unknown_kind, invalid_context, no_contact, channel_unavailable, no_template, incomplete, time_budget and internal_error (a bug in the CMS itself, caught so the caller is never hurt) are not_sent; cms_off, log_only, duplicate, excluded and muted are skipped. Required.",
       "enum": [
         "ok",
         "adapter_error",
@@ -97,6 +97,7 @@
         "no_template",
         "incomplete",
         "time_budget",
+        "internal_error",
         "cms_off",
         "log_only",
         "duplicate",
@@ -297,7 +298,8 @@
               "channel_unavailable",
               "no_template",
               "incomplete",
-              "time_budget"
+              "time_budget",
+              "internal_error"
             ]
           }
         },

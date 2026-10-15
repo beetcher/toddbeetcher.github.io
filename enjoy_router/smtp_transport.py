@@ -29,14 +29,17 @@ class SendResult:
 transport: Optional[Callable[..., SendResult]] = None
 
 
-def send(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None) -> SendResult:
+def send(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None, headers=None) -> SendResult:
     """Use the explicitly enabled transport; never expose exception details.
 
     `attachments` is an optional list of (filename, mime_type, bytes), for example a calendar file; it is passed on only when given,
-    so a transport that does not know about attachments keeps working for plain messages."""
+    so a transport that does not know about attachments keeps working for plain messages.
+    `headers` is an optional dict (from_name, from_address, reply_to, message_id); like attachments it is passed on only when given."""
     if transport is None:
         return SendResult(False, "disabled")
     try:
+        if headers:
+            return transport(key, recipient, subject, body, html_body, attachments, headers)
         if attachments:
             return transport(key, recipient, subject, body, html_body, attachments)
         if html_body is None:
@@ -48,7 +51,7 @@ def send(key: str, recipient: str, subject: str, body: str, html_body=None, atta
         return SendResult(False, "unknown")
 
 
-def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None) -> SendResult:
+def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None, headers=None) -> SendResult:
     """One attempt: certificate-verified STARTTLS before login, with no retry.
 
     A connection loss during submission is ambiguous and returns `unknown`.
@@ -60,8 +63,12 @@ def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None
     submitting = False
     try:
         message = EmailMessage()
-        message["From"] = f"Launch <{FROM_ADDRESS}>"
-        message["Reply-To"] = FROM_ADDRESS
+        h = headers or {}
+        from_address = h.get("from_address") or FROM_ADDRESS
+        message["From"] = f"{h.get('from_name') or 'Launch'} <{from_address}>"
+        message["Reply-To"] = h.get("reply_to") or from_address
+        if h.get("message_id"):
+            message["Message-ID"] = h["message_id"]
         message["To"] = recipient
         message["Subject"] = subject
         message.set_content(body)
@@ -78,7 +85,7 @@ def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None
         client.ehlo()
         client.login(LOGIN, key)
         submitting = True
-        refused = client.send_message(message, from_addr=FROM_ADDRESS, to_addrs=[recipient])
+        refused = client.send_message(message, from_addr=from_address, to_addrs=[recipient])
         return SendResult(not refused, "recipient_rejected" if refused else "accepted")
     except smtplib.SMTPAuthenticationError:
         return SendResult(False, "authentication_failed")
@@ -106,10 +113,10 @@ def _send_once(key: str, recipient: str, subject: str, body: str, html_body=None
                 pass
 
 
-def _smtp_worker(connection, key, recipient, subject, body, html_body, attachments=None):
+def _smtp_worker(connection, key, recipient, subject, body, html_body, attachments=None, headers=None):
     """Worker credentials travel in memory, never in command arguments or files."""
     try:
-        connection.send(_send_once(key, recipient, subject, body, html_body, attachments))
+        connection.send(_send_once(key, recipient, subject, body, html_body, attachments, headers))
     except BaseException:
         # No traceback: exception text can contain SMTP replies or submitted data.
         pass
@@ -117,7 +124,7 @@ def _smtp_worker(connection, key, recipient, subject, body, html_body, attachmen
         connection.close()
 
 
-def send_brevo(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None) -> SendResult:
+def send_brevo(key: str, recipient: str, subject: str, body: str, html_body=None, attachments=None, headers=None) -> SendResult:
     """Cap the entire attempt, including DNS/connect/TLS/auth/DATA, at about 10s.
 
     A separate worker lets us stop blocked I/O instead of leaving a thread that
@@ -128,7 +135,7 @@ def send_brevo(key: str, recipient: str, subject: str, body: str, html_body=None
     deadline = time.monotonic() + TIMEOUT_SECONDS
     context = multiprocessing.get_context("spawn")
     receiver, sender = context.Pipe(duplex=False)
-    worker = context.Process(target=_smtp_worker, args=(sender, key, recipient, subject, body, html_body, attachments))
+    worker = context.Process(target=_smtp_worker, args=(sender, key, recipient, subject, body, html_body, attachments, headers))
     started = False
     try:
         worker.start()

@@ -40,8 +40,10 @@ Each reason belongs to exactly one status; the schema enforces it.
 | `sent` | the provider accepted it | `ok` |
 | `failed` | the provider refused it | `adapter_error` |
 | `unknown` | no answer in time; we cannot say | `timeout` |
-| `not_sent` | the CMS wanted to send and could not; a person may need to act | `unknown_kind`, `invalid_context`, `no_contact`, `channel_unavailable`, `no_template`, `incomplete`, `time_budget` |
+| `not_sent` | the CMS wanted to send and could not; a person may need to act | `unknown_kind`, `invalid_context`, `no_contact`, `channel_unavailable`, `no_template`, `incomplete`, `time_budget`, `internal_error` |
 | `skipped` | the CMS decided not to send; nobody needs to act | `cms_off`, `log_only`, `duplicate`, `excluded`, `muted` |
+
+`internal_error` means a bug inside the CMS was caught: the caller was not hurt, and the entry says so.
 
 `channel_unavailable` covers the rule that a person who prefers text gets no email: the entry is `not_sent` and appears in the hand-contact queue until it is marked handled.
 

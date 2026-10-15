@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from .schema_kit import load_collection, stamp_update
 
-ROSTER_TYPES = ("instructor_roster", "student_roster", "attendance", "journal_event")  # attendance rides along: same pointer, same scrub
+ROSTER_TYPES = ("instructor_roster", "student_roster", "attendance", "journal_event", "communication_log")  # attendance rides along: same pointer, same scrub
 ROSTERS = tuple(load_collection(t) for t in ROSTER_TYPES)
 KEEP = frozenset({"id", "schema_version", "created_at", "created_by", "updated_at", "updated_by", "source", "status",
                   "deleted_at", "deleted_by"})
@@ -16,7 +16,7 @@ def scrub_for_individual(store, individual_id, actor, tx, now=None):
     describes it is removed, leaving an anonymous tombstone. Writes join `tx`. Returns {"roster_entries_scrubbed": n}."""
     n = 0
     for coll in ROSTERS:
-        for d in store.query(coll.name, [("individual_id", "==", individual_id)], limit=50):
+        for d in store.query(coll.name, [("individual_id", "==", individual_id)], limit=200):
             stamp = stamp_update(actor, now)
             fields = dict(stamp)
             fields.setdefault("deleted_at", d.get("deleted_at") or stamp["updated_at"])

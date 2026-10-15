@@ -90,6 +90,15 @@
       "dedupe_key": "placement_confirmation:7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
       "contract_version": 1,
       "is_redirected": true
+    },
+    "not_sent_internal_error": {
+      "kind": "placement_confirmation",
+      "channel": "none",
+      "status": "not_sent",
+      "reason": "internal_error",
+      "trigger": "automatic",
+      "attendance_id": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
+      "contract_version": 1
     }
   },
   "invalid": {
