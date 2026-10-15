@@ -35,6 +35,25 @@
     border: 1px solid var(--ink); background: var(--ink); color: #fff;
   }
   button.quiet { background: transparent; color: inherit; border-color: currentColor; }
+  button { transition: transform .08s ease, box-shadow .15s ease, filter .15s ease; }
+  button:not(:disabled):not(.working):hover { filter: brightness(1.12); box-shadow: 0 2px 8px rgba(0,0,0,.22); }
+  button.quiet:not(:disabled):not(.working):hover { filter: none; background: rgba(0,0,0,.07); }
+  button:not(:disabled):not(.working):active { transform: translateY(1px) scale(.985); box-shadow: none; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  /* A save in progress: the button that was pressed shows a spinner and cannot be pressed again. */
+  button.working { position: relative; pointer-events: none; cursor: progress; opacity: .85; }
+  button.working::before { content: ""; display: inline-block; width: .9em; height: .9em; margin-right: .55em; vertical-align: -.1em;
+    border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+  button.working:disabled { opacity: .85; cursor: progress; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #workToast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 24px); opacity: 0; pointer-events: none; z-index: 10000;
+    max-width: min(92vw, 520px); padding: 12px 18px; border-radius: 999px; background: #1b1b1b; color: #fff; font-weight: 600; font-size: 15px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.35); transition: opacity .18s ease, transform .18s ease; display: flex; gap: 10px; align-items: center; }
+  #workToast.on { opacity: 1; transform: translate(-50%, 0); }
+  #workToast .dot { flex: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--orange); border-right-color: transparent; animation: spin .7s linear infinite; }
+  #workToast.ok { background: #14532d; } #workToast.ok .dot { animation: none; border-color: #fff; background: #fff; }
+  #workToast.bad { background: var(--err); } #workToast.bad .dot { animation: none; border-color: #fff; background: #fff; }
+  @media (prefers-reduced-motion: reduce) { button.working::before, #workToast .dot { animation-duration: 3s; } button { transition: none; } }
   .mdetail button.quiet:hover, .mdetail button.quiet:focus-visible { background: rgba(0,0,0,.08); box-shadow: 0 0 0 2px currentColor; }
   .mdetail button.quiet.copied { background: #1b6e3a; color: #fff; border-color: #1b6e3a; }
   header button.quiet { color: #fff; border-color: #6a6a6a; min-height: 40px; }
@@ -378,6 +397,7 @@
 </style>
 </head>
 <body>
+<div id="workToast" role="status" aria-live="polite"><span class="dot"></span><span id="workText"></span></div>
 <header id="topbar">
   <div>
     <h1><a class="brand" id="brand" href="#/home" aria-label="LAUNCH Console: go to Home"><img src="assets/launch-tile-mobile.webp" width="40" height="40" alt=""><span><span class="bname">Console</span><span class="bapp" id="appName">LAUNCH</span></span></a></h1>
@@ -912,7 +932,7 @@
         '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
         '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
         '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
-        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept. <b>People are emailed when a placement ends</b>: everyone in a cancelled or deleted class gets a cancel notice (with a calendar file that removes the event); a person set to declined, withdrawn or cancelled, or removed, is told, and when a student who held a seat leaves, every instructor of the class is told. The status menu acts at once, so pick carefully. Messages shows every one of these emails, including any that could not be sent.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept. <b>People are emailed when a placement ends</b>: everyone in a cancelled or deleted class gets a cancel notice (with a calendar file that removes the event); a person set to declined, withdrawn or cancelled, or removed, is told, and when a student who held a seat leaves, every instructor of the class is told. Choosing a status that ends someone's place (declined, withdrawn, cancelled) asks you to confirm first, because they are emailed. Every save shows a spinner on the button and a Working, then Done, message at the bottom of the screen. Messages shows every one of these emails, including any that could not be sent.</li>' +
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled and emailed (students and instructors).</li>' +
         '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
@@ -1380,7 +1400,27 @@
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
   var slugTouched = false, addPlace = null;
 
+  // Anything that changes data shows a working indicator on the button that was pressed (which then cannot be pressed twice) and a
+  // toast at the bottom: "Working…", then "Done" or "Did not go through". Reading (list, get, lookups) stays silent.
+  var READ_OPS = { list: 1, get: 1, find_gps: 1 }, lastBtn = null, lastBtnAt = 0, workN = 0, toastTimer = null;
+  document.addEventListener("click", function (e) { var b = e.target && e.target.closest && e.target.closest("button"); if (b) { lastBtn = b; lastBtnAt = Date.now(); } }, true);
+  function toast(kind, text, ms) {
+    var el = document.getElementById("workToast"); if (!el) return;
+    clearTimeout(toastTimer); el.className = (kind ? kind + " " : "") + "on"; document.getElementById("workText").textContent = text;
+    if (ms) toastTimer = setTimeout(function () { el.className = el.className.replace(/\bon\b/, "").trim(); }, ms);
+  }
   function admin(op, args, coll) {
+    if (READ_OPS[op]) return adminCall(op, args, coll);
+    var btn = lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null;
+    if (btn) { btn.classList.add("working"); btn.setAttribute("aria-busy", "true"); }
+    workN++; toast("", "Working… this can take a few seconds when emails are sent.", 0);
+    return adminCall(op, args, coll).then(function (res) {
+      workN--; if (btn) { btn.classList.remove("working"); btn.removeAttribute("aria-busy"); }
+      if (!workN) { var ok = res.status === 200 && res.body && res.body.ok; if (ok) toast("ok", "Done", 1800); else if (res.status === 401) toast("", "", 1); else toast("bad", "That did not go through. See the message above.", 3500); }
+      return res;
+    });
+  }
+  function adminCall(op, args, coll) {
     return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
         headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
         body: JSON.stringify({ collection: coll || "venues", op: op, args: args }) })
@@ -3661,6 +3701,7 @@
     row.appendChild(top);
     if (r.role === "student") attCorrespondence(r, row, say, redraw);
     sel.addEventListener("change", function () {
+      if (leftOpen(r.status, sel.value) && !window.confirm(attName(r) + " will be set to " + ATT_WORD[sel.value].toLowerCase() + " and emailed" + (r.role === "student" ? ", and the instructors too" : "") + ". Go ahead?")) { sel.value = r.status; return; }
       sel.disabled = true;
       admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
         sel.disabled = false;
