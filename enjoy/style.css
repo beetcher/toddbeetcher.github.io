@@ -1066,3 +1066,27 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 @media (min-width: 900px) { .wall__scroll { max-height: none; overflow: hidden; } .wall__scroll img, .wall__scroll.is-zoomed img { width: 100%; cursor: default; } .wall__hint { display: none; } }
 @media (prefers-reduced-motion: reduce) { .zero__bait { animation: none; } .zero__egg.is-flash::after { animation: none; opacity: 0; } .wall[open] .wall__card { animation: none; } }
 @media print { .zero__egg, .wall { display: none; } }
+
+/* ===== Four statements after the hero (added 2026-10-15) =====
+   Colors alternate cream / indigo with a soft fade into the next panel.
+   Each panel sets --bg, --ink, --next (the color it fades into) and --prev (only panel 1 fades in from the hero).
+   Relay idea for later (A+B, B+C, C+D): change only these variables. */
+:root { --say-cream: var(--color-bg); --say-indigo: var(--color-text); --say-pink: var(--color-accent); --say-hero-end: #1c1233; --say-fade: 120px; }
+.say {
+  --bg: var(--say-cream); --ink: var(--say-indigo); --prev: var(--bg); --next: var(--bg);
+  position: relative; min-height: 100svh; display: grid; place-items: center; text-align: center;
+  padding: 72px var(--content-padding) 130px; color: var(--ink);
+  background: linear-gradient(to bottom, var(--prev) 0, var(--bg) var(--say-fade), var(--bg) calc(100% - var(--say-fade)), var(--next) 100%);
+}
+.say--1 { --bg: var(--say-cream); --ink: var(--say-indigo); --prev: var(--say-hero-end); --next: var(--say-indigo); padding-top: 110px; }
+.say--2 { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-cream); }
+.say--3 { --bg: var(--say-cream); --ink: var(--say-indigo); --next: var(--say-indigo); }
+.say--4 { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-indigo); }
+.say.has-next { padding-bottom: 130px; }
+.say__inner { max-width: 34rem; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.say__kicker { margin: 0; font: 800 .9rem/1 var(--font-heading); letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
+.say__head { margin: 0; font: 800 clamp(1.8rem, 7.4vw, 2.7rem)/1.1 var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; }
+.say__body { margin: 0; font-weight: 700; font-size: clamp(1.1rem, 4.2vw, 1.4rem); line-height: 1.4; text-wrap: pretty; }
+.say__more { margin: 4px 0 0; }
+.say__pink { color: var(--say-pink); }
+@media (min-width: 900px) { .say { min-height: 62vh; } .say__inner { max-width: 40rem; } }

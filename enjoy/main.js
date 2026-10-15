@@ -1025,7 +1025,7 @@ function initAsk() {
 
 // One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
 function addPanelArrows() {
-  const panels = [document.getElementById('message'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get')]
+  const panels = [document.getElementById('say-learn'), document.getElementById('say-how'), document.getElementById('say-do'), document.getElementById('say-why'), document.getElementById('message'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get')]
     .concat(Array.from(document.querySelectorAll('#moments > section')))
     .concat([document.getElementById('faq'), document.getElementById('footer')])
     .filter(Boolean);
