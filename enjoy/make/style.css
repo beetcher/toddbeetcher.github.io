@@ -1107,3 +1107,18 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .make__list { list-style: none; margin: 0 0 var(--sp-md); padding: 0; display: grid; gap: var(--sp-xs); }
 .make__list li { font-weight: 800; font-size: clamp(1.3rem, 4.2vw, 1.8rem); line-height: 1.2; padding-left: 1.1em; position: relative; }
 .make__list li::before { content: ''; position: absolute; left: 0; top: .5em; width: .5em; height: .5em; border-radius: 50%; background: var(--color-accent); }
+
+/* ===== Class one page (added 2026-10-15) =====
+   Same cream / indigo relay as the four statements. Panels alternate; each fades into the next one's color. */
+.say--cream { --bg: var(--say-cream); --ink: var(--say-indigo); --next: var(--say-indigo); }
+.say--ink { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-cream); }
+.learn .say { min-height: 70svh; }
+.learn .say__head { color: var(--say-pink); }
+.learn .say__inner { max-width: 36rem; }
+.learn__prompt { margin: 0; padding: 12px 18px; border: 2px solid var(--say-pink); border-radius: 14px; font-weight: 700; font-size: clamp(1rem, 3.8vw, 1.15rem); line-height: 1.45; text-align: left; text-wrap: pretty; }
+.learn__note { margin: 0; font-weight: 500; font-size: 1rem; line-height: 1.45; opacity: .82; text-wrap: pretty; }
+.learn__fig { margin: 0; width: 100%; max-width: 30rem; }
+.learn__fig a { display: block; }
+.learn__fig img { display: block; width: 100%; height: auto; }
+.learn__fig figcaption { margin-top: 8px; font-size: .9rem; opacity: .8; }
+@media (min-width: 900px) { .learn .say__inner { max-width: 42rem; } .learn__fig { max-width: 36rem; } }
