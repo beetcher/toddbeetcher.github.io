@@ -2804,6 +2804,8 @@
         s2.body.appendChild(btn); s2.body.appendChild(box);
       }
     });
+    var sIns = section("Instructors", true); sIns.d.id = "cInsSection";
+    sIns.body.appendChild(classInstructors(rec));
     var more = mk("details", "more");
     more.appendChild(mk("summary", "", "More (program, organizer, accessibility)"));
     var mbody = mk("div", "mbody"); more.appendChild(mbody); host.appendChild(more);
@@ -2827,6 +2829,95 @@
       w.hidden = !show;
     }
     cField("status").el.addEventListener("change", syncReason); syncReason();
+  }
+
+  // Instructors of a class, on the Edit class screen. Instructors are placements (Attendance records), not class fields, so these buttons
+  // save at once (the Save changes button below saves only the class details) and email the people in the class: a new lead tells everyone
+  // the lead changed, and the instructor who is placed or removed is told too. The new lead is promoted first and the old lead demoted
+  // second, so the class sees ONE lead change, not two.
+  function classInstructors(rec) {
+    var box = mk("div", "insbox"), list = mk("div"), say = mk("div", "msg"), st = { lead: null, others: [], all: [] };
+    say.setAttribute("role", "status"); say.id = "cInsMsg"; box.id = "cInstructors";
+    function nameOf(r) { return attName(r); }
+    function fail(res) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [];
+      if (ps.some(function (p) { return p.issue === "address_required"; })) return "That instructor has no address on file. Open the Instructors station, open them and tap Add address, then try again.";
+      return attFail(res);
+    }
+    function nextOrder() { var m = 0; st.all.forEach(function (r) { if ((r.order || 0) > m) m = r.order; }); return Math.min(m + 1, 50); }
+    function load() {
+      list.textContent = "Loading instructors…";
+      return admin("list", { filters: { scheduled_class_id: rec.id }, limit: 200, expand: true }, ATT).then(function (res) {
+        list.textContent = "";
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body || !res.body.ok) { list.appendChild(mk("div", "hint", "Could not load the instructors. " + adminProblem(res.status))); return; }
+        var ins = (res.body.data.records || []).filter(function (r) {
+          return (r.role === "primary_instructor" || r.role === "instructor") && r.status !== "declined" && r.status !== "withdrawn" && r.status !== "cancelled";
+        });
+        ins.sort(function (a, b) { return (a.order || 999) - (b.order || 999) || String(a.created_at).localeCompare(String(b.created_at)); });
+        st.all = ins;
+        st.lead = ins.filter(function (r) { return r.role === "primary_instructor" && (r.status === "assigned" || r.status === "confirmed"); })[0] || null;
+        st.others = ins.filter(function (r) { return r !== st.lead; });
+        list.appendChild(mk("div", "note", st.lead ? "Lead instructor: " + nameOf(st.lead) : "No lead instructor yet."));
+        st.others.forEach(function (r) {
+          var row = mk("div", "arow"), top = mk("div", "atop"), rm = mk("button", "quiet", "Remove"), armed = false;
+          rm.type = "button";
+          top.appendChild(mk("span", "aname", nameOf(r) + (r.role === "primary_instructor" ? " (lead role, not seated)" : " · also teaching")));
+          top.appendChild(rm); row.appendChild(top); list.appendChild(row);
+          rm.addEventListener("click", function () {
+            if (!armed) { armed = true; rm.textContent = "Really remove? They are emailed."; rm.className = "danger"; return; }
+            rm.disabled = true;
+            admin("soft_delete", { id: r.id }, ATT).then(function (res2) {
+              if (res2.status === 200 && res2.body && res2.body.ok) { say.textContent = nameOf(r) + " was removed from this class and emailed that they are no longer assigned. Messages shows the result."; load(); return; }
+              rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say.textContent = fail(res2);
+            });
+          });
+        });
+      });
+    }
+    function chooser(label, buttonText, go) {
+      var wrap = mk("div", "addbox"), finder = instructorFinder(""), b = mk("button", "", buttonText);
+      b.type = "button"; wrap.appendChild(mk("div", "rhead", label)); wrap.appendChild(finder.el); wrap.appendChild(b);
+      b.addEventListener("click", function () {
+        var id = finder.id(); if (!id) { say.textContent = "Search for an instructor and tap their name first."; return; }
+        say.textContent = ""; b.disabled = true;
+        go(id).then(function (said) { b.disabled = false; if (said) { finder.reset(); say.textContent = said; } return load(); });
+      });
+      return wrap;
+    }
+    function personOf(id) { return st.all.filter(function (r) { return r.individual_id === id; })[0] || null; }
+    function makeLead(id) {
+      var cur = st.lead, mine = personOf(id), order = cur ? (cur.order || 1) : 1;
+      if (cur && cur.individual_id === id) return Promise.resolve("That person is already the lead.");
+      var first = mine
+        ? admin("update", { id: mine.id, changes: { role: "primary_instructor", order: order }, expected_updated_at: mine.updated_at }, ATT)
+        : admin("assign", { data: { scheduled_class_id: rec.id, role: "primary_instructor", individual_id: id, order: order } }, ATT);
+      return first.then(function (res) {
+        if (!(res.status === 200 && res.body && res.body.ok)) { say.textContent = fail(res); return null; }
+        var done = function () {
+          return "The lead instructor is now " + (mine ? nameOf(mine) : "the person you chose") + ". Everyone in the class was emailed the change" + (mine ? "." : ", and the new lead was emailed that they are assigned to teach.") + (cur ? " " + nameOf(cur) + " stays on as an instructor." : "") + " Messages shows the results.";
+        };
+        if (!cur) return done();
+        return admin("update", { id: cur.id, changes: { role: "instructor", order: Math.min(nextOrder(), 50) }, expected_updated_at: cur.updated_at }, ATT).then(function (res2) {
+          if (res2.status === 200 && res2.body && res2.body.ok) return done();
+          say.textContent = "The new lead was saved, but the old lead could not be moved to instructor: " + fail(res2); return null;
+        });
+      });
+    }
+    function addOne(id) {
+      if (personOf(id)) return Promise.resolve("That person is already an instructor of this class.");
+      return admin("assign", { data: { scheduled_class_id: rec.id, role: "instructor", individual_id: id, order: nextOrder() } }, ATT).then(function (res) {
+        if (res.status === 200 && res.body && res.body.ok) return "Added. They were emailed that they are assigned to teach.";
+        say.textContent = fail(res); return null;
+      });
+    }
+    box.appendChild(mk("div", "hint", "These buttons save at once and email the people in the class. The details above are saved with Save changes."));
+    box.appendChild(list);
+    box.appendChild(chooser("Change the lead instructor", "Make lead", makeLead));
+    box.appendChild(chooser("Add another instructor", "Add instructor", addOne));
+    box.appendChild(say);
+    load();
+    return box;
   }
 
   function renderClassReady() {
