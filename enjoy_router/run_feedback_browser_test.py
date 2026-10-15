@@ -106,6 +106,14 @@ with sync_playwright() as p:
     li.locator("button.mhead").click()
     d = li.locator(".mdetail").inner_text()
     check("a 'student left' entry names who left, who it went to, and the class", "Student who left" in d and "Ann Able" in d and "Sent to" in d and "Ina Teach" in d and "Evening Basics" in d, d[:400])
+    # a student whose placement is later removed is not in the live list: the name must still show
+    for r in store.query(AT.ATT.name, [], limit=50):
+        if r.get("role") == "student" and "deleted_at" not in r: AT.soft_delete(store, r["id"], A)
+    pg.click("#mRefresh"); pg.wait_for_timeout(1500)
+    li = pg.locator("#mList li", has_text="Participant left").first
+    if not li.locator(".mdetail").is_visible(): li.locator("button.mhead").click()
+    d2 = li.locator(".mdetail").inner_text()
+    check("the student's name still shows after the placement is removed", "Student who left" in d2 and "Ann Able" in d2, d2[:400])
     check("no script errors", not errors, errors)
     b.close()
 print("\n" + ("FAILED: " + "; ".join(fails) if fails else "OK: all feedback browser checks pass")); sys.exit(1 if fails else 0)

@@ -58,6 +58,7 @@ def mkreq(i, first, att, parts):
     store.create(AT.REQUESTS.name, r["id"], dict(r)); return r
 R1 = mkreq(1, "Ann", True, [{"first_name": "Bob", "last_name": "Guest", "email": "bob@example.com"}, {"first_name": "Cy"}])
 R2 = mkreq(2, "Dora", False, [{"first_name": "Eve", "email": "eve@example.com"}])
+R3 = mkreq(3, "Eli", True, [])
 assert AT.assign(store, {"scheduled_class_id": sc["id"], "role": "primary_instructor", "order": 1, "individual_id": ina["id"]}, A).ok
 
 with sync_playwright() as p:
@@ -66,7 +67,7 @@ with sync_playwright() as p:
     c = b.new_page(viewport={"width": 420, "height": 900}); errors = []
     c.on("pageerror", lambda e: errors.append(str(e)))
     c.route("**/enjoy_admin", admin_route)
-    c.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": [R1, R2]}})))
+    c.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": [R1, R2, R3]}})))
     SCHEMA = (HERE.parent / "schemas" / "scheduled_class.schema.json").read_text()
     c.route("**/schemas/scheduled_class.schema.json", lambda r: r.fulfill(status=200, headers={"Content-Type": "application/json"}, body=SCHEMA))
     c.goto(PAGE); c.fill("#keyInput", KEY); c.click("#unlockBtn"); c.wait_for_selector("#homeView:not([hidden])")
@@ -97,6 +98,28 @@ with sync_playwright() as p:
     li2.get_by_role("button", name="Add to class").click()
     c.wait_for_function("document.getElementById('reqDone').textContent.indexOf('Eve') >= 0")
     check("Eve was emailed, Dora was not", [m["to"] for m in sent][n:] == ["eve@example.com", "ina@example.com"], [m["to"] for m in sent][n:])
+    # Delete on a request card: two presses, refused while people are placed, hidden once deleted
+    c.select_option("#collPick", "requests"); c.wait_for_selector("#list li", state="attached")
+    c.select_option("#reqShow", "all") if c.locator("#reqShow option[value=all]").count() else None
+    def card(name):
+        li = c.locator("#list li", has_text=name).first
+        li.locator("button.head").click()
+        return li
+    li = card("Ann")
+    db = li.get_by_role("button", name="Delete", exact=True)
+    db.click()
+    check("first press asks 'Really delete?' and deletes nothing", li.get_by_role("button", name="Really delete?").count() == 1 and not [d for d in store.data[next(k for k in store.data if k.endswith("registration_requests"))].values() if d.get("deleted_at")])
+    li.get_by_role("button", name="Really delete?").click()
+    c.wait_for_function("document.getElementById('reqDone').textContent.indexOf('Not deleted') === 0")
+    check("a request with people placed is refused in plain words", "still in a class" in c.locator("#reqDone").inner_text(), c.locator("#reqDone").inner_text())
+    check("...and its card is still there", c.locator("#list li", has_text="Ann").count() == 1)
+    li3 = card("Eli")
+    li3.get_by_role("button", name="Delete", exact=True).click()
+    li3.get_by_role("button", name="Really delete?").click()
+    c.wait_for_function("document.getElementById('reqDone').textContent.indexOf('deleted') >= 0 && document.getElementById('reqDone').textContent.indexOf('Not deleted') < 0")
+    check("an unplaced request is deleted and its card disappears", c.locator("#list li", has_text="Eli").count() == 0 and "ICDT-PART03" in c.locator("#reqDone").inner_text(), c.locator("#reqDone").inner_text())
+    reqs = store.data[next(k for k in store.data if k.endswith("registration_requests"))]
+    check("the record is kept, marked deleted", reqs[R3["id"]].get("deleted_at"))
     # the Messages log shows the confirmation number on every entry that belongs to a request
     c.select_option("#collPick", "messages"); c.wait_for_selector("#mList li")
     confs = c.locator("#mList li .mconf").all_inner_texts()

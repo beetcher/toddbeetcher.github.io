@@ -893,7 +893,7 @@
         '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li><b>Tap a card</b> to open it and see every answer they gave.</li>' +
-        '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes. <b>Delete</b> (two presses: the second says Really delete?) hides a request from this list; the record is kept for now. A request with someone still in a class is not deleted: cancel or remove them in the class Attendance first.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
         '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
@@ -1295,6 +1295,33 @@
     var ib = document.createElement("button"); ib.type = "button"; ib.className = "quiet infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
     ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
     putrow.appendChild(ib);
+    // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
+    var db = document.createElement("button"); db.type = "button"; db.className = "quiet"; db.textContent = "Delete"; db.style.marginLeft = "auto";
+    var armedT = null;
+    function disarm() { clearTimeout(armedT); db.className = "quiet"; db.textContent = "Delete"; db.removeAttribute("data-armed"); }
+    db.addEventListener("click", function () {
+      if (!db.getAttribute("data-armed")) {
+        db.setAttribute("data-armed", "1"); db.className = "danger"; db.textContent = "Really delete?";
+        armedT = setTimeout(disarm, 6000); return;
+      }
+      clearTimeout(armedT);
+      admin("delete_request", { id: rec.id }, "attendances").then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          delete known[rec.id]; delete rows[rec.id]; if (li.parentNode) li.parentNode.removeChild(li);
+          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " deleted. It is hidden from this list; the record is kept for now.";
+          $("reqDone").hidden = false; applyReqFilter();
+          return;
+        }
+        disarm();
+        var probs = (res.body && res.body.error && res.body.error.problems) || [];
+        $("reqDone").textContent = probs.some(function (x) { return x.issue === "has_placements"; })
+          ? "Not deleted: someone from this request is still in a class. Cancel or remove them in the class Attendance first, then delete the request."
+          : res.status === 404 ? "That request is already gone. Refresh the list." : adminProblem(res.status);
+        $("reqDone").hidden = false;
+      });
+    });
+    putrow.appendChild(db);
     li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(detail);
     li._q = qrow; li._rec = rec;
     fillQRow(qrow, rec);
@@ -4038,6 +4065,14 @@
       MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;
       $("mChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
       mBuildBoxes(); mRender();
+      // A student who left (or was removed) is no longer in the live list, so ask for those placements by id and fill in the names.
+      var gone = []; MS.recs.forEach(function (e) { if (e.attendance_id && !MS.att[e.attendance_id] && gone.indexOf(e.attendance_id) < 0 && gone.length < 60) gone.push(e.attendance_id); });
+      if (!gone.length) return;
+      Promise.all(gone.map(function (id) { return admin("get", { id: id, include_deleted: true, expand: true }, "attendances"); })).then(function (rs) {
+        if (my !== MS.seq) return;
+        rs.forEach(function (r) { var a = r.status === 200 && r.body && r.body.ok ? r.body.data : null; if (a && a.person) { MS.att[a.id] = { name: attName(a), role: a.role }; MS.person[a.individual_id] = MS.person[a.individual_id] || attName(a); } });
+        mRender();
+      });
     });
   }
   $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });

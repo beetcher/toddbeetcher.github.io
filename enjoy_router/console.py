@@ -35,7 +35,8 @@ def list_registration_requests(store, limit: int = DEFAULT_LIMIT, since: Optiona
     """Newest first. since (an ISO string) keeps only records created at or after it."""
     limit = max(1, min(int(limit), MAX_LIMIT))
     # completion_token is the secret in the receipt-email link: it never goes to the Console
-    return [{k: v for k, v in d.items() if k != "completion_token"} for d in store.list_requests(limit, since)]
+    # a request marked deleted is kept but never shown
+    return [{k: v for k, v in d.items() if k != "completion_token"} for d in store.list_requests(limit, since) if not d.get("deleted_at")]
 
 
 def _bearer(authorization: str) -> str:

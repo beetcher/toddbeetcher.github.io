@@ -471,6 +471,26 @@ def _participant_person(item):
     return person
 
 
+def delete_request(store, request_id, actor, now=None):
+    """Delete a registration request from the Console's point of view: it is marked deleted (kept, ignored everywhere, hidden from the
+    Console list), never erased. Refused while anyone from it still holds a place in a class: remove or cancel them first.
+    Permanent removal after a retention period is a separate job (parking lot)."""
+    problems = check_actor(actor)
+    req = store.get(REQUESTS.name, request_id) if isinstance(request_id, str) and UUID_PATTERN.match(request_id) else None
+    if req is None or _deleted(req):
+        return failure("not_found")
+    if problems:
+        return _bad(problems)
+    if _still_placed(store, request_id, ()):
+        return _bad([{"field": "request_id", "issue": "has_placements"}])
+    stamp = utc_stamp(now)
+    try:
+        store.update(REQUESTS.name, request_id, {"deleted_at": stamp, "deleted_by": actor}, ())
+    except DocMissing:
+        return failure("not_found")
+    return success({"id": request_id, "deleted_at": stamp})
+
+
 def assign_request(store, data, actor, requester=None, source="dashboard", now=None):
     """Put EVERYONE named on a registration request in one class, as students, together or not at all: the requester (when `requester`
     is given: {"individual_id"} for a person we have, or {"person": {...}} for a new one) and every person in the request's

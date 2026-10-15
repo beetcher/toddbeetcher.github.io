@@ -185,6 +185,23 @@ stand = MT.standing(s2, old)
 check("seed refresh: a new version is published and the old one is kept", len(got) == 1 and stand["version"] == 2 and any(r_["label"] == "Seats" for b in stand["blocks"] if b["type"] == "facts_table" for r_ in b["rows"]) and len(MT._same_key(s2, old)) == 2, str(got))
 check("seed refresh: running it again does nothing", seed_comms.refresh(s2, {"students_added"}) == [])
 
+# deleting a request: hidden, kept, refused while people are placed
+import console as CON
+rq9 = request([{"first_name": "Del"}], attending=False)
+check("delete request: a request nobody is placed from is marked deleted and kept", AT.delete_request(s, rq9["id"], A, now=tick()).ok and s.data["t_registration_requests"][rq9["id"]].get("deleted_at") and s.data["t_registration_requests"][rq9["id"]].get("deleted_by") == A)
+class _Req:   # the Console's list reads requests through list_requests
+    def list_requests(self, limit, since=None): return sorted(s.data["t_registration_requests"].values(), key=lambda d: d["created_at"], reverse=True)[:limit]
+shown = [x["id"] for x in CON.list_registration_requests(_Req(), 200)]
+check("delete request: it no longer appears in the Console list, the others still do", rq9["id"] not in shown and rq["id"] in shown, str(len(shown)))
+check("delete request: deleting it again says not found", AT.delete_request(s, rq9["id"], A, now=tick()).code == "not_found")
+check("delete request: a deleted request can no longer be placed", AT.assign_request(s, {"request_id": rq9["id"], "scheduled_class_id": c4["id"]}, A, now=tick()).problems == [{"field": "request_id", "issue": "not_found"}])
+r_ = AT.delete_request(s, rq["id"], A, now=tick())
+check("delete request: refused while anyone from it holds a place", not r_.ok and r_.problems == [{"field": "request_id", "issue": "has_placements"}] and not s.data["t_registration_requests"][rq["id"]].get("deleted_at"), str(r_.problems))
+check("delete request: an unknown id is not found", AT.delete_request(s, str(uuid.uuid4()), A, now=tick()).code == "not_found" and AT.delete_request(s, "nope", A, now=tick()).code == "not_found")
+for d in [d for d in s.data["t_attendances"].values() if d.get("request_id") == rq["id"]]:
+    AT.update(s, d["id"], {"status": "cancelled"}, A, now=tick())
+check("delete request: allowed once everyone from it is cancelled", AT.delete_request(s, rq["id"], A, now=tick()).ok)
+
 # the endpoint door
 from crud_endpoint import handle_admin  # noqa: E402
 c6 = room("c6", capacity_max=5)
@@ -194,6 +211,10 @@ res = handle_admin("POST", "Bearer " + "k" * 16 + "Z" * 16 + "-test", json.dumps
     "data": {"request_id": rq7["id"], "scheduled_class_id": c6["id"]}, "requester": {"individual_id": ann["id"]}}}).encode(),
     "k" * 16 + "Z" * 16 + "-test", "v", s, make_failure_limiter(), NOW)
 body = json.loads(res.body) if isinstance(res.body, (str, bytes)) else res.body
+rq10 = request([{"first_name": "Gone"}], attending=False)
+res2 = handle_admin("POST", "Bearer " + "k" * 16 + "Z" * 16 + "-test", json.dumps({"collection": "attendances", "op": "delete_request", "args": {"id": rq10["id"]}}).encode(),
+                    "k" * 16 + "Z" * 16 + "-test", "v", s, make_failure_limiter(), NOW)
+check("endpoint: delete_request through the admin door", res2.status == 200 and s.data["t_registration_requests"][rq10["id"]].get("deleted_at"), f"{res2.status} {res2.body}")
 check("endpoint: assign_request through the admin door places both", res.status == 200 and body.get("ok") and len(body["data"]["records"]) == 2, f"{res.status} {body}")
 print(f"\n{total - len(fails)}/{total} checks passed" + ("" if not fails else "\nFAILED:\n - " + "\n - ".join(fails)))
 sys.exit(1 if fails else 0)
