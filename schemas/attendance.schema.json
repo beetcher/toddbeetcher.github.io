@@ -96,7 +96,7 @@
       }
     },
     "correspondence": {
-      "description": "Every message the system sent about this placement, oldest first: a small log. Each line says when it was sent (UTC), what kind it was, the channel, the address it went to, the subject, how it came out, and who or what sent it. The message text is not kept. Set by the server only (the Console never writes it); a record with no lines has had no messages. Up to 100 entries.",
+      "description": "DEPRECATED (CMS refactor, October 15, 2026): no longer written or read by the server; the message log (communication_log) replaced it. Kept so older records stay valid; to be removed from the schema after the test-data cleanup. Every message the system sent about this placement, oldest first: a small log. Each line says when it was sent (UTC), what kind it was, the channel, the address it went to, the subject, how it came out, and who or what sent it. The message text is not kept. Set by the server only (the Console never writes it); a record with no lines has had no messages. Up to 100 entries.",
       "readOnly": true,
       "type": "array",
       "maxItems": 100,

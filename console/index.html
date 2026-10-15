@@ -3409,13 +3409,21 @@
             if (res.status === 200 && res.body && res.body.ok) {
               var d = res.body.data;
               if (d.created_person) peopleForPick = null;
-              var log = d.correspondence || [], last = log.length ? log[log.length - 1] : null;
-              var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
-                + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "")
-                + (instructorSaid || "")
-                + (last ? (last.result === "sent" ? " A confirmation email with the calendar file went to " + last.to + "." : " The confirmation email did not go (see the log on their row); you can send it again there.") : "");
-              finish(d, said);
-              return;
+              var told = function (last) {
+                var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
+                  + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "")
+                  + (instructorSaid || "")
+                  + (!last || last.status === "skipped" ? "" : last.status === "sent" ? " A confirmation email with the calendar file went to " + last.to + "."
+                    : last.status === "not_sent" ? " No confirmation email went out (" + (REASON_WORD[last.reason] || String(last.reason).replace(/_/g, " ")) + ")."
+                    : " The confirmation email did not go (see the log on their row); you can send it again there.");
+                finish(d, said);
+              };
+              // The CMS wrote the message log; ask it what happened to the confirmation (students only).
+              if (d.role !== "student") { told(null); return; }
+              return admin("list", { filters: { attendance_id: d.id } }, "communication_logs").then(function (lr) {
+                var recs = (lr.body && lr.body.data && lr.body.data.records) || [];
+                told(recs.length ? recs[0] : null);
+              });
             }
             add.disabled = false;
             msg.textContent = (prefix ? prefix : "") + attFail(res);
@@ -3464,29 +3472,51 @@
     if (ps.length && ps[0].field === "id") return SEND_WHY[ps[0].issue] || "That email cannot be sent.";
     return attFail(res);
   }
-  var CORR_KIND = { placement_confirmation: "Placement confirmation" };
-  function corrLine(e) {
-    var when = e.at ? new Date(e.at).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
-    var res = e.result === "sent" ? "Sent" : e.result === "failed" ? "Failed" + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : "Unknown, may not have been sent" + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "");
-    var line = mk("div", "alogline" + (e.result === "sent" ? "" : " bad"), [when, CORR_KIND[e.kind] || e.kind, (e.channel === "email" ? "Email to " : "") + e.to, res, e.trigger === "manual" ? "sent by hand" : "automatic"].filter(Boolean).join(" · "));
-    return line;
+  var CORR_KIND = { placement_confirmation: "Placement confirmation", request_received: "Request received" };
+  // Why the CMS did not send, in plain words (the closed reason list of the message log).
+  var REASON_WORD = { no_contact: "no email or phone on file", channel_unavailable: "they prefer a text, so contact them by hand", no_template: "no message is set up for this",
+                      incomplete: "a detail the message needs is missing", invalid_context: "the details were not valid", unknown_kind: "unknown kind of message",
+                      time_budget: "ran out of time", internal_error: "a problem on our side", cms_off: "messaging is off", log_only: "test mode, nothing is really sent",
+                      duplicate: "already sent", excluded: "left out on purpose", muted: "they asked not to be contacted" };
+  // One display shape for a message-log entry (communication_logs) and for an older line from the retired correspondence list.
+  function corrNorm(e) {
+    if (e.status) return { when: e.created_at, kind: e.kind, channel: e.channel, to: e.to, status: e.status, reason: e.reason, code: e.error_code, manual: e.trigger === "manual" };
+    return { when: e.at, kind: e.kind, channel: e.channel, to: e.to, status: e.result, code: e.error_code, manual: e.trigger === "manual", older: true };
   }
-  // Students only: the record's correspondence log (newest first) and a button to send the confirmation email now.
+  function corrLine(raw) {
+    var e = corrNorm(raw);
+    var when = e.when ? new Date(e.when).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    var code = e.code ? " (" + e.code.replace(/_/g, " ") + ")" : "";
+    var res = e.status === "sent" ? "Sent" : e.status === "failed" ? "Failed" + code : e.status === "unknown" ? "Unknown, may not have been sent" + code
+            : (e.status === "not_sent" ? "Not sent: " : "Skipped: ") + (REASON_WORD[e.reason] || String(e.reason || "").replace(/_/g, " "));
+    var bad = e.status === "failed" || e.status === "unknown" || e.status === "not_sent";
+    return mk("div", "alogline" + (bad ? " bad" : ""), [when, CORR_KIND[e.kind] || e.kind, e.to ? (e.channel === "email" ? "Email to " : "") + e.to : "", res,
+      e.manual ? "sent by hand" : "automatic", e.older ? "earlier record" : ""].filter(Boolean).join(" · "));
+  }
+  // Students only: the message log for this placement (newest first, plus older lines kept from before the CMS) and a button to send the confirmation now.
   function attCorrespondence(r, row, say, redraw) {
     var box = mk("div", "alog"); box.setAttribute("data-corr", r.id);
     box.appendChild(mk("div", "alogh", "Messages sent"));
-    var log = (r.correspondence || []).slice().reverse();
-    if (!log.length) box.appendChild(mk("div", "alogline none", "None yet."));
-    log.forEach(function (e) { box.appendChild(corrLine(e)); });
+    var body = mk("div", ""); body.appendChild(mk("div", "alogline none", "Loading…")); box.appendChild(body);
     row.appendChild(box);
+    admin("list", { filters: { attendance_id: r.id } }, "communication_logs").then(function (lr) {
+      body.textContent = "";
+      var fresh = (lr.body && lr.body.data && lr.body.data.records) || [];
+      var all = fresh.concat((r.correspondence || []).slice().reverse());
+      all.sort(function (x, y) { return String(corrNorm(y).when || "").localeCompare(String(corrNorm(x).when || "")); });
+      if (lr.status !== 200 && !all.length) { body.appendChild(mk("div", "alogline none", "Could not load the messages.")); return; }
+      if (!all.length) body.appendChild(mk("div", "alogline none", "None yet."));
+      all.forEach(function (e) { body.appendChild(corrLine(e)); });
+    });
     var b = mk("button", "quiet asend", "Send confirmation email"); b.type = "button";
     b.addEventListener("click", function () {
       b.disabled = true; b.textContent = "Sending…";
       admin("send_confirmation", { id: r.id }, ATT).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
-          var out = res.body.data.result;
-          say(out === "sent" ? "Confirmation email sent to " + attName(r) + "." : "The email was not sent (" + String(res.body.data.code || out).replace(/_/g, " ") + "). It is noted in the log.");
+          var out = res.body.data;
+          say(out.status === "sent" ? "Confirmation email sent to " + attName(r) + "."
+            : "The email was not sent (" + (out.status === "failed" || out.status === "unknown" ? out.status : (REASON_WORD[out.reason] || String(out.reason).replace(/_/g, " "))) + "). It is noted in the log.");
           redraw(); return;
         }
         b.disabled = false; b.textContent = "Send confirmation email"; say(sendFail(res));

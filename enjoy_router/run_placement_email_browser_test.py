@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser test: the Console shows each student's correspondence log (newest first) and a Send confirmation email button; placing a
+"""Browser test: the Console shows each student's message log (from the CMS, newest first) and a Send confirmation email button; placing a
 student reports the email; failures and refusals are said in plain words. Fake mail transport, in-memory store, headless Chromium.
 Run from enjoy_router/:  python3 run_placement_email_browser_test.py"""
 import sys, json, os, pathlib
@@ -7,7 +7,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from datetime import datetime, timezone
 import smtp_transport as T
-import placement_email as PE
+import comms, seed_comms
+from launch_comms import wiring
 from crud.memory_doc_store import MemoryDocStore
 from crud import attendances_service as AT, individuals_service as IS, scheduled_classes_crud as CL, venues_service as VS
 from crud_endpoint import handle_admin, make_failure_limiter
@@ -24,12 +25,17 @@ def check(label, ok, detail=""):
     print(("ok   " if ok else "FAIL ") + label + ("" if ok else " " + str(detail)))
     if not ok: fails.append(label)
 sent, mode = [], ["accept"]
-def fake(key, to, subject, body, html=None, attachments=None):
+def fake(key, to, subject, body, html=None, attachments=None, headers=None):
     sent.append({"to": to, "body": body, "att": attachments})
     return T.SendResult(True, "accepted") if mode[0] == "accept" else T.SendResult(False, "recipient_rejected")
 T.transport = fake
-ON = lambda st, id, actor, now, manual: PE.send_for(st, id, actor, "key", now, manual)
-AT.notify = ON
+_need, _todo = seed_comms.plan(store); seed_comms.apply(store, _need, _todo)
+class ON:   # switching the CMS on / off for the test
+    @staticmethod
+    def on(): comms.configure(wiring.build(store, lambda: "key", {"ICDT_COMMS_MODE": "live"}))
+    @staticmethod
+    def off(): comms.configure(None)
+ON.on()
 CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
 def admin_route(route):
     r_ = route.request
@@ -85,6 +91,7 @@ with sync_playwright() as p:
     pg.wait_for_selector("#atBody .arow .alog .alogline.bad, #atBody .arow .alog .alogline:not(.none)")
     t = row("Ann Able").locator(".alog").inner_text()
     check("Ann's row lists the message: kind, address, Sent, automatic", "Messages sent" in t and "Placement confirmation" in t and "Email to ann@example.com" in t and "Sent" in t and "automatic" in t, t)
+    pg.wait_for_timeout(1200)   # log times are to the second; keep the two entries apart so "newest first" is testable
     row("Ann Able").get_by_role("button", name="Send confirmation email").click()
     wait_msg("Confirmation email sent to Ann Able.")
     pg.wait_for_function("document.querySelectorAll('#atBody .arow .alog .alogline').length >= 2")
@@ -93,11 +100,12 @@ with sync_playwright() as p:
     check("a second email really went", len(sent) == 2)
     # a person with no email address
     add_student("nina", "Nina Nomail")
-    check("no email on file: placed, and no email claim", "confirmation email" not in pg.locator("#atMsg").inner_text() and len(sent) == 2)
-    check("her row says nothing was sent yet", "None yet." in row("Nina Nomail").locator(".alog").inner_text())
+    check("no email on file: placed, and the message says nothing went out and why", "No confirmation email went out (no email or phone on file)" in pg.locator("#atMsg").inner_text() and len(sent) == 2, pg.locator("#atMsg").inner_text())
+    pg.wait_for_function("t => document.querySelector('#atBody .arow:has(.aname)') && [...document.querySelectorAll('#atBody .arow')].some(r => r.innerText.indexOf('Nina Nomail') >= 0 && r.innerText.indexOf('Not sent') >= 0)")
+    check("her row says it was not sent, and why", "Not sent: no email or phone on file" in row("Nina Nomail").locator(".alog").inner_text(), row("Nina Nomail").locator(".alog").inner_text())
     row("Nina Nomail").get_by_role("button", name="Send confirmation email").click()
-    wait_msg("no email address")
-    check("the button explains why", "no email address on file" in pg.locator("#atMsg").inner_text())
+    wait_msg("The email was not sent")
+    check("the button explains why", "no email or phone on file" in pg.locator("#atMsg").inner_text())
     # a rejected email
     mode[0] = "reject"
     add_student("bea", "Bea Bad")
@@ -107,11 +115,11 @@ with sync_playwright() as p:
     check("the log shows Failed with the reason", "Failed (recipient rejected)" in bt, bt)
     mode[0] = "accept"
     # email turned off
-    AT.notify = None
+    ON.off()
     row("Ann Able").get_by_role("button", name="Send confirmation email").click()
     wait_msg("Email is turned off")
     check("with email off the button says so", "turned off on the server" in pg.locator("#atMsg").inner_text())
-    AT.notify = ON
+    ON.on()
     pg.click("#atClose")
     # a class that is only an idea
     open_class("Idea Session")

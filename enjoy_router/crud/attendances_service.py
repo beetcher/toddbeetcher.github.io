@@ -43,17 +43,26 @@ NO_SEAT = STATUS_OFF | {"waitlisted"}                                 # does not
 OPEN = frozenset({"assigned", "waitlisted", "confirmed"})             # what a cancelled or deleted class cancels
 SEND_STATUSES = ("assigned", "confirmed")
 LOG = logging.getLogger("enjoy_router")
-# The confirmation-email sender: callable(store, attendance_id, actor, now, manual) -> dict. None until main.py turns it on
-# (only when CMS email is enabled), so tests and local runs send nothing.
-notify = None
+
+
+def _notify(store, attendance_id, actor, manual):
+    """Ask the CMS to send the placement confirmation. Returns (comms Result, None), or (None, reason) when the placement is not eligible
+    (nothing is tried, so nothing is logged). The CMS is told AFTER the placement is saved (R-4) and never raises (R-3)."""
+    import comms
+    from launch_comms import placement_context
+    call, reason = placement_context.call_for(store, attendance_id, actor, manual=manual)
+    if call is None:
+        return None, reason
+    return comms.notify(**call), None
 
 
 def _auto_notify(store, rec, actor, now):
-    """A student was just placed: send the confirmation (never raises, never undoes the placement)."""
-    if notify is None or rec.get("role") != STUDENT or rec.get("status") not in SEND_STATUSES:
+    """A student was just placed: the CMS sends the confirmation (never raises, never undoes the placement)."""
+    import comms
+    if not comms.is_configured() or rec.get("role") != STUDENT or rec.get("status") not in SEND_STATUSES:
         return
     try:
-        notify(store, rec["id"], actor, now, False)
+        _notify(store, rec["id"], actor, False)
     except Exception:   # a mail problem must never fail a placement; no details are logged
         LOG.warning("placement email failed attendance=%s", rec.get("id"))
 
@@ -189,23 +198,25 @@ def create(store, data, actor, source="dashboard", tx=None, now=None):
 
 
 _SEND_REASONS = {"not_found": "not_found", "not_a_student": "not_a_student", "not_placed": "not_placed", "class_not_found": "class_not_found",
-                 "class_not_scheduled": "class_not_scheduled", "no_venue": "no_venue", "no_email": "no_email"}
+                 "class_not_scheduled": "class_not_scheduled", "no_venue": "no_venue", "person_not_found": "not_found"}
 
 
 def send_confirmation(store, id, actor, now=None):  # noqa: A002
-    """Send the placement confirmation email for one student record now (adds a line to its correspondence log)."""
+    """Send the placement confirmation for one student record now, by hand (the CMS logs it; a hand send ignores duplicate protection).
+    Returns what the CMS decided: status (sent, failed, unknown, not_sent, skipped), reason and channel."""
+    import comms
     problems = check_actor(actor) + _id_problem(id)
     if problems:
         return _bad(problems)
-    if notify is None:
+    if not comms.is_configured():
         return _bad([{"field": "email", "issue": "not_enabled"}])
     cur = store.get(ATT.name, id)
     if cur is None or _deleted(cur):
         return failure("not_found")
-    out = notify(store, id, actor, now, True)
-    if not out.get("ok"):
-        return _bad([{"field": "id", "issue": _SEND_REASONS.get(out.get("reason"), "not_allowed")}])
-    return success({"id": id, "result": out["result"], "code": out.get("code"), "correspondence": out.get("correspondence", [])})
+    res, reason = _notify(store, id, actor, True)
+    if res is None:
+        return _bad([{"field": "id", "issue": _SEND_REASONS.get(reason, "not_allowed")}])
+    return success({"id": id, "status": res.status, "reason": res.reason, "channel": res.channel, "log_id": res.log_id})
 
 
 # ---- reading ----------------------------------------------------------------

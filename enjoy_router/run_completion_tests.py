@@ -12,7 +12,6 @@ from memory_store import MemoryStore  # noqa: E402
 from ratelimit import RateLimiter  # noqa: E402
 import request_completion as RC  # noqa: E402
 import console as CON  # noqa: E402
-import cms_service  # noqa: E402
 
 NOW = datetime(2026, 10, 14, 18, 0, 0, tzinfo=timezone.utc)
 fails, total = [], 0
@@ -131,10 +130,17 @@ check("the store still has it", all("completion_token" in x for x in reg_store.l
 
 sent = []
 import smtp_transport
-smtp_transport.send = lambda key, to, subject, text, html: sent.append((text, html)) or "ok"
+import comms, seed_comms
+from crud.memory_doc_store import MemoryDocStore as _MDS
+from launch_comms import request_context, wiring
+smtp_transport.transport = lambda key, to, subject, text, html=None, attachments=None, headers=None: sent.append((text, html)) or smtp_transport.SendResult(True, "accepted")
+cs = _MDS(""); need, todo = seed_comms.plan(cs); seed_comms.apply(cs, need, todo)
+comms.configure(wiring.build(cs, lambda: "k", {"ICDT_COMMS_MODE": "live"}))
 LINK = "https://beetcher.com/enjoy/register/private/?r=" + tok
-cms_service.acknowledge("Sam Test", "sam@example.com", "ICDT-ABCDEF", "k", LINK)
-cms_service.acknowledge("Sam Test", "sam@example.com", "ICDT-ABCDEF", "k")
+base_doc = {"id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e", "first_name": "Sam", "last_name": "Test", "email": "sam@example.com", "confirmation_number": "ICDT-ABCDEF"}
+comms.notify(**request_context.call_for({**base_doc, "registration_type": "private", "completion_token": tok}))
+comms.notify(**request_context.call_for({**base_doc, "id": "7c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e", "registration_type": "private"}))
+comms.configure(None)
 check("the email carries the link as a button and as plain text", LINK in sent[0][0] and LINK in sent[0][1] and "Finish your request" in sent[0][1] and "ICDT-ABCDEF" in sent[0][0])
 check("with no link the email is as before", "Finish your request" not in sent[1][1] and "https://" not in sent[1][0] and "ICDT-ABCDEF" in sent[1][0])
 

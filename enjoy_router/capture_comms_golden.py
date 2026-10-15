@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """One-time capture of the GOLDEN MASTERS for the CMS refactor (spec claude/cms-architecture-spec.md, plan claude/cms-refactor-build-plan.md).
 
+HISTORICAL: cms_service.py and placement_email.py were removed in CMS step 3, so this only runs on a checkout of commit 21bce01.
 Runs the PRE-REFACTOR code (cms_service.acknowledge and placement_email.compose/make_ics, as at commit 21bce01) on fixed inputs and
 writes what it produces to ../schemas/message_kinds/golden_masters.json. The refactored code must reproduce every byte of these
 outputs from the seed templates. Do not regenerate after the refactor: the old code is gone by then, and that is the point.

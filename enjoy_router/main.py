@@ -12,7 +12,8 @@ Settings (environment variables, none required):
                          For a test deployment only (a live test run sends 30 requests from one address).
                          A warning is logged at startup whenever it is set. Leave it unset for real use.
   ICDT_ADMIN_KEY         the one key that locks the Console and the CRUD test endpoint (32+ characters)
-  ICDT_CMS_ENABLED       true enables CMS only outside local testing; default false
+  ICDT_COMMS_MODE        off, log_only or live (the CMS send mode); when unset, ICDT_CMS_ENABLED=true means live, anything else off
+  ICDT_CMS_ENABLED       the old switch: true means live (kept so today's deploy settings keep working); ignored outside a deployed function
 Secret Manager (always bound to the registration function, independent of the runtime switch):
   ICDT_BREVO_SMTP_KEY    SMTP key, read only after a newly created request is saved
 Emulator only (honored only when FUNCTIONS_EMULATOR is "true", or ICDT_STORE=memory for local tests):
@@ -32,11 +33,11 @@ from firebase_functions import https_fn, options
 from firebase_functions.params import SecretParam
 
 from core import Schemas
-import cms_service
-import registration_service
+import comms
+import registration_service  # noqa: F401  (handler.py calls it; it asks the CMS for the receipt)
 import smtp_transport
-from crud import attendances_service, registration_requests_crud
-import placement_email
+from comms.settings import resolve_mode
+from launch_comms import wiring
 from crud import geocoder
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
@@ -63,7 +64,6 @@ ORIGINS = [o.strip() for o in os.environ.get("ICDT_ALLOWED_ORIGINS", ",".join(DE
 SALT = os.environ.get("ICDT_VISITOR_SALT", "icdt-enjoy")
 ADMIN_KEY = os.environ.get("ICDT_ADMIN_KEY", "")  # the Console lock; never logged
 LOCAL_TESTING = os.environ.get("FUNCTIONS_EMULATOR") == "true" or os.environ.get("ICDT_STORE") == "memory"
-CMS_ENABLED = not LOCAL_TESTING and os.environ.get("ICDT_CMS_ENABLED", "false").lower() == "true"
 BREVO_SMTP_KEY = SecretParam("ICDT_BREVO_SMTP_KEY")
 
 _schemas = Schemas.load()
@@ -152,35 +152,13 @@ def _client_address(req) -> str:
     return forwarded[-1] if forwarded else (req.remote_addr or "unknown")
 
 
-COMPLETION_LINK = "https://beetcher.com/enjoy/register/private/?r="
-
-
-def _acknowledge(doc):
-    link = COMPLETION_LINK + doc["completion_token"] if doc.get("registration_type") == "private" and doc.get("completion_token") else None
-    return cms_service.acknowledge(
-        " ".join((doc["first_name"], doc["last_name"])), doc["email"],
-        doc["confirmation_number"], BREVO_SMTP_KEY.value, link,
-    )
-
-
-def _record_acknowledgment(id, status, attempted_at, error_code):
-    return registration_requests_crud.set_acknowledgment_result(
-        _get_admin_store(), id, status, attempted_at, error_code,
-    )
-
-
-if CMS_ENABLED:
+# The CMS (CMS_GUIDE.md): ONE door for every message. Services call comms.notify after their change is saved; the CMS decides wording,
+# channel, whether to send, and logs it. The send mode comes from ICDT_COMMS_MODE (off, log_only, live); the old ICDT_CMS_ENABLED=true means live.
+# Local tests and the emulator never configure it, so they send nothing.
+COMMS_MODE = "off" if LOCAL_TESTING else resolve_mode(os.environ)
+if COMMS_MODE != "off":
     smtp_transport.transport = smtp_transport.send_brevo
-    registration_service.acknowledge = _acknowledge
-    registration_service.record_result = _record_acknowledgment
-
-
-def _placement_notify(store, attendance_id, actor, now, manual):
-    return placement_email.send_for(store, attendance_id, actor, BREVO_SMTP_KEY.value, now, manual)
-
-
-if CMS_ENABLED:   # the placement confirmation email (with the calendar file) is sent by the admin function
-    attendances_service.notify = _placement_notify
+    comms.configure(wiring.build(wiring.LazyStore(lambda: _get_admin_store()), lambda: BREVO_SMTP_KEY.value, os.environ))
 
 
 @https_fn.on_request(

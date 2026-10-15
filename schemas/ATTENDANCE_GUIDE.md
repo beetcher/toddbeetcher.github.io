@@ -78,7 +78,10 @@ A registration request is **assigned** when at least one live attendance record 
 
 Every placement, status change, removal and class cancellation or deletion writes a `journal_event` (see `JOURNAL_EVENT_GUIDE.md`) in the same step. When a change leaves a request with no active placement, a `request_unassigned` entry is written too. The journal is provenance; it is never used to decide what is true.
 
-### The correspondence log (October 14, 2026)
+### The correspondence log (October 14, 2026) — DEPRECATED October 15, 2026
+
+The CMS refactor retired this list: the server no longer writes or reads it, and the Console shows message history from the communication log (`COMMUNICATION_LOG_GUIDE.md`, filter `attendance_id`), with these older lines shown beneath as "earlier record". The field stays in the schema so older records remain valid, and is removed after the test-data cleanup. What follows describes how it worked.
+
 
 `correspondence` is a small log, written only by the server, of every message sent about this one placement (oldest first, up to 100). Each line has: `at` (when, UTC), `kind` (today only `placement_confirmation`), `channel` (today only `email`), `to` (the address), `subject`, `result` (`sent`, `failed` or `unknown`), `error_code` (a short sanitized reason when it did not go, never personal data), `by` (the actor who placed the person or pressed Send) and `trigger` (`automatic` or `manual`). The message text is not stored. The journal records what changed; this log records what we told the person. `sent` means the mail service accepted the message, not that it was read.
 

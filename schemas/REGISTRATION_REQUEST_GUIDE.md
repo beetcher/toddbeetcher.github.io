@@ -203,6 +203,8 @@ A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUID
 
 After a newly created request is saved, CMS attempts one acknowledgment. It says a request was received, not that the person is registered. Replays, rejected requests and honeypot responses send nothing. The normal success response contains only the confirmation number and registration type, even when email or recording the result fails. There is no automatic retry or email outbox.
 
+DEPRECATED October 15, 2026 (the next three fields): the CMS refactor stopped writing and reading them; the receipt's outcome is in the message log (`COMMUNICATION_LOG_GUIDE.md`, filter `request_id`). They stay in the schema so older records remain valid and are removed after the test-data cleanup.
+
 - `acknowledgment_email_status`: optional server-only string, `accepted`, `failed` or `unknown`. Accepted means SMTP acceptance, not delivery or an open. A timeout anywhere in the approximately ten-second SMTP attempt is unknown.
 - `acknowledgment_email_attempted_at`: optional server-only UTC date-time string, when the attempt began.
 - `acknowledgment_email_error_code`: optional server-only bounded string enum of sanitized transport/configuration codes; omitted on acceptance. It never contains personal data, credentials, message text or a raw SMTP response.

@@ -50,29 +50,18 @@ prompting or connecting. No registration record is created or changed.
     python3 run_tests.py              # core, in memory, plus extra checks
     python3 run_tests.py --handler    # core plus HTTP handler, in memory
 
-## CMS Feature 1: acknowledgment (proof of concept)
+## Communications (the CMS)
 
-`registration_service.py` calls the existing registration core, then calls CMS
-only for outcome `created`, after the atomic request/idempotency save completes.
-`cms_service.py` fills a basic acknowledgment using the saved name, email and
-confirmation. It sends plain text plus escaped HTML, allowing Brevo's existing
-open tracking. No tracking or unsubscribe overrides are added. Sender and
-Reply-To both derive from `smtp_transport.FROM_ADDRESS` (the Phase 1 Gmail).
-
-`crud/registration_requests_crud.py` records optional acknowledgment status,
-attempt time and sanitized error code on the same request, via the existing
-document-store adapter. It stamps `updated_at` and `updated_by=system:cms`.
-Email metadata stays with the request without separate expiry. This is a narrow
-server-only setter; legacy creation and its atomic save remain in `core.py`.
-
-The hook is off by default. Replays, spam and rejected requests do not send.
-Email, secret-access and result-recording failures preserve the saved request
-and the original success response. SMTP acceptance is not delivery or an open.
-There is one attempt, no automatic retry, no sending trigger, and no email outbox.
-The total SMTP attempt (including worker startup, DNS, connection, TLS, login and
-submission) is capped at approximately 10 seconds, plus at most a short worker
-cleanup interval. Timeouts record `unknown`. A crash or failed result write can
-leave status absent. No guaranteed delivery or automatic recovery is promised.
+All outgoing email goes through one door, `comms.notify(...)` (packages `comms/` and
+`launch_comms/`). `registration_service.py` calls it only for outcome `created`, after
+the atomic request save; placement confirmations are triggered from
+`crud/attendances_service.py`. Wording lives in `comm_template` records, every attempt is
+one `communication_log` entry, and the mode is set by `ICDT_COMMS_MODE`
+(`off` / `log_only` / `live`; `ICDT_CMS_ENABLED=true` still means live). Run
+`seed_comms.py` (dry run by default) once per project so templates and settings exist.
+See `claude/cms-architecture-spec.md`. The old `cms_service.py`/`placement_email.py`
+are gone; the legacy `correspondence` and `acknowledgment_email_*` fields are deprecated.
+SMTP acceptance is not delivery or an open; one attempt, no automatic retry.
 The post-save status write has a two-second RPC timeout and no retry; an error
 is logged by record ID and code only, and registration success is preserved.
 

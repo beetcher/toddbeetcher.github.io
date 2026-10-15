@@ -477,7 +477,7 @@
       "readOnly": true
     },
     "acknowledgment_email_status": {
-      "description": "Result of the single acknowledgment attempt: accepted by SMTP (not proof of delivery), failed, or unknown. Optional and server-set; retained with the request.",
+      "description": "DEPRECATED (CMS refactor, October 15, 2026): no longer written or read by the server; the message log (communication_log) replaced it. Kept so older records stay valid; to be removed from the schema after the test-data cleanup. Result of the single acknowledgment attempt: accepted by SMTP (not proof of delivery), failed, or unknown. Optional and server-set; retained with the request.",
       "type": "string",
       "enum": [
         "accepted",
@@ -487,14 +487,14 @@
       "readOnly": true
     },
     "acknowledgment_email_attempted_at": {
-      "description": "UTC time the acknowledgment attempt began. Optional and server-set; retained with the request.",
+      "description": "DEPRECATED (CMS refactor, October 15, 2026): no longer written or read by the server; the message log (communication_log) replaced it. Kept so older records stay valid; to be removed from the schema after the test-data cleanup. UTC time the acknowledgment attempt began. Optional and server-set; retained with the request.",
       "type": "string",
       "format": "date-time",
       "readOnly": true,
       "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|\\+00:00)$"
     },
     "acknowledgment_email_error_code": {
-      "description": "Sanitized failure code, never an address, message, credential or raw SMTP response. Omitted on acceptance. Optional and server-set; retained with the request.",
+      "description": "DEPRECATED (CMS refactor, October 15, 2026): no longer written or read by the server; the message log (communication_log) replaced it. Kept so older records stay valid; to be removed from the schema after the test-data cleanup. Sanitized failure code, never an address, message, credential or raw SMTP response. Omitted on acceptance. Optional and server-set; retained with the request.",
       "type": "string",
       "maxLength": 40,
       "enum": [

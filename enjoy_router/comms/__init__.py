@@ -24,6 +24,11 @@ def configure(instance: Optional[Comms]) -> None:
     _instance = instance
 
 
+def is_configured() -> bool:
+    """True when a CMS instance has been supplied (the product turns it on at startup; tests and local runs leave it off)."""
+    return _instance is not None
+
+
 def notify(kind, recipient, context, by, trigger, refs=None, audience=None, suppress=None, dedupe_key=None) -> Result:
     if _instance is None:
         return Result("skipped", "none", "cms_off", None)
@@ -36,4 +41,4 @@ def notify_many(items, time_budget_s) -> list:
     return _instance.notify_many(items, time_budget_s)
 
 
-__all__ = ["CONTRACT_VERSION", "Comms", "Contact", "KindRegistry", "Result", "configure", "notify", "notify_many"]
+__all__ = ["CONTRACT_VERSION", "Comms", "Contact", "KindRegistry", "Result", "configure", "is_configured", "notify", "notify_many"]

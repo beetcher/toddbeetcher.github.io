@@ -89,7 +89,7 @@ for f in (HERE / "comms").rglob("*.py"):
 check("R-1 comms/ imports only the standard library and jsonschema", not bad, str(bad))
 
 # ---------------------------------------------------------------- R-2 sending code lives only behind the door
-LEGACY = {"cms_service.py", "placement_email.py", "registration_service.py"}   # removed in step 3; this list then becomes empty
+LEGACY = set()   # step 3 done: the old senders are gone, nothing is exempt
 ALLOWED = {"smtp_transport.py", "main.py", "capture_comms_golden.py"} | LEGACY
 offenders = []
 for f in HERE.rglob("*.py"):
