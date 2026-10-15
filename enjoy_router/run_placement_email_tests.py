@@ -87,13 +87,13 @@ check("calendar file attached as text/calendar", name == "workshop.ics" and mime
 check("ics has the UTC start and end", "DTSTART:20261104T010000Z" in ics and "DTEND:20261104T020000Z" in ics and ics.startswith("BEGIN:VCALENDAR\r\n") and ics.endswith("END:VCALENDAR\r\n"), ics)
 check("ics has summary, location, instructor, CRLF only", "SUMMARY:Private session for Pat" in ics and "LOCATION:Louisville Library\\, 951 Spruce St\\, Louisville\\, CO 80027" in ics.replace("\r\n ", "") and "Lead instructor: Ingrid Teach" in ics.replace("\r\n ", "") and "\n" not in ics.replace("\r\n", ""), ics)
 check("ics lines are folded to 75 octets", all(len(x.encode()) <= 75 for x in ics.split("\r\n")))
-check("the message carries the sender name and our own Message-ID", m["headers"]["from_name"] == "Launch" and re.match(r"^<.+@.+>$", m["headers"]["message_id"]), m["headers"])
+check("the message carries the sender name and leaves the Message-ID to the provider", m["headers"]["from_name"] == "Launch" and "message_id" not in m["headers"], m["headers"])
 rec = r.data
 log = log_for(rec["id"])
 check("the placement is logged once", len(log) == 1, log)
 e = log[0] if log else {}
 check("log entry: kind, channel, to, status, reason, trigger, created_by", (e.get("kind"), e.get("channel"), e.get("to"), e.get("status"), e.get("reason"), e.get("trigger"), e.get("created_by")) == ("placement_confirmation", "email", "pat@example.com", "sent", "ok", "automatic", A), e)
-check("log entry has the subject, the template version, the message ref and no body", e.get("subject") == m["subject"] and e.get("template_version") == 1 and e.get("message_ref") == m["headers"]["message_id"] and not any(k in e for k in ("body", "text", "html")))
+check("log entry has the subject and template version, no body, and no Message-ID is forced on the provider", e.get("subject") == m["subject"] and e.get("template_version") == 1 and not e.get("message_ref") and "message_id" not in m["headers"] and not any(k in e for k in ("body", "text", "html")))
 check("log entry points at the attendance, the class and the person", (e.get("attendance_id"), e.get("scheduled_class_id"), e.get("individual_id")) == (rec["id"], sched["id"], pat["id"]))
 check("the attendance record no longer gets a correspondence list (retired)", "correspondence" not in AT.get(s, rec["id"]).data)
 check("a client cannot write the old log field any more", ("correspondence", "not_allowed") in sorted((p["field"], p["issue"]) for p in AT.update(s, rec["id"], {"correspondence": []}, A, now=tick()).problems))

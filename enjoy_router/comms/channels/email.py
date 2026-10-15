@@ -20,17 +20,20 @@ class EmailChannel:
     name = "email"
     supports_attachments = True
 
-    def __init__(self, sender, key_getter, msgid_domain: str = "beetcher.com"):
+    def __init__(self, sender, key_getter, msgid_domain: Optional[str] = None):
         self._sender, self._key, self._domain = sender, key_getter, msgid_domain
 
     def can_carry(self, content: dict) -> bool:
         return bool(content.get("subject")) and bool(content.get("text"))
 
     def new_message_ref(self) -> Optional[str]:
-        return make_msgid(domain=self._domain)
+        # None (the default) leaves the Message-ID to the mail provider, as the old senders did. Set a domain only when it matches the From domain.
+        return make_msgid(domain=self._domain) if self._domain else None
 
     def send(self, to, content, settings, message_ref) -> ChannelResult:
-        headers = {"from_name": settings.sender_name, "message_id": message_ref}
+        headers = {"from_name": settings.sender_name}
+        if message_ref:
+            headers["message_id"] = message_ref
         if settings.from_address:
             headers["from_address"] = settings.from_address
         if settings.reply_to:
