@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/request_received.facts.schema.json",
+  "title": "request_received",
+  "description": "The facts the message kind request_received (the receipt: we have your request) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Request received (receipt)",
+    "audiences": [
+      "requester"
+    ],
+    "triggers": [
+      "A registration request is saved for the first time (registration_service.register, outcome created). Replays, honeypot hits and rejected requests send nothing."
+    ],
+    "recipient": "adhoc: the name and email on the request (the person has no individual record until identity review).",
+    "dedupe": "kind + request id",
+    "refs": [
+      "request_id"
+    ]
+  },
+  "required": [
+    "name",
+    "confirmation_number"
+  ],
+  "properties": {
+    "name": {
+      "description": "The requester's full name, first and last, as the receipt greets them.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys Hart"
+      ]
+    },
+    "confirmation_number": {
+      "description": "The confirmation number of the request.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "ICDT-Y9D2FT"
+      ]
+    },
+    "completion_link": {
+      "description": "The address that opens the same request with their answers filled in. Present only for private requests that have a completion token; absent otherwise.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "https://beetcher.com/enjoy/register/private/?r=0123abcd"
+      ],
+      "format": "uri",
+      "x_derived": true
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "captured_from": "commit 21bce01 (pre-refactor cms_service.acknowledge and placement_email.compose / make_ics)",
+  "clock_for_calendar_stamp": "2026-10-15T12:00:00Z",
+  "cases": {
+    "receipt_with_link": {
+      "kind": "request_received",
+      "audience": "requester",
+      "inputs": {
+        "name": "Maria O'Brien & Sons",
+        "email": "maria@example.com",
+        "confirmation_number": "ICDT-ABC123",
+        "link": "https://beetcher.com/enjoy/register/private/?r=tok123&x=1"
+      },
+      "facts": {
+        "name": "Maria O'Brien & Sons",
+        "confirmation_number": "ICDT-ABC123",
+        "completion_link": "https://beetcher.com/enjoy/register/private/?r=tok123&x=1"
+      },
+      "expect": {
+        "subject": "Launch — we received your request",
+        "text": "Hello Maria O'Brien & Sons,\n\nWe received your request. Your confirmation number is ICDT-ABC123.\n\nWant to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in:\n\nhttps://beetcher.com/enjoy/register/private/?r=tok123&x=1\n\nWe'll contact you about the next steps either way.\n\nLaunch\n",
+        "html": "<html><body><p>Hello Maria O&#x27;Brien &amp; Sons,</p><p>We received your request. Your confirmation number is <strong>ICDT-ABC123</strong>.</p><p>Want to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in.</p><p><a href=\"https://beetcher.com/enjoy/register/private/?r=tok123&amp;x=1\" style=\"display:inline-block;padding:12px 20px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold\">Finish your request</a></p><p>If the button does not work, copy this address into your browser:<br>https://beetcher.com/enjoy/register/private/?r=tok123&amp;x=1</p><p>We'll contact you about the next steps either way.</p><p>Launch</p></body></html>"
+      }
+    },
+    "receipt_without_link": {
+      "kind": "request_received",
+      "audience": "requester",
+      "inputs": {
+        "name": "Gladys Hart",
+        "email": "gladys@example.com",
+        "confirmation_number": "ICDT-Y9D2FT",
+        "link": null
+      },
+      "facts": {
+        "name": "Gladys Hart",
+        "confirmation_number": "ICDT-Y9D2FT"
+      },
+      "expect": {
+        "subject": "Launch — we received your request",
+        "text": "Hello Gladys Hart,\n\nWe received your request. Your confirmation number is ICDT-Y9D2FT.\n\nWe'll contact you about the next steps either way.\n\nLaunch\n",
+        "html": "<html><body><p>Hello Gladys Hart,</p><p>We received your request. Your confirmation number is <strong>ICDT-Y9D2FT</strong>.</p><p>We'll contact you about the next steps either way.</p><p>Launch</p></body></html>"
+      }
+    },
+    "placement_full": {
+      "kind": "placement_confirmation",
+      "audience": "student",
+      "inputs": {
+        "to": "gladys@example.com",
+        "name": "Gladys",
+        "confirmation": "ICDT-ABC123",
+        "reference": "R-1",
+        "title": "Gladys's AI Happy Hour",
+        "start": "2026-10-17T23:00:00Z",
+        "end": "2026-10-18T00:30:00Z",
+        "tz": "America/Denver",
+        "venue": "Ozo's Coffee, East Pearl",
+        "address": "1500 Pearl St, Boulder, CO 80302",
+        "room": "Back room",
+        "notes": "Park behind the building; ring the bell & wait <b>please</b>. Bring a phone, a tablet or a laptop; chargers are provided, and so is coffee, café au lait, tea — whatever you like; line two\nline three; done.",
+        "lead": "Todd Beetcher",
+        "others": [
+          "Susan Adams",
+          "Bobby Hodgkins"
+        ],
+        "uid": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f"
+      },
+      "facts": {
+        "name": "Gladys",
+        "title": "Gladys's AI Happy Hour",
+        "start_utc": "2026-10-17T23:00:00Z",
+        "end_utc": "2026-10-18T00:30:00Z",
+        "time_zone": "America/Denver",
+        "when_day": "Saturday, October 17, 2026",
+        "when_span": "5:00 PM to 6:30 PM MDT",
+        "when_short": "Sat Oct 17, 5:00 PM",
+        "uid": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f",
+        "where": "Ozo's Coffee, East Pearl · Back room",
+        "address": "1500 Pearl St, Boulder, CO 80302",
+        "venue": "Ozo's Coffee, East Pearl",
+        "room": "Back room",
+        "notes": "Park behind the building; ring the bell & wait <b>please</b>. Bring a phone, a tablet or a laptop; chargers are provided, and so is coffee, café au lait, tea — whatever you like; line two\nline three; done.",
+        "lead": "Todd Beetcher",
+        "also_teaching": "Susan Adams, Bobby Hodgkins",
+        "confirmation_number": "ICDT-ABC123",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Ozo%27s+Coffee%2C+East+Pearl%2C+1500+Pearl+St%2C+Boulder%2C+CO+80302"
+      },
+      "expect": {
+        "subject": "Launch — you're scheduled: Sat Oct 17, 5:00 PM",
+        "text": "Hello Gladys,\n\nYou're scheduled. Here are the details:\n\nWhat: Gladys's AI Happy Hour\nWhen: Saturday, October 17, 2026, 5:00 PM to 6:30 PM MDT\nWhere: Ozo's Coffee, East Pearl · Back room\nAddress: 1500 Pearl St, Boulder, CO 80302\nLead instructor: Todd Beetcher\nAlso teaching: Susan Adams, Bobby Hodgkins\nGood to know: Park behind the building; ring the bell & wait <b>please</b>. Bring a phone, a tablet or a laptop; chargers are provided, and so is coffee, café au lait, tea — whatever you like; line two\nline three; done.\nConfirmation number: ICDT-ABC123\n\nMap: https://www.google.com/maps/search/?api=1&query=Ozo%27s+Coffee%2C+East+Pearl%2C+1500+Pearl+St%2C+Boulder%2C+CO+80302\n\nA calendar file is attached: open it to add this to your calendar.\n\nNeed to change something? Just reply to this email.\n\nLaunch\n",
+        "html": "<html><body><p>Hello Gladys,</p><p>You're scheduled. Here are the details:</p><table cellpadding=\"4\" style=\"border-collapse:collapse\"><tr><td style=\"color:#555;vertical-align:top\">What</td><td><strong>Gladys&#x27;s AI Happy Hour</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">When</td><td><strong>Saturday, October 17, 2026, 5:00 PM to 6:30 PM MDT</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Where</td><td><strong>Ozo&#x27;s Coffee, East Pearl · Back room</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Address</td><td><strong>1500 Pearl St, Boulder, CO 80302</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Lead instructor</td><td><strong>Todd Beetcher</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Also teaching</td><td><strong>Susan Adams, Bobby Hodgkins</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Good to know</td><td><strong>Park behind the building; ring the bell &amp; wait &lt;b&gt;please&lt;/b&gt;. Bring a phone, a tablet or a laptop; chargers are provided, and so is coffee, café au lait, tea — whatever you like; line two\nline three; done.</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Confirmation number</td><td><strong>ICDT-ABC123</strong></td></tr></table><p><a href=\"https://www.google.com/maps/search/?api=1&amp;query=Ozo%27s+Coffee%2C+East+Pearl%2C+1500+Pearl+St%2C+Boulder%2C+CO+80302\" style=\"display:inline-block;padding:12px 20px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold\">Open the map</a></p><p>A calendar file is attached: open it to add this to your calendar.</p><p>Need to change something? Just reply to this email.</p><p>Launch</p></body></html>",
+        "ics": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//LAUNCH//I Can Do That//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f@beetcher.com\r\nDTSTAMP:20261015T120000Z\r\nDTSTART:20261017T230000Z\r\nDTEND:20261018T003000Z\r\nSUMMARY:Gladys's AI Happy Hour\r\nLOCATION:Ozo's Coffee\\, East Pearl\\, Back room\\, 1500 Pearl St\\, Boulder\\, \r\n CO 80302\r\nDESCRIPTION:Gladys's AI Happy Hour\\nLead instructor: Todd Beetcher\\nConfirm\r\n ation number: ICDT-ABC123\\nPark behind the building\\; ring the bell & wait\r\n  <b>please</b>. Bring a phone\\, a tablet or a laptop\\; chargers are provid\r\n ed\\, and so is coffee\\, café au lait\\, tea — whatever you like\\; line t\r\n wo\\nline three\\; done.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+      }
+    },
+    "placement_minimal": {
+      "kind": "placement_confirmation",
+      "audience": "student",
+      "inputs": {
+        "to": "sam@example.com",
+        "name": "there",
+        "confirmation": null,
+        "reference": null,
+        "title": "Your session",
+        "start": "2026-11-05T17:00:00Z",
+        "end": "2026-11-05T18:00:00Z",
+        "tz": "America/Denver",
+        "venue": "",
+        "address": "",
+        "room": "",
+        "notes": "",
+        "lead": null,
+        "others": [],
+        "uid": "1a2b3c4d-0000-4000-8000-000000000001"
+      },
+      "facts": {
+        "name": "there",
+        "title": "Your session",
+        "start_utc": "2026-11-05T17:00:00Z",
+        "end_utc": "2026-11-05T18:00:00Z",
+        "time_zone": "America/Denver",
+        "when_day": "Thursday, November 5, 2026",
+        "when_span": "10:00 AM to 11:00 AM MST",
+        "when_short": "Thu Nov 5, 10:00 AM",
+        "uid": "1a2b3c4d-0000-4000-8000-000000000001"
+      },
+      "expect": {
+        "subject": "Launch — you're scheduled: Thu Nov 5, 10:00 AM",
+        "text": "Hello there,\n\nYou're scheduled. Here are the details:\n\nWhat: Your session\nWhen: Thursday, November 5, 2026, 10:00 AM to 11:00 AM MST\n\nA calendar file is attached: open it to add this to your calendar.\n\nNeed to change something? Just reply to this email.\n\nLaunch\n",
+        "html": "<html><body><p>Hello there,</p><p>You're scheduled. Here are the details:</p><table cellpadding=\"4\" style=\"border-collapse:collapse\"><tr><td style=\"color:#555;vertical-align:top\">What</td><td><strong>Your session</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">When</td><td><strong>Thursday, November 5, 2026, 10:00 AM to 11:00 AM MST</strong></td></tr></table><p>A calendar file is attached: open it to add this to your calendar.</p><p>Need to change something? Just reply to this email.</p><p>Launch</p></body></html>",
+        "ics": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//LAUNCH//I Can Do That//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:1a2b3c4d-0000-4000-8000-000000000001@beetcher.com\r\nDTSTAMP:20261015T120000Z\r\nDTSTART:20261105T170000Z\r\nDTEND:20261105T180000Z\r\nSUMMARY:Your session\r\nDESCRIPTION:Your session\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+      }
+    },
+    "placement_standard_time": {
+      "kind": "placement_confirmation",
+      "audience": "student",
+      "inputs": {
+        "to": "lee@example.com",
+        "name": "Lee",
+        "confirmation": "ICDT-QQ77ZZ",
+        "reference": null,
+        "title": "Intro to AI",
+        "start": "2026-11-14T16:00:00Z",
+        "end": "2026-11-14T18:00:00Z",
+        "tz": "America/Denver",
+        "venue": "Boulder Public Library",
+        "address": "1001 Arapahoe Ave, Boulder, CO 80302",
+        "room": "",
+        "notes": "",
+        "lead": "Todd Beetcher",
+        "others": [],
+        "uid": "1a2b3c4d-0000-4000-8000-000000000002"
+      },
+      "facts": {
+        "name": "Lee",
+        "title": "Intro to AI",
+        "start_utc": "2026-11-14T16:00:00Z",
+        "end_utc": "2026-11-14T18:00:00Z",
+        "time_zone": "America/Denver",
+        "when_day": "Saturday, November 14, 2026",
+        "when_span": "9:00 AM to 11:00 AM MST",
+        "when_short": "Sat Nov 14, 9:00 AM",
+        "uid": "1a2b3c4d-0000-4000-8000-000000000002",
+        "where": "Boulder Public Library",
+        "address": "1001 Arapahoe Ave, Boulder, CO 80302",
+        "venue": "Boulder Public Library",
+        "lead": "Todd Beetcher",
+        "confirmation_number": "ICDT-QQ77ZZ",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Boulder+Public+Library%2C+1001+Arapahoe+Ave%2C+Boulder%2C+CO+80302"
+      },
+      "expect": {
+        "subject": "Launch — you're scheduled: Sat Nov 14, 9:00 AM",
+        "text": "Hello Lee,\n\nYou're scheduled. Here are the details:\n\nWhat: Intro to AI\nWhen: Saturday, November 14, 2026, 9:00 AM to 11:00 AM MST\nWhere: Boulder Public Library\nAddress: 1001 Arapahoe Ave, Boulder, CO 80302\nLead instructor: Todd Beetcher\nConfirmation number: ICDT-QQ77ZZ\n\nMap: https://www.google.com/maps/search/?api=1&query=Boulder+Public+Library%2C+1001+Arapahoe+Ave%2C+Boulder%2C+CO+80302\n\nA calendar file is attached: open it to add this to your calendar.\n\nNeed to change something? Just reply to this email.\n\nLaunch\n",
+        "html": "<html><body><p>Hello Lee,</p><p>You're scheduled. Here are the details:</p><table cellpadding=\"4\" style=\"border-collapse:collapse\"><tr><td style=\"color:#555;vertical-align:top\">What</td><td><strong>Intro to AI</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">When</td><td><strong>Saturday, November 14, 2026, 9:00 AM to 11:00 AM MST</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Where</td><td><strong>Boulder Public Library</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Address</td><td><strong>1001 Arapahoe Ave, Boulder, CO 80302</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Lead instructor</td><td><strong>Todd Beetcher</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Confirmation number</td><td><strong>ICDT-QQ77ZZ</strong></td></tr></table><p><a href=\"https://www.google.com/maps/search/?api=1&amp;query=Boulder+Public+Library%2C+1001+Arapahoe+Ave%2C+Boulder%2C+CO+80302\" style=\"display:inline-block;padding:12px 20px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold\">Open the map</a></p><p>A calendar file is attached: open it to add this to your calendar.</p><p>Need to change something? Just reply to this email.</p><p>Launch</p></body></html>",
+        "ics": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//LAUNCH//I Can Do That//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:1a2b3c4d-0000-4000-8000-000000000002@beetcher.com\r\nDTSTAMP:20261015T120000Z\r\nDTSTART:20261114T160000Z\r\nDTEND:20261114T180000Z\r\nSUMMARY:Intro to AI\r\nLOCATION:Boulder Public Library\\, 1001 Arapahoe Ave\\, Boulder\\, CO 80302\r\nDESCRIPTION:Intro to AI\\nLead instructor: Todd Beetcher\\nConfirmation numbe\r\n r: ICDT-QQ77ZZ\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+      }
+    },
+    "placement_unknown_zone": {
+      "kind": "placement_confirmation",
+      "audience": "student",
+      "inputs": {
+        "to": "kim@example.com",
+        "name": "Kim",
+        "confirmation": null,
+        "reference": null,
+        "title": "Evening workshop",
+        "start": "2026-12-01T01:30:00Z",
+        "end": "2026-12-01T03:00:00Z",
+        "tz": "Europe/Nowhere",
+        "venue": "Community Hall",
+        "address": "",
+        "room": "Room 2",
+        "notes": "",
+        "lead": null,
+        "others": [
+          "Pat"
+        ],
+        "uid": "1a2b3c4d-0000-4000-8000-000000000003"
+      },
+      "facts": {
+        "name": "Kim",
+        "title": "Evening workshop",
+        "start_utc": "2026-12-01T01:30:00Z",
+        "end_utc": "2026-12-01T03:00:00Z",
+        "time_zone": "Europe/Nowhere",
+        "when_day": "Tuesday, December 1, 2026",
+        "when_span": "1:30 AM to 3:00 AM UTC",
+        "when_short": "Tue Dec 1, 1:30 AM",
+        "uid": "1a2b3c4d-0000-4000-8000-000000000003",
+        "where": "Community Hall · Room 2",
+        "venue": "Community Hall",
+        "room": "Room 2",
+        "also_teaching": "Pat",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Community+Hall"
+      },
+      "expect": {
+        "subject": "Launch — you're scheduled: Tue Dec 1, 1:30 AM",
+        "text": "Hello Kim,\n\nYou're scheduled. Here are the details:\n\nWhat: Evening workshop\nWhen: Tuesday, December 1, 2026, 1:30 AM to 3:00 AM UTC\nWhere: Community Hall · Room 2\nAlso teaching: Pat\n\nMap: https://www.google.com/maps/search/?api=1&query=Community+Hall\n\nA calendar file is attached: open it to add this to your calendar.\n\nNeed to change something? Just reply to this email.\n\nLaunch\n",
+        "html": "<html><body><p>Hello Kim,</p><p>You're scheduled. Here are the details:</p><table cellpadding=\"4\" style=\"border-collapse:collapse\"><tr><td style=\"color:#555;vertical-align:top\">What</td><td><strong>Evening workshop</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">When</td><td><strong>Tuesday, December 1, 2026, 1:30 AM to 3:00 AM UTC</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Where</td><td><strong>Community Hall · Room 2</strong></td></tr><tr><td style=\"color:#555;vertical-align:top\">Also teaching</td><td><strong>Pat</strong></td></tr></table><p><a href=\"https://www.google.com/maps/search/?api=1&amp;query=Community+Hall\" style=\"display:inline-block;padding:12px 20px;background:#1a1a1a;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold\">Open the map</a></p><p>A calendar file is attached: open it to add this to your calendar.</p><p>Need to change something? Just reply to this email.</p><p>Launch</p></body></html>",
+        "ics": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//LAUNCH//I Can Do That//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:1a2b3c4d-0000-4000-8000-000000000003@beetcher.com\r\nDTSTAMP:20261015T120000Z\r\nDTSTART:20261201T013000Z\r\nDTEND:20261201T030000Z\r\nSUMMARY:Evening workshop\r\nLOCATION:Community Hall\\, Room 2\r\nDESCRIPTION:Evening workshop\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+      }
+    }
+  }
+}

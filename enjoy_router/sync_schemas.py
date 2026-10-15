@@ -16,6 +16,9 @@ dst = here / "schemas"
 dst.mkdir(exist_ok=True)
 registry = json.loads((src / "registry.json").read_text())
 files = ["registry.json"] + [e["schema"] for e in registry["schemas"]]
+# CMS message kinds: the fact schemas the server validates a message's context against.
+files += [k["facts"] for k in registry.get("message_kinds", {}).get("kinds", [])]
 for f in files:
+    (dst / f).parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src / f, dst / f)
 print(f"copied {len(files)} files to {dst}")

@@ -1,0 +1,66 @@
+{
+  "valid": {
+    "launch_defaults": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "is_email_on": true,
+      "is_text_on": false
+    },
+    "with_everything": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "from_address": "hello@example.com",
+      "reply_to": "todd@example.com",
+      "footer": "You are receiving this because you asked to take part in a Launch workshop.",
+      "test_redirect_address": "todd+test@example.com",
+      "is_email_on": true,
+      "is_text_on": false
+    }
+  },
+  "invalid": {
+    "wrong_key": {
+      "settings_key": "second",
+      "sender_name": "Launch",
+      "is_email_on": true,
+      "is_text_on": false
+    },
+    "missing_sender_name": {
+      "settings_key": "default",
+      "is_email_on": true,
+      "is_text_on": false
+    },
+    "bad_email": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "reply_to": "not an email",
+      "is_email_on": true,
+      "is_text_on": false
+    },
+    "text_switch_missing": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "is_email_on": true
+    },
+    "mode_belongs_in_the_environment": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "is_email_on": true,
+      "is_text_on": false,
+      "mode": "live"
+    },
+    "footer_too_long": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "footer": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "is_email_on": true,
+      "is_text_on": false
+    },
+    "client_sent_id": {
+      "settings_key": "default",
+      "sender_name": "Launch",
+      "is_email_on": true,
+      "is_text_on": false,
+      "id": "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f"
+    }
+  }
+}

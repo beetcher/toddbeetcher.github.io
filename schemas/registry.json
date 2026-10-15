@@ -136,6 +136,46 @@
       "guide": "ORGANIZATION_LINK_GUIDE.md",
       "examples": "examples/organization_link.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "message_template",
+      "collection": "message_templates",
+      "schema": "message_template.schema.json",
+      "guide": "MESSAGE_TEMPLATE_GUIDE.md",
+      "examples": "examples/message_template.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "communication_log",
+      "collection": "communication_logs",
+      "schema": "communication_log.schema.json",
+      "guide": "COMMUNICATION_LOG_GUIDE.md",
+      "examples": "examples/communication_log.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "comms_setting",
+      "collection": "comms_settings",
+      "schema": "comms_setting.schema.json",
+      "guide": "COMMS_SETTING_GUIDE.md",
+      "examples": "examples/comms_setting.examples.json",
+      "schema_version": 1
     }
-  ]
+  ],
+  "message_kinds": {
+    "guide": "CMS_GUIDE.md",
+    "golden_masters": "message_kinds/golden_masters.json",
+    "reference_renderer": "message_kinds/reference_render.py",
+    "seed_templates": "examples/message_template.seed.json",
+    "kinds": [
+      {
+        "kind": "request_received",
+        "facts": "message_kinds/request_received.facts.schema.json"
+      },
+      {
+        "kind": "placement_confirmation",
+        "facts": "message_kinds/placement_confirmation.facts.schema.json"
+      }
+    ]
+  }
 }

@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_template.schema.json",
+  "title": "message_template",
+  "description": "The wording of one message for one channel and one audience, kept as data so the Console can edit it (see CMS_GUIDE.md and MESSAGE_TEMPLATE_GUIDE.md). One record per kind, channel and audience. The body is a list of blocks, not HTML: the channel turns the blocks into the text and HTML versions. Versions are linked records: a draft is edited in place; publishing turns the draft into the new published record, whose previous_id names the published record it replaces; the standing version is the published record nobody supersedes. Rules the schema cannot express: only a published and active record is ever sent; at most one draft and one standing published record per kind, channel and audience; every placeholder must name a fact the kind supplies, and a placeholder for an optional fact must sit inside a block or row guarded by that fact's show_if (the kind's fact schema decides, and the Console and check.py refuse anything else); curly braces are used only for placeholders; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "linked_records",
+  "x_retention": "Kept. Every published version stays so a log entry's template_version can be explained. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "kind",
+    "channel",
+    "audience",
+    "name",
+    "subject",
+    "blocks",
+    "is_active"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "status",
+    "version"
+  ],
+  "properties": {
+    "kind": {
+      "description": "The message kind this wording is for, such as placement_confirmation. Must be a kind registered in registry.json. Required.",
+      "type": "string",
+      "maxLength": 60,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "channel": {
+      "description": "The channel this wording is for. Only email exists today; a short text-message version is added later as another record. Required.",
+      "enum": [
+        "email"
+      ]
+    },
+    "audience": {
+      "description": "Which people get this wording, such as student or requester. Must be one of the audiences the kind lists. The caller names the audience; the CMS does not know what the word means. Required.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "name": {
+      "description": "A plain-words name shown in the Console. Up to 120 characters. Required.",
+      "type": "string",
+      "maxLength": 120
+    },
+    "subject": {
+      "description": "The subject line, with {fact_name} placeholders for required facts only. One line. Up to 200 characters. Required.",
+      "type": "string",
+      "maxLength": 200,
+      "pattern": "^[^\\r\\n]*$"
+    },
+    "blocks": {
+      "description": "The body, in order: paragraphs, a table of labelled rows, buttons. At least one, up to 40. Required.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "description": "What kind of block: paragraph (a paragraph of text), facts_table (labelled rows) or button (a link button). Required.",
+            "enum": [
+              "paragraph",
+              "facts_table",
+              "button"
+            ]
+          },
+          "text": {
+            "description": "paragraph only: the words, with {fact_name} placeholders. `**bold**` marks bold in the HTML version. Up to 1000 characters.",
+            "type": "string",
+            "maxLength": 1000
+          },
+          "plain": {
+            "description": "paragraph only, optional: different words for the plain-text version when they must differ from `text` (for example a colon where the HTML version has a button after it). Same placeholder rules. Up to 1000 characters.",
+            "type": "string",
+            "maxLength": 1000
+          },
+          "show_if": {
+            "description": "Optional on a paragraph, a button and each table row: the name of a fact. The block or row appears only when that fact has a value. A placeholder for an optional fact is allowed only inside a block or row guarded by its own show_if.",
+            "type": "string",
+            "maxLength": 60,
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "label": {
+            "description": "button: the words on the button (no placeholders). On a table row: the left-hand label (no placeholders). Up to 80 characters.",
+            "type": "string",
+            "maxLength": 80
+          },
+          "link": {
+            "description": "button only: the address the button opens, normally a single placeholder such as {map_url}. Up to 200 characters.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "plain_prefix": {
+            "description": "button only, optional: words put before the link in the plain-text version, for example Map: . Up to 40 characters.",
+            "type": "string",
+            "maxLength": 40
+          },
+          "has_fallback_line": {
+            "description": "button only, optional: when true the HTML version adds a line under the button that shows the address to copy if the button does not work. Absent means false.",
+            "type": "boolean"
+          },
+          "rows": {
+            "description": "facts_table only: the rows, in order. At least one, up to 20.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "label",
+                "value"
+              ],
+              "properties": {
+                "label": {
+                  "description": "The left-hand label of the row. No placeholders. Up to 80 characters.",
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "value": {
+                  "description": "The right-hand text, with {fact_name} placeholders. Up to 300 characters.",
+                  "type": "string",
+                  "maxLength": 300
+                },
+                "show_if": {
+                  "description": "Optional: the name of a fact; the row appears only when that fact has a value.",
+                  "type": "string",
+                  "maxLength": 60,
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                }
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "paragraph"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "text"
+              ],
+              "properties": {
+                "label": false,
+                "link": false,
+                "plain_prefix": false,
+                "has_fallback_line": false,
+                "rows": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "facts_table"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "rows"
+              ],
+              "properties": {
+                "text": false,
+                "plain": false,
+                "label": false,
+                "link": false,
+                "plain_prefix": false,
+                "has_fallback_line": false,
+                "show_if": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "button"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "then": {
+              "required": [
+                "label",
+                "link"
+              ],
+              "properties": {
+                "text": false,
+                "plain": false,
+                "rows": false
+              }
+            }
+          }
+        ]
+      }
+    },
+    "is_active": {
+      "description": "The on/off switch. false means this message is not sent and the attempt is logged as not sent (no_template). Changing it does not make a new version. Required.",
+      "type": "boolean"
+    },
+    "status": {
+      "description": "draft (being edited, never sent) or published (the version that may be sent). Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "draft",
+        "published"
+      ]
+    },
+    "version": {
+      "description": "1 for the first published version, then one more each time a draft is published; a draft carries the number it will get. Set by the server.",
+      "readOnly": true,
+      "type": "integer",
+      "minimum": 1
+    },
+    "previous_id": {
+      "description": "The published record this one replaces or was copied from. Absent on the first version. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "published_at": {
+      "description": "When the draft was published (UTC); absent while a draft. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "published_by": {
+      "description": "Who published it, as an actor string; absent while a draft. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/communication_log.schema.json",
+  "title": "communication_log",
+  "description": "One line in the send log: one attempt to tell one person one thing, with what came of it (see CMS_GUIDE.md and COMMUNICATION_LOG_GUIDE.md). Written only by the server (the CMS), once per recipient per call, whatever the outcome. The message text is never stored: the kind, the template version and the facts identify what was sent. Append-only, with one exception: an operator marks a not_sent entry handled (the handled_ fields), and later provider status may be attached. The per-attendance and per-request message history is a view of these entries. Rules the schema cannot express: entries are written only by the server; create, update and soft delete through the endpoints are refused (only get, list and the mark-handled operation work); merging two people repoints individual_id; erasing a person removes what describes the entry (to, subject, handled_note) and leaves an anonymous tombstone.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "append_only",
+  "x_retention": "Kept. When the individual is erased the entry is soft deleted and everything that describes it is removed, leaving an anonymous tombstone. (A written policy only; the erase code does it. Same policy as attendance, P-08.)",
+  "required": [
+    "kind",
+    "channel",
+    "status",
+    "reason",
+    "trigger",
+    "contract_version"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "kind": {
+      "description": "The message kind attempted, such as placement_confirmation. Required.",
+      "type": "string",
+      "maxLength": 60,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "template_version": {
+      "description": "The version number of the template used. Absent when no template was found or the attempt stopped before that step.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "audience": {
+      "description": "The audience label the caller gave. Optional.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "individual_id": {
+      "description": "The person told, when the recipient was a known individual. Optional. Not checked. Repointed when people are merged.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "channel": {
+      "description": "The channel used or chosen: email, text, or none when no channel could be chosen. Required.",
+      "enum": [
+        "email",
+        "text",
+        "none"
+      ]
+    },
+    "to": {
+      "description": "The address or number the message went to (the redirect address when a test redirect was on). Absent when there was none. Personal data.",
+      "type": "string",
+      "maxLength": 254,
+      "x_pii": true
+    },
+    "is_redirected": {
+      "description": "true when the test redirect replaced the real address. Absent means false.",
+      "type": "boolean"
+    },
+    "subject": {
+      "description": "The subject line as sent, or the title for a non-email channel. Absent when nothing was rendered. Personal data.",
+      "type": "string",
+      "maxLength": 300,
+      "x_pii": true
+    },
+    "status": {
+      "description": "What came of it: sent (the provider accepted it), failed (the provider refused it), unknown (no answer in time), not_sent (the CMS wanted to send and could not, so a person may need to act) or skipped (the CMS decided not to send). Required.",
+      "enum": [
+        "sent",
+        "failed",
+        "unknown",
+        "not_sent",
+        "skipped"
+      ]
+    },
+    "reason": {
+      "description": "The closed reason code. Each reason belongs to exactly one status: ok is sent; adapter_error is failed; timeout is unknown; unknown_kind, invalid_context, no_contact, channel_unavailable, no_template, incomplete and time_budget are not_sent; cms_off, log_only, duplicate, excluded and muted are skipped. Required.",
+      "enum": [
+        "ok",
+        "adapter_error",
+        "timeout",
+        "unknown_kind",
+        "invalid_context",
+        "no_contact",
+        "channel_unavailable",
+        "no_template",
+        "incomplete",
+        "time_budget",
+        "cms_off",
+        "log_only",
+        "duplicate",
+        "excluded",
+        "muted"
+      ]
+    },
+    "error_code": {
+      "description": "A short sanitized code from the provider or adapter, for failed and unknown entries. Never a reply text. Optional.",
+      "type": "string",
+      "maxLength": 60,
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "message_ref": {
+      "description": "The Message-ID the CMS put on the email, so the provider's delivered, bounced and opened reports can be matched later. Optional.",
+      "type": "string",
+      "maxLength": 200
+    },
+    "trigger": {
+      "description": "automatic (the product decided) or manual (an operator pressed a button). Required.",
+      "enum": [
+        "automatic",
+        "manual"
+      ]
+    },
+    "request_id": {
+      "description": "The registration request this message belongs to. Optional. Not checked.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "scheduled_class_id": {
+      "description": "The class this message belongs to. Optional. Not checked.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "attendance_id": {
+      "description": "The attendance record this message belongs to. Optional. Not checked.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "dedupe_key": {
+      "description": "The key that stops the same event being sent twice. Optional.",
+      "type": "string",
+      "maxLength": 300
+    },
+    "contract_version": {
+      "description": "The version of the CMS call contract the call used. Required.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "handled_at": {
+      "description": "When an operator marked this not_sent entry as dealt with (UTC). Absent until then. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "handled_by": {
+      "description": "Who marked it handled, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "handled_note": {
+      "description": "What the operator did, such as called by hand. Up to 500 characters. Personal data. Optional.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 500,
+      "x_pii": true
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server. For a log entry this is when the attempt happened.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "ok"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "sent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "adapter_error"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "failed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "timeout"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "unknown"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "unknown_kind",
+              "invalid_context",
+              "no_contact",
+              "channel_unavailable",
+              "no_template",
+              "incomplete",
+              "time_budget"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "not_sent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "cms_off",
+              "log_only",
+              "duplicate",
+              "excluded",
+              "muted"
+            ]
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "skipped"
+          }
+        }
+      }
+    }
+  ]
+}

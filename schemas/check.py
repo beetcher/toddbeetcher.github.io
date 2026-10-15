@@ -207,6 +207,125 @@ for e in REG:
         summary += f", {len(cases)} test records"
     print(summary + " checked")
 
+def check_message_kinds():
+    """CMS (spec: claude/cms-architecture-spec.md). For every message kind in registry.json: the fact schema is sound; the seed
+    templates use only facts of their kind (optional facts only inside their own show_if guard, no stray braces, bold balanced);
+    and the golden masters (what the pre-refactor code produced) are reproduced byte for byte by the reference renderer."""
+    import importlib.util
+    mk = json.load(open(D / "registry.json")).get("message_kinds")
+    if not mk:
+        return
+    guide = (D / mk["guide"]).read_text()
+    spec = importlib.util.spec_from_file_location("reference_render", D / mk["reference_renderer"])
+    RR = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(RR)
+    kinds = {}
+    for k in mk["kinds"]:
+        kn = k["kind"]
+        fs = json.load(open(D / k["facts"]))
+        V.check_schema(fs)
+        if not SNAKE.match(kn) or fs.get("title") != kn:
+            fails.append(f"kind {kn}: key must be snake_case and equal the fact schema title")
+        if f"`{kn}`" not in guide:
+            fails.append(f"kind {kn}: {mk['guide']} does not mention it")
+        if fs.get("additionalProperties") is not False:
+            fails.append(f"kind {kn}: fact schema must set additionalProperties false")
+        x = fs.get("x_kind") or {}
+        for key in ("name", "audiences", "triggers", "recipient", "dedupe", "refs"):
+            if not x.get(key):
+                fails.append(f"kind {kn}: x_kind.{key} is missing")
+        props = fs.get("properties", {})
+        for n, p in props.items():
+            if not SNAKE.match(n):
+                fails.append(f"kind {kn}: fact not snake_case: {n}")
+            if not p.get("description") or "type" not in p:
+                fails.append(f"kind {kn}: fact {n} needs a description and a type")
+        for r in fs.get("required", []):
+            if r not in props:
+                fails.append(f"kind {kn}: required fact {r} is not a property")
+        for att in x.get("attachments", []):
+            for field, fact in att.get("event_fields", {}).items():
+                if fact not in props:
+                    fails.append(f"kind {kn}: attachment field {field} names unknown fact {fact}")
+        kinds[kn] = fs
+    mt_schema = SCHEMAS["message_template"]
+    mt_readonly = {k for k, v in mt_schema["properties"].items() if v.get("readOnly")}
+    ph = re.compile(r"\{([^{}]*)\}")
+    seeds = json.load(open(D / mk["seed_templates"]))["templates"]
+    by = {}
+
+    def check_text(label, s, known, required, guard):
+        if "{" in ph.sub("", s) or "}" in ph.sub("", s):
+            fails.append(f"{label}: stray curly brace in '{s[:40]}'")
+        if s.count("**") % 2:
+            fails.append(f"{label}: unbalanced ** in '{s[:40]}'")
+        for n in ph.findall(s):
+            if n not in known:
+                fails.append(f"{label}: placeholder {{{n}}} is not a fact of this kind")
+            elif n not in required and n != guard:
+                fails.append(f"{label}: optional fact {{{n}}} is used without its own show_if")
+
+    for t in seeds:
+        label = f"seed template {t.get('kind')}/{t.get('audience')}"
+        for e in inbound_errors(mt_schema, mt_readonly, t):
+            fails.append(f"{label}: fails the schema: {e}")
+        fs = kinds.get(t.get("kind"))
+        if fs is None:
+            fails.append(f"{label}: kind is not registered")
+            continue
+        if t["audience"] not in fs["x_kind"]["audiences"]:
+            fails.append(f"{label}: audience is not one of the kind's audiences")
+        key = (t["kind"], t["channel"], t["audience"])
+        if key in by:
+            fails.append(f"{label}: duplicate kind/channel/audience")
+        by[key] = t
+        known, required = set(fs["properties"]), set(fs.get("required", []))
+        check_text(label + " subject", t["subject"], known, required, None)
+        for i, b in enumerate(t["blocks"]):
+            bl = f"{label} block {i + 1}"
+            guard = b.get("show_if")
+            if guard and guard not in known:
+                fails.append(f"{bl}: show_if names unknown fact {guard}")
+            if b["type"] == "paragraph":
+                check_text(bl, b["text"], known, required, guard)
+                if "plain" in b:
+                    check_text(bl + " plain", b["plain"], known, required, guard)
+            elif b["type"] == "button":
+                check_text(bl + " link", b["link"], known, required, guard)
+                if ph.search(b["label"]):
+                    fails.append(f"{bl}: a button label has no placeholders")
+            elif b["type"] == "facts_table":
+                for j, r in enumerate(b["rows"]):
+                    g2 = r.get("show_if")
+                    if g2 and g2 not in known:
+                        fails.append(f"{bl} row {j + 1}: show_if names unknown fact {g2}")
+                    if ph.search(r["label"]):
+                        fails.append(f"{bl} row {j + 1}: a row label has no placeholders")
+                    check_text(f"{bl} row {j + 1}", r["value"], known, required, g2)
+    gm = json.load(open(D / mk["golden_masters"]))
+    done = 0
+    for name, c in gm["cases"].items():
+        fs = kinds.get(c["kind"])
+        t = by.get((c["kind"], "email", c["audience"]))
+        if fs is None or t is None:
+            fails.append(f"golden {name}: no kind or seed template for {c['kind']}/{c['audience']}")
+            continue
+        for e in V(fs, format_checker=FormatChecker()).iter_errors(c["facts"]):
+            fails.append(f"golden {name}: facts fail the fact schema: {e.message[:80]}")
+        try:
+            subject, text, html = RR.render(t, c["facts"])
+        except RR.Incomplete as e:
+            fails.append(f"golden {name}: seed template needs fact {e}")
+            continue
+        for part, got in (("subject", subject), ("text", text), ("html", html)):
+            if got != c["expect"][part]:
+                fails.append(f"golden {name}: {part} differs from the pre-refactor output")
+        done += 1
+    print(f"message_kinds: {len(kinds)} kinds, {len(seeds)} seed templates, {done} golden cases checked (subject, text and HTML byte for byte)")
+
+
+check_message_kinds()
+
 if fails:
     print("\nFAILED:")
     for f in fails:

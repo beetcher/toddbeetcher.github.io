@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/comms_setting.schema.json",
+  "title": "comms_setting",
+  "description": "The CMS settings: one record for the whole product, edited in the Console (see CMS_GUIDE.md and COMMS_SETTING_GUIDE.md). The send mode (off, log_only, live) is not here: it comes from the environment with the secrets. Rules the schema cannot express: exactly one record exists (settings_key is always default); turning is_text_on on is refused until a text channel exists; from_address must be an address the mail provider has verified, or sends fail; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept. The record is replaced in place; the log keeps what was sent. (A written policy only.)",
+  "required": [
+    "settings_key",
+    "sender_name",
+    "is_email_on",
+    "is_text_on"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "settings_key": {
+      "description": "Always default. It makes the one-record rule checkable, because ids are UUIDs. Required.",
+      "const": "default"
+    },
+    "sender_name": {
+      "description": "The name people see as the sender, such as Launch. Up to 80 characters. Required.",
+      "type": "string",
+      "maxLength": 80
+    },
+    "from_address": {
+      "description": "The address mail is sent from. Optional; absent means the address built into the server. Must be verified with the mail provider. The final domain is parked (P-05).",
+      "type": "string",
+      "format": "email",
+      "maxLength": 254,
+      "x_pii": true
+    },
+    "reply_to": {
+      "description": "Where replies go. Optional; absent means the from address.",
+      "type": "string",
+      "format": "email",
+      "maxLength": 254,
+      "x_pii": true
+    },
+    "footer": {
+      "description": "A short closing line added under every email. Optional. Up to 500 characters.",
+      "type": "string",
+      "maxLength": 500
+    },
+    "test_redirect_address": {
+      "description": "When set, every message goes to this address instead of the real one and the log entry is marked redirected. Optional. For testing.",
+      "type": "string",
+      "format": "email",
+      "maxLength": 254,
+      "x_pii": true
+    },
+    "is_email_on": {
+      "description": "Whether the email channel may send. false makes every email attempt not_sent (channel_unavailable). Required.",
+      "type": "boolean"
+    },
+    "is_text_on": {
+      "description": "Whether the text channel may send. Must stay false until a text channel exists. Required.",
+      "type": "boolean"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/placement_confirmation.facts.schema.json",
+  "title": "placement_confirmation",
+  "description": "The facts the message kind placement_confirmation (you are scheduled: details and a calendar file) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product from the raw facts and the record data, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Placement confirmation (you are scheduled)",
+    "audiences": [
+      "student"
+    ],
+    "triggers": [
+      "A student is placed with status assigned or confirmed in a class that is scheduled or enrolling, has a venue and a start time, and the person has an email address (automatic).",
+      "An operator presses Send confirmation email on a student row (manual)."
+    ],
+    "recipient": "individual: the placed student.",
+    "dedupe": "kind + attendance id",
+    "refs": [
+      "attendance_id",
+      "scheduled_class_id"
+    ],
+    "attachments": [
+      {
+        "kind": "calendar_event",
+        "filename": "workshop.ics",
+        "mime_type": "text/calendar",
+        "method": "PUBLISH",
+        "event_fields": {
+          "uid": "uid",
+          "title": "title",
+          "start": "start_utc",
+          "end": "end_utc",
+          "venue": "venue",
+          "room": "room",
+          "address": "address",
+          "lead": "lead",
+          "confirmation": "confirmation_number",
+          "notes": "notes"
+        },
+        "uid_domain": "beetcher.com"
+      }
+    ]
+  },
+  "required": [
+    "name",
+    "title",
+    "start_utc",
+    "end_utc",
+    "time_zone",
+    "when_day",
+    "when_span",
+    "when_short",
+    "uid"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: their given name, else their display name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Gladys"
+      ]
+    },
+    "title": {
+      "description": "The title of the class.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys's AI Happy Hour"
+      ]
+    },
+    "start_utc": {
+      "description": "When the class starts (UTC, to the second). Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-17T23:00:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "end_utc": {
+      "description": "When the class ends (UTC). Start plus the duration, 60 minutes if none is set. Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-18T00:30:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "time_zone": {
+      "description": "The class's time zone as an IANA name; America/Denver if none is set. An unknown name shows times in UTC.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "America/Denver"
+      ]
+    },
+    "when_day": {
+      "description": "The day in words, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "Saturday, October 17, 2026"
+      ],
+      "x_derived": true
+    },
+    "when_span": {
+      "description": "The start and end times with the zone abbreviation, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "5:00 PM to 6:30 PM MDT"
+      ],
+      "x_derived": true
+    },
+    "when_short": {
+      "description": "A short day and start time for subject lines.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "Sat Oct 17, 5:00 PM"
+      ],
+      "x_derived": true
+    },
+    "venue": {
+      "description": "The venue's name. Absent when none.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Ozo's Coffee, East Pearl"
+      ]
+    },
+    "room": {
+      "description": "The room label at the venue. Absent when none.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Back room"
+      ]
+    },
+    "where": {
+      "description": "Venue and room together, joined with a middle dot. Absent when both are absent.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "Ozo's Coffee, East Pearl · Back room"
+      ],
+      "x_derived": true
+    },
+    "address": {
+      "description": "The venue's address on one line. Absent when none.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "1500 Pearl St, Boulder, CO 80302"
+      ],
+      "x_derived": true
+    },
+    "map_url": {
+      "description": "A map search link for the venue and address. Absent when there is neither.",
+      "type": "string",
+      "maxLength": 500,
+      "examples": [
+        "https://www.google.com/maps/search/?api=1&query=Ozo%27s+Coffee"
+      ],
+      "format": "uri",
+      "x_derived": true
+    },
+    "notes": {
+      "description": "The class's venue notes (parking, doors). Absent when none.",
+      "type": "string",
+      "maxLength": 2000,
+      "examples": [
+        "Park behind the building."
+      ]
+    },
+    "lead": {
+      "description": "The lead instructor's display name. Absent when none is placed.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Todd Beetcher"
+      ]
+    },
+    "also_teaching": {
+      "description": "The other instructors' display names, joined with commas. Absent when none.",
+      "type": "string",
+      "maxLength": 400,
+      "examples": [
+        "Susan Adams, Bobby Hodgkins"
+      ],
+      "x_derived": true
+    },
+    "confirmation_number": {
+      "description": "The confirmation number of the placement. Absent when none.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "ICDT-ABC123"
+      ]
+    },
+    "uid": {
+      "description": "The id the calendar file uses to recognize this event, so a later update replaces it. The attendance record's id.",
+      "type": "string",
+      "maxLength": 36,
+      "examples": [
+        "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f"
+      ],
+      "format": "uuid"
+    }
+  }
+}

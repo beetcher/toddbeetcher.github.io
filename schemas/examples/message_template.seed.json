@@ -1,0 +1,124 @@
+{
+  "description": "The two seed templates: today's receipt and placement emails, word for word, as blocks. The seed script (step 3) writes these as published records. Golden masters in message_kinds/golden_masters.json prove they render exactly as the pre-refactor code did.",
+  "templates": [
+    {
+      "kind": "request_received",
+      "channel": "email",
+      "audience": "requester",
+      "name": "Request received (receipt)",
+      "subject": "Launch — we received your request",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "We received your request. Your confirmation number is **{confirmation_number}**."
+        },
+        {
+          "type": "paragraph",
+          "text": "Want to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in.",
+          "plain": "Want to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in:",
+          "show_if": "completion_link"
+        },
+        {
+          "type": "button",
+          "show_if": "completion_link",
+          "label": "Finish your request",
+          "link": "{completion_link}",
+          "has_fallback_line": true
+        },
+        {
+          "type": "paragraph",
+          "text": "We'll contact you about the next steps either way."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "placement_confirmation",
+      "channel": "email",
+      "audience": "student",
+      "name": "Placement confirmation (you are scheduled)",
+      "subject": "Launch — you're scheduled: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "You're scheduled. Here are the details:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            },
+            {
+              "label": "Lead instructor",
+              "value": "{lead}",
+              "show_if": "lead"
+            },
+            {
+              "label": "Also teaching",
+              "value": "{also_teaching}",
+              "show_if": "also_teaching"
+            },
+            {
+              "label": "Good to know",
+              "value": "{notes}",
+              "show_if": "notes"
+            },
+            {
+              "label": "Confirmation number",
+              "value": "{confirmation_number}",
+              "show_if": "confirmation_number"
+            }
+          ]
+        },
+        {
+          "type": "button",
+          "show_if": "map_url",
+          "label": "Open the map",
+          "link": "{map_url}",
+          "plain_prefix": "Map:"
+        },
+        {
+          "type": "paragraph",
+          "text": "A calendar file is attached: open it to add this to your calendar."
+        },
+        {
+          "type": "paragraph",
+          "text": "Need to change something? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    }
+  ]
+}
