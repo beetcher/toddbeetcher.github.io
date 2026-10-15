@@ -85,6 +85,17 @@ def _send_notices(build, *args):
         return []
 
 
+def _notify_instructors(store, recs, actor):
+    """After a placement is saved: a placed instructor is told they are assigned; the instructors of the class are told which students were
+    added (one message for everyone placed together). Never raises (R-3)."""
+    for rec in recs:
+        if rec.get("role") != STUDENT:
+            _send_notices("instructor_placed_items", store, rec, actor)
+    students = [r for r in recs if r.get("role") == STUDENT]
+    if students:
+        _send_notices("students_added_items", store, students, actor)
+
+
 def open_placements(store, class_id):
     """The class's placements as they stand now that a cancel would end (assigned, waitlisted, confirmed), copied before they change."""
     return [dict(d) for d in _live_for(store, "scheduled_class_id", class_id) if d.get("status") in OPEN]
@@ -518,6 +529,7 @@ def assign_request(store, data, actor, requester=None, source="dashboard", now=N
     for rec in recs:
         _auto_notify(store, rec, actor, now)
     fresh = [store.get(ATT.name, r["id"]) or r for r in recs]
+    _notify_instructors(store, fresh, actor)
     return success({"records": [expanded(store, r) for r in fresh], "created_people": made})
 
 
@@ -552,4 +564,5 @@ def assign(store, data, actor, person=None, source="dashboard", now=None):
         return stop.result
     _auto_notify(store, out["rec"], actor, now)
     out["rec"] = store.get(ATT.name, out["rec"]["id"]) or out["rec"]
+    _notify_instructors(store, [out["rec"]], actor)
     return success({**expanded(store, out["rec"]), "created_person": person is not None, "created_roster_entry": out["created_roster_entry"]})

@@ -1,5 +1,5 @@
 {
-  "description": "The seed templates: today's receipt and placement emails word for word, plus the change notices (class cancelled, placement ended, participant left), as blocks. The seed script writes these as published records. Golden masters in message_kinds/golden_masters.json prove the first two render exactly as the pre-refactor code did.",
+  "description": "The seed templates: today's receipt and placement emails word for word, plus the change notices (class cancelled, placement ended, participant left, instructor placed, students added), as blocks. The seed script writes these as published records. Golden masters in message_kinds/golden_masters.json prove the first two render exactly as the pre-refactor code did.",
   "templates": [
     {
       "kind": "request_received",
@@ -347,6 +347,104 @@
         {
           "type": "paragraph",
           "text": "{student_name} {how}. Here is the class:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "instructor_placed",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Instructor placed (instructor)",
+      "subject": "Launch — you are assigned to teach: {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "You are assigned to this workshop as the {role_word}:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The attached calendar file puts it on your calendar."
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "students_added",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Students added (instructor)",
+      "subject": "Launch — students added: {title}, {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "{summary}"
         },
         {
           "type": "facts_table",

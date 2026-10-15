@@ -72,10 +72,11 @@ ins = person("Ingrid", "Teach", email="ingrid@example.com"); give_address(s, ins
 
 # the lead instructor is placed first, so the student's email can name them
 r = AT.assign(s, {"scheduled_class_id": sched["id"], "role": "primary_instructor", "order": 1, "individual_id": ins["id"]}, A, now=tick())
-check("placing an instructor sends nothing", r.ok and not sent and not LG.list(s, {}).data["count"], r.problems)
+check("placing an instructor sends only their own assignment email (no placement confirmation)", r.ok and len(sent) == 1 and sent[0]["to"] == "ingrid@example.com" and "assigned to teach" in sent[0]["subject"], (r.problems, [m["to"] for m in sent]))
+sent.clear()
 
 r = AT.assign(s, {"scheduled_class_id": sched["id"], "role": "student", "individual_id": pat["id"]}, A, now=tick())
-check("placing a student in a scheduled class sends one email", r.ok and len(sent) == 1 and sent[0]["to"] == "pat@example.com", (r.problems, sent))
+check("placing a student in a scheduled class sends the student one email and tells the instructor", r.ok and len(sent) == 2 and sent[0]["to"] == "pat@example.com" and sent[1]["to"] == "ingrid@example.com" and "students added" in sent[1]["subject"], (r.problems, [m["to"] for m in sent]))
 m = sent[0]
 check("subject has the local date and time", "Tue Nov 3, 6:00 PM" in m["subject"], m["subject"])
 check("body: when, where, address, instructor", all(x in m["body"] for x in ("Tuesday, November 3, 2026, 6:00 PM to 7:00 PM MST", "Louisville Library", "951 Spruce St", "Lead instructor: Ingrid Teach")), m["body"])
@@ -115,7 +116,7 @@ x = AT.send_confirmation(s, r2.data["id"], A, now=tick())
 check("manual send on an idea class says why", not x.ok and ("id", "class_not_scheduled") in sorted((p["field"], p["issue"]) for p in x.problems))
 r3 = AT.assign(s, {"scheduled_class_id": sched["id"], "role": "student", "individual_id": nomail["id"]}, A, now=tick())
 l3 = log_for(r3.data["id"])
-check("a person with no email: placed, nothing sent, and the log says not_sent / no_contact", r3.ok and len(sent) == n and [(x["status"], x["reason"], x["channel"]) for x in l3] == [("not_sent", "no_contact", "none")], l3)
+check("a person with no email: placed, nothing sent, and the log says not_sent / no_contact", r3.ok and len([m for m in sent if m['to'] != 'ingrid@example.com']) == len([m for m in sent[:n] if m['to'] != 'ingrid@example.com']) and [(x["status"], x["reason"], x["channel"]) for x in l3] == [("not_sent", "no_contact", "none")], l3)
 x = AT.send_confirmation(s, r3.data["id"], A, now=tick())
 check("manual send for no email is logged too and reported as not_sent / no_contact", x.ok and (x.data["status"], x.data["reason"]) == ("not_sent", "no_contact") and len(log_for(r3.data["id"])) == 2, x.problems if not x.ok else x.data)
 x = AT.send_confirmation(s, rec["id"], "bad actor!!", now=tick())
@@ -125,7 +126,7 @@ check("bad actor refused", not x.ok)
 w = person("Wanda", email="wanda@example.com")
 n = len(sent)
 r4 = AT.assign(s, {"scheduled_class_id": sched["id"], "role": "student", "individual_id": w["id"], "status": "waitlisted"}, A, now=tick())
-check("a waitlisted student gets no email", r4.ok and len(sent) == n and not log_for(r4.data["id"]))
+check("a waitlisted student gets no email", r4.ok and len([m for m in sent if m['to'] != 'ingrid@example.com']) == len([m for m in sent[:n] if m['to'] != 'ingrid@example.com']) and not log_for(r4.data["id"]))
 x = AT.send_confirmation(s, r4.data["id"], A, now=tick())
 check("manual send on a waitlisted student says not_placed", not x.ok and ("id", "not_placed") in sorted((p["field"], p["issue"]) for p in x.problems))
 

@@ -249,6 +249,8 @@
   .mchip.sent { color: #1f5d22; border-color: #2f7d32; }
   .mchip.failed, .mchip.unknown, .mchip.not_sent { color: var(--err); border-color: var(--err); }
   .mchip.skipped { color: var(--muted); }
+  .mconf { margin-left: auto; font-size: 13px; font-weight: 800; letter-spacing: .04em; color: #3b3b3b; background: rgba(0,0,0,.06); border-radius: 6px; padding: 1px 8px; white-space: nowrap; }
+  .mconf.none { font-weight: 600; color: var(--muted); background: transparent; }
   .mtag { font-size: 13px; color: #7a3a00; font-weight: 700; }
   .mdetail { padding: 4px 14px 14px; border-top: 1px dashed var(--line); }
   .mdetail dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 10px 0; }
@@ -3836,7 +3838,8 @@
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
   // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy
-  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {} };
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {} };
+  function mConf(e) { return MS.conf[e.id] || ""; }   // the request's confirmation number, worked out when the log loads
   var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
   var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
   function mKindWord(k) { return CORR_KIND[k] || String(k || "").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }); }
@@ -3867,7 +3870,7 @@
   }
   function mText(e) {
     return [e.to, e.subject, e.kind, mKindWord(e.kind), e.status, M_STATUS_WORD[e.status], e.reason, mReasonWord(e.reason), e.error_code, e.message_ref, e.id, e.request_id,
-      e.attendance_id, e.scheduled_class_id, e.individual_id].concat((e.notes || []).map(function (n) { return n.text; })).filter(Boolean).join(" ").toLowerCase();
+      e.attendance_id, e.scheduled_class_id, e.individual_id, mConf(e)].concat((e.notes || []).map(function (n) { return n.text; })).filter(Boolean).join(" ").toLowerCase();
   }
   function mMatches(e, sel, q) {
     if (q) {
@@ -3980,6 +3983,7 @@
       if (e.is_redirected) l1.appendChild(mk("span", "mtag", "test address"));
       if (e.handled_at) l1.appendChild(mk("span", "mtag", "handled"));
       if (e.notes && e.notes.length) l1.appendChild(mk("span", "mtag", "📝 " + e.notes.length + (e.notes.length === 1 ? " note" : " notes")));
+      l1.appendChild(mConf(e) ? mk("span", "mconf", mConf(e)) : mk("span", "mconf none", "—"));
       head.appendChild(l1);
       var why = e.status === "sent" ? "" : (e.status === "failed" || e.status === "unknown" ? M_STATUS_WORD[e.status] + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : mReasonWord(e.reason));
       head.appendChild(mk("div", "mline2", [e.to ? "To " + e.to : "", e.subject || "", why].filter(Boolean).join(" · ")));
@@ -4005,9 +4009,18 @@
     var my = ++MS.seq;
     $("mMsg").textContent = "";
     mBuildBoxes();
-    Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs")]).then(function (both) {
+    Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
+                 admin("list", { limit: 200, order: "-created_at" }, "registration_requests"), admin("list", { limit: 200, order: "-created_at" }, "attendances")]).then(function (both) {
       if (my !== MS.seq || !key) return;
       var res = both[1];
+      // Confirmation numbers: a log entry names its request directly, or (older entries) through its attendance.
+      var rq = {}, at = {}, got = function (r) { return r.status === 200 && r.body && r.body.ok ? r.body.data.records || [] : []; };
+      got(both[2]).forEach(function (r) { rq[r.id] = r.confirmation_number; });
+      got(both[3]).forEach(function (a) { at[a.id] = a.request_id; });
+      MS.conf = {};
+      (res.body && res.body.data && res.body.data.records || []).forEach(function (e) {
+        var c = rq[e.request_id] || rq[at[e.attendance_id]]; if (c) MS.conf[e.id] = c;
+      });
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body || !res.body.ok) { $("mMsg").textContent = "Could not load the messages. " + adminProblem(res.status); return; }
       MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;

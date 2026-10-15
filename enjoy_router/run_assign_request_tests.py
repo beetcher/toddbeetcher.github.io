@@ -135,6 +135,29 @@ rq6 = request([{"first_name": "Fay", "email": "fay@example.com"}])
 r = AT.assign_request(s, {"request_id": rq6["id"], "scheduled_class_id": c5["id"]}, A, requester={"person": {"given_name": "New", "family_name": "Req", "email": "newreq@example.com"}}, now=tick())
 check("new requester: created and placed with the participant", r.ok and r.data["created_people"] == 2, str(r.problems))
 
+# the instructors are told (Todd, 2026-10-15: no instructor email on assignment was a bug)
+ch = wire()
+c7 = room("c7", capacity_max=3)
+lead, second = person("Lena", "Lead", email="lena@example.com"), person("Sam", "Second", email="sam@example.com"); give_address(s, lead["id"]); give_address(s, second["id"])
+r = AT.assign(s, {"scheduled_class_id": c7["id"], "role": "primary_instructor", "individual_id": lead["id"], "order": 1}, A, now=tick())
+check("instructor placed: the instructor is told they are assigned, with a calendar file whose UID is the attendance id",
+      r.ok and "lena@example.com" in by_to(ch) and by_to(ch)["lena@example.com"]["subject"].startswith("Launch — you are assigned to teach")
+      and any(a[0] == "workshop.ics" and r.data["id"].encode() in a[2] and b"METHOD:PUBLISH" in a[2] for a in (ch.sent[-1]["content"].get("attachments") or [])), str(r.problems))
+check("instructor placed: the log carries kind instructor_placed", any(l["kind"] == "instructor_placed" for l in log_of()))
+r = AT.assign(s, {"scheduled_class_id": c7["id"], "role": "instructor", "individual_id": second["id"], "order": 2}, A, now=tick()); ch.sent.clear()
+rq8 = request([{"first_name": "Pia", "email": "pia@example.com"}, {"first_name": "Quin"}, {"first_name": "Rex"}])
+r = AT.assign_request(s, {"request_id": rq8["id"], "scheduled_class_id": c7["id"]}, A, requester={"individual_id": ann["id"]}, now=tick())
+told = {m["to"]: m["content"] for m in ch.sent if m["content"]["subject"].startswith("Launch — students added")}
+check("students added: each instructor gets ONE email for the whole request", r.ok and sorted(told) == ["lena@example.com", "sam@example.com"], str(sorted(told)))
+body = json.dumps(told.get("lena@example.com", {}))
+check("students added: it lists who was added and who is waiting", "Ann Requester" in body and "Pia" in body and "Quin" in body and "waiting list" in body and "Rex" in body, body[:400])
+check("students added: sent again for the same placement is not duplicated", len([m for m in ch.sent if m["to"] == "lena@example.com" and "students added" in m["content"]["subject"]]) == 1)
+wl = [l for l in log_of() if l.get("kind") == "placement_confirmation" and l.get("request_id") == rq8["id"]]
+check("the placement email log entries carry the request id (for the confirmation number)", len(wl) >= 1, str(len(wl)))
+ch.sent.clear()
+c8 = klass("c8", title="Idea", status="identified")
+check("a class with no date: nobody is told anything", AT.assign_request(s, {"request_id": request([{"first_name": "Zed", "email": "zed@example.com"}], attending=False)["id"], "scheduled_class_id": c8["id"]}, A, now=tick()).ok and not ch.sent, str(ch.sent))
+
 # the endpoint door
 from crud_endpoint import handle_admin  # noqa: E402
 c6 = room("c6", capacity_max=5)

@@ -126,5 +126,5 @@ def call_for(store, attendance_id: str, actor: str, manual: bool = False):
     if facts is None:
         return None, reason
     return dict(kind="placement_confirmation", recipient={"type": "individual", "individual_id": individual_id}, context=facts, by=actor,
-                trigger="manual" if manual else "automatic", refs={"attendance_id": attendance_id, "scheduled_class_id": att["scheduled_class_id"]},
+                trigger="manual" if manual else "automatic", refs={"attendance_id": attendance_id, "scheduled_class_id": att["scheduled_class_id"], **({"request_id": att["request_id"]} if att.get("request_id") else {})},
                 audience="student"), None

@@ -187,6 +187,14 @@
       {
         "kind": "participant_left",
         "facts": "message_kinds/participant_left.facts.schema.json"
+      },
+      {
+        "kind": "instructor_placed",
+        "facts": "message_kinds/instructor_placed.facts.schema.json"
+      },
+      {
+        "kind": "students_added",
+        "facts": "message_kinds/students_added.facts.schema.json"
       }
     ]
   }

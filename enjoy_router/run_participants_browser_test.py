@@ -97,6 +97,12 @@ with sync_playwright() as p:
     li2.get_by_role("button", name="Add to class").click()
     c.wait_for_function("document.getElementById('reqDone').textContent.indexOf('Eve') >= 0")
     check("Eve was emailed, Dora was not", sorted(m["to"] for m in sent)[n:] == [] or [m["to"] for m in sent][n:] == ["eve@example.com"], [m["to"] for m in sent][n:])
+    # the Messages log shows the confirmation number on every entry that belongs to a request
+    c.select_option("#collPick", "messages"); c.wait_for_selector("#mList li")
+    confs = c.locator("#mList li .mconf").all_inner_texts()
+    check("Messages: each placement email shows its request's confirmation number, upper right", confs.count("ICDT-PART01") >= 2 and confs.count("ICDT-PART02") >= 1, confs)
+    c.fill("#mSearch", "ICDT-PART02"); c.wait_for_timeout(300)
+    check("searching a confirmation number narrows the list to that request", 1 <= c.locator("#mList li").count() < len(confs), c.locator("#mList li").count())
     check("no script errors", not errors, errors)
     b.close()
 print("\n" + ("FAILED: " + "; ".join(fails) if fails else "OK: all participants browser checks pass")); sys.exit(1 if fails else 0)

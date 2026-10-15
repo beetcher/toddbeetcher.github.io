@@ -1,4 +1,4 @@
-"""The facts and the calls for the change notices: class_cancelled, placement_ended and participant_left (Stage 1 of the change notices).
+"""The facts and the calls for the change notices: class_cancelled, placement_ended and participant_left (Stage 1 of the change notices), and the placement notices instructor_placed and students_added.
 
 Rule (Todd, 2026-10-15): notification is cheap, an annoyed stakeholder is expensive. When a material change is made to a student, an
 instructor or a class, everyone it touches is told. A guardian may be added later as one more recipient.
@@ -72,9 +72,64 @@ def _event(rec):
 
 
 def _item(kind, audience, individual_id, facts, att, actor, event):
+    refs = {"attendance_id": att["id"], "scheduled_class_id": att["scheduled_class_id"]}
+    if att.get("request_id"):
+        refs["request_id"] = att["request_id"]      # lets the Messages station show the confirmation number
     return dict(kind=kind, recipient={"type": "individual", "individual_id": individual_id}, context=facts, by=actor, trigger="automatic",
-                refs={"attendance_id": att["id"], "scheduled_class_id": att["scheduled_class_id"]}, audience=audience,
+                refs=refs, audience=audience,
                 dedupe_key=f"{kind}:{individual_id}:{att['id']}:{event}"[:300])
+
+
+def instructor_placed_items(store, rec, actor):
+    """An instructor was just placed (assigned or confirmed): told they are assigned to teach, with a calendar file (P-41)."""
+    cls = store.get(CL.CLASSES.name, rec.get("scheduled_class_id", ""))
+    base = class_view(store, cls) if cls is not None else None
+    if base is None or rec.get("role") not in INSTRUCTOR_ROLES or rec.get("status") not in SEATED:
+        return []
+    facts = {**base, "name": _first_name(_person(store, rec["individual_id"])), "uid": rec["id"],
+             "role_word": "lead instructor" if rec.get("role") == "primary_instructor" else "instructor"}
+    return [_item("instructor_placed", "instructor", rec["individual_id"], facts, rec, actor, _event(rec))]
+
+
+def _full_name(person):
+    p = person or {}
+    return p.get("display_name") or " ".join(x for x in (p.get("given_name"), p.get("family_name")) if x) or "A student"
+
+
+def _and(names):
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def students_added_items(store, recs, actor):
+    """`recs`: the student records placed together (one request, or one person) in ONE class. Every instructor placed in that class
+    is told once, with everyone listed: one message per placement, not one per student."""
+    import hashlib
+    recs = [r for r in recs if r.get("role") == "student" and r.get("status") in SEATED + ("waitlisted",)]
+    if not recs:
+        return []
+    cls = store.get(CL.CLASSES.name, recs[0].get("scheduled_class_id", ""))
+    base = class_view(store, cls) if cls is not None else None
+    if base is None:
+        return []
+    seated = [_full_name(_person(store, r["individual_id"])) for r in recs if r["status"] in SEATED]
+    waiting = [_full_name(_person(store, r["individual_id"])) for r in recs if r["status"] == "waitlisted"]
+    parts = []
+    if seated:
+        parts.append(f"{_and(seated)} {'was' if len(seated) == 1 else 'were'} added to your class.")
+    if waiting:
+        parts.append(f"{_and(waiting)} {'is' if len(waiting) == 1 else 'are'} on the waiting list.")
+    facts = {k: v for k, v in base.items() if k in ("title", "when_day", "when_span", "when_short", "time_zone", "venue", "room", "where", "address")}
+    facts["summary"] = " ".join(parts)
+    digest = hashlib.sha1(":".join(sorted(r["id"] for r in recs)).encode()).hexdigest()[:20]
+    out = []
+    for d in store.query(ATT_NAME, [("scheduled_class_id", "==", recs[0]["scheduled_class_id"])], limit=200):
+        if _deleted(d) or d.get("status") in OFF or d.get("role") not in INSTRUCTOR_ROLES:
+            continue
+        item = _item("students_added", "instructor", d["individual_id"], {**facts, "name": _first_name(_person(store, d["individual_id"]))}, recs[0], actor, 0)
+        item["dedupe_key"] = f"students_added:{d['individual_id']}:{digest}"
+        item["refs"] = {k: v for k, v in item["refs"].items() if k != "attendance_id"}   # about several people: not filed under any one student's row
+        out.append(item)
+    return out
 
 
 def class_cancelled_items(store, cls, recs, actor):
