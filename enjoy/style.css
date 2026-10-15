@@ -1081,7 +1081,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .say--1 { --bg: var(--say-cream); --ink: var(--say-indigo); --prev: var(--say-hero-end); --next: var(--say-indigo); padding-top: 110px; }
 .say--2 { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-cream); }
 .say--3 { --bg: var(--say-cream); --ink: var(--say-indigo); --next: var(--say-indigo); }
-.say--4 { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-indigo); }
+.say--4 { --bg: var(--say-indigo); --ink: var(--say-cream); --next: var(--say-cream); }
 .say.has-next { padding-bottom: 130px; }
 .say__inner { max-width: 34rem; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 .say__kicker { margin: 0; font: 800 .9rem/1 var(--font-heading); letter-spacing: .14em; text-transform: uppercase; opacity: .72; }

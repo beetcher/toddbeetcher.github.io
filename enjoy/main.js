@@ -895,7 +895,7 @@ function initSignup() {
 // Closes after a choice, on a tap outside, or on Esc (focus returns to the button).
 // Floating buttons flip to white over dark panels (hero, navy message panel, brisket) so they never vanish into a same-colored background.
 function initFabFlip() {
-  const ids = ['top', 'message', 'brisket'];
+  const ids = ['top', 'say-how', 'say-why', 'brisket'];
   let ticking = false;
   function check() {
     ticking = false;
@@ -1025,7 +1025,7 @@ function initAsk() {
 
 // One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
 function addPanelArrows() {
-  const panels = [document.getElementById('say-learn'), document.getElementById('say-how'), document.getElementById('say-do'), document.getElementById('say-why'), document.getElementById('message'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get')]
+  const panels = [document.getElementById('say-learn'), document.getElementById('say-how'), document.getElementById('say-do'), document.getElementById('say-why'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get')]
     .concat(Array.from(document.querySelectorAll('#moments > section')))
     .concat([document.getElementById('faq'), document.getElementById('footer')])
     .filter(Boolean);
