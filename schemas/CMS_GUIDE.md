@@ -20,7 +20,7 @@ notify(kind, recipient, context, by, trigger, refs, audience=None, suppress=None
 notify_many(items, time_budget_s) -> list[Result]
 ```
 
-- `kind`: a registered kind. Today `request_received`, `placement_confirmation`, `class_cancelled`, `placement_ended`, `participant_left`, `instructor_placed` and `students_added`.
+- `kind`: a registered kind. Today `request_received`, `placement_confirmation`, `class_cancelled`, `placement_ended`, `participant_left`, `instructor_placed`, `students_added` and `class_changed`.
 - `recipient`: `{type: "individual", individual_id}` or `{type: "adhoc", name, email?, phone?}` (the receipt goes out before the requester has an individual record).
 - `context`: the facts of the event, plain JSON, validated against the kind's fact schema (`schemas/message_kinds/<kind>.facts.schema.json`). Facts only: no wording, no channel.
 - `by`: who caused it. `trigger`: `automatic` or `manual`.
@@ -91,6 +91,7 @@ See `COMMUNICATION_LOG_GUIDE.md`. Message history on an attendance row or a requ
 | `participant_left` | `instructor` | individual | a student who held a seat leaves a class: every instructor still placed in it is told |
 | `instructor_placed` | `instructor` | individual | an instructor is placed in a class (assigned or confirmed): told they are assigned to teach it, with a calendar file |
 | `students_added` | `instructor` | individual | students are placed in a class (one placement, however many people): every instructor in it gets one message listing them |
+| `class_changed` | `student`, `instructor` | individual | a scheduled class that has not started changes its date, start time, length, time zone, venue, room or venue notes; its lead instructor changes; or its venue's name or place changes: everyone with an open placement (assigned, confirmed or waitlisted) is told what was and what is, one message per person per save, with a calendar update (not for a person on the waiting list, who has no calendar event) |
 
 ## 10. Rules (each becomes a named test)
 

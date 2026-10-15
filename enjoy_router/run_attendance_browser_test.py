@@ -225,6 +225,12 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('cNotice').textContent.indexOf('Saved') === 0")
     ev = [c for c in CL.list(store).data["records"] if c["title"] == "Evening Basics"][0]
     check("edit saved curriculum, series and session 2", ev.get("curriculum_id") == cu["id"] and ev.get("session_number") == 2 and ev.get("series_id") == c0.get("series_id"), ev)
+    check("a save that does not change the when or where does not claim anyone is emailed", "emailed" not in pg.locator("#cNotice").inner_text(), pg.locator("#cNotice").inner_text())
+    li = pg.locator("#cList li", has_text="Evening Basics"); li.locator("button.head").click()
+    li.get_by_role("button", name="Edit", exact=True).click(); pg.wait_for_selector("#ef_c_venue_notes")
+    pg.fill("#ef_c_venue_notes", "Use the side door"); pg.click("#cEditSave")
+    pg.wait_for_function("document.getElementById('cNotice').textContent.indexOf('emailed') >= 0")
+    check("a change to the venue notes says everyone placed is being emailed", "Everyone placed in it is being emailed what changed" in pg.locator("#cNotice").inner_text(), pg.locator("#cNotice").inner_text())
     # ---- journal, workflows, cancel cascade
     pg.select_option("#collPick", "home")
     check("Home lists the workflows", pg.locator("#wfHomeList details.wfcard").count() == 4, pg.locator("#wfHomeList").inner_text())

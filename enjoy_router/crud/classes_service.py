@@ -15,6 +15,7 @@ Problems name fields and never values (so the Console asks which classes are in 
 from __future__ import annotations
 
 from . import attendances_service as AT
+from . import change_watch
 from . import curriculums_crud as CU
 from . import registration_assignments_crud as A
 from . import scheduled_classes_crud as C
@@ -90,14 +91,23 @@ def list(store, filters=None, **kw):  # noqa: A001
     return C.list(store, filters, **kw)
 
 
+WATCHED_FIELDS = ("starts_at", "time_zone", "duration_minutes", "venue_id", "venue_room_label", "venue_notes", "status")   # changes people are told about
+
+
 def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=None):
     if tx is None and isinstance(changes, dict) and changes.get("status") == "cancelled" and isinstance(id, str):
         cur = store.get(C.CLASSES.name, id)
         if cur is not None and "deleted_at" not in cur and cur.get("status") != "cancelled":
             return _with_cascade(store, "class_cancelled", actor, now, lambda t: C.update(
                 store, id, changes, actor, expected_updated_at, tx=t, now=now, check=make_class_check(store), check_fields=CLASS_CHECK_FIELDS), id)
-    return C.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now,
-                    check=make_class_check(store), check_fields=CLASS_CHECK_FIELDS)
+    watch = None
+    if tx is None and isinstance(id, str) and isinstance(changes, dict) and any(k in changes for k in WATCHED_FIELDS):
+        watch = change_watch.class_watch(store, id)       # remembers how the class reads now; tells people the difference after the save
+    r = C.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now,
+                 check=make_class_check(store), check_fields=CLASS_CHECK_FIELDS)
+    if watch is not None and r.ok:
+        watch(actor, (r.data or {}).get("updated_at") or "")
+    return r
 
 
 def soft_delete(store, id, actor, tx=None, now=None):

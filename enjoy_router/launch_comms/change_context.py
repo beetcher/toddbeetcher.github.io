@@ -8,7 +8,7 @@ Nothing here sends anything, reads the log or renders a word of the message: wor
 """
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from urllib.parse import quote_plus
 
 from crud import individuals_service as IS
@@ -174,4 +174,126 @@ def placement_ended_items(store, before, how, actor):
             facts = {k: v for k, v in base.items() if k in ("title", "when_day", "when_span", "when_short", "time_zone", "venue", "room", "where", "address")}
             facts.update({"name": _first_name(_person(store, d["individual_id"])), "student_name": student_name, "how": HOW[how]})
             out.append(_item("participant_left", "instructor", d["individual_id"], facts, before, actor, ev))
+    return out
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# class_changed (Stage 2): a class that has not started changes its time, place, room, notes or lead instructor, or its venue changes.
+# `class_state` is taken BEFORE the change and again AFTER it; `class_changed_items` tells everyone the difference touches.
+# ---------------------------------------------------------------------------------------------------------------------------------------
+OPEN_NOW = ("assigned", "confirmed", "waitlisted")
+LIVE_CLASS_STATUSES = ("scheduled", "enrolling")
+CHANGED_FACTS = ("title", "start_utc", "end_utc", "time_zone", "when_day", "when_span", "when_short", "venue", "room", "where", "address", "map_url")
+def _now():
+    return datetime.now(timezone.utc)       # one place for "now", so a test can fix it
+
+
+WAITLIST_NOTE = "You are still on the waiting list for this class."
+
+
+def _roster(store, class_id):
+    return [d for d in store.query(ATT_NAME, [("scheduled_class_id", "==", class_id)], limit=200) if not _deleted(d)]
+
+
+def lead_name(store, class_id):
+    """The lead instructor's name: the first open primary_instructor by order (then by when they were placed), else None."""
+    leads = [d for d in _roster(store, class_id) if d.get("role") == "primary_instructor" and d.get("status") in SEATED]
+    leads.sort(key=lambda d: (d.get("order") if isinstance(d.get("order"), int) else 10**6, d.get("created_at") or ""))
+    return _full_name(_person(store, leads[0]["individual_id"])) if leads else None
+
+
+def class_state(store, class_id):
+    """What a person would be told about the class right now, or None when it is not a scheduled or enrolling class with a start time."""
+    cls = store.get(CL.CLASSES.name, class_id) if isinstance(class_id, str) else None
+    if cls is None or _deleted(cls) or cls.get("status") not in LIVE_CLASS_STATUSES:
+        return None
+    view = class_view(store, cls)
+    if view is None:
+        return None
+    return {"class_id": class_id, "view": view, "notes": (cls.get("venue_notes") or "").strip(), "lead": lead_name(store, class_id),
+            "starts": _parse_utc(cls["starts_at"])}
+
+
+def _place_text(view):
+    return ", ".join(x for x in (view.get("venue"), view.get("address")) if x) or "none"
+
+
+def describe_changes(before, after):
+    """({fact: text}, [words]) for what differs between two class states; ({}, []) when nothing a person sees differs. Wording of the
+    differences is worked out here (CMS rule: derived facts are built by the product, never by the template)."""
+    b, a, facts, words = before["view"], after["view"], {}, []
+    if (b["start_utc"], b["end_utc"], b["time_zone"]) != (a["start_utc"], a["end_utc"], a["time_zone"]):
+        facts["change_when"] = f"{b['when_day']}, {b['when_span']} \u2192 {a['when_day']}, {a['when_span']}"
+        words.append("date and time")
+    if (b.get("venue"), b.get("address")) != (a.get("venue"), a.get("address")):
+        facts["change_where"] = f"{_place_text(b)} \u2192 {_place_text(a)}"
+        words.append("place")
+    if (b.get("room") or "") != (a.get("room") or ""):
+        facts["change_room"] = f"{b.get('room') or 'none'} \u2192 {a.get('room') or 'none'}"
+        words.append("room")
+    if before["lead"] != after["lead"]:
+        facts["change_lead"] = f"{before['lead'] or 'none'} \u2192 {after['lead'] or 'none'}"
+        words.append("lead instructor")
+    if before["notes"] != after["notes"]:
+        facts["change_notes"] = f"{before['notes'] or 'none'} \u2192 {after['notes'] or 'none'}"
+        words.append("notes")
+    return facts, words
+
+
+def _summary(words):
+    the = [f"the {w}" for w in words]
+    joined = the[0] if len(the) == 1 else ", ".join(the[:-1]) + " and " + the[-1]
+    return joined[0].upper() + joined[1:] + " changed."
+
+
+def class_changed_items(store, before, after, actor, stamp, skip=()):
+    """One class_changed call for everyone with an open placement (students and instructors; a waitlisted person is told too, with no
+    calendar file) when `after` differs from `before`. `skip`: individual ids already told directly (for example the instructor just
+    placed). Nothing for a class that has already started, or that was not a scheduled class before (the first-time case is
+    class_scheduled_items). `stamp` is the updated_at of the save that caused it: it keeps a repeat of the same call from sending twice
+    while a later save always sends."""
+    if before is None or after is None or after["starts"] is None or after["starts"] <= _now():
+        return []
+    changes, words = describe_changes(before, after)
+    if not words:
+        return []
+    facts_base = {k: v for k, v in after["view"].items() if k in CHANGED_FACTS}
+    facts_base.update(changes)
+    facts_base["summary"] = _summary(words)
+    if after["notes"]:
+        facts_base["notes"] = after["notes"]
+    out = []
+    for d in _roster(store, after["class_id"]):
+        aud = audience_of(d.get("role"))
+        if aud is None or d.get("status") not in OPEN_NOW or d["individual_id"] in skip:
+            continue
+        facts = {**facts_base, "name": _first_name(_person(store, d["individual_id"]))}
+        if d["status"] == "waitlisted":
+            facts["waitlist_note"] = WAITLIST_NOTE
+        else:
+            facts["uid"] = d["id"]
+        item = _item("class_changed", aud, d["individual_id"], facts, d, actor, 0)
+        item["dedupe_key"] = f"class_changed:{d['individual_id']}:{d['id']}:{stamp}"[:300]
+        out.append(item)
+    return out
+
+
+def class_scheduled_items(store, class_id, actor):
+    """A class that had no start time (an idea) has just been given one: everyone already placed gets the normal placement emails they
+    could not get before (a seated student: placement_confirmation; an instructor: instructor_placed). A person on the waiting list is
+    told nothing, as when a waitlisted person is first placed."""
+    from . import placement_context as PC
+    state = class_state(store, class_id)
+    if state is None or state["starts"] <= _now():
+        return []
+    out = []
+    for d in _roster(store, class_id):
+        if d.get("status") not in SEATED:
+            continue
+        if d.get("role") == "student":
+            call, _reason = PC.call_for(store, d["id"], actor, manual=False)
+            if call is not None:
+                out.append(call)
+        elif d.get("role") in INSTRUCTOR_ROLES:
+            out += instructor_placed_items(store, d, actor)
     return out

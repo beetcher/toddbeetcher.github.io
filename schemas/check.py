@@ -244,6 +244,8 @@ def check_message_kinds():
             if r not in props:
                 fails.append(f"kind {kn}: required fact {r} is not a property")
         for att in x.get("attachments", []):
+            if att.get("attach_if") and att["attach_if"] not in props:
+                fails.append(f"kind {kn}: attachment attach_if names unknown fact {att['attach_if']}")
             for field, fact in att.get("event_fields", {}).items():
                 if fact not in props:
                     fails.append(f"kind {kn}: attachment field {field} names unknown fact {fact}")

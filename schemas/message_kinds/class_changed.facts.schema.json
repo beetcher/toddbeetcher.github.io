@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/class_changed.facts.schema.json",
+  "title": "class_changed",
+  "description": "The facts the message kind class_changed (something changed for your class: date, time, length, place, room, lead instructor or notes) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Class changed (something changed for your class)",
+    "audiences": [
+      "student",
+      "instructor"
+    ],
+    "triggers": [
+      "A class that is scheduled or enrolling, has a start time and has not started yet is saved with a different start, time zone, length, venue, room or venue notes (automatic). One message per person per save.",
+      "The lead instructor of such a class changes: a new lead is placed, a role changes, or the lead leaves (automatic).",
+      "A venue's name, or the place a venue is at (moved, or its address or name edited), changes for every such class at that venue (automatic)."
+    ],
+    "recipient": "individual: every person with an open placement (assigned, confirmed or waitlisted; students and instructors) in the class. A waitlisted student gets the message without a calendar file.",
+    "dedupe": "explicit key: kind + person + attendance id + the updated_at of the save that caused the change",
+    "refs": [
+      "attendance_id",
+      "scheduled_class_id"
+    ],
+    "attachments": [
+      {
+        "kind": "calendar_event",
+        "filename": "workshop.ics",
+        "mime_type": "text/calendar",
+        "method": "PUBLISH",
+        "sequence": true,
+        "attach_if": "uid",
+        "event_fields": {
+          "uid": "uid",
+          "title": "title",
+          "start": "start_utc",
+          "end": "end_utc",
+          "venue": "venue",
+          "room": "room",
+          "address": "address"
+        },
+        "uid_domain": "beetcher.com"
+      }
+    ]
+  },
+  "required": [
+    "name",
+    "title",
+    "start_utc",
+    "end_utc",
+    "time_zone",
+    "when_day",
+    "when_span",
+    "when_short",
+    "summary"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: their given name, else their display name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Gladys"
+      ]
+    },
+    "title": {
+      "description": "The title of the class.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Gladys's AI Happy Hour"
+      ]
+    },
+    "start_utc": {
+      "description": "When the class starts (UTC, to the second). Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-17T23:00:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "end_utc": {
+      "description": "When the class ends (UTC). Start plus the duration, 60 minutes if none is set. Used for the calendar file.",
+      "type": "string",
+      "maxLength": 20,
+      "examples": [
+        "2026-10-18T00:30:00Z"
+      ],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "time_zone": {
+      "description": "The class's time zone as an IANA name; America/Denver if none is set. An unknown name shows times in UTC.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "America/Denver"
+      ]
+    },
+    "when_day": {
+      "description": "The day in words, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "Saturday, October 17, 2026"
+      ],
+      "x_derived": true
+    },
+    "when_span": {
+      "description": "The start and end times with the zone abbreviation, in the class's time zone.",
+      "type": "string",
+      "maxLength": 60,
+      "examples": [
+        "5:00 PM to 6:30 PM MDT"
+      ],
+      "x_derived": true
+    },
+    "when_short": {
+      "description": "A short day and start time for subject lines.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "Sat Oct 17, 5:00 PM"
+      ],
+      "x_derived": true
+    },
+    "uid": {
+      "description": "The id the calendar file uses to recognize the event, so the update replaces the event the placement email added. The attendance record's id. Absent for a person on the waiting list, who has no calendar event: the calendar file is then not attached.",
+      "type": "string",
+      "maxLength": 36,
+      "examples": [
+        "7d6f2a5c-1e8b-4c93-9fae-5a6b7c8d9e0f"
+      ],
+      "format": "uuid"
+    },
+    "venue": {
+      "description": "The venue's name. Absent when none.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Ozo's Coffee, East Pearl"
+      ]
+    },
+    "room": {
+      "description": "The room label at the venue. Absent when none.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Back room"
+      ]
+    },
+    "where": {
+      "description": "Venue and room together, joined with a middle dot. Absent when both are absent.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "Ozo's Coffee, East Pearl · Back room"
+      ],
+      "x_derived": true
+    },
+    "address": {
+      "description": "The venue's address on one line. Absent when none.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "1500 Pearl St, Boulder, CO 80302"
+      ],
+      "x_derived": true
+    },
+    "map_url": {
+      "description": "A map search link for the venue and address. Absent when there is neither.",
+      "type": "string",
+      "maxLength": 500,
+      "examples": [
+        "https://www.google.com/maps/search/?api=1&query=Ozo%27s+Coffee"
+      ],
+      "format": "uri",
+      "x_derived": true
+    },
+    "summary": {
+      "description": "One sentence saying what changed, in plain words, built from the changes (for example: The date and time and the room changed.).",
+      "type": "string",
+      "maxLength": 400,
+      "examples": [
+        "The date and time and the room changed."
+      ],
+      "x_derived": true
+    },
+    "change_when": {
+      "description": "Shown only when the day, time or length changed: the old day and times, an arrow, then the new ones.",
+      "type": "string",
+      "maxLength": 400,
+      "examples": [
+        "Wednesday, October 21, 2026, 9:00 AM to 10:30 AM MDT → Thursday, October 22, 2026, 9:00 AM to 10:30 AM MDT"
+      ],
+      "x_derived": true
+    },
+    "change_where": {
+      "description": "Shown only when the venue changed or the venue's name or place changed: the old venue and address, an arrow, then the new.",
+      "type": "string",
+      "maxLength": 700,
+      "examples": [
+        "Ozo's Coffee, 1500 Pearl St → Amante North, 4580 Broadway, Boulder, CO 80344"
+      ],
+      "x_derived": true
+    },
+    "change_room": {
+      "description": "Shown only when the room changed: the old room, an arrow, then the new (a missing room reads none).",
+      "type": "string",
+      "maxLength": 250,
+      "examples": [
+        "Back room → Front room"
+      ],
+      "x_derived": true
+    },
+    "change_lead": {
+      "description": "Shown only when the lead instructor changed: the old name, an arrow, then the new (a missing lead reads none).",
+      "type": "string",
+      "maxLength": 250,
+      "examples": [
+        "Susan Adams → Bobby Hodgkins"
+      ],
+      "x_derived": true
+    },
+    "change_notes": {
+      "description": "Shown only when the venue notes of the class changed: the old notes, an arrow, then the new.",
+      "type": "string",
+      "maxLength": 700,
+      "examples": [
+        "Park behind the building → Park in the lot"
+      ],
+      "x_derived": true
+    },
+    "notes": {
+      "description": "The class's current venue notes. Absent when none.",
+      "type": "string",
+      "maxLength": 400,
+      "examples": [
+        "Park in the lot"
+      ],
+      "x_derived": true
+    },
+    "waitlist_note": {
+      "description": "Said only to a person on the waiting list: that they are still on it. Absent for everyone else.",
+      "type": "string",
+      "maxLength": 400,
+      "examples": [
+        "You are still on the waiting list for this class."
+      ],
+      "x_derived": true
+    }
+  }
+}

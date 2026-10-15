@@ -10,6 +10,7 @@ Same function names as a handler file. All field checking stays in the handler f
 """
 from __future__ import annotations
 
+from . import change_watch
 from . import location_links_crud as LK
 from . import location_links_service as LINKS
 from . import locations_crud as L
@@ -70,7 +71,11 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
             return [{"field": "id", "issue": "in_use"}]
         return []
 
-    return L.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check, check_fields=("status",))
+    watch = change_watch.location_watch(store, id) if tx is None and cur is not None else None     # an address or name edit reaches people in upcoming classes here
+    r = L.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check, check_fields=("status",))
+    if watch is not None and r.ok:
+        watch(actor, (r.data or {}).get("updated_at") or "")
+    return r
 
 
 def soft_delete(store, id, actor, tx=None, now=None, as_admin=False):

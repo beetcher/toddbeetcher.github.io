@@ -479,6 +479,210 @@
           "text": "Launch"
         }
       ]
+    },
+    {
+      "kind": "class_changed",
+      "channel": "email",
+      "audience": "student",
+      "name": "Class changed (student)",
+      "subject": "Launch — class changed: {title}, {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "Something changed for your workshop."
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What changed",
+              "value": "{summary}"
+            },
+            {
+              "label": "Date and time",
+              "value": "{change_when}",
+              "show_if": "change_when"
+            },
+            {
+              "label": "Place",
+              "value": "{change_where}",
+              "show_if": "change_where"
+            },
+            {
+              "label": "Room",
+              "value": "{change_room}",
+              "show_if": "change_room"
+            },
+            {
+              "label": "Lead instructor",
+              "value": "{change_lead}",
+              "show_if": "change_lead"
+            },
+            {
+              "label": "Notes",
+              "value": "{change_notes}",
+              "show_if": "change_notes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here is the class as it stands now:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            },
+            {
+              "label": "Notes",
+              "value": "{notes}",
+              "show_if": "notes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "{waitlist_note}",
+          "show_if": "waitlist_note"
+        },
+        {
+          "type": "paragraph",
+          "text": "The attached calendar file updates your calendar: it replaces the earlier entry.",
+          "show_if": "uid"
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "class_changed",
+      "channel": "email",
+      "audience": "instructor",
+      "name": "Class changed (instructor)",
+      "subject": "Launch — class changed: {title}, {when_short}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "Something changed for a class you are teaching."
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What changed",
+              "value": "{summary}"
+            },
+            {
+              "label": "Date and time",
+              "value": "{change_when}",
+              "show_if": "change_when"
+            },
+            {
+              "label": "Place",
+              "value": "{change_where}",
+              "show_if": "change_where"
+            },
+            {
+              "label": "Room",
+              "value": "{change_room}",
+              "show_if": "change_room"
+            },
+            {
+              "label": "Lead instructor",
+              "value": "{change_lead}",
+              "show_if": "change_lead"
+            },
+            {
+              "label": "Notes",
+              "value": "{change_notes}",
+              "show_if": "change_notes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Here is the class as it stands now:"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "What",
+              "value": "{title}"
+            },
+            {
+              "label": "When",
+              "value": "{when_day}, {when_span}"
+            },
+            {
+              "label": "Where",
+              "value": "{where}",
+              "show_if": "where"
+            },
+            {
+              "label": "Address",
+              "value": "{address}",
+              "show_if": "address"
+            },
+            {
+              "label": "Notes",
+              "value": "{notes}",
+              "show_if": "notes"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "{waitlist_note}",
+          "show_if": "waitlist_note"
+        },
+        {
+          "type": "paragraph",
+          "text": "The attached calendar file updates your calendar: it replaces the earlier entry.",
+          "show_if": "uid"
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
     }
   ]
 }

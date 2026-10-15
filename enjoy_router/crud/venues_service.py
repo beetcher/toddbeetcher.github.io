@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
+from . import change_watch
 from . import geocoder
 from . import individuals_crud as I
 from . import individuals_service as IS
@@ -27,7 +28,7 @@ from . import location_links_crud as LK
 from . import locations_crud as LOC
 from . import venues_crud as V
 from .classes_service import _find_room, live_classes_at
-from .schema_kit import UUID_PATTERN, failure, success
+from .schema_kit import UUID_PATTERN, failure, success, utc_stamp
 
 import geo_rank  # top-level module of enjoy_router: distances from a Colorado ZIP
 
@@ -189,8 +190,12 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         if activating and not has_place(store, id):
             problems.append({"field": "status", "issue": "place_required"})
         return problems
-    return V.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check,
-                    check_fields=("rooms", "status", *CONTACT_FIELDS))
+    watch = change_watch.venue_watch(store, [id]) if tx is None else None      # a new venue name reaches people in upcoming classes here
+    r = V.update(store, id, changes, actor, expected_updated_at, tx=tx, now=now, check=check,
+                 check_fields=("rooms", "status", *CONTACT_FIELDS))
+    if watch is not None and r.ok:
+        watch(actor, (r.data or {}).get("updated_at") or "")
+    return r
 
 
 def soft_delete(store, id, actor, tx=None, now=None):
@@ -360,6 +365,7 @@ def set_place(store, id, actor, address=None, location_id=None, source="dashboar
     if problems:
         return failure("validation_failed", problems)
     venue = got.data
+    watch = change_watch.venue_watch(store, [id])           # moving the venue to another place reaches people in upcoming classes here
     old = _live_place_link(store, id)
     if location_id is not None and any(l["location_id"] == location_id for l in old):
         return success({**expanded(store, venue), "changed": False})  # already there
@@ -375,4 +381,5 @@ def set_place(store, id, actor, address=None, location_id=None, source="dashboar
     except _Abort as stop:
         return stop.result
     _try_gps(store, id, actor, now)
+    watch(actor, utc_stamp(now))      # the venue record itself is not saved by a move, so the moment of the move is what tells one move from another
     return success({**expanded(store, V.get(store, id).data), "changed": True})

@@ -915,6 +915,7 @@
         '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
         '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
         '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
+        '<li>Changing a venue name, or moving it to another place, emails everyone placed in an upcoming class here, with the old and the new.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>To make a venue <b>active</b> it needs one thing: a place with an address or a GPS point. Everything else is optional (a park has no one to call and no rooms).</li>' +
@@ -938,6 +939,7 @@
         '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
         '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled and emailed (students and instructors).</li>' +
         '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
+        '<li><b>Saving a change</b> to the date, start time, length, time zone, venue, room or venue notes of a class that has not started emails everyone placed in it (students, the waiting list and instructors) what changed and what it is now. Students and instructors get a calendar update that replaces the old entry; the waiting list gets no calendar file. It is one message per person per save. Changing the lead instructor does the same. A class that is given its first date emails the people already placed in it the usual placement emails. Titles, sizes and prices send nothing.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>Fewest people, target and biggest size must go in order: fewest, then target, then biggest.</li>' +
@@ -980,6 +982,7 @@
         '<h3>Controls</h3><ul>' +
         '<li><b>Add place</b> saves a place by itself. To give a person an address, open their card in <b>People</b> and tap <b>Addresses</b>: that finds the place if it is already saved, or saves it, and links the person with a start date.</li>' +
         '<li><b>Tap a card</b> to see every address and GPS point. <b>Add address</b> and <b>Add GPS point</b> put more on the same place. <b>Show who is linked here</b> lists the people, venues and organizations. An organization is linked to a place from its own card in <b>Organizations</b> (<b>Add place</b>).</li>' +
+        '<li>Changing a place address emails everyone placed in an upcoming class at a venue there, with the old and the new address.</li>' +
         '<li><b>Retire</b> hides a place that is no longer used. <b>Delete</b> hides a mistake. Neither works while anyone is still linked: end those links first.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -2279,7 +2282,7 @@
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status === 200 && res.body && res.body.ok) {
         vNewId = editRec.id;
-        $("vNotice").textContent = "Saved " + (c.changes.name || editRec.name) + ".";
+        $("vNotice").textContent = "Saved " + (c.changes.name || editRec.name) + "." + ("name" in c.changes ? " People in upcoming classes here are emailed the new name. Messages shows the result." : "");
         closeEdit(); loadVenues();
         return;
       }
@@ -2936,7 +2939,8 @@
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status === 200 && res.body && res.body.ok) {
         cNewId = cRec.id;
-        $("cNotice").textContent = "Saved " + (c.changes.title || cRec.title) + ".";
+        var told = ["starts_at", "time_zone", "duration_minutes", "venue_id", "venue_room_label", "venue_notes"].some(function (k) { return k in c.changes; });
+        $("cNotice").textContent = "Saved " + (c.changes.title || cRec.title) + "." + (told ? " Everyone placed in it is being emailed what changed. Messages shows the result." : "");
         closeClassEdit(); loadClasses();
         return;
       }
@@ -4784,7 +4788,7 @@
           if (r.status === 401) { lock("That key did not work."); return; }
           if (r.status === 200 && r.body.ok) {
             editRec.place = r.body.data.place; host.textContent = ""; show(); savedPlaces = null;
-            $("vNotice").textContent = r.body.data.changed === false ? "That is already the venue's place." : "Moved " + (rec.name || "venue") + " to its new place.";
+            $("vNotice").textContent = r.body.data.changed === false ? "That is already the venue's place." : "Moved " + (rec.name || "venue") + " to its new place. People in upcoming classes here are emailed the new address. Messages shows the result.";
             loadVenues(); liveReady();
             return;
           }
@@ -5078,7 +5082,7 @@
     function save(changes, done) {
       admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_L).then(function (r) {
         if (r.status === 401) { lock("That key did not work."); return; }
-        if (r.status === 200 && r.body.ok) { lNewId = rec.id; $("lNotice").textContent = "Saved changes."; loadPlaces(); return; }
+        if (r.status === 200 && r.body.ok) { lNewId = rec.id; $("lNotice").textContent = "Saved changes. If an address changed, people in upcoming classes at venues here are emailed the new address. Messages shows the result."; loadPlaces(); return; }
         if (r.status === 409 && r.body.error && r.body.error.code === "conflict" && lProblems(r).indexOf("still linked") >= 0) { err.textContent = lProblems(r); return; }
         err.textContent = r.status === 409 ? "Someone changed this place while you were editing. Tap Refresh and try again." : lProblems(r);
         if (done) done();

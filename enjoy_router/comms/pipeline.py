@@ -115,7 +115,11 @@ class Comms:
         if channel.supports_attachments:
             for att in kd.attachments:
                 if att["kind"] == "calendar_event":
+                    if att.get("attach_if") and not context.get(att["attach_if"]):
+                        continue                       # the kind says this file goes only to people whose facts include <attach_if>
                     ev = event_from_facts(context, att["event_fields"])
+                    if att.get("sequence"):            # an update: a SEQUENCE higher than any earlier one makes the calendar replace the event
+                        ev["sequence"] = int((now or datetime.now(timezone.utc)).timestamp())
                     content["attachments"].append((att["filename"], att["mime_type"],
                                                    make_ics(ev, now, att.get("uid_domain", "beetcher.com"), att.get("method", "PUBLISH"))))
         if not channel.can_carry(content):

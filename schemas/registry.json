@@ -195,6 +195,10 @@
       {
         "kind": "students_added",
         "facts": "message_kinds/students_added.facts.schema.json"
+      },
+      {
+        "kind": "class_changed",
+        "facts": "message_kinds/class_changed.facts.schema.json"
       }
     ]
   }

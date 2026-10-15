@@ -96,6 +96,18 @@ def _notify_instructors(store, recs, actor, via_request_id=None):
         _send_notices("students_added_items", store, students, actor)
 
 
+INSTRUCTOR_ROLES = ("primary_instructor", "instructor")
+
+
+def _lead_watch(store, class_id, roles, tx):
+    """Before a change to an instructor's placement: remember how the class reads (its lead instructor is part of it), so everyone it touches
+    can be told afterwards if the lead changed. None for a student or inside an outer transaction (nothing is sent then)."""
+    if tx is not None or not any(r in INSTRUCTOR_ROLES for r in roles):
+        return None
+    from . import change_watch
+    return change_watch.class_watch(store, class_id)
+
+
 def open_placements(store, class_id):
     """The class's placements as they stand now that a cancel would end (assigned, waitlisted, confirmed), copied before they change."""
     return [dict(d) for d in _live_for(store, "scheduled_class_id", class_id) if d.get("status") in OPEN]
@@ -346,6 +358,7 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         return failure("not_found")
     if expected_updated_at is not None and cur.get("updated_at") != expected_updated_at:
         return failure("conflict")
+    watch = _lead_watch(store, cur["scheduled_class_id"], (cur.get("role"), sets.get("role")), tx)
     fields = dict(sets)
     if "request_id" in sets:
         number = _confirmation_of(store, sets["request_id"])
@@ -369,6 +382,8 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         return failure("conflict")
     if tx is None and cur.get("status") in OPEN and sets.get("status") in STATUS_OFF:
         _notify_left(store, cur, sets["status"], actor)
+    if watch is not None:
+        watch(actor, stamp["updated_at"])
     return success({"id": id, "changed": sorted(sets), "removed": sorted(removals),
                     "updated_at": stamp["updated_at"], "updated_by": actor})
 
@@ -382,6 +397,7 @@ def soft_delete(store, id, actor, tx=None, now=None):
     if cur is None or _deleted(cur):
         return failure("not_found")
     stamp = utc_stamp(now)
+    watch = _lead_watch(store, cur["scheduled_class_id"], (cur.get("role"),), tx)
     try:
         with _tx(store, tx) as t:
             store.update(ATT.name, id, {"deleted_at": stamp, "deleted_by": actor, "updated_at": stamp, "updated_by": actor}, (),
@@ -396,6 +412,8 @@ def soft_delete(store, id, actor, tx=None, now=None):
         return failure("conflict")
     if tx is None and cur.get("status") in OPEN:
         _notify_left(store, cur, "removed", actor)
+    if watch is not None:
+        watch(actor, stamp)
     return success({"id": id, "deleted_at": stamp})
 
 
@@ -576,6 +594,7 @@ def assign(store, data, actor, person=None, source="dashboard", now=None, via_re
     if problems:
         return _bad(problems)
     out = {"created_roster_entry": False}
+    watch = _lead_watch(store, cid, (data.get("role"),), None)
     try:
         with store.transaction() as tx:
             rec, made_entry = _place(store, tx, cls, data, person, actor, source, now)
@@ -585,4 +604,6 @@ def assign(store, data, actor, person=None, source="dashboard", now=None, via_re
     _auto_notify(store, out["rec"], actor, now)
     out["rec"] = store.get(ATT.name, out["rec"]["id"]) or out["rec"]
     _notify_instructors(store, [out["rec"]], actor, via_request_id if isinstance(via_request_id, str) and UUID_PATTERN.match(via_request_id) else None)
+    if watch is not None:       # an instructor was placed: if the class's lead changed, everyone else is told (the instructor was told above)
+        watch(actor, out["rec"].get("updated_at") or out["rec"].get("created_at") or "", skip=(out["rec"]["individual_id"],))
     return success({**expanded(store, out["rec"]), "created_person": person is not None, "created_roster_entry": out["created_roster_entry"]})
