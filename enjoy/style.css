@@ -1165,7 +1165,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
     linear-gradient(var(--c), var(--c)) right bottom / var(--T) var(--L) no-repeat; }
 .say.rs.is-title .say__inner::before { opacity: 1; transform: scale(1); }
 /* kicker: opens big, centered, green and glowing */
-.say.rs .say__kicker { color: var(--rs-green); opacity: 0; transform: translateY(var(--rs-dy, 0px)) scale(var(--rs-s, 2.75)); text-shadow: 0 0 0 rgba(0,121,107,0); }
+.say.rs .say__kicker { color: var(--say-kick-soft); opacity: 0; transform: translateY(var(--rs-dy, 0px)) scale(var(--rs-s, 2.75)); text-shadow: 0 0 0 rgba(0,121,107,0); }
 .say.rs.is-enter .say__kicker { opacity: 1; text-shadow: 0 0 12px rgba(0,121,107,.9), 0 0 30px rgba(0,121,107,.6); transition: opacity .4s ease, text-shadow .4s ease; }
 .say.rs.is-rise .say__kicker { transform: none; transition: transform 1.2s cubic-bezier(.45, 0, .25, 1), opacity .4s ease, text-shadow .4s ease; }
 .say.rs.is-pop .say__kicker { opacity: 1; transform: none; animation: rs-k-pop 1.75s ease-out forwards; }
@@ -1222,3 +1222,11 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 @keyframes spark-ring { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(15); opacity: 0; } }
 @keyframes spark-ray { 0% { transform: rotate(var(--a)) translateX(4px) scaleX(.2); opacity: 1; } 55% { transform: rotate(var(--a)) translateX(calc(var(--d) * .65)) scaleX(1.3); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) scaleX(.2); opacity: 0; } }
 @keyframes spark-dot { 0% { transform: rotate(var(--a)) translateX(2px) scale(1); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) translateY(14px) scale(.2); opacity: 0; } }
+
+/* ===== Kickers on the four statement panels (2026-10-15): green label, bigger and brighter first word, same on every panel. ===== */
+.say--1, .say--3 { --say-kick: #00796b; --say-kick-soft: rgba(0,121,107,.75); }
+.say--2, .say--4 { --say-kick: #3be8b0; --say-kick-soft: rgba(59,232,176,.75); }
+.say .say__kicker { color: var(--say-kick-soft); opacity: 1; }
+.say.rd.is-lit .say__kicker { opacity: 1; }
+.say__k1 { color: var(--say-kick); font-size: 1.6em; font-weight: 900; }
+.say__kicker { text-wrap: balance; }
