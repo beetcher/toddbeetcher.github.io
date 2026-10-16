@@ -1151,7 +1151,6 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 /* ===== Panel 1 sequence v2 (2026-10-15): kicker opens big and centered, rises to a spark; the spark pops and the headline appears; the body comes out of a fog. =====
    main.js adds .rs to #say-learn, then .is-enter, .is-rise, .is-pop, .is-fog (and .is-skip on tap). Without the script or with reduced motion, none of this applies. */
 .say.rs { --rs-green: #00796b; }
-.say.rs.say--1 { align-items: start; padding-top: calc(25svh - 5px); }
 .say.rs .say__inner { position: relative; padding: 30px 22px; }
 .say.rs .say__inner::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transform: scale(1.05); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);
   --c: var(--say-pink); --L: 26px; --T: 3px;

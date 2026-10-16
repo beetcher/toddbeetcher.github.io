@@ -1053,12 +1053,25 @@ function initSayRead() {
       // Panel 1: kicker opens big and centered (0.5s) -> rises to a spark (1.2s) -> pop: headline appears, glows fade (1.75s) -> body out of a fog -> still.
       const kicker = panel.querySelector('.say__kicker');
       const spark = makeSpark(inner);
-      let timer = null, started = false, done = false, cur = null, measured = false;
+      let timer = null, started = false, done = false, cur = null, measured = false, vis = false, watching = false;
       const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
       const pFog = () => { cur = null; done = true; panel.classList.add('is-fog'); };
       const pTitle = () => { cur = pTitle; panel.classList.add('is-title'); wait(2050, pFog); };
       const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(330, pTitle); };
-      const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); };
+      const watchCross = () => {
+        if (watching) return;
+        watching = true;
+        const tick = () => {
+          if (done || panel.classList.contains('is-pop')) return;
+          if (vis) {
+            const kr = kicker.getBoundingClientRect(), sr = spark.getBoundingClientRect();
+            if (kr.top + kr.height / 2 <= sr.top + 6) { clearTimeout(timer); pPop(); return; }
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); watchCross(); };
       const pHold = () => {
         cur = pHold;
         if (!measured) {
@@ -1066,7 +1079,7 @@ function initSayRead() {
           const pr = panel.getBoundingClientRect(), kr = kicker.getBoundingClientRect(), ir = inner.getBoundingClientRect();
           panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (kr.top + kr.height / 2)) + 'px');
           spark.style.setProperty('--sx', (kr.left + kr.width / 2 - ir.left) + 'px');
-          spark.style.setProperty('--sy', (kr.top - ir.top - 16) + 'px');
+          spark.style.setProperty('--sy', (pr.top + pr.height * 0.25 - ir.top) + 'px');
         }
         panel.classList.add('is-enter');
         spark.classList.add('is-on');
@@ -1075,6 +1088,7 @@ function initSayRead() {
       new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (done) return;
+          vis = e.isIntersecting;
           if (e.isIntersecting) { if (!started) { started = true; pHold(); } else if (cur) cur(); }
           else clearTimeout(timer);
         });
