@@ -1176,7 +1176,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
     linear-gradient(var(--c), var(--c)) right bottom / var(--T) var(--L) no-repeat; }
 .say.rs.is-title .say__inner::before { opacity: 1; transform: scale(1); }
 /* kicker: opens big, centered, green and glowing */
-.say.rs .say__kicker { color: var(--rs-green); opacity: 0; transform: translateY(var(--rs-dy, 0px)) scale(2.2); text-shadow: 0 0 0 rgba(0,121,107,0); }
+.say.rs .say__kicker { color: var(--rs-green); opacity: 0; transform: translateY(var(--rs-dy, 0px)) scale(var(--rs-s, 2.75)); text-shadow: 0 0 0 rgba(0,121,107,0); }
 .say.rs.is-enter .say__kicker { opacity: 1; text-shadow: 0 0 12px rgba(0,121,107,.9), 0 0 30px rgba(0,121,107,.6); transition: opacity .4s ease, text-shadow .4s ease; }
 .say.rs.is-rise .say__kicker { transform: none; transition: transform 1.2s cubic-bezier(.45, 0, .25, 1), opacity .4s ease, text-shadow .4s ease; }
 .say.rs.is-pop .say__kicker { opacity: 1; transform: none; animation: rs-k-pop 1.75s ease-out forwards; }

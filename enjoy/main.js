@@ -1056,7 +1056,7 @@ function initSayRead() {
       let timer = null, started = false, done = false, cur = null, measured = false;
       const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
       const pFog = () => { cur = null; done = true; panel.classList.add('is-fog'); };
-      const pTitle = () => { cur = pTitle; panel.classList.add('is-title'); wait(2050, pFog); };
+      const pTitle = () => { cur = pTitle; panel.classList.add('is-title'); wait(3300, pFog); };
       const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(330, pTitle); };
       const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); };
       const pHold = () => {
@@ -1064,6 +1064,7 @@ function initSayRead() {
         if (!measured) {
           measured = true;
           const pr = panel.getBoundingClientRect(), kr = kicker.getBoundingClientRect(), ir = inner.getBoundingClientRect();
+          panel.style.setProperty('--rs-s', Math.min(2.75, (window.innerWidth - 32) / kicker.offsetWidth).toFixed(3));
           panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (kr.top + kr.height / 2)) + 'px');
           spark.style.setProperty('--sx', (kr.left + kr.width / 2 - ir.left) + 'px');
           spark.style.setProperty('--sy', (pr.top + pr.height * 0.25 - ir.top) + 'px');
