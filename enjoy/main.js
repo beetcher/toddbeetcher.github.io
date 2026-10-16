@@ -1029,7 +1029,7 @@ function makeSpark(parent) {
   const el = document.createElement('span');
   el.className = 'spark';
   el.setAttribute('aria-hidden', 'true');
-  let html = '<i class="spark__flash"></i><i class="spark__core"></i><i class="spark__ring"></i><i class="spark__ring spark__ring--b"></i>';
+  let html = '<i class="spark__flash"></i><i class="spark__core"></i><i class="spark__ring"></i><i class="spark__ring spark__ring--b"></i><i class="spark__ring spark__ring--c"></i>';
   const reach = [96, 70, 110, 64, 90, 76, 104, 68, 92, 74, 108, 66];
   for (let k = 0; k < 12; k++) html += '<i class="spark__ray" style="--a:' + (k * 30 + 8) + 'deg;--d:' + reach[k] + 'px"></i>';
   for (let k = 0; k < 8; k++) html += '<i class="spark__ray spark__ray--dot" style="--a:' + (k * 45 + 24) + 'deg;--d:' + (44 + (k % 3) * 14) + 'px"></i>';
@@ -1053,25 +1053,12 @@ function initSayRead() {
       // Panel 1: kicker opens big and centered (0.5s) -> rises to a spark (1.2s) -> pop: headline appears, glows fade (1.75s) -> body out of a fog -> still.
       const kicker = panel.querySelector('.say__kicker');
       const spark = makeSpark(inner);
-      let timer = null, started = false, done = false, cur = null, measured = false, vis = false, watching = false;
+      let timer = null, started = false, done = false, cur = null, measured = false;
       const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
       const pFog = () => { cur = null; done = true; panel.classList.add('is-fog'); };
       const pTitle = () => { cur = pTitle; panel.classList.add('is-title'); wait(2050, pFog); };
       const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(330, pTitle); };
-      const watchCross = () => {
-        if (watching) return;
-        watching = true;
-        const tick = () => {
-          if (done || panel.classList.contains('is-pop')) return;
-          if (vis) {
-            const kr = kicker.getBoundingClientRect(), sr = spark.getBoundingClientRect();
-            if (kr.top + kr.height / 2 <= sr.top + 6) { clearTimeout(timer); pPop(); return; }
-          }
-          requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      };
-      const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); watchCross(); };
+      const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); };
       const pHold = () => {
         cur = pHold;
         if (!measured) {
@@ -1088,7 +1075,6 @@ function initSayRead() {
       new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (done) return;
-          vis = e.isIntersecting;
           if (e.isIntersecting) { if (!started) { started = true; pHold(); } else if (cur) cur(); }
           else clearTimeout(timer);
         });

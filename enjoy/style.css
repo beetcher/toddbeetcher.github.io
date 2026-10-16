@@ -1202,21 +1202,23 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .spark { position: absolute; left: var(--sx, 50%); top: var(--sy, 0); width: 0; height: 0; pointer-events: none; z-index: 2; }
 .spark__core { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #ffc83d; box-shadow: 0 0 10px 3px rgba(255,200,61,.9), 0 0 24px 8px rgba(255,61,110,.5); opacity: 0; }
 .spark.is-on .spark__core { opacity: 1; animation: spark-pulse .9s ease-in-out infinite; }
-.spark.is-burst .spark__core { opacity: 1; animation: spark-core-pop .5s ease-out forwards; }
+.spark.is-burst .spark__core { opacity: 1; animation: spark-core-pop .7s ease-out forwards; }
 .spark__flash { position: absolute; left: -30px; top: -30px; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(255,230,140,.95) 0, rgba(255,200,61,.55) 35%, rgba(255,61,110,0) 70%); opacity: 0; }
-.spark.is-burst .spark__flash { animation: spark-flash .5s ease-out forwards; }
+.spark.is-burst .spark__flash { animation: spark-flash .8s ease-out forwards; }
 .spark__ring { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; border: 2px solid #ffc83d; opacity: 0; }
 .spark__ring--b { border-color: #ff3d6e; }
-.spark.is-burst .spark__ring { animation: spark-ring .7s ease-out forwards; }
-.spark.is-burst .spark__ring--b { animation: spark-ring .8s ease-out .12s forwards; }
+.spark.is-burst .spark__ring { animation: spark-ring 1s ease-out forwards; }
+.spark.is-burst .spark__ring--b { animation: spark-ring 1.1s ease-out .15s forwards; }
+.spark__ring--c { border-color: #ffc83d; }
+.spark.is-burst .spark__ring--c { animation: spark-ring 1.2s ease-out .35s forwards; }
 .spark__ray { position: absolute; left: 0; top: -1.5px; width: 16px; height: 3px; border-radius: 3px; background: #ff3d6e; opacity: 0; transform-origin: 0 50%; }
 .spark__ray:nth-child(odd) { background: #ffc83d; }
 .spark__ray--dot { width: 5px; height: 5px; top: -2.5px; border-radius: 50%; }
-.spark.is-burst .spark__ray { animation: spark-ray .85s cubic-bezier(.15,.7,.3,1) forwards; }
-.spark.is-burst .spark__ray--dot { animation: spark-dot 1s cubic-bezier(.15,.7,.3,1) forwards; }
+.spark.is-burst .spark__ray { animation: spark-ray 1.3s cubic-bezier(.2,.7,.3,1) forwards; }
+.spark.is-burst .spark__ray--dot { animation: spark-dot 1.6s cubic-bezier(.2,.7,.3,1) forwards; }
 @keyframes spark-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.5); } }
 @keyframes spark-core-pop { 0% { transform: scale(1); opacity: 1; } 30% { transform: scale(3.4); opacity: 1; } 100% { transform: scale(.3); opacity: 0; } }
 @keyframes spark-flash { 0% { transform: scale(.2); opacity: 1; } 100% { transform: scale(3.6); opacity: 0; } }
-@keyframes spark-ring { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(13); opacity: 0; } }
-@keyframes spark-ray { 0% { transform: rotate(var(--a)) translateX(4px) scaleX(.2); opacity: 1; } 45% { transform: rotate(var(--a)) translateX(calc(var(--d) * .55)) scaleX(1.3); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) scaleX(.2); opacity: 0; } }
+@keyframes spark-ring { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(15); opacity: 0; } }
+@keyframes spark-ray { 0% { transform: rotate(var(--a)) translateX(4px) scaleX(.2); opacity: 1; } 55% { transform: rotate(var(--a)) translateX(calc(var(--d) * .65)) scaleX(1.3); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) scaleX(.2); opacity: 0; } }
 @keyframes spark-dot { 0% { transform: rotate(var(--a)) translateX(2px) scale(1); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) translateY(14px) scale(.2); opacity: 0; } }
