@@ -1152,3 +1152,33 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .rd__w.on { opacity: 1; }
 .say.rd.is-done .say__more .btn { animation: rd-pulse 1.4s ease-out 1; }
 @keyframes rd-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,61,110,.7); } 100% { box-shadow: 0 0 0 16px rgba(255,61,110,0); } }
+
+/* ===== Panel 1 sequence (added 2026-10-15): headline alone and lit, centered; drifts up; glow hands off to the kicker; words appear one at a time. =====
+   main.js adds .rs to #say-learn, then .is-enter, .is-drift, .is-hand, .is-words, .is-done in turn. Without the script or with reduced motion, none of this applies. */
+.say.rs { --rs-green: #00796b; }
+.say.rs .say__inner { position: relative; padding: 30px 22px; }
+.say.rs .say__inner::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transform: scale(1.05); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);
+  --c: var(--say-pink); --L: 26px; --T: 3px;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) left top / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--T) var(--L) no-repeat; }
+.say.rs.is-hand .say__inner::before { opacity: 1; transform: scale(1); }
+.say.rs .say__head { color: var(--say-pink); opacity: 0; transform: translateY(var(--rs-dy, 0px)); }
+.say.rs.is-enter .say__head { animation: rs-glow-in .8s ease-out forwards; }
+.say.rs.is-drift .say__head { transform: translateY(0); transition: transform 1.2s cubic-bezier(.45, 0, .25, 1); }
+.say.rs.is-hand .say__head { animation: rs-glow-out .5s ease-in-out forwards; }
+@keyframes rs-glow-in { 0% { opacity: 0; text-shadow: 0 0 0 rgba(255,61,110,0); } 100% { opacity: 1; text-shadow: 0 0 18px rgba(255,61,110,.95), 0 0 44px rgba(255,61,110,.75), 0 0 90px rgba(255,61,110,.5); } }
+@keyframes rs-glow-out { 0% { opacity: 1; text-shadow: 0 0 18px rgba(255,61,110,.95), 0 0 44px rgba(255,61,110,.75), 0 0 90px rgba(255,61,110,.5); } 100% { opacity: 1; text-shadow: 0 0 0 rgba(255,61,110,0); } }
+.say.rs .say__kicker { color: var(--rs-green); opacity: 0; text-shadow: 0 0 0 rgba(0,121,107,0); transition: opacity .5s ease, text-shadow 1s ease; }
+.say.rs.is-hand .say__kicker { opacity: 1; text-shadow: 0 0 14px rgba(0,121,107,.95), 0 0 34px rgba(0,121,107,.7); }
+.say.rs.is-words .say__kicker { text-shadow: 0 0 0 rgba(0,121,107,0); }
+.say.rs .rd__w { opacity: 0; transition: opacity .25s ease; }
+.say.rs .rd__w.on { opacity: 1; }
+.say.rs .say__more { opacity: 0; transition: opacity .8s ease; }
+.say.rs.is-done .say__more { opacity: 1; }

@@ -1033,7 +1033,8 @@ function initSayRead() {
     const inner = panel && panel.querySelector('.say__inner');
     const body = panel && panel.querySelector('.say__body');
     if (!inner || !body) return;
-    panel.classList.add('rd');
+    const rs = id === 'say-learn';
+    panel.classList.add(rs ? 'rs' : 'rd');
     const words = [];
     const walk = (node, mark) => {
       Array.from(node.childNodes).forEach(ch => {
@@ -1060,6 +1061,46 @@ function initSayRead() {
     const sum = words.reduce((a, x) => a + x.w, 0);
     const seconds = Math.min(9, Math.max(5, words.length / 4.5));
     const unit = seconds * 1000 / sum;
+    if (rs) {
+      // Panel 1 sequence: hold (3.5s) -> drift up (1.2s) -> glow hands off to the kicker (0.5s) -> words appear -> done.
+      const head = panel.querySelector('.say__head');
+      let timer = null, started = false, done = false, i = 0, cur = null, measured = false;
+      const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+      const finish = () => {
+        done = true; clearTimeout(timer);
+        words.forEach(x => x.el.classList.add('on'));
+        ['is-enter', 'is-drift', 'is-hand', 'is-words', 'is-done'].forEach(c => panel.classList.add(c));
+      };
+      const stepW = () => {
+        if (done) return;
+        if (i >= words.length) { finish(); return; }
+        const x = words[i++];
+        x.el.classList.add('on');
+        timer = setTimeout(stepW, x.w * unit);
+      };
+      const pWords = () => { cur = stepW; panel.classList.add('is-words'); stepW(); };
+      const pHand = () => { cur = pHand; panel.classList.add('is-hand'); wait(500, pWords); };
+      const pDrift = () => { cur = pDrift; panel.classList.add('is-drift'); wait(1200, pHand); };
+      const pHold = () => {
+        cur = pHold;
+        if (!measured) {
+          measured = true;
+          const pr = panel.getBoundingClientRect(), hr = head.getBoundingClientRect();
+          panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (hr.top + hr.height / 2)) + 'px');
+        }
+        panel.classList.add('is-enter');
+        wait(3500, pDrift);
+      };
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (done) return;
+          if (e.isIntersecting) { if (!started) { started = true; pHold(); } else if (cur) cur(); }
+          else clearTimeout(timer);
+        });
+      }, { threshold: 0.5 }).observe(inner);
+      inner.addEventListener('click', e => { if (!e.target.closest('a')) finish(); });
+      return;
+    }
     let started = false, done = false, i = 0, timer = null;
     const finish = () => { done = true; clearTimeout(timer); words.forEach(x => x.el.classList.add('on')); panel.classList.add('is-done'); };
     const step = () => {
