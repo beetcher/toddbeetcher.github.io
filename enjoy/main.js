@@ -1024,6 +1024,18 @@ function initAsk() {
 }
 
 // One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
+// Reusable spark: a small glowing point that can pop once (see "Spark" in style.css).
+function makeSpark(parent) {
+  const el = document.createElement('span');
+  el.className = 'spark';
+  el.setAttribute('aria-hidden', 'true');
+  let html = '<i class="spark__core"></i><i class="spark__ring"></i>';
+  for (let k = 0; k < 8; k++) html += '<i class="spark__ray" style="--a:' + (k * 45 + 22) + 'deg"></i>';
+  el.innerHTML = html;
+  parent.appendChild(el);
+  return el;
+}
+
 // Four statement panels: headline blooms, then the body is read word by word (CSS: "Read-through").
 // Once per panel; pauses when scrolled away; tap the text to light it all; skipped with reduced motion.
 function initSayRead() {
@@ -1035,6 +1047,42 @@ function initSayRead() {
     if (!inner || !body) return;
     const rs = id === 'say-learn';
     panel.classList.add(rs ? 'rs' : 'rd');
+    if (rs) {
+      // Panel 1: kicker opens big and centered (0.5s) -> rises to a spark (1.2s) -> pop: headline appears, glows fade (1.75s) -> body out of a fog -> still.
+      const kicker = panel.querySelector('.say__kicker');
+      const spark = makeSpark(inner);
+      let timer = null, started = false, done = false, cur = null, measured = false;
+      const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+      const pFog = () => { cur = null; done = true; panel.classList.add('is-fog'); };
+      const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(2050, pFog); };
+      const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); };
+      const pHold = () => {
+        cur = pHold;
+        if (!measured) {
+          measured = true;
+          const pr = panel.getBoundingClientRect(), kr = kicker.getBoundingClientRect(), ir = inner.getBoundingClientRect();
+          panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (kr.top + kr.height / 2)) + 'px');
+          spark.style.setProperty('--sx', (kr.left + kr.width / 2 - ir.left) + 'px');
+          spark.style.setProperty('--sy', (kr.top - ir.top - 16) + 'px');
+        }
+        panel.classList.add('is-enter');
+        spark.classList.add('is-on');
+        wait(500, pRise);
+      };
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (done) return;
+          if (e.isIntersecting) { if (!started) { started = true; pHold(); } else if (cur) cur(); }
+          else clearTimeout(timer);
+        });
+      }, { threshold: 0.5 }).observe(inner);
+      inner.addEventListener('click', e => {
+        if (e.target.closest('a')) return;
+        done = true; clearTimeout(timer);
+        ['is-enter', 'is-rise', 'is-pop', 'is-fog', 'is-skip'].forEach(c => panel.classList.add(c));
+      });
+      return;
+    }
     const words = [];
     const walk = (node, mark) => {
       Array.from(node.childNodes).forEach(ch => {
@@ -1061,46 +1109,6 @@ function initSayRead() {
     const sum = words.reduce((a, x) => a + x.w, 0);
     const seconds = Math.min(9, Math.max(5, words.length / 4.5));
     const unit = seconds * 1000 / sum;
-    if (rs) {
-      // Panel 1 sequence: hold (3.5s) -> drift up (1.2s) -> glow hands off to the kicker (0.5s) -> words appear -> done.
-      const head = panel.querySelector('.say__head');
-      let timer = null, started = false, done = false, i = 0, cur = null, measured = false;
-      const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
-      const finish = () => {
-        done = true; clearTimeout(timer);
-        words.forEach(x => x.el.classList.add('on'));
-        ['is-enter', 'is-drift', 'is-hand', 'is-words', 'is-done'].forEach(c => panel.classList.add(c));
-      };
-      const stepW = () => {
-        if (done) return;
-        if (i >= words.length) { finish(); return; }
-        const x = words[i++];
-        x.el.classList.add('on');
-        timer = setTimeout(stepW, x.w * unit);
-      };
-      const pWords = () => { cur = stepW; panel.classList.add('is-words'); stepW(); };
-      const pHand = () => { cur = pHand; panel.classList.add('is-hand'); wait(500, pWords); };
-      const pDrift = () => { cur = pDrift; panel.classList.add('is-drift'); wait(1200, pHand); };
-      const pHold = () => {
-        cur = pHold;
-        if (!measured) {
-          measured = true;
-          const pr = panel.getBoundingClientRect(), hr = head.getBoundingClientRect();
-          panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (hr.top + hr.height / 2)) + 'px');
-        }
-        panel.classList.add('is-enter');
-        wait(3500, pDrift);
-      };
-      new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (done) return;
-          if (e.isIntersecting) { if (!started) { started = true; pHold(); } else if (cur) cur(); }
-          else clearTimeout(timer);
-        });
-      }, { threshold: 0.5 }).observe(inner);
-      inner.addEventListener('click', e => { if (!e.target.closest('a')) finish(); });
-      return;
-    }
     let started = false, done = false, i = 0, timer = null;
     const finish = () => { done = true; clearTimeout(timer); words.forEach(x => x.el.classList.add('on')); panel.classList.add('is-done'); };
     const step = () => {
