@@ -23,22 +23,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav class="page-top" aria-label="Site">
-    <a href="../../">&larr; I Can Do That</a>
-    <span class="page-top__links"><a href="../../faq/">FAQ</a><a href="../../curriculum/">Curriculum</a><a href="../../ways/">Ways to join</a><a href="../../testimonials/">Testimonials</a><a href="../../about/">About</a></span>
-  </nav>
-  <main class="learn">
-    <header class="clinic-header">
-      <h1>Class one: from the blank screen to something you send.</h1>
-      <p class="subtitle">Everyone starts from the same line. After that, the path is yours.</p>
-    </header>
+  <header class="hero hero--learn" id="top">
+    <div class="hero__content">
+      <h1 class="hero__title">Class one</h1>
+      <p class="hero__lede">From the blank screen to something you <span class="hero__pink">send</span>.</p>
+      <!-- PICTURE TODO (later): swap in the single Hall of Records version here; the full three-model picture then goes in the panel below (figure markup saved in the comment there). -->
+      <figure class="hero__art">
+        <a href="../../assets/ai-three-lanes.webp"><img src="../../assets/ai-three-lanes-mobile.webp" srcset="../../assets/ai-three-lanes-mobile.webp 760w, ../../assets/ai-three-lanes.webp 1376w" sizes="(max-width: 960px) 94vw, 900px" width="760" height="424" decoding="async" alt="A picture of how an AI assistant works: the world&rsquo;s knowledge, in every language, feeds three boxes. Each box leads to a library, from a small quick one to the most capable. A friendly professor, the assistant, stands in the middle. To the right are doors to the live internet, the app and the browser, and a framed portrait of you."></a>
+      </figure>
+      <p class="hero__lede hero__lede--small">Everyone starts from the same line. After that, the path is yours.</p>
+    </div>
+    <a class="hero__scroll" href="#learn-picture" aria-label="Next panel">&darr;</a>
+  </header>
 
-    <section class="say say--cream" id="learn-picture" aria-labelledby="learn-picture-title">
+  <main class="learn">
+    <section class="say say--cream say--first" id="learn-picture" aria-labelledby="learn-picture-title">
       <div class="say__inner">
         <p class="say__kicker">The picture</p>
         <h2 class="say__head" id="learn-picture-title">First, you see what you&rsquo;re actually talking to.</h2>
         <p class="say__body">Before you open any app, I show you this. Companies took the world&rsquo;s knowledge, in every language, and built it into a giant Hall of Records. Somebody stands at the front door who can go through all of it for you. That&rsquo;s your assistant.</p>
         <!-- PICTURE TODO (later): annotate with a "Hall of Records" label, a date stamp on the hall, an "ask me to go look" label on the internet door, and "you" on the portrait. -->
+        <!-- PICTURE TODO (later): the hero above gets the single Hall of Records picture; this full three-model picture stays here. -->
         <figure class="learn__fig">
           <a href="../../assets/ai-three-lanes.webp"><img src="../../assets/ai-three-lanes-mobile.webp" srcset="../../assets/ai-three-lanes-mobile.webp 760w, ../../assets/ai-three-lanes.webp 1376w" sizes="(max-width: 960px) 88vw, 576px" width="760" height="424" loading="lazy" decoding="async" alt="A picture of how an AI assistant works: the world&rsquo;s knowledge, in every language, feeds three boxes. Each box leads to a library, from a small quick one to the most capable. A friendly professor, the assistant, stands in the middle. To the right are doors to the live internet, the app and the browser, and a framed portrait of you."></a>
           <figcaption>The picture calls these halls &ldquo;libraries.&rdquo; Same thing. Tap to enlarge.</figcaption>

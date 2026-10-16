@@ -1117,3 +1117,44 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 .learn__fig img { display: block; width: 100%; height: auto; }
 .learn__fig figcaption { margin-top: 8px; font-size: .9rem; opacity: .8; }
 @media (min-width: 900px) { .learn .say__inner { max-width: 42rem; } .learn__fig { max-width: 36rem; } }
+
+/* Class one page hero (this file only): dark indigo with a pink glow, the picture as the hero art. */
+.hero--learn { min-height: 0; padding: 56px var(--content-padding) 110px; background: radial-gradient(ellipse 80% 50% at 50% 38%, rgba(255,61,110,.28), rgba(255,61,110,0) 70%), radial-gradient(ellipse 70% 40% at 50% 100%, rgba(124,77,255,.25), rgba(124,77,255,0) 70%), var(--say-hero-end); }
+.hero--learn .hero__content { padding: 0; gap: 14px; max-width: 62rem; margin: 0 auto; }
+.hero__lede { margin: 0 auto; max-width: 24em; font-size: clamp(1.4rem, 4.4vw, 2.1rem); font-weight: 700; line-height: 1.25; text-wrap: balance; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.hero__lede--small { font-size: clamp(1.05rem, 3.2vw, 1.35rem); font-weight: 500; font-style: italic; opacity: .9; }
+.hero__art { margin: 10px 0 6px; width: 100%; }
+.hero__art a { display: block; border-radius: 18px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 24px 60px rgba(0,0,0,.55), 0 0 90px rgba(255,61,110,.22); }
+.hero__art img { display: block; width: 100%; height: auto; }
+.say--first { --prev: var(--say-hero-end); padding-top: 110px; }
+@media (min-width: 900px) { .hero--learn { padding-top: 72px; } }
+
+/* ===== Read-through on the four statement panels (added 2026-10-15) =====
+   main.js adds .rd to a panel, wraps the body words in .rd__w, then adds .is-lit (headline blooms) and .on (word by word).
+   Without the script, or with reduced motion, none of this applies and everything is fully lit. */
+.say.rd .say__inner { position: relative; padding: 30px 22px; }
+.say.rd .say__inner::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transform: scale(1.05); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);
+  --c: var(--say-pink); --L: 26px; --T: 3px;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) left top / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--T) var(--L) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--L) var(--T) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--T) var(--L) no-repeat; }
+.say.rd.is-lit .say__inner::before { opacity: 1; transform: scale(1); }
+.say.rd .say__kicker { opacity: 0; transition: opacity .8s ease; }
+.say.rd.is-lit .say__kicker { opacity: .72; }
+.say.rd .say__head { opacity: 0; }
+.say.rd.is-lit .say__head { animation: rd-bloom 1.1s ease-out forwards; }
+@keyframes rd-bloom {
+  0% { opacity: 0; transform: scale(.94); text-shadow: 0 0 0 rgba(255,61,110,0); }
+  55% { opacity: 1; transform: scale(1.02); text-shadow: 0 0 22px rgba(255,61,110,.95), 0 0 56px rgba(255,61,110,.7), 0 0 110px rgba(255,61,110,.45); }
+  100% { opacity: 1; transform: scale(1); text-shadow: 0 0 16px rgba(255,61,110,.38), 0 0 40px rgba(255,61,110,.18); }
+}
+.rd__w { opacity: .45; transition: opacity .25s ease; }
+.rd__w.on { opacity: 1; }
+.say.rd.is-done .say__more .btn { animation: rd-pulse 1.4s ease-out 1; }
+@keyframes rd-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,61,110,.7); } 100% { box-shadow: 0 0 0 16px rgba(255,61,110,0); } }

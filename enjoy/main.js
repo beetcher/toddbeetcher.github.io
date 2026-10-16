@@ -1024,6 +1024,69 @@ function initAsk() {
 }
 
 // One arrow at the bottom of every panel after the hero: down to the next panel, and on the last one, up to the top.
+// Four statement panels: headline blooms, then the body is read word by word (CSS: "Read-through").
+// Once per panel; pauses when scrolled away; tap the text to light it all; skipped with reduced motion.
+function initSayRead() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  ['say-learn', 'say-how', 'say-do', 'say-why'].forEach(id => {
+    const panel = document.getElementById(id);
+    const inner = panel && panel.querySelector('.say__inner');
+    const body = panel && panel.querySelector('.say__body');
+    if (!inner || !body) return;
+    panel.classList.add('rd');
+    const words = [];
+    const walk = (node, mark) => {
+      Array.from(node.childNodes).forEach(ch => {
+        if (ch.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          ch.nodeValue.split(/(\s+)/).forEach(tok => {
+            if (!tok) return;
+            if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+            const s = document.createElement('span');
+            s.className = 'rd__w';
+            s.textContent = tok;
+            let w = 1;
+            if (mark && mark.first) { w = 2; mark.first = false; }
+            words.push({ el: s, w });
+            frag.appendChild(s);
+          });
+          node.replaceChild(frag, ch);
+        } else if (ch.nodeType === 1) {
+          walk(ch, ch.classList.contains('say__pink') || ch.classList.contains('term') ? { first: true } : mark);
+        }
+      });
+    };
+    walk(body, null);
+    const sum = words.reduce((a, x) => a + x.w, 0);
+    const seconds = Math.min(9, Math.max(5, words.length / 4.5));
+    const unit = seconds * 1000 / sum;
+    let started = false, done = false, i = 0, timer = null;
+    const finish = () => { done = true; clearTimeout(timer); words.forEach(x => x.el.classList.add('on')); panel.classList.add('is-done'); };
+    const step = () => {
+      if (done) return;
+      if (i >= words.length) { finish(); return; }
+      const x = words[i++];
+      x.el.classList.add('on');
+      timer = setTimeout(step, x.w * unit);
+    };
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (done) return;
+        if (e.isIntersecting) {
+          clearTimeout(timer);
+          if (!started) { started = true; panel.classList.add('is-lit'); timer = setTimeout(step, 1100); }
+          else timer = setTimeout(step, 200);
+        } else clearTimeout(timer);
+      });
+    }, { threshold: 0.5 }).observe(inner);
+    inner.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      if (!started) { started = true; panel.classList.add('is-lit'); }
+      finish();
+    });
+  });
+}
+
 function addPanelArrows() {
   const panels = [document.getElementById('say-learn'), document.getElementById('say-how'), document.getElementById('say-do'), document.getElementById('say-why'), document.getElementById('hello'), document.getElementById('zero-state'), document.getElementById('price'), document.getElementById('testimonials'), document.getElementById('what-we-do'), document.getElementById('what-you-get')]
     .concat(Array.from(document.querySelectorAll('#moments > section')))
@@ -1213,6 +1276,7 @@ function initDocHi() {
 document.addEventListener('DOMContentLoaded', () => {
   renderStories();
   addPanelArrows();
+  initSayRead();
   initPhoneCarousel();
   initPhoneBubbles();
   initWallEgg();
