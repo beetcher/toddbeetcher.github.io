@@ -1029,8 +1029,10 @@ function makeSpark(parent) {
   const el = document.createElement('span');
   el.className = 'spark';
   el.setAttribute('aria-hidden', 'true');
-  let html = '<i class="spark__core"></i><i class="spark__ring"></i>';
-  for (let k = 0; k < 8; k++) html += '<i class="spark__ray" style="--a:' + (k * 45 + 22) + 'deg"></i>';
+  let html = '<i class="spark__flash"></i><i class="spark__core"></i><i class="spark__ring"></i><i class="spark__ring spark__ring--b"></i>';
+  const reach = [96, 70, 110, 64, 90, 76, 104, 68, 92, 74, 108, 66];
+  for (let k = 0; k < 12; k++) html += '<i class="spark__ray" style="--a:' + (k * 30 + 8) + 'deg;--d:' + reach[k] + 'px"></i>';
+  for (let k = 0; k < 8; k++) html += '<i class="spark__ray spark__ray--dot" style="--a:' + (k * 45 + 24) + 'deg;--d:' + (44 + (k % 3) * 14) + 'px"></i>';
   el.innerHTML = html;
   parent.appendChild(el);
   return el;
@@ -1054,7 +1056,8 @@ function initSayRead() {
       let timer = null, started = false, done = false, cur = null, measured = false;
       const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
       const pFog = () => { cur = null; done = true; panel.classList.add('is-fog'); };
-      const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(2050, pFog); };
+      const pTitle = () => { cur = pTitle; panel.classList.add('is-title'); wait(2050, pFog); };
+      const pPop = () => { cur = pPop; panel.classList.add('is-pop'); spark.classList.add('is-burst'); wait(330, pTitle); };
       const pRise = () => { cur = pRise; panel.classList.add('is-rise'); wait(1200, pPop); };
       const pHold = () => {
         cur = pHold;
@@ -1067,7 +1070,7 @@ function initSayRead() {
         }
         panel.classList.add('is-enter');
         spark.classList.add('is-on');
-        wait(500, pRise);
+        wait(1000, pRise);
       };
       new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -1079,7 +1082,7 @@ function initSayRead() {
       inner.addEventListener('click', e => {
         if (e.target.closest('a')) return;
         done = true; clearTimeout(timer);
-        ['is-enter', 'is-rise', 'is-pop', 'is-fog', 'is-skip'].forEach(c => panel.classList.add(c));
+        ['is-enter', 'is-rise', 'is-pop', 'is-title', 'is-fog', 'is-skip'].forEach(c => panel.classList.add(c));
       });
       return;
     }

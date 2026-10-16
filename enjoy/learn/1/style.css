@@ -1162,6 +1162,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 /* ===== Panel 1 sequence v2 (2026-10-15): kicker opens big and centered, rises to a spark; the spark pops and the headline appears; the body comes out of a fog. =====
    main.js adds .rs to #say-learn, then .is-enter, .is-rise, .is-pop, .is-fog (and .is-skip on tap). Without the script or with reduced motion, none of this applies. */
 .say.rs { --rs-green: #00796b; }
+.say.rs.say--1 { align-items: start; padding-top: calc(25svh - 5px); }
 .say.rs .say__inner { position: relative; padding: 30px 22px; }
 .say.rs .say__inner::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transform: scale(1.05); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);
   --c: var(--say-pink); --L: 26px; --T: 3px;
@@ -1174,7 +1175,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
     linear-gradient(var(--c), var(--c)) left bottom / var(--T) var(--L) no-repeat,
     linear-gradient(var(--c), var(--c)) right bottom / var(--L) var(--T) no-repeat,
     linear-gradient(var(--c), var(--c)) right bottom / var(--T) var(--L) no-repeat; }
-.say.rs.is-pop .say__inner::before { opacity: 1; transform: scale(1); }
+.say.rs.is-title .say__inner::before { opacity: 1; transform: scale(1); }
 /* kicker: opens big, centered, green and glowing */
 .say.rs .say__kicker { color: var(--rs-green); opacity: 0; transform: translateY(var(--rs-dy, 0px)) scale(2.2); text-shadow: 0 0 0 rgba(0,121,107,0); }
 .say.rs.is-enter .say__kicker { opacity: 1; text-shadow: 0 0 12px rgba(0,121,107,.9), 0 0 30px rgba(0,121,107,.6); transition: opacity .4s ease, text-shadow .4s ease; }
@@ -1187,7 +1188,7 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 }
 /* headline: appears instantly at the pop, glow fades */
 .say.rs .say__head { color: var(--say-pink); opacity: 0; }
-.say.rs.is-pop .say__head { opacity: 1; animation: rs-h-glow 1.75s ease-out forwards; }
+.say.rs.is-title .say__head { opacity: 1; animation: rs-h-glow 1.75s ease-out forwards; }
 @keyframes rs-h-glow {
   0% { text-shadow: 0 0 18px rgba(255,61,110,.95), 0 0 44px rgba(255,61,110,.75), 0 0 90px rgba(255,61,110,.5); }
   100% { text-shadow: 0 0 0 rgba(255,61,110,0); }
@@ -1212,14 +1213,22 @@ body.doc-hi-on .doc-peek, body.doc-hi-on .doc-peek * { opacity: 0 !important; po
 /* ===== Spark (reusable): a small glowing point that pops once. JS: makeSpark(parent) -> element; add .is-on to show it pulsing, .is-burst to pop it. Position with --sx / --sy. ===== */
 .spark { position: absolute; left: var(--sx, 50%); top: var(--sy, 0); width: 0; height: 0; pointer-events: none; z-index: 2; }
 .spark__core { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #ffc83d; box-shadow: 0 0 10px 3px rgba(255,200,61,.9), 0 0 24px 8px rgba(255,61,110,.5); opacity: 0; }
-.spark.is-on .spark__core { opacity: 1; animation: spark-pulse 1s ease-in-out infinite; }
-.spark.is-burst .spark__core { opacity: 1; animation: spark-core-pop .35s ease-out forwards; }
+.spark.is-on .spark__core { opacity: 1; animation: spark-pulse .9s ease-in-out infinite; }
+.spark.is-burst .spark__core { opacity: 1; animation: spark-core-pop .5s ease-out forwards; }
+.spark__flash { position: absolute; left: -30px; top: -30px; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(255,230,140,.95) 0, rgba(255,200,61,.55) 35%, rgba(255,61,110,0) 70%); opacity: 0; }
+.spark.is-burst .spark__flash { animation: spark-flash .5s ease-out forwards; }
 .spark__ring { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; border: 2px solid #ffc83d; opacity: 0; }
-.spark.is-burst .spark__ring { animation: spark-ring .5s ease-out forwards; }
-.spark__ray { position: absolute; left: -2px; top: -2px; width: 4px; height: 4px; border-radius: 50%; background: #ff3d6e; opacity: 0; }
+.spark__ring--b { border-color: #ff3d6e; }
+.spark.is-burst .spark__ring { animation: spark-ring .7s ease-out forwards; }
+.spark.is-burst .spark__ring--b { animation: spark-ring .8s ease-out .12s forwards; }
+.spark__ray { position: absolute; left: 0; top: -1.5px; width: 16px; height: 3px; border-radius: 3px; background: #ff3d6e; opacity: 0; transform-origin: 0 50%; }
 .spark__ray:nth-child(odd) { background: #ffc83d; }
-.spark.is-burst .spark__ray { animation: spark-ray .55s ease-out forwards; }
-@keyframes spark-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
-@keyframes spark-core-pop { 0% { transform: scale(1); opacity: 1; } 40% { transform: scale(3); opacity: 1; } 100% { transform: scale(.4); opacity: 0; } }
-@keyframes spark-ring { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(9); opacity: 0; } }
-@keyframes spark-ray { 0% { transform: rotate(var(--a)) translateX(0) scale(1); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(46px) scale(.3); opacity: 0; } }
+.spark__ray--dot { width: 5px; height: 5px; top: -2.5px; border-radius: 50%; }
+.spark.is-burst .spark__ray { animation: spark-ray .85s cubic-bezier(.15,.7,.3,1) forwards; }
+.spark.is-burst .spark__ray--dot { animation: spark-dot 1s cubic-bezier(.15,.7,.3,1) forwards; }
+@keyframes spark-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.5); } }
+@keyframes spark-core-pop { 0% { transform: scale(1); opacity: 1; } 30% { transform: scale(3.4); opacity: 1; } 100% { transform: scale(.3); opacity: 0; } }
+@keyframes spark-flash { 0% { transform: scale(.2); opacity: 1; } 100% { transform: scale(3.6); opacity: 0; } }
+@keyframes spark-ring { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(13); opacity: 0; } }
+@keyframes spark-ray { 0% { transform: rotate(var(--a)) translateX(4px) scaleX(.2); opacity: 1; } 45% { transform: rotate(var(--a)) translateX(calc(var(--d) * .55)) scaleX(1.3); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) scaleX(.2); opacity: 0; } }
+@keyframes spark-dot { 0% { transform: rotate(var(--a)) translateX(2px) scale(1); opacity: 1; } 100% { transform: rotate(var(--a)) translateX(var(--d)) translateY(14px) scale(.2); opacity: 0; } }
