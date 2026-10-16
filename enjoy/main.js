@@ -1052,6 +1052,7 @@ function initSayRead() {
     if (rs) {
       // Panel 1: kicker opens big and centered (0.5s) -> rises to a spark (1.2s) -> pop: headline appears, glows fade (1.75s) -> body out of a fog -> still.
       const kicker = panel.querySelector('.say__kicker');
+      const head = panel.querySelector('.say__head');
       const spark = makeSpark(inner);
       let timer = null, started = false, done = false, cur = null, measured = false;
       const wait = (ms, fn) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
@@ -1066,8 +1067,22 @@ function initSayRead() {
           const pr = panel.getBoundingClientRect(), kr = kicker.getBoundingClientRect(), ir = inner.getBoundingClientRect();
           panel.style.setProperty('--rs-s', Math.min(2.75, (window.innerWidth - 32) / kicker.offsetWidth).toFixed(3));
           panel.style.setProperty('--rs-dy', ((pr.top + pr.height / 2) - (kr.top + kr.height / 2)) + 'px');
-          spark.style.setProperty('--sx', (kr.left + kr.width / 2 - ir.left) + 'px');
-          spark.style.setProperty('--sy', (pr.top + pr.height * 0.25 - ir.top) + 'px');
+          // The burst goes off on the word "no" inside the headline ("...came with no instructions...").
+          let sx = kr.left + kr.width / 2, sy = pr.top + pr.height * 0.25;
+          const hw = document.createTreeWalker(head, NodeFilter.SHOW_TEXT);
+          for (let tn = hw.nextNode(); tn; tn = hw.nextNode()) {
+            const m = /\bno\b/i.exec(tn.nodeValue);
+            if (m) {
+              const rg = document.createRange();
+              rg.setStart(tn, m.index);
+              rg.setEnd(tn, m.index + m[0].length);
+              const wr = rg.getBoundingClientRect();
+              if (wr.width) { sx = wr.left + wr.width / 2; sy = wr.top + wr.height / 2; }
+              break;
+            }
+          }
+          spark.style.setProperty('--sx', (sx - ir.left) + 'px');
+          spark.style.setProperty('--sy', (sy - ir.top) + 'px');
         }
         panel.classList.add('is-enter');
         spark.classList.add('is-on');
