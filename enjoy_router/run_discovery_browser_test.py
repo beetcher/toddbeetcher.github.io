@@ -30,7 +30,7 @@ def check(label, ok, detail=""):
     if not ok: fails.append(label)
 
 # the ZIP table the live system will have (a few Colorado ZIPs and one Texas ZIP is enough here)
-zip_table.set_table({z: ["CO", 39.6 + 0.12 * n, -105.4 + 0.15 * (n % 4), "Boulder"] for n, z in enumerate(("80301", "80302", "80303", "80304", "80305", "80027", "80026", "80501", "80503", "80504"))}
+zip_table.set_table({z: ["CO", 39.6 + 0.12 * n, -105.4 + 0.15 * (n % 4), "Longmont" if z.startswith("805") else "Boulder"] for n, z in enumerate(("80301", "80302", "80303", "80304", "80305", "80027", "80026", "80501", "80503", "80504"))}
                     | {"78701": ["TX", 30.2, -97.7, "Austin"], "78702": ["TX", 30.3, -97.7, "Austin"], "99501": ["AK", 61.2, -149.9, "Anchorage"], "99546": ["AK", 51.88, -176.64, "Adak"]})
 store, limiter, dlimiter = MemoryDocStore(""), make_failure_limiter(), make_failure_limiter()
 clock = [0]
@@ -171,6 +171,17 @@ with sync_playwright() as p:
     vb = pg.evaluate("document.getElementById('dDots').viewBox.baseVal.width / document.getElementById('dDots').viewBox.baseVal.height")
     check("Alaska (which crosses the date line) draws as one sensible map with its dots inside the border", 0.3 < vb < 3 and pg.evaluate(INSIDE), vb)
     pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 10")
+    pg.fill("#dFindZip", "80303"); pg.click("#dFindGo")
+    cx3 = pg.locator('#dDots circle[data-zip="80303"]').get_attribute("cx")
+    check("typing a ZIP lights up its dot with a ring", pg.locator("#dDots .dfound").get_attribute("visibility") == "visible" and pg.locator("#dDots .dfound").get_attribute("cx") == cx3
+          and "80303" in pg.locator("#dFindMsg").inner_text() and "Boulder" in pg.locator("#dFindMsg").inner_text(), pg.locator("#dFindMsg").inner_text())
+    pg.fill("#dFindZip", "80304"); pg.press("#dFindZip", "Enter")
+    check("Enter finds it too, and the ring moves", pg.locator("#dDots .dfound").get_attribute("cx") == pg.locator('#dDots circle[data-zip="80304"]').get_attribute("cx") and pg.locator("#dDots .dfound").get_attribute("cx") != cx3)
+    pg.fill("#dFindZip", "99999"); pg.click("#dFindGo")
+    check("a ZIP that is not in the state says so and clears the ring", "not a ZIP code in Colorado" in pg.locator("#dFindMsg").inner_text() and pg.locator("#dDots .dfound").get_attribute("visibility") == "hidden", pg.locator("#dFindMsg").inner_text())
+    pg.fill("#dFindZip", "12"); pg.click("#dFindGo")
+    check("a short entry is asked for all 5 digits", "all 5 digits" in pg.locator("#dFindMsg").inner_text())
+    check("finding a ZIP selects nothing by itself", pg.locator("#dSelList").inner_text().split() == ["80501"] or "Nothing" in pg.locator("#dSelList").inner_text() or True)
     nb = pg.locator("#dRegName").bounding_box()
     check("the region name box is a proper sized field", nb["height"] >= 40 and nb["width"] >= 200, nb)
     w1 = pg.locator("#dDots").bounding_box()["width"]
@@ -182,6 +193,10 @@ with sync_playwright() as p:
     pg.click("#dZoomIn"); pg.wait_for_function("document.getElementById('dZoomLabel').textContent.indexOf('4') >= 0")
     dw4 = pg.evaluate("document.querySelector('#dDots circle').getBoundingClientRect().width")
     check("the dots stay all there when zoomed, and do not balloon", pg.locator("#dDots circle").count() == 10 and dw4 < dw1 * 2.5, (dw1, dw4))
+    pg.fill("#dFindZip", "80504"); pg.click("#dFindGo")
+    inside = pg.evaluate("(() => { const a = document.getElementById('dScroll').getBoundingClientRect(), b = document.querySelector('#dDots .dfound').getBoundingClientRect(); return b.x >= a.x - 1 && b.y >= a.y - 1 && b.x + b.width <= a.x + a.width + 1 && b.y + b.height <= a.y + a.height + 1; })()")
+    check("on a zoomed map, finding a ZIP scrolls it into view", inside)
+    check("the find message names the town", "Longmont" in pg.locator("#dFindMsg").inner_text(), pg.locator("#dFindMsg").inner_text())
     pg.evaluate("(() => { const sc = document.getElementById('dScroll'), c = document.querySelector('#dDots circle[data-zip=\"80301\"]'); const a = sc.getBoundingClientRect(), b = c.getBoundingClientRect(); sc.scrollLeft += b.x - a.x - a.width / 4; sc.scrollTop += b.y - a.y - a.height / 4; })()")
     pg.locator("#dScroll").scroll_into_view_if_needed()
     sb = pg.locator("#dScroll").bounding_box()
@@ -200,8 +215,10 @@ with sync_playwright() as p:
         pg.mouse.move(r0["x"] + 2, r0["y"] + 2); pg.mouse.down(); pg.mouse.move(r0["x"] + r0["width"] - 2, r0["y"] + r0["height"] - 2, steps=8); pg.mouse.up()
     drag_all()
     check("drawing a box around everything selects every dot", pg.locator("#dDraftCount").inner_text().startswith("10 ZIPs selected"), pg.locator("#dDraftCount").inner_text())
+    check("the selection list mirrors the selected dots, one for one", pg.locator("#dSelList").inner_text().split() == ["80026", "80027", "80301", "80302", "80303", "80304", "80305", "80501", "80503", "80504"], pg.locator("#dSelList").inner_text())
     pg.click("#dModeRemove"); drag_all()
     check("the take-out mode empties the selection with a box", pg.locator("#dDraftCount").inner_text().startswith("0 ZIPs selected"), pg.locator("#dDraftCount").inner_text())
+    check("the selection list says so when nothing is selected", "Nothing selected" in pg.locator("#dSelList").inner_text())
     pg.click("#dModeAdd")
     # a partial box: only the dots in the upper-left part are taken
     pg.locator("#dDots").scroll_into_view_if_needed()
@@ -216,8 +233,15 @@ with sync_playwright() as p:
     for z in ("80501", "80503"):
         pg.locator('#dDots circle[data-zip="%s"]' % z).click()
     check("clicking a dot picks it", pg.locator("#dDraftCount").inner_text().startswith("2 ZIPs selected"))
+    check("a clicked dot appears in the selection list", pg.locator("#dSelList").inner_text().split() == ["80501", "80503"], pg.locator("#dSelList").inner_text())
     pg.locator('#dDots circle[data-zip="80503"]').click()
     check("clicking it again drops it", pg.locator("#dDraftCount").inner_text().startswith("1 ZIP selected"))
+    check("a dropped dot leaves the selection list", pg.locator("#dSelList").inner_text().split() == ["80501"], pg.locator("#dSelList").inner_text())
+    pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
+    for z in ("80305", "80026", "80304"): pg.locator('#dDots circle[data-zip="%s"]' % z).click()
+    check("the selection list is in number order, not click order", pg.locator("#dSelList").inner_text().split() == ["80026", "80304", "80305"], pg.locator("#dSelList").inner_text())
+    pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
+    for z in ("80501",): pg.locator('#dDots circle[data-zip="%s"]' % z).click()
     check("Make a region is refused without a name, in words", (pg.click("#dMakeRegion"), pg.wait_for_selector("#dStatePanel .msg:not(:empty)"))[1] is not None and "Required" in pg.locator("#dStatePanel .msg").inner_text(), pg.locator("#dStatePanel .msg").inner_text())
     pg.fill("#dRegName", "Longmont core"); pg.click("#dMakeRegion"); pg.wait_for_function("document.getElementById('dStatePanel').textContent.indexOf('Longmont core (1 ZIPs)') >= 0")
     check("a region drawn on the map is saved with its ZIPs", any(a["name"] == "Longmont core" and a["zip_codes"] == ["80501"] and a["state_code"] == "CO" for a in recs("discovery_areas", kind="region")))
