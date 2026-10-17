@@ -46,6 +46,7 @@ class Discovery:
             return Reply(True, data={"run_mode": run["run_mode"], "steps_planned": run["steps_planned"],
                                      "estimated_cost_low_cents": run["estimated_cost_low_cents"],
                                      "estimated_cost_high_cents": run["estimated_cost_high_cents"],
+                                     "min_cap_for_one_call_cents": run["_min_cap"], "full_cap_for_one_call_cents": run["_full_cap"],
                                      "area_labels": run["area_labels"], "model_name": run["model_name"],
                                      "prompt_version": run["prompt_version"], "prompts": prompts})
         except Exception:
@@ -94,6 +95,7 @@ class Discovery:
         if isinstance(got, Reply):
             return got
         run, _prompts = got
+        run = {k: v for k, v in run.items() if not k.startswith("_")}     # quote-only fields are not stored
         rid = self.runs.create(run, by, self.clock())
         return Reply(True, data={"run_id": rid, "run_mode": run["run_mode"], "steps_planned": run["steps_planned"],
                                  "estimated_cost_low_cents": run["estimated_cost_low_cents"],
@@ -146,6 +148,8 @@ class Discovery:
         chars = [len(x[2]) for x in texts]
         prompts = [{"step_number": i + 1, "area_id": a, "type_key": k, "prompt_text": tx[:MAX_STORED_PROMPT]} for i, (a, k, tx) in enumerate(texts)]
         low, high = cost.estimate(model, chars, [per_step] * steps)
+        min_cap = max(cost.one_call_minimum_cents(model, c) for c in chars)
+        full_cap = max(cost.one_call_full_cents(model, c) for c in chars)
         mode = self.mode_fn()
         run = {"finder_key": rq.finder_key, "status": "planned", "run_mode": "live" if mode == "live" else "dry_run",
                "model_id": model.id, "model_name": model.model_name,
@@ -154,7 +158,8 @@ class Discovery:
                "area_ids": list(rq.area_ids), "area_labels": [areas[a].label for a in rq.area_ids],
                "type_keys": list(rq.type_keys), "prompt_id": pr.id, "prompt_version": pr.version,
                "max_results": rq.max_results, "spend_cap_cents": rq.spend_cap_cents,
-               "estimated_cost_low_cents": low, "estimated_cost_high_cents": high, "actual_cost_cents": 0,
+               "estimated_cost_low_cents": low, "estimated_cost_high_cents": high, "_min_cap": min_cap, "_full_cap": full_cap,
+               "actual_cost_cents": 0,
                "input_tokens": 0, "output_tokens": 0, "search_count": 0, "steps_planned": steps, "steps_done": 0, "steps": [],
                "found_count": 0, "created_count": 0, "duplicate_count": 0, "rejected_count": 0, "attention_count": 0,
                "rejections": [], "started_at": _iso(self.clock())}

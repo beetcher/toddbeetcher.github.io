@@ -102,6 +102,9 @@ with sync_playwright() as p:
     ptxt = pg.locator("#dQuote .dprompt").first.inner_text()
     check("the exact prompt text can be read before Go", "Boulder" in ptxt and "coffee" in ptxt.lower(), ptxt[:200])
     check("Go is enabled after an estimate", pg.locator("#dGo").is_enabled())
+    pg.fill("#dCap", "1"); pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard")
+    wt = pg.locator("#dQuote .dwarn").inner_text() if pg.locator("#dQuote .dwarn").count() else ""
+    check("a cap below one call warns in words, names the smallest cap, and Go stays off", "too low to make even one call" in wt and "Raise the cap to at least $" in wt and pg.locator("#dGo").is_disabled(), wt)
     pg.fill("#dCap", "9")
     check("changing a choice throws the estimate away", pg.locator("#dGo").is_disabled() and pg.locator("#dQuote .dcard").count() == 0)
     pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard"); pg.click("#dGo")

@@ -4,8 +4,8 @@
 
     python3 enjoy_router/discovery_live_check.py status            the mode, which model keys exist, the ZIP table (no AI call, no cost)
     python3 enjoy_router/discovery_live_check.py dry               an estimate + a dry run for Boulder coffee shops (no AI call, no cost)
-    python3 enjoy_router/discovery_live_check.py live [model] [cap]  a TINY live run (3 results, cap in cents, default 10) on that model name
-                                                                   (default gemini-3.5-flash-lite), then lists what it saved. A call with 5 web searches can cost up to 7 cents on Gemini, so a cap under about 9 stops with cap_reached before any call.
+    python3 enjoy_router/discovery_live_check.py live [model]      a TINY live run (3 results, 5 cent cap) on that model name
+                                                                   (default gemini-3.5-flash-lite), then lists what it saved
     python3 enjoy_router/discovery_live_check.py withdraw RUN_ID   takes a run's untouched candidates back
 
 The live command needs ICDT_DISCOVERY_MODE=live on the server. It never contacts a venue; candidates are saved inactive."""
@@ -101,6 +101,8 @@ def run(model_name, max_results, cap, want_mode):
     if s != 200:
         say("QUOTE FAILED:", problem((s, b))); return 1
     q = b["data"]
+    if q.get("min_cap_for_one_call_cents", 0) > cap:
+        say(f"WARNING: cap {cap} is below the {q['min_cap_for_one_call_cents']} cents the smallest one call can cost; the run would stop at once.")
     say(f"quote: {q['steps_planned']} call(s) with {q['model_name']}, expected {q['estimated_cost_low_cents']} to {q['estimated_cost_high_cents']} cents, cap {cap}, prompt version {q['prompt_version']}")
     say("--- the exact prompt that will be sent (call 1) ---"); say(q["prompts"][0]["prompt_text"]); say("--- end of prompt ---")
     s, b = disc("plan", **rq)
@@ -131,9 +133,9 @@ def main(argv):
     if cmd == "status":
         return 0 if status() else 1
     if cmd == "dry":
-        return run("gemini-3.5-flash-lite", 3, 10, "dry_run")
+        return run("gemini-3.5-flash-lite", 3, 5, "dry_run")
     if cmd == "live":
-        return run(argv[2] if len(argv) > 2 else "gemini-3.5-flash-lite", 3, int(argv[3]) if len(argv) > 3 else 10, "live")
+        return run(argv[2] if len(argv) > 2 else "gemini-3.5-flash-lite", 3, 5, "live")
     if cmd == "withdraw" and len(argv) > 2:
         s, b = disc("withdraw", run_id=argv[2])
         say(problem((s, b)) if s != 200 else f"withdrawn: removed {json.dumps(b['data'].get('removed'))}, kept (a person used them) {b['data'].get('kept')}"); return 0 if s == 200 else 1

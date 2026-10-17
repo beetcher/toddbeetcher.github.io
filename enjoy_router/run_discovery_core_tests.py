@@ -327,6 +327,15 @@ rid = e.d.plan(RunRequest("venue", "m1", ("a1", "a2"), ("cafe", "lib"), 20, 500)
 check("quote: the prompts it showed are the ones the run then sent", [p["prompt_text"] for p in q.data["prompts"]] == [c.prompt for c in e.provider.calls])
 check("quote: refuses exactly what plan refuses", all(Env().d.quote(RunRequest("venue", kw.get("model", "m1"), tuple(kw.get("areas", ("a1",))), tuple(kw.get("types", ("cafe",))), kw.get("n", 20), kw.get("cap", 500))).code == code
       for _, kw, code in cases if "key" not in kw))
+qm = q.data["min_cap_for_one_call_cents"]
+qf = q.data["full_cap_for_one_call_cents"]
+check("quote: names the smallest cap that can make a call and the cap for a full-size call, in order, within the run's worst case", 1 <= qm <= qf <= q.data["estimated_cost_high_cents"])
+lo = Env(replies=lambda r: reply(), mode="live"); rl = lo.d.plan(RunRequest("venue", "m1", ("a1",), ("cafe",), 20, qm - 1), "u").data["run_id"]; lo.go(rl)
+hi = Env(replies=lambda r: reply(), mode="live"); rh = hi.d.plan(RunRequest("venue", "m1", ("a1",), ("cafe",), 20, qm), "u").data["run_id"]; hi.go(rh)
+check("quote: a cap one cent under the minimum really stops the run with nothing spent; at the minimum the call is made",
+      lo.run(rl).get("stop_reason") == "cap_reached" and lo.run(rl)["actual_cost_cents"] == 0 and hi.run(rh)["steps_done"] == 1 and hi.run(rh).get("stop_reason") != "cap_reached",
+      (qm, qf, lo.run(rl).get("stop_reason"), hi.run(rh).get("stop_reason")))
+check("quote: the quote-only number is not saved in the run record", "_min_cap" not in lo.run(rl) and "min_cap_for_one_call_cents" not in lo.run(rl))
 check("quote: off mode refuses", Env(mode="off").d.quote(RunRequest("venue", "m1", ("a1",), ("cafe",), 5, 5)).code == "mode_off")
 e = Env(replies=lambda r: reply(v("A")), mode="live"); e.d.provider_timeout_s = 77; rid = e.plan().data["run_id"]; e.go(rid)
 check("the provider is given the engine's time limit", e.provider.calls[0].timeout_s == 77)

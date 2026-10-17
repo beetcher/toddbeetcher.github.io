@@ -98,7 +98,7 @@
       ".dchip.sure{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}.dchip.verify{background:#ffe9b3;border-color:#c98a00;color:#6a4500}.dchip.unknown{background:#fff;border-style:dashed;color:#666}" +
       ".dchip.bad{background:#fbd5d5;border-color:#b00020;color:#6a0014}.dchip.good{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}" +
       ".dbanner{padding:10px 14px;border-radius:8px;margin:10px 0;font-weight:600;background:#ffe9b3;border:1px solid #c98a00}.dbanner.live{background:#d9f2c4;border-color:#5c9a00}.dbanner.off{background:#fbd5d5;border-color:#b00020}" +
-      ".drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.dmini{font-size:14px;color:#555}" +
+      ".drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.dmini{font-size:14px;color:#555}.dwarn{font-size:15px;font-weight:700;color:#8a1c1c;background:#fff1f1;border:1px solid #e0a0a0;border-radius:8px;padding:8px 10px}" +
       ".dprompt{white-space:pre-wrap;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#f6f3ea;border:1px solid #d8d2c4;border-radius:6px;padding:10px;max-height:340px;overflow:auto}" +
       ".dtable{border-collapse:collapse;width:100%;font-size:14px}.dtable th,.dtable td{border-bottom:1px solid #e4dfd2;text-align:left;padding:4px 6px;vertical-align:top}" +
       ".dprog{height:14px;border-radius:7px;background:#e9e4d8;overflow:hidden;margin:8px 0}.dprog>div{height:100%;background:var(--orange);width:0}" +
@@ -217,12 +217,15 @@
       var c = el("div", "dcard"); c.appendChild(el("h3", "", "Estimate"));
       c.appendChild(el("p", "", d.steps_planned + " AI call" + (d.steps_planned === 1 ? "" : "s") + " with " + d.model_name + " in " + d.area_labels.join(", ") + ". Expected cost " +
         usd(d.estimated_cost_low_cents) + " to " + usd(d.estimated_cost_high_cents) + ". Your cap is " + usd(r.spend_cap_cents) + ". Prompt version " + d.prompt_version + "."));
-      if (d.estimated_cost_high_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "The top of the estimate is above your cap, so the run may stop early at the cap. That is the cap working."));
+      var tooLow = d.min_cap_for_one_call_cents > r.spend_cap_cents;
+      if (tooLow) c.appendChild(el("p", "dwarn", "Your cap is too low to make even one call: the smallest a call can cost is " + usd(d.min_cap_for_one_call_cents) + " (the web searches count). The run would stop at once with nothing found. Raise the cap to at least " + usd(d.min_cap_for_one_call_cents) + "."));
+      else if (d.full_cap_for_one_call_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "Heads up: a cap under " + usd(d.full_cap_for_one_call_cents) + " cannot cover a full-size call, so answers are kept short to fit and may list fewer places."));
+      if (!tooLow && d.estimated_cost_high_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "The top of the estimate is above your cap, so the run may stop early at the cap. That is the cap working."));
       if (d.run_mode === "dry_run") c.appendChild(el("p", "dmini", "This is a dry run: Go will plan the run and send nothing to the AI."));
       var det = el("details", "more"); det.appendChild(el("summary", "", "Show the exact prompts that would be sent (" + d.prompts.length + ")"));
-      d.prompts.forEach(function (p) { det.appendChild(el("h4", "", "Call " + p.step + ": " + p.type_key)); det.appendChild(el("div", "dprompt", p.prompt_text)); });
+      d.prompts.forEach(function (p) { det.appendChild(el("h4", "", "Call " + p.step_number + ": " + p.type_key)); det.appendChild(el("div", "dprompt", p.prompt_text)); });
       c.appendChild(det); q.appendChild(c);
-      $("dGo").disabled = !(S.status && S.status.mode !== "off");
+      $("dGo").disabled = tooLow || !(S.status && S.status.mode !== "off");
     });
   }
   function doGo() {

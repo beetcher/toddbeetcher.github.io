@@ -61,6 +61,17 @@ def step_limits(model, prompt_chars: int, remaining_cents: int):
     return out, searches
 
 
+def one_call_full_cents(model, prompt_chars: int) -> int:
+    """The most ONE call can cost: full prompt, full output cap, most searches. A cap at or above this lets the call run at full size."""
+    return cost_cents(model, tokens_from_chars(prompt_chars), output_cap(model), max_searches(model))
+
+
+def one_call_minimum_cents(model, prompt_chars: int) -> int:
+    """The smallest cap that can make one call at all: the prompt, the searches and a minimal useful answer. Below this step_limits
+    refuses the call (cap_reached). Between this and one_call_full_cents the answer is shortened to fit."""
+    return math.ceil(_exact(model, tokens_from_chars(prompt_chars), MIN_USEFUL_OUTPUT_TOKENS, max_searches(model)))
+
+
 def estimate(model, prompt_chars_per_step: list, results_per_step: list):
     """(low, high) in cents for the whole run. High is every step at its output cap with the most searches; low is an expected
     answer at 60% with one search. Both are rounded up."""
