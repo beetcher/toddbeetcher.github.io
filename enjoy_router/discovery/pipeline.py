@@ -22,11 +22,12 @@ def _iso(now) -> str:
 
 
 class Discovery:
-    def __init__(self, finders, providers, areas, catalog, runs, sink, mode_fn, clock=None):
+    def __init__(self, finders, providers, areas, catalog, runs, sink, mode_fn, clock=None, provider_timeout_s=45):
         self.finders = {f.key: f for f in finders}
         self.providers, self.areas, self.catalog = providers, areas, catalog
         self.runs, self.sinks, self.mode_fn = runs, sink, mode_fn
         self.clock = clock or (lambda: datetime.now(timezone.utc))
+        self.provider_timeout_s = provider_timeout_s
 
     # ---------------------------------------------------------------- public calls
     def plan(self, request: RunRequest, by: str) -> Reply:
@@ -34,6 +35,21 @@ class Discovery:
             return self._plan(request, by)
         except Exception:
             return Reply(False, "internal_error", "Discovery could not plan this run.")
+
+    def quote(self, request: RunRequest) -> Reply:
+        """Everything plan checks and works out, with NOTHING saved: the estimate and the exact prompt of every step (D-18)."""
+        try:
+            got = self._prepare(request)
+            if isinstance(got, Reply):
+                return got
+            run, prompts = got
+            return Reply(True, data={"run_mode": run["run_mode"], "steps_planned": run["steps_planned"],
+                                     "estimated_cost_low_cents": run["estimated_cost_low_cents"],
+                                     "estimated_cost_high_cents": run["estimated_cost_high_cents"],
+                                     "area_labels": run["area_labels"], "model_name": run["model_name"],
+                                     "prompt_version": run["prompt_version"], "prompts": prompts})
+        except Exception:
+            return Reply(False, "internal_error", "Discovery could not work out the quote.")
 
     def step(self, run_id: str, by: str) -> Reply:
         try:
@@ -74,6 +90,17 @@ class Discovery:
         return Reply(False, code, message)
 
     def _plan(self, rq: RunRequest, by: str) -> Reply:
+        got = self._prepare(rq)
+        if isinstance(got, Reply):
+            return got
+        run, _prompts = got
+        rid = self.runs.create(run, by, self.clock())
+        return Reply(True, data={"run_id": rid, "run_mode": run["run_mode"], "steps_planned": run["steps_planned"],
+                                 "estimated_cost_low_cents": run["estimated_cost_low_cents"],
+                                 "estimated_cost_high_cents": run["estimated_cost_high_cents"]})
+
+    def _prepare(self, rq: RunRequest):
+        """All the checks of a plan. Returns a refusal Reply, or (run record, list of {step, type_key, area_id, prompt_text})."""
         if self.mode_fn() == "off":
             return self._refuse("mode_off", "Discovery is switched off.")
         finder = self.finders.get(rq.finder_key)
@@ -115,7 +142,9 @@ class Discovery:
         if steps > MAX_STEPS:
             return self._refuse("too_many_steps", f"A run is at most {MAX_STEPS} steps.")
         per_step = min(limits.results_per_step, rq.max_results)
-        chars = [len(prompt_mod.build(pr.text, finder, areas[a], types[t], per_step)) for a in rq.area_ids for t in rq.type_keys]
+        texts = [(a, t, prompt_mod.build(pr.text, finder, areas[a], types[t], per_step).strip()) for a in rq.area_ids for t in rq.type_keys]
+        chars = [len(x[2]) for x in texts]
+        prompts = [{"step_number": i + 1, "area_id": a, "type_key": k, "prompt_text": tx[:MAX_STORED_PROMPT]} for i, (a, k, tx) in enumerate(texts)]
         low, high = cost.estimate(model, chars, [per_step] * steps)
         mode = self.mode_fn()
         run = {"finder_key": rq.finder_key, "status": "planned", "run_mode": "live" if mode == "live" else "dry_run",
@@ -131,9 +160,7 @@ class Discovery:
                "rejections": [], "started_at": _iso(self.clock())}
         if model.price_search_per_1000_cents is not None:
             run["model_price_search_per_1000_cents"] = model.price_search_per_1000_cents
-        rid = self.runs.create(run, by, self.clock())
-        return Reply(True, data={"run_id": rid, "run_mode": run["run_mode"], "steps_planned": steps,
-                                 "estimated_cost_low_cents": low, "estimated_cost_high_cents": high})
+        return run, prompts
 
     # ---------------------------------------------------------------- step
     def _update(self, run_id, changes, by):
@@ -223,7 +250,7 @@ class Discovery:
         provider = self.providers[model.provider]
         req = ProviderRequest(provider=model.provider, model_name=model.model_name, key_name=model.key_name, prompt=text,
                               max_output_tokens=max_out, max_searches=max_search,
-                              use_grounding=bool(model.has_grounding and max_search))
+                              use_grounding=bool(model.has_grounding and max_search), timeout_s=self.provider_timeout_s)
         try:
             res = provider.generate(req)
             if res.outcome not in ("ok", "rejected", "no_answer"):

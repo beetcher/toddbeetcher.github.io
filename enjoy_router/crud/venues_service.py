@@ -383,3 +383,7 @@ def set_place(store, id, actor, address=None, location_id=None, source="dashboar
     _try_gps(store, id, actor, now)
     watch(actor, utc_stamp(now))      # the venue record itself is not saved by a move, so the moment of the move is what tells one move from another
     return success({**expanded(store, V.get(store, id).data), "changed": True})
+
+
+def set_discovery(store, id, block, actor, tx=None, now=None):   # noqa: A002
+    return V.set_discovery(store, id, block, actor, tx=tx, now=now)

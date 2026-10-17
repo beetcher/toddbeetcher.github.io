@@ -306,3 +306,23 @@ def set_review_summary(store, id, review_count, average_rating, actor="system:re
     except DocMissing:
         return failure("not_found")
     return success({"id": id, "review_count": review_count, "average_rating": average_rating})
+
+
+def set_discovery(store, id, block, actor, tx=None, now=None):   # noqa: A002
+    """Record how the AI found this venue (the read-only `discovery` block). Named function: no Console op reaches it. The block is
+    checked against the shared fragment in the venue schema; the venue must exist."""
+    problems = check_actor(actor) + _id_problem(id)
+    if not isinstance(block, dict):
+        problems.append({"field": "discovery", "issue": "invalid_type"})
+    else:
+        problems += check_field(VENUES, "discovery", block, allow_read_only=True)
+    if problems:
+        return _bad(problems)
+    cur = store.get(VENUES.name, id)
+    if cur is None or _is_deleted(cur):
+        return failure("not_found")
+    try:
+        store.update(VENUES.name, id, {"discovery": block, **stamp_update(actor, now)}, (), tx=tx)
+    except DocMissing:
+        return failure("not_found")
+    return success({"id": id})

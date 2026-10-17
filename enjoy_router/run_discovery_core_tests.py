@@ -317,6 +317,20 @@ two = Discovery([VENUE_FINDER, TRACK_FINDER], {"fake": FakeProvider("fake", lamb
 rp = two.plan(RunRequest("high_school_track", "m1", ("a1",), ("cafe",), 5, 50), "u")
 check("PORT one engine can carry several finders", rp.ok and two.step(rp.data["run_id"], "u").ok)
 
+# ================================================================ quote: the same checks and the exact prompts, nothing saved
+e = Env(replies=lambda r: reply(), mode="live")
+q = e.d.quote(RunRequest("venue", "m1", ("a1", "a2"), ("cafe", "lib"), 20, 500))
+check("quote: estimate range, step count, model and every step's exact prompt, and NOTHING is saved", q.ok and not e.runs.runs
+      and q.data["steps_planned"] == 4 and len(q.data["prompts"]) == 4 and 0 < q.data["estimated_cost_low_cents"] <= q.data["estimated_cost_high_cents"]
+      and "Larimer County" in q.data["prompts"][2]["prompt_text"] and q.data["model_name"] == "fake-1")
+rid = e.d.plan(RunRequest("venue", "m1", ("a1", "a2"), ("cafe", "lib"), 20, 500), "u").data["run_id"]; e.go(rid)
+check("quote: the prompts it showed are the ones the run then sent", [p["prompt_text"] for p in q.data["prompts"]] == [c.prompt for c in e.provider.calls])
+check("quote: refuses exactly what plan refuses", all(Env().d.quote(RunRequest("venue", kw.get("model", "m1"), tuple(kw.get("areas", ("a1",))), tuple(kw.get("types", ("cafe",))), kw.get("n", 20), kw.get("cap", 500))).code == code
+      for _, kw, code in cases if "key" not in kw))
+check("quote: off mode refuses", Env(mode="off").d.quote(RunRequest("venue", "m1", ("a1",), ("cafe",), 5, 5)).code == "mode_off")
+e = Env(replies=lambda r: reply(v("A")), mode="live"); e.d.provider_timeout_s = 77; rid = e.plan().data["run_id"]; e.go(rid)
+check("the provider is given the engine's time limit", e.provider.calls[0].timeout_s == 77)
+
 # ================================================================ marks and contract kit
 raw = v("Kit")
 c, rej = marks.check_item(raw, VENUE_FINDER)

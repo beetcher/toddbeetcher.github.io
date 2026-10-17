@@ -41,6 +41,8 @@ from launch_comms import wiring
 from crud import geocoder
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
+from discovery_door import handle_discovery
+from launch_discovery import wiring as discovery_wiring
 from handler import handle_http
 from public_venues import handle_public_venues
 from public_curriculums import handle_public_curriculums
@@ -76,6 +78,8 @@ _limiter = RateLimiter(rules=parse_rules(_rate_rules) if _rate_rules else DEFAUL
 _console_limiter = make_failure_limiter()
 _crud_limiter = make_failure_limiter()
 _admin_limiter = make_failure_limiter()
+_discovery_limiter = make_failure_limiter()
+_discovery_engine = None
 _venues_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _curriculums_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _completion_limiter = RateLimiter(rules=((600, 60), (86400, 500)))
@@ -248,6 +252,40 @@ def enjoy_admin(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_admin_store(),
         limiter=_admin_limiter,
+        now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+def _get_discovery_engine():
+    """Built on first use (so importing this file needs no network). Reads ICDT_DISCOVERY_MODE (default off) and any model keys from the
+    environment by the names on the model records."""
+    global _discovery_engine
+    if _discovery_engine is None:
+        _discovery_engine = discovery_wiring.build_engine(_get_admin_store())
+    return _discovery_engine
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["POST", "OPTIONS"]),
+    max_instances=2,
+    memory=options.MemoryOption.MB_512,
+    timeout_sec=180,   # one step is one AI call (up to 90 seconds) plus saving its results
+)
+def enjoy_discovery(req: https_fn.Request) -> https_fn.Response:
+    """The Console's door to the Discovery station (quote, plan, step, stop, withdraw, read runs). Locked by the admin key."""
+    result = handle_discovery(
+        method=req.method,
+        authorization=req.headers.get("Authorization", ""),
+        raw_body=req.get_data(),
+        admin_key=ADMIN_KEY,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        engine=_get_discovery_engine(),
+        environ=os.environ,
+        limiter=_discovery_limiter,
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
