@@ -11,7 +11,7 @@ ops (args):
     withdraw    run_id                       takes back what the run created and is still untouched
     get_run     id
     list_runs   limit (optional)             newest first
-    zips        state_code                   every ZIP in that state with its place name and centre point, for the Console map
+    zips        state_code                   every ZIP in that state with its place name and centre point, plus its largest cities, for the Console map
 
 Fails closed like the Console: no admin key setting (or under 32 characters) means nothing is allowed. Logs only codes. The engine is
 built by the caller (main.py), so tests can pass one with a fake AI. This file has no Firebase in it.
@@ -26,7 +26,7 @@ from console import MIN_KEY_LENGTH, _bearer
 from crud import discovery_runs_crud as RU
 from discovery.contract import RunRequest
 from handler import HttpResult, _error
-from launch_discovery import wiring, zip_table
+from launch_discovery import city_table, wiring, zip_table
 
 log = logging.getLogger("enjoy_router")
 ACTOR = "user:admin"
@@ -114,7 +114,7 @@ def _run(op, a, store, engine, environ):
         if not (isinstance(sc, str) and len(sc) == 2 and sc.isalpha() and sc.isupper()):
             return False, "bad_request", "state_code must be two capital letters."
         t = zip_table.table() or {}
-        return True, {"state_code": sc, "loaded": bool(t), "zips": [[z, row[1], row[2], row[3] if len(row) > 3 else ""] for z, row in sorted(t.items()) if row[0] == sc]}
+        return True, {"state_code": sc, "loaded": bool(t), "cities": city_table.cities_in_state(sc), "cities_loaded": city_table.is_loaded(), "zips": [[z, row[1], row[2], row[3] if len(row) > 3 else ""] for z, row in sorted(t.items()) if row[0] == sc]}
     elif op == "get_run":
         got = RU.get(store, a["id"])
         return (True, got.data) if got.ok else (False, "run_not_found", "No such run.")

@@ -30,6 +30,8 @@ def check(label, ok, detail=""):
     if not ok or "-v" in sys.argv: print(f"{'ok  ' if ok else 'FAIL'} {label} {detail if not ok else ''}")
 
 zip_table.set_table({z: ["CO", 40.0, -105.0, "X"] for z in ("80301", "80302")})
+from launch_discovery import city_table
+city_table.set_table({"CO": [{"name": "Boulder", "population": 108000, "lat": 40.0, "lon": -105.2, "zips": ["80301", "80302"]}]})
 store = MemoryDocStore("")
 mid = MO.create(store, {"provider": "gemini", "model_name": "gemini-3.8-flash", "label": "Gemini", "price_input_per_million_cents": 75,
                         "price_output_per_million_cents": 375, "has_grounding": False}, A, now=tick()).data["id"]
@@ -113,6 +115,10 @@ zr = call("zips", {"state_code": "CO"})
 check("zips: a state's ZIPs with place and centre point, sorted", zr.status == 200 and [z[0] for z in zr.body["data"]["zips"]] == ["80301", "80302"] and zr.body["data"]["zips"][0][1:3] == [40.0, -105.0] and zr.body["data"]["loaded"] is True, zr.body)
 check("zips: a state with none gives an empty list, bad codes are refused", call("zips", {"state_code": "TX"}).body["data"]["zips"] == [] and call("zips", {"state_code": "co"}).status == 400
       and call("zips", {"state_code": "COLORADO"}).status == 400 and call("zips").status == 400 and call("zips", {"state_code": "CO"}, key="w" * 40).status == 401)
+check("zips: the state's largest cities come with it, and none for a state without", zr.body["data"]["cities_loaded"] is True and zr.body["data"]["cities"][0]["name"] == "Boulder" and zr.body["data"]["cities"][0]["zips"] == ["80301", "80302"]
+      and call("zips", {"state_code": "TX"}).body["data"]["cities"] == [])
+city_table.set_table({}); zr2 = call("zips", {"state_code": "CO"})
+check("zips: with no city file the ZIPs still come and the page is told the cities are not loaded", zr2.status == 200 and zr2.body["data"]["cities_loaded"] is False and zr2.body["data"]["cities"] == [] and len(zr2.body["data"]["zips"]) == 2)
 check("nothing the door returns contains the key", all(SECRET not in json.dumps(x.body) for x in (call("status"), call("list_runs"), call("get_run", {"id": rid}))))
 
 print(f"{total - len(fails)}/{total} checks passed" + (f"; FAILED: {fails}" if fails else ""))

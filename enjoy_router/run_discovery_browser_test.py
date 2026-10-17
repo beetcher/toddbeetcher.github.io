@@ -14,7 +14,7 @@ from console import make_failure_limiter
 from discovery.contract import ProviderResult
 from discovery.memory_stores import FakeProvider
 from discovery_door import handle_discovery
-from launch_discovery import wiring, zip_table
+from launch_discovery import city_table, wiring, zip_table
 import seed_discovery as SEED
 try:
     from playwright.sync_api import sync_playwright
@@ -32,6 +32,9 @@ def check(label, ok, detail=""):
 # the ZIP table the live system will have (a few Colorado ZIPs and one Texas ZIP is enough here)
 zip_table.set_table({z: ["CO", 39.6 + 0.12 * n, -105.4 + 0.15 * (n % 4), "Longmont" if z.startswith("805") else "Boulder"] for n, z in enumerate(("80301", "80302", "80303", "80304", "80305", "80027", "80026", "80501", "80503", "80504"))}
                     | {"78701": ["TX", 30.2, -97.7, "Austin"], "78702": ["TX", 30.3, -97.7, "Austin"], "99501": ["AK", 61.2, -149.9, "Anchorage"], "99546": ["AK", 51.88, -176.64, "Adak"]})
+CITIES = {"CO": [{"name": "Boulder", "population": 108250, "lat": 40.0, "lon": -105.2, "zips": ["80301", "80302", "80303", "80304", "80305"]},
+                 {"name": "Longmont", "population": 98000, "lat": 40.2, "lon": -105.1, "zips": ["80501", "80503", "80504"]}]}
+city_table.set_table(CITIES)
 store, limiter, dlimiter = MemoryDocStore(""), make_failure_limiter(), make_failure_limiter()
 clock = [0]
 def tick():
@@ -182,6 +185,28 @@ with sync_playwright() as p:
     pg.fill("#dFindZip", "12"); pg.click("#dFindGo")
     check("a short entry is asked for all 5 digits", "all 5 digits" in pg.locator("#dFindMsg").inner_text())
     check("finding a ZIP selects nothing by itself", pg.locator("#dSelList").inner_text().split() == ["80501"] or "Nothing" in pg.locator("#dSelList").inner_text() or True)
+    pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
+    cb = pg.locator("#dCities .dcity")
+    check("the largest cities are listed on the right, biggest first, with people and ZIP counts", cb.count() == 2 and "Boulder" in cb.nth(0).inner_text() and "108,250 people" in cb.nth(0).inner_text() and "5 ZIPs" in cb.nth(0).inner_text()
+          and "Longmont" in cb.nth(1).inner_text(), cb.all_inner_texts())
+    check("the city list sits beside the map, not under it", pg.evaluate("(() => { const a = document.getElementById('dScroll').getBoundingClientRect(), b = document.getElementById('dCities').getBoundingClientRect(); return b.x >= a.x + a.width - 2 && Math.abs(b.y - a.y) < 40; })()"))
+    cb.nth(1).hover()
+    check("hovering a city lights its dots and only its dots", pg.evaluate("Array.from(document.querySelectorAll('#dDots circle')).filter(c => c.getAttribute('stroke') === '#d6006f').map(c => c.getAttribute('data-zip')).sort().join()") == "80501,80503,80504")
+    pg.mouse.move(2, 2)
+    check("the lit dots go dark again when the pointer leaves", pg.evaluate("Array.from(document.querySelectorAll('#dDots circle')).filter(c => c.getAttribute('stroke') === '#d6006f').length") == 0)
+    cb.nth(1).click()
+    check("clicking a city selects exactly its ZIPs and the list mirrors them", pg.locator("#dDraftCount").inner_text().startswith("3 ZIPs selected") and pg.locator("#dSelList").inner_text().split() == ["80501", "80503", "80504"], pg.locator("#dSelList").inner_text())
+    check("a fully selected city shows as pressed, the other does not", cb.nth(1).get_attribute("aria-pressed") == "true" and cb.nth(0).get_attribute("aria-pressed") == "false")
+    cb.nth(0).click()
+    check("a second city adds to the selection", pg.locator("#dDraftCount").inner_text().startswith("8 ZIPs selected") and cb.nth(0).get_attribute("aria-pressed") == "true")
+    pg.click("#dModeRemove"); cb.nth(1).click()
+    check("in take-out mode a city click removes its ZIPs", pg.locator("#dDraftCount").inner_text().startswith("5 ZIPs selected") and cb.nth(1).get_attribute("aria-pressed") == "false")
+    pg.click("#dModeAdd"); pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
+    pg.locator('#dNation .dst[data-state=AK]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 2")
+    check("a state with no matching big cities says so", "None of the largest cities" in pg.locator("#dCities").inner_text())
+    city_table.set_table({}); pg.locator('#dNation .dst[data-state=TX]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 2")
+    check("with no city file the map still works and says the list is not loaded", "not loaded on the server" in pg.locator("#dCities").inner_text() and pg.locator("#dCities .dcity").count() == 0)
+    city_table.set_table(CITIES); pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 10")
     nb = pg.locator("#dRegName").bounding_box()
     check("the region name box is a proper sized field", nb["height"] >= 40 and nb["width"] >= 200, nb)
     w1 = pg.locator("#dDots").bounding_box()["width"]

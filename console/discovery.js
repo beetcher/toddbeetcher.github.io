@@ -105,7 +105,7 @@
       ".dmap{width:100%;height:auto;display:block}.dmap .dst path{fill:#e3ded0;stroke:#fff;stroke-width:1;cursor:pointer}.dmap .dst.on path{fill:#9fd36b}.dmap .dst:hover path{fill:#f3c98a}.dmap .dst.sel path{stroke:var(--orange);stroke-width:3}.dmap .dst:focus{outline:none}.dmap .dst:focus-visible path{stroke:#000;stroke-width:3}" +
       ".dmap .dlab{font:700 11px sans-serif;fill:#1d4d00;pointer-events:none}.dzips{border:1px solid #d8d2c4;border-radius:6px;background:#e4dfd2;touch-action:none;cursor:crosshair;user-select:none}.dzips circle{cursor:pointer}.dbox{fill:rgba(255,138,0,.15);stroke:#ff8a00;stroke-dasharray:4 3}" +
       ".dswatch{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;border:1px solid #333}.dkey{padding:4px 0}.btns button[aria-pressed=true]{background:var(--orange);color:var(--ink)}" +
-      ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}.dstate{fill:#faf8f2;stroke:#4a443b;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}#dTip{position:fixed;z-index:60;background:#1c1a17;color:#fff;font:600 13px/1.3 sans-serif;padding:5px 9px;border-radius:6px;pointer-events:none;max-width:260px}#dTip[hidden]{display:none}.dfound{fill:none;stroke:#d6006f;stroke-width:3;vector-effect:non-scaling-stroke;pointer-events:none}#dFind input{max-width:150px}#dSelList{margin:6px 0;padding:8px 10px;max-height:110px;overflow:auto;border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;word-spacing:2px}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
+      ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}.dstate{fill:#faf8f2;stroke:#4a443b;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}#dTip{position:fixed;z-index:60;background:#1c1a17;color:#fff;font:600 13px/1.3 sans-serif;padding:5px 9px;border-radius:6px;pointer-events:none;max-width:260px}#dTip[hidden]{display:none}#dMapRow{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}#dMapRow>#dScroll{flex:1 1 300px;min-width:0}#dCities{flex:0 0 210px;display:flex;flex-direction:column;gap:6px}.dcity{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:6px 12px;min-height:44px;gap:0;color:var(--ink)}.dcity[aria-pressed=true]{background:var(--orange);color:var(--ink);border-color:var(--orange)}.dfound{fill:none;stroke:#d6006f;stroke-width:3;vector-effect:non-scaling-stroke;pointer-events:none}#dFind input{max-width:150px}#dSelList{margin:6px 0;padding:8px 10px;max-height:110px;overflow:auto;border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;word-spacing:2px}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
     var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
@@ -546,12 +546,13 @@
       os.onerror = function () { S.outlinesFailed = true; if (S.tab === "settings" && S.sub === "areas" && S.mapState === code) drawSettings(); };
       document.head.appendChild(os); return;
     }
-    drawDots(card, code, data.zips);
+    drawDots(card, code, data.zips, data.cities || [], !!data.cities_loaded);
   }
-  function drawDots(card, code, zips) {
+  function drawDots(card, code, zips, cities, citiesLoaded) {
     var regions = S.areas.filter(function (a) { return a.kind === "region" && a.state_code === code; }).sort(byName);
     var colorOf = {}, regOf = {}; regions.forEach(function (r, i) { (r.zip_codes || []).forEach(function (z) { if (!(z in colorOf)) { colorOf[z] = PALETTE[i % PALETTE.length]; regOf[z] = r; } }); });
     S.draft = S.draft || {};
+    var hl = {}, cityBtns = [];     // dots lit by hovering a city in the list; the list buttons
     var lat0 = Math.min.apply(null, zips.map(function (z) { return z[1]; })), lat1 = Math.max.apply(null, zips.map(function (z) { return z[1]; }));
     var lon0 = Math.min.apply(null, zips.map(function (z) { return z[2]; })), lon1 = Math.max.apply(null, zips.map(function (z) { return z[2]; }));
     var rings = ((window.US_OUTLINES || {})[code] || []).map(function (ring) { return ring.map(function (p) { return [p[0] > 100 ? p[0] - 360 : p[0], p[1]]; }); });   // Alaska crosses the date line: shift the far-west points
@@ -595,8 +596,9 @@
       var n = 0;
       Object.keys(circles).forEach(function (zc) {
         var c = circles[zc], sel = !!S.draft[zc]; if (sel) n++;
-        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : "0"); c.setAttribute("r", (sel ? rBase * 1.25 : rBase).toFixed(2));
+        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : hl[zc] ? "#d6006f" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : hl[zc] ? "2.5" : "0"); c.setAttribute("r", (sel ? rBase * 1.25 : rBase).toFixed(2));
       });
+      cityBtns.forEach(function (cb) { cb.b.setAttribute("aria-pressed", cb.zips.length && cb.zips.every(function (zc) { return S.draft[zc]; }) ? "true" : "false"); });
       var chosen = Object.keys(S.draft).filter(function (zc) { return circles[zc]; }).sort();
       selBox.textContent = chosen.length ? chosen.join("  ") : "Nothing selected yet.";
       count.textContent = n + " ZIP" + (n === 1 ? "" : "s") + " selected" + (S.editing ? " (editing " + (S.areas.filter(function (a) { return a.id === S.editing; })[0] || {}).name + ")" : "");
@@ -640,7 +642,26 @@
       tip.textContent = e.target.getAttribute("aria-label"); tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 260) + "px"; tip.style.top = (e.clientY + 16) + "px";
     });
     svg.addEventListener("pointerleave", function () { tip.hidden = true; });
-    var scroller = el("div"); scroller.id = "dScroll"; scroller.appendChild(svg); card.appendChild(scroller);
+    var mrow = el("div"); mrow.id = "dMapRow"; card.appendChild(mrow);
+    var scroller = el("div"); scroller.id = "dScroll"; scroller.appendChild(svg); mrow.appendChild(scroller);
+    var cp = el("div"); cp.id = "dCities"; mrow.appendChild(cp); cp.appendChild(el("b", "", "Largest cities"));
+    if (!citiesLoaded) cp.appendChild(el("p", "dmini", "The city list is not loaded on the server yet (run build_zip_table.py again, then deploy)."));
+    else if (!cities.length) cp.appendChild(el("p", "dmini", "None of the largest cities here match a ZIP's town name."));
+    else {
+      cp.appendChild(el("p", "dmini", "Click a city to select its ZIPs (the mode buttons above apply). Based on the post office's town name for each ZIP, not city limits."));
+      cities.forEach(function (ct) {
+        var zs = (ct.zips || []).filter(function (zc) { return circles[zc]; });
+        var b = btn("", "quiet dcity", function (e) {
+          var remove = (S.drawMode === "remove") !== !!e.altKey;
+          zs.forEach(function (zc) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; }); paint();
+        });
+        b.dataset.city = ct.name; b.appendChild(el("b", "", ct.name)); b.appendChild(el("span", "dmini", Number(ct.population).toLocaleString("en-US") + " people · " + zs.length + " ZIP" + (zs.length === 1 ? "" : "s")));
+        function light(on) { hl = {}; if (on) zs.forEach(function (zc) { hl[zc] = 1; }); paint(); }
+        b.addEventListener("pointerenter", function () { light(true); }); b.addEventListener("pointerleave", function () { light(false); });
+        b.addEventListener("focus", function () { light(true); }); b.addEventListener("blur", function () { light(false); });
+        cityBtns.push({ b: b, zips: zs }); cp.appendChild(b);
+      });
+    }
     if (Z > 1) { var baseW = Math.min(Wd, scroller.clientWidth || Wd); svg.style.width = Math.round(baseW * Z) + "px"; svg.style.maxWidth = "none"; }   // zoom is a multiple of the size you see at 1x
     if (S.zoomFocus) { scroller.scrollLeft = S.zoomFocus[0] * scroller.scrollWidth - scroller.clientWidth / 2; scroller.scrollTop = S.zoomFocus[1] * scroller.scrollHeight - scroller.clientHeight / 2; S.zoomFocus = null; }
     if (S.found && S.found.code === code) showFound(S.found.zip, true);
