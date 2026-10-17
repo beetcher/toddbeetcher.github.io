@@ -206,6 +206,33 @@ with sync_playwright() as p:
     check("Details closes again", not pd.locator(".detail").is_visible())
     check("Link click does not toggle Details", am.locator("button.vdetails").get_attribute("aria-expanded") == "false")
 
+    # 12. the opened view
+    vid = venue("Amante Coffee")["id"]
+    api("venues", "update", id=vid, changes={"phone": "303-555-0142", "email": "hi@amante.example", "description": "Corner cafe with a back room.", "rooms": [{"label": "Back room", "max_occupancy": 18}], "is_accessible": True, "has_wifi": True, "allows_minors": False, "parking_description": "Street parking", "availability_hours": [{"day_of_week": "monday", "opens_at": "09:00", "closes_at": "17:00"}]})
+    store.data["venues"][vid]["discovery"] = {"run_id": "11111111-1111-4111-8111-111111111111", "model_name": "gemini-2.5-flash", "prompt_version": 1, "found_at": "2026-10-17T15:00:00Z", "source_urls": ["https://vertexaisearch.cloud.google.com/grounding-api-redirect/abc123", "https://www.amante.example/about"], "attention_reasons": ["operator_unconfirmed"]}
+    pg.click("#vRefresh")
+    pg.wait_for_function("[...document.querySelectorAll('#vList li .vname')].some(n => n.textContent === 'Amante Coffee') && document.querySelector('#vList li .dfold') !== null")
+    am = pg.locator("#vList li.vrow").filter(has=pg.locator(".vname", has_text=_re.compile("^Amante Coffee$")))
+    am.locator("button.vdetails").click()
+    dt = am.locator(".detail")
+    txt = dt.inner_text()
+    check("details lead with Edit / Delete buttons", dt.locator("button", has_text="Edit").count() == 1 and dt.locator("button", has_text="Delete").count() >= 1)
+    check("Open in map and See photos are Google Maps links in a new tab, built from the address", dt.get_by_role("link", name="Open in map").get_attribute("href").startswith("https://www.google.com/maps/search/") and "Pearl" in dt.get_by_role("link", name="See photos").get_attribute("href") and dt.get_by_role("link", name="Open in map").get_attribute("target") == "_blank")
+    check("website, phone and email are tap links", dt.get_by_role("link", name="Website").get_attribute("href") == "https://amante.example/home" and dt.get_by_role("link", name="303-555-0142").get_attribute("href") == "tel:3035550142" and dt.get_by_role("link", name="hi@amante.example").get_attribute("href") == "mailto:hi@amante.example")
+    check("description is shown", "Corner cafe with a back room." in txt)
+    check("public hours are shown with a check-it note", "Mon-Fri 7am-5pm" in txt and "check before relying" in txt)
+    check("class open days are listed", "Mon 09:00\u201317:00" in txt)
+    check("rooms with capacity and the good-to-know facts", "Back room (up to 18)" in txt and "Accessible" in txt and "Wi-Fi" in txt and "No minors" in txt and "Parking: Street parking" in txt)
+    check("where-this-came-from is folded and says AI search, operator unconfirmed", dt.locator("details.dfold").first.get_attribute("open") is None and "Found by AI search" in dt.locator("details.dfold").first.text_content() and "operator unconfirmed" in dt.locator("details.dfold").first.text_content())
+    dt.locator("details.dfold").first.locator("summary").click()
+    check("sources show readable labels, not the Google redirect address", dt.get_by_role("link", name="Google search result").count() == 1 and dt.get_by_role("link", name="amante.example").count() >= 1 and "grounding-api-redirect" not in dt.locator("details.dfold").first.inner_text())
+    check("the raw fields stay available but folded", dt.locator("details.dfold").nth(1).get_attribute("open") is None and "schema_version" in dt.locator("details.dfold").nth(1).text_content())
+    # a bare venue: nothing invented
+    pd = pg.locator("#vList li.vrow").filter(has=pg.locator(".vname", has_text=_re.compile("^Park Draft$")))
+    pd.locator("button.vdetails").click()
+    pt = pd.locator(".detail").inner_text()
+    check("a bare venue shows Not entered, no phone/website links, no came-from fold", "Public hours: Not entered" in pt and "Open days for classes: Not entered" in pt and pd.locator(".detail a.dlink").count() <= 2 and pd.locator(".detail details.dfold").count() == 1)
+
     check("no page errors", not errors)
     if errors: print(errors[:3])
     b.close()

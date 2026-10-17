@@ -82,6 +82,12 @@
   .stoggle:disabled { opacity: .6; cursor: progress; }
   .stoggle:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
   li.vrow { padding: 0; }
+  li.vrow .detail { padding: 6px 14px 12px; }
+  li.vrow .vfact, li.vrow .dlinks, li.vrow .ddesc { margin: 6px 0; overflow-wrap: anywhere; }
+  li.vrow .dlinks { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+  .dlink { color: #7a3a00; font-weight: 700; display: inline-flex; align-items: center; min-height: 36px; }
+  li.vrow .dfold { margin: 8px 0; }
+  li.vrow .dfold summary { cursor: pointer; font-weight: 700; min-height: 36px; display: flex; align-items: center; }
   .vline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 8px 14px; min-height: 44px; }
   .vline .vname { font-weight: 800; font-size: 16px; }
   .vline .vaddr { color: var(--muted); font-size: 14px; flex: 1 1 200px; min-width: 0; }
@@ -1560,6 +1566,113 @@
     var t = n.slice(HOURS_PREFIX.length).trim();
     return { text: t.length > 46 ? t.slice(0, 45) + "\u2026" : t, full: t };
   }
+  // ---- the opened view of a venue: what people look for first, the raw record folded away
+  var DAY_ABBR = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
+  function dRow(label, content) {
+    var d = document.createElement("div"); d.className = "vfact";
+    var b = document.createElement("b"); b.textContent = label; d.appendChild(b);
+    if (typeof content === "string") d.appendChild(document.createTextNode(content)); else d.appendChild(content);
+    return d;
+  }
+  function dLink(text, href, newTab) {
+    var a = document.createElement("a"); a.className = "dlink"; a.textContent = text; a.href = href;
+    if (newTab) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+    return a;
+  }
+  function vMapQuery(rec) {
+    var pl = rec.place, a = pl && pl.address;
+    if (a) { var q = [vAddrLine(rec)].concat(a.postal_code ? [a.postal_code] : []).join(" "); return (rec.name ? rec.name + ", " : "") + q; }
+    return rec.name || "";
+  }
+  function vSourceLabel(u) {
+    try {
+      var h = new URL(u).hostname.replace(/^www\./, "");
+      if (/vertexaisearch\.cloud\.google\.com$|google\.com$/.test(h) && /grounding-api-redirect/.test(u)) return "Google search result";
+      return h;
+    } catch (e) { return "source"; }
+  }
+  function vMoney(c) { return "$" + (c / 100).toFixed(c % 100 ? 2 : 0); }
+  function venueDetail(rec) {
+    var detail = document.createElement("div"); detail.className = "detail";
+    detail.appendChild(venueActions(rec));
+
+    var pl = rec.place, hasAddr = !!(pl && pl.address);
+    var wh = document.createElement("div"); wh.className = "dlinks";
+    wh.appendChild(document.createTextNode((rec.is_public_venue ? "Public venue" : "Private space") + " \u00b7 " + vAddrLine(rec) + (pl && pl.address && pl.address.postal_code ? " " + pl.address.postal_code : "")));
+    detail.appendChild(wh);
+    var q = vMapQuery(rec);
+    if (hasAddr || rec.name) {
+      var ml = document.createElement("div"); ml.className = "dlinks";
+      ml.appendChild(dLink("Open in map", "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q), true));
+      ml.appendChild(dLink("See photos", "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q), true));
+      detail.appendChild(ml);
+    }
+    if (pl) detail.appendChild(dRow("GPS: ", pl.has_gps ? (pl.gps_source === "entered" ? "entered" : "looked up") : "none yet"));
+
+    var cl = document.createElement("div"); cl.className = "dlinks";
+    if (/^https?:\/\//i.test(String(rec.website_url || ""))) cl.appendChild(dLink("Website", rec.website_url, true));
+    if (rec.phone) cl.appendChild(dLink(String(rec.phone), "tel:" + String(rec.phone).replace(/[^+0-9]/g, ""), false));
+    if (rec.email) cl.appendChild(dLink(String(rec.email), "mailto:" + rec.email, false));
+    if (cl.childNodes.length) detail.appendChild(cl);
+    if (rec.main_contact) detail.appendChild(dRow("Contact: ", rec.main_contact.display_name || "(unavailable)"));
+    if (rec.description) { var ds = document.createElement("div"); ds.className = "ddesc"; ds.textContent = rec.description; detail.appendChild(ds); }
+
+    // hours: the web's public hours (to check), and the class days we entered
+    var hr = vHoursShort(rec);
+    detail.appendChild(dRow("Public hours: ", hr.full ? hr.full + " (from the web \u2014 check before relying on it)" : "Not entered"));
+    var days = (rec.availability_hours || []).map(function (h) { return (DAY_ABBR[h.day_of_week] || h.day_of_week) + " " + h.opens_at + "\u2013" + h.closes_at; });
+    detail.appendChild(dRow("Open days for classes: ", days.length ? days.join(", ") : "Not entered"));
+
+    // can we meet here: only facts we actually hold
+    var can = [];
+    (rec.rooms || []).forEach(function (r) {
+      var n = r.max_occupancy || r.preferred_occupancy;
+      can.push(r.label + (n ? " (up to " + n + ")" : ""));
+    });
+    var facts = [];
+    if (rec.is_accessible === true) facts.push("Accessible"); else if (rec.is_accessible === false) facts.push("Not accessible");
+    if (rec.has_wifi === true) facts.push("Wi-Fi"); else if (rec.has_wifi === false) facts.push("No Wi-Fi");
+    if (rec.allows_minors === true) facts.push("Minors allowed"); else if (rec.allows_minors === false) facts.push("No minors");
+    if (rec.parking_description) facts.push("Parking: " + rec.parking_description);
+    if (typeof rec.cost_cents === "number") facts.push("Cost: " + (rec.cost_cents === 0 ? "free" : vMoney(rec.cost_cents) + (rec.cost_basis ? " " + String(rec.cost_basis).replace("_", " ") : "")));
+    detail.appendChild(dRow("Rooms: ", can.length ? can.join("; ") : "None entered"));
+    if (facts.length) detail.appendChild(dRow("Good to know: ", facts.join(" \u00b7 ")));
+
+    var chips = document.createElement("div"); chips.className = "lchips";
+    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
+    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
+    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
+    rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
+    hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
+    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
+    chips.appendChild(rlink); chips.appendChild(hlink); chips.appendChild(added);
+    detail.appendChild(chips);
+
+    // where an AI-found record came from
+    var dc = rec.discovery;
+    if (dc) {
+      var w = document.createElement("details"); w.className = "dfold";
+      var ws = document.createElement("summary"); ws.textContent = "Where this came from"; w.appendChild(ws);
+      var reasons = (dc.attention_reasons || []);
+      w.appendChild(dRow("", "Found by AI search on " + when(dc.found_at) + (reasons.indexOf("operator_unconfirmed") >= 0 ? " \u2014 operator unconfirmed" : "") + "."));
+      var srcs = dc.source_urls || [];
+      if (srcs.length) {
+        var sl = document.createElement("div"); sl.className = "dlinks";
+        srcs.slice(0, 8).forEach(function (u) { sl.appendChild(dLink(vSourceLabel(u), u, true)); });
+        w.appendChild(sl);
+      }
+      detail.appendChild(w);
+    }
+
+    // everything the record holds, folded
+    var raw = document.createElement("details"); raw.className = "dfold";
+    var rs = document.createElement("summary"); rs.textContent = "All fields"; raw.appendChild(rs);
+    var done = {};
+    ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
+    detail.appendChild(raw);
+    return detail;
+  }
   function venueRow(rec, isNew) {
     var li = document.createElement("li"); li.className = "vrow" + (isNew ? " isnew" : "");
     var ln = document.createElement("div"); ln.className = "vline";
@@ -1578,23 +1691,7 @@
     var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.setAttribute("aria-expanded", "false");
     ln.appendChild(dt);
 
-    var detail = document.createElement("div"); detail.className = "detail";
-    var kind = document.createElement("div"); kind.className = "sub";
-    kind.textContent = (rec.is_public_venue ? "Public venue" : "Private space") + " \u00b7 " + venuePlaceLine(rec);
-    detail.appendChild(kind);
-    var chips = document.createElement("div"); chips.className = "lchips";
-    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
-    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
-    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
-    rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
-    hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
-    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
-    chips.appendChild(rlink); chips.appendChild(hlink); chips.appendChild(added);
-    detail.appendChild(chips);
-    detail.appendChild(venueActions(rec));
-    var done = {};
-    ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    var detail = venueDetail(rec);
 
     dt.addEventListener("click", function () {
       var open = li.classList.toggle("open");
