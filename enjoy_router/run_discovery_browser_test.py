@@ -158,6 +158,28 @@ with sync_playwright() as p:
     pg.locator("#dStatePanel .dsw").click(); pg.wait_for_function("!document.querySelector('#dNation .dst[data-state=UT]').classList.contains('on')")
     pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_selector("#dDots circle")
     check("Colorado shows one dot per ZIP, and regions have a key", pg.locator("#dDots circle").count() == 10 and pg.locator(".dkey").count() == 3, pg.locator("#dDots circle").count())
+    nb = pg.locator("#dRegName").bounding_box()
+    check("the region name box is a proper sized field", nb["height"] >= 40 and nb["width"] >= 200, nb)
+    w1 = pg.locator("#dDots").bounding_box()["width"]
+    dw1 = pg.evaluate("document.querySelector('#dDots circle').getBoundingClientRect().width")
+    check("zoom out and Whole state start disabled", pg.locator("#dZoomOut").is_disabled() and pg.locator("#dZoomReset").is_disabled())
+    pg.click("#dZoomIn"); pg.wait_for_function("document.getElementById('dZoomLabel').textContent.indexOf('2') >= 0")
+    w2 = pg.locator("#dDots").bounding_box()["width"]
+    check("zoom in doubles the map and says so", abs(w2 / w1 - 2) < 0.05 and "Zoom 2" in pg.locator("#dZoomLabel").inner_text(), (w1, w2))
+    pg.click("#dZoomIn"); pg.wait_for_function("document.getElementById('dZoomLabel').textContent.indexOf('4') >= 0")
+    dw4 = pg.evaluate("document.querySelector('#dDots circle').getBoundingClientRect().width")
+    check("the dots stay all there when zoomed, and do not balloon", pg.locator("#dDots circle").count() == 10 and dw4 < dw1 * 2.5, (dw1, dw4))
+    pg.evaluate("(() => { const sc = document.getElementById('dScroll'), c = document.querySelector('#dDots circle[data-zip=\"80301\"]'); const a = sc.getBoundingClientRect(), b = c.getBoundingClientRect(); sc.scrollLeft += b.x - a.x - a.width / 4; sc.scrollTop += b.y - a.y - a.height / 4; })()")
+    pg.locator("#dScroll").scroll_into_view_if_needed()
+    sb = pg.locator("#dScroll").bounding_box()
+    pts4 = pg.evaluate("Array.from(document.querySelectorAll('#dDots circle')).map(c => { const r = c.getBoundingClientRect(); return [c.getAttribute('data-zip'), r.x + r.width/2, r.y + r.height/2]; })")
+    bx0, by0, bx1, by1 = sb["x"] + 4, sb["y"] + 4, sb["x"] + sb["width"] - 20, sb["y"] + sb["height"] - 20
+    exp4 = sorted(z for z, x, y in pts4 if bx0 <= x <= bx1 and by0 <= y <= by1)
+    pg.mouse.move(bx0, by0); pg.mouse.down(); pg.mouse.move(bx1, by1, steps=6); pg.mouse.up()
+    check("a box drawn on a zoomed map selects exactly the dots inside it", 0 < len(exp4) < 10 and pg.locator("#dDraftCount").inner_text().startswith("%d ZIP" % len(exp4)), (len(exp4), pg.locator("#dDraftCount").inner_text()))
+    pg.click("#dZoomReset"); pg.wait_for_function("document.getElementById('dZoomLabel').textContent.indexOf('1') >= 0")
+    check("Whole state brings the map back to full size and keeps the selection", abs(pg.locator("#dDots").bounding_box()["width"] - w1) < 1 and pg.locator("#dDraftCount").inner_text().startswith("%d ZIP" % len(exp4)))
+    pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
     check("a region's dots carry its colour and name", pg.locator('#dDots circle[data-zip="80301"]').get_attribute("fill") != pg.locator('#dDots circle[data-zip="80501"]').get_attribute("fill")
           and "Boulder" in pg.locator('#dDots circle[data-zip="80301"] title').text_content())
     def drag_all():

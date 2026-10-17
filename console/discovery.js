@@ -105,6 +105,7 @@
       ".dmap{width:100%;height:auto;display:block}.dmap .dst path{fill:#e3ded0;stroke:#fff;stroke-width:1;cursor:pointer}.dmap .dst.on path{fill:#9fd36b}.dmap .dst:hover path{fill:#f3c98a}.dmap .dst.sel path{stroke:var(--orange);stroke-width:3}.dmap .dst:focus{outline:none}.dmap .dst:focus-visible path{stroke:#000;stroke-width:3}" +
       ".dmap .dlab{font:700 11px sans-serif;fill:#1d4d00;pointer-events:none}.dzips{border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;touch-action:none;cursor:crosshair;user-select:none}.dzips circle{cursor:pointer}.dbox{fill:rgba(255,138,0,.15);stroke:#ff8a00;stroke-dasharray:4 3}" +
       ".dswatch{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;border:1px solid #333}.dkey{padding:4px 0}.btns button[aria-pressed=true]{background:var(--orange);color:var(--ink)}" +
+      ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
     var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
@@ -510,7 +511,7 @@
       g.appendChild(svgEl("title")).textContent = st.name + (on ? " (on)" : " (off)");
       g.appendChild(svgEl("path", { d: st.d }));
       if (on || S.mapState === code) { var t = svgEl("text", { x: st.cx, y: st.cy, "text-anchor": "middle", class: "dlab" }); t.textContent = code; g.appendChild(t); }
-      function pick() { S.mapState = S.mapState === code ? "" : code; S.draft = {}; S.editing = ""; drawSettings(); }
+      function pick() { S.mapState = S.mapState === code ? "" : code; S.draft = {}; S.editing = ""; S.zoom = 1; S.zoomFocus = null; drawSettings(); }
       g.addEventListener("click", pick);
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
       svg.appendChild(g);
@@ -522,7 +523,7 @@
     var top = el("div", "drow"); top.appendChild(el("h3", "", U.name + " (" + code + ")"));
     var ctl = el("div", "btns");
     if (rec) ctl.appendChild(switchBtn(!!rec.is_active, U.name, function () { toggleActive("discovery_areas", rec); }));
-    ctl.appendChild(btn("Close", "quiet", function () { S.mapState = ""; drawSettings(); })); top.appendChild(ctl); card.appendChild(top);
+    ctl.appendChild(btn("Close", "quiet", function () { S.mapState = ""; S.zoom = 1; drawSettings(); })); top.appendChild(ctl); card.appendChild(top);
     host.appendChild(card);
     var cache = S.zipCache = S.zipCache || {};
     if (!cache[code]) {
@@ -554,10 +555,20 @@
     function setMode(m) { S.drawMode = m; addB.setAttribute("aria-pressed", m === "add" ? "true" : "false"); remB.setAttribute("aria-pressed", m === "remove" ? "true" : "false"); }
     addB.id = "dModeAdd"; remB.id = "dModeRemove"; addB.addEventListener("click", function () { setMode("add"); }); remB.addEventListener("click", function () { setMode("remove"); }); setMode(S.drawMode || "add");
     mode.appendChild(addB); mode.appendChild(remB); card.appendChild(mode);
-    var svg = svgEl("svg", { viewBox: "0 0 " + Wd + " " + Ht, class: "dmap dzips", role: "group", "aria-label": "ZIP codes in the state" }); svg.id = "dDots"; svg.style.maxWidth = Wd + "px";
+    var Z = S.zoom || 1, ZSTEPS = [1, 2, 4, 8];
+    function setZoom(z) {
+      var sc0 = $("dScroll"), f = sc0 && sc0.scrollWidth ? [(sc0.scrollLeft + sc0.clientWidth / 2) / sc0.scrollWidth, (sc0.scrollTop + sc0.clientHeight / 2) / sc0.scrollHeight] : [0.5, 0.5];
+      S.zoom = z; S.zoomFocus = f; drawSettings();
+    }
+    var zr = el("div", "btns"); zr.id = "dZoom";
+    var zIn = btn("Zoom in", "quiet", function () { setZoom(ZSTEPS[Math.min(ZSTEPS.indexOf(Z) + 1, ZSTEPS.length - 1)]); }), zOut = btn("Zoom out", "quiet", function () { setZoom(ZSTEPS[Math.max(ZSTEPS.indexOf(Z) - 1, 0)]); }), zAll = btn("Whole state", "quiet", function () { setZoom(1); });
+    zIn.id = "dZoomIn"; zOut.id = "dZoomOut"; zAll.id = "dZoomReset"; zIn.disabled = Z >= 8; zOut.disabled = Z <= 1; zAll.disabled = Z <= 1;
+    var zl = el("span", "dmini", " Zoom " + Z + "×" + (Z > 1 ? ". Scroll to move around, then drag a box." : "")); zl.id = "dZoomLabel"; zr.appendChild(zOut); zr.appendChild(zIn); zr.appendChild(zAll); zr.appendChild(zl); card.appendChild(zr);
+    var svg = svgEl("svg", { viewBox: "0 0 " + Wd + " " + Ht, class: "dmap dzips", role: "group", "aria-label": "ZIP codes in the state" }); svg.id = "dDots"; if (Z > 1) { svg.style.width = Math.round(Wd * Z) + "px"; svg.style.maxWidth = "none"; } else svg.style.maxWidth = Wd + "px";
+    var rBase = 4 / Math.sqrt(Z);
     var circles = {};
     zips.forEach(function (z) {
-      var c = svgEl("circle", { cx: pos[z[0]][0].toFixed(1), cy: pos[z[0]][1].toFixed(1), r: 4, "data-zip": z[0] }); c.appendChild(svgEl("title")).textContent = z[0] + (z[3] ? " " + z[3] : "") + (regOf[z[0]] ? " · " + regOf[z[0]].name : "");
+      var c = svgEl("circle", { cx: pos[z[0]][0].toFixed(1), cy: pos[z[0]][1].toFixed(1), r: rBase.toFixed(2), "data-zip": z[0] }); c.appendChild(svgEl("title")).textContent = z[0] + (z[3] ? " " + z[3] : "") + (regOf[z[0]] ? " · " + regOf[z[0]].name : "");
       svg.appendChild(c); circles[z[0]] = c;
     });
     var box = svgEl("rect", { class: "dbox", visibility: "hidden" }); svg.appendChild(box);
@@ -565,7 +576,7 @@
       var n = 0;
       Object.keys(circles).forEach(function (zc) {
         var c = circles[zc], sel = !!S.draft[zc]; if (sel) n++;
-        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : "0"); c.setAttribute("r", sel ? 5 : 4);
+        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : "0"); c.setAttribute("r", (sel ? rBase * 1.25 : rBase).toFixed(2));
       });
       count.textContent = n + " ZIP" + (n === 1 ? "" : "s") + " selected" + (S.editing ? " (editing " + (S.areas.filter(function (a) { return a.id === S.editing; })[0] || {}).name + ")" : "");
       saveNew.disabled = !n; if (saveEdit) saveEdit.disabled = !n;
@@ -585,7 +596,8 @@
       Object.keys(pos).forEach(function (zc) { var q = pos[zc]; if (q[0] >= x0 && q[0] <= x1 && q[1] >= y0 && q[1] <= y1) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; } });
       paint();
     });
-    card.appendChild(svg);
+    var scroller = el("div"); scroller.id = "dScroll"; scroller.appendChild(svg); card.appendChild(scroller);
+    if (S.zoomFocus) { scroller.scrollLeft = S.zoomFocus[0] * scroller.scrollWidth - scroller.clientWidth / 2; scroller.scrollTop = S.zoomFocus[1] * scroller.scrollHeight - scroller.clientHeight / 2; S.zoomFocus = null; }
     var count = el("div", "dmini", ""); count.id = "dDraftCount"; count.setAttribute("role", "status"); card.appendChild(count);
     var nm = el("input"); nm.type = "text"; nm.id = "dRegName"; nm.placeholder = "Name for a new region"; nm.setAttribute("aria-label", "Name for a new region");
     var err = el("div", "msg"); err.setAttribute("role", "alert");
