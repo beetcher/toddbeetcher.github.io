@@ -136,14 +136,14 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('vNotice').textContent.indexOf('Saved') === 0")
     v = venue("Park Draft")
     check("now active, with the contact stored as an id only", v["status"] == "active" and v["contact_individual_id"] == sue["id"] and "contact_name" not in v)
-    pg.wait_for_function("document.querySelector('#vList li').innerText.indexOf('Contact: Sue Miller') >= 0 || [...document.querySelectorAll('#vList li')].some(l => l.innerText.indexOf('Contact: Sue Miller') >= 0)")
-    check("the card shows the contact's name read from the person", "Contact: Sue Miller" in pg.locator("#vList li", has_text="Park Draft").inner_text())
+    pg.wait_for_function("[...document.querySelectorAll('#vList li')].some(l => l.textContent.indexOf('Contact: Sue Miller') >= 0)")
+    check("the card shows the contact's name read from the person", "Contact: Sue Miller" in pg.locator("#vList li", has_text="Park Draft").text_content())
 
     # 8. the person is renamed: the venue shows the new name without being touched
     api("individuals", "update", id=sue["id"], changes={"family_name": "Smith"})
     pg.click("#vRefresh")
-    pg.wait_for_function("[...document.querySelectorAll('#vList li')].some(l => l.innerText.indexOf('Sue Smith') >= 0)")
-    check("a renamed person shows under the new name on the venue", "Contact: Sue Smith" in pg.locator("#vList li", has_text="Park Draft").inner_text())
+    pg.wait_for_function("[...document.querySelectorAll('#vList li')].some(l => l.textContent.indexOf('Sue Smith') >= 0)")
+    check("a renamed person shows under the new name on the venue", "Contact: Sue Smith" in pg.locator("#vList li", has_text="Park Draft").text_content())
 
     # 9. move the venue to a saved place; the old place is kept, the old link ends
     open_edit("Park Draft")
@@ -183,6 +183,28 @@ with sync_playwright() as p:
     check("an active venue can be set back and forth", sw2.get_attribute("aria-checked") in ("true", "false"))
     sw.click(); pg.wait_for_timeout(2300)
     check("it can be set inactive again from the card", venue("Amante Coffee")["status"] == "inactive" and "Inactive" in sw.inner_text())
+
+    # 11. the one-line scan row: name, address, Link, hours, Details
+    HP = "Public hours per the web (check before relying on them): "
+    api("venues", "update", id=venue("Amante Coffee")["id"], changes={"website_url": "https://amante.example/home", "availability_notes": HP + "Mon-Fri 7am-5pm; Sat 8am-3pm; closed Sun and holidays"})
+    pg.click("#vRefresh")
+    pg.wait_for_function("document.querySelector('#vList li .vlink') !== null")
+    am = pg.locator("#vList li.vrow").filter(has=pg.locator(".vname", has_text=_re.compile("^Amante Coffee$")))
+    pd = pg.locator("#vList li.vrow").filter(has=pg.locator(".vname", has_text=_re.compile("^Park Draft$")))
+    check("scan line shows the name and the street address", am.locator(".vname").inner_text() == "Amante Coffee" and "2 Pearl St, Boulder, CO" in am.locator(".vaddr").inner_text())
+    lk = am.locator("a.vlink")
+    check("Link pill reads just Link and does not show the URL", lk.inner_text() == "Link" and "amante.example" not in am.locator(".vline").inner_text())
+    check("Link goes to the website in a new tab, safely", lk.get_attribute("href") == "https://amante.example/home" and lk.get_attribute("target") == "_blank" and "noopener" in lk.get_attribute("rel"))
+    check("a venue with no website has no Link", pd.locator("a.vlink").count() == 0)
+    check("hours snippet is shown trimmed, full text on hover", am.locator(".vhours").count() == 1 and am.locator(".vhours").inner_text().endswith("\u2026") and "closed Sun" in am.locator(".vhours").get_attribute("title"))
+    check("no hours snippet when none were collected", pd.locator(".vhours").count() == 0)
+    check("the scan line stays compact at phone width (wraps, not the whole card)", am.locator(".vline").bounding_box()["height"] < 220)
+    check("Details starts closed, with the rest hidden", pd.locator("button.vdetails").get_attribute("aria-expanded") == "false" and not pd.locator(".detail").is_visible())
+    pd.locator("button.vdetails").click()
+    check("Details opens the rest", pd.locator("button.vdetails").get_attribute("aria-expanded") == "true" and pd.locator(".detail").is_visible() and "Rooms: 0" in pd.locator(".detail").inner_text() and "Added:" in pd.locator(".detail").inner_text())
+    pd.locator("button.vdetails").click()
+    check("Details closes again", not pd.locator(".detail").is_visible())
+    check("Link click does not toggle Details", am.locator("button.vdetails").get_attribute("aria-expanded") == "false")
 
     check("no page errors", not errors)
     if errors: print(errors[:3])

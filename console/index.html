@@ -81,6 +81,16 @@
   .stoggle.pending { border-style: dashed; }
   .stoggle:disabled { opacity: .6; cursor: progress; }
   .stoggle:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  li.vrow { padding: 0; }
+  .vline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 8px 14px; min-height: 44px; }
+  .vline .vname { font-weight: 800; font-size: 16px; }
+  .vline .vaddr { color: var(--muted); font-size: 14px; flex: 1 1 200px; min-width: 0; }
+  .vline .vhours { font-size: 14px; color: var(--ink); }
+  .vlink { display: inline-flex; align-items: center; min-height: 44px; padding: 2px 18px; border-radius: 999px; border: 2px solid #7a3a00; color: #7a3a00; background: #fff; font-weight: 700; font-size: 14px; text-decoration: none; }
+  .vlink:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  li.vrow .stoggle { position: static; }
+  button.vdetails { min-height: 44px; padding: 2px 18px; border-radius: 999px; border: 2px solid var(--ink); background: #fff; color: var(--ink); font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+  li.vrow.open button.vdetails { background: var(--orange); border-color: var(--orange); }
   li > .stmsg { padding: 0 14px 6px; }
   .stmsg { color: var(--err); font-weight: 600; font-size: 14px; flex: 1 1 100%; }
   li > button.head {
@@ -1535,42 +1545,62 @@
     return { btn: b, msg: msg };
   }
 
+  // ---- one line per venue (scan it fast), with Details to open the rest
+  var HOURS_PREFIX = "Public hours per the web (check before relying on them): ";
+  function vAddrLine(rec) {
+    var pl = rec.place, a = pl && pl.address;
+    if (!pl) return "No place yet";
+    if (!a) return pl.name || "Place saved";
+    var st = [a.street_number, a.street].filter(Boolean).join(" "), cs = [a.locality, a.region].filter(Boolean).join(", ");
+    return [st, cs].filter(Boolean).join(", ") || pl.name || "Place saved";
+  }
+  function vHoursShort(rec) {
+    var n = String(rec.availability_notes || "");
+    if (n.indexOf(HOURS_PREFIX) !== 0) return { text: "", full: "" };
+    var t = n.slice(HOURS_PREFIX.length).trim();
+    return { text: t.length > 46 ? t.slice(0, 45) + "\u2026" : t, full: t };
+  }
   function venueRow(rec, isNew) {
-    var li = document.createElement("li");
-    if (isNew) li.className = "isnew";
-    var head = document.createElement("button");
-    head.className = "head"; head.type = "button"; head.setAttribute("aria-expanded", "false");
-
-    var top = document.createElement("div"); top.className = "top";
+    var li = document.createElement("li"); li.className = "vrow" + (isNew ? " isnew" : "");
+    var ln = document.createElement("div"); ln.className = "vline";
     var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
-    top.appendChild(nm);
+    var ad = document.createElement("span"); ad.className = "vaddr"; ad.textContent = vAddrLine(rec);
+    ln.appendChild(nm); ln.appendChild(ad);
+    if (/^https?:\/\//i.test(String(rec.website_url || ""))) {
+      var lk = document.createElement("a"); lk.className = "vlink"; lk.textContent = "Link"; lk.href = rec.website_url;
+      lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.setAttribute("aria-label", "Website for " + (rec.name || "this venue"));
+      ln.appendChild(lk);
+    }
+    var hr = vHoursShort(rec);
+    if (hr.text) { var hs = document.createElement("span"); hs.className = "vhours"; hs.textContent = hr.text; hs.title = hr.full; ln.appendChild(hs); }
+    var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
+    ln.appendChild(tg.btn);
+    var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.setAttribute("aria-expanded", "false");
+    ln.appendChild(dt);
 
-    var kind = document.createElement("div"); kind.className = "who";
-    kind.textContent = rec.is_public_venue ? "Public venue" : "Private space";
-    var place = document.createElement("div"); place.className = "sub";
-    place.textContent = venuePlaceLine(rec);
-    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
-    [top, kind, place].forEach(function (n) { head.appendChild(n); });
+    var detail = document.createElement("div"); detail.className = "detail";
+    var kind = document.createElement("div"); kind.className = "sub";
+    kind.textContent = (rec.is_public_venue ? "Public venue" : "Private space") + " \u00b7 " + venuePlaceLine(rec);
+    detail.appendChild(kind);
     var chips = document.createElement("div"); chips.className = "lchips";
     var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
     var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
     var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
     rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
     hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
+    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
     chips.appendChild(rlink); chips.appendChild(hlink); chips.appendChild(added);
-
-    var detail = document.createElement("div"); detail.className = "detail";
+    detail.appendChild(chips);
     detail.appendChild(venueActions(rec));
     var done = {};
     ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
     Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
 
-    head.addEventListener("click", function () {
+    dt.addEventListener("click", function () {
       var open = li.classList.toggle("open");
-      head.setAttribute("aria-expanded", open ? "true" : "false");
+      dt.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
-    li.appendChild(head); li.appendChild(tg.btn); chips.appendChild(tg.msg); li.appendChild(chips); li.appendChild(detail);
+    li.appendChild(ln); li.appendChild(tg.msg); li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
