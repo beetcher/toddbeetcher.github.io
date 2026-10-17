@@ -79,6 +79,7 @@ with sync_playwright() as p:
         return sorted(pg.locator("#vList > li").evaluate_all("els => els.map(e => e.innerText.split('\\n')[0].trim())"))
     count = lambda: pg.inner_text("#vCount")
     check("all venues show by default, with a plain count", len(shown()) == 8 and count() == "8 venues", (shown(), count()))
+    check("the status filter says what it is: All (active / inactive), Active, Inactive", pg.locator("#vFilter option").all_inner_texts() == ["All (active / inactive)", "Active", "Inactive"], pg.locator("#vFilter option").all_inner_texts())
     sopts = pg.locator("#vState option").all_inner_texts()
     check("the State list is All states plus ONLY the states switched on, by name", sopts == ["All states", "Colorado", "Minnesota"], sopts)
     ropts = pg.locator("#vRegion option").all_inner_texts()
