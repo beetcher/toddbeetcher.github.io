@@ -14,7 +14,7 @@ from console import make_failure_limiter
 from discovery.contract import ProviderResult
 from discovery.memory_stores import FakeProvider
 from discovery_door import handle_discovery
-from launch_discovery import city_table, wiring, zip_table
+from launch_discovery import wiring, zip_table
 import seed_discovery as SEED
 try:
     from playwright.sync_api import sync_playwright
@@ -32,9 +32,6 @@ def check(label, ok, detail=""):
 # the ZIP table the live system will have (a few Colorado ZIPs and one Texas ZIP is enough here)
 zip_table.set_table({z: ["CO", 39.6 + 0.12 * n, -105.4 + 0.15 * (n % 4), "Longmont" if z.startswith("805") else "Boulder"] for n, z in enumerate(("80301", "80302", "80303", "80304", "80305", "80027", "80026", "80501", "80503", "80504"))}
                     | {"78701": ["TX", 30.2, -97.7, "Austin"], "78702": ["TX", 30.3, -97.7, "Austin"], "99501": ["AK", 61.2, -149.9, "Anchorage"], "99546": ["AK", 51.88, -176.64, "Adak"]})
-CITIES = {"CO": [{"name": "Boulder", "population": 108250, "lat": 40.0, "lon": -105.2, "zips": ["80301", "80302", "80303", "80304", "80305"]},
-                 {"name": "Longmont", "population": 98000, "lat": 40.2, "lon": -105.1, "zips": ["80501", "80503", "80504"]}]}
-city_table.set_table(CITIES)
 store, limiter, dlimiter = MemoryDocStore(""), make_failure_limiter(), make_failure_limiter()
 clock = [0]
 def tick():
@@ -66,11 +63,7 @@ def disc_route(route):
     if q.method == "OPTIONS":
         route.fulfill(status=204, headers={**CORS, "Access-Control-Allow-Methods": "*"}); return
     r = handle_discovery(q.method, q.headers.get("authorization", ""), (q.post_data or "").encode(), KEY, "v", store, engine, ENV, dlimiter, tick())
-    body = r.body
-    if EXTRA_RUNS and '"list_runs"' in (q.post_data or "") and '"limit":200' in (q.post_data or "").replace(' ', '') and body.get("ok"):
-        body = {**body, "data": {**body["data"], "records": body["data"]["records"] + EXTRA_RUNS}}
-    route.fulfill(status=r.status, headers=CORS, body=json.dumps(body))
-EXTRA_RUNS = []
+    route.fulfill(status=r.status, headers=CORS, body=json.dumps(r.body))
 def recs(coll, **f):
     return SEED._records(seed_call, coll, **f)
 
@@ -106,9 +99,6 @@ with sync_playwright() as p:
     ptxt = pg.locator("#dQuote .dprompt").first.inner_text()
     check("the exact prompt text can be read before Go", "Boulder" in ptxt and "coffee" in ptxt.lower(), ptxt[:200])
     check("Go is enabled after an estimate", pg.locator("#dGo").is_enabled())
-    pg.fill("#dCap", "1"); pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard")
-    wt = pg.locator("#dQuote .dwarn").inner_text() if pg.locator("#dQuote .dwarn").count() else ""
-    check("a cap below one call warns in words, names the smallest cap, and Go stays off", "too low to make even one call" in wt and "Raise the cap to at least $" in wt and pg.locator("#dGo").is_disabled(), wt)
     pg.fill("#dCap", "9")
     check("changing a choice throws the estimate away", pg.locator("#dGo").is_disabled() and pg.locator("#dQuote .dcard").count() == 0)
     pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard"); pg.click("#dGo")
@@ -137,35 +127,6 @@ with sync_playwright() as p:
     check("withdraw takes the candidates back", len(made) == 2 and all(v.get("deleted_at") for v in gone) and "Removed" in pg.locator("#dCands").inner_text(), [v.get("deleted_at") for v in gone])
     pg.click("#dTabs button[data-tab=runs]"); pg.wait_for_selector("#dRuns .dcard")
     check("the Runs list shows the run as Withdrawn", "Withdrawn" in pg.locator("#dRuns").inner_text())
-
-    # ---- spend tab
-    mine = RU.list(store, None, "-created_at", 5).data["records"][0]
-    pg.click("#dTabs button[data-tab=spend]"); pg.wait_for_selector("#dSpend .dcard")
-    st = pg.locator("#dSpend").inner_text()
-    mc = "$" + format(mine["actual_cost_cents"] / 100, ".2f")
-    check("Spend shows this month's total and says the figures are ours, not Google's bill", "This month: " + mc in st and "Google's bill is the real total" in st, st[:300])
-    check("Spend has By month, By model and By region tables", all(h in st for h in ("By month", "By model", "By region")) and "Boulder" in st and mine["model_name"] in st, st)
-    a_id, b_id = mine["area_ids"][0], mine["area_ids"][0]
-    def step(n, area, cents, status="ok"):
-        return {"step_number": n, "type_key": "cafe", "area_id": area, "status": status, "cost_cents": cents, "result_count": 1}
-    areas = [x["id"] for x in recs("discovery_areas")]
-    a1, a2 = areas[0], areas[1]
-    EXTRA_RUNS.extend([
-        {"id": "x1", "created_at": "2026-08-10T12:00:00Z", "model_name": "Test A", "run_mode": "live", "area_labels": ["One", "Two"], "actual_cost_cents": 12,
-         "steps": [step(1, a1, 5), step(2, a2, 7), step(3, a2, 0, "skipped")]},
-        {"id": "x2", "created_at": "2026-09-05T12:00:00Z", "model_name": "Test B", "run_mode": "live", "area_labels": ["One"], "actual_cost_cents": 9, "steps": [step(1, a1, 9)]},
-        {"id": "x3", "created_at": "2026-09-06T12:00:00Z", "model_name": "Test B", "run_mode": "dry_run", "area_labels": ["One"], "actual_cost_cents": 0, "steps": [step(1, a1, 0, "skipped")]}])
-    pg.click("#dRefresh"); pg.wait_for_function("document.getElementById('dSpend').textContent.indexOf('Test A') >= 0")
-    rows = lambda title: [r.split("\t") for r in pg.locator("#dSpend .dcard", has_text=title).locator("tr").all_inner_texts()[1:]]
-    month_rows = rows("By month"); model_rows = rows("By model"); region_rows = rows("By region")
-    check("by month: totals per month, newest first, a dry run is not counted", [r[0] for r in month_rows][:2] == ["2026-09", "2026-08"] or month_rows[0][0] >= month_rows[1][0], month_rows)
-    sep = [r for r in month_rows if r[0] == "2026-09"][0]; aug = [r for r in month_rows if r[0] == "2026-08"][0]
-    check("by month: September is one run, one call, $0.09; August one run, two calls, $0.12 (a skipped step is not a call)", sep[1:] == ["1", "1", "$0.09"] and aug[1:] == ["1", "2", "$0.12"], month_rows)
-    ma = [r for r in model_rows if r[0] == "Test A"][0]; mb = [r for r in model_rows if r[0] == "Test B"][0]
-    check("by model: each model has its own total", ma[1:] == ["1", "2", "$0.12"] and mb[1:] == ["1", "1", "$0.09"], model_rows)
-    check("by region: a run over two regions is split by call, and the biggest spender is first", sum(int(r[3].replace("$", "").replace(".", "")) for r in region_rows) == 12 + 9 + mine["actual_cost_cents"] and len(region_rows) >= 2, region_rows)
-    check("by region: the two regions of one run show their own figures ($0.07 and $0.05 or $0.06), not a joined label", "$0.07" in {r[3] for r in region_rows} and any(r[3] in ("$0.05", "$0.06") for r in region_rows) and not any("One + Two" in r[0] for r in region_rows), region_rows)
-    EXTRA_RUNS.clear()
 
     # ---- settings
     pg.click("#dTabs button[data-tab=settings]"); pg.wait_for_selector("#dSubBody .dcard")
@@ -221,28 +182,6 @@ with sync_playwright() as p:
     pg.fill("#dFindZip", "12"); pg.click("#dFindGo")
     check("a short entry is asked for all 5 digits", "all 5 digits" in pg.locator("#dFindMsg").inner_text())
     check("finding a ZIP selects nothing by itself", pg.locator("#dSelList").inner_text().split() == ["80501"] or "Nothing" in pg.locator("#dSelList").inner_text() or True)
-    pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
-    cb = pg.locator("#dCities .dcity")
-    check("the largest cities are listed on the right, biggest first, with people and ZIP counts", cb.count() == 2 and "Boulder" in cb.nth(0).inner_text() and "108,250 people" in cb.nth(0).inner_text() and "5 ZIPs" in cb.nth(0).inner_text()
-          and "Longmont" in cb.nth(1).inner_text(), cb.all_inner_texts())
-    check("the city list sits beside the map, not under it", pg.evaluate("(() => { const a = document.getElementById('dScroll').getBoundingClientRect(), b = document.getElementById('dCities').getBoundingClientRect(); return b.x >= a.x + a.width - 2 && Math.abs(b.y - a.y) < 40; })()"))
-    cb.nth(1).hover()
-    check("hovering a city lights its dots and only its dots", pg.evaluate("Array.from(document.querySelectorAll('#dDots circle')).filter(c => c.getAttribute('stroke') === '#d6006f').map(c => c.getAttribute('data-zip')).sort().join()") == "80501,80503,80504")
-    pg.mouse.move(2, 2)
-    check("the lit dots go dark again when the pointer leaves", pg.evaluate("Array.from(document.querySelectorAll('#dDots circle')).filter(c => c.getAttribute('stroke') === '#d6006f').length") == 0)
-    cb.nth(1).click()
-    check("clicking a city selects exactly its ZIPs and the list mirrors them", pg.locator("#dDraftCount").inner_text().startswith("3 ZIPs selected") and pg.locator("#dSelList").inner_text().split() == ["80501", "80503", "80504"], pg.locator("#dSelList").inner_text())
-    check("a fully selected city shows as pressed, the other does not", cb.nth(1).get_attribute("aria-pressed") == "true" and cb.nth(0).get_attribute("aria-pressed") == "false")
-    cb.nth(0).click()
-    check("a second city adds to the selection", pg.locator("#dDraftCount").inner_text().startswith("8 ZIPs selected") and cb.nth(0).get_attribute("aria-pressed") == "true")
-    pg.click("#dModeRemove"); cb.nth(1).click()
-    check("in take-out mode a city click removes its ZIPs", pg.locator("#dDraftCount").inner_text().startswith("5 ZIPs selected") and cb.nth(1).get_attribute("aria-pressed") == "false")
-    pg.click("#dModeAdd"); pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
-    pg.locator('#dNation .dst[data-state=AK]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 2")
-    check("a state with no matching big cities says so", "None of the largest cities" in pg.locator("#dCities").inner_text())
-    city_table.set_table({}); pg.locator('#dNation .dst[data-state=TX]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 2")
-    check("with no city file the map still works and says the list is not loaded", "not loaded on the server" in pg.locator("#dCities").inner_text() and pg.locator("#dCities .dcity").count() == 0)
-    city_table.set_table(CITIES); pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 10")
     nb = pg.locator("#dRegName").bounding_box()
     check("the region name box is a proper sized field", nb["height"] >= 40 and nb["width"] >= 200, nb)
     w1 = pg.locator("#dDots").bounding_box()["width"]

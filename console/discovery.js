@@ -98,31 +98,31 @@
       ".dchip.sure{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}.dchip.verify{background:#ffe9b3;border-color:#c98a00;color:#6a4500}.dchip.unknown{background:#fff;border-style:dashed;color:#666}" +
       ".dchip.bad{background:#fbd5d5;border-color:#b00020;color:#6a0014}.dchip.good{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}" +
       ".dbanner{padding:10px 14px;border-radius:8px;margin:10px 0;font-weight:600;background:#ffe9b3;border:1px solid #c98a00}.dbanner.live{background:#d9f2c4;border-color:#5c9a00}.dbanner.off{background:#fbd5d5;border-color:#b00020}" +
-      ".drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.dmini{font-size:14px;color:#555}.dwarn{font-size:15px;font-weight:700;color:#8a1c1c;background:#fff1f1;border:1px solid #e0a0a0;border-radius:8px;padding:8px 10px}" +
+      ".drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.dmini{font-size:14px;color:#555}" +
       ".dprompt{white-space:pre-wrap;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#f6f3ea;border:1px solid #d8d2c4;border-radius:6px;padding:10px;max-height:340px;overflow:auto}" +
       ".dtable{border-collapse:collapse;width:100%;font-size:14px}.dtable th,.dtable td{border-bottom:1px solid #e4dfd2;text-align:left;padding:4px 6px;vertical-align:top}" +
       ".dprog{height:14px;border-radius:7px;background:#e9e4d8;overflow:hidden;margin:8px 0}.dprog>div{height:100%;background:var(--orange);width:0}" +
       ".dmap{width:100%;height:auto;display:block}.dmap .dst path{fill:#e3ded0;stroke:#fff;stroke-width:1;cursor:pointer}.dmap .dst.on path{fill:#9fd36b}.dmap .dst:hover path{fill:#f3c98a}.dmap .dst.sel path{stroke:var(--orange);stroke-width:3}.dmap .dst:focus{outline:none}.dmap .dst:focus-visible path{stroke:#000;stroke-width:3}" +
       ".dmap .dlab{font:700 11px sans-serif;fill:#1d4d00;pointer-events:none}.dzips{border:1px solid #d8d2c4;border-radius:6px;background:#e4dfd2;touch-action:none;cursor:crosshair;user-select:none}.dzips circle{cursor:pointer}.dbox{fill:rgba(255,138,0,.15);stroke:#ff8a00;stroke-dasharray:4 3}" +
       ".dswatch{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;border:1px solid #333}.dkey{padding:4px 0}.btns button[aria-pressed=true]{background:var(--orange);color:var(--ink)}" +
-      ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}.dstate{fill:#faf8f2;stroke:#4a443b;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}#dTip{position:fixed;z-index:60;background:#1c1a17;color:#fff;font:600 13px/1.3 sans-serif;padding:5px 9px;border-radius:6px;pointer-events:none;max-width:260px}#dTip[hidden]{display:none}#dMapRow{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}#dMapRow>#dScroll{flex:1 1 300px;min-width:0}#dCities{flex:0 0 210px;display:flex;flex-direction:column;gap:6px}.dcity{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:6px 12px;min-height:44px;gap:0;color:var(--ink)}.dcity[aria-pressed=true]{background:var(--orange);color:var(--ink);border-color:var(--orange)}.dfound{fill:none;stroke:#d6006f;stroke-width:3;vector-effect:non-scaling-stroke;pointer-events:none}#dFind input{max-width:150px}#dSelList{margin:6px 0;padding:8px 10px;max-height:110px;overflow:auto;border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;word-spacing:2px}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
+      ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}.dstate{fill:#faf8f2;stroke:#4a443b;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}#dTip{position:fixed;z-index:60;background:#1c1a17;color:#fff;font:600 13px/1.3 sans-serif;padding:5px 9px;border-radius:6px;pointer-events:none;max-width:260px}#dTip[hidden]{display:none}.dfound{fill:none;stroke:#d6006f;stroke-width:3;vector-effect:non-scaling-stroke;pointer-events:none}#dFind input{max-width:150px}#dSelList{margin:6px 0;padding:8px 10px;max-height:110px;overflow:auto;border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;word-spacing:2px}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
     var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
-    var act = el("div", "actions"); var man = btn("Manual", "quiet manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); if (S.tab === "spend") loadSpend(); }));
+    var act = el("div", "actions"); var man = btn("Manual", "quiet manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); }));
     act.lastChild.id = "dRefresh"; bar.appendChild(left); bar.appendChild(act); root.appendChild(bar);
     var ban = el("div", "dbanner"); ban.id = "dBanner"; ban.setAttribute("role", "status"); root.appendChild(ban);
     var tabs = el("div", "dtabs"); tabs.id = "dTabs";
-    [["run", "Find venues"], ["runs", "Runs"], ["spend", "Spend"], ["settings", "Settings"]].forEach(function (t) {
-      var b = btn(t[1], "", function () { S.tab = t[0]; S.openRun = null; drawTabs(); if (t[0] === "runs") loadRuns(); if (t[0] === "spend") loadSpend(); }); b.dataset.tab = t[0]; tabs.appendChild(b);
+    [["run", "Find venues"], ["runs", "Runs"], ["settings", "Settings"]].forEach(function (t) {
+      var b = btn(t[1], "", function () { S.tab = t[0]; S.openRun = null; drawTabs(); if (t[0] === "runs") loadRuns(); }); b.dataset.tab = t[0]; tabs.appendChild(b);
     });
     root.appendChild(tabs);
     var n = el("div", "notice"); n.id = "dNotice"; n.setAttribute("role", "status"); var e = el("div", "msg"); e.id = "dMsg"; e.setAttribute("role", "alert"); root.appendChild(n); root.appendChild(e);
-    ["dRun", "dRuns", "dSpend", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
+    ["dRun", "dRuns", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
   }
   function drawTabs() {
     Array.prototype.forEach.call($("dTabs").children, function (b) { b.setAttribute("aria-pressed", b.dataset.tab === S.tab ? "true" : "false"); });
-    $("dRun").hidden = S.tab !== "run"; $("dRuns").hidden = S.tab !== "runs"; $("dSpend").hidden = S.tab !== "spend"; $("dSettings").hidden = S.tab !== "settings";
+    $("dRun").hidden = S.tab !== "run"; $("dRuns").hidden = S.tab !== "runs"; $("dSettings").hidden = S.tab !== "settings";
     if (S.tab === "runs") drawRuns();
   }
   function drawAll() { drawBanner(); drawRun(); drawSettings(); drawTabs(); }
@@ -217,15 +217,12 @@
       var c = el("div", "dcard"); c.appendChild(el("h3", "", "Estimate"));
       c.appendChild(el("p", "", d.steps_planned + " AI call" + (d.steps_planned === 1 ? "" : "s") + " with " + d.model_name + " in " + d.area_labels.join(", ") + ". Expected cost " +
         usd(d.estimated_cost_low_cents) + " to " + usd(d.estimated_cost_high_cents) + ". Your cap is " + usd(r.spend_cap_cents) + ". Prompt version " + d.prompt_version + "."));
-      var tooLow = d.min_cap_for_one_call_cents > r.spend_cap_cents;
-      if (tooLow) c.appendChild(el("p", "dwarn", "Your cap is too low to make even one call: the smallest a call can cost is " + usd(d.min_cap_for_one_call_cents) + " (the web searches count). The run would stop at once with nothing found. Raise the cap to at least " + usd(d.min_cap_for_one_call_cents) + "."));
-      else if (d.full_cap_for_one_call_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "Heads up: a cap under " + usd(d.full_cap_for_one_call_cents) + " cannot cover a full-size call, so answers are kept short to fit and may list fewer places."));
-      if (!tooLow && d.estimated_cost_high_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "The top of the estimate is above your cap, so the run may stop early at the cap. That is the cap working."));
+      if (d.estimated_cost_high_cents > r.spend_cap_cents) c.appendChild(el("p", "dmini", "The top of the estimate is above your cap, so the run may stop early at the cap. That is the cap working."));
       if (d.run_mode === "dry_run") c.appendChild(el("p", "dmini", "This is a dry run: Go will plan the run and send nothing to the AI."));
       var det = el("details", "more"); det.appendChild(el("summary", "", "Show the exact prompts that would be sent (" + d.prompts.length + ")"));
-      d.prompts.forEach(function (p) { det.appendChild(el("h4", "", "Call " + p.step_number + ": " + p.type_key)); det.appendChild(el("div", "dprompt", p.prompt_text)); });
+      d.prompts.forEach(function (p) { det.appendChild(el("h4", "", "Call " + p.step + ": " + p.type_key)); det.appendChild(el("div", "dprompt", p.prompt_text)); });
       c.appendChild(det); q.appendChild(c);
-      $("dGo").disabled = tooLow || !(S.status && S.status.mode !== "off");
+      $("dGo").disabled = !(S.status && S.status.mode !== "off");
     });
   }
   function doGo() {
@@ -283,54 +280,6 @@
       c.appendChild(el("div", "dmini", (r.run_mode === "dry_run" ? "Dry run · " : "") + "saved " + (r.created_count || 0) + " · duplicates " + (r.duplicate_count || 0) + " · rejected " + (r.rejected_count || 0) + " · spent " + usd(r.actual_cost_cents) + " of " + usd(r.spend_cap_cents)));
       var b = btn("Open", "", function () { openRun(r.id); }); b.dataset.run = r.id; c.appendChild(b); host.appendChild(c);
     });
-  }
-
-  // ---- SPEND tab: totals worked out from the run records (nothing is stored separately, so it cannot drift)
-  var SPEND_RUNS = 200;
-  function loadSpend() {
-    return disc("list_runs", { limit: SPEND_RUNS }, true).then(function (r) {
-      if (ok(r)) { S.spendRuns = r.body.data.records || []; S.spendFail = ""; } else { S.spendRuns = null; S.spendFail = "Could not load the runs. " + problemsText(r); }
-      drawSpend();
-    });
-  }
-  function monthKey(iso) { var d = new Date(iso); if (isNaN(d)) return "unknown"; return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2); }
-  function spendTable(title, rows, first) {
-    var c = el("div", "dcard"); c.appendChild(el("h3", "", title));
-    if (!rows.length) { c.appendChild(el("div", "dmini", "Nothing yet.")); return c; }
-    var tb = el("table"), th = el("tr"); [first, "Runs", "Calls", "Spent"].forEach(function (h) { th.appendChild(el("th", "", h)); }); tb.appendChild(th);
-    rows.forEach(function (x) { var tr = el("tr"); [x.name, x.runs, x.calls, usd(x.cents)].forEach(function (v) { tr.appendChild(el("td", "", String(v))); }); tb.appendChild(tr); });
-    c.appendChild(tb); return c;
-  }
-  function spendRollup(runs) {
-    var month = {}, model = {}, area = {}, total = 0, calls = 0;
-    function add(map, name, cents, nCalls, rid) { var x = map[name] || (map[name] = { name: name, runs: {}, calls: 0, cents: 0 }); x.runs[rid] = 1; x.calls += nCalls; x.cents += cents; }
-    runs.forEach(function (r) {
-      var cents = Number(r.actual_cost_cents) || 0, steps = (r.steps || []).filter(function (s) { return s.status !== "skipped"; }), n = steps.length;
-      if (r.run_mode === "dry_run" && !cents) return;                 // a dry run costs nothing and is not a call
-      total += cents; calls += n;
-      add(month, monthKey(r.created_at), cents, n, r.id); add(model, r.model_name || "unknown model", cents, n, r.id);
-      var perStep = 0; steps.forEach(function (s) { perStep += Number(s.cost_cents) || 0; });
-      if (steps.length && perStep === cents) steps.forEach(function (s) { add(area, areaName(s.area_id), Number(s.cost_cents) || 0, 1, r.id); });
-      else add(area, (r.area_labels || []).join(" + ") || "unknown area", cents, n, r.id);
-    });
-    function list(map, newestFirst) {
-      var a = Object.keys(map).map(function (k) { var x = map[k]; return { name: x.name, runs: Object.keys(x.runs).length, calls: x.calls, cents: x.cents }; });
-      a.sort(newestFirst ? function (p, q) { return p.name < q.name ? 1 : -1; } : function (p, q) { return q.cents - p.cents; }); return a;
-    }
-    return { total: total, calls: calls, months: list(month, true), models: list(model, false), areas: list(area, false) };
-  }
-  function drawSpend() {
-    var host = $("dSpend"); if (!host) return; host.innerHTML = "";
-    if (S.spendFail) { host.appendChild(el("div", "empty", S.spendFail)); return; }
-    if (!S.spendRuns) { host.appendChild(el("div", "empty", "Loading.")); return; }
-    var u = spendRollup(S.spendRuns), thisMonth = monthKey(new Date().toISOString());
-    var cur = u.months.filter(function (m) { return m.name === thisMonth; })[0];
-    var c = el("div", "dcard"); c.appendChild(el("h3", "", "Spend")); c.id = "dSpendTotal";
-    c.appendChild(el("p", "", "This month: " + usd(cur ? cur.cents : 0) + ". All runs shown: " + usd(u.total) + " in " + u.calls + " AI call" + (u.calls === 1 ? "" : "s") + "."));
-    c.appendChild(el("div", "dmini", "These are OUR figures, worked out from the tokens and searches Google reports and the prices in Settings > Models, rounded up. Google's bill is the real total (Google Cloud billing)."));
-    if (S.spendRuns.length >= SPEND_RUNS) c.appendChild(el("div", "dmini", "Only the newest " + SPEND_RUNS + " runs are counted."));
-    host.appendChild(c);
-    host.appendChild(spendTable("By month", u.months, "Month")); host.appendChild(spendTable("By model", u.models, "Model")); host.appendChild(spendTable("By region", u.areas, "Region"));
   }
   function openRun(id) {
     disc("get_run", { id: id }, true).then(function (res) {
@@ -597,13 +546,12 @@
       os.onerror = function () { S.outlinesFailed = true; if (S.tab === "settings" && S.sub === "areas" && S.mapState === code) drawSettings(); };
       document.head.appendChild(os); return;
     }
-    drawDots(card, code, data.zips, data.cities || [], !!data.cities_loaded);
+    drawDots(card, code, data.zips);
   }
-  function drawDots(card, code, zips, cities, citiesLoaded) {
+  function drawDots(card, code, zips) {
     var regions = S.areas.filter(function (a) { return a.kind === "region" && a.state_code === code; }).sort(byName);
     var colorOf = {}, regOf = {}; regions.forEach(function (r, i) { (r.zip_codes || []).forEach(function (z) { if (!(z in colorOf)) { colorOf[z] = PALETTE[i % PALETTE.length]; regOf[z] = r; } }); });
     S.draft = S.draft || {};
-    var hl = {}, cityBtns = [];     // dots lit by hovering a city in the list; the list buttons
     var lat0 = Math.min.apply(null, zips.map(function (z) { return z[1]; })), lat1 = Math.max.apply(null, zips.map(function (z) { return z[1]; }));
     var lon0 = Math.min.apply(null, zips.map(function (z) { return z[2]; })), lon1 = Math.max.apply(null, zips.map(function (z) { return z[2]; }));
     var rings = ((window.US_OUTLINES || {})[code] || []).map(function (ring) { return ring.map(function (p) { return [p[0] > 100 ? p[0] - 360 : p[0], p[1]]; }); });   // Alaska crosses the date line: shift the far-west points
@@ -647,9 +595,8 @@
       var n = 0;
       Object.keys(circles).forEach(function (zc) {
         var c = circles[zc], sel = !!S.draft[zc]; if (sel) n++;
-        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : hl[zc] ? "#d6006f" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : hl[zc] ? "2.5" : "0"); c.setAttribute("r", (sel ? rBase * 1.25 : rBase).toFixed(2));
+        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : "0"); c.setAttribute("r", (sel ? rBase * 1.25 : rBase).toFixed(2));
       });
-      cityBtns.forEach(function (cb) { cb.b.setAttribute("aria-pressed", cb.zips.length && cb.zips.every(function (zc) { return S.draft[zc]; }) ? "true" : "false"); });
       var chosen = Object.keys(S.draft).filter(function (zc) { return circles[zc]; }).sort();
       selBox.textContent = chosen.length ? chosen.join("  ") : "Nothing selected yet.";
       count.textContent = n + " ZIP" + (n === 1 ? "" : "s") + " selected" + (S.editing ? " (editing " + (S.areas.filter(function (a) { return a.id === S.editing; })[0] || {}).name + ")" : "");
@@ -693,26 +640,7 @@
       tip.textContent = e.target.getAttribute("aria-label"); tip.hidden = false; tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 260) + "px"; tip.style.top = (e.clientY + 16) + "px";
     });
     svg.addEventListener("pointerleave", function () { tip.hidden = true; });
-    var mrow = el("div"); mrow.id = "dMapRow"; card.appendChild(mrow);
-    var scroller = el("div"); scroller.id = "dScroll"; scroller.appendChild(svg); mrow.appendChild(scroller);
-    var cp = el("div"); cp.id = "dCities"; mrow.appendChild(cp); cp.appendChild(el("b", "", "Largest cities"));
-    if (!citiesLoaded) cp.appendChild(el("p", "dmini", "The city list is not loaded on the server yet (run build_zip_table.py again, then deploy)."));
-    else if (!cities.length) cp.appendChild(el("p", "dmini", "None of the largest cities here match a ZIP's town name."));
-    else {
-      cp.appendChild(el("p", "dmini", "Click a city to select its ZIPs (the mode buttons above apply). Based on the post office's town name for each ZIP, not city limits."));
-      cities.forEach(function (ct) {
-        var zs = (ct.zips || []).filter(function (zc) { return circles[zc]; });
-        var b = btn("", "quiet dcity", function (e) {
-          var remove = (S.drawMode === "remove") !== !!e.altKey;
-          zs.forEach(function (zc) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; }); paint();
-        });
-        b.dataset.city = ct.name; b.appendChild(el("b", "", ct.name)); b.appendChild(el("span", "dmini", Number(ct.population).toLocaleString("en-US") + " people · " + zs.length + " ZIP" + (zs.length === 1 ? "" : "s")));
-        function light(on) { hl = {}; if (on) zs.forEach(function (zc) { hl[zc] = 1; }); paint(); }
-        b.addEventListener("pointerenter", function () { light(true); }); b.addEventListener("pointerleave", function () { light(false); });
-        b.addEventListener("focus", function () { light(true); }); b.addEventListener("blur", function () { light(false); });
-        cityBtns.push({ b: b, zips: zs }); cp.appendChild(b);
-      });
-    }
+    var scroller = el("div"); scroller.id = "dScroll"; scroller.appendChild(svg); card.appendChild(scroller);
     if (Z > 1) { var baseW = Math.min(Wd, scroller.clientWidth || Wd); svg.style.width = Math.round(baseW * Z) + "px"; svg.style.maxWidth = "none"; }   // zoom is a multiple of the size you see at 1x
     if (S.zoomFocus) { scroller.scrollLeft = S.zoomFocus[0] * scroller.scrollWidth - scroller.clientWidth / 2; scroller.scrollTop = S.zoomFocus[1] * scroller.scrollHeight - scroller.clientHeight / 2; S.zoomFocus = null; }
     if (S.found && S.found.code === code) showFound(S.found.zip, true);
