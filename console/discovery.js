@@ -421,6 +421,8 @@
       row("Name", v.name, marks.name);
       if ((d.attention_reasons || []).indexOf("no_street_address") >= 0) { row("Street address", "", ""); row("City", placeText(v), marks.city); }
       else row("Address", placeText(v), marks.street || marks.address || marks.city);
+      var hrs = String(v.availability_notes || "").replace(/^Public hours per the web \(check before relying on them\):\s*/, "");
+      if (hrs && marks.public_hours) row("Public hours", hrs, marks.public_hours);
       CF.forEach(function (f) { var val = yn(v[f[0]]); if (val != null && val !== "" || marks[f[0]]) row(f[1], val, marks[f[0]]); });
       c.appendChild(tb);
       var src = (d.source_urls || []).filter(function (u) { return /^https?:\/\//.test(u); }).slice(0, 6);

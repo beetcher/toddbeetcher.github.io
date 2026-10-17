@@ -50,6 +50,7 @@ def ai(req):
     def item(**kw): return {k: {"value": v, "mark": "sure", "source_url": "https://example.org/" + k} for k, v in kw.items()}
     good = item(name="Ozo Coffee", operator="Ozo Coffee Company", city="Boulder", state="CO", is_public_venue=True, street="1825 Pearl St", website_url="https://ozo.example.org", description="Situated inside the historic building in the park, this modern cafe features exposed brick, abundant natural light, and comfortable seating areas including couches and small tables well-suited for conversations among small groups, with a long back table for twelve.")
     good["phone"] = {"value": "303-555-0101", "mark": "verify"}
+    good["public_hours"] = {"value": "Mon-Fri 7am-5pm, Sat 8am-3pm", "mark": "verify"}
     noaddr = item(name="Corner Table Cafe", operator="Corner Table LLC", city="Boulder", state="CO", is_public_venue=True)
     return ProviderResult("ok", text=json.dumps({"venues": [good, noaddr]}), input_tokens=500, output_tokens=300)
 engine = wiring.build_engine(store, ENV, providers={"gemini": FakeProvider("gemini", ai)}, clock=tick)
@@ -123,6 +124,9 @@ with sync_playwright() as p:
     ozo = pg.locator("#dCands .dcard", has_text="Ozo Coffee")
     check("a candidate is Inactive with facts and marks in words", "Inactive" in ozo.inner_text() and "Sure" in ozo.inner_text() and "Check" in ozo.inner_text(), ozo.inner_text())
     check("the Address row shows the street address (number and street), not only the city and ZIP", "1825 Pearl St" in ozo.locator("tr", has_text="Address").inner_text(), ozo.locator("tr", has_text="Address").inner_text())
+    hrow = ozo.locator("tr", has_text="Public hours")
+    check("the card shows the public hours as their own row, with a Check mark, without the long label", hrow.count() == 1 and "Mon-Fri 7am-5pm, Sat 8am-3pm" in hrow.inner_text() and "check before relying" not in hrow.inner_text() and "Check" in hrow.inner_text(), hrow.all_inner_texts())
+    check("a place with no hours shows no hours row", pg.locator("#dCands .dcard", has_text="Corner Table").locator("tr", has_text="Public hours").count() == 0)
     chips = ozo.locator("tr .dchip").evaluate_all("els => els.map(e => e.getBoundingClientRect().height)")
     labs = ozo.locator("tr td:first-child").evaluate_all("els => els.map(e => { const r = document.createRange(); r.selectNodeContents(e); return [e.textContent, r.getBoundingClientRect().height, parseFloat(getComputedStyle(e).lineHeight) || 20]; })")
     check("each Sure/Check/Unknown chip is one line tall (never 'Su / re')", chips and max(chips) < 30, chips)

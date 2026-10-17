@@ -488,6 +488,8 @@
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
+        <select id="vState" aria-label="Filter by state"><option value="">All states</option></select>
+        <select id="vRegion" aria-label="Filter by region"><option value="">All regions</option></select>
         <button type="button" class="quiet manualBtn" data-m="venues">Manual</button>
         <button id="vRefresh" class="quiet" type="button">Refresh</button>
         <button id="vGps" class="quiet" type="button">Find missing GPS</button>
@@ -861,7 +863,7 @@
   var timer = null;
   var busy = false;
   var firstLoadDone = false;
-  var vLoaded = false, vBusy = false, vAgain = false, vNewId = "";
+  var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
 
   $("appName").textContent = APP.name;
 
@@ -1582,14 +1584,58 @@
       if (vAgain) { vAgain = false; return loadVenues(); }
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { $("vMsg").textContent = adminProblem(res.status); return; }
-      var recs = res.body.data.records || [];
-      var ul = $("vList"); ul.textContent = "";
-      recs.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
-      vNewId = ""; vLoaded = true;
-      $("vCount").textContent = recs.length + (recs.length === 1 ? " venue" : " venues");
-      $("vEmpty").hidden = recs.length > 0;
-      $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
+      vRecs = res.body.data.records || [];
+      return (vAreas ? Promise.resolve() : loadAreas()).then(function () {
+        drawVenueFilters(); renderVenues(); vNewId = ""; vLoaded = true;
+        $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
     });
+  }
+
+  // State and Region filters. They narrow the venues already loaded (no extra trip), and combine with the status filter.
+  // The regions are the Discovery areas; a venue is in a region when its ZIP is on the region's list.
+  function loadAreas() {
+    return admin("list", { limit: 200 }, "discovery_areas").then(function (res) {
+      vAreas = res.status === 200 && res.body && res.body.ok ? (res.body.data.records || []) : [];
+    });
+  }
+  function vAddr(r) { return (r.place && r.place.address) || {}; }
+  function vStateOf(r) { return String(vAddr(r).region || r.state_region || "").toUpperCase(); }
+  function vZipOf(r) { return String(vAddr(r).postal_code || r.postal_code || "").slice(0, 5); }
+  function vByName(a, b) { return String(a.name).toLowerCase() < String(b.name).toLowerCase() ? -1 : 1; }
+  function vOptions(sel, first, items, keep) {
+    sel.textContent = "";
+    var o = document.createElement("option"); o.value = ""; o.textContent = first; sel.appendChild(o);
+    items(sel);
+    sel.value = keep; if (sel.value !== keep) sel.value = "";
+  }
+  function drawVenueFilters() {
+    var areas = vAreas || [], states = areas.filter(function (a) { return a.kind === "state" && a.is_active; }).sort(vByName);
+    var on = {}; states.forEach(function (s) { on[s.state_code] = s.name; });
+    vOptions($("vState"), "All states", function (sel) {
+      states.forEach(function (s) { var o = document.createElement("option"); o.value = s.state_code; o.textContent = s.name; sel.appendChild(o); });
+    }, $("vState").value);
+    var sc = $("vState").value;
+    vOptions($("vRegion"), "All regions", function (sel) {
+      states.filter(function (s) { return !sc || s.state_code === sc; }).forEach(function (s) {
+        var regs = areas.filter(function (a) { return a.kind === "region" && a.is_active && a.state_code === s.state_code; }).sort(vByName);
+        if (!regs.length) return;
+        var g = document.createElement("optgroup"); g.label = s.name;
+        regs.forEach(function (a) { var o = document.createElement("option"); o.value = a.id; o.textContent = a.name; g.appendChild(o); });
+        sel.appendChild(g);
+      });
+    }, $("vRegion").value);
+  }
+  function renderVenues() {
+    var st = $("vState").value, rg = $("vRegion").value, zips = null;
+    if (rg) { var ra = (vAreas || []).filter(function (a) { return a.id === rg; })[0]; zips = {}; ((ra && ra.zip_codes) || []).forEach(function (z) { zips[z] = 1; }); }
+    var shown = vRecs.filter(function (r) { return (!st || vStateOf(r) === st) && (!zips || zips[vZipOf(r)]); });
+    var ul = $("vList"); ul.textContent = "";
+    shown.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
+    var word = function (n) { return n + (n === 1 ? " venue" : " venues"); };
+    $("vCount").textContent = (st || rg) ? "Showing " + shown.length + " of " + word(vRecs.length) : word(vRecs.length);
+    $("vEmpty").textContent = vRecs.length ? "No venues match these filters." : "No venues yet.";
+    $("vEmpty").hidden = shown.length > 0;
   }
 
   // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
@@ -3157,7 +3203,7 @@
     vLoaded = false; vBusy = false; vNewId = "";
     $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
     $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
-    $("vFilter").value = ""; closeForm(); closeEdit();
+    $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; vRecs = []; vAreas = null; closeForm(); closeEdit();
   }
 
   function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
@@ -3173,7 +3219,9 @@
   $("fSlug").addEventListener("input", function () { slugTouched = true; });
   $("addBtn").addEventListener("click", openForm);
   $("cancelBtn").addEventListener("click", closeForm);
-  $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; loadVenues(); });
+  $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; vAreas = null; loadVenues(); });
+  $("vState").addEventListener("change", function () { drawVenueFilters(); renderVenues(); });
+  $("vRegion").addEventListener("change", renderVenues);
   $("vGps").addEventListener("click", function () {   // look up GPS for every public venue that has an address but no point
     var b = $("vGps"); b.disabled = true; $("vNotice").textContent = "Looking for venues without GPS…";
     admin("list", { limit: 200, expand: true }).then(function (res) {

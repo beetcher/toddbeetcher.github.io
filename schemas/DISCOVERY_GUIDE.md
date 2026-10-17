@@ -51,6 +51,7 @@ The AI is asked for a short list only. Todd: "It doesn't need to capture everyth
 | phone | venue `phone` | optional |
 | public email, only if the venue's own site shows one | venue `email` | optional |
 | has wifi, is accessible, allows minors | venue `has_wifi`, `is_accessible`, `allows_minors` | optional |
+| the place's public opening hours, one line | venue `availability_notes`, as the text "Public hours per the web (check before relying on them): ..." (never the structured `availability_hours`: opening hours are not when a class can be held) | optional |
 | anything else worth knowing | venue `notes` | optional |
 
 Every candidate is created `inactive`, `is_public_venue` true (it cannot reach the public picker until a person activates it), `source` import, with the `discovery` block. Never private homes. Nobody is contacted. Needed means the candidate is rejected without it; optional means it is simply absent when the AI does not know it. These tiers belong to the finder, not to the venue schema, so no venue field becomes required.

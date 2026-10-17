@@ -29,6 +29,7 @@ from .venue_finder import norm
 
 ACTOR = "system:discovery"
 SCAN = 2000
+HOURS_PREFIX = "Public hours per the web (check before relying on them): "
 VENUE_FIELDS = ("name", "description", "website_url", "phone", "email", "has_wifi", "is_accessible", "allows_minors", "notes")
 _NUMBER = re.compile(r"^(\d+[A-Za-z]?)\s+(.+)$")
 _SLUG = re.compile(r"[^a-z0-9]+")
@@ -141,6 +142,8 @@ class VenueSink:
             ids.setdefault("organization", []).append(org_id)
             reasons.append("operator_unconfirmed")
         data = {k: v[k] for k in VENUE_FIELDS if k in v}
+        if v.get("public_hours"):                      # opening hours are NOT class availability: kept as text for a person to read
+            data["availability_notes"] = (HOURS_PREFIX + v["public_hours"])[:1000]
         data.update({"status": "inactive", "is_public_venue": True})
         base, n, res = _slug_base(v["name"], v["city"]), 1, None
         while n <= 6:

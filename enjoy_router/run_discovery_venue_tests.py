@@ -165,5 +165,18 @@ wd = d.withdraw(rid, A)
 check("e2e: withdraw takes the run's venues back and marks the run withdrawn", wd.ok and count(s, "venues") == 0 and StoreRuns(s).get(rid)["status"] == "withdrawn"
       and count(s, "organizations") == 0 and count(s, "locations") == 0)
 
+hstore = MemoryDocStore("test_"); hsink = VenueSink(hstore)
+v0 = VC.get(hstore, hsink.save(cand(name="Plain Cafe", op="Plain Cafe LLC", street="2 Plain St"), CTX()).ids["venue"][0]).data
+hr = hsink.save(cand(name="Hours Cafe", op="Hours Cafe LLC", street="9 Hours St", public_hours="Mon-Fri 7am-5pm, Sat 8am-3pm"), CTX())
+hv = VC.get(hstore, hr.ids["venue"][0]).data
+check("hours: the public hours are saved as readable text in the availability notes, labelled as web hours to check",
+      hv.get("availability_notes") == "Public hours per the web (check before relying on them): Mon-Fri 7am-5pm, Sat 8am-3pm", hv.get("availability_notes"))
+check("hours: they never become structured open days (a person sets the real class window)", not hv.get("availability_hours"), hv.get("availability_hours"))
+check("hours: a place with no hours gets no availability notes", "availability_notes" not in v0, v0.get("availability_notes"))
+check("hours: the hours fact keeps its mark and is asked for as an optional fact",
+      "public_hours" in hv["discovery"]["marks"] and [f.tier for f in FINDER.ask_fields if f.key == "public_hours"] == ["optional"])
+long_ = hsink.save(cand(name="Long Hours", op="Long Hours Co", street="1 Long St", public_hours="x" * 300), CTX())
+check("hours: the longest allowed hours fit in the venue record", long_.status == "saved" and len(VC.get(hstore, long_.ids["venue"][0]).data["availability_notes"]) <= 1000)
+
 print(f"{total - len(fails)}/{total} checks passed" + (f"; FAILED: {fails}" if fails else ""))
 sys.exit(1 if fails else 0)

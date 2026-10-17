@@ -49,6 +49,7 @@ FINDER = Finder(
         _field("has_wifi", "true if wifi is available to customers", "optional"),
         _field("is_accessible", "true if the place is wheelchair accessible", "optional"),
         _field("allows_minors", "true if people under 18 may be there", "optional"),
+        _field("public_hours", "the place's public opening hours on one line, such as Mon-Fri 7am-5pm, Sat-Sun 8am-3pm", "optional", {"type": "string", "minLength": 1, "maxLength": 300}),
         _field("notes", "anything else worth knowing, such as quiet hours or a back room", "optional"),
     ),
     dedupe_key=dedupe_key,
