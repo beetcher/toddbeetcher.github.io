@@ -776,6 +776,8 @@
     <div class="empty" id="mEmpty" hidden>No messages match.</div>
   </section>
 
+  <section id="discoveryView" hidden></section>
+
   <section id="placesView" hidden>
     <div class="bar">
       <div>
@@ -915,6 +917,7 @@
         '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
         '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
         '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
+        '<li>Venues found by <b>Discovery</b> (AI) arrive here <b>inactive</b>, with a note saying what still needs a look. Check the facts, then activate. See the Discovery station.</li>' +
         '<li>Changing a venue name, or moving it to another place, emails everyone placed in an upcoming class here, with the old and the new.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -1096,6 +1099,25 @@
         '<li>The list shows the newest 200. If you see a note about that, narrow it with the filters or search.</li>' +
         '<li>A message with a test-address mark went to our own test inbox, not to the person.</li>' +
         '</ul>' },
+    { id: "discovery", admin: true, name: "Discovery", short: "Discovery", blurb: "Find venues with AI: pick a model and an area, set a spend cap, review what comes back.",
+      manual:
+        '<div class="kicker">Station 12</div><h2>Discovery</h2>' +
+        '<h3>Mission</h3><p>Discovery asks an AI model to find places in an area you choose (venues first) and saves what it finds as <b>inactive candidates</b> for you to check. Nobody is contacted. Nothing goes live until you activate a venue in Venues.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>The banner</b> at the top says whether Discovery is off, a dry run (plans and prompts only, nothing sent, nothing spent) or live.</li>' +
+        '<li><b>Find venues</b>: choose the model, the state, then the whole state or a region, the kinds of place, the most results and a spend cap in cents. <b>Estimate</b> shows how many AI calls, the expected cost range and the exact prompts that would be sent. <b>Go</b> is only enabled after an estimate, and the run never spends past the cap. <b>Stop</b> ends it after the current call.</li>' +
+        '<li><b>Runs</b>: every run ever made. Open one to see each call and its exact prompt, what was rejected and why, and the candidates. <b>Continue</b> restarts a run that paused. <b>Withdraw</b> (two presses) takes back what the run created, except venues a person has already activated, edited or used.</li>' +
+        '<li><b>Candidates</b>: each fact is labelled <b>Sure</b> (a source was cited), <b>Check</b> (the AI could not confirm it) or <b>Unknown</b> (blank). A venue flagged <b>No street address</b> or <b>Operator is a new organization</b> needs a look before you activate it. Open Venues to finish and activate it.</li>' +
+        '<li><b>Settings</b>: <b>Models</b> (add one, switch one on or off; only the NAME of a key setting is stored), <b>Areas</b> (switch states on or off, and make regions by typing their ZIP codes), <b>Types</b> (the tick boxes), <b>Prompt</b> (read the wording sent to the AI, edit it as a draft, publish it, or start a new draft from an older version), <b>Limits</b> (starting and maximum spend cap, results per run and per call).</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The mode (off, dry run, live) is set on the server, never here, so a slip in the Console cannot start spending.</li>' +
+        '<li>A new state starts switched off. Only states and regions switched on can be searched.</li>' +
+        '<li>A fact marked Sure means a source was cited, not that it is certainly true. Always look before activating.</li>' +
+        '<li>Run records are history: they are never deleted. A published prompt is never edited; edit a draft and publish it as the next version.</li>' +
+        '<li>The money fields are whole cents. The Find venues tab cannot go above the maximum in Limits.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Estimate a small run for one library type in a region, open the prompts, read them, then press Go.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1168,11 +1190,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1193,6 +1215,8 @@
     $("organizationsView").hidden = r !== "organizations";
     $("attendanceView").hidden = r !== "attendance";
     $("messagesView").hidden = r !== "messages";
+    $("discoveryView").hidden = r !== "discovery";
+    if (r === "discovery" && window.DiscoveryStation) window.DiscoveryStation.show();
     if (r === "messages") loadMessagesStation();
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
@@ -1396,7 +1420,7 @@
   }
 
   function lock(message) {
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -1814,6 +1838,9 @@
   var DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   var listUid = 0;
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
+  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, when: when, clock: function (d) { return fmtClock.format(d); },
+                        go: function (id) { goTo(id); }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
   function canon(v) {
     if (v === null || v === undefined) return "null";
     if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
@@ -6341,5 +6368,6 @@
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
 })();
 </script>
+<script src="discovery.js"></script>
 </body>
 </html>

@@ -36,7 +36,7 @@ check("seed: four venue types, Panera is the chain", [t["key"] for t in rec("dis
       and [t["key"] for t in rec("discovery_types") if t["is_chain"]] == ["panera"])
 p = rec("discovery_prompts")
 check("seed: the venue prompt is published as version 1", len(p) == 1 and p[0]["status"] == "published" and p[0]["version"] == 1)
-check("seed: the settings record has the starting values", [(s["default_spend_cap_cents"], s["max_spend_cap_cents"], s["max_results_per_run"], s["results_per_step"]) for s in rec("discovery_settings")] == [(100, 1000, 100, 10)])
+check("seed: the settings record has the starting values", [(s["default_spend_cap_cents"], s["max_spend_cap_cents"], s["max_results_per_run"], s["results_per_step"]) for s in rec("discovery_settings")] == [(10, 10, 10, 10)])
 res2 = S.seed(call, say=quiet)
 check("seed: running it again adds nothing", res2["added"] == {} and res2["errors"] == [] and len(rec("discovery_areas")) == 51)
 res3 = S.seed(call, say=quiet, regions=True)

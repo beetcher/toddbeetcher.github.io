@@ -12,7 +12,7 @@ from crud import discovery_models_crud as MO
 from discovery.modes import resolve_mode
 from discovery.pipeline import Discovery
 
-from . import zip_table
+from . import FINDER_KEYS, PROMPT_PLACEHOLDERS, zip_table
 from .providers.build import build_providers
 from .stores import StoreAreas, StoreCatalog, StoreRuns
 from .venue_finder import FINDER
@@ -44,7 +44,8 @@ def status(store, environ=None) -> dict:
     names = sorted({m["key_name"] for m in MO.list(store).data["records"] if m.get("key_name")})
     t = zip_table.table()
     return {"mode": mode_of(env), "keys": {n: bool(env.get(n)) for n in names}, "project": project_id(env),
-            "zip_table": {"loaded": bool(t), "zip_count": len(t or {}), "states": zip_table.states_loaded()}}
+            "zip_table": {"loaded": bool(t), "zip_count": len(t or {}), "states": zip_table.states_loaded()},
+            "placeholders": list(PROMPT_PLACEHOLDERS), "finders": list(FINDER_KEYS)}
 
 
 @contextlib.contextmanager

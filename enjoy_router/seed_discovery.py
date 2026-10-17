@@ -5,7 +5,7 @@
     python3 seed_discovery.py regions    adds the starter Colorado regions (needs the ZIP table deployed first)
 
 What it adds (everything is editable in the Console afterwards):
-  settings  100 cents starting cap, 1000 cents maximum, 100 results a run, 10 a step
+  settings  10 cents starting cap, 10 cents maximum, 10 results a run, 10 a step (all four start at 10; raise them in the Console)
   models    Gemini 3.8 Flash and Gemini 3.5 Flash-Lite (on); Claude Haiku 5.5, Claude Sonnet 5.5 and OpenAI gpt-6-luna (OFF until their
             keys are set; the record names the key setting, never the key)
   areas     all 50 states and DC; ONLY Colorado is switched on
@@ -85,7 +85,7 @@ def seed(call, say=print, regions=False):
                 add("discovery_areas", {"kind": "region", "state_code": "CO", "is_active": True, **rg}, "region " + rg["name"])
         return {"added": added, "errors": errors}
     if _records(call, "discovery_settings") == []:
-        add("discovery_settings", {}, "settings")
+        add("discovery_settings", {"default_spend_cap_cents": 10, "max_spend_cap_cents": 10, "max_results_per_run": 10, "results_per_step": 10}, "settings")
     have = {(m["provider"], m["model_name"]) for m in (_records(call, "discovery_models") or [])}
     for m in MODELS:
         if (m["provider"], m["model_name"]) not in have:
