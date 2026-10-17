@@ -246,6 +246,25 @@ with sync_playwright() as p:
     pg.click("#dEstimate"); pg.wait_for_function("document.getElementById('dMsg').textContent.length > 0")
     check("Estimate and Go are refused while it is off, in words", "switched off" in pg.locator("#dMsg").inner_text() and pg.locator("#dGo").is_disabled(), pg.locator("#dMsg").inner_text())
     check("the manual opens for Discovery", pg.evaluate("document.querySelectorAll('[data-m=discovery]').length") >= 1)
+    # every visible button must be readable (text against its own background): this once shipped white-on-white tabs
+    CONTRAST = """() => { const out = [];
+      const rgb = c => { const m = c.match(/[\\d.]+/g).map(Number); return { r: m[0], g: m[1], b: m[2], a: m.length > 3 ? m[3] : 1 }; };
+      const lum = c => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
+      const bgOf = el => { for (let e = el; e; e = e.parentElement) { const c = rgb(getComputedStyle(e).backgroundColor); if (c.a > 0.5) return c; } return { r: 255, g: 255, b: 255, a: 1 }; };
+      document.querySelectorAll('#discoveryView button').forEach(b => { if (b.disabled || !b.offsetParent || !b.textContent.trim()) return;
+        const fg = rgb(getComputedStyle(b).color), bg = bgOf(b), l1 = lum(fg), l2 = lum(bg), r = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        if (r < 4.5) out.push(b.textContent.trim().slice(0, 30) + ' ' + r.toFixed(1)); });
+      return out; }"""
+    def unreadable(where):
+        bad = pg.evaluate(CONTRAST)
+        check("every visible button is readable on " + where, bad == [], bad)
+    pg.click("#dTabs button[data-tab=run]"); unreadable("Find venues")
+    pg.click("#dTabs button[data-tab=runs]"); unreadable("Runs")
+    pg.click("#dTabs button[data-tab=settings]")
+    for sub in ("models", "areas", "types", "prompt", "limits"):
+        pg.click("#dSubs button[data-sub=%s]" % sub); unreadable("Settings > " + sub)
+    pg.click("#dSubs button[data-sub=areas]"); pg.click("#dView_map"); pg.wait_for_selector("#dNation .dst"); unreadable("the map")
+    pg.click("#dView_list")
     pg.set_viewport_size({"width": 420, "height": 900}); pg.click("#dTabs button[data-tab=settings]"); pg.click("#dSubs button[data-sub=areas]"); pg.click("#dView_map"); pg.wait_for_selector("#dNation .dst")
     if not pg.locator("#dDots circle").count(): pg.locator('#dNation .dst[data-state=CO]').click()
     pg.wait_for_selector("#dDots circle")
