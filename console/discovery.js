@@ -635,6 +635,29 @@
     var fmsg = el("span", "dmini", ""); fmsg.id = "dFindMsg"; fmsg.setAttribute("role", "status");
     fr.appendChild(fz); fr.appendChild(fgo); fr.appendChild(fmsg); card.appendChild(fr);
     fz.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); findZip(); } });
+    var tr = el("div", "btns"); tr.id = "dFindTownRow";
+    var ft = el("input"); ft.type = "text"; ft.id = "dFindTown"; ft.placeholder = "Find a town"; ft.maxLength = 60; ft.setAttribute("aria-label", "Find a town by name and show its ZIP codes"); ft.value = S.townText || "";
+    var ftgo = btn("Find", "quiet", function () { findTown(); }); ftgo.id = "dTownGo";
+    var ftsel = btn("Select these ZIPs", "quiet", function () {
+      var remove = S.drawMode === "remove";
+      (S.townZips || []).forEach(function (zc) { if (circles[zc]) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; } }); paint();
+    }); ftsel.id = "dTownSelect"; ftsel.hidden = true;
+    var ftmsg = el("span", "dmini", ""); ftmsg.id = "dTownMsg"; ftmsg.setAttribute("role", "status");
+    tr.appendChild(ft); tr.appendChild(ftgo); tr.appendChild(ftsel); tr.appendChild(ftmsg); card.appendChild(tr);
+    ft.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); findTown(); } });
+    function findTown() {
+      var q = ft.value.trim().toLowerCase(); S.townText = ft.value.trim(); S.townZips = []; hl = {}; ftsel.hidden = true;
+      if (!q) { ftmsg.textContent = ""; paint(); return; }
+      if (q.length < 2) { ftmsg.textContent = "Type at least 2 letters of the town name."; paint(); return; }
+      var hit = zips.filter(function (z) { return z[3] && String(z[3]).toLowerCase().indexOf(q) >= 0; });
+      var stName = (window.US_STATES && window.US_STATES.states[code]) ? window.US_STATES.states[code].name : code;
+      if (!hit.length) { ftmsg.textContent = "No ZIP in " + stName + " has \u201c" + ft.value.trim() + "\u201d in its town name."; paint(); return; }
+      S.townZips = hit.map(function (z) { return z[0]; }); S.townZips.forEach(function (zc) { hl[zc] = 1; });
+      var names = {}; hit.forEach(function (z) { names[z[3]] = 1; });
+      var inReg = S.townZips.filter(function (zc) { return regOf[zc]; }).length;
+      ftmsg.textContent = S.townZips.length + " ZIP" + (S.townZips.length === 1 ? "" : "s") + " in " + stName + " (" + Object.keys(names).join(", ") + "): " + S.townZips.join(", ") + (inReg ? " \u00b7 " + inReg + " already in a region" : "") + ". Outlined on the map.";
+      ftsel.hidden = false; paint();
+    }
     var svg = svgEl("svg", { viewBox: "0 0 " + Wd + " " + Ht, class: "dmap dzips", role: "group", "aria-label": "ZIP codes in the state" }); svg.id = "dDots"; svg.style.maxWidth = Wd + "px";
     var rBase = 4 / Math.sqrt(Z);
     if (rings.length) {
@@ -711,7 +734,7 @@
           zs.forEach(function (zc) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; }); paint();
         });
         b.dataset.city = ct.name; b.appendChild(el("b", "", ct.name)); b.appendChild(el("span", "dmini", Number(ct.population).toLocaleString("en-US") + " people · " + zs.length + " ZIP" + (zs.length === 1 ? "" : "s")));
-        function light(on) { hl = {}; if (on) zs.forEach(function (zc) { hl[zc] = 1; }); paint(); }
+        function light(on) { hl = {}; (S.townZips || []).forEach(function (zc) { hl[zc] = 1; }); if (on) zs.forEach(function (zc) { hl[zc] = 1; }); paint(); }
         b.addEventListener("pointerenter", function () { light(true); }); b.addEventListener("pointerleave", function () { light(false); });
         b.addEventListener("focus", function () { light(true); }); b.addEventListener("blur", function () { light(false); });
         cityBtns.push({ b: b, zips: zs }); cp.appendChild(b);
@@ -751,6 +774,7 @@
       li.appendChild(bs); key.appendChild(li);
     });
     card.appendChild(key); paint();
+    if (S.townText) findTown();
   }
   // The prompt: the standing published text, an editable draft, and the version history. The exact final text is on the Find venues tab (Estimate).
   function drawPrompt(host) {
