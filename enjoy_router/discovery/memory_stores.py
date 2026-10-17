@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import itertools
+import uuid
 from typing import Optional
 
 from .contract import (AreaEntry, Candidate, Limits, ModelEntry, PromptEntry, ProviderRequest, ProviderResult, SinkContext,
@@ -92,7 +93,7 @@ class MemorySink:
         key = self.keyer(candidate.values())
         if key is not None and any(r["key"] == key and not r.get("withdrawn") for r in self.records.values()):
             return SinkResult("duplicate", reason="same_record")
-        rid = f"{self.kind}-{next(self._n)}"
+        rid = str(uuid.uuid4())
         self.records[rid] = {"key": key, "values": candidate.values(), "status": self.record_status, "block": candidate.block,
                              "run_id": ctx.run_id}
         return SinkResult("saved", record_status=self.record_status, ids={self.kind: [rid]},

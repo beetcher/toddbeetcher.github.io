@@ -34,11 +34,11 @@ def run_store_failures(store, run_factory) -> list:
     if hasattr(store, "delete") or hasattr(store, "remove"):
         out.append("a run store must not offer delete (D-12)")
     try:
-        rid = store.create(run_factory(), "kit", None)
+        rid = store.create(run_factory(), "system:kit", None)
         got = store.get(rid)
         if not got or got.get("finder_key") != run_factory()["finder_key"]:
             out.append("get does not return what create stored")
-        store.update(rid, {"status": "running"}, "kit", None)
+        store.update(rid, {"status": "running"}, "system:kit", None)
         if store.get(rid)["status"] != "running":
             out.append("update did not change the run")
         got["status"] = "tampered"
@@ -55,7 +55,7 @@ def sink_failures(sink, candidate_factory) -> list:
     """candidate_factory(n) -> a Candidate whose n-th variants are different records. Save makes an inactive record; the same one
     again is a duplicate and creates nothing new; withdraw takes back what the save created (D-6, D-7, D-13)."""
     out = []
-    ctx = SinkContext("run-kit", "kit", "m", 1, "kit", None)
+    ctx = SinkContext("run-kit", "kit", "m", 1, "system:kit", None)
     try:
         first = sink.save(candidate_factory(1), ctx)
         if first.status != "saved" or first.record_status != "inactive":
@@ -67,7 +67,7 @@ def sink_failures(sink, candidate_factory) -> list:
         if other.status != "saved":
             out.append("a different candidate must be saved")
         run = {f"created_{k}_ids": list(v) for k, v in first.ids.items()}
-        res = sink.withdraw(run, "kit", None)
+        res = sink.withdraw(run, "system:kit", None)
         if not any(res.removed.values()):
             out.append("withdraw removed nothing that the run created")
         if sink.save(candidate_factory(1), ctx).status != "saved":

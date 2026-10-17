@@ -215,7 +215,7 @@ e = Env(replies=lambda r: reply(junk, bad1, bad2, home, bad3, "not an object"), 
 run = e.run(rid); saved = {r["values"]["name"]: r for r in e.sink.records.values()}
 check("D-8 unknown fields are dropped", "secret_field" not in saved["Fine Place"]["values"] and "secret_field" not in saved["Fine Place"]["block"]["marks"])
 check("D-8 a bad optional value is dropped, the record kept", "Odd Url" in saved and "website_url" not in saved["Odd Url"]["values"])
-by_reason = {x["name"]: x for x in run["rejections"]}
+by_reason = {x.get("name", ""): x for x in run["rejections"]}
 check("D-8 missing/invalid needed field: rejected, naming the fields only",
       by_reason["No City"]["fields"] == ["city"] and by_reason["Bad State"]["fields"] == ["state"] and "Colorado" not in json.dumps(run["rejections"]))
 check("D-10 a private home is rejected", by_reason["Smith House"]["reason"] == "private_home" and "Smith House" not in saved)

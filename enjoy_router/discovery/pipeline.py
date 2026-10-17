@@ -183,8 +183,8 @@ class Discovery:
         if not (model.is_active and types[type_key].is_active and areas[area_id].is_active and areas[area_id].state_is_active):
             return self._stop(run_id, "operator", by)
         per_step = min(limits.results_per_step, remaining_results)
-        text = prompt_mod.build(pr.text, finder, areas[area_id], types[type_key], per_step)
-        stored = text[:MAX_STORED_PROMPT]
+        text = prompt_mod.build(pr.text, finder, areas[area_id], types[type_key], per_step).strip()
+        stored = text[:MAX_STORED_PROMPT].rstrip()
         live = run["run_mode"] == "live" and mode == "live"
         if not live:                                                              # dry_run: no provider call (D-5)
             step = {"step_number": n + 1, "type_key": type_key, "area_id": area_id, "status": "skipped", "result_count": 0,

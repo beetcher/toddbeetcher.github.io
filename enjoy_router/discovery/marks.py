@@ -27,10 +27,17 @@ def _source(entry) -> str | None:
     return url if isinstance(url, str) and URL.match(url) else None
 
 
+def _rejection(reason, fields, name):
+    out = {"reason": reason, "fields": list(fields)}
+    if name and name.strip():
+        out["name"] = name.strip()[:200]               # a name is left out when empty: the run record never stores blanks
+    return out
+
+
 def check_item(raw, finder):
     """Returns (Candidate, None) or (None, rejection) where rejection = {"reason", "fields": [names only], "name"}."""
     if not isinstance(raw, dict):
-        return None, {"reason": "not_an_object", "fields": [], "name": ""}
+        return None, {"reason": "not_an_object", "fields": []}
     fields, urls, missing, dropped = {}, [], [], []
     for spec in finder.ask_fields:
         entry = raw.get(spec.key)
@@ -48,10 +55,10 @@ def check_item(raw, finder):
     label_value = raw.get(finder.ask_fields[0].key)
     name = label_value.get("value") if isinstance(label_value, dict) and isinstance(label_value.get("value"), str) else ""
     if missing:
-        return None, {"reason": "missing_needed", "fields": missing, "name": name[:200]}
+        return None, _rejection("missing_needed", missing, name)
     for key, reason in finder.must_be_true.items():
         if fields.get(key, {}).get("value") is not True:
-            return None, {"reason": reason, "fields": [key], "name": name[:200]}
+            return None, _rejection(reason, [key], name)
     attention = [code for key, code in finder.attention_if_missing.items() if key not in fields]
     first = finder.ask_fields[0].key
     return Candidate(key="", label=str(fields[first]["value"]), fields=fields, source_urls=urls,
