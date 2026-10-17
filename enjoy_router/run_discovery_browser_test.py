@@ -160,6 +160,7 @@ with sync_playwright() as p:
         {"id": "x1", "created_at": "2026-08-10T12:00:00Z", "model_name": "Test A", "run_mode": "live", "area_labels": ["One", "Two"], "actual_cost_cents": 12,
          "steps": [step(1, a1, 5), step(2, a2, 7), step(3, a2, 0, "skipped")]},
         {"id": "x2", "created_at": "2026-09-05T12:00:00Z", "model_name": "Test B", "run_mode": "live", "area_labels": ["One"], "actual_cost_cents": 9, "steps": [step(1, a1, 9)]},
+        {"id": "x4", "created_at": "2026-09-07T12:00:00Z", "model_name": "Test B", "run_mode": "live", "area_labels": ["One"], "actual_cost_cents": 0, "stop_reason": "cap_reached", "steps": [step(1, a1, 0, "skipped")]},
         {"id": "x3", "created_at": "2026-09-06T12:00:00Z", "model_name": "Test B", "run_mode": "dry_run", "area_labels": ["One"], "actual_cost_cents": 0, "steps": [step(1, a1, 0, "skipped")]}])
     pg.click("#dRefresh"); pg.wait_for_function("document.getElementById('dSpend').textContent.indexOf('Test A') >= 0")
     rows = lambda title: [r.split("\t") for r in pg.locator("#dSpend .dcard", has_text=title).locator("tr").all_inner_texts()[1:]]
@@ -169,6 +170,12 @@ with sync_playwright() as p:
     check("by month: September is one run, one call, $0.09; August one run, two calls, $0.12 (a skipped step is not a call)", sep[1:] == ["1", "1", "$0.09"] and aug[1:] == ["1", "2", "$0.12"], month_rows)
     ma = [r for r in model_rows if r[0] == "Test A"][0]; mb = [r for r in model_rows if r[0] == "Test B"][0]
     check("by model: each model has its own total", ma[1:] == ["1", "2", "$0.12"] and mb[1:] == ["1", "1", "$0.09"], model_rows)
+    hw = pg.locator("#dSpend .dcard", has_text="By month").locator("tr").first.evaluate_all("els => els.map(r => [...r.children].map(c => c.getBoundingClientRect()))")[0]
+    dw = pg.locator("#dSpend .dcard", has_text="By month").locator("tr").nth(1).evaluate_all("els => els.map(r => [...r.children].map(c => c.getBoundingClientRect()))")[0]
+    check("Spend tables: each header sits over its column and the columns have room (no crowding)", all(abs(h["left"] - d["left"]) < 1 and abs(h["right"] - d["right"]) < 1 for h, d in zip(hw, dw)) and all(hw[i + 1]["left"] - hw[i]["right"] >= -0.5 for i in range(3)) and min(c["width"] for c in hw[1:]) >= 50, [(h["left"], h["right"]) for h in hw])
+    pad = pg.locator("#dSpend .dtable td").first.evaluate("e => parseFloat(getComputedStyle(e).paddingLeft)")
+    right = pg.locator("#dSpend .dtable td").nth(3).evaluate("e => getComputedStyle(e).textAlign")
+    check("Spend tables: cells have room around them and the figures are right-aligned", pad >= 12 and right == "right", (pad, right))
     check("by region: a run over two regions is split by call, and the biggest spender is first", sum(int(r[3].replace("$", "").replace(".", "")) for r in region_rows) == 12 + 9 + mine["actual_cost_cents"] and len(region_rows) >= 2, region_rows)
     check("by region: the two regions of one run show their own figures; a region adds up across runs ($0.05 + $0.09, and $0.07), not a joined label", {r[0]: r[3] for r in region_rows}.get(areaA) == "$0.14" and {r[0]: r[3] for r in region_rows}.get(areaB) == "$0.07" and not any("One + Two" in r[0] for r in region_rows), region_rows)
     EXTRA_RUNS.clear()

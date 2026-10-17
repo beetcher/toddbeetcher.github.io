@@ -100,7 +100,7 @@
       ".dbanner{padding:10px 14px;border-radius:8px;margin:10px 0;font-weight:600;background:#ffe9b3;border:1px solid #c98a00}.dbanner.live{background:#d9f2c4;border-color:#5c9a00}.dbanner.off{background:#fbd5d5;border-color:#b00020}" +
       ".drow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.dmini{font-size:14px;color:#555}.dwarn{font-size:15px;font-weight:700;color:#8a1c1c;background:#fff1f1;border:1px solid #e0a0a0;border-radius:8px;padding:8px 10px}" +
       ".dprompt{white-space:pre-wrap;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#f6f3ea;border:1px solid #d8d2c4;border-radius:6px;padding:10px;max-height:340px;overflow:auto}" +
-      ".dtable{border-collapse:collapse;width:100%;font-size:14px}.dtable th,.dtable td{border-bottom:1px solid #e4dfd2;text-align:left;padding:4px 6px;vertical-align:top}.dtable td:first-child{white-space:nowrap;color:#555}.dtable td:last-child{white-space:nowrap;width:1%}.dtable .dchip{white-space:nowrap}" +
+      ".dtable{border-collapse:collapse;width:100%;font-size:14px}.dtable th,.dtable td{border-bottom:1px solid #e4dfd2;text-align:left;padding:4px 6px;vertical-align:top}.dtable td:first-child{white-space:nowrap;color:#555}.dtable td:last-child{white-space:nowrap;width:1%}.dtable .dchip{white-space:nowrap}.dnum th,.dnum td{padding:6px 14px}.dnum th:nth-child(n+2),.dnum td:nth-child(n+2){text-align:right;white-space:nowrap}.dnum td:first-child{color:inherit;white-space:normal}" +
       ".dprog{height:14px;border-radius:7px;background:#e9e4d8;overflow:hidden;margin:8px 0}.dprog>div{height:100%;background:var(--orange);width:0}" +
       ".dmap{width:100%;height:auto;display:block}.dmap .dst path{fill:#e3ded0;stroke:#fff;stroke-width:1;cursor:pointer}.dmap .dst.on path{fill:#9fd36b}.dmap .dst:hover path{fill:#f3c98a}.dmap .dst.sel path{stroke:var(--orange);stroke-width:3}.dmap .dst:focus{outline:none}.dmap .dst:focus-visible path{stroke:#000;stroke-width:3}" +
       ".dmap .dlab{font:700 11px sans-serif;fill:#1d4d00;pointer-events:none}.dzips{border:1px solid #d8d2c4;border-radius:6px;background:#e4dfd2;touch-action:none;cursor:crosshair;user-select:none}.dzips circle{cursor:pointer}.dbox{fill:rgba(255,138,0,.15);stroke:#ff8a00;stroke-dasharray:4 3}" +
@@ -297,7 +297,7 @@
   function spendTable(title, rows, first) {
     var c = el("div", "dcard"); c.appendChild(el("h3", "", title));
     if (!rows.length) { c.appendChild(el("div", "dmini", "Nothing yet.")); return c; }
-    var tb = el("table"), th = el("tr"); [first, "Runs", "Calls", "Spent"].forEach(function (h) { th.appendChild(el("th", "", h)); }); tb.appendChild(th);
+    var tb = el("table", "dtable dnum"), th = el("tr"); [first, "Runs", "Calls", "Spent"].forEach(function (h) { th.appendChild(el("th", "", h)); }); tb.appendChild(th);
     rows.forEach(function (x) { var tr = el("tr"); [x.name, x.runs, x.calls, usd(x.cents)].forEach(function (v) { tr.appendChild(el("td", "", String(v))); }); tb.appendChild(tr); });
     c.appendChild(tb); return c;
   }
@@ -306,7 +306,7 @@
     function add(map, name, cents, nCalls, rid) { var x = map[name] || (map[name] = { name: name, runs: {}, calls: 0, cents: 0 }); x.runs[rid] = 1; x.calls += nCalls; x.cents += cents; }
     runs.forEach(function (r) {
       var cents = Number(r.actual_cost_cents) || 0, steps = (r.steps || []).filter(function (s) { return s.status !== "skipped"; }), n = steps.length;
-      if (r.run_mode === "dry_run" && !cents) return;                 // a dry run costs nothing and is not a call
+      if (!cents && !n) return;                 // a run that made no call (a dry run, or one stopped at its cap first) cost nothing and is not counted
       total += cents; calls += n;
       add(month, monthKey(r.created_at), cents, n, r.id); add(model, r.model_name || "unknown model", cents, n, r.id);
       var perStep = 0; steps.forEach(function (s) { perStep += Number(s.cost_cents) || 0; });
