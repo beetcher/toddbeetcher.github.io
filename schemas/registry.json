@@ -160,6 +160,54 @@
       "guide": "COMMS_SETTING_GUIDE.md",
       "examples": "examples/comms_setting.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "discovery_model",
+      "collection": "discovery_models",
+      "schema": "discovery_model.schema.json",
+      "guide": "DISCOVERY_MODEL_GUIDE.md",
+      "examples": "examples/discovery_model.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "discovery_area",
+      "collection": "discovery_areas",
+      "schema": "discovery_area.schema.json",
+      "guide": "DISCOVERY_AREA_GUIDE.md",
+      "examples": "examples/discovery_area.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "discovery_type",
+      "collection": "discovery_types",
+      "schema": "discovery_type.schema.json",
+      "guide": "DISCOVERY_TYPE_GUIDE.md",
+      "examples": "examples/discovery_type.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "discovery_prompt",
+      "collection": "discovery_prompts",
+      "schema": "discovery_prompt.schema.json",
+      "guide": "DISCOVERY_PROMPT_GUIDE.md",
+      "examples": "examples/discovery_prompt.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "discovery_setting",
+      "collection": "discovery_settings",
+      "schema": "discovery_setting.schema.json",
+      "guide": "DISCOVERY_SETTING_GUIDE.md",
+      "examples": "examples/discovery_setting.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "discovery_run",
+      "collection": "discovery_runs",
+      "schema": "discovery_run.schema.json",
+      "guide": "DISCOVERY_RUN_GUIDE.md",
+      "examples": "examples/discovery_run.examples.json",
+      "schema_version": 1
     }
   ],
   "message_kinds": {
@@ -201,5 +249,20 @@
         "facts": "message_kinds/class_changed.facts.schema.json"
       }
     ]
-  }
+  },
+  "fragments": [
+    {
+      "name": "discovery_mark",
+      "file": "discovery_mark.fragment.json",
+      "guide": "DISCOVERY_GUIDE.md",
+      "examples": "examples/discovery_mark.examples.json",
+      "embedded_in": [
+        {
+          "schema": "venue",
+          "property": "discovery",
+          "read_only": true
+        }
+      ]
+    }
+  ]
 }

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/discovery_setting.schema.json",
+  "title": "discovery_setting",
+  "description": "The Discovery settings: one record for the whole product, edited in the Console (see DISCOVERY_GUIDE.md and DISCOVERY_SETTING_GUIDE.md). The run mode (off, dry_run, live) is not here: it comes from the environment with the secrets, so a mistake in the Console can never turn live AI calls on. Rules the schema cannot express: exactly one record exists (settings_key is always default); default_spend_cap_cents is not above max_spend_cap_cents; results_per_step is not above max_results_per_run; a run's own cap and result limit cannot exceed the maximums here; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept. The record is replaced in place; each run keeps the cap and limits it used. (A written policy only.)",
+  "required": [
+    "settings_key",
+    "default_spend_cap_cents",
+    "max_spend_cap_cents",
+    "max_results_per_run",
+    "results_per_step"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "settings_key": {
+      "description": "Always default. It makes the one-record rule checkable, because ids are UUIDs. Required.",
+      "const": "default"
+    },
+    "default_model_id": {
+      "description": "The model the Run tab selects first. Optional; absent means the first active model.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "default_spend_cap_cents": {
+      "description": "The spend cap the Run tab starts with, in whole US cents. Required.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "max_spend_cap_cents": {
+      "description": "The most any single run may be allowed to spend, in whole US cents. The Run tab cannot go above it. Required.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "max_results_per_run": {
+      "description": "The most candidates any single run may return. Required.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "results_per_step": {
+      "description": "How many candidates one AI call is asked for. Small steps keep each call quick and let the spend cap stop a run between calls. Required.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

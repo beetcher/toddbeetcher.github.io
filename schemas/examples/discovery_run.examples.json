@@ -1,0 +1,2475 @@
+{
+  "valid": {
+    "planned_dry_run": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "finished_live_run": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "stopped_at_the_cap": {
+      "finder_key": "venue",
+      "status": "stopped",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 100,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 1,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z",
+      "stop_reason": "cap_reached"
+    },
+    "withdrawn_run": {
+      "finder_key": "venue",
+      "status": "withdrawn",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z",
+      "withdrawn_at": "2026-10-17T16:00:00Z",
+      "withdrawn_by": "user:admin"
+    },
+    "failed_run": {
+      "finder_key": "venue",
+      "status": "failed",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 1,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:01:00Z"
+    },
+    "running_run": {
+      "finder_key": "venue",
+      "status": "running",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0,
+      "started_at": "2026-10-17T15:00:00Z",
+      "steps_planned": 3,
+      "steps_done": 1
+    }
+  },
+  "invalid": {
+    "missing_finder_key": {
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "missing_status": {
+      "finder_key": "venue",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "missing_model_id": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "missing_price_snapshot": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "missing_spend_cap": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "missing_estimate": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "actual_cost_cents": 0
+    },
+    "unknown_status": {
+      "finder_key": "venue",
+      "status": "paused",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "unknown_run_mode": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "off",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "no_areas": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "no_types": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "area_not_a_uuid": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "colorado"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "stopped_without_reason": {
+      "finder_key": "venue",
+      "status": "stopped",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 100,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 1,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "unknown_stop_reason": {
+      "finder_key": "venue",
+      "status": "stopped",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 100,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 1,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z",
+      "stop_reason": "boredom"
+    },
+    "finished_without_finished_at": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z"
+    },
+    "withdrawn_without_who": {
+      "finder_key": "venue",
+      "status": "withdrawn",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z",
+      "withdrawn_at": "2026-10-17T16:00:00Z"
+    },
+    "withdrawn_without_when": {
+      "finder_key": "venue",
+      "status": "withdrawn",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z",
+      "withdrawn_by": "user:admin"
+    },
+    "withdrawn_by_alone": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0,
+      "withdrawn_by": "user:admin"
+    },
+    "negative_cost": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": -1
+    },
+    "cost_has_fraction": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 1.5
+    },
+    "cap_over_limit": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 1000001,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "max_results_zero": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 0,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0
+    },
+    "too_many_steps": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 2,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 3,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 4,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 5,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 6,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 7,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 8,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 9,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 10,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 11,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 12,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 13,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 14,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 15,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 16,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 17,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 18,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 19,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 20,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 21,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 22,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 23,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 24,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 25,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 26,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 27,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 28,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 29,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 30,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 31,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 32,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 33,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 34,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 35,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 36,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 37,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 38,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 39,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 40,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        },
+        {
+          "step_number": 41,
+          "type_key": "coffee_shops",
+          "status": "ok"
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "step_without_status": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops"
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "step_unknown_status": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "status": "maybe"
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "step_prompt_too_long": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "status": "ok",
+          "prompt_text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "step_error_code_with_provider_text": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "status": "rejected",
+          "error_code": "The provider said: quota exceeded for key AIza..."
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "rejection_without_reason": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "x"
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "rejection_fields_with_values": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "reason": "invalid_field",
+          "fields": [
+            "phone: 303-555-0100"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "too_many_rejections": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        },
+        {
+          "reason": "residential"
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "manifest_id_not_a_uuid": {
+      "finder_key": "venue",
+      "status": "finished",
+      "run_mode": "live",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops",
+        "libraries"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 20,
+      "estimated_cost_high_cents": 30,
+      "actual_cost_cents": 23,
+      "model_price_search_per_1000_cents": 3500,
+      "area_labels": [
+        "Boulder County, CO"
+      ],
+      "input_tokens": 4200,
+      "output_tokens": 6100,
+      "search_count": 8,
+      "steps_planned": 2,
+      "steps_done": 2,
+      "steps": [
+        {
+          "step_number": 1,
+          "type_key": "coffee_shops",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 10,
+          "input_tokens": 2100,
+          "output_tokens": 3000,
+          "cost_cents": 11,
+          "prompt_text": "You are helping a small in-person workshop business ... (the exact text sent)"
+        },
+        {
+          "step_number": 2,
+          "type_key": "libraries",
+          "area_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02",
+          "status": "ok",
+          "result_count": 6,
+          "input_tokens": 2100,
+          "output_tokens": 3100,
+          "cost_cents": 12
+        }
+      ],
+      "found_count": 16,
+      "created_count": 12,
+      "duplicate_count": 2,
+      "rejected_count": 2,
+      "attention_count": 3,
+      "rejections": [
+        {
+          "name": "Somebody's Basement Cafe",
+          "reason": "residential"
+        },
+        {
+          "reason": "missing_needed_field",
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "created_organization_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "created_venue_ids": [
+        "venue-1"
+      ],
+      "created_organization_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+      ],
+      "created_location_link_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "started_at": "2026-10-17T15:00:00Z",
+      "finished_at": "2026-10-17T15:02:30Z"
+    },
+    "client_sent_id": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0,
+      "id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+    },
+    "client_sent_created_by": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0,
+      "created_by": "web:enjoy"
+    },
+    "extra_field": {
+      "finder_key": "venue",
+      "status": "planned",
+      "run_mode": "dry_run",
+      "model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "model_price_input_per_million_cents": 30,
+      "model_price_output_per_million_cents": 250,
+      "area_ids": [
+        "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a02"
+      ],
+      "type_keys": [
+        "coffee_shops"
+      ],
+      "prompt_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a03",
+      "prompt_version": 1,
+      "max_results": 50,
+      "spend_cap_cents": 100,
+      "estimated_cost_low_cents": 5,
+      "estimated_cost_high_cents": 20,
+      "actual_cost_cents": 0,
+      "secret": "never here"
+    }
+  }
+}

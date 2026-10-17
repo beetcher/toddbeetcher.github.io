@@ -1,0 +1,111 @@
+{
+  "valid": {
+    "starting_values": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "with_default_model": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10,
+      "default_model_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+    }
+  },
+  "invalid": {
+    "wrong_key": {
+      "settings_key": "second",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "missing_default_cap": {
+      "settings_key": "default",
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "missing_max_cap": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "missing_max_results": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "results_per_step": 10
+    },
+    "missing_results_per_step": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100
+    },
+    "cap_has_fraction": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 99.5,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "cap_negative": {
+      "settings_key": "default",
+      "default_spend_cap_cents": -5,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10
+    },
+    "results_per_step_zero": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 0
+    },
+    "results_per_step_over_100": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 101
+    },
+    "max_results_over_1000": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 1001,
+      "results_per_step": 10
+    },
+    "default_model_not_a_uuid": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10,
+      "default_model_id": "gemini"
+    },
+    "mode_belongs_in_the_environment": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10,
+      "mode": "live"
+    },
+    "client_sent_id": {
+      "settings_key": "default",
+      "default_spend_cap_cents": 100,
+      "max_spend_cap_cents": 1000,
+      "max_results_per_run": 100,
+      "results_per_step": 10,
+      "id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+    }
+  }
+}

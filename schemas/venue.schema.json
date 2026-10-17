@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/venue.schema.json",
   "title": "venue",
-  "description": "A place where classes are held. A scheduled_class points at one venue by venue_id and names a room by venue_room_label. A venue is an entity of its own: it holds its name, its own email and phone, how to get in, pointers to its contact people, its rooms (inside the record), accessibility, house rules, hours and what it costs. Reviews are their own records that point at the venue; only review_count and average_rating live here. Where it is lives in a location record, reached through a location_link (relationship operates_at); the venue stores no address, GPS point or time zone. A class still stores its own time_zone; the time zone of the venue's place is its natural default. Precise spots inside a venue are location_pin records, a later schema, listed by location_pin_ids. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: an active venue has a live operates_at location_link to a location that has an address or a GPS point; contact_individual_id and backup_contact_individual_id point at individuals that exist and are not erased; room labels are unique within the venue, a room preferred_occupancy is not above its max_occupancy, opens_at is before closes_at.",
+  "description": "A place where classes are held. A scheduled_class points at one venue by venue_id and names a room by venue_room_label. A venue is an entity of its own: it holds its name, its own email and phone, how to get in, pointers to its contact people, its rooms (inside the record), accessibility, house rules, hours and what it costs. Reviews are their own records that point at the venue; only review_count and average_rating live here. Where it is lives in a location record, reached through a location_link (relationship operates_at); the venue stores no address, GPS point or time zone. A class still stores its own time_zone; the time zone of the venue's place is its natural default. Precise spots inside a venue are location_pin records, a later schema, listed by location_pin_ids. Fields marked readOnly are set by the server only. Endpoint rules the schema cannot express: an active venue has a live operates_at location_link to a location that has an address or a GPS point; contact_individual_id and backup_contact_individual_id point at individuals that exist and are not erased; room labels are unique within the venue, a room preferred_occupancy is not above its max_occupancy, opens_at is before closes_at. An AI-found venue also carries a read-only discovery block (how it was found and how sure the AI was); a venue loaded by hand never has one.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -331,6 +331,105 @@
       "description": "Anything that fits nowhere else, free text up to 2000 characters. Optional.",
       "type": "string",
       "maxLength": 2000
+    },
+    "discovery": {
+      "description": "How an AI-found record was found, kept on the record it created. Optional on the target schema and set only by the server (a named function), never typed in a form. A record loaded by hand never has it. Defined once in schemas/discovery_mark.fragment.json and embedded unchanged in every schema an AI finder can create (check.py proves the copies match). A fact the record holds that is not listed in marks was not marked; a fact the AI did not know is simply absent from the record. Rules the schema cannot express: run_id names a discovery_run that exists; every key in marks names a field the record holds; a fact marked sure must have a source in source_urls (otherwise it is stored as verify).",
+      "type": "object",
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "required": [
+        "run_id",
+        "model_name",
+        "prompt_version",
+        "found_at"
+      ],
+      "properties": {
+        "run_id": {
+          "description": "The discovery run (batch) that found this record. Required.",
+          "type": "string",
+          "format": "uuid"
+        },
+        "model_name": {
+          "description": "The AI model that produced it, as named on the run, such as gemini-2.5-flash. Up to 100 characters. Required.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "prompt_version": {
+          "description": "The version number of the published prompt used. Required.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "found_at": {
+          "description": "When the AI result was received (UTC). Required.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_urls": {
+          "description": "Web pages the AI cited for this record, up to 20, each up to 500 characters. Optional.",
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "pattern": "^https?://[^\\s]+$",
+            "maxLength": 500
+          }
+        },
+        "marks": {
+          "description": "How sure the AI was about each fact, by field name: sure (a source was cited) or verify (the AI thinks it is right but could not confirm it). A field with neither a value nor a mark is unknown. Optional.",
+          "type": "object",
+          "maxProperties": 60,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "enum": [
+              "sure",
+              "verify"
+            ]
+          }
+        },
+        "needs_attention": {
+          "description": "true when a person should check this record before activating it, for example because it has no street address. Optional; absent means false.",
+          "type": "boolean"
+        },
+        "attention_reasons": {
+          "description": "Why it needs attention, as short codes: no_street_address, address_not_matched (the free geocoder could not find the address), operator_unconfirmed (the business that runs it was guessed). Up to 10. Required when needs_attention is true.",
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "no_street_address",
+              "address_not_matched",
+              "operator_unconfirmed"
+            ]
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "needs_attention": {
+            "const": true
+          }
+        },
+        "required": [
+          "needs_attention"
+        ]
+      },
+      "then": {
+        "required": [
+          "attention_reasons"
+        ],
+        "properties": {
+          "attention_reasons": {
+            "minItems": 1
+          }
+        }
+      },
+      "readOnly": true
     },
     "id": {
       "description": "UUID v4, set by the server; also the Firestore document id. Never sent by a browser.",

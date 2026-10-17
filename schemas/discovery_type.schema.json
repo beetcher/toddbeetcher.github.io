@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/discovery_type.schema.json",
+  "title": "discovery_type",
+  "description": "One kind of thing a finder looks for, such as independent coffee shops and cafes (the venue finder's venue types), kept as data so the list is edited in the Console and the prompt is built from the ones ticked (see DISCOVERY_GUIDE.md and DISCOVERY_TYPE_GUIDE.md). Rules the schema cannot express: finder_key must name a registered finder; key is unique within its finder among live records; an inactive type is not offered and cannot be run; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept until the owner deletes it. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "finder_key",
+    "key",
+    "label",
+    "is_chain",
+    "is_active"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "finder_key": {
+      "description": "Which finder this type belongs to, such as venue. Must be a registered finder. Required.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "key": {
+      "description": "A short snake_case name for the type, such as coffee_shops. Unique within the finder. Set once; the label is what people read. Required.",
+      "type": "string",
+      "maxLength": 60,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "label": {
+      "description": "The plain-words name shown in the Console, such as Independent coffee shops and cafes. Up to 120 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "search_hint": {
+      "description": "A sentence or two that steers the AI for this type, such as what makes one worth listing. It goes into the prompt. Up to 1,000 characters. Optional.",
+      "type": "string",
+      "maxLength": 1000
+    },
+    "is_chain": {
+      "description": "true when the type is the locations of one named chain (Panera Bread), so the prompt asks for every location instead of only distinctive ones. Required.",
+      "type": "boolean"
+    },
+    "sort_order": {
+      "description": "Where the type sits in the picker, lowest first. Optional; types without it sort by label.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9999
+    },
+    "is_active": {
+      "description": "The on/off switch. false hides the type from the Run tab. Required.",
+      "type": "boolean"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "valid": {
+    "minimum": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z"
+    },
+    "with_marks_and_sources": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "source_urls": [
+        "https://www.example.com/location"
+      ],
+      "marks": {
+        "name": "sure",
+        "website_url": "sure",
+        "phone": "verify"
+      }
+    },
+    "needs_attention_no_address": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": true,
+      "attention_reasons": [
+        "no_street_address"
+      ]
+    },
+    "not_flagged_explicitly": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": false
+    }
+  },
+  "invalid": {
+    "missing_run_id": {
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z"
+    },
+    "missing_found_at": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1
+    },
+    "run_id_not_a_uuid": {
+      "run_id": "batch-7",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z"
+    },
+    "prompt_version_zero": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 0,
+      "found_at": "2026-10-17T15:30:00Z"
+    },
+    "mark_not_sure_or_verify": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "marks": {
+        "name": "certain"
+      }
+    },
+    "mark_key_not_snake_case": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "marks": {
+        "websiteUrl": "sure"
+      }
+    },
+    "attention_without_reasons": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": true
+    },
+    "attention_with_empty_reasons": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": true,
+      "attention_reasons": []
+    },
+    "unknown_reason_code": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": true,
+      "attention_reasons": [
+        "looks_odd"
+      ]
+    },
+    "repeated_reason": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "needs_attention": true,
+      "attention_reasons": [
+        "no_street_address",
+        "no_street_address"
+      ]
+    },
+    "source_not_a_url": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "source_urls": [
+        "not a url"
+      ]
+    },
+    "too_many_sources": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "source_urls": [
+        "https://example.com/0",
+        "https://example.com/1",
+        "https://example.com/2",
+        "https://example.com/3",
+        "https://example.com/4",
+        "https://example.com/5",
+        "https://example.com/6",
+        "https://example.com/7",
+        "https://example.com/8",
+        "https://example.com/9",
+        "https://example.com/10",
+        "https://example.com/11",
+        "https://example.com/12",
+        "https://example.com/13",
+        "https://example.com/14",
+        "https://example.com/15",
+        "https://example.com/16",
+        "https://example.com/17",
+        "https://example.com/18",
+        "https://example.com/19",
+        "https://example.com/20"
+      ]
+    },
+    "extra_field": {
+      "run_id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01",
+      "model_name": "gemini-2.5-flash",
+      "prompt_version": 1,
+      "found_at": "2026-10-17T15:30:00Z",
+      "confidence_score": 0.9
+    }
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "valid": {
+    "gemini_through_the_google_project": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "claude_with_key_name_switched_off": {
+      "provider": "claude",
+      "model_name": "claude-sonnet-5-5",
+      "label": "Claude Sonnet 5.5",
+      "price_input_per_million_cents": 300,
+      "price_output_per_million_cents": 1500,
+      "has_grounding": false,
+      "key_name": "ICDT_CLAUDE_KEY",
+      "is_active": false,
+      "notes": "Draft prices; check before switching on."
+    },
+    "openai_minimum": {
+      "provider": "openai",
+      "model_name": "gpt-example",
+      "label": "OpenAI example",
+      "price_input_per_million_cents": 0,
+      "price_output_per_million_cents": 0,
+      "has_grounding": false,
+      "key_name": "ICDT_OPENAI_KEY",
+      "is_active": false
+    }
+  },
+  "invalid": {
+    "missing_provider": {
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "missing_price": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "unknown_provider": {
+      "provider": "mystery",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "claude_without_key_name": {
+      "provider": "claude",
+      "model_name": "claude-sonnet-5-5",
+      "label": "Claude Sonnet 5.5",
+      "price_input_per_million_cents": 300,
+      "price_output_per_million_cents": 1500,
+      "has_grounding": false,
+      "is_active": false
+    },
+    "openai_without_key_name": {
+      "provider": "openai",
+      "model_name": "gpt-example",
+      "label": "x",
+      "price_input_per_million_cents": 1,
+      "price_output_per_million_cents": 1,
+      "has_grounding": false,
+      "is_active": false
+    },
+    "key_name_looks_like_a_key": {
+      "provider": "claude",
+      "model_name": "claude-sonnet-5-5",
+      "label": "Claude Sonnet 5.5",
+      "price_input_per_million_cents": 300,
+      "price_output_per_million_cents": 1500,
+      "has_grounding": false,
+      "key_name": "sk-ant-1234567890",
+      "is_active": false
+    },
+    "key_name_lowercase": {
+      "provider": "claude",
+      "model_name": "claude-sonnet-5-5",
+      "label": "Claude Sonnet 5.5",
+      "price_input_per_million_cents": 300,
+      "price_output_per_million_cents": 1500,
+      "has_grounding": false,
+      "key_name": "icdt_claude_key",
+      "is_active": false
+    },
+    "price_has_fraction": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 7.5,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "price_negative": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": -1,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "grounding_not_boolean": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": "yes",
+      "is_active": true
+    },
+    "empty_model_name": {
+      "provider": "gemini",
+      "model_name": "",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "label_too_long": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "max_output_tokens_too_small": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 10,
+      "has_grounding": true,
+      "is_active": true
+    },
+    "client_sent_id": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true,
+      "id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+    },
+    "client_sent_source": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true,
+      "source": "import"
+    },
+    "extra_field": {
+      "provider": "gemini",
+      "model_name": "gemini-2.5-flash",
+      "label": "Gemini 2.5 Flash (with search)",
+      "price_input_per_million_cents": 30,
+      "price_output_per_million_cents": 250,
+      "search_price_per_1000_cents": 3500,
+      "max_output_tokens": 8192,
+      "has_grounding": true,
+      "is_active": true,
+      "api_key": "never here"
+    }
+  }
+}

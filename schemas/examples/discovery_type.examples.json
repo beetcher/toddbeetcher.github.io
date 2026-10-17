@@ -1,0 +1,133 @@
+{
+  "valid": {
+    "independent_coffee_shops": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains.",
+      "sort_order": 1
+    },
+    "libraries": {
+      "finder_key": "venue",
+      "key": "libraries",
+      "label": "Public libraries",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Branches with a community room or quiet tables a small group can use."
+    },
+    "panera_is_a_chain": {
+      "finder_key": "venue",
+      "key": "panera_bread",
+      "label": "Panera Bread locations",
+      "is_chain": true,
+      "is_active": true,
+      "search_hint": "Every Panera Bread cafe in the area."
+    },
+    "minimum": {
+      "finder_key": "venue",
+      "key": "community_centers",
+      "label": "Community centers and senior centers",
+      "is_chain": false,
+      "is_active": false
+    }
+  },
+  "invalid": {
+    "missing_finder_key": {
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "missing_key": {
+      "finder_key": "venue",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "missing_label": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "missing_is_chain": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "key_has_spaces": {
+      "finder_key": "venue",
+      "key": "coffee shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "key_uppercase": {
+      "finder_key": "venue",
+      "key": "CoffeeShops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "finder_key_has_dash": {
+      "finder_key": "high-school-tracks",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "hint_too_long": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "sort_order_negative": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains.",
+      "sort_order": -1
+    },
+    "is_chain_not_boolean": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": "no",
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains."
+    },
+    "client_sent_id": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains.",
+      "id": "6f1c2b0e-4a52-4d3b-9a65-0b6f6d1c1a01"
+    },
+    "extra_field": {
+      "finder_key": "venue",
+      "key": "coffee_shops",
+      "label": "Independent coffee shops and cafes",
+      "is_chain": false,
+      "is_active": true,
+      "search_hint": "Locally owned, one-of-a-kind spots with room to sit and talk. Not drive-through chains.",
+      "color": "green"
+    }
+  }
+}

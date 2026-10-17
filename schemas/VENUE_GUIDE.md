@@ -84,6 +84,8 @@ Because a link needs the venue to exist first, a venue is created inactive, link
 - Summary numbers: `review_count` (starts at zero) and `average_rating` (1 to 5; absent until a first review exists), kept current from the reviews collection.
 - `x_server_required` in the schema lists the readOnly fields every stored venue must have.
 
+- AI-found provenance (added October 17, 2026, thread 17; read `DISCOVERY_GUIDE.md`): `discovery`, an optional, read-only block that exists only on a venue the Discovery module created. It is set by the server through a named function, never by create, never in the edit form, and a venue loaded by hand never has it. It holds `run_id` (the discovery run that found it), `model_name`, `prompt_version`, `found_at`, `source_urls` (pages the AI cited), `marks` (how sure the AI was about each fact: `sure` or `verify`; a fact with neither a value nor a mark is unknown), `needs_attention` and `attention_reasons` (`no_street_address`, `address_not_matched`, `operator_unconfirmed`). The block is defined once in `schemas/discovery_mark.fragment.json`; `check.py` proves the copy here matches. Adding it is an optional field, so `schema_version` stays 1 and nothing became required. Candidates are always created `inactive`; activation stays the human step, and the existing readiness checklist says what is missing.
+
 ## 4. What the endpoints must do
 
 1. Venue creation and changes come only from the dashboard. Reject any readOnly field sent.

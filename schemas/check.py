@@ -18,6 +18,9 @@ Verifies, for every type in schemas/registry.json:
     a class request may only pick a seed class of type workshop;
     seed venues are valid venue records, every seed class points at a seed venue, names a room that
     exists there
+Shared fragments (registry.json "fragments", for example the Discovery module's discovery_mark block): the fragment is valid, its field names
+    are snake_case and mentioned in its guide, its valid and invalid examples behave as labelled, and every schema that embeds it carries a
+    byte-for-byte copy (so "defined once" cannot drift)
 Passing means the schema, guide, examples and test records agree. Needs: pip install jsonschema
 """
 import json, re, sys, pathlib
@@ -326,7 +329,43 @@ def check_message_kinds():
     print(f"message_kinds: {len(kinds)} kinds, {len(seeds)} seed templates, {done} golden cases checked (subject, text and HTML byte for byte)")
 
 
+def check_fragments():
+    """Shared schema fragments (spec: claude/discovery-module-plan.md). A fragment is one field definition that several schemas embed
+    unchanged. It is defined once in its own file; this proves every embedded copy still equals it."""
+    fr = json.load(open(D / "registry.json")).get("fragments", [])
+    for f in fr:
+        frag = json.load(open(D / f["file"]))
+        V.check_schema(frag)
+        guide = (D / f["guide"]).read_text()
+        all_names = list(dict.fromkeys(names(frag.get("properties", {}))))
+        for n in all_names:
+            if not SNAKE.match(n):
+                fails.append(f"fragment {f['name']}: field not snake_case: {n}")
+            if f"`{n}`" not in guide:
+                fails.append(f"fragment {f['name']}: guide {f['guide']} does not mention field: {n}")
+        ex = json.load(open(D / f["examples"]))
+        checker = V(frag, format_checker=FormatChecker())
+        for label, doc in ex["valid"].items():
+            errs = [e.message[:80] for e in checker.iter_errors(doc)]
+            if errs:
+                fails.append(f"fragment {f['name']}: valid example '{label}' fails: {errs[0]}")
+        for label, doc in ex["invalid"].items():
+            if not list(checker.iter_errors(doc)):
+                fails.append(f"fragment {f['name']}: invalid example '{label}' passed but should fail")
+        for emb in f.get("embedded_in", []):
+            sch = SCHEMAS.get(emb["schema"])
+            prop = (sch or {}).get("properties", {}).get(emb["property"])
+            want = dict(frag, readOnly=True) if emb.get("read_only") else dict(frag)
+            if prop is None:
+                fails.append(f"fragment {f['name']}: {emb['schema']} has no property {emb['property']}")
+            elif prop != want:
+                fails.append(f"fragment {f['name']}: {emb['schema']}.{emb['property']} differs from {f['file']}")
+        print(f"fragment {f['name']}: {len(all_names)} fields, {len(ex['valid'])} valid and {len(ex['invalid'])} invalid examples, "
+              f"{len(f.get('embedded_in', []))} embedded copies checked")
+
+
 check_message_kinds()
+check_fragments()
 
 if fails:
     print("\nFAILED:")

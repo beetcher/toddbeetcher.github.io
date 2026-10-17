@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/discovery_prompt.schema.json",
+  "title": "discovery_prompt",
+  "description": "The instruction text sent to the AI for one finder, kept as data so the Console can show and edit exactly what goes into the calls (see DISCOVERY_GUIDE.md and DISCOVERY_PROMPT_GUIDE.md). Versions are linked records, the same pattern as message_template: a draft is edited in place; publishing turns the draft into the new published record, whose previous_id names the record it replaces; the standing version is the published record nobody supersedes. Rules the schema cannot express: at most one draft and one standing published record per finder; every {placeholder} must be one the finder supplies (territory, types, fields, max_results for the venue finder) and curly braces are used only for placeholders; a finder with no published prompt cannot run; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "linked_records",
+  "x_retention": "Kept. Every published version stays so a run's prompt_version can be explained. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "finder_key",
+    "name",
+    "text"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "status",
+    "version"
+  ],
+  "properties": {
+    "finder_key": {
+      "description": "Which finder this prompt is for, such as venue. Must be a registered finder. Required.",
+      "type": "string",
+      "maxLength": 40,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "name": {
+      "description": "A plain-words name shown in the Console. Up to 120 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "text": {
+      "description": "The instruction text, with {placeholder} slots the system fills from the operator's choices. 20 to 12,000 characters. Required.",
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 12000
+    },
+    "status": {
+      "description": "draft (being edited, never sent) or published (the version a run may use). Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "draft",
+        "published"
+      ]
+    },
+    "version": {
+      "description": "1 for the first published version, then one more each time a draft is published; a draft carries the number it will get. Set by the server.",
+      "readOnly": true,
+      "type": "integer",
+      "minimum": 1
+    },
+    "previous_id": {
+      "description": "The published record this one replaces or was copied from. Absent on the first version. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "published_at": {
+      "description": "When the draft was published (UTC); absent while a draft. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "published_by": {
+      "description": "Who published it, as an actor string; absent while a draft. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

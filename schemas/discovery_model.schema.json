@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/discovery_model.schema.json",
+  "title": "discovery_model",
+  "description": "One AI model the Discovery station can pick, kept as data so a model is added or switched off in the Console (see DISCOVERY_GUIDE.md and DISCOVERY_MODEL_GUIDE.md). It holds the provider, the model name, the prices the cost estimate and spend cap use, and the NAME of the server setting that holds its key; never the key itself. Rules the schema cannot express: provider plus model_name is unique among live records; a model with is_active false cannot be run; the key named by key_name must exist in the server environment or a run on this model is refused; prices are whole cents per million tokens, rounded up when the real price has fractions of a cent (so a cap is never underestimated); fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept until the owner deletes it. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "provider",
+    "model_name",
+    "label",
+    "price_input_per_million_cents",
+    "price_output_per_million_cents",
+    "has_grounding",
+    "is_active"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provider": {
+            "enum": [
+              "claude",
+              "openai"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "then": {
+        "required": [
+          "key_name"
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "provider": {
+      "description": "Which company's service answers: gemini (Google, through the Google project, no key), claude (Anthropic) or openai. A new company needs a new adapter in the code; a new model from a company we already have is just a new record. Required.",
+      "enum": [
+        "gemini",
+        "claude",
+        "openai"
+      ]
+    },
+    "model_name": {
+      "description": "The model's name exactly as the provider calls it, such as gemini-2.5-flash. Up to 100 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "label": {
+      "description": "The plain-words name shown in the Console picker. Up to 120 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "price_input_per_million_cents": {
+      "description": "What the provider charges per million input tokens, in whole US cents, rounded up. Used for the estimate and the spend cap. Required.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "price_output_per_million_cents": {
+      "description": "What the provider charges per million output tokens, in whole US cents, rounded up. Required.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "search_price_per_1000_cents": {
+      "description": "What the provider charges per 1,000 searches when the model searches the web, in whole US cents, rounded up. Optional; absent means no separate search charge.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "max_output_tokens": {
+      "description": "The most output tokens one call may use, which is how a step is kept inside the spend cap. Optional; absent means the provider adapter's own default.",
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 200000
+    },
+    "has_grounding": {
+      "description": "Whether the model can search the web for real facts. A model without it can still run, but most of its facts will come back marked verify. Required.",
+      "type": "boolean"
+    },
+    "key_name": {
+      "description": "The NAME of the server setting that holds this model's key, such as ICDT_CLAUDE_KEY. Never the key. Required for claude and openai; leave absent for gemini through the Google project.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{2,60}$"
+    },
+    "is_active": {
+      "description": "The on/off switch. false means the Run tab does not offer this model and a run on it is refused. Required.",
+      "type": "boolean"
+    },
+    "notes": {
+      "description": "Anything worth remembering about this model, free text up to 2000 characters. Optional.",
+      "type": "string",
+      "maxLength": 2000
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}
