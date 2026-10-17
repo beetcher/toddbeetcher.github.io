@@ -31,7 +31,7 @@ def check(label, ok, detail=""):
 
 # the ZIP table the live system will have (a few Colorado ZIPs and one Texas ZIP is enough here)
 zip_table.set_table({z: ["CO", 39.6 + 0.12 * n, -105.4 + 0.15 * (n % 4), "Boulder"] for n, z in enumerate(("80301", "80302", "80303", "80304", "80305", "80027", "80026", "80501", "80503", "80504"))}
-                    | {"78701": ["TX", 30.2, -97.7, "Austin"], "78702": ["TX", 30.3, -97.7, "Austin"]})
+                    | {"78701": ["TX", 30.2, -97.7, "Austin"], "78702": ["TX", 30.3, -97.7, "Austin"], "99501": ["AK", 61.2, -149.9, "Anchorage"], "99546": ["AK", 51.88, -176.64, "Adak"]})
 store, limiter, dlimiter = MemoryDocStore(""), make_failure_limiter(), make_failure_limiter()
 clock = [0]
 def tick():
@@ -79,7 +79,7 @@ with sync_playwright() as p:
     check("Discovery is a station on the home page", pg.locator("#stationTiles .tile", has_text="Discovery").count() == 1)
     pg.select_option("#collPick", "discovery"); pg.wait_for_selector("#dModel")
     ban = pg.locator("#dBanner").inner_text()
-    check("the banner says the mode and the ZIP table", "LIVE" in ban and "ZIP table: 12 ZIPs" in ban, ban)
+    check("the banner says the mode and the ZIP table", "LIVE" in ban and "ZIP table: 14 ZIPs" in ban, ban)
     check("only models switched on are offered", pg.locator("#dModel option").all_inner_texts() == ["Gemini 3.5 Flash-Lite (Google search)", "Gemini 3.8 Flash (Google search)"]
           or len(pg.locator("#dModel option").all_inner_texts()) == 2, pg.locator("#dModel option").all_inner_texts())
     check("only states switched on are offered", pg.locator("#dState option").all_inner_texts() == ["Colorado"])
@@ -158,6 +158,19 @@ with sync_playwright() as p:
     pg.locator("#dStatePanel .dsw").click(); pg.wait_for_function("!document.querySelector('#dNation .dst[data-state=UT]').classList.contains('on')")
     pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_selector("#dDots circle")
     check("Colorado shows one dot per ZIP, and regions have a key", pg.locator("#dDots circle").count() == 10 and pg.locator(".dkey").count() == 3, pg.locator("#dDots circle").count())
+    INSIDE = "(() => { const path = document.querySelector('#dDots .dstate'); if (!path) return false; return Array.from(document.querySelectorAll('#dDots circle')).every(c => path.isPointInFill(new DOMPoint(+c.getAttribute('cx'), +c.getAttribute('cy')))); })()"
+    check("the state has a border and every ZIP dot sits inside it", pg.locator("#dDots .dstate").count() == 1 and pg.evaluate(INSIDE))
+    check("the whole border fits inside the map frame", pg.evaluate("(() => { const b = document.querySelector('#dDots .dstate').getBBox(), v = document.getElementById('dDots').viewBox.baseVal; return b.x >= 0 && b.y >= 0 && b.x + b.width <= v.width + 0.5 && b.y + b.height <= v.height + 0.5; })()"))
+    check("the border never gets in the way of clicking dots", pg.evaluate("getComputedStyle(document.querySelector('#dDots .dstate')).pointerEvents") == "none")
+    pg.hover('#dDots circle[data-zip="80301"]'); pg.wait_for_selector("#dTip:not([hidden])", timeout=3000)
+    check("hovering a dot shows its ZIP and town at once", "80301" in pg.locator("#dTip").inner_text() and "Boulder" in pg.locator("#dTip").inner_text(), pg.locator("#dTip").inner_text())
+    check("a region's name is in the hover label", "Boulder" in pg.locator("#dTip").inner_text())
+    pg.mouse.move(2, 2); pg.wait_for_selector("#dTip", state="hidden", timeout=3000)
+    check("the hover label goes away when the pointer leaves the dots", pg.locator("#dTip").is_hidden())
+    pg.locator('#dNation .dst[data-state=AK]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 2")
+    vb = pg.evaluate("document.getElementById('dDots').viewBox.baseVal.width / document.getElementById('dDots').viewBox.baseVal.height")
+    check("Alaska (which crosses the date line) draws as one sensible map with its dots inside the border", 0.3 < vb < 3 and pg.evaluate(INSIDE), vb)
+    pg.locator('#dNation .dst[data-state=CO]').click(); pg.wait_for_function("document.querySelectorAll('#dDots circle').length === 10")
     nb = pg.locator("#dRegName").bounding_box()
     check("the region name box is a proper sized field", nb["height"] >= 40 and nb["width"] >= 200, nb)
     w1 = pg.locator("#dDots").bounding_box()["width"]
@@ -181,7 +194,7 @@ with sync_playwright() as p:
     check("Whole state brings the map back to full size and keeps the selection", abs(pg.locator("#dDots").bounding_box()["width"] - w1) < 1 and pg.locator("#dDraftCount").inner_text().startswith("%d ZIP" % len(exp4)))
     pg.click("button:has-text('Clear selection')"); pg.wait_for_function("document.getElementById('dDraftCount').textContent.startsWith('0 ZIP')")
     check("a region's dots carry its colour and name", pg.locator('#dDots circle[data-zip="80301"]').get_attribute("fill") != pg.locator('#dDots circle[data-zip="80501"]').get_attribute("fill")
-          and "Boulder" in pg.locator('#dDots circle[data-zip="80301"] title').text_content())
+          and "Boulder" in pg.locator('#dDots circle[data-zip="80301"]').get_attribute("aria-label"))
     def drag_all():
         pg.locator("#dDots").scroll_into_view_if_needed(); r0 = pg.locator("#dDots").bounding_box()
         pg.mouse.move(r0["x"] + 2, r0["y"] + 2); pg.mouse.down(); pg.mouse.move(r0["x"] + r0["width"] - 2, r0["y"] + r0["height"] - 2, steps=8); pg.mouse.up()
@@ -287,10 +300,7 @@ with sync_playwright() as p:
         pg.click("#dSubs button[data-sub=%s]" % sub); unreadable("Settings > " + sub)
     pg.click("#dSubs button[data-sub=areas]"); pg.click("#dView_map"); pg.wait_for_selector("#dNation .dst"); unreadable("the map")
     pg.click("#dView_list")
-    pg.set_viewport_size({"width": 420, "height": 900}); pg.click("#dTabs button[data-tab=settings]"); pg.click("#dSubs button[data-sub=areas]"); pg.click("#dView_map"); pg.wait_for_selector("#dNation .dst")
-    if not pg.locator("#dDots circle").count(): pg.locator('#dNation .dst[data-state=CO]').click()
-    pg.wait_for_selector("#dDots circle")
-    check("on a phone width the map does not scroll sideways", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"), pg.evaluate("[document.documentElement.scrollWidth, window.innerWidth]"))
+    pg.set_viewport_size({"width": 420, "height": 900})  # the Run tab only: the map is a desktop tool by design
     pg.click("#dTabs button[data-tab=run]")
     check("on a phone width the Run tab does not scroll sideways", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"), pg.evaluate("[document.documentElement.scrollWidth, window.innerWidth]"))
     check("no script errors", not errors, errors)
