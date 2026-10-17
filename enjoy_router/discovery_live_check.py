@@ -4,8 +4,8 @@
 
     python3 enjoy_router/discovery_live_check.py status            the mode, which model keys exist, the ZIP table (no AI call, no cost)
     python3 enjoy_router/discovery_live_check.py dry               an estimate + a dry run for Boulder coffee shops (no AI call, no cost)
-    python3 enjoy_router/discovery_live_check.py live [model]      a TINY live run (3 results, 5 cent cap) on that model name
-                                                                   (default gemini-3.5-flash-lite), then lists what it saved
+    python3 enjoy_router/discovery_live_check.py live [model] [cap]  a TINY live run (3 results, cap in cents, default 10) on that model name
+                                                                   (default gemini-3.5-flash-lite), then lists what it saved. A call with 5 web searches can cost up to 7 cents on Gemini, so a cap under about 9 stops with cap_reached before any call.
     python3 enjoy_router/discovery_live_check.py withdraw RUN_ID   takes a run's untouched candidates back
 
 The live command needs ICDT_DISCOVERY_MODE=live on the server. It never contacts a venue; candidates are saved inactive."""
@@ -131,9 +131,9 @@ def main(argv):
     if cmd == "status":
         return 0 if status() else 1
     if cmd == "dry":
-        return run("gemini-3.5-flash-lite", 3, 5, "dry_run")
+        return run("gemini-3.5-flash-lite", 3, 10, "dry_run")
     if cmd == "live":
-        return run(argv[2] if len(argv) > 2 else "gemini-3.5-flash-lite", 3, 5, "live")
+        return run(argv[2] if len(argv) > 2 else "gemini-3.5-flash-lite", 3, int(argv[3]) if len(argv) > 3 else 10, "live")
     if cmd == "withdraw" and len(argv) > 2:
         s, b = disc("withdraw", run_id=argv[2])
         say(problem((s, b)) if s != 200 else f"withdrawn: removed {json.dumps(b['data'].get('removed'))}, kept (a person used them) {b['data'].get('kept')}"); return 0 if s == 200 else 1
