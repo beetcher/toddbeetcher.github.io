@@ -109,20 +109,20 @@
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
     var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
-    var act = el("div", "actions"); var man = btn("Manual", "quiet manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); }));
+    var act = el("div", "actions"); var man = btn("Manual", "quiet manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); if (S.tab === "spend") loadSpend(); }));
     act.lastChild.id = "dRefresh"; bar.appendChild(left); bar.appendChild(act); root.appendChild(bar);
     var ban = el("div", "dbanner"); ban.id = "dBanner"; ban.setAttribute("role", "status"); root.appendChild(ban);
     var tabs = el("div", "dtabs"); tabs.id = "dTabs";
-    [["run", "Find venues"], ["runs", "Runs"], ["settings", "Settings"]].forEach(function (t) {
-      var b = btn(t[1], "", function () { S.tab = t[0]; S.openRun = null; drawTabs(); if (t[0] === "runs") loadRuns(); }); b.dataset.tab = t[0]; tabs.appendChild(b);
+    [["run", "Find venues"], ["runs", "Runs"], ["spend", "Spend"], ["settings", "Settings"]].forEach(function (t) {
+      var b = btn(t[1], "", function () { S.tab = t[0]; S.openRun = null; drawTabs(); if (t[0] === "runs") loadRuns(); if (t[0] === "spend") loadSpend(); }); b.dataset.tab = t[0]; tabs.appendChild(b);
     });
     root.appendChild(tabs);
     var n = el("div", "notice"); n.id = "dNotice"; n.setAttribute("role", "status"); var e = el("div", "msg"); e.id = "dMsg"; e.setAttribute("role", "alert"); root.appendChild(n); root.appendChild(e);
-    ["dRun", "dRuns", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
+    ["dRun", "dRuns", "dSpend", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
   }
   function drawTabs() {
     Array.prototype.forEach.call($("dTabs").children, function (b) { b.setAttribute("aria-pressed", b.dataset.tab === S.tab ? "true" : "false"); });
-    $("dRun").hidden = S.tab !== "run"; $("dRuns").hidden = S.tab !== "runs"; $("dSettings").hidden = S.tab !== "settings";
+    $("dRun").hidden = S.tab !== "run"; $("dRuns").hidden = S.tab !== "runs"; $("dSpend").hidden = S.tab !== "spend"; $("dSettings").hidden = S.tab !== "settings";
     if (S.tab === "runs") drawRuns();
   }
   function drawAll() { drawBanner(); drawRun(); drawSettings(); drawTabs(); }
@@ -283,6 +283,54 @@
       c.appendChild(el("div", "dmini", (r.run_mode === "dry_run" ? "Dry run · " : "") + "saved " + (r.created_count || 0) + " · duplicates " + (r.duplicate_count || 0) + " · rejected " + (r.rejected_count || 0) + " · spent " + usd(r.actual_cost_cents) + " of " + usd(r.spend_cap_cents)));
       var b = btn("Open", "", function () { openRun(r.id); }); b.dataset.run = r.id; c.appendChild(b); host.appendChild(c);
     });
+  }
+
+  // ---- SPEND tab: totals worked out from the run records (nothing is stored separately, so it cannot drift)
+  var SPEND_RUNS = 200;
+  function loadSpend() {
+    return disc("list_runs", { limit: SPEND_RUNS }, true).then(function (r) {
+      if (ok(r)) { S.spendRuns = r.body.data.records || []; S.spendFail = ""; } else { S.spendRuns = null; S.spendFail = "Could not load the runs. " + problemsText(r); }
+      drawSpend();
+    });
+  }
+  function monthKey(iso) { var d = new Date(iso); if (isNaN(d)) return "unknown"; return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2); }
+  function spendTable(title, rows, first) {
+    var c = el("div", "dcard"); c.appendChild(el("h3", "", title));
+    if (!rows.length) { c.appendChild(el("div", "dmini", "Nothing yet.")); return c; }
+    var tb = el("table"), th = el("tr"); [first, "Runs", "Calls", "Spent"].forEach(function (h) { th.appendChild(el("th", "", h)); }); tb.appendChild(th);
+    rows.forEach(function (x) { var tr = el("tr"); [x.name, x.runs, x.calls, usd(x.cents)].forEach(function (v) { tr.appendChild(el("td", "", String(v))); }); tb.appendChild(tr); });
+    c.appendChild(tb); return c;
+  }
+  function spendRollup(runs) {
+    var month = {}, model = {}, area = {}, total = 0, calls = 0;
+    function add(map, name, cents, nCalls, rid) { var x = map[name] || (map[name] = { name: name, runs: {}, calls: 0, cents: 0 }); x.runs[rid] = 1; x.calls += nCalls; x.cents += cents; }
+    runs.forEach(function (r) {
+      var cents = Number(r.actual_cost_cents) || 0, steps = (r.steps || []).filter(function (s) { return s.status !== "skipped"; }), n = steps.length;
+      if (r.run_mode === "dry_run" && !cents) return;                 // a dry run costs nothing and is not a call
+      total += cents; calls += n;
+      add(month, monthKey(r.created_at), cents, n, r.id); add(model, r.model_name || "unknown model", cents, n, r.id);
+      var perStep = 0; steps.forEach(function (s) { perStep += Number(s.cost_cents) || 0; });
+      if (steps.length && perStep === cents) steps.forEach(function (s) { add(area, areaName(s.area_id), Number(s.cost_cents) || 0, 1, r.id); });
+      else add(area, (r.area_labels || []).join(" + ") || "unknown area", cents, n, r.id);
+    });
+    function list(map, newestFirst) {
+      var a = Object.keys(map).map(function (k) { var x = map[k]; return { name: x.name, runs: Object.keys(x.runs).length, calls: x.calls, cents: x.cents }; });
+      a.sort(newestFirst ? function (p, q) { return p.name < q.name ? 1 : -1; } : function (p, q) { return q.cents - p.cents; }); return a;
+    }
+    return { total: total, calls: calls, months: list(month, true), models: list(model, false), areas: list(area, false) };
+  }
+  function drawSpend() {
+    var host = $("dSpend"); if (!host) return; host.innerHTML = "";
+    if (S.spendFail) { host.appendChild(el("div", "empty", S.spendFail)); return; }
+    if (!S.spendRuns) { host.appendChild(el("div", "empty", "Loading.")); return; }
+    var u = spendRollup(S.spendRuns), thisMonth = monthKey(new Date().toISOString());
+    var cur = u.months.filter(function (m) { return m.name === thisMonth; })[0];
+    var c = el("div", "dcard"); c.appendChild(el("h3", "", "Spend")); c.id = "dSpendTotal";
+    c.appendChild(el("p", "", "This month: " + usd(cur ? cur.cents : 0) + ". All runs shown: " + usd(u.total) + " in " + u.calls + " AI call" + (u.calls === 1 ? "" : "s") + "."));
+    c.appendChild(el("div", "dmini", "These are OUR figures, worked out from the tokens and searches Google reports and the prices in Settings > Models, rounded up. Google's bill is the real total (Google Cloud billing)."));
+    if (S.spendRuns.length >= SPEND_RUNS) c.appendChild(el("div", "dmini", "Only the newest " + SPEND_RUNS + " runs are counted."));
+    host.appendChild(c);
+    host.appendChild(spendTable("By month", u.months, "Month")); host.appendChild(spendTable("By model", u.models, "Model")); host.appendChild(spendTable("By region", u.areas, "Region"));
   }
   function openRun(id) {
     disc("get_run", { id: id }, true).then(function (res) {

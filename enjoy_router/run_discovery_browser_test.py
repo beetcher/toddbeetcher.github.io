@@ -66,7 +66,11 @@ def disc_route(route):
     if q.method == "OPTIONS":
         route.fulfill(status=204, headers={**CORS, "Access-Control-Allow-Methods": "*"}); return
     r = handle_discovery(q.method, q.headers.get("authorization", ""), (q.post_data or "").encode(), KEY, "v", store, engine, ENV, dlimiter, tick())
-    route.fulfill(status=r.status, headers=CORS, body=json.dumps(r.body))
+    body = r.body
+    if EXTRA_RUNS and '"list_runs"' in (q.post_data or "") and '"limit":200' in (q.post_data or "").replace(' ', '') and body.get("ok"):
+        body = {**body, "data": {**body["data"], "records": body["data"]["records"] + EXTRA_RUNS}}
+    route.fulfill(status=r.status, headers=CORS, body=json.dumps(body))
+EXTRA_RUNS = []
 def recs(coll, **f):
     return SEED._records(seed_call, coll, **f)
 
@@ -133,6 +137,35 @@ with sync_playwright() as p:
     check("withdraw takes the candidates back", len(made) == 2 and all(v.get("deleted_at") for v in gone) and "Removed" in pg.locator("#dCands").inner_text(), [v.get("deleted_at") for v in gone])
     pg.click("#dTabs button[data-tab=runs]"); pg.wait_for_selector("#dRuns .dcard")
     check("the Runs list shows the run as Withdrawn", "Withdrawn" in pg.locator("#dRuns").inner_text())
+
+    # ---- spend tab
+    mine = RU.list(store, None, "-created_at", 5).data["records"][0]
+    pg.click("#dTabs button[data-tab=spend]"); pg.wait_for_selector("#dSpend .dcard")
+    st = pg.locator("#dSpend").inner_text()
+    mc = "$" + format(mine["actual_cost_cents"] / 100, ".2f")
+    check("Spend shows this month's total and says the figures are ours, not Google's bill", "This month: " + mc in st and "Google's bill is the real total" in st, st[:300])
+    check("Spend has By month, By model and By region tables", all(h in st for h in ("By month", "By model", "By region")) and "Boulder" in st and mine["model_name"] in st, st)
+    a_id, b_id = mine["area_ids"][0], mine["area_ids"][0]
+    def step(n, area, cents, status="ok"):
+        return {"step_number": n, "type_key": "cafe", "area_id": area, "status": status, "cost_cents": cents, "result_count": 1}
+    areas = [x["id"] for x in recs("discovery_areas")]
+    a1, a2 = areas[0], areas[1]
+    EXTRA_RUNS.extend([
+        {"id": "x1", "created_at": "2026-08-10T12:00:00Z", "model_name": "Test A", "run_mode": "live", "area_labels": ["One", "Two"], "actual_cost_cents": 12,
+         "steps": [step(1, a1, 5), step(2, a2, 7), step(3, a2, 0, "skipped")]},
+        {"id": "x2", "created_at": "2026-09-05T12:00:00Z", "model_name": "Test B", "run_mode": "live", "area_labels": ["One"], "actual_cost_cents": 9, "steps": [step(1, a1, 9)]},
+        {"id": "x3", "created_at": "2026-09-06T12:00:00Z", "model_name": "Test B", "run_mode": "dry_run", "area_labels": ["One"], "actual_cost_cents": 0, "steps": [step(1, a1, 0, "skipped")]}])
+    pg.click("#dRefresh"); pg.wait_for_function("document.getElementById('dSpend').textContent.indexOf('Test A') >= 0")
+    rows = lambda title: [r.split("\t") for r in pg.locator("#dSpend .dcard", has_text=title).locator("tr").all_inner_texts()[1:]]
+    month_rows = rows("By month"); model_rows = rows("By model"); region_rows = rows("By region")
+    check("by month: totals per month, newest first, a dry run is not counted", [r[0] for r in month_rows][:2] == ["2026-09", "2026-08"] or month_rows[0][0] >= month_rows[1][0], month_rows)
+    sep = [r for r in month_rows if r[0] == "2026-09"][0]; aug = [r for r in month_rows if r[0] == "2026-08"][0]
+    check("by month: September is one run, one call, $0.09; August one run, two calls, $0.12 (a skipped step is not a call)", sep[1:] == ["1", "1", "$0.09"] and aug[1:] == ["1", "2", "$0.12"], month_rows)
+    ma = [r for r in model_rows if r[0] == "Test A"][0]; mb = [r for r in model_rows if r[0] == "Test B"][0]
+    check("by model: each model has its own total", ma[1:] == ["1", "2", "$0.12"] and mb[1:] == ["1", "1", "$0.09"], model_rows)
+    check("by region: a run over two regions is split by call, and the biggest spender is first", sum(int(r[3].replace("$", "").replace(".", "")) for r in region_rows) == 12 + 9 + mine["actual_cost_cents"] and len(region_rows) >= 2, region_rows)
+    check("by region: the two regions of one run show their own figures ($0.07 and $0.05 or $0.06), not a joined label", "$0.07" in {r[3] for r in region_rows} and any(r[3] in ("$0.05", "$0.06") for r in region_rows) and not any("One + Two" in r[0] for r in region_rows), region_rows)
+    EXTRA_RUNS.clear()
 
     # ---- settings
     pg.click("#dTabs button[data-tab=settings]"); pg.wait_for_selector("#dSubBody .dcard")
