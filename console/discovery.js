@@ -102,6 +102,9 @@
       ".dprompt{white-space:pre-wrap;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#f6f3ea;border:1px solid #d8d2c4;border-radius:6px;padding:10px;max-height:340px;overflow:auto}" +
       ".dtable{border-collapse:collapse;width:100%;font-size:14px}.dtable th,.dtable td{border-bottom:1px solid #e4dfd2;text-align:left;padding:4px 6px;vertical-align:top}" +
       ".dprog{height:14px;border-radius:7px;background:#e9e4d8;overflow:hidden;margin:8px 0}.dprog>div{height:100%;background:var(--orange);width:0}" +
+      ".dmap{width:100%;height:auto;display:block}.dmap .dst path{fill:#e3ded0;stroke:#fff;stroke-width:1;cursor:pointer}.dmap .dst.on path{fill:#9fd36b}.dmap .dst:hover path{fill:#f3c98a}.dmap .dst.sel path{stroke:var(--orange);stroke-width:3}.dmap .dst:focus{outline:none}.dmap .dst:focus-visible path{stroke:#000;stroke-width:3}" +
+      ".dmap .dlab{font:700 11px sans-serif;fill:#1d4d00;pointer-events:none}.dzips{border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;touch-action:none;cursor:crosshair;user-select:none}.dzips circle{cursor:pointer}.dbox{fill:rgba(255,138,0,.15);stroke:#ff8a00;stroke-dasharray:4 3}" +
+      ".dswatch{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;border:1px solid #333}.dkey{padding:4px 0}.btns button[aria-pressed=true]{background:var(--orange);color:#fff}" +
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
     var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
@@ -174,6 +177,7 @@
     acts.appendChild(est); acts.appendChild(go); card.appendChild(acts);
     host.appendChild(card);
     var qh = el("div"); qh.id = "dQuote"; host.appendChild(qh); var ph = el("div"); ph.id = "dProgress"; host.appendChild(ph);
+    if (S.prefill) { var pa = S.areas.filter(function (a) { return a.id === S.prefill; })[0]; var ps_ = pa && stateRec(pa.state_code); if (ps_ && active([ps_]).length) { try { ss.value = ps_.id; } catch (e) {} } }
     ss.addEventListener("change", function () { drawAreaPicks(); invalidate(); });
     host.addEventListener("change", invalidate); host.addEventListener("input", invalidate);
     drawAreaPicks();
@@ -192,6 +196,7 @@
     whole.addEventListener("change", function () { if (whole.checked) rbs.forEach(function (c) { c.checked = false; }); });
     rbs.forEach(function (c) { c.addEventListener("change", function () { if (c.checked) whole.checked = false; }); });
     host.appendChild(fs);
+    if (S.prefill) { var pc = fs.querySelector('input[value="' + S.prefill + '"]'); if (pc) { pc.checked = true; whole.checked = false; } S.prefill = ""; }
   }
   function invalidate() { if (S.quote && S.quoteKey !== JSON.stringify(formReq())) { S.quote = null; if ($("dGo")) $("dGo").disabled = true; var q = $("dQuote"); if (q) q.innerHTML = ""; } }
   function reqOk(r) {
@@ -474,7 +479,144 @@
         { name: "is_active", label: "Switched on", kind: "bool", def: true }, { name: "notes", label: "Notes", kind: "textarea" }] };
     var rh = el("div"); host.appendChild(rh); listSection(rh, cfg, regions.sort(byName));
   }
-  function drawAreas(host) { drawAreaList(host); }
+  // ---- the map: the whole country (click a state), then a state as ZIP dots (draw a box to make or change a region)
+  var NS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs) { var e = document.createElementNS(NS, tag); Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); }); return e; }
+  var PALETTE = ["#1f77b4", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#17becf", "#bcbd22", "#2ca02c"];
+  function drawAreas(host) {
+    var vw = el("div", "dtabs"); vw.id = "dAreaView";
+    [["map", "Map"], ["list", "List"]].forEach(function (t) {
+      var b = btn(t[1], "", function () { S.areaView = t[0]; drawSettings(); }); b.id = "dView_" + t[0]; b.setAttribute("aria-pressed", (S.areaView || "map") === t[0] ? "true" : "false"); vw.appendChild(b);
+    });
+    host.appendChild(vw);
+    if ((S.areaView || "map") === "list") { drawAreaList(host); return; }
+    if (!window.US_STATES) {
+      host.appendChild(el("div", "dmini", "Loading the map…"));
+      var sc = document.createElement("script"); sc.src = "assets/us-states.js"; sc.onload = function () { if (S.tab === "settings" && S.sub === "areas") drawSettings(); };
+      sc.onerror = function () { S.areaView = "list"; setMsg("Could not load the map outlines. The List view still works."); if (S.tab === "settings" && S.sub === "areas") drawSettings(); };
+      document.head.appendChild(sc); return;
+    }
+    drawNation(host);
+    if (S.mapState) drawStatePanel(host);
+  }
+  function stateRec(code) { return S.areas.filter(function (a) { return a.kind === "state" && a.state_code === code; })[0] || null; }
+  function drawNation(host) {
+    var U = window.US_STATES; var card = el("div", "dcard"); card.appendChild(el("h3", "", "United States"));
+    card.appendChild(el("p", "dmini", "Green states are switched on. Click a state to open it: switch it on or off, see its ZIP codes, and draw regions."));
+    var svg = svgEl("svg", { viewBox: U.viewBox, class: "dmap", role: "group", "aria-label": "Map of the United States" }); svg.id = "dNation";
+    Object.keys(U.states).forEach(function (code) {
+      var st = U.states[code], rec = stateRec(code), on = !!(rec && rec.is_active);
+      var g = svgEl("g", { class: "dst" + (on ? " on" : "") + (S.mapState === code ? " sel" : ""), tabindex: "0", role: "button", "data-state": code, "aria-label": st.name + (on ? ", switched on" : ", switched off") });
+      g.appendChild(svgEl("title")).textContent = st.name + (on ? " (on)" : " (off)");
+      g.appendChild(svgEl("path", { d: st.d }));
+      if (on || S.mapState === code) { var t = svgEl("text", { x: st.cx, y: st.cy, "text-anchor": "middle", class: "dlab" }); t.textContent = code; g.appendChild(t); }
+      function pick() { S.mapState = S.mapState === code ? "" : code; S.draft = {}; S.editing = ""; drawSettings(); }
+      g.addEventListener("click", pick);
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+      svg.appendChild(g);
+    });
+    card.appendChild(svg); host.appendChild(card);
+  }
+  function drawStatePanel(host) {
+    var code = S.mapState, U = window.US_STATES.states[code], rec = stateRec(code); var card = el("div", "dcard"); card.id = "dStatePanel";
+    var top = el("div", "drow"); top.appendChild(el("h3", "", U.name + " (" + code + ")"));
+    var ctl = el("div", "btns");
+    if (rec) ctl.appendChild(switchBtn(!!rec.is_active, U.name, function () { toggleActive("discovery_areas", rec); }));
+    ctl.appendChild(btn("Close", "quiet", function () { S.mapState = ""; drawSettings(); })); top.appendChild(ctl); card.appendChild(top);
+    host.appendChild(card);
+    var cache = S.zipCache = S.zipCache || {};
+    if (!cache[code]) {
+      card.appendChild(el("div", "dmini", "Loading ZIP codes…"));
+      disc("zips", { state_code: code }, true).then(function (r) {
+        if (!ok(r)) { cache[code] = { zips: [], loaded: false, failed: true }; } else cache[code] = r.body.data;
+        if (S.tab === "settings" && S.sub === "areas" && S.mapState === code) drawSettings();
+      });
+      return;
+    }
+    var data = cache[code];
+    if (!data.zips.length) {
+      card.appendChild(el("p", "dmini", (data.failed ? "Could not load the ZIP codes." : !data.loaded ? "The ZIP table is not loaded on the server yet (run build_zip_table.py once, then deploy)." : "No ZIP data for this state.")));
+      return;
+    }
+    drawDots(card, code, data.zips);
+  }
+  function drawDots(card, code, zips) {
+    var regions = S.areas.filter(function (a) { return a.kind === "region" && a.state_code === code; }).sort(byName);
+    var colorOf = {}, regOf = {}; regions.forEach(function (r, i) { (r.zip_codes || []).forEach(function (z) { if (!(z in colorOf)) { colorOf[z] = PALETTE[i % PALETTE.length]; regOf[z] = r; } }); });
+    S.draft = S.draft || {};
+    var lat0 = Math.min.apply(null, zips.map(function (z) { return z[1]; })), lat1 = Math.max.apply(null, zips.map(function (z) { return z[1]; }));
+    var lon0 = Math.min.apply(null, zips.map(function (z) { return z[2]; })), lon1 = Math.max.apply(null, zips.map(function (z) { return z[2]; }));
+    var k = Math.cos(((lat0 + lat1) / 2) * Math.PI / 180), W = 900, pad = 16; var spanX = Math.max((lon1 - lon0) * k, 0.01), spanY = Math.max(lat1 - lat0, 0.01);
+    var sc = Math.min((W - 2 * pad) / spanX, 560 / spanY), Wd = Math.round(spanX * sc + 2 * pad), Ht = Math.round(spanY * sc + 2 * pad);
+    var pos = {}; zips.forEach(function (z) { pos[z[0]] = [pad + (z[2] - lon0) * k * sc, pad + (lat1 - z[1]) * sc]; });
+    card.appendChild(el("p", "dmini", zips.length + " ZIP codes. Drag a box to select the dots inside it; click a dot to pick or drop one. Selected dots are orange with a black ring. Existing regions have their own colour (see the key)."));
+    var mode = el("div", "btns"); var addB = btn("Add to selection", "", null), remB = btn("Take out of selection", "quiet", null);
+    function setMode(m) { S.drawMode = m; addB.setAttribute("aria-pressed", m === "add" ? "true" : "false"); remB.setAttribute("aria-pressed", m === "remove" ? "true" : "false"); }
+    addB.id = "dModeAdd"; remB.id = "dModeRemove"; addB.addEventListener("click", function () { setMode("add"); }); remB.addEventListener("click", function () { setMode("remove"); }); setMode(S.drawMode || "add");
+    mode.appendChild(addB); mode.appendChild(remB); card.appendChild(mode);
+    var svg = svgEl("svg", { viewBox: "0 0 " + Wd + " " + Ht, class: "dmap dzips", role: "group", "aria-label": "ZIP codes in the state" }); svg.id = "dDots"; svg.style.maxWidth = Wd + "px";
+    var circles = {};
+    zips.forEach(function (z) {
+      var c = svgEl("circle", { cx: pos[z[0]][0].toFixed(1), cy: pos[z[0]][1].toFixed(1), r: 4, "data-zip": z[0] }); c.appendChild(svgEl("title")).textContent = z[0] + (z[3] ? " " + z[3] : "") + (regOf[z[0]] ? " · " + regOf[z[0]].name : "");
+      svg.appendChild(c); circles[z[0]] = c;
+    });
+    var box = svgEl("rect", { class: "dbox", visibility: "hidden" }); svg.appendChild(box);
+    function paint() {
+      var n = 0;
+      Object.keys(circles).forEach(function (zc) {
+        var c = circles[zc], sel = !!S.draft[zc]; if (sel) n++;
+        c.setAttribute("fill", sel ? "#ff8a00" : (colorOf[zc] || "#a9a395")); c.setAttribute("stroke", sel ? "#000" : "none"); c.setAttribute("stroke-width", sel ? "1.5" : "0"); c.setAttribute("r", sel ? 5 : 4);
+      });
+      count.textContent = n + " ZIP" + (n === 1 ? "" : "s") + " selected" + (S.editing ? " (editing " + (S.areas.filter(function (a) { return a.id === S.editing; })[0] || {}).name + ")" : "");
+      saveNew.disabled = !n; if (saveEdit) saveEdit.disabled = !n;
+    }
+    function toSvg(e) { var r = svg.getBoundingClientRect(); return [(e.clientX - r.left) * Wd / r.width, (e.clientY - r.top) * Ht / r.height]; }
+    var start = null, moved = false, downZip = "";
+    svg.addEventListener("pointerdown", function (e) { if (e.button !== 0) return; start = toSvg(e); moved = false; downZip = (e.target && e.target.getAttribute && e.target.getAttribute("data-zip")) || ""; try { svg.setPointerCapture(e.pointerId); } catch (x) {} });
+    svg.addEventListener("pointermove", function (e) {
+      if (!start) return; var p = toSvg(e); if (Math.abs(p[0] - start[0]) + Math.abs(p[1] - start[1]) > 6) moved = true; if (!moved) return;
+      box.setAttribute("x", Math.min(start[0], p[0])); box.setAttribute("y", Math.min(start[1], p[1])); box.setAttribute("width", Math.abs(p[0] - start[0])); box.setAttribute("height", Math.abs(p[1] - start[1])); box.setAttribute("visibility", "visible");
+    });
+    svg.addEventListener("pointerup", function (e) {
+      if (!start) return; var p = toSvg(e), s0 = start; start = null; box.setAttribute("visibility", "hidden");
+      var remove = (S.drawMode === "remove") !== !!e.altKey;
+      if (!moved) { var z = downZip; if (z) { if (S.draft[z]) delete S.draft[z]; else S.draft[z] = 1; paint(); } return; }
+      var x0 = Math.min(s0[0], p[0]), x1 = Math.max(s0[0], p[0]), y0 = Math.min(s0[1], p[1]), y1 = Math.max(s0[1], p[1]);
+      Object.keys(pos).forEach(function (zc) { var q = pos[zc]; if (q[0] >= x0 && q[0] <= x1 && q[1] >= y0 && q[1] <= y1) { if (remove) delete S.draft[zc]; else S.draft[zc] = 1; } });
+      paint();
+    });
+    card.appendChild(svg);
+    var count = el("div", "dmini", ""); count.id = "dDraftCount"; count.setAttribute("role", "status"); card.appendChild(count);
+    var nm = el("input"); nm.type = "text"; nm.id = "dRegName"; nm.placeholder = "Name for a new region"; nm.setAttribute("aria-label", "Name for a new region");
+    var err = el("div", "msg"); err.setAttribute("role", "alert");
+    var row = el("div", "btns"); row.appendChild(nm);
+    var saveNew = btn("Make a new region from the selection", "", function () {
+      err.textContent = ""; adm("create", { data: { kind: "region", name: nm.value.trim(), state_code: code, zip_codes: Object.keys(S.draft).sort(), is_active: true } }, "discovery_areas").then(function (r) {
+        if (!ok(r)) { err.textContent = problemsText(r); return; } S.draft = {}; S.editing = ""; refreshAfter("discovery_areas");
+      });
+    }); saveNew.id = "dMakeRegion"; row.appendChild(saveNew);
+    var saveEdit = null;
+    if (S.editing) {
+      var cur = S.areas.filter(function (a) { return a.id === S.editing; })[0];
+      if (cur) { saveEdit = btn("Save changes to " + cur.name, "", function () {
+        err.textContent = ""; adm("update", { id: cur.id, changes: { zip_codes: Object.keys(S.draft).sort() }, expected_updated_at: cur.updated_at }, "discovery_areas").then(function (r) {
+          if (!ok(r)) { err.textContent = problemsText(r); return; } S.draft = {}; S.editing = ""; refreshAfter("discovery_areas");
+        }); }); saveEdit.id = "dSaveRegion"; row.appendChild(saveEdit); }
+    }
+    row.appendChild(btn("Clear selection", "quiet", function () { S.draft = {}; S.editing = ""; drawSettings(); }));
+    card.appendChild(row); card.appendChild(err);
+    var key = el("div", "dfield"); key.appendChild(el("b", "", "Regions in this state"));
+    if (!regions.length) key.appendChild(el("div", "dmini", "None yet. Select some dots and make one."));
+    regions.forEach(function (r, i) {
+      var li = el("div", "drow dkey"); li.dataset.region = r.id; var sw = el("span", "dswatch"); sw.style.background = PALETTE[i % PALETTE.length]; sw.setAttribute("aria-hidden", "true");
+      var lab = el("span", "", " " + r.name + " (" + (r.zip_codes || []).length + " ZIPs)" + (r.is_active ? "" : " · off")); var l = el("span"); l.appendChild(sw); l.appendChild(lab); li.appendChild(l);
+      var bs = el("span", "btns");
+      bs.appendChild(btn("Change on the map", "quiet", function () { S.draft = {}; (r.zip_codes || []).forEach(function (z) { S.draft[z] = 1; }); S.editing = r.id; drawSettings(); }));
+      bs.appendChild(btn("Search here", "quiet", function () { S.prefill = r.id; S.tab = "run"; drawRun(); drawTabs(); }));
+      li.appendChild(bs); key.appendChild(li);
+    });
+    card.appendChild(key); paint();
+  }
   // The prompt: the standing published text, an editable draft, and the version history. The exact final text is on the Find venues tab (Estimate).
   function drawPrompt(host) {
     var ps = S.prompts.filter(function (p) { return p.finder_key === "venue"; }); var pub = ps.filter(function (p) { return p.status === "published"; }).sort(function (a, b) { return b.version - a.version; });

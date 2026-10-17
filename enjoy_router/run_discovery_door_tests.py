@@ -109,6 +109,10 @@ dry = wiring.build_engine(store, {"ICDT_DISCOVERY_MODE": "dry_run"}, providers={
 n_before = len(seen_gps)
 rid3 = call("plan", REQ, eng=dry, env={"ICDT_DISCOVERY_MODE": "dry_run"}).body["data"]["run_id"]; call("step", {"run_id": rid3}, eng=dry)
 check("dry_run through the door: prompts built, no AI call, nothing spent", len(seen_gps) == n_before and call("get_run", {"id": rid3}).body["data"]["actual_cost_cents"] == 0)
+zr = call("zips", {"state_code": "CO"})
+check("zips: a state's ZIPs with place and centre point, sorted", zr.status == 200 and [z[0] for z in zr.body["data"]["zips"]] == ["80301", "80302"] and zr.body["data"]["zips"][0][1:3] == [40.0, -105.0] and zr.body["data"]["loaded"] is True, zr.body)
+check("zips: a state with none gives an empty list, bad codes are refused", call("zips", {"state_code": "TX"}).body["data"]["zips"] == [] and call("zips", {"state_code": "co"}).status == 400
+      and call("zips", {"state_code": "COLORADO"}).status == 400 and call("zips").status == 400 and call("zips", {"state_code": "CO"}, key="w" * 40).status == 401)
 check("nothing the door returns contains the key", all(SECRET not in json.dumps(x.body) for x in (call("status"), call("list_runs"), call("get_run", {"id": rid}))))
 
 print(f"{total - len(fails)}/{total} checks passed" + (f"; FAILED: {fails}" if fails else ""))

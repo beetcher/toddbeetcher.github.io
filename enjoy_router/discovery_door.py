@@ -11,6 +11,7 @@ ops (args):
     withdraw    run_id                       takes back what the run created and is still untouched
     get_run     id
     list_runs   limit (optional)             newest first
+    zips        state_code                   every ZIP in that state with its place name and centre point, for the Console map
 
 Fails closed like the Console: no admin key setting (or under 32 characters) means nothing is allowed. Logs only codes. The engine is
 built by the caller (main.py), so tests can pass one with a fake AI. This file has no Firebase in it.
@@ -25,7 +26,7 @@ from console import MIN_KEY_LENGTH, _bearer
 from crud import discovery_runs_crud as RU
 from discovery.contract import RunRequest
 from handler import HttpResult, _error
-from launch_discovery import wiring
+from launch_discovery import wiring, zip_table
 
 log = logging.getLogger("enjoy_router")
 ACTOR = "user:admin"
@@ -33,7 +34,7 @@ MAX_BODY_BYTES = 20_000
 OPS = {"status": (set(), set()), "quote": ({"finder_key", "model_id", "area_ids", "type_keys", "max_results", "spend_cap_cents"}, set()),
        "plan": ({"finder_key", "model_id", "area_ids", "type_keys", "max_results", "spend_cap_cents"}, set()),
        "step": ({"run_id"}, set()), "stop": ({"run_id"}, set()), "withdraw": ({"run_id"}, set()),
-       "get_run": ({"id"}, set()), "list_runs": (set(), {"limit"})}
+       "get_run": ({"id"}, set()), "list_runs": (set(), {"limit"}), "zips": ({"state_code"}, set())}
 STATUS = {"mode_off": 409, "run_not_active": 409, "nothing_to_withdraw": 409, "run_not_found": 404, "unknown_finder": 404,
           "unknown_model": 404, "unknown_area": 404, "unknown_type": 404, "internal_error": 500}
 
@@ -108,6 +109,12 @@ def _run(op, a, store, engine, environ):
             return False, "bad_request", "run_id must be text."
         with wiring.no_gps():
             r = getattr(engine, op)(a["run_id"], ACTOR)
+    elif op == "zips":
+        sc = a["state_code"]
+        if not (isinstance(sc, str) and len(sc) == 2 and sc.isalpha() and sc.isupper()):
+            return False, "bad_request", "state_code must be two capital letters."
+        t = zip_table.table() or {}
+        return True, {"state_code": sc, "loaded": bool(t), "zips": [[z, row[1], row[2], row[3] if len(row) > 3 else ""] for z, row in sorted(t.items()) if row[0] == sc]}
     elif op == "get_run":
         got = RU.get(store, a["id"])
         return (True, got.data) if got.ok else (False, "run_not_found", "No such run.")
