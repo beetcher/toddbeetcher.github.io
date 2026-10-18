@@ -23,19 +23,53 @@
     var r = document.createRange(); r.selectNodeContents(addr);
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
-  var copyBtn = document.getElementById('copy-addr');
-  if (copyBtn) copyBtn.addEventListener('click', function () {
-    function done(ok) {
-      if (ok) { status.textContent = 'Copied. Paste it into any email.'; }
-      else { selectAddress(); status.textContent = 'Address selected. Press copy on your device.'; }
+  function copyText(text, onDone) {
+    function fallback() {
+      var ok = false;
+      try {
+        var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+        ok = document.execCommand('copy'); document.body.removeChild(ta);
+      } catch (e) {}
+      onDone(ok);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(ADDRESS).then(function () { done(true); }, function () { done(false); });
-    } else {
-      selectAddress();
-      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
-      done(ok);
-    }
+      navigator.clipboard.writeText(text).then(function () { onDone(true); }, fallback);
+    } else { fallback(); }
+  }
+  var copyBtn = document.getElementById('copy-addr');
+  if (copyBtn) copyBtn.addEventListener('click', function () {
+    copyText(ADDRESS, function (ok) {
+      if (ok) { status.textContent = 'Copied. Paste it into any email.'; }
+      else { selectAddress(); status.textContent = 'Address selected. Press copy on your device.'; }
+    });
+  });
+
+  var NOTE = "Hi Todd,\n\nI'm interested. (Or: I'd like to introduce someone.)\n\nA little about me (or them):\n\nWhat I might like to build:\n";
+  var noteBtn = document.getElementById('copy-note');
+  if (noteBtn) noteBtn.addEventListener('click', function () {
+    copyText(NOTE, function (ok) {
+      status.textContent = ok ? 'Copied. Paste it into an email to ' + ADDRESS + '.' : 'Could not copy here. Just write a few lines about you and what you might build.';
+    });
+  });
+
+  // ---- Share this page ----
+  function pageUrl() {
+    var c = document.querySelector('link[rel="canonical"]');
+    return (c && c.href) || location.href;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-share]'), function (b) {
+    b.addEventListener('click', function () {
+      var inDialog = !!b.closest('dialog');
+      var out = inDialog ? status : document.getElementById('share-status');
+      var data = { title: 'Learn to build software with AI', text: 'Do you know anyone who\u2019d like to learn to build software with AI? Todd Beetcher is offering free coaching.', url: pageUrl() };
+      function say(m) { if (out) out.textContent = m; }
+      if (navigator.share) {
+        navigator.share(data).catch(function () {});
+      } else {
+        copyText(pageUrl(), function (ok) { say(ok ? 'Link copied. Paste it into a text or email.' : 'Copy this link: ' + pageUrl()); });
+      }
+    });
   });
 
   // ---- Reveal ----

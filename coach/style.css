@@ -123,3 +123,14 @@ a { color: var(--pink); }
 /* ---- "FREE" call-out in the hero kicker ---- */
 .kicker__free { color: var(--pink); font-size: 2.1em; line-height: .9; letter-spacing: .06em; vertical-align: -0.12em; opacity: 1; }
 .panel__kicker:has(.kicker__free) { opacity: 1; }
+
+/* ---- Phones first: email app on top. Desktops keep copy and Gmail on top. ---- */
+@media (hover: none) and (pointer: coarse) {
+  .contact__btn--app { order: -1; background: var(--pink); border-color: var(--pink); color: #fff; font-weight: 800; }
+  .contact__btn--main { order: 0; background: #fff; border-color: var(--indigo); color: var(--indigo); }
+}
+.contact__share { margin-top: 12px; }
+.btn-share { font: 800 1rem/1 var(--font); cursor: pointer; background: transparent; color: var(--cream); border: 2px solid var(--cream); padding: 14px 24px; border-radius: 999px; }
+.btn-share:hover { background: var(--cream); color: var(--indigo); }
+.btn-share:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.share__status { min-height: 1.3em; font-weight: 800; color: var(--gold); font-size: 1rem; }

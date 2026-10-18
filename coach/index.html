@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=12">
+  <link rel="stylesheet" href="style.css?v=13">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-phone.webp" media="(max-width: 720px)">
 </head>
 <body>
@@ -179,6 +179,8 @@
       <p class="panel__body">Know someone who&rsquo;d enjoy this? If you&rsquo;re a parent, relative, professor or friend, an introduction is very welcome.</p>
       <p class="panel__body panel__body--soft">If you&rsquo;re introducing someone under 18, a parent is welcome to join our first coffee.</p>
       <button type="button" class="btn-interested" data-open-contact>I&rsquo;m interested</button>
+      <button type="button" class="btn-share" data-share>Share this page</button>
+      <p class="share__status" id="share-status" role="status" aria-live="polite"></p>
       <noscript><p class="panel__body panel__body--soft">You can reach me at toddbeetcher17@gmail.com.</p></noscript>
       <p class="sign">&mdash; Todd Beetcher</p>
     </div>
@@ -194,10 +196,12 @@
     <div class="contact__actions">
       <button type="button" class="contact__btn contact__btn--main" id="copy-addr">Copy my email address</button>
       <a class="contact__btn" id="gmail-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=toddbeetcher17%40gmail.com&amp;su=I%27m%20interested%20in%20building%20something%20with%20AI&amp;body=Hi%20Todd%2C%0A%0AI%27m%20interested.%20(Or%3A%20I%27d%20like%20to%20introduce%20someone.)%0A%0AA%20little%20about%20me%20(or%20them)%3A%0A%0AWhat%20I%20might%20like%20to%20build%3A%0A" target="_blank" rel="noopener">Write to me in Gmail</a>
-      <a class="contact__btn contact__btn--quiet" href="mailto:toddbeetcher17@gmail.com?subject=I%27m%20interested%20in%20building%20something%20with%20AI">Use my email app</a>
+      <a class="contact__btn contact__btn--app" id="app-link" href="mailto:toddbeetcher17@gmail.com?subject=I%27m%20interested%20in%20building%20something%20with%20AI&amp;body=Hi%20Todd%2C%0D%0A%0D%0AI%27m%20interested.%20(Or%3A%20I%27d%20like%20to%20introduce%20someone.)%0D%0A%0D%0AA%20little%20about%20me%20(or%20them)%3A%0D%0A%0D%0AWhat%20I%20might%20like%20to%20build%3A%0D%0A">Use my email app</a>
+      <button type="button" class="contact__btn contact__btn--quiet" id="copy-note">Copy a starter note</button>
     </div>
     <p class="contact__status" id="copy-status" role="status" aria-live="polite"></p>
-    <p class="contact__small">If a button doesn&rsquo;t work for you, just copy the address and write from anywhere. &ldquo;Use my email app&rdquo; only works if your device has one set up.</p>
+    <p class="contact__small">If a button doesn&rsquo;t work for you, just copy the address and write from anywhere. &ldquo;Use my email app&rdquo; only works if your device has one set up. &ldquo;Copy a starter note&rdquo; copies a short message you can paste into any email.</p>
+    <p class="contact__share"><button type="button" class="contact__btn contact__btn--quiet" data-share>Share this page with someone</button></p>
     <p class="contact__small">Want to check me out first? <a href="https://www.linkedin.com/in/beetcher" target="_blank" rel="noopener noreferrer">Here&rsquo;s my LinkedIn</a>.</p>
     <h3 class="contact__sub">What to put in the note</h3>
     <ul class="contact__list">
@@ -207,6 +211,6 @@
     <p class="contact__small">A few sentences is fine. I&rsquo;ll write back to set up coffee. If you&rsquo;re introducing someone under 18, a parent is welcome to join the first one.</p>
   </dialog>
 
-  <script src="main.js?v=2"></script>
+  <script src="main.js?v=3"></script>
 </body>
 </html>
