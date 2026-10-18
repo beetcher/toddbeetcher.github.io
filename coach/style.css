@@ -119,3 +119,7 @@ a { color: var(--pink); }
 /* ---- Warm panel (Boulder roots): a third tint so cream panels do not blur together ---- */
 .panel--warm { --bg: #f3e5c7; border-top: 1px solid #e3d2ab; border-bottom: 1px solid #e3d2ab; }
 .panel--warm .panel__body--note { background: #fff; }
+
+/* ---- "FREE" call-out in the hero kicker ---- */
+.kicker__free { color: var(--pink); font-size: 2.1em; line-height: .9; letter-spacing: .06em; vertical-align: -0.12em; opacity: 1; }
+.panel__kicker:has(.kicker__free) { opacity: 1; }
