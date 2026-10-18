@@ -18,3 +18,5 @@
   X-Robots-Tag: noindex, nofollow, noarchive
 /docs/*
   X-Robots-Tag: noindex, nofollow, noarchive
+/coach/*
+  X-Robots-Tag: noindex, nofollow, noarchive

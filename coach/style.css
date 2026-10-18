@@ -1,0 +1,82 @@
+/* coach/style.css: a personal invitation. Same family look as the other panel pages
+   (cream and indigo panels, DM Sans, pink accent, floating pill). Self-contained. */
+:root {
+  --cream: #fff8ec; --indigo: #1b1340; --ink-soft: #5a5078; --pink: #ff3d6e; --gold: #ffc83d;
+  --font: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --pad: 24px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--indigo); font-family: var(--font); font-size: 1.125rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--pink); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+
+/* ---- Panels ---- */
+.panel {
+  --bg: var(--cream); --ink: var(--indigo);
+  position: relative; background: var(--bg); color: var(--ink);
+  min-height: 82svh; display: grid; place-items: center; text-align: center;
+  padding: 72px var(--pad) 84px;
+}
+.panel--dark { --bg: var(--indigo); --ink: var(--cream); }
+.panel--last { padding-bottom: 150px; }
+.panel__inner { width: 100%; max-width: 34rem; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.panel__kicker { font-weight: 800; font-size: .9rem; line-height: 1; letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
+.panel__head { font-weight: 800; font-size: clamp(1.9rem, 7.6vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+.panel__body { font-weight: 500; font-size: clamp(1.1rem, 4.2vw, 1.3rem); line-height: 1.5; text-wrap: pretty; }
+.panel__body--soft { opacity: .85; font-style: italic; }
+.panel__body strong { color: var(--pink); font-weight: 800; }
+.panel .mail { color: inherit; font-weight: 700; text-decoration-color: var(--pink); text-decoration-thickness: 2px; text-underline-offset: 4px; overflow-wrap: anywhere; }
+
+/* ---- Hero ---- */
+.panel--hero { min-height: 0; padding-top: 56px; padding-bottom: 96px; align-content: start; row-gap: 28px; }
+.panel--hero .panel__head { font-size: clamp(2.5rem, 11vw, 4.4rem); line-height: 1.03; letter-spacing: -0.03em; color: var(--indigo); }
+.panel--hero .panel__head::after { content: ''; display: block; width: 64px; height: 6px; border-radius: 3px; background: var(--pink); margin: 18px auto 0; }
+.hero__photo { width: 100%; max-width: 34rem; border-radius: 22px; overflow: hidden; box-shadow: 0 18px 44px rgba(27,19,64,.28); }
+.hero__photo img { width: 100%; height: auto; }
+@media (max-width: 720px) {
+  .hero__photo img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 38%; }
+}
+@media (min-width: 721px) {
+  .hero__photo { max-width: 960px; }
+  .panel--hero .panel__inner { max-width: 40rem; }
+}
+.panel__next {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%;
+  background: #fff; color: #BF5700; font-size: 1.6rem; line-height: 1; text-decoration: none;
+  box-shadow: 0 6px 16px rgba(20,8,40,.3); transition: transform .2s ease;
+}
+.panel__next:hover { transform: translateX(-50%) translateY(3px); }
+
+/* ---- Photos ---- */
+.photo { width: 100%; margin: 6px 0; border-radius: 18px; overflow: hidden; box-shadow: 0 14px 36px rgba(0,0,0,.22); background: #000; }
+.photo--portrait { max-width: 18rem; }
+.photo--wide { max-width: 34rem; }
+.photo figcaption { background: var(--cream); color: var(--indigo); font-weight: 800; font-size: 1rem; padding: 10px 14px; }
+
+/* ---- Lists and quote ---- */
+.story { text-align: left; display: flex; flex-direction: column; gap: 12px; margin-top: 6px; padding: 20px 20px 20px 22px; border-left: 6px solid var(--pink); background: rgba(255,248,236,.08); border-radius: 0 16px 16px 0; font-weight: 500; font-size: clamp(1.05rem, 4vw, 1.2rem); line-height: 1.5; }
+.steps { list-style: none; counter-reset: s; width: 100%; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.steps li { counter-increment: s; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; background: rgba(255,248,236,.1); font-weight: 700; font-size: clamp(1.05rem, 4vw, 1.2rem); line-height: 1.3; }
+.steps li::before { content: counter(s); flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--pink); color: #fff; font-weight: 800; }
+.takeaways { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.takeaways li { position: relative; padding: 14px 16px 14px 48px; border-radius: 16px; background: #fff; border: 1px solid #eadfcb; font-weight: 700; font-size: clamp(1.05rem, 4vw, 1.2rem); line-height: 1.3; }
+.takeaways li::before { content: '\2713'; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--pink); color: #fff; font-size: .95rem; font-weight: 800; }
+.sign { margin-top: 8px; font-weight: 800; font-size: 1.4rem; }
+
+/* ---- The floating "I'm interested" pill ---- */
+.pill {
+  position: fixed; right: 18px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 50;
+  font: 800 1.0625rem/1 var(--font); text-decoration: none; color: #fff; background: var(--pink);
+  padding: 16px 24px; border-radius: 999px; box-shadow: 0 8px 24px rgba(27,19,64,.4);
+  border: 2px solid rgba(255,255,255,.9); transition: transform .15s ease, background .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pill:hover { background: #e62e5f; transform: translateY(-2px); }
+.pill:focus-visible, .panel__next:focus-visible, .mail:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* ---- Gentle reveal (only when JS runs and motion is allowed) ---- */
+.js .panel__inner > *, .js .hero__photo { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.js .is-in .panel__inner > *, .js .hero__photo.is-in { opacity: 1; transform: none; }
