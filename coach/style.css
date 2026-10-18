@@ -104,3 +104,18 @@ a { color: var(--pink); }
 .contact__list { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 1rem; margin: 0 0 8px; }
 .contact__list li { padding-left: 20px; position: relative; }
 .contact__list li::before { content: ''; position: absolute; left: 4px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); }
+
+/* ---- Hero caption, link lists, section heads ---- */
+.hero__photo { background: var(--cream); }
+.hero__photo figcaption { padding: 10px 14px 12px; font-size: .9rem; font-style: italic; color: var(--ink-soft); text-align: center; background: var(--cream); }
+.linklist { list-style: none; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.linklist a { display: inline-block; padding: 10px 16px; border-radius: 999px; border: 2px solid currentColor; color: inherit; font-weight: 700; font-size: .98rem; line-height: 1.2; text-decoration: none; }
+.linklist a:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
+.linklist a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.roots__head { margin-top: 10px; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.01em; }
+.contact a:not(.contact__btn) { color: var(--pink); font-weight: 700; }
+.panel--dark .panel__body--note { background: rgba(255,248,236,.1); border-color: rgba(255,248,236,.25); color: var(--cream); }
+
+/* ---- Warm panel (Boulder roots): a third tint so cream panels do not blur together ---- */
+.panel--warm { --bg: #f3e5c7; border-top: 1px solid #e3d2ab; border-bottom: 1px solid #e3d2ab; }
+.panel--warm .panel__body--note { background: #fff; }
