@@ -76,7 +76,7 @@ with sync_playwright() as p:
     pg.select_option("#collPick", "venues"); pg.wait_for_function("document.getElementById('vChecked').textContent.length > 0")
     names = lambda: sorted(pg.locator("#vList > li .name, #vList > li h3, #vList > li b").first.evaluate_all("x => []") or [])
     def shown():
-        return sorted(pg.locator("#vList > li").evaluate_all("els => els.map(e => e.innerText.split('\\n')[0].trim())"))
+        return sorted(pg.locator("#vList > li").evaluate_all("els => els.map(e => (e.querySelector('.vname') || e).innerText.split('\\n')[0].trim())"))
     count = lambda: pg.inner_text("#vCount")
     check("all venues show by default, with a plain count", len(shown()) == 8 and count() == "8 venues", (shown(), count()))
     check("the status filter says what it is: All (active / inactive), Active, Inactive", pg.locator("#vFilter option").all_inner_texts() == ["All (active / inactive)", "Active", "Inactive"], pg.locator("#vFilter option").all_inner_texts())

@@ -88,10 +88,14 @@
   .dlink { color: #7a3a00; font-weight: 700; display: inline-flex; align-items: center; min-height: 36px; }
   li.vrow .dfold { margin: 8px 0; }
   li.vrow .dfold summary { cursor: pointer; font-weight: 700; min-height: 36px; display: flex; align-items: center; }
-  .vline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 8px 14px; min-height: 44px; }
-  .vline .vname { font-weight: 800; font-size: 16px; }
-  .vline .vaddr { color: var(--muted); font-size: 14px; flex: 1 1 200px; min-width: 0; }
-  .vline .vhours { font-size: 14px; color: var(--ink); }
+  li.vrow .dfold summary::before { content: "\25B8"; margin-right: 8px; }
+  li.vrow .dfold[open] summary::before { content: "\25BE"; }
+  .vline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 14px; min-height: 44px; }
+  .vline .vmain { flex: 1 1 280px; min-width: 0; }
+  .vline .vname { font-weight: 800; font-size: 16px; margin-right: 10px; overflow-wrap: anywhere; }
+  .vline .vaddr { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+  .vline .vhours { display: block; font-size: 14px; color: var(--ink); margin-top: 2px; overflow-wrap: anywhere; }
+  .vline .vacts { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; margin-left: auto; }
   .vlink { display: inline-flex; align-items: center; min-height: 44px; padding: 2px 18px; border-radius: 999px; border: 2px solid #7a3a00; color: #7a3a00; background: #fff; font-weight: 700; font-size: 14px; text-decoration: none; }
   .vlink:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
   li.vrow .stoggle { position: static; }
@@ -1564,7 +1568,7 @@
     var n = String(rec.availability_notes || "");
     if (n.indexOf(HOURS_PREFIX) !== 0) return { text: "", full: "" };
     var t = n.slice(HOURS_PREFIX.length).trim();
-    return { text: t.length > 46 ? t.slice(0, 45) + "\u2026" : t, full: t };
+    return { text: t.length > 90 ? t.slice(0, 89) + "\u2026" : t, full: t };
   }
   // ---- the opened view of a venue: what people look for first, the raw record folded away
   var DAY_ABBR = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
@@ -1676,20 +1680,24 @@
   function venueRow(rec, isNew) {
     var li = document.createElement("li"); li.className = "vrow" + (isNew ? " isnew" : "");
     var ln = document.createElement("div"); ln.className = "vline";
+    var vm = document.createElement("div"); vm.className = "vmain";
     var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
     var ad = document.createElement("span"); ad.className = "vaddr"; ad.textContent = vAddrLine(rec);
-    ln.appendChild(nm); ln.appendChild(ad);
+    vm.appendChild(nm); vm.appendChild(ad);
+    var hr = vHoursShort(rec);
+    if (hr.text) { var hs = document.createElement("span"); hs.className = "vhours"; hs.textContent = hr.text; hs.title = hr.full; vm.appendChild(hs); }
+    ln.appendChild(vm);
+    var acts = document.createElement("div"); acts.className = "vacts";
     if (/^https?:\/\//i.test(String(rec.website_url || ""))) {
       var lk = document.createElement("a"); lk.className = "vlink"; lk.textContent = "Link"; lk.href = rec.website_url;
       lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.setAttribute("aria-label", "Website for " + (rec.name || "this venue"));
-      ln.appendChild(lk);
+      acts.appendChild(lk);
     }
-    var hr = vHoursShort(rec);
-    if (hr.text) { var hs = document.createElement("span"); hs.className = "vhours"; hs.textContent = hr.text; hs.title = hr.full; ln.appendChild(hs); }
     var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
-    ln.appendChild(tg.btn);
+    acts.appendChild(tg.btn);
     var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.setAttribute("aria-expanded", "false");
-    ln.appendChild(dt);
+    acts.appendChild(dt);
+    ln.appendChild(acts);
 
     var detail = venueDetail(rec);
 

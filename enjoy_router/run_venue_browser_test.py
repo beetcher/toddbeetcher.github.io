@@ -186,7 +186,7 @@ with sync_playwright() as p:
 
     # 11. the one-line scan row: name, address, Link, hours, Details
     HP = "Public hours per the web (check before relying on them): "
-    api("venues", "update", id=venue("Amante Coffee")["id"], changes={"website_url": "https://amante.example/home", "availability_notes": HP + "Mon-Fri 7am-5pm; Sat 8am-3pm; closed Sun and holidays"})
+    api("venues", "update", id=venue("Amante Coffee")["id"], changes={"website_url": "https://amante.example/home", "availability_notes": HP + "Mon-Fri 7am-5pm; Sat 8am-3pm; closed Sun and holidays; kitchen closes one hour earlier; extended summer hours on the patio Thursday to Saturday"})
     pg.click("#vRefresh")
     pg.wait_for_function("document.querySelector('#vList li .vlink') !== null")
     am = pg.locator("#vList li.vrow").filter(has=pg.locator(".vname", has_text=_re.compile("^Amante Coffee$")))
@@ -196,9 +196,16 @@ with sync_playwright() as p:
     check("Link pill reads just Link and does not show the URL", lk.inner_text() == "Link" and "amante.example" not in am.locator(".vline").inner_text())
     check("Link goes to the website in a new tab, safely", lk.get_attribute("href") == "https://amante.example/home" and lk.get_attribute("target") == "_blank" and "noopener" in lk.get_attribute("rel"))
     check("a venue with no website has no Link", pd.locator("a.vlink").count() == 0)
-    check("hours snippet is shown trimmed, full text on hover", am.locator(".vhours").count() == 1 and am.locator(".vhours").inner_text().endswith("\u2026") and "closed Sun" in am.locator(".vhours").get_attribute("title"))
+    check("long hours are trimmed on the row, full text on hover", am.locator(".vhours").count() == 1 and am.locator(".vhours").inner_text().endswith("\u2026") and "closed Sun" in am.locator(".vhours").get_attribute("title"))
     check("no hours snippet when none were collected", pd.locator(".vhours").count() == 0)
     check("the scan line stays compact at phone width (wraps, not the whole card)", am.locator(".vline").bounding_box()["height"] < 220)
+    pg.set_viewport_size({"width": 900, "height": 1000}); pg.wait_for_timeout(200)
+    bx = lambda loc: loc.bounding_box()
+    check("on a wide screen the buttons line up on the right on every row, with or without a Link", abs(bx(am.locator("button.vdetails"))["x"] - bx(pd.locator("button.vdetails"))["x"]) < 1 and abs(bx(am.locator("button.stoggle"))["x"] - bx(pd.locator("button.stoggle"))["x"]) < 1)
+    check("name and address never run under the buttons", all(bx(r.locator(".vmain"))["x"] + bx(r.locator(".vmain"))["width"] <= bx(r.locator(".vacts"))["x"] + 1 or bx(r.locator(".vacts"))["y"] >= bx(r.locator(".vmain"))["y"] + bx(r.locator(".vmain"))["height"] - 1 for r in (am, pd)))
+    check("each row's contents stay inside the card", all(bx(r.locator(".vacts"))["x"] + bx(r.locator(".vacts"))["width"] <= bx(r)["x"] + bx(r)["width"] + 1 for r in (am, pd)))
+    pg.set_viewport_size({"width": 420, "height": 1000}); pg.wait_for_timeout(200)
+    check("on a phone the buttons stay inside the card too", all(bx(r.locator(".vacts"))["x"] + bx(r.locator(".vacts"))["width"] <= bx(r)["x"] + bx(r)["width"] + 1 and bx(r.locator(".vacts"))["x"] >= bx(r)["x"] - 1 for r in (am, pd)))
     check("Details starts closed, with the rest hidden", pd.locator("button.vdetails").get_attribute("aria-expanded") == "false" and not pd.locator(".detail").is_visible())
     pd.locator("button.vdetails").click()
     check("Details opens the rest", pd.locator("button.vdetails").get_attribute("aria-expanded") == "true" and pd.locator(".detail").is_visible() and "Rooms: 0" in pd.locator(".detail").inner_text() and "Added:" in pd.locator(".detail").inner_text())
@@ -224,7 +231,10 @@ with sync_playwright() as p:
     check("class open days are listed", "Mon 09:00\u201317:00" in txt)
     check("rooms with capacity and the good-to-know facts", "Back room (up to 18)" in txt and "Accessible" in txt and "Wi-Fi" in txt and "No minors" in txt and "Parking: Street parking" in txt)
     check("where-this-came-from is folded and says AI search, operator unconfirmed", dt.locator("details.dfold").first.get_attribute("open") is None and "Found by AI search" in dt.locator("details.dfold").first.text_content() and "operator unconfirmed" in dt.locator("details.dfold").first.text_content())
+    arrow = lambda i: pg.evaluate("(i) => getComputedStyle(document.querySelectorAll('#vList li.vrow .detail details.dfold summary')[i], '::before').content", i)
+    check("the folded sections show a closed arrow so they look clickable", "\u25b8" in arrow(0) and "\u25b8" in arrow(1))
     dt.locator("details.dfold").first.locator("summary").click()
+    check("an opened fold shows the open arrow", "\u25be" in pg.evaluate("() => getComputedStyle(document.querySelector('#vList li.vrow .detail details.dfold[open] summary'), '::before').content"))
     check("sources show readable labels, not the Google redirect address", dt.get_by_role("link", name="Google search result").count() == 1 and dt.get_by_role("link", name="amante.example").count() >= 1 and "grounding-api-redirect" not in dt.locator("details.dfold").first.inner_text())
     check("the raw fields stay available but folded", dt.locator("details.dfold").nth(1).get_attribute("open") is None and "schema_version" in dt.locator("details.dfold").nth(1).text_content())
     # a bare venue: nothing invented
