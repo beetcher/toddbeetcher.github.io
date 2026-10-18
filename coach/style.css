@@ -22,7 +22,7 @@ a { color: var(--pink); }
 .panel--dark { --bg: var(--indigo); --ink: var(--cream); }
 .panel--last { padding-bottom: 150px; }
 .panel__inner { width: 100%; max-width: 34rem; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-.panel__kicker { font-weight: 800; font-size: .9rem; line-height: 1; letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
+.panel__kicker { text-wrap: balance; font-weight: 800; font-size: .9rem; line-height: 1.25; letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
 .panel__head { font-weight: 800; font-size: clamp(1.9rem, 7.6vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
 .panel__body { font-weight: 500; font-size: clamp(1.1rem, 4.2vw, 1.3rem); line-height: 1.5; text-wrap: pretty; }
 .panel__body--soft { opacity: .85; font-style: italic; }
