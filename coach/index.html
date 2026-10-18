@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;0,800;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1">
+  <link rel="stylesheet" href="style.css?v=2">
   <link rel="preload" as="image" type="image/webp" href="assets/hero-phone.webp" media="(max-width: 720px)">
 </head>
 <body>
@@ -32,6 +32,7 @@
       <h1 class="panel__head" id="p1-title">What do you want to build?</h1>
       <p class="panel__body">If you&rsquo;re a student or young adult who&rsquo;s curious about making something with AI, I&rsquo;d love to sit down with you and help. You don&rsquo;t need any experience. A rough idea is plenty.</p>
       <p class="panel__body panel__body--soft">I&rsquo;m looking for a few people who&rsquo;d like an experienced person beside them.</p>
+      <p class="panel__body panel__body--note">Reading this for someone else? A parent, relative, professor or friend is welcome to start the conversation. Just tell me a little about them.</p>
     </div>
     <figure class="hero__photo">
       <picture>
@@ -150,13 +151,35 @@
       <h2 class="panel__head" id="p10-title">Let&rsquo;s start with coffee.</h2>
       <p class="panel__body">Tell me a little about yourself and what you might like to build. We&rsquo;ll meet, talk about how I could help, and see whether it feels like a fit. If it does, we&rsquo;ll set up a time to build.</p>
       <p class="panel__body">Know someone who&rsquo;d enjoy this? If you&rsquo;re a parent, relative, professor or friend, an introduction is very welcome.</p>
-      <p class="panel__body panel__body--soft">Tap <strong>I&rsquo;m interested</strong> to send me a note. Or write to <a class="mail" href="mailto:toddbeetcher17@gmail.com">toddbeetcher17@gmail.com</a>.</p>
+      <p class="panel__body panel__body--soft">If you&rsquo;re introducing someone under 18, a parent is welcome to join our first coffee.</p>
+      <button type="button" class="btn-interested" data-open-contact>I&rsquo;m interested</button>
+      <noscript><p class="panel__body panel__body--soft">You can reach me at toddbeetcher17@gmail.com.</p></noscript>
       <p class="sign">&mdash; Todd Beetcher</p>
     </div>
   </section>
 
-  <a class="pill" id="interested" href="mailto:toddbeetcher17@gmail.com?subject=I%27m%20interested%20in%20building%20something%20with%20AI&amp;body=Hi%20Todd%2C%0D%0A%0D%0AI%27m%20interested.%20(Or%3A%20I%27d%20like%20to%20introduce%20someone.)%0D%0A%0D%0AA%20little%20about%20me%20(or%20them)%3A%0D%0A%0D%0AWhat%20I%20might%20like%20to%20build%3A%0D%0A">I&rsquo;m interested</a>
+  <button type="button" class="pill" id="interested" data-open-contact aria-haspopup="dialog">I&rsquo;m interested</button>
 
-  <script src="main.js?v=1"></script>
+  <dialog class="contact" id="contact" aria-labelledby="contact-title">
+    <button type="button" class="contact__close" data-close-contact aria-label="Close">&times;</button>
+    <h2 class="contact__title" id="contact-title">I&rsquo;m glad you&rsquo;re interested.</h2>
+    <p class="contact__lead">The easiest way is to send me a short note. My address:</p>
+    <p class="contact__addr" id="contact-addr">toddbeetcher17@gmail.com</p>
+    <div class="contact__actions">
+      <button type="button" class="contact__btn contact__btn--main" id="copy-addr">Copy my email address</button>
+      <a class="contact__btn" id="gmail-link" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=toddbeetcher17%40gmail.com&amp;su=I%27m%20interested%20in%20building%20something%20with%20AI&amp;body=Hi%20Todd%2C%0A%0AI%27m%20interested.%20(Or%3A%20I%27d%20like%20to%20introduce%20someone.)%0A%0AA%20little%20about%20me%20(or%20them)%3A%0A%0AWhat%20I%20might%20like%20to%20build%3A%0A" target="_blank" rel="noopener">Write to me in Gmail</a>
+      <a class="contact__btn contact__btn--quiet" href="mailto:toddbeetcher17@gmail.com?subject=I%27m%20interested%20in%20building%20something%20with%20AI">Use my email app</a>
+    </div>
+    <p class="contact__status" id="copy-status" role="status" aria-live="polite"></p>
+    <p class="contact__small">If a button doesn&rsquo;t work for you, just copy the address and write from anywhere. &ldquo;Use my email app&rdquo; only works if your device has one set up.</p>
+    <h3 class="contact__sub">What to put in the note</h3>
+    <ul class="contact__list">
+      <li>A little about you, or the person you&rsquo;re introducing.</li>
+      <li>Anything you might like to build. A rough idea is plenty.</li>
+    </ul>
+    <p class="contact__small">A few sentences is fine. I&rsquo;ll write back to set up coffee. If you&rsquo;re introducing someone under 18, a parent is welcome to join the first one.</p>
+  </dialog>
+
+  <script src="main.js?v=2"></script>
 </body>
 </html>

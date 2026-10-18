@@ -72,7 +72,7 @@ a { color: var(--pink); }
   font: 800 1.0625rem/1 var(--font); text-decoration: none; color: #fff; background: var(--pink);
   padding: 16px 24px; border-radius: 999px; box-shadow: 0 8px 24px rgba(27,19,64,.4);
   border: 2px solid rgba(255,255,255,.9); transition: transform .15s ease, background .2s ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent; cursor: pointer;
 }
 .pill:hover { background: #e62e5f; transform: translateY(-2px); }
 .pill:focus-visible, .panel__next:focus-visible, .mail:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
@@ -80,3 +80,27 @@ a { color: var(--pink); }
 /* ---- Gentle reveal (only when JS runs and motion is allowed) ---- */
 .js .panel__inner > *, .js .hero__photo { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
 .js .is-in .panel__inner > *, .js .hero__photo.is-in { opacity: 1; transform: none; }
+
+/* ---- Note line in the hero, in-panel button ---- */
+.panel__body--note { font-size: clamp(1rem, 3.8vw, 1.1rem); padding: 14px 16px; border-radius: 16px; background: #fff; border: 1px solid #eadfcb; text-align: left; font-weight: 500; }
+.btn-interested { font: 800 1.0625rem/1 var(--font); cursor: pointer; border: 0; color: #fff; background: var(--pink); padding: 16px 28px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.btn-interested:hover { background: #e62e5f; }
+.btn-interested:focus-visible, .contact__btn:focus-visible, .contact__close:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* ---- Contact popup ---- */
+.contact { border: 0; border-radius: 22px; padding: 28px 22px 24px; width: min(30rem, calc(100vw - 24px)); max-height: calc(100svh - 24px); overflow-y: auto; margin: auto; background: var(--cream); color: var(--indigo); box-shadow: 0 24px 64px rgba(0,0,0,.5); text-align: center; }
+.contact::backdrop { background: rgba(20,12,40,.72); }
+.contact__close { position: absolute; top: 8px; right: 10px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--indigo); font-size: 2rem; line-height: 1; cursor: pointer; }
+.contact__title { font-weight: 800; font-size: clamp(1.6rem, 6.4vw, 2.1rem); line-height: 1.1; letter-spacing: -0.02em; margin: 6px 28px 12px; text-wrap: balance; }
+.contact__lead { font-weight: 500; font-size: 1.05rem; margin-bottom: 6px; }
+.contact__addr { font-weight: 800; font-size: clamp(1.1rem, 4.8vw, 1.35rem); padding: 12px 10px; border-radius: 14px; background: #fff; border: 2px solid var(--pink); margin-bottom: 14px; overflow-wrap: anywhere; user-select: all; -webkit-user-select: all; }
+.contact__actions { display: flex; flex-direction: column; gap: 10px; }
+.contact__btn { display: block; width: 100%; font: 800 1.05rem/1.2 var(--font); text-align: center; text-decoration: none; cursor: pointer; padding: 15px 18px; border-radius: 999px; border: 2px solid var(--indigo); background: #fff; color: var(--indigo); }
+.contact__btn--main { background: var(--pink); border-color: var(--pink); color: #fff; }
+.contact__btn--quiet { border-color: #cfc3ad; font-weight: 700; font-size: .98rem; }
+.contact__status { min-height: 1.4em; margin-top: 8px; font-weight: 800; color: #0a7a3d; }
+.contact__small { font-size: .95rem; line-height: 1.45; color: var(--ink-soft); margin-top: 6px; }
+.contact__sub { font-weight: 800; font-size: 1.05rem; margin: 16px 0 6px; }
+.contact__list { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 1rem; margin: 0 0 8px; }
+.contact__list li { padding-left: 20px; position: relative; }
+.contact__list li::before { content: ''; position: absolute; left: 4px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); }
