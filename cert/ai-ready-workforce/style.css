@@ -288,7 +288,7 @@ a:hover {
    ============================================================ */
 .panel--hero-doc {
   position: relative;
-  height: 480px;
+  height: clamp(480px, 42vw, 720px);
   overflow: hidden;
   padding: 0;
 }
@@ -308,6 +308,8 @@ a:hover {
 }
 
 /* Per-image focal point (keeps the key sign in view) */
+.panel--hero-doc__bg img.hero-pos-20 { object-position: center 20%; }
+.panel--hero-doc__bg img.hero-pos-25 { object-position: center 25%; }
 .panel--hero-doc__bg img.hero-pos-35 { object-position: center 35%; }
 .panel--hero-doc__bg img.hero-pos-45 { object-position: center 45%; }
 .panel--hero-doc__bg img.hero-pos-55 { object-position: center 55%; }
