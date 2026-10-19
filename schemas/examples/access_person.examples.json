@@ -1,0 +1,64 @@
+{
+  "valid": {
+    "todd_super_admin": {
+      "email": "toddbeetcher17@gmail.com",
+      "display_name": "Todd Beetcher",
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10",
+      "is_active": true
+    },
+    "region_head_with_territory": {
+      "email": "example.head@gmail.com",
+      "display_name": "Example Region Head",
+      "role_id": "9d2b7e44-1c3a-4f5b-8e6d-0a1b2c3d4e5f",
+      "scope_region_id": "c0ffee00-1111-4222-8333-444455556666",
+      "individual_id": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee",
+      "is_active": true
+    },
+    "minimum": {
+      "email": "minimum@example.com",
+      "role_id": "9d2b7e44-1c3a-4f5b-8e6d-0a1b2c3d4e5f",
+      "is_active": false
+    }
+  },
+  "invalid": {
+    "missing_email": {
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10",
+      "is_active": true
+    },
+    "missing_role_id": {
+      "email": "toddbeetcher17@gmail.com",
+      "is_active": true
+    },
+    "missing_is_active": {
+      "email": "toddbeetcher17@gmail.com",
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10"
+    },
+    "email_without_at_sign": {
+      "email": "toddbeetcher17.gmail.com",
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10",
+      "is_active": true
+    },
+    "role_id_not_a_uuid": {
+      "email": "toddbeetcher17@gmail.com",
+      "role_id": "super_admin",
+      "is_active": true
+    },
+    "scope_region_id_not_a_uuid": {
+      "email": "example.head@gmail.com",
+      "role_id": "9d2b7e44-1c3a-4f5b-8e6d-0a1b2c3d4e5f",
+      "scope_region_id": "boulder",
+      "is_active": true
+    },
+    "is_active_not_a_boolean": {
+      "email": "toddbeetcher17@gmail.com",
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10",
+      "is_active": "yes"
+    },
+    "unknown_field": {
+      "email": "toddbeetcher17@gmail.com",
+      "role_id": "3f6c1a52-8b1e-4d0a-9c1f-2a7e5d4b6c10",
+      "is_active": true,
+      "password": "hunter2"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "valid": {
+    "super_admin": {
+      "key": "super_admin",
+      "label": "Super admin",
+      "description": "The owner. May do everything, including inviting and removing other people.",
+      "is_super_admin": true,
+      "is_active": true
+    },
+    "region_head": {
+      "key": "region_head",
+      "label": "Region head",
+      "description": "Runs one region: edits and switches on its venues and manages its instructors. No Discovery spending, no settings, no access management.",
+      "capabilities": [
+        "view_console",
+        "edit_venues",
+        "activate_venues",
+        "manage_instructors",
+        "manage_requests"
+      ],
+      "is_super_admin": false,
+      "is_active": true
+    },
+    "minimum": {
+      "key": "viewer",
+      "label": "Viewer",
+      "is_super_admin": false,
+      "is_active": false,
+      "capabilities": [
+        "view_console"
+      ]
+    }
+  },
+  "invalid": {
+    "missing_key": {
+      "label": "Region head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console"
+      ]
+    },
+    "missing_label": {
+      "key": "region_head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console"
+      ]
+    },
+    "missing_is_super_admin": {
+      "key": "region_head",
+      "label": "Region head",
+      "is_active": true,
+      "capabilities": [
+        "view_console"
+      ]
+    },
+    "missing_is_active": {
+      "key": "region_head",
+      "label": "Region head",
+      "is_super_admin": false,
+      "capabilities": [
+        "view_console"
+      ]
+    },
+    "key_not_snake_case": {
+      "key": "Region Head",
+      "label": "Region head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console"
+      ]
+    },
+    "unknown_capability": {
+      "key": "region_head",
+      "label": "Region head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console",
+        "delete_everything"
+      ]
+    },
+    "repeated_capability": {
+      "key": "region_head",
+      "label": "Region head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console",
+        "view_console"
+      ]
+    },
+    "is_super_admin_not_a_boolean": {
+      "key": "super_admin",
+      "label": "Super admin",
+      "is_super_admin": "yes",
+      "is_active": true
+    },
+    "unknown_field": {
+      "key": "region_head",
+      "label": "Region head",
+      "is_super_admin": false,
+      "is_active": true,
+      "capabilities": [
+        "view_console"
+      ],
+      "password": "hunter2"
+    }
+  }
+}

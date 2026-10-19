@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/access_role.schema.json",
+  "title": "access_role",
+  "description": "A named bundle of capabilities that can be given to a person, such as Super admin or Region head (see ACCESS_GUIDE.md and ACCESS_ROLE_GUIDE.md). The capability list in this schema is the one table of what the Console and the server can allow; a role is a choice from it. Rules the schema cannot express: key is unique among live records and never changes; a role with is_super_admin true holds every capability, listed or not; a role that is not a super admin needs at least one capability; a role that people still hold cannot be deleted; the last active super admin role cannot be switched off; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept until the owner deletes it. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "key",
+    "label",
+    "is_super_admin",
+    "is_active"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "key": {
+      "description": "A short snake_case name for the role, such as super_admin or region_head. Unique among live records. Set once; the label is what people read. Required.",
+      "type": "string",
+      "maxLength": 60,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "label": {
+      "description": "The plain-words name shown in the Console, such as Region head. Up to 120 characters. Required.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "description": "One or two sentences on who this role is for and what it is meant to do. Up to 1,000 characters. Optional.",
+      "type": "string",
+      "maxLength": 1000
+    },
+    "capabilities": {
+      "description": "The things a person with this role may do, chosen from the fixed list (each is explained in ACCESS_ROLE_GUIDE.md). No repeats. Omitted when the role is a super admin, which holds all of them.",
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 30,
+      "items": {
+        "enum": [
+          "view_console",
+          "manage_requests",
+          "manage_classes",
+          "manage_curriculums",
+          "manage_instructors",
+          "edit_venues",
+          "activate_venues",
+          "edit_people",
+          "edit_places",
+          "view_messages",
+          "manage_messages",
+          "run_discovery",
+          "edit_discovery_settings",
+          "view_spend",
+          "manage_access"
+        ]
+      }
+    },
+    "is_super_admin": {
+      "description": "true when the role may do everything, now and for any capability added later, and may manage access. Required.",
+      "type": "boolean"
+    },
+    "is_active": {
+      "description": "The on/off switch. false means people holding the role are refused at their next request. Required.",
+      "type": "boolean"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

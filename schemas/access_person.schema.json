@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/access_person.schema.json",
+  "title": "access_person",
+  "description": "One person who may sign in to the Console with their Google account, and what they may do (see ACCESS_GUIDE.md and ACCESS_PERSON_GUIDE.md). Google proves who the person is; this record says whether they are allowed in and with which role. Rules the schema cannot express: email is trimmed, lowercased and unique among live records; role_id must name an existing, active access_role; individual_id, when given, must name an existing person; scope_region_id, when given, must name an existing region; google_uid is set at the first sign-in and later sign-ins must match it; the last active super admin cannot be switched off or deleted; only a super admin (manage_access) may write this collection; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept while the person has access; a removed person is switched off and kept, never erased. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "email",
+    "role_id",
+    "is_active"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "email": {
+      "description": "The Google account email the person signs in with. Trimmed and lowercased before it is stored or compared; unique among live records. Personal data. Required.",
+      "type": "string",
+      "format": "email",
+      "maxLength": 254,
+      "x_pii": true
+    },
+    "display_name": {
+      "description": "The name shown in the Console for this person, such as Todd Beetcher. Up to 120 characters. Personal data. Optional; the Google profile name is used when it is missing.",
+      "type": "string",
+      "maxLength": 120,
+      "x_pii": true
+    },
+    "role_id": {
+      "description": "The access_role this person holds. Required.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "scope_region_id": {
+      "description": "Limits the person to one region (a discovery_area of kind region), such as a region head's own territory. Omitted for a role that is not limited. Stored now; enforced when regional ownership is built (P-60).",
+      "type": "string",
+      "format": "uuid"
+    },
+    "individual_id": {
+      "description": "Links the access to a person record (for example an instructor who is also a region head). Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "is_active": {
+      "description": "The on/off switch. false means the person is refused at their next request; the record is kept. Required.",
+      "type": "boolean"
+    },
+    "google_uid": {
+      "description": "Google's permanent id for the account, saved at the person's first sign-in so a later sign-in must be the same account. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 128
+    },
+    "last_sign_in_at": {
+      "description": "When the person last signed in (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id. It is the id in the person's actor string, user:<id>.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created, which is when the person was invited (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who invited the person, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import (the seed script). Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

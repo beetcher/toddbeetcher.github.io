@@ -208,6 +208,22 @@
       "guide": "DISCOVERY_RUN_GUIDE.md",
       "examples": "examples/discovery_run.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "access_role",
+      "collection": "access_roles",
+      "schema": "access_role.schema.json",
+      "guide": "ACCESS_ROLE_GUIDE.md",
+      "examples": "examples/access_role.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "access_person",
+      "collection": "access_persons",
+      "schema": "access_person.schema.json",
+      "guide": "ACCESS_PERSON_GUIDE.md",
+      "examples": "examples/access_person.examples.json",
+      "schema_version": 1
     }
   ],
   "message_kinds": {
