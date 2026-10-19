@@ -1204,3 +1204,18 @@ a.nocti:hover { color: var(--color-accent); }
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* Phone stopgap (full phone design is Step 8): the picture is too small to hold
+   the paragraph, so on narrow screens it sits just below the picture instead */
+@media (max-width: 700px) {
+  .intro-para {
+    position: static;
+    width: auto;
+    margin: 0;
+    padding: var(--sp-md) var(--content-padding) 0;
+    font-size: 1.05rem;
+  }
+  .intro-title { font-size: 1.15rem; padding: 8px 12px; }
+}
+/* Arch stays locked to the picture even when the paragraph sits below it */
+.intro-arc { bottom: auto; height: auto; aspect-ratio: 1264 / 842; }
