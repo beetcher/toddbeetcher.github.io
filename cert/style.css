@@ -1149,3 +1149,6 @@ a.nocti:hover { color: var(--color-accent); }
 .pill-erin { border-color: var(--color-nocti-teal); }
 .pill-interested:focus-visible, .pill-erin:focus-visible,
 .btn-interested:focus-visible, .meet__summary:focus-visible { outline-color: var(--color-nocti-teal); }
+
+/* Line after the closing statement (e.g. the pointer to the next page) */
+.closing-line + p { margin-top: var(--sp-lg); }
