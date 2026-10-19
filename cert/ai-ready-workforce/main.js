@@ -145,6 +145,7 @@ function initContact() {
   document.querySelectorAll('[data-open-contact]').forEach(b => b.addEventListener('click', openContact));
   document.querySelectorAll('[data-close-contact]').forEach(b => b.addEventListener('click', closeContact));
   dlg.addEventListener('click', e => { if (e.target === dlg) closeContact(); });
+  dlg.querySelectorAll('a[href*="#meet-"]').forEach(a => a.addEventListener('click', closeContact));
 
   function selectAddress() {
     if (!addr || !window.getSelection) return;
@@ -325,6 +326,21 @@ function initIntro() {
 }
 
 // ============================================================
+// MEET CARDS — a link to #meet-erin (from the contact panel or another page)
+// scrolls to the card and opens it.
+// ============================================================
+function initMeet() {
+  const openFromHash = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const el = id && document.getElementById(id);
+    if (el && el.tagName === 'DETAILS') el.open = true;
+  };
+  openFromHash();
+  window.addEventListener('hashchange', openFromHash);
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => setTimeout(openFromHash, 0)));
+}
+
+// ============================================================
 // PAGE-SPECIFIC — the only line that differs between the 3 files
 // ============================================================
 CURRENT_DOC = 'ai-ready-workforce';
@@ -336,6 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompletionDetection();
   initPill();
   initContact();
+  initMeet();
   if (!initIntro()) setTimeout(showPill, PILL_DELAY);
 });
 
