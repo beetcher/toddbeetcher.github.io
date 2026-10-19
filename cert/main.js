@@ -3,12 +3,12 @@
 // If you change anything above the PAGE-SPECIFIC line, update all 3 main.js files:
 // cert/main.js
 // cert/ai-ready-workforce/main.js
-// cert/building-the-bridge/main.js
+// cert/impact/main.js
 // ============================================================
 const CERT_DOCS = [
-  { slug: 'letter',              title: 'A National AI-Readiness Certification', shortTitle: 'Letter' },
+  { slug: 'invitation',          title: 'The Invitation',                        shortTitle: 'Invitation' },
   { slug: 'ai-ready-workforce',  title: 'Accelerating the AI-Ready Workforce',   shortTitle: 'Opportunity' },
-  { slug: 'building-the-bridge', title: 'Building the AI-Readiness Bridge',      shortTitle: 'Bridge' },
+  { slug: 'impact',              title: 'The Impact',                            shortTitle: 'Impact' },
 ];
 const STORAGE_KEY = 'cert';
 
@@ -126,7 +126,7 @@ function initCompletionDetection() {
 // ============================================================
 // PAGE-SPECIFIC — the only line that differs between the 3 files
 // ============================================================
-CURRENT_DOC = 'letter';
+CURRENT_DOC = 'invitation';
 
 document.addEventListener('DOMContentLoaded', () => {
   recordVisit();
