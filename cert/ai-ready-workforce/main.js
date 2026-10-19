@@ -274,6 +274,7 @@ function initIntro() {
     timers.forEach(clearTimeout); timers = [];
     anims.forEach(a => { try { a.cancel(); } catch (e) {} }); anims = [];
     document.body.classList.remove('intro-on');
+    document.documentElement.classList.remove('intro-wait');
     placePara(); band();
     showPill();
   }
@@ -286,6 +287,7 @@ function initIntro() {
     anims.forEach(a => { try { a.cancel(); } catch (e) {} }); anims = [];
     running = true;
     document.body.classList.add('intro-on');
+    document.documentElement.classList.remove('intro-wait');
     placePara(); band();
 
     await wait(T.startDelay); if (!alive()) return;
@@ -354,7 +356,11 @@ function initMeet() {
   const openFromHash = () => {
     const id = decodeURIComponent(location.hash.slice(1));
     const el = id && document.getElementById(id);
-    if (el && el.tagName === 'DETAILS') el.open = true;
+    if (!el || el.tagName !== 'DETAILS') return;
+    el.open = true;
+    el.scrollIntoView({ block: 'start' });
+    // Take #meet-erin back out of the address bar, so a reload plays the opening again
+    if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   };
   openFromHash();
   window.addEventListener('hashchange', openFromHash);

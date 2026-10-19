@@ -995,7 +995,10 @@ html:has(.intro-title) { scroll-padding-top: 120px; }
 /* While the opening plays, everything starts hidden; a click or tap skips to the end */
 .intro-on .intro-title,
 .intro-on .intro-para,
-.intro-on .intro-arc { opacity: 0; }
+.intro-on .intro-arc,
+.intro-wait .intro-title,
+.intro-wait .intro-para,
+.intro-wait .intro-arc { opacity: 0; }
 .intro-on .intro-stage { cursor: pointer; }
 
 /* Floating "I'm interested" pill (all pages) */
