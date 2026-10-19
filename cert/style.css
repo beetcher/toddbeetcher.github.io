@@ -833,3 +833,55 @@ a:focus-visible {
 .contact__list li { padding-left: 18px; position: relative; }
 .contact__list li::before { content: ''; position: absolute; left: 2px; top: 0.6em; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent-warm); }
 .contact__share { margin-top: 12px; }
+
+/* ============================================================
+   HERO — WHOLE PICTURE (no cropping)
+   The illustrations are full of signs meant to be read, so the
+   picture is shown complete, sized to fit one screen, with the
+   title and intro below it on the page instead of over the art.
+   ============================================================ */
+.panel--hero-doc {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  padding: 0;
+}
+
+.panel--hero-doc::after { display: none; }
+
+.panel--hero-doc__bg {
+  position: static;
+  background: var(--color-bg);
+}
+
+.panel--hero-doc__bg img,
+.panel--hero-doc__bg img[class^="hero-pos"] {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: calc((100vh - 48px) * 1.5);
+  max-width: calc((100svh - 48px) * 1.5);
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.panel--hero-doc__content {
+  position: static;
+  display: block;
+  height: auto;
+  min-height: 0;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--sp-lg) var(--content-padding) 0;
+  text-shadow: none;
+}
+
+.panel--hero-doc__sequence { color: var(--color-accent-warm); }
+.panel--hero-doc__title { color: var(--color-text); }
+.panel--hero-doc__role { color: var(--color-text-secondary); }
+
+@media (max-width: 767px) {
+  .panel--hero-doc,
+  .panel--hero-doc__content { min-height: 0; }
+  .panel--hero-doc__content { padding-top: var(--sp-md); }
+}
