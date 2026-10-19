@@ -276,8 +276,9 @@ function initIntro() {
     const t = title.getBoundingClientRect();
     const p = para.getBoundingClientRect();
     const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--intro-title-start-scale')) || 2;
+    const raise = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--intro-title-start-raise')) || 0;
     const midY = s.top + s.height / 2;
-    const titleStart = `translateY(${midY - (t.top + t.height / 2)}px) scale(${scale})`;
+    const titleStart = `translateY(${midY - raise - (t.top + t.height / 2)}px) scale(${scale})`;
     const paraStart = `translateY(${midY - (p.top + p.height / 2)}px)`;
     const glide = 'cubic-bezier(.45,0,.2,1)';
 
