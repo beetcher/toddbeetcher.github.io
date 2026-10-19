@@ -20,3 +20,7 @@
   X-Robots-Tag: noindex, nofollow, noarchive
 /coach/*
   X-Robots-Tag: noindex, nofollow, noarchive
+/cert_OG/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+/cert2/*
+  X-Robots-Tag: noindex, nofollow, noarchive
