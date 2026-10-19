@@ -196,7 +196,8 @@ const INTRO_TIMINGS = {
   titleHold:   2200,   // red title holds in the center
   titleMove:   1200,   // red title rises to the top of the window
   paraDelay:    300,   // pause after the title docks, before the paragraph appears
-  paraFadeIn:  1000,   // paragraph fades in, in its final place under the title, glowing
+  paraFadeIn:  1000,   // each paragraph line fades in, in its final place under the title, glowing
+  linePause:    900,   // pause between one line finishing and the next one starting
   paraGlow:    4000,   // paragraph keeps its glow (reading time)
   glowFade:     600,   // glow fades down to a faint halo
   arcDelay:     125,   // pause before the orange arch
@@ -312,7 +313,12 @@ function initIntro() {
 
     // 3. Paragraph fades in where it stays, glowing; then the glow fades to a faint halo
     await wait(T.paraDelay); if (!alive()) return;
-    await play(para, [{ opacity: 0, textShadow: glow }, { opacity: 1, textShadow: glow }], T.paraFadeIn); if (!alive()) return;
+    play(para, [{ opacity: 1, textShadow: glow }, { opacity: 1, textShadow: glow }], 1);
+    const lines = para.querySelectorAll('.intro-line');
+    for (let i = 0; i < lines.length; i++) {
+      if (i > 0) { await wait(T.linePause); if (!alive()) return; }
+      await play(lines[i], [{ opacity: 0 }, { opacity: 1 }], T.paraFadeIn); if (!alive()) return;
+    }
     await wait(T.paraGlow); if (!alive()) return;
     await play(para, [{ opacity: 1, textShadow: glow }, { opacity: 1, textShadow: halo }], T.glowFade, 'ease-in-out'); if (!alive()) return;
 
