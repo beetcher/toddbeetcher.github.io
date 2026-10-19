@@ -1087,7 +1087,7 @@ Panel 5 renders as a curriculum list:
     <a href="the-full-essay/" class="btn--primary curriculum-hub__cta">Start with the essay →</a>
     <div class="curriculum-hub__contact">
       <p>A response is being designed. If you have the leverage to help build it, I would welcome that conversation.</p>
-      <p><strong>Todd Beetcher</strong> | <a href="mailto:toddbeetcher17@gmail.com">toddbeetcher17@gmail.com</a> | <a href="https://linkedin.com/in/beeetcher" rel="noopener">linkedin.com/in/beeetcher</a></p>
+      <p><strong>Todd Beetcher</strong> | <a href="mailto:toddbeetcher17@gmail.com">toddbeetcher17@gmail.com</a> | <a href="https://linkedin.com/in/beetcher" rel="noopener">linkedin.com/in/beetcher</a></p>
     </div>
   </div>
 </section>

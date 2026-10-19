@@ -23,4 +23,4 @@ They are clear. The full case is in the four documents below, best read in this 
 
 A response is being designed. If you have the leverage to help build it, I would welcome that conversation.
 
-**Todd Beetcher** | todd@beetcher.com | linkedin.com/in/beeetcher
+**Todd Beetcher** | todd@beetcher.com | linkedin.com/in/beetcher

@@ -172,11 +172,11 @@ None. No anchor links (`#section-id`) or relative page links.
 ### External Links
 | Target | URL | Rel Attributes | Target | Usage |
 |--------|-----|---|--------|-------|
-| LinkedIn | `https://linkedin.com/in/beeetcher` | `rel="noopener"` | `_blank` | Line 465 (Connect section) |
-| LinkedIn | `https://linkedin.com/in/beeetcher` | `rel="noopener"` | `_blank` | Line 486 (Footer) |
+| LinkedIn | `https://linkedin.com/in/beetcher` | `rel="noopener"` | `_blank` | Line 465 (Connect section) |
+| LinkedIn | `https://linkedin.com/in/beetcher` | `rel="noopener"` | `_blank` | Line 486 (Footer) |
 
 ### Link Validation
-- Both LinkedIn URLs use identical path: `linkedin.com/in/beeetcher`
+- Both LinkedIn URLs use identical path: `linkedin.com/in/beetcher`
 - `rel="noopener"` present on both external links (security best practice)
 - `target="_blank"` present on both external links
 
