@@ -1,7 +1,7 @@
 /* ============================================================
-   SHARED TOKENS — cert (RMAIIG × NOCTI) design system
+   SHARED TOKENS — cert (NOCTI AI-readiness certification) design system
    Derived from the satisfaction/ design system; accents re-keyed
-   to the NOCTI blue and RMAIIG red used in the illustrations.
+   to the NOCTI blue and the specialists’ red used in the illustrations.
    If you change any value in this file, update all 3 style.css files:
    cert/style.css
    cert/ai-ready-workforce/style.css
@@ -14,7 +14,7 @@
   --color-text-secondary: #6a635d;
   --color-accent: #1f4e9c;          /* NOCTI blue */
   --color-accent-hover: #173d7c;
-  --color-accent-warm: #b0202a;     /* RMAIIG red */
+  --color-accent-warm: #b0202a;     /* specialists red */
   --color-sand: #c28d64;            /* canyon sandstone */
   --color-border: #ddd7cf;
   --font-heading: 'DM Sans', 'Inter', system-ui, sans-serif;
@@ -666,7 +666,13 @@ a:focus-visible {
   }
 
   .panel--hero-doc {
-    height: 340px;
+    height: auto;
+    min-height: 340px;
+  }
+
+  .panel--hero-doc__content {
+    min-height: 340px;
+    padding-top: var(--sp-2xl);
   }
 
   .panel--hero-doc__content {
@@ -698,3 +704,130 @@ a:focus-visible {
     gap: var(--sp-sm);
   }
 }
+
+/* ============================================================
+   CONTACT PANEL (same pattern as /coach)
+   ============================================================ */
+.btn-interested {
+  display: inline-block;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--type-body);
+  padding: 14px 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  line-height: var(--lh-tight);
+  box-shadow: 0 6px 18px rgba(31, 78, 156, 0.25);
+  transition: background 0.15s ease;
+}
+
+.btn-interested:hover { background: var(--color-accent-hover); }
+
+.btn-interested:focus-visible,
+.contact__btn:focus-visible,
+.contact__close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.cert-ask__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-md);
+  margin: var(--sp-lg) 0 var(--sp-md);
+}
+
+.cert-ask__by {
+  font-size: var(--type-small);
+  color: var(--color-text-secondary);
+}
+
+.contact {
+  border: 0;
+  border-radius: 16px;
+  padding: 28px 22px 24px;
+  width: min(30rem, calc(100vw - 24px));
+  max-height: calc(100svh - 24px);
+  overflow-y: auto;
+  margin: auto;
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  font-family: var(--font-heading);
+}
+
+.contact::backdrop { background: rgba(28, 25, 20, 0.6); }
+
+.contact__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.contact__title {
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: 6px 28px 12px;
+}
+
+.contact__lead { font-family: var(--font-body); font-size: 1rem; line-height: var(--lh-tight); margin-bottom: 10px; }
+
+.contact__addr {
+  font-weight: 600;
+  font-size: clamp(0.95rem, 4.3vw, 1.15rem);
+  padding: 12px 10px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 2px solid var(--color-accent);
+  margin-bottom: 14px;
+  overflow-wrap: anywhere;
+  user-select: all;
+  -webkit-user-select: all;
+}
+
+.contact__actions { display: flex; flex-direction: column; gap: 10px; }
+
+.contact__btn {
+  display: block;
+  width: 100%;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent);
+  background: #ffffff;
+  color: var(--color-accent);
+}
+
+.contact__btn:hover { text-decoration: none; background: #f2f5fb; }
+.contact__btn--main { background: var(--color-accent); color: #ffffff; }
+.contact__btn--main:hover { background: var(--color-accent-hover); }
+.contact__btn--quiet { border-color: var(--color-border); color: var(--color-text); font-weight: 500; }
+
+.contact__status { min-height: 1.4em; margin-top: 8px; font-weight: 600; color: #0a7a3d; }
+.contact__small { font-family: var(--font-body); font-size: 0.9rem; line-height: 1.45; color: var(--color-text-secondary); margin-top: 6px; }
+.contact__sub { font-weight: 600; font-size: 1rem; margin: 16px 0 6px; }
+.contact__list { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 6px; font-family: var(--font-body); font-size: 0.95rem; margin: 0 0 8px; }
+.contact__list li { padding-left: 18px; position: relative; }
+.contact__list li::before { content: ''; position: absolute; left: 2px; top: 0.6em; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent-warm); }
+.contact__share { margin-top: 12px; }
