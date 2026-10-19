@@ -226,7 +226,7 @@ function initPill() {
   const erin = document.createElement('a');
   erin.className = 'pill-erin is-hidden';
   erin.href = base + '#meet-erin';
-  erin.innerHTML = '<img src="' + base + 'assets/erin-maruzzella.webp" alt="" width="30" height="30"><span>Meet Erin of NOCTI</span>';
+  erin.innerHTML = '<img src="' + base + 'assets/erin-maruzzella.webp" alt="" width="30" height="30"><span>Meet Erin of <span class="nocti">NOCTI</span></span>';
   document.body.appendChild(erin);
 
   // On the Invitation, step aside while the card itself is on screen
