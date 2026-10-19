@@ -200,7 +200,8 @@ const INTRO_TIMINGS = {
   paraGlow:    8000,   // paragraph keeps its glow (reading time)
   glowFade:    1200,   // glow fades down to a faint halo
   arcDelay:     250,   // pause before the orange arch
-  arcFadeIn:   1600,   // orange arch fades in
+  arcFloat:    2000,   // orange arch floats down from the sky into place, fading in
+  arcDrop:      150,   // how far above its place the arch starts (pixels, not milliseconds)
 };
 const PILL_DELAY = 800; // pages without the opening: when the "I'm interested" pill appears
 
@@ -296,9 +297,13 @@ function initIntro() {
     await wait(T.paraGlow); if (!alive()) return;
     await play(para, [{ opacity: 1, textShadow: glow }, { opacity: 1, textShadow: halo }], T.glowFade, 'ease-in-out'); if (!alive()) return;
 
-    // 4. Orange arch across the gorge
+    // 4. Orange arch floats down from the sky into place across the gorge
     await wait(T.arcDelay); if (!alive()) return;
-    await play(arc, [{ opacity: 0 }, { opacity: 1 }], T.arcFadeIn); if (!alive()) return;
+    await play(arc, [
+      { opacity: 0, transform: `translateY(${-T.arcDrop}px)` },
+      { opacity: 1, offset: 0.6 },
+      { opacity: 1, transform: 'none' }
+    ], T.arcFloat, 'cubic-bezier(.2,.7,.3,1)'); if (!alive()) return;
     finish();
   }
 
