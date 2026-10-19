@@ -194,10 +194,10 @@ const INTRO_TIMINGS = {
   titleFadeIn:  900,   // red title fades in, centered over the canyon
   titleHold:   2200,   // red title holds in the center
   titleMove:   1200,   // red title rises to the top of the window
-  paraDelay:    600,   // after the title starts rising, the green paragraph begins to appear
-  paraFadeIn:  1000,   // green paragraph fades in, centered
-  paraHold:    5000,   // green paragraph holds for reading
-  paraMove:    1100,   // green paragraph rises to sit under the title
+  paraDelay:    300,   // pause after the title docks, before the paragraph appears
+  paraFadeIn:  1000,   // paragraph fades in, in its final place under the title, glowing
+  paraGlow:    8000,   // paragraph keeps its glow (reading time)
+  glowFade:    1200,   // glow fades down to a faint halo
   arcDelay:     500,   // pause before the orange arch
   arcFadeIn:   1600,   // orange arch fades in
 };
@@ -274,26 +274,26 @@ function initIntro() {
     // Start positions, measured now (fonts and picture are in place)
     const s = stage.getBoundingClientRect();
     const t = title.getBoundingClientRect();
-    const p = para.getBoundingClientRect();
     const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--intro-title-start-scale')) || 2;
     const raise = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--intro-title-start-raise')) || 0;
     const midY = s.top + s.height / 2;
     const titleStart = `translateY(${midY - raise - (t.top + t.height / 2)}px) scale(${scale})`;
-    const paraStart = `translateY(${midY - (p.top + p.height / 2)}px)`;
+    const glow = getComputedStyle(document.documentElement).getPropertyValue('--intro-para-glow').trim();
+    const halo = getComputedStyle(document.documentElement).getPropertyValue('--intro-para-halo').trim();
     const glide = 'cubic-bezier(.45,0,.2,1)';
 
     // 1. Red title appears, centered over the canyon, and holds
     await play(title, [{ opacity: 0, transform: titleStart }, { opacity: 1, transform: titleStart }], T.titleFadeIn); if (!alive()) return;
     await wait(T.titleHold); if (!alive()) return;
 
-    // 2. Title rises to the top; the green paragraph appears in the center
-    play(title, [{ opacity: 1, transform: titleStart }, { opacity: 1, transform: 'none' }], T.titleMove, glide);
-    await wait(T.paraDelay); if (!alive()) return;
-    await play(para, [{ opacity: 0, transform: paraStart }, { opacity: 1, transform: paraStart }], T.paraFadeIn); if (!alive()) return;
-    await wait(T.paraHold); if (!alive()) return;
+    // 2. Title rises to the top of the window
+    await play(title, [{ opacity: 1, transform: titleStart }, { opacity: 1, transform: 'none' }], T.titleMove, glide); if (!alive()) return;
 
-    // 3. Paragraph rises to sit under the title
-    await play(para, [{ opacity: 1, transform: paraStart }, { opacity: 1, transform: 'none' }], T.paraMove, glide); if (!alive()) return;
+    // 3. Paragraph fades in where it stays, glowing; then the glow fades to a faint halo
+    await wait(T.paraDelay); if (!alive()) return;
+    await play(para, [{ opacity: 0, textShadow: glow }, { opacity: 1, textShadow: glow }], T.paraFadeIn); if (!alive()) return;
+    await wait(T.paraGlow); if (!alive()) return;
+    await play(para, [{ opacity: 1, textShadow: glow }, { opacity: 1, textShadow: halo }], T.glowFade, 'ease-in-out'); if (!alive()) return;
 
     // 4. Orange arch across the gorge
     await wait(T.arcDelay); if (!alive()) return;
