@@ -811,6 +811,7 @@
   </section>
 
   <section id="discoveryView" hidden></section>
+  <section id="accessView" hidden></section>
 
   <section id="placesView" hidden>
     <div class="bar">
@@ -1168,6 +1169,24 @@
         '<li>The money fields are whole cents. The Find venues tab cannot go above the maximum in Limits.</li>' +
         '</ul>' +
         '<h3>Try this</h3><ul><li>Estimate a small run for one library type in a region, open the prompts, read them, then press Go.</li></ul>' },
+    { id: "access", admin: true, name: "Access", short: "Access", blurb: "Who may sign in with Google, and what each role may do.",
+      manual:
+        '<div class="kicker">Station 13</div><h2>Access</h2>' +
+        '<h3>Mission</h3><p>Decide who may sign in to the Console with their Google account and what they may do there. Only a super admin sees this station.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Invite someone</b>: type the Google email they sign in with, pick a role (and a region if you like) and save. They can sign in at once; there is no email to send.</li>' +
+        '<li><b>Edit</b> changes a person\'s name, role or region. Once someone has signed in, their email cannot change.</li>' +
+        '<li><b>Switch off / Switch on</b> stops or restores a person\'s access at their very next request. Nothing is deleted.</li>' +
+        '<li><b>Roles</b> are bundles of capabilities. Tick what a role may do; the table at the bottom says what each capability allows. A super admin role does everything.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The last active super admin cannot be switched off or demoted, and you cannot change your own role, region, email or on/off switch.</li>' +
+        '<li>A role that people still hold cannot be deleted. Switch it off instead.</li>' +
+        '<li>Only a super admin may manage access; that capability cannot be given to an ordinary role yet.</li>' +
+        '<li>The admin key still opens the Console as a super admin, whatever is set here.</li>' +
+        '<li>Region limits are saved but not enforced yet.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Invite a second Google account as Region head, sign in with it in another browser, and see which stations it gets.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1255,11 +1274,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1283,6 +1302,8 @@
     $("messagesView").hidden = r !== "messages";
     $("discoveryView").hidden = r !== "discovery";
     if (r === "discovery" && window.DiscoveryStation) window.DiscoveryStation.show();
+    $("accessView").hidden = r !== "access";
+    if (r === "access" && window.AccessStation) window.AccessStation.show();
     if (r === "messages") loadMessagesStation();
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
@@ -1492,7 +1513,7 @@
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
     ME = null; $("who").hidden = true;
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -6659,5 +6680,6 @@
 })();
 </script>
 <script src="discovery.js"></script>
+<script src="access.js"></script>
 </body>
 </html>
