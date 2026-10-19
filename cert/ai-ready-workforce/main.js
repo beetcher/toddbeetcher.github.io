@@ -198,7 +198,7 @@ const INTRO_TIMINGS = {
   paraFadeIn:  1000,   // paragraph fades in, in its final place under the title, glowing
   paraGlow:    8000,   // paragraph keeps its glow (reading time)
   glowFade:    1200,   // glow fades down to a faint halo
-  arcDelay:     500,   // pause before the orange arch
+  arcDelay:     250,   // pause before the orange arch
   arcFadeIn:   1600,   // orange arch fades in
 };
 const PILL_DELAY = 800; // pages without the opening: when the "I'm interested" pill appears
