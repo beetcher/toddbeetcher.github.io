@@ -362,7 +362,11 @@ function initMeet() {
     // Take #meet-erin back out of the address bar, so a reload plays the opening again
     if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
   };
+  // Every load starts with the cards closed (unless a link asked for one)
+  const closeAll = () => document.querySelectorAll('details.meet').forEach(d => { d.open = false; });
+  closeAll();
   openFromHash();
+  window.addEventListener('pageshow', e => { if (e.persisted) closeAll(); });
   window.addEventListener('hashchange', openFromHash);
   document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => setTimeout(openFromHash, 0)));
 }
