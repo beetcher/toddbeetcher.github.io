@@ -64,6 +64,10 @@
   .lock .row button { flex: none; }
   .remember { display: flex; align-items: center; gap: 10px; margin-top: 12px; min-height: 44px; color: var(--muted); cursor: pointer; }
   .remember input { width: 22px; height: 22px; margin: 0; }
+  .lock .gbtn { width: 100%; min-height: 48px; font-weight: 700; }
+  .lock .swap { margin: 14px 0 0; font-size: 14px; }
+  .lock .swap a { color: var(--muted); }
+  #who { color: var(--muted); font-size: 13px; margin-right: 8px; }
   .msg { min-height: 1.4em; margin: 10px 0 0; color: var(--err); font-weight: 600; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
   .bar .count { font-weight: 700; }
@@ -425,6 +429,7 @@
     <h1><a class="brand" id="brand" href="#/home" aria-label="LAUNCH Console: go to Home"><img src="assets/launch-tile-mobile.webp" width="40" height="40" alt=""><span><span class="bname">Console</span><span class="bapp" id="appName">LAUNCH</span></span></a></h1>
   </div>
   <div class="hright">
+    <span id="who" hidden></span>
     <select id="collPick" aria-label="Go to" hidden></select>
     <button class="quiet" id="lockBtn" hidden>Lock</button>
   </div>
@@ -471,12 +476,19 @@
   </section>
 
   <section class="lock" id="lockView">
-    <p>Enter your key to open the Console.</p>
-    <form class="row" id="lockForm" autocomplete="off">
-      <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
-      <button type="submit" id="unlockBtn">Unlock</button>
-    </form>
-    <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
+    <div id="googleBox" hidden>
+      <p>Sign in to open the Console.</p>
+      <button type="button" id="googleBtn" class="gbtn">Sign in with Google</button>
+    </div>
+    <div id="keyBox">
+      <p>Enter your key to open the Console.</p>
+      <form class="row" id="lockForm" autocomplete="off">
+        <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button type="submit" id="unlockBtn">Unlock</button>
+      </form>
+      <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
+    </div>
+    <p class="swap"><a href="#" id="swapLink" hidden>Use admin key</a></p>
     <div class="msg" id="lockMsg" role="alert"></div>
   </section>
 
@@ -860,6 +872,7 @@
 </div>
 
 
+<script src="firebase-config.js"></script>
 <script>
 (function () {
   "use strict";
@@ -903,6 +916,21 @@
     if (!v) return;
     try { (remember ? localStorage : sessionStorage).setItem(KEY_STORE, v); } catch (e) {}
   }
+
+  // ---- Who is signed in. method "key" = the admin key (the back door); "google" = a Google sign-in (Firebase). While signed in with
+  // Google, `key` holds the current Google ID token and every call sends it as the Bearer value, exactly like the key. ME is what the
+  // server's `me` op said (or, for the key, a super admin). Hiding stations here is a courtesy: the server decides what is allowed.
+  var method = "key", ME = null, auth = null;
+  var SDK = "https://www.gstatic.com/firebasejs/10.14.1/";
+  var STATION_CAPS = { requests: ["manage_requests", "manage_classes"], venues: ["view_console"], classes: ["view_console"], people: ["edit_people"],
+    places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
+    curriculums: ["view_console"], attendance: ["manage_classes", "manage_requests"], organizations: ["edit_people"], messages: ["view_messages"],
+    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access"] };
+  function can(c) { return !!ME && (ME.is_super_admin === true || (ME.capabilities || []).indexOf(c) >= 0); }
+  function canAny(list) { for (var i = 0; i < list.length; i++) if (can(list[i])) return true; return false; }
+  function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && ME.is_super_admin); }
+  function canPlaced() { return canAny(["manage_requests", "manage_classes"]); }
+  function keyMe() { return { name: "Admin key", role_key: "super_admin", method: "key", is_super_admin: true, capabilities: [], email: "", scope_region_id: "" }; }
 
   var fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
   var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
@@ -1175,6 +1203,21 @@
       var pg = document.createElement("div"); pg.className = "mpage"; pg.hidden = true; pg.innerHTML = sf.manual; sc.appendChild(pg); mPages[sf.id] = pg;
     });
   }
+  var ALL_OPTS = null;
+  function applyAccess() {
+    var pick = $("collPick");
+    if (!ALL_OPTS) ALL_OPTS = Array.prototype.slice.call(pick.options);
+    var cur = pick.value;
+    pick.innerHTML = "";
+    ALL_OPTS.forEach(function (o) { if (o.value === "home" || stationAllowed(o.value)) pick.appendChild(o); });
+    pick.value = cur;
+    Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = stationAllowed(b.dataset.go) ? "" : "none"; });
+    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button[data-m]"), function (b) { b.style.display = stationAllowed(b.dataset.m) ? "" : "none"; });
+    $("attnBox").hidden = !canPlaced();
+    var who = $("who");
+    who.textContent = ME ? ME.name + (ME.method === "google" && ME.role_key ? " · " + ME.role_key.replace(/_/g, " ") : "") : "";
+    who.hidden = !ME;
+  }
   function markManual() {
     Array.prototype.forEach.call(document.querySelectorAll(".mbtns button"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
   }
@@ -1220,6 +1263,7 @@
   function route() {
     if (!key) return;
     var r = currentRoute();
+    if (r !== "home" && !stationAllowed(r)) { location.hash = "#/home"; return; }
     closeManual();
     $("homeView").hidden = r !== "home";
     if (r !== "venues") closeEdit();
@@ -1401,7 +1445,8 @@
   }
 
   function problem(status) {
-    if (status === "unauthorized") return "That key did not work.";
+    if (status === "unauthorized") return method === "google" ? "Google sign-in did not work. Try again." : "That key did not work.";
+    if (status === "forbidden") return "This Google account has not been invited. Ask the owner.";
     if (status === "limited") return "Too many tries. Wait a few minutes.";
     if (status === "network") return "Could not reach the server.";
     return "Something went wrong. Try again.";
@@ -1442,26 +1487,45 @@
   }
 
   function lock(message) {
+    if (method === "google") {
+      if (message === "That key did not work.") message = "Your Google sign-in ended. Sign in again.";
+      method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
+    }
+    ME = null; $("who").hidden = true;
     stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
   }
 
+  // The first call after a key or sign-in: who is this, and may they in? The key proves itself by reading the registration records
+  // (as it always did). A Google sign-in asks the server's `me` op; the records are read only if the role may see requests.
+  function accessProbe() {
+    if (method !== "google") return fetchRecords("").then(function (r) { if (r.status === "ok") ME = keyMe(); return r; });
+    return adminCall("me", {}, "access_persons").then(function (r) {
+      if (r.status !== 200 || !r.body || !r.body.ok) return { status: r.status === 401 ? "unauthorized" : r.status === 403 ? "forbidden" : r.status === 429 ? "limited" : r.status === 0 ? "network" : "error" };
+      ME = r.body.data;
+      return canPlaced() ? fetchRecords("") : { status: "ok", records: [] };
+    });
+  }
+
   function unlock(k, remember) {
     key = k; reset();
     $("lockMsg").textContent = "";
     $("unlockBtn").disabled = true;
-    return fetchRecords("").then(function (res) {
+    return accessProbe().then(function (res) {
       $("unlockBtn").disabled = false;
       if (res.status !== "ok") {
         key = "";
         $("lockMsg").textContent = problem(res.status);
+        if (method === "google") { method = "key"; try { if (auth) auth.signOut(); } catch (e) {} }
+        ME = null;
         show(true);
         return;
       }
-      setKey(k, remember);
+      if (method !== "google") setKey(k, remember);
       show(false);
+      applyAccess();
       merge(res.records);
       firstLoadDone = true;
       $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
@@ -2020,7 +2084,7 @@
   var listUid = 0;
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
-  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, when: when, clock: function (d) { return fmtClock.format(d); },
+  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
                         go: function (id) { goTo(id); }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
   function canon(v) {
     if (v === null || v === undefined) return "null";
@@ -3451,6 +3515,7 @@
   function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
 
   function loadPlaced() {
+    if (!canPlaced()) return Promise.resolve();
     var my = ++qSeq;
     return Promise.all([admin("list", { limit: 200, expand: true }, "attendances"), firstLoadDone ? Promise.resolve(null) : fetchRecords("")]).then(function (both) {
       if (my !== qSeq || !key) return;
@@ -6546,6 +6611,48 @@
   buildOrganization();
 
   function resetRosters() { Object.keys(ROSTER).forEach(function (k) { ROSTER[k].reset(); }); }
+
+  // ---- Google sign-in. Only switched on when console/firebase-config.js holds the project's public web key; until then the page is key-only.
+  function loadScript(src) { return new Promise(function (ok, no) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+  function onToken(user) {
+    if (!user) { if (method === "google" && key) lock("You have been signed out."); return; }
+    user.getIdToken().then(function (t) {
+      if (method === "google" && key) { key = t; return; }   // a refreshed token for the session already open
+      if (key) return;                                       // already in with the admin key
+      method = "google"; unlock(t, false);
+    }).catch(function () {});
+  }
+  function refreshToken() {
+    if (method === "google" && auth && auth.currentUser) auth.currentUser.getIdToken().then(function (t) { if (method === "google") key = t; }).catch(function () {});
+  }
+  function showGoogle(on) {
+    $("googleBox").hidden = !on; $("keyBox").hidden = on; $("swapLink").textContent = on ? "Use admin key" : "Use Google sign-in"; $("swapLink").hidden = false;
+  }
+  function initGoogle() {
+    var cfg = window.CONSOLE_FIREBASE;
+    if (!cfg || !cfg.apiKey) return;
+    var ready = window.firebase ? Promise.resolve() : loadScript(SDK + "firebase-app-compat.js").then(function () { return loadScript(SDK + "firebase-auth-compat.js"); });
+    ready.then(function () {
+      var fb = window.firebase;
+      if (!fb.apps || !fb.apps.length) fb.initializeApp(cfg);
+      auth = fb.auth();
+      showGoogle(true);
+      auth.onIdTokenChanged(onToken);
+    }).catch(function () { /* stays key-only */ });
+  }
+  $("googleBtn").addEventListener("click", function () {
+    if (!auth) return;
+    $("lockMsg").textContent = "";
+    var p = new window.firebase.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    auth.signInWithPopup(p).catch(function (e) {
+      $("lockMsg").textContent = e && e.code === "auth/popup-closed-by-user" ? "" : "Google sign-in did not complete. Try again.";
+    });
+  });
+  $("swapLink").addEventListener("click", function (e) { e.preventDefault(); showGoogle($("googleBox").hidden); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshToken(); });
+  setInterval(refreshToken, 20 * 60 * 1000);
+  initGoogle();
 
   var saved = getKey();
   if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
