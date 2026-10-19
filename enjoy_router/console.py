@@ -15,6 +15,7 @@ import re
 from datetime import datetime
 from typing import Optional
 
+from access import door as _door, policy as _policy
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -53,26 +54,20 @@ def handle_console(
     store,
     limiter: RateLimiter,
     now: datetime,
+    verifier=None,
+    access_store=None,
 ) -> HttpResult:
-    """params: the query string as a plain dict of strings. now: aware datetime."""
+    """params: the query string as a plain dict of strings. now: aware datetime. verifier + access_store switch on Google sign-in
+    (access_store holds the access_roles / access_persons records); without them only the key works."""
     if method.upper() != "GET":
         return _error(405, "validation_failed", "Use GET.", {"Allow": "GET"})
 
-    if not admin_key or len(admin_key) < MIN_KEY_LENGTH:
-        log.error("console_records code=not_configured")
-        return _error(401, "unauthorized", "Unauthorized.")
-
-    ts = now.timestamp()
-    wait = limiter.retry_after(visitor, ts)
-    if wait:
-        log.info("console_records code=rate_limited")
-        return _error(429, "rate_limited", "Too many attempts. Try again later.", {"Retry-After": str(wait)})
-
-    given = _bearer(authorization)
-    if not given or not hmac.compare_digest(given.encode("utf-8"), admin_key.encode("utf-8")):
-        limiter.allow(visitor, ts)  # records one failure
-        log.info("console_records code=unauthorized")
-        return _error(401, "unauthorized", "Unauthorized.")
+    access, refusal = _door.sign_in(authorization, admin_key=admin_key, verifier=verifier, store=access_store, limiter=limiter,
+                                    visitor=visitor, now=now, tag="console_records")
+    if refusal:
+        return refusal
+    if not _policy.allowed(access, _policy.RECORDS):
+        return _door.forbidden("console_records")
 
     try:
         limit = int(params.get("limit", DEFAULT_LIMIT))

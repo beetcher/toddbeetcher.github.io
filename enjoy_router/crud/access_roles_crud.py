@@ -37,6 +37,8 @@ def _rules(store, doc, cur):
         problems.append({"field": "capabilities", "issue": "not_allowed"})        # a super admin holds all of them already
     if not doc.get("is_super_admin") and not doc.get("capabilities"):
         problems.append({"field": "capabilities", "issue": "required"})
+    if not doc.get("is_super_admin") and "manage_access" in (doc.get("capabilities") or []):
+        problems.append({"field": "capabilities", "issue": "not_allowed"})        # delegating access management comes later
     cur_id = (cur or {}).get("id")
     if any(d["id"] != cur_id for d in _live(store, ROLES, key=doc["key"])):
         problems.append({"field": "key", "issue": "duplicate"})

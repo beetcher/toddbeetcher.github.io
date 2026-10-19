@@ -39,6 +39,7 @@ import smtp_transport
 from comms.settings import resolve_mode
 from launch_comms import wiring
 from crud import geocoder
+from access import FirebaseVerifier
 from console import handle_console, make_failure_limiter
 from crud_endpoint import handle_admin, handle_crud_test
 from discovery_door import handle_discovery
@@ -106,6 +107,16 @@ def _get_store():
                 firebase_admin.initialize_app()
             _store = FirestoreStore(firestore.client(), _schemas)
     return _store
+
+
+def _get_verifier():
+    """Google sign-in checker; None in local memory mode (only the key works there)."""
+    if os.environ.get("ICDT_STORE") == "memory":
+        return None
+    import firebase_admin
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app()
+    return FirebaseVerifier()
 
 
 def _get_doc_store():
@@ -205,6 +216,8 @@ def enjoy_console_records(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_store(),
         limiter=_console_limiter,
+        verifier=_get_verifier(),
+        access_store=_get_admin_store(),
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
@@ -252,6 +265,7 @@ def enjoy_admin(req: https_fn.Request) -> https_fn.Response:
         visitor=visitor_key(_client_address(req), SALT),
         store=_get_admin_store(),
         limiter=_admin_limiter,
+        verifier=_get_verifier(),
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
@@ -275,7 +289,7 @@ def _get_discovery_engine():
     timeout_sec=180,   # one step is one AI call (up to 90 seconds) plus saving its results
 )
 def enjoy_discovery(req: https_fn.Request) -> https_fn.Response:
-    """The Console's door to the Discovery station (quote, plan, step, stop, withdraw, read runs). Locked by the admin key."""
+    """The Console's door to the Discovery station (quote, plan, step, stop, withdraw, read runs). Locked by the admin key or a Google sign-in."""
     result = handle_discovery(
         method=req.method,
         authorization=req.headers.get("Authorization", ""),
@@ -286,6 +300,7 @@ def enjoy_discovery(req: https_fn.Request) -> https_fn.Response:
         engine=_get_discovery_engine(),
         environ=os.environ,
         limiter=_discovery_limiter,
+        verifier=_get_verifier(),
         now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,

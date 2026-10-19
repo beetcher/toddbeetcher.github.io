@@ -45,8 +45,9 @@ import json
 import logging
 from datetime import datetime
 
+from access import door as _door, policy as _policy
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
+from crud import (access_persons_crud, access_roles_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
                   individual_restricted_details_service, message_templates_crud,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service,
@@ -58,7 +59,7 @@ from ratelimit import RateLimiter
 
 log = logging.getLogger("enjoy_router")
 TEST_ACTOR = "system:crud_test"
-ADMIN_ACTOR = "user:admin"
+ADMIN_ACTOR = "user:admin"   # what the admin key stamps (access.authorize.KEY_ACTOR); a Google sign-in stamps user:<access_person id>
 MAX_BODY_BYTES = 100_000
 
 # collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
@@ -71,7 +72,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "message_templates": message_templates_crud, "communication_logs": communication_logs_crud,
             "comms_settings": comms_settings_crud, "discovery_models": discovery_models_crud, "discovery_areas": discovery_areas_crud,
             "discovery_types": discovery_types_crud, "discovery_prompts": discovery_prompts_crud, "discovery_settings": discovery_settings_crud,
-            "discovery_runs": discovery_runs_crud}
+            "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs"})   # runs: only the Discovery service writes them
 
@@ -185,26 +186,18 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
 
 
 def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str, visitor: str,
-                store, limiter: RateLimiter, now: datetime, actor: str, allowed_ops, tag: str,
-                blocked_collections=frozenset()) -> HttpResult:
+                store, limiter: RateLimiter, now: datetime, actor, allowed_ops, tag: str,
+                blocked_collections=frozenset(), verifier=None, allow_me=False) -> HttpResult:
+    """actor: a fixed actor string (the test door: key only, no per-person rules), or None = who signed in (the Console door:
+    the key or a Google sign-in, with the capability rules in access/policy.py)."""
     if method.upper() != "POST":
         return _error(405, "validation_failed", "Use POST.", {"Allow": "POST"})
 
-    if not admin_key or len(admin_key) < MIN_KEY_LENGTH:
-        log.error("%s code=not_configured", tag)
-        return _error(401, "unauthorized", "Unauthorized.")
-
-    ts = now.timestamp()
-    wait = limiter.retry_after(visitor, ts)
-    if wait:
-        log.info("%s code=rate_limited", tag)
-        return _error(429, "rate_limited", "Too many attempts. Try again later.", {"Retry-After": str(wait)})
-
-    given = _bearer(authorization)
-    if not given or not hmac.compare_digest(given.encode("utf-8"), admin_key.encode("utf-8")):
-        limiter.allow(visitor, ts)
-        log.info("%s code=unauthorized", tag)
-        return _error(401, "unauthorized", "Unauthorized.")
+    access, refusal = _door.sign_in(authorization, admin_key=admin_key, verifier=verifier, store=store, limiter=limiter,
+                                    visitor=visitor, now=now, tag=tag)
+    if refusal:
+        return refusal
+    who = access.actor if actor is None else actor
 
     if len(raw_body) > MAX_BODY_BYTES:
         return _error(413, "validation_failed", "The request is too large.")
@@ -214,6 +207,10 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
         return _error(400, "validation_failed", "The request body must be JSON.")
     if not isinstance(body, dict):
         return _error(400, "validation_failed", "Send a JSON object with collection, op and args.")
+    if body.get("op") == "me":   # who is signed in and what they may do (the Console door only)
+        if not allow_me:
+            return _error(400, "validation_failed", "This op is not enabled here.")
+        return HttpResult(200, {"ok": True, "data": _door.me(access)}, {"Cache-Control": "no-store"})
 
     collection, op, args = body.get("collection"), body.get("op"), body.get("args", {})
     if collection not in HANDLERS:
@@ -224,6 +221,8 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
         return _error(400, "validation_failed", "args must be an object.")
     if op not in allowed_ops or collection in blocked_collections:
         return _error(400, "validation_failed", "This op is not enabled here.")
+    if actor is None and not _policy.allowed(access, _policy.crud_need(collection, op, args)):
+        return _door.forbidden(tag)
     required, optional = OPS[op]
     missing, extra = sorted(required - set(args)), sorted(set(args) - required - optional)
     if missing or extra:
@@ -232,7 +231,7 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
 
     try:
-        result = _run(HANDLERS[collection], store, op, args, now, actor)
+        result = _run(HANDLERS[collection], store, op, args, now, who)
     except Exception as exc:  # say nothing about the cause
         log.error("%s code=server_error op=%s exception=%s", tag, op, type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")
@@ -251,6 +250,6 @@ def handle_crud_test(method, authorization, raw_body, admin_key, visitor, store,
                        TEST_ACTOR, frozenset(OPS), "crud_test")
 
 
-def handle_admin(method, authorization, raw_body, admin_key, visitor, store, limiter, now) -> HttpResult:
+def handle_admin(method, authorization, raw_body, admin_key, visitor, store, limiter, now, verifier=None) -> HttpResult:
     return handle_crud(method, authorization, raw_body, admin_key, visitor, store, limiter, now,
-                       ADMIN_ACTOR, ADMIN_OPS, "admin", ADMIN_BLOCKED_COLLECTIONS)
+                       None, ADMIN_OPS, "admin", ADMIN_BLOCKED_COLLECTIONS, verifier=verifier, allow_me=True)

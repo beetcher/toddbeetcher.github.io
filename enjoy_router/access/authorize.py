@@ -23,10 +23,10 @@ import hmac
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from console import MIN_KEY_LENGTH
 from crud import access_persons_crud as PE
 from .capabilities import CAPABILITIES
 
+MIN_KEY_LENGTH = 32            # same number as console.MIN_KEY_LENGTH (a test keeps them equal; console cannot be imported here)
 KEY_ACTOR = "user:admin"
 PROVIDER = "google.com"
 SIGN_IN_WRITE_SECONDS = 600     # last_sign_in_at is written at most this often per person

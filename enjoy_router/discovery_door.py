@@ -22,7 +22,7 @@ import hmac
 import json
 import logging
 
-from console import MIN_KEY_LENGTH, _bearer
+from access import door as _door, policy as _policy
 from crud import discovery_runs_crud as RU
 from discovery.contract import RunRequest
 from handler import HttpResult, _error
@@ -51,21 +51,13 @@ def _request(a):
     return RunRequest(a["finder_key"], a["model_id"], tuple(a["area_ids"]), tuple(a["type_keys"]), a["max_results"], a["spend_cap_cents"])
 
 
-def handle_discovery(method, authorization, raw_body, admin_key, visitor, store, engine, environ, limiter, now) -> HttpResult:
+def handle_discovery(method, authorization, raw_body, admin_key, visitor, store, engine, environ, limiter, now, verifier=None) -> HttpResult:
     if method.upper() != "POST":
         return _error(405, "validation_failed", "Use POST.", {"Allow": "POST"})
-    if not admin_key or len(admin_key) < MIN_KEY_LENGTH:
-        log.error("discovery code=not_configured")
-        return _error(401, "unauthorized", "Unauthorized.")
-    ts = now.timestamp()
-    wait = limiter.retry_after(visitor, ts)
-    if wait:
-        return _error(429, "rate_limited", "Too many attempts. Try again later.", {"Retry-After": str(wait)})
-    given = _bearer(authorization)
-    if not given or not hmac.compare_digest(given.encode("utf-8"), admin_key.encode("utf-8")):
-        limiter.allow(visitor, ts)
-        log.info("discovery code=unauthorized")
-        return _error(401, "unauthorized", "Unauthorized.")
+    access, refusal = _door.sign_in(authorization, admin_key=admin_key, verifier=verifier, store=store, limiter=limiter,
+                                    visitor=visitor, now=now, tag="discovery")
+    if refusal:
+        return refusal
     if len(raw_body) > MAX_BODY_BYTES:
         return _error(413, "validation_failed", "The request is too large.")
     try:
@@ -75,6 +67,8 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
     if not isinstance(body, dict) or body.get("op") not in OPS:
         return _error(400, "validation_failed", "Send a JSON object with op and args. Known ops: " + ", ".join(sorted(OPS)) + ".")
     op, args = body["op"], body.get("args", {})
+    if not _policy.allowed(access, _policy.discovery_need(op)):
+        return _door.forbidden("discovery")
     if not isinstance(args, dict):
         return _error(400, "validation_failed", "args must be an object.")
     required, optional = OPS[op]
@@ -83,7 +77,7 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
         return _error(400, "validation_failed", f"For {op}: " + (f"missing {', '.join(missing)}. " if missing else "")
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
     try:
-        data = _run(op, args, store, engine, environ)
+        data = _run(op, args, store, engine, environ, access.actor)
     except Exception as exc:
         log.error("discovery code=server_error op=%s exception=%s", op, type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")
@@ -94,7 +88,7 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
     return _error(STATUS.get(data[1], 400), data[1], data[2])
 
 
-def _run(op, a, store, engine, environ):
+def _run(op, a, store, engine, environ, actor=ACTOR):
     """(True, data) or (False, code, message)."""
     if op == "status":
         return True, wiring.status(store, environ)
@@ -103,12 +97,12 @@ def _run(op, a, store, engine, environ):
         if rq is None:
             return False, "bad_request", "The request is not complete."
         with wiring.no_gps():
-            r = engine.quote(rq) if op == "quote" else engine.plan(rq, ACTOR)
+            r = engine.quote(rq) if op == "quote" else engine.plan(rq, actor)
     elif op in ("step", "stop", "withdraw"):
         if not isinstance(a["run_id"], str):
             return False, "bad_request", "run_id must be text."
         with wiring.no_gps():
-            r = getattr(engine, op)(a["run_id"], ACTOR)
+            r = getattr(engine, op)(a["run_id"], actor)
     elif op == "zips":
         sc = a["state_code"]
         if not (isinstance(sc, str) and len(sc) == 2 and sc.isalpha() and sc.isupper()):
