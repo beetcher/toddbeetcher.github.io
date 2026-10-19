@@ -374,7 +374,16 @@ function initMeet() {
   openFromHash();
   window.addEventListener('pageshow', e => { if (e.persisted) closeAll(); });
   window.addEventListener('hashchange', openFromHash);
-  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', () => setTimeout(openFromHash, 0)));
+  // A link to a card on this same page opens it directly, without ever putting #meet-erin in the address bar
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href*="#"]');
+    if (!a || a.pathname !== location.pathname) return;
+    const el = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+    if (!el || el.tagName !== 'DETAILS') return;
+    e.preventDefault();
+    el.open = true;
+    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
 }
 
 // ============================================================
