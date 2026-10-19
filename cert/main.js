@@ -197,10 +197,12 @@ const INTRO_TIMINGS = {
   titleMove:   1200,   // red title rises to the top of the window
   paraDelay:    300,   // pause after the title docks, before the paragraph appears
   paraFadeIn:  1000,   // paragraph fades in, in its final place under the title, glowing
-  paraGlow:    8000,   // paragraph keeps its glow (reading time)
-  glowFade:    1200,   // glow fades down to a faint halo
-  arcDelay:     250,   // pause before the orange arch
-  arcFloat:    2000,   // orange arch floats down from the sky into place, fading in
+  paraGlow:    4000,   // paragraph keeps its glow (reading time)
+  glowFade:     600,   // glow fades down to a faint halo
+  arcDelay:     125,   // pause before the orange arch
+  arcAppear:    600,   // orange arch fades in up in the sky
+  arcHold:      700,   // arch holds in the sky before it drops
+  arcFloat:    2500,   // arch floats down into place
   arcDrop:      150,   // how far above its place the arch starts (pixels, not milliseconds)
 };
 const PILL_DELAY = 800; // pages without the opening: when the "I'm interested" pill appears
@@ -216,11 +218,26 @@ function initPill() {
   pill.setAttribute('data-open-contact', '');
   pill.textContent = 'I’m interested';
   document.body.appendChild(pill);
+
+  // "Meet Erin of NOCTI" pill, above it: goes to the Meet Erin card on the Invitation
+  const meetLink = document.querySelector('.contact__meet a[href*="#meet-erin"]');
+  if (!meetLink) return;
+  const base = meetLink.getAttribute('href').replace('#meet-erin', '');
+  const erin = document.createElement('a');
+  erin.className = 'pill-erin is-hidden';
+  erin.href = base + '#meet-erin';
+  erin.innerHTML = '<img src="' + base + 'assets/erin-maruzzella.webp" alt="" width="30" height="30"><span>Meet Erin of NOCTI</span>';
+  document.body.appendChild(erin);
+
+  // On the Invitation, step aside while the card itself is on screen
+  const card = document.getElementById('meet-erin');
+  if (card && 'IntersectionObserver' in window) {
+    new IntersectionObserver(es => es.forEach(e => erin.classList.toggle('is-aside', e.isIntersecting)), { threshold: 0.3 }).observe(card);
+  }
 }
 
 function showPill() {
-  const pill = document.querySelector('.pill-interested');
-  if (pill) pill.classList.remove('is-hidden');
+  document.querySelectorAll('.pill-interested, .pill-erin').forEach(p => p.classList.remove('is-hidden'));
 }
 
 // ============================================================
@@ -299,11 +316,10 @@ function initIntro() {
 
     // 4. Orange arch floats down from the sky into place across the gorge
     await wait(T.arcDelay); if (!alive()) return;
-    await play(arc, [
-      { opacity: 0, transform: `translateY(${-T.arcDrop}px)` },
-      { opacity: 1, offset: 0.6 },
-      { opacity: 1, transform: 'none' }
-    ], T.arcFloat, 'cubic-bezier(.2,.7,.3,1)'); if (!alive()) return;
+    const sky = `translateY(${-T.arcDrop}px)`;
+    await play(arc, [{ opacity: 0, transform: sky }, { opacity: 1, transform: sky }], T.arcAppear); if (!alive()) return;
+    await wait(T.arcHold); if (!alive()) return;
+    await play(arc, [{ opacity: 1, transform: sky }, { opacity: 1, transform: 'none' }], T.arcFloat, 'cubic-bezier(.3,0,.25,1)'); if (!alive()) return;
     finish();
   }
 

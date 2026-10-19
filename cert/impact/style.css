@@ -1091,3 +1091,40 @@ html:has(.intro-title) { scroll-padding-top: 120px; }
   color: var(--color-text-secondary);
   margin: 4px 0 8px;
 }
+
+/* "Meet Erin of NOCTI" pill — stacked above the "I'm interested" pill */
+.pill-erin {
+  position: fixed;
+  right: 24px;
+  bottom: 84px;
+  z-index: 95;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 18px 5px 5px;
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  background: var(--color-bg-surface);
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(28, 25, 20, 0.2);
+  transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s, background-color 0.2s ease;
+}
+.pill-erin img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.pill-erin:hover { background: #f2f5fb; text-decoration: none; }
+.pill-erin:focus-visible { outline: 3px solid var(--color-accent-warm); outline-offset: 3px; }
+.pill-erin.is-hidden,
+.pill-erin.is-aside {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+@media (max-width: 767px) {
+  .pill-erin { right: 16px; bottom: 74px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pill-erin { transition: none; }
+}
