@@ -1152,3 +1152,55 @@ a.nocti:hover { color: var(--color-accent); }
 
 /* Line after the closing statement (e.g. the pointer to the next page) */
 .closing-line + p { margin-top: var(--sp-lg); }
+
+/* ============================================================
+   ROADMAP STRIP (Impact page): baseline → endorsements → refreshers
+   ============================================================ */
+.roadmap {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-md) 0 var(--sp-lg);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.roadmap li {
+  position: relative;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-nocti-teal);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.roadmap li strong {
+  display: block;
+  font-family: var(--font-heading);
+  color: var(--color-accent);
+  margin-bottom: 6px;
+}
+.roadmap li:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -17px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-nocti-teal);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+@media (max-width: 700px) {
+  .roadmap { grid-template-columns: 1fr; gap: 26px; }
+  .roadmap li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -24px; transform: translateX(-50%); }
+}
+.cert-ask__actions .btn--secondary { margin-left: 12px; }
+/* Wide figure: breaks out of the text column (used for the cycle diagram) */
+.panel__figure--wide {
+  width: min(1120px, calc(100vw - 32px));
+  max-width: none;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
