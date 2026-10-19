@@ -885,3 +885,143 @@ a:focus-visible {
   .panel--hero-doc__content { min-height: 0; }
   .panel--hero-doc__content { padding-top: var(--sp-md); }
 }
+
+/* ============================================================
+   OPENING SCENE (Invitation hero) + FLOATING "I'M INTERESTED" PILL
+   EASY CHANGES: the colors and sizes are the --intro-* settings
+   right below. The timings are in main.js under "OPENING SCENE".
+   ============================================================ */
+:root {
+  --intro-title-color: #d21f2b;          /* red title */
+  --intro-para-color: #3ee86a;           /* bright green paragraph */
+  --intro-arc-color: #f5a04a;            /* orange arch line */
+  --intro-title-size: clamp(1.25rem, 2.1vw, 2rem); /* title size once it docks at the top */
+  --intro-title-start-scale: 1.7;          /* how much bigger the title is when it first appears */
+  --intro-para-size: clamp(14px, 1.55cqw, 22px);
+  --intro-arc-size: 28px;                /* arch text size (in picture pixels; scales with the picture) */
+  --intro-band-bg: rgba(248, 244, 239, 0.94); /* band behind the pinned title once the page scrolls */
+}
+
+html:has(.intro-title) { scroll-padding-top: 120px; }
+
+.panel--intro { position: relative; padding: 0; }
+
+.intro-stage {
+  position: relative;
+  max-width: calc((100vh - 48px) * 1.5);
+  max-width: calc((100svh - 48px) * 1.5);
+  margin: 0 auto;
+  container-type: inline-size;
+}
+
+.intro-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Red title: pinned to the top of the window for the whole page */
+.intro-title {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  margin: 0;
+  padding: 10px var(--content-padding);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--intro-title-size);
+  line-height: 1.2;
+  color: var(--intro-title-color);
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.95), 0 0 12px rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, text-shadow 0.3s ease;
+}
+
+.intro-title.is-banded {
+  background: var(--intro-band-bg);
+  box-shadow: 0 1px 0 var(--color-border);
+  text-shadow: none;
+}
+
+/* Green paragraph: sits in the sky under the title and scrolls with the picture */
+.intro-para {
+  position: absolute;
+  top: var(--intro-para-top, 64px);
+  left: 0;
+  right: 0;
+  width: 52cqw;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--intro-para-size);
+  line-height: 1.4;
+  color: var(--intro-para-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Orange arch across the gorge, where the bridge will go */
+.intro-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.intro-arc text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--intro-arc-size);
+  letter-spacing: 0.02em;
+  fill: var(--intro-arc-color);
+  stroke: rgba(55, 22, 6, 0.6);
+  stroke-width: 3px;
+  paint-order: stroke;
+}
+
+/* While the opening plays, everything starts hidden; a click or tap skips to the end */
+.intro-on .intro-title,
+.intro-on .intro-para,
+.intro-on .intro-arc { opacity: 0; }
+.intro-on .intro-stage { cursor: pointer; }
+
+/* Floating "I'm interested" pill (all pages) */
+.pill-interested {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 95;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(28, 25, 20, 0.28);
+  transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s, background-color 0.2s ease;
+}
+
+.pill-interested:hover { background: var(--color-accent-hover); }
+.pill-interested:focus-visible { outline: 3px solid var(--color-accent-warm); outline-offset: 3px; }
+
+.pill-interested.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+
+@media (max-width: 767px) {
+  .pill-interested { right: 16px; bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-title, .pill-interested { transition: none; }
+}

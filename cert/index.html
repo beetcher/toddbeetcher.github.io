@@ -57,16 +57,17 @@
 
   <main>
 
-    <!-- PANEL 1: Hero -->
-    <section class="panel panel--hero panel--hero-doc" data-panel="1">
-      <div class="panel--hero-doc__bg">
-        <img src="assets/canyon-gap.webp" alt="" class="hero-pos-25" loading="eager">
+    <!-- PANEL 1: Hero — opening scene. Colors/sizes: style.css "OPENING SCENE". Timings: main.js "OPENING SCENE". -->
+    <section class="panel panel--hero panel--intro" data-panel="1" data-intro>
+      <div class="intro-stage">
+        <img src="assets/canyon-gap.webp" width="1264" height="842" loading="eager" alt="A deep canyon between two cliffs. On the left, workforce preparation: universities, community colleges, K-12 schools, workforce development and learners, with a sign reading “Millions learning. Many pathways. But no common destination.” On the right, workplace demand: healthcare, technology, manufacturing, financial services, education, government and small business, with a sign reading “Employers are ready. The need is real. But how do we identify AI-ready talent?” There is no bridge yet.">
+        <p class="intro-para">Millions of people are asking. Employers are asking it about them. NOCTI, a nonprofit, is ready to build the answer, and we’re inviting a few founding sponsors to help.</p>
+        <svg class="intro-arc" viewBox="0 0 1264 842" aria-hidden="true" focusable="false">
+          <path id="intro-arc-path" d="M 330 600 Q 645 360 960 560" fill="none"/>
+          <text><textPath href="#intro-arc-path" startOffset="50%" text-anchor="middle">How do we get from here to there?</textPath></text>
+        </svg>
       </div>
-      <div class="panel--hero-doc__content">
-        <span class="panel--hero-doc__sequence">NOCTI · A nonprofit sponsorship invitation</span>
-        <h1 class="panel--hero-doc__title">Am I AI-ready? How would I know?</h1>
-        <p class="panel--hero-doc__role">Millions of people are asking. Employers are asking it about them. NOCTI, a nonprofit, is ready to build the answer, and we’re inviting a few founding sponsors to help.</p>
-      </div>
+      <h1 class="intro-title">Am I AI-ready? How would I know?</h1>
     </section>
 
     <!-- PANEL 2: Who NOCTI is -->

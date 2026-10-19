@@ -185,6 +185,145 @@ function initContact() {
 }
 
 // ============================================================
+// OPENING SCENE — TIMINGS (Invitation hero; runs only on a page with [data-intro])
+// EASY CHANGES: every number below is in milliseconds (1000 = 1 second).
+// Colors and sizes are the --intro-* settings in style.css under "OPENING SCENE".
+// ============================================================
+const INTRO_TIMINGS = {
+  startDelay:   500,   // the bare picture, before anything appears
+  titleFadeIn:  900,   // red title fades in, centered over the canyon
+  titleHold:   2200,   // red title holds in the center
+  titleMove:   1200,   // red title rises to the top of the window
+  paraDelay:    600,   // after the title starts rising, the green paragraph begins to appear
+  paraFadeIn:  1000,   // green paragraph fades in, centered
+  paraHold:    5000,   // green paragraph holds for reading
+  paraMove:    1100,   // green paragraph rises to sit under the title
+  arcDelay:     500,   // pause before the orange arch
+  arcFadeIn:   1600,   // orange arch fades in
+};
+const PILL_DELAY = 800; // pages without the opening: when the "I'm interested" pill appears
+
+// ============================================================
+// FLOATING "I'M INTERESTED" PILL — opens the same contact panel
+// ============================================================
+function initPill() {
+  if (!document.getElementById('contact')) return;
+  const pill = document.createElement('button');
+  pill.type = 'button';
+  pill.className = 'pill-interested is-hidden';
+  pill.setAttribute('data-open-contact', '');
+  pill.textContent = 'I’m interested';
+  document.body.appendChild(pill);
+}
+
+function showPill() {
+  const pill = document.querySelector('.pill-interested');
+  if (pill) pill.classList.remove('is-hidden');
+}
+
+// ============================================================
+// OPENING SCENE
+// Final arrangement is the plain CSS; the opening animates into it.
+// Click, tap, key or scroll skips to the end. Leaving the picture and
+// coming back to the top of the page plays it again.
+// Reduced-motion and no-JavaScript visitors see the final arrangement.
+// ============================================================
+function initIntro() {
+  const hero = document.querySelector('[data-intro]');
+  if (!hero) return false;
+  const stage = hero.querySelector('.intro-stage');
+  const title = hero.querySelector('.intro-title');
+  const para = hero.querySelector('.intro-para');
+  const arc = hero.querySelector('.intro-arc');
+  const T = INTRO_TIMINGS;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canAnimate = !reduce && typeof Element.prototype.animate === 'function';
+  let running = false, runId = 0, anims = [], timers = [], leftHero = false, replayTimer = null;
+
+  const placePara = () => stage.style.setProperty('--intro-para-top', (title.offsetHeight + 2) + 'px');
+  const band = () => title.classList.toggle('is-banded', window.scrollY > 4);
+  const wait = ms => new Promise(res => timers.push(setTimeout(res, ms)));
+  const play = (el, frames, ms, easing) => {
+    const a = el.animate(frames, { duration: ms, fill: 'both', easing: easing || 'ease-out' });
+    anims.push(a);
+    return a.finished.catch(() => {});
+  };
+
+  function finish() {
+    runId++;
+    running = false;
+    timers.forEach(clearTimeout); timers = [];
+    anims.forEach(a => { try { a.cancel(); } catch (e) {} }); anims = [];
+    document.body.classList.remove('intro-on');
+    placePara(); band();
+    showPill();
+  }
+
+  async function run() {
+    if (!canAnimate) { finish(); return; }
+    const id = ++runId;
+    const alive = () => id === runId;
+    timers.forEach(clearTimeout); timers = [];
+    anims.forEach(a => { try { a.cancel(); } catch (e) {} }); anims = [];
+    running = true;
+    document.body.classList.add('intro-on');
+    placePara(); band();
+
+    await wait(T.startDelay); if (!alive()) return;
+
+    // Start positions, measured now (fonts and picture are in place)
+    const s = stage.getBoundingClientRect();
+    const t = title.getBoundingClientRect();
+    const p = para.getBoundingClientRect();
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--intro-title-start-scale')) || 2;
+    const midY = s.top + s.height / 2;
+    const titleStart = `translateY(${midY - (t.top + t.height / 2)}px) scale(${scale})`;
+    const paraStart = `translateY(${midY - (p.top + p.height / 2)}px)`;
+    const glide = 'cubic-bezier(.45,0,.2,1)';
+
+    // 1. Red title appears, centered over the canyon, and holds
+    await play(title, [{ opacity: 0, transform: titleStart }, { opacity: 1, transform: titleStart }], T.titleFadeIn); if (!alive()) return;
+    await wait(T.titleHold); if (!alive()) return;
+
+    // 2. Title rises to the top; the green paragraph appears in the center
+    play(title, [{ opacity: 1, transform: titleStart }, { opacity: 1, transform: 'none' }], T.titleMove, glide);
+    await wait(T.paraDelay); if (!alive()) return;
+    await play(para, [{ opacity: 0, transform: paraStart }, { opacity: 1, transform: paraStart }], T.paraFadeIn); if (!alive()) return;
+    await wait(T.paraHold); if (!alive()) return;
+
+    // 3. Paragraph rises to sit under the title
+    await play(para, [{ opacity: 1, transform: paraStart }, { opacity: 1, transform: 'none' }], T.paraMove, glide); if (!alive()) return;
+
+    // 4. Orange arch across the gorge
+    await wait(T.arcDelay); if (!alive()) return;
+    await play(arc, [{ opacity: 0 }, { opacity: 1 }], T.arcFadeIn); if (!alive()) return;
+    finish();
+  }
+
+  // Skip to the final arrangement
+  ['click', 'keydown', 'wheel', 'touchstart'].forEach(type =>
+    window.addEventListener(type, () => { if (running) finish(); }, { passive: true, capture: true }));
+
+  window.addEventListener('scroll', () => {
+    band();
+    if (running && window.scrollY > 4) finish();
+    if (stage.getBoundingClientRect().bottom <= 48) leftHero = true;
+    clearTimeout(replayTimer);
+    if (leftHero && window.scrollY <= 2) {
+      replayTimer = setTimeout(() => {
+        if (window.scrollY <= 2) { leftHero = false; run(); }
+      }, 350);
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => { if (running) finish(); else placePara(); });
+  window.addEventListener('pageshow', e => { if (e.persisted && window.scrollY <= 2) run(); });
+
+  if (window.scrollY <= 2 && !location.hash) run(); else finish();
+  return true;
+}
+
+// ============================================================
 // PAGE-SPECIFIC — the only line that differs between the 3 files
 // ============================================================
 CURRENT_DOC = 'ai-ready-workforce';
@@ -194,7 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
   updateState();
   initReadProgress();
   initCompletionDetection();
+  initPill();
   initContact();
+  if (!initIntro()) setTimeout(showPill, PILL_DELAY);
 });
 
 // Refresh dots when returning via the browser Back button (page restored from cache).
