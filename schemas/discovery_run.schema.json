@@ -355,7 +355,7 @@
       "minimum": 0
     },
     "rejections": {
-      "description": "What was rejected and why, up to 100. Names and codes only. Optional.",
+      "description": "What was rejected and why, up to 100: a name, a code, the field names involved and, when there is one, what the AI sent for the item. Optional.",
       "type": "array",
       "maxItems": 100,
       "items": {
@@ -375,6 +375,11 @@
             "type": "string",
             "maxLength": 60,
             "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "raw": {
+            "description": "What the AI actually sent for this item, as JSON text, cut to 1,200 characters, so a rejection can be understood later. Optional.",
+            "type": "string",
+            "maxLength": 1200
           },
           "fields": {
             "description": "Field names involved, up to 20. Names only, never values. Optional.",

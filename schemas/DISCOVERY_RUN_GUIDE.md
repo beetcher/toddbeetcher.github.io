@@ -33,7 +33,7 @@ Progress and result:
 - `steps_planned`, `steps_done`.
 - `steps`: one entry per step, up to 40. Each has `step_number`, `type_key`, `area_id`, `status` (`ok`, `no_answer`, `rejected`, `skipped`), `result_count`, `input_tokens`, `output_tokens`, `cost_cents`, `error_code` (a short code, never provider text) and `prompt_text` (the exact text sent, up to 8,000 characters).
 - `found_count`, `created_count`, `duplicate_count`, `rejected_count`, `attention_count`.
-- `rejections`: what was rejected and why, up to 100. Each has a `name`, a `reason` code and the `fields` involved (field names only, never values).
+- `rejections`: what was rejected and why, up to 100. Each has a `name`, a `reason` code, the `fields` involved (field names only) and, when there is one, `raw`: what the AI sent for that item, as text cut to 1,200 characters, so a rejection can be understood later.
 
 What it created (so Withdraw can take it back):
 - `created_organization_ids`, `created_location_ids`, `created_venue_ids`, `created_organization_link_ids`, `created_location_link_ids`.

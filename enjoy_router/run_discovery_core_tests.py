@@ -217,9 +217,35 @@ check("D-8 unknown fields are dropped", "secret_field" not in saved["Fine Place"
 check("D-8 a bad optional value is dropped, the record kept", "Odd Url" in saved and "website_url" not in saved["Odd Url"]["values"])
 by_reason = {x.get("name", ""): x for x in run["rejections"]}
 check("D-8 missing/invalid needed field: rejected, naming the fields only",
-      by_reason["No City"]["fields"] == ["city"] and by_reason["Bad State"]["fields"] == ["state"] and "Colorado" not in json.dumps(run["rejections"]))
+      by_reason["No City"]["fields"] == ["city"] and by_reason["Bad State"]["fields"] == ["state"] and "Colorado" not in json.dumps([x["fields"] for x in run["rejections"]]))
 check("D-10 a private home is rejected", by_reason["Smith House"]["reason"] == "private_home" and "Smith House" not in saved)
 check("D-8 a non-object item is rejected", any(x["reason"] == "not_an_object" for x in run["rejections"]) and run["rejected_count"] == 4)
+check("rejection keeps what the AI sent (raw), cut to 1,200 characters",
+      '"Colorado"' in by_reason["Bad State"]["raw"] and by_reason["Smith House"]["raw"].startswith("{") and all(len(x.get("raw", "")) <= 1200 for x in run["rejections"])
+      and any(x["reason"] == "not_an_object" and x["raw"] == "not an object" for x in run["rejections"]))
+longitem = v("Long One"); del longitem["city"]; longitem["description"] = {"value": "x" * 5000, "mark": "verify"}
+check("a very long rejected item is cut, not stored whole", len(marks.check_item(longitem, VENUE_FINDER)[1]["raw"]) == 1200)
+
+# a needed yes/no field the AI leaves out: kept and marked Check when the finder says so; a stated false is never overridden
+import dataclasses
+ASSUME = dataclasses.replace(VENUE_FINDER, assume_if_missing={"is_public_venue": True})
+nopub = v("No Public Field"); del nopub["is_public_venue"]
+c, rj = marks.check_item(nopub, ASSUME)
+check("assume: a needed yes/no left out entirely is kept, value assumed and marked verify", rj is None and c.fields["is_public_venue"] == {"value": True, "mark": "verify"}, (c, rj))
+check("assume: without the setting the same item is still rejected (other finders unchanged)", marks.check_item(nopub, VENUE_FINDER)[1]["reason"] == "missing_needed")
+nullpub = v("Null Public"); nullpub["is_public_venue"] = {"value": None, "mark": "verify"}
+check("assume: an explicit null counts as left out", marks.check_item(nullpub, ASSUME)[1] is None)
+check("assume: a stated false is still rejected as a private home", marks.check_item(v("Home", public=False), ASSUME)[1]["reason"] == "private_home")
+check("assume: a wrong-typed answer (the word false) is NOT assumed true; it is rejected", marks.check_item({**v("Word"), "is_public_venue": {"value": "false", "mark": "sure"}}, ASSUME)[1]["fields"] == ["is_public_venue"])
+check("assume: a bare word false is rejected too", marks.check_item({**v("Bare Word"), "is_public_venue": "false"}, ASSUME)[1]["fields"] == ["is_public_venue"])
+check("assume: other needed fields still reject when missing", marks.check_item({**{k: x for k, x in nopub.items() if k != "operator"}}, ASSUME)[1]["fields"] == ["operator"])
+bare = {**v("Bare Bool"), "is_public_venue": True}
+c, rj = marks.check_item(bare, ASSUME)
+check("bare: a plain true is accepted as a value and marked verify", rj is None and c.fields["is_public_venue"] == {"value": True, "mark": "verify"})
+check("bare: a plain false is read as false and rejected", marks.check_item({**v("Bare False"), "is_public_venue": False}, ASSUME)[1]["reason"] == "private_home")
+check("bare: a plain text name is accepted and marked verify", marks.check_item({**v("x"), "name": "Plain Name"}, ASSUME)[0].fields["name"] == {"value": "Plain Name", "mark": "verify"})
+e = Env(finder=ASSUME, replies=lambda r: reply(nopub, v("Fine")), mode="live"); rid = e.plan().data["run_id"]; e.go(rid)
+check("assume: end to end, the item with no public answer is saved and counted", e.run(rid)["created_count"] == 2 and e.run(rid)["rejected_count"] == 0, e.run(rid))
 e = Env(replies=[ProviderResult("ok", text="I could not find anything, sorry.", input_tokens=10, output_tokens=5)], mode="live"); rid = e.plan().data["run_id"]; e.go(rid)
 check("D-8 an unreadable answer is a no_answer step, not a crash", e.run(rid)["steps"][0]["status"] == "no_answer" and e.run(rid)["steps"][0]["error_code"] == "unreadable_answer")
 check("parse reads fenced and bare JSON", parse.parse_items('x ```json\n{"a": [1]}\n``` y', "a") == [1] and parse.parse_items('{"a": [2]}', "a") == [2]

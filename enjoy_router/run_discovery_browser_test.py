@@ -52,7 +52,8 @@ def ai(req):
     good["phone"] = {"value": "303-555-0101", "mark": "verify"}
     good["public_hours"] = {"value": "Mon-Fri 7am-5pm, Sat 8am-3pm", "mark": "verify"}
     noaddr = item(name="Corner Table Cafe", operator="Corner Table LLC", city="Boulder", state="CO", is_public_venue=True)
-    return ProviderResult("ok", text=json.dumps({"venues": [good, noaddr]}), input_tokens=500, output_tokens=300)
+    apt = item(name="Sam's Apartment", operator="Sam", city="Boulder", state="CO", is_public_venue=False, street="5 Elm St")
+    return ProviderResult("ok", text=json.dumps({"venues": [good, noaddr, apt]}), input_tokens=500, output_tokens=300)
 engine = wiring.build_engine(store, ENV, providers={"gemini": FakeProvider("gemini", ai)}, clock=tick)
 
 CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
@@ -115,12 +116,21 @@ with sync_playwright() as p:
     pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard"); pg.click("#dGo")
     pg.wait_for_function("document.getElementById('dRunLine') && document.getElementById('dRunLine').textContent === 'Finished.'", timeout=20000)
     summ = pg.locator("#dProgress").inner_text()
-    check("a finished run says what it found, saved and spent", "Found 2, saved 2" in summ and "need attention" in summ and "Spent" in summ, summ)
+    check("a finished run says what it found, saved and spent", "Found 3, saved 2" in summ and "need attention" in summ and "Spent" in summ, summ)
     runs = RU.list(store, None, "-created_at", 50).data["records"]
     check("one run record exists, finished", len(runs) == 1 and runs[0]["status"] == "finished" and runs[0]["spend_cap_cents"] == 9, runs and runs[0]["status"])
     pg.get_by_role("button", name="Review this run").click(); pg.wait_for_selector("#dCands .dcard")
     cards = pg.locator("#dCands .dcard")
     check("both candidates are listed for review", cards.count() == 2)
+    rjd = pg.locator("details", has=pg.locator("summary", has_text="Rejected (1) and why"))
+    rjd.locator("summary").first.click()
+    check("the rejected place is listed by name and reason", rjd.count() == 1 and "Sam's Apartment" in rjd.inner_text() and "private home" in rjd.inner_text(), rjd.inner_text() if rjd.count() else "none")
+    raw_fold = pg.locator("details.rejraw")
+    check("a rejected place has a closed 'What the AI sent' fold", raw_fold.count() == 1 and raw_fold.get_attribute("open") is None and "What the AI sent" in raw_fold.inner_text())
+    raw_fold.locator("summary").click()
+    rawtxt = raw_fold.locator("pre").inner_text()
+    check("opened, the fold shows what the AI sent, readable and inside the card", "Sam's Apartment" in rawtxt and "is_public_venue" in rawtxt and raw_fold.locator("pre").is_visible()
+          and pg.evaluate("(() => { const p = document.querySelector('details.rejraw pre'), c = document.getElementById('dCands').parentElement.getBoundingClientRect(), b = p.getBoundingClientRect(); return b.right <= c.right + 1; })()"), rawtxt[:200])
     ozo = pg.locator("#dCands .dcard", has_text="Ozo Coffee")
     check("a candidate is Inactive with facts and marks in words", "Inactive" in ozo.inner_text() and "Sure" in ozo.inner_text() and "Check" in ozo.inner_text(), ozo.inner_text())
     check("the Address row shows the street address (number and street), not only the city and ZIP", "1825 Pearl St" in ozo.locator("tr", has_text="Address").inner_text(), ozo.locator("tr", has_text="Address").inner_text())

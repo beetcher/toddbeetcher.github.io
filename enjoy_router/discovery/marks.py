@@ -5,6 +5,7 @@ and a fact marked sure without a source is stored as verify (D-3).
 """
 from __future__ import annotations
 
+import json
 import re
 
 import jsonschema
@@ -27,21 +28,33 @@ def _source(entry) -> str | None:
     return url if isinstance(url, str) and URL.match(url) else None
 
 
-def _rejection(reason, fields, name):
+MAX_RAW = 1200
+
+
+def _rejection(reason, fields, name, raw=None):
     out = {"reason": reason, "fields": list(fields)}
     if name and name.strip():
         out["name"] = name.strip()[:200]               # a name is left out when empty: the run record never stores blanks
+    if isinstance(raw, (dict, list, str)):             # what the AI actually sent, so a rejection can be understood later
+        text = json.dumps(raw, ensure_ascii=False) if not isinstance(raw, str) else raw
+        if text.strip():
+            out["raw"] = text[:MAX_RAW]
     return out
 
 
 def check_item(raw, finder):
     """Returns (Candidate, None) or (None, rejection) where rejection = {"reason", "fields": [names only], "name"}."""
     if not isinstance(raw, dict):
-        return None, {"reason": "not_an_object", "fields": []}
+        return None, _rejection("not_an_object", [], "", raw)
     fields, urls, missing, dropped = {}, [], [], []
     for spec in finder.ask_fields:
         entry = raw.get(spec.key)
+        bare = entry is not None and not isinstance(entry, dict)       # the AI sent true instead of {"value": true, ...}
+        if bare:
+            entry = {"value": entry}
         value = entry.get("value") if isinstance(entry, dict) else None
+        if value is None and spec.key in finder.assume_if_missing and spec.tier == "needed":
+            value, entry = finder.assume_if_missing[spec.key], {"mark": "verify"}   # left out entirely: keep it, marked Check
         if value is None or not _valid(value, spec.schema) or (isinstance(value, str) and not value.strip()):
             (missing if spec.tier == "needed" else dropped).append(spec.key)
             continue
@@ -55,10 +68,10 @@ def check_item(raw, finder):
     label_value = raw.get(finder.ask_fields[0].key)
     name = label_value.get("value") if isinstance(label_value, dict) and isinstance(label_value.get("value"), str) else ""
     if missing:
-        return None, _rejection("missing_needed", missing, name)
+        return None, _rejection("missing_needed", missing, name, raw)
     for key, reason in finder.must_be_true.items():
         if fields.get(key, {}).get("value") is not True:
-            return None, _rejection(reason, [key], name)
+            return None, _rejection(reason, [key], name, raw)
     attention = [code for key, code in finder.attention_if_missing.items() if key not in fields]
     first = finder.ask_fields[0].key
     return Candidate(key="", label=str(fields[first]["value"]), fields=fields, source_urls=urls,

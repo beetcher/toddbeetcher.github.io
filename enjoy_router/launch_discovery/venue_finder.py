@@ -54,5 +54,6 @@ FINDER = Finder(
     ),
     dedupe_key=dedupe_key,
     must_be_true={"is_public_venue": "private_home"},
+    assume_if_missing={"is_public_venue": True},       # a shop that leaves this out is kept and marked Check; an explicit false is still rejected
     attention_if_missing={"street": "no_street_address"},
 )

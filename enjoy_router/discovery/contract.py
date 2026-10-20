@@ -42,7 +42,9 @@ class FieldSpec:
 class Finder:
     """What a run looks for. dedupe_key(values) -> a string that is equal for two candidates that are the same thing, or None.
     must_be_true maps a needed yes/no field to the rejection reason used when the AI does not say true (for example a
-    'open to the public' field). attention_if_missing maps an optional field to the attention code used when it is absent."""
+    'open to the public' field). attention_if_missing maps an optional field to the attention code used when it is absent.
+    assume_if_missing maps a needed field to the value assumed when the AI leaves that field out entirely: the candidate is kept
+    with that value marked verify (Check) instead of being rejected. A value the AI DOES give (for example false) is never overridden."""
     key: str
     name: str
     result_key: str
@@ -51,6 +53,7 @@ class Finder:
     placeholders: tuple = ("territory", "types", "fields", "max_results")
     must_be_true: dict = field(default_factory=dict)
     attention_if_missing: dict = field(default_factory=dict)
+    assume_if_missing: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

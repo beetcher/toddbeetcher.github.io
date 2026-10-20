@@ -365,7 +365,10 @@
     }
     if ((r.rejections || []).length) {
       var rj = el("details", "more"); rj.appendChild(el("summary", "", "Rejected (" + r.rejections.length + ") and why"));
-      r.rejections.forEach(function (x) { rj.appendChild(el("div", "dmini", (x.name || "(no name)") + ": " + String(x.reason || "").replace(/_/g, " ") + ((x.fields || []).length ? " [" + x.fields.join(", ") + "]" : ""))); }); host.appendChild(rj);
+      r.rejections.forEach(function (x) {
+        rj.appendChild(el("div", "dmini", (x.name || "(no name)") + ": " + String(x.reason || "").replace(/_/g, " ") + ((x.fields || []).length ? " [" + x.fields.join(", ") + "]" : "")));
+        if (x.raw) { var rw = el("details", "more rejraw"); rw.appendChild(el("summary", "", "What the AI sent")); var pre = el("pre", "", String(x.raw)); pre.style.whiteSpace = "pre-wrap"; pre.style.wordBreak = "break-word"; pre.style.fontSize = "12px"; rw.appendChild(pre); rj.appendChild(rw); }
+      }); host.appendChild(rj);
     }
     var ch = el("div"); ch.id = "dCands"; host.appendChild(ch); drawCands();
   }

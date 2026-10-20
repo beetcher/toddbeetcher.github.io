@@ -90,7 +90,8 @@
           "reason": "missing_needed_field",
           "fields": [
             "name"
-          ]
+          ],
+          "raw": "{\"city\": {\"value\": \"Boulder\", \"mark\": \"verify\"}}"
         }
       ],
       "created_organization_ids": [

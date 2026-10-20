@@ -158,6 +158,11 @@ check("e2e: the private home was rejected by name and reason, never saved", run[
     x["name"] == "Someone's Apartment" for x in s.query("venues", [], limit=99)))
 check("e2e: the run holds the ids, the cost and the exact prompt", len(run["created_venue_ids"]) == 2 and run["actual_cost_cents"] > 0 and "independent" in run["steps"][0]["prompt_text"].lower())
 check("e2e: attention counted (no street, new operators)", run["attention_count"] == 2)
+nopub = item(name="Jackson Street Coffee and Market", operator="Jackson Street LLC", city="Boulder", state="CO", street="1 Jackson St")
+c, rj = marks.check_item(nopub, FINDER)
+check("real venue finder: a coffee shop that leaves out the public answer is kept and marked Check, not rejected",
+      rj is None and c.fields["is_public_venue"] == {"value": True, "mark": "verify"}, (c, rj))
+check("real venue finder: an explicit false is still rejected, with what the AI sent", marks.check_item(item(name="Apt", operator="Sam", city="Boulder", state="CO", is_public_venue=False), FINDER)[1]["reason"] == "private_home")
 check("e2e: both venues inactive with their marks", all(VC.get(s, i).data["status"] == "inactive" and VC.get(s, i).data["discovery"]["marks"]["name"] == "sure" for i in run["created_venue_ids"]))
 check("e2e: a second identical run creates nothing", (lambda rid2: (d.step(rid2, A), StoreRuns(s).get(rid2))[1])(d.plan(RunRequest("venue", mid, (reg,), ("coffee_shops",), 20, 100), A).data["run_id"])["created_count"] == 0)
 check("e2e: the provider was given the 90 second limit and the grounding tool", prov.calls[0].timeout_s == 90 and prov.calls[0].use_grounding)
