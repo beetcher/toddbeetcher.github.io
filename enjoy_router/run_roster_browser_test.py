@@ -50,8 +50,8 @@ with sync_playwright() as p:
     for n in ("Instructors", "Students"):
         check(n + " tile on Home", pg.locator("#stationTiles .tile", has_text=n).count() == 1)
     red = pg.evaluate("Array.from(document.querySelectorAll('#collPick option')).filter(o => o.style.color).map(o => o.textContent)")
-    check("Discovery, People and Places are red in the station menu", sorted(red) == ["Discovery (admin)", "People (admin)", "Places (admin)"])
-    check("Discovery, People and Places tiles are red on Home", pg.locator("#stationTiles .tile.adm").count() == 3)
+    check("Access, Discovery, People and Places are red in the station menu", sorted(red) == ["Access (admin)", "Discovery (admin)", "People (admin)", "Places (admin)"])
+    check("Access, Discovery, People and Places tiles are red on Home", pg.locator("#stationTiles .tile.adm").count() == 4)
     check("manual buttons for both rosters", pg.locator("#homeManualBtns button", has_text="Instructors").count() == 1 and pg.locator("#homeManualBtns button", has_text="Students").count() == 1)
 
     bob = IS.create(store, {"given_name": "Bob", "family_name": "Ray", "email": "bob@example.com"}, "user:admin").data
