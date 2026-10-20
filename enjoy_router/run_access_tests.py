@@ -312,18 +312,36 @@ check("no secret appears in the result", KEY not in repr(auth(tok(9))) and KEY n
 # ================================================================ the seed script
 s = fresh()
 todo, need = seed_access.plan(s, "toddbeetcher17@gmail.com")
-check("seed: empty store needs both roles and the person", [r["key"] for r in todo] == ["super_admin", "region_head"] and need)
+check("seed: empty store needs the four roles and the person (never the old Region head)", [r["key"] for r in todo] == ["super_admin", "admin", "manager", "instructor"] and need)
 done = seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher")
-check("seed: creates two roles and the person", len(done) == 3 and RO.list(s).data["count"] == 2 and PE.list(s).data["count"] == 1, done)
+check("seed: creates four roles and the person", len(done) == 5 and RO.list(s).data["count"] == 4 and PE.list(s).data["count"] == 1, done)
 check("seed: nothing left to do afterwards", seed_access.plan(s, "toddbeetcher17@gmail.com") == ([], False))
-check("seed: running again adds nothing", seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher") == [] and RO.list(s).data["count"] == 2 and PE.list(s).data["count"] == 1)
+check("seed: running again adds nothing", seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher") == [] and RO.list(s).data["count"] == 4 and PE.list(s).data["count"] == 1)
 rec = PE.find_live_by_email(s, "toddbeetcher17@gmail.com")
 check("seed: records are marked import by the seed actor", rec["source"] == "import" and rec["created_by"] == "system:access_seed")
 v = Fake(); v.tokens[tok(1)] = claims("toddbeetcher17@gmail.com", "uid-todd")
 a = authenticate(tok(1), admin_key=KEY, verifier=v, store=s, now=tick())
 check("seed: the seeded person signs in as a super admin", a.ok and a.is_super_admin and a.name == "Todd Beetcher")
-rh = RO.list(s, {"key": "region_head"}).data["records"][0]
-check("seed: region head bundle is as documented", rh["capabilities"] == ["view_console", "edit_venues", "activate_venues", "manage_instructors", "manage_requests"] and not rh["is_super_admin"])
+mg = RO.list(s, {"key": "manager"}).data["records"][0]; ad = RO.list(s, {"key": "admin"}).data["records"][0]; ins = RO.list(s, {"key": "instructor"}).data["records"][0]
+check("seed: Manager bundle is as documented (no region creating, no sending messages)", mg["capabilities"] == ["view_console", "view_spend", "manage_requests", "manage_classes", "manage_instructors", "edit_venues", "activate_venues", "edit_people", "edit_places", "view_messages", "run_discovery"] and not mg["is_super_admin"])
+check("seed: Admin holds every territorial capability and no access management or Discovery settings", set(ad["capabilities"]) >= set(seed_access.TERRITORIAL) and "manage_access" not in ad["capabilities"] and "edit_discovery_settings" not in ad["capabilities"] and "manage_curriculums" in ad["capabilities"])
+check("seed: Instructor bundle", ins["capabilities"] == ["view_console", "manage_classes"])
+check("seed: a fresh store has nothing to move", seed_access.old_role_work(s) == (None, []))
+# the move off the old Region head role
+s3 = fresh()
+old_rh = RO.create(s3, dict(key="region_head", label="Region head", is_super_admin=False, is_active=True, capabilities=["view_console", "edit_venues"]), A, now=tick()).data
+sa3 = RO.create(s3, dict(seed_access.ROLES[0]), A, now=tick()).data
+PE.create(s3, {"email": "head1@example.com", "role_id": old_rh["id"]}, A, now=tick()); PE.create(s3, {"email": "head2@example.com", "role_id": old_rh["id"]}, A, now=tick())
+PE.create(s3, {"email": "boss@example.com", "role_id": sa3["id"]}, A, now=tick())
+o_, holders_ = seed_access.old_role_work(s3)
+check("seed move: the old role and its two holders are found", o_ is not None and len(holders_) == 2)
+done3 = seed_access.apply(s3, "boss@example.com", "Boss")
+mg3 = RO.list(s3, {"key": "manager"}).data["records"][0]
+check("seed move: Manager is created, both people move to it, the old role is switched off", PE.find_live_by_email(s3, "head1@example.com")["role_id"] == mg3["id"] and PE.find_live_by_email(s3, "head2@example.com")["role_id"] == mg3["id"] and not RO.get(s3, old_rh["id"]).data["is_active"], done3)
+check("seed move: the old role is kept (never deleted) and the super admin is untouched", RO.get(s3, old_rh["id"]).ok and PE.find_live_by_email(s3, "boss@example.com")["role_id"] == sa3["id"])
+check("seed move: nothing left to move, a second run adds nothing", seed_access.old_role_work(s3) == (None, []) and seed_access.apply(s3, "boss@example.com", "Boss") == [])
+check("seed: only the old role left to move is still work to do", not seed_access.nothing_to_do([], False, {"id": "x"}) and seed_access.nothing_to_do([], False, None) and not seed_access.nothing_to_do([{"key": "x"}], False, None) and not seed_access.nothing_to_do([], True, None))
+check("seed move: the moved people are not left on a switched-off role", all(p["role_id"] != old_rh["id"] for p in PE.list(s3).data["records"]))
 src = (HERE / "seed_access.py").read_text()
 check("seed: carries no key, token or password", "password" not in src.lower().replace("no password", "") and "ICDT_ADMIN_KEY" not in src and "Bearer" not in src)
 s2 = fresh()
