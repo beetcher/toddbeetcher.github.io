@@ -179,7 +179,7 @@ function initContact() {
 
   document.querySelectorAll('[data-share]').forEach(b => b.addEventListener('click', () => {
     const url = location.href.split('#')[0];
-    const data = { title: 'NOCTI AI-Readiness Certification', text: 'NOCTI, a nonprofit, is building an AI-readiness certification and inviting a few founding sponsors.', url };
+    const data = { title: 'An invitation to support NOCTI’s AI-readiness certification', text: 'NOCTI, a nonprofit, is ready to build an AI-readiness certification, and a few founding sponsors can help it get started.', url };
     if (navigator.share) { navigator.share(data).catch(() => {}); }
     else { copyText(url, ok => say(ok ? 'Link copied. Paste it into a text or email.' : 'Copy this link: ' + url)); }
   }));
