@@ -129,7 +129,7 @@ with sync_playwright() as p:
     check("no web key set: only the admin-key box shows", pg.locator("#keyBox").is_visible() and not pg.locator("#googleBox").is_visible() and not pg.locator("#swapLink").is_visible())
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
     check("...and the key still opens the Console, with every station", len(tiles(pg)) == 13, tiles(pg))
-    check("...labelled as the admin key", "Admin key" in pg.locator("#who").inner_text())
+    check("...shows no name label (the key is no person)", not pg.locator("#who").is_visible())
     check("the page made no script errors (key only)", not errs, errs)
 
     pg0, e0 = new_page(b, apikey="")
@@ -150,6 +150,10 @@ with sync_playwright() as p:
     seen.clear(); sign_in(pg, T_TODD); pg.wait_for_selector("#homeView:not([hidden])")
     check("the name label is showing", pg.locator("#who").is_visible())
     check("Todd is in, named with his role", "Todd Beetcher" in pg.locator("#who").inner_text() and "super admin" in pg.locator("#who").inner_text(), pg.locator("#who").inner_text())
+    pg.evaluate("window.scrollTo(0, document.body.scrollHeight)"); pg.wait_for_timeout(150)
+    check("the name and role stay on screen at the top while scrolling", pg.evaluate("document.getElementById('topbar').getBoundingClientRect().top") == 0 and pg.locator("#who").is_visible() and pg.evaluate("document.getElementById('who').getBoundingClientRect().top") >= 0)
+    check("the role is in its own coloured part", pg.locator("#who .role").inner_text() == "super admin")
+    pg.evaluate("window.scrollTo(0, 0)")
     check("Todd sees every station", len(tiles(pg)) == 13, tiles(pg))
     check("the first call asked who he is, with the Google token (not the key)", any(s[0] == "admin:me" and s[1] == T_TODD and s[2] == 200 for s in seen) and not any(s[1] == KEY for s in seen), seen[:4])
     pg.wait_for_timeout(600)
@@ -196,9 +200,9 @@ with sync_playwright() as p:
 
     # ---------- the key still works beside Google
     pg.click("#swapLink"); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
-    check("the admin key still opens everything with Google switched on", len(tiles(pg)) == 13 and "Admin key" in pg.locator("#who").inner_text())
+    check("the admin key still opens everything with Google switched on", len(tiles(pg)) == 13 and not pg.locator("#who").is_visible())
     pg.evaluate("t => window.__refresh(t)", T_HEAD); pg.wait_for_timeout(500)
-    check("a Google session appearing while the key is in use does not take over", "Admin key" in pg.locator("#who").inner_text() and len(tiles(pg)) == 13)
+    check("a Google session appearing while the key is in use does not take over", not pg.locator("#who").is_visible() and len(tiles(pg)) == 13)
     check("the page made no script errors (Google on)", not errs, errs)
 
     # ---------- a phone-width sign-in screen

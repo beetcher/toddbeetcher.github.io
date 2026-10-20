@@ -111,7 +111,7 @@
   function grantsEditor(p, roleSel) {
     var box = mk("div", "acf"); box.id = "agBox";
     var key = p ? p.id : "new";
-    if (!S.draft || S.draft.key !== key) S.draft = { key: key, grants: p ? copyGrants(p.grants && p.grants.length ? p.grants : (p.scope_region_id && legacyGrant(p) ? [legacyGrant(p)] : [])) : [] };
+    if (!S.draft || S.draft.key !== key) S.draft = { key: key, editing: null, grants: p ? copyGrants(p.grants && p.grants.length ? p.grants : (p.scope_region_id && legacyGrant(p) ? [legacyGrant(p)] : [])) : [] };
     function render() {
       box.innerHTML = "";
       box.appendChild(mk("label", "", "Territory"));
@@ -121,40 +121,42 @@
       S.draft.grants.forEach(function (g, i) {
         var row = mk("div", "acgrant"); row.appendChild(mk("b", "", grantText(g) + (g.group ? "  [" + g.group + "]" : "")));
         row.appendChild(mk("div", "acm", g.kind === "regions" ? (g.capabilities || []).join(", ") : "Every capability in " + (g.kind === "all" ? "the whole US" : stateName(g.state_code)) + (g.kind === "state" ? ", including ZIPs no region has claimed (state administrator)." : ".")));
-        row.appendChild(btn("Remove", "quiet", function () { S.draft.grants.splice(i, 1); render(); }));
+        row.appendChild(btn(S.draft.editing === i ? "Editing below" : "Edit", "quiet", function () { S.draft.editing = i; render(); }));
+        row.appendChild(btn("Remove", "quiet", function () { S.draft.grants.splice(i, 1); S.draft.editing = null; render(); }));
         box.appendChild(row);
       });
-      var add = mk("div", "acadd"); add.appendChild(mk("b", "", "Add territory"));
-      var kind = select("agKind", [["regions", "Some regions in a state"], ["state", "A whole state (state administrator)"], ["all", "The whole US"]], "regions");
+      var ed = S.draft.editing, eg = ed != null ? S.draft.grants[ed] : null, fresh = !!eg;     // fresh: the form still shows the grant being edited
+      var add = mk("div", "acadd"); add.appendChild(mk("b", "", eg ? "Edit this territory" : "Add territory"));
+      var kind = select("agKind", [["regions", "Some regions in a state"], ["state", "A whole state (state administrator)"], ["all", "The whole US"]], eg ? eg.kind : "regions");
       var states = areaByKind("state").sort(sortBy("name")).map(function (a) { return [a.state_code, a.name]; });
-      var st = select("agState", states, (states[0] || [""])[0]);
+      var st = select("agState", states, eg && eg.state_code ? eg.state_code : (states[0] || [""])[0]);
       var regionBox = mk("div", "accaps"); var capBox = mk("div", "accaps"); var copy = select("agCopy", [["", "Start from this role's defaults"]].concat(S.draft.grants.map(function (g, i) { return g.kind === "regions" ? [String(i), "Copy from: " + grantText(g)] : null; }).filter(Boolean)), "");
-      var group = input("text", "agGroup", ""); group.placeholder = "Label for the list (optional), such as Wisconsin team";
+      var group = input("text", "agGroup", eg && eg.group ? eg.group : ""); group.placeholder = "Label for the list (optional), such as Wisconsin team";
       var err = mk("div", "acerr"); err.id = "agErr"; err.setAttribute("role", "alert");
-      var used = {}; S.draft.grants.forEach(function (g) { (g.region_ids || []).forEach(function (id) { used[id] = true; }); });
+      var used = {}; S.draft.grants.forEach(function (g, gi) { if (gi === ed) return; (g.region_ids || []).forEach(function (id) { used[id] = true; }); });
       function roleCaps() { var r = null; if (roleSel) S.roles.forEach(function (x) { if (x.id === roleSel.value) r = x; }); return terrOfRole(r); }
       function fillRegions() {
         regionBox.innerHTML = "";
         regionsOf(st.value).forEach(function (a) {
-          var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = a.id; cb.disabled = !!used[a.id]; l.appendChild(cb);
+          var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = a.id; cb.disabled = !!used[a.id]; cb.checked = !!(fresh && eg.region_ids && eg.state_code === st.value && eg.region_ids.indexOf(a.id) >= 0); l.appendChild(cb);
           l.appendChild(mk("span", "", " " + a.name + (used[a.id] ? " (already in a grant)" : ""))); regionBox.appendChild(l);
         });
         if (!regionBox.firstChild) regionBox.appendChild(mk("span", "acm", "This state has no regions yet."));
       }
       function fillCaps() {
-        var have = copy.value !== "" ? (S.draft.grants[+copy.value].capabilities || []) : roleCaps();
+        var have = fresh && eg.capabilities ? eg.capabilities : copy.value !== "" ? (S.draft.grants[+copy.value].capabilities || []) : roleCaps();
         capBox.innerHTML = "";
         TERR.forEach(function (c) { var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = c; cb.checked = have.indexOf(c) >= 0; l.appendChild(cb); l.appendChild(mk("span", "", " " + c)); capBox.appendChild(l); });
       }
       function show() {
         var k = kind.value; st.parentNode.hidden = k === "all"; regionBox.parentNode.hidden = k !== "regions"; capBox.parentNode.hidden = k !== "regions"; copy.parentNode.hidden = k !== "regions";
       }
-      kind.addEventListener("change", show); st.addEventListener("change", fillRegions); copy.addEventListener("change", fillCaps);
+      kind.addEventListener("change", show); st.addEventListener("change", function () { fresh = false; fillRegions(); }); copy.addEventListener("change", function () { fresh = false; fillCaps(); });
       add.appendChild(field("What kind", kind, "agKind")); add.appendChild(field("State", st, "agState"));
       add.appendChild(field("Regions", regionBox)); add.appendChild(field("Capabilities in these regions (to give two regions different capabilities, add them one grant at a time)", copy, "agCopy"));
       add.lastChild.appendChild(capBox);
       add.appendChild(field("Label", group, "agGroup")); add.appendChild(err);
-      add.appendChild(btn("Add this territory", "quiet", function () {
+      add.appendChild(btn(eg ? "Save this territory" : "Add this territory", "quiet", function () {
         var k = kind.value, g = { kind: k };
         if (k !== "all") g.state_code = st.value;
         if (k === "regions") {
@@ -162,11 +164,13 @@
           g.capabilities = Array.prototype.map.call(capBox.querySelectorAll("input:checked"), function (c) { return c.value; });
           if (!g.region_ids.length) { err.textContent = "Pick at least one region."; return; }
           if (!g.capabilities.length) { err.textContent = "Pick at least one capability."; return; }
-        } else if (k === "state" && S.draft.grants.some(function (x) { return x.kind === "state" && x.state_code === g.state_code; })) { err.textContent = "That state is already added."; return; }
-        else if (k === "all" && S.draft.grants.some(function (x) { return x.kind === "all"; })) { err.textContent = "The whole US is already added."; return; }
+        } else if (k === "state" && S.draft.grants.some(function (x) { return x.kind === "state" && x.state_code === g.state_code && S.draft.grants.indexOf(x) !== ed; })) { err.textContent = "That state is already added."; return; }
+        else if (k === "all" && S.draft.grants.some(function (x) { return x.kind === "all" && S.draft.grants.indexOf(x) !== ed; })) { err.textContent = "The whole US is already added."; return; }
         if (group.value.trim()) g.group = group.value.trim();
-        S.draft.grants.push(g); render();
+        if (ed != null) { S.draft.grants[ed] = g; S.draft.editing = null; } else S.draft.grants.push(g);
+        render();
       }));
+      if (eg) add.appendChild(btn("Cancel editing", "quiet", function () { S.draft.editing = null; render(); }));
       box.appendChild(add); fillRegions(); fillCaps(); show();
     }
     if (roleSel) roleSel.addEventListener("change", render);
@@ -181,7 +185,9 @@
     f.appendChild(field("Google email (the account they sign in with)", email, "apEmail"));
     f.appendChild(field("Name (optional)", input("text", "apName", p ? p.display_name : ""), "apName"));
     var roles = S.roles.filter(function (r) { return r.is_active || (p && p.role_id === r.id); }).sort(sortBy("label")).map(function (r) { return [r.id, r.label + (r.is_super_admin ? " (super admin)" : "")]; });
-    f.appendChild(field("Role (what they can do everywhere; their territory is set below)", select("apRole", roles, p ? p.role_id : (roles[0] || [""])[0]), "apRole"));
+    var lost = p && !roles.some(function (r) { return r[0] === p.role_id; });     // never fall back silently to the first role in the list
+    if (lost) roles.unshift(["", "(role not found: choose one)"]);
+    f.appendChild(field("Role (what they can do everywhere; their territory is set below)", select("apRole", roles, p ? (lost ? "" : p.role_id) : (roles[0] || [""])[0]), "apRole"));
     f.appendChild(grantsEditor(p, f.querySelector("#apRole")));
     var err = mk("div", "acerr"); err.id = "apErr"; err.setAttribute("role", "alert"); f.appendChild(err);
     var row = mk("div", "acbtns");
