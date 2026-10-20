@@ -59,6 +59,7 @@
           "activate_venues",
           "edit_people",
           "edit_places",
+          "edit_regions",
           "view_messages",
           "manage_messages",
           "run_discovery",

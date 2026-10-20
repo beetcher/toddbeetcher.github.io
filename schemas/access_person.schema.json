@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://beetcher.com/schemas/access_person.schema.json",
   "title": "access_person",
-  "description": "One person who may sign in to the Console with their Google account, and what they may do (see ACCESS_GUIDE.md and ACCESS_PERSON_GUIDE.md). Google proves who the person is; this record says whether they are allowed in and with which role. Rules the schema cannot express: email is trimmed, lowercased and unique among live records; role_id must name an existing, active access_role; individual_id, when given, must name an existing person; scope_region_id, when given, must name an existing region; google_uid is set at the first sign-in and later sign-ins must match it; the last active super admin cannot be switched off or deleted; only a super admin (manage_access) may write this collection; fields marked readOnly are set by the server only.",
+  "description": "One person who may sign in to the Console with their Google account, and what they may do (see ACCESS_GUIDE.md and ACCESS_PERSON_GUIDE.md). Google proves who the person is; this record says whether they are allowed in and with which role. Rules the schema cannot express: email is trimmed, lowercased and unique among live records; role_id must name an existing, active access_role; individual_id, when given, must name an existing person; scope_region_id (retired), when given, must name an existing region; every grant is checked (a state grant names a state that has a state record; a regions grant names existing regions of its own state, lists territorial capabilities only, and a region appears in at most one regions grant); google_uid is set at the first sign-in and later sign-ins must match it; the last active super admin cannot be switched off or deleted; only a super admin (manage_access) may write this collection; fields marked readOnly are set by the server only.",
   "type": "object",
   "additionalProperties": false,
   "propertyNames": {
@@ -44,9 +44,125 @@
       "format": "uuid"
     },
     "scope_region_id": {
-      "description": "Limits the person to one region (a discovery_area of kind region), such as a region head's own territory. Omitted for a role that is not limited. Stored now; enforced when regional ownership is built (P-60).",
+      "description": "RETIRED, replaced by grants. Kept so older records still load: when a person has no grants and this is set, it counts as one grant for that single region with the territorial capabilities the person's role lists. New records use grants.",
       "type": "string",
       "format": "uuid"
+    },
+    "grants": {
+      "description": "The territory the person works in, and what they may do in each part of it. One entry per grant; a person may hold any number. kind 'all' is the whole US. kind 'state' is a whole state: every region in it and every ZIP in it, including ZIPs no region has claimed yet, with every territorial capability (state administrator). kind 'regions' is one or more regions inside ONE state, each with exactly the capabilities listed (capabilities required); to give two regions different capabilities, use two grants. A ZIP is never owned on its own: it belongs to a region, and a region has one state. Regions may share ZIPs. Nothing here gives the global capabilities (curriculums, Discovery settings, spend, access); those come from the role. Omitted or empty means no territory. See ACCESS_PERSON_GUIDE.md.",
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "description": "all, state or regions.",
+            "enum": [
+              "all",
+              "state",
+              "regions"
+            ]
+          },
+          "state_code": {
+            "description": "Two-letter state code, such as CO. Required for state and regions; not allowed for all.",
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "region_ids": {
+            "description": "The regions (discovery_areas of kind region) the grant covers, all in state_code. Required for regions; not allowed otherwise.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "capabilities": {
+            "description": "What the person may do in these regions. Required for regions; not allowed for state or all, which carry every territorial capability.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "manage_requests",
+                "manage_classes",
+                "manage_instructors",
+                "edit_venues",
+                "activate_venues",
+                "edit_people",
+                "edit_places",
+                "edit_regions",
+                "view_messages",
+                "manage_messages",
+                "run_discovery"
+              ]
+            }
+          },
+          "group": {
+            "description": "A label the Access screen uses to fold grants together, such as Wisconsin team. For looking only; it gives no rights. Optional.",
+            "type": "string",
+            "maxLength": 60
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "all"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "state_code": false,
+                "region_ids": false,
+                "capabilities": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "state"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "state_code"
+              ],
+              "properties": {
+                "region_ids": false,
+                "capabilities": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "regions"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "state_code",
+                "region_ids",
+                "capabilities"
+              ]
+            }
+          }
+        ]
+      }
     },
     "individual_id": {
       "description": "Links the access to a person record (for example an instructor who is also a region head). Optional.",

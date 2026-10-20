@@ -8,6 +8,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import seed_access  # noqa: E402
 from access import CAPABILITIES, KEY_ACTOR, authenticate  # noqa: E402
+from access.capabilities import GLOBAL, TERRITORIAL  # noqa: E402
 from crud import access_persons_crud as PE, access_roles_crud as RO  # noqa: E402
 from crud.memory_doc_store import MemoryDocStore  # noqa: E402
 
@@ -47,9 +48,12 @@ def person(s, email, role_id, **kw):
 
 # ================================================================ the capability list
 schema = json.loads((SCHEMAS / "access_role.schema.json").read_text())
-check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 15)
+check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 16)
 guide = (SCHEMAS / "ACCESS_ROLE_GUIDE.md").read_text()
 check("every capability is explained in the role guide", all(f"| `{c}` |" in guide for c in CAPABILITIES), [c for c in CAPABILITIES if f"| `{c}` |" not in guide])
+check("every capability is territorial or global, never both, and the grant schema offers exactly the territorial ones",
+      set(TERRITORIAL) | set(GLOBAL) == set(CAPABILITIES) and not set(TERRITORIAL) & set(GLOBAL) and "manage_access" in GLOBAL and "view_console" in GLOBAL
+      and set(json.loads((SCHEMAS / "access_person.schema.json").read_text())["properties"]["grants"]["items"]["properties"]["capabilities"]["items"]["enum"]) == set(TERRITORIAL))
 check("manage_access and view_console exist", "manage_access" in CAPABILITIES and "view_console" in CAPABILITIES)
 
 # ================================================================ roles: examples
@@ -117,6 +121,9 @@ for name, rec in pex["valid"].items():
     st = fresh(); r_ = RO.create(st, {"key": "r", "label": "R", "is_super_admin": False, "capabilities": ["view_console"]}, A, now=tick()).data
     st.create("discovery_areas", rec.get("scope_region_id", "x"), {"id": rec.get("scope_region_id", "x"), "kind": "region"}) if rec.get("scope_region_id") else None
     st.create("individuals", rec.get("individual_id", "y"), {"id": rec.get("individual_id", "y"), "status": "active"}) if rec.get("individual_id") else None
+    for g in rec.get("grants", []):       # the grants name states and regions that must exist
+        if g.get("state_code"): st.create("discovery_areas", f"st-{g['state_code']}", {"id": f"st-{g['state_code']}", "kind": "state", "state_code": g["state_code"]})
+        for rid in g.get("region_ids", []): st.create("discovery_areas", rid, {"id": rid, "kind": "region", "state_code": g["state_code"]})
     check(f"person: valid example {name} creates", PE.create(st, dict(rec, role_id=r_["id"]), A, now=tick()).ok)
 for name, rec in pex["invalid"].items():
     if name == "missing_is_active": continue          # filled by the handler
@@ -182,6 +189,43 @@ check("person: a super admin can change another person", PE.update(s, head["id"]
 check("person: removed person is kept and hidden", PE.soft_delete(s, head["id"], A, now=tick()).ok and PE.get(s, head["id"]).code == "not_found"
       and PE.get(s, head["id"], include_deleted=True).data["deleted_at"])
 check("person: removed person's email can be invited again", PE.create(s, {"email": "head2@example.com", "role_id": rh["id"]}, A, now=tick()).ok)
+
+# ================================================================ persons: grants (territory)
+s = fresh()
+sa = RO.create(s, {"key": "super_admin", "label": "Super", "is_super_admin": True}, A, now=tick()).data
+rh = role(s, "region_head", capabilities=["view_console", "edit_venues"])
+def area(i, kind, st, name, **kw):
+    rid = f"{i:08d}-0000-4000-8000-000000000000"
+    s.create("discovery_areas", rid, {"id": rid, "kind": kind, "name": name, "state_code": st, "is_active": True, **kw}); return rid
+wi_state, mn_state = area(1, "state", "WI", "Wisconsin"), area(2, "state", "MN", "Minnesota")
+wi1, wi2, mn1 = area(3, "region", "WI", "Madison", zip_codes=["53703"]), area(4, "region", "WI", "Milwaukee", zip_codes=["53202"]), area(5, "region", "MN", "Rochester", zip_codes=["55901"])
+gone_region = area(6, "region", "MN", "Gone", zip_codes=["55902"]); s.update("discovery_areas", gone_region, {"deleted_at": "2026-10-19T00:00:00Z"}, ())
+def mk(email, grants, **kw): return PE.create(s, {"email": email, "role_id": rh["id"], "grants": grants, **kw}, A, now=tick())
+def regions(ids, caps, st, **kw): return {"kind": "regions", "state_code": st, "region_ids": ids, "capabilities": caps, **kw}
+r = mk("a@x.com", [{"kind": "state", "state_code": "WI", "group": "Wisconsin"}, regions([mn1], ["edit_venues", "manage_requests"], "MN")])
+check("grants: a whole state plus regions in another state are accepted", r.ok and len(r.data["grants"]) == 2, r.problems)
+check("grants: stored as sent (group kept)", r.ok and r.data["grants"][0]["group"] == "Wisconsin" and r.data["grants"][1]["capabilities"] == ["edit_venues", "manage_requests"])
+check("grants: a regions grant may hold several regions of its own state", mk("b@x.com", [regions([wi1, wi2], ["manage_requests"], "WI")]).ok)
+check("grants: two regions of one state may be in two grants with different capabilities", mk("c@x.com", [regions([wi1], ["edit_venues"], "WI"), regions([wi2], ["manage_requests"], "WI")]).ok)
+check("grants: the whole US", mk("d@x.com", [{"kind": "all"}]).ok)
+check("grants: none at all is fine (no territory)", mk("e@x.com", []).ok and PE.create(s, {"email": "f@x.com", "role_id": rh["id"]}, A, now=tick()).ok)
+check("grants: a state with no state record is refused", issues(mk("g@x.com", [{"kind": "state", "state_code": "AZ"}])) == [("grants", "not_found")])
+check("grants: an unknown region is refused", issues(mk("g@x.com", [regions(["99999999-0000-4000-8000-000000000000"], ["edit_venues"], "WI")])) == [("grants", "not_found")])
+check("grants: a deleted region is refused", issues(mk("g@x.com", [regions([gone_region], ["edit_venues"], "MN")])) == [("grants", "not_found")])
+check("grants: a state record is not a region", issues(mk("g@x.com", [regions([wi_state], ["edit_venues"], "WI")])) == [("grants", "not_found")])
+check("grants: a region in another state is refused", issues(mk("g@x.com", [regions([mn1], ["edit_venues"], "WI")])) == [("grants", "wrong_state")])
+check("grants: a global capability is refused in a grant", not mk("g@x.com", [regions([wi1], ["view_spend"], "WI")]).ok and not mk("g@x.com", [regions([wi1], ["manage_access"], "WI")]).ok)
+check("grants: the handler itself also refuses a global capability (defence behind the schema)", PE.grant_problems(s, [regions([wi1], ["view_spend"], "WI")]) == [{"field": "grants", "issue": "not_territorial"}])
+check("grants: the same region in two grants of one person is refused", issues(mk("g@x.com", [regions([wi1], ["edit_venues"], "WI"), regions([wi1, wi2], ["manage_requests"], "WI")])) == [("grants", "duplicate_region")])
+check("grants: shape errors come from the schema (no capabilities on a state grant)", not mk("g@x.com", [{"kind": "state", "state_code": "WI", "capabilities": ["edit_venues"]}]).ok)
+check("grants: shape errors come from the schema (regions without capabilities)", not mk("g@x.com", [{"kind": "regions", "state_code": "WI", "region_ids": [wi1]}]).ok)
+who = PE.find_live_by_email(s, "a@x.com")
+r = PE.update(s, who["id"], {"grants": [regions([wi1], ["edit_venues"], "WI")]}, A, now=tick())
+check("grants: a person's grants can be replaced", r.ok and PE.get(s, who["id"]).data["grants"][0]["region_ids"] == [wi1], r.problems)
+check("grants: a bad replacement is refused and nothing changes", not PE.update(s, who["id"], {"grants": [regions([mn1], ["edit_venues"], "WI")]}, A, now=tick()).ok and PE.get(s, who["id"]).data["grants"][0]["region_ids"] == [wi1])
+check("grants: a person cannot change their own grants", issues(PE.update(s, who["id"], {"grants": [{"kind": "all"}]}, f"user:{who['id']}", now=tick())) == [("grants", "not_allowed")])
+s.update("discovery_areas", wi1, {"deleted_at": "2026-10-19T01:00:00Z"}, ())
+check("grants: a region removed later does not block other edits to the person", PE.update(s, who["id"], {"display_name": "Still fine"}, A, now=tick()).ok)
 
 # ================================================================ the shared sign-in check
 s = fresh()
@@ -256,7 +300,7 @@ RO.update(s, rh["id"], {"is_active": True}, A, now=tick())
 PE.soft_delete(s, head_id, A, now=tick())
 check("google: a removed person is refused", auth(tok(9)).code == "not_invited")
 RO.update(s, rh["id"], {"capabilities": ["view_console", "edit_venues", "activate_venues"]}, A, now=tick())
-h2 = person(s, "head@example.com", rh["id"])
+h2 = person(s, "head@example.com", rh["id"], scope_region_id=region["id"])
 check("google: a re-invited email starts fresh (new id, new Google binding)", auth(tok(9)).ok and auth(tok(9)).actor == f"user:{h2['id']}" and h2["id"] != head_id)
 check("google: role changes show at the next request", auth(tok(9)).can("activate_venues"))
 check("no secret appears in the result", KEY not in repr(auth(tok(9))) and KEY not in repr(auth(KEY).capabilities))

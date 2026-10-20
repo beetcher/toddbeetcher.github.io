@@ -33,12 +33,15 @@ Each capability is one thing the server can allow. The server maps every operati
 | `activate_venues` | Switch a venue on or off, and withdraw Discovery candidates. |
 | `edit_people` | The People station (full person records). Todd's super-admin station today. |
 | `edit_places` | The Places station (locations and links). Todd's super-admin station today. |
+| `edit_regions` | Create and edit regions (names and ZIP lists) inside the person's own state. Territorial: only a state grant or a regions grant that lists it. |
 | `view_messages` | Read the Messages station (the send log). |
 | `manage_messages` | Edit message wording and settings, add notes, mark handled. |
 | `run_discovery` | Start, stop and review Discovery runs (spends money). |
 | `edit_discovery_settings` | Discovery models, areas, types, prompt and limits. |
 | `view_spend` | Read the Spend tab. |
 | `manage_access` | Invite people, change roles, switch access on and off. Only a super admin should hold it. |
+
+Territorial or global (decided 2026-10-20): `manage_requests`, `manage_classes`, `manage_instructors`, `edit_venues`, `activate_venues`, `edit_people`, `edit_places`, `edit_regions`, `view_messages`, `manage_messages` and `run_discovery` apply only inside a person's territory and come from the person's grants (a role's list of these is the default offered when a grant is made). `view_console`, `manage_curriculums`, `edit_discovery_settings`, `view_spend` and `manage_access` are global and come from the role.
 
 Todd may rename or split a capability later; a new one is added to the `capabilities` enum and to this table in the same change.
 

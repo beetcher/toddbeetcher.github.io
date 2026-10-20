@@ -2,7 +2,7 @@
 
 Rules: the email is trimmed, lowercased and unique among live records; the role must exist and be active (checked when the person is
 created or given a different role, so a person whose role was later switched off can still be switched off); individual_id and
-scope_region_id, when given, must name a real person / a region; once someone has signed in their email cannot change; the last
+scope_region_id (retired), when given, must name a real person / a region; grants are checked by grant_problems; once someone has signed in their email cannot change; the last
 active super admin cannot be switched off, moved to an ordinary role or deleted; a person cannot change their own role, region,
 email or on/off switch, or delete themselves.
 
@@ -11,11 +11,12 @@ Who may call this (only a super admin: capability `manage_access`) is decided at
 """
 from __future__ import annotations
 
+from access.capabilities import TERRITORIAL
 from .access_roles_crud import PERSONS, ROLES, _live
 from .discovery_kit import bad, make
 from .schema_kit import utc_stamp
 
-SELF_LOCKED = ("role_id", "is_active", "scope_region_id", "email")   # a person may not change these on their own record
+SELF_LOCKED = ("role_id", "is_active", "scope_region_id", "grants", "email")   # a person may not change these on their own record
 
 
 def _tidy(name, v):
@@ -47,6 +48,29 @@ def find_live_by_email(store, email):
     return found[0] if found else None
 
 
+def grant_problems(store, grants):
+    """The cross-record rules for a person's grants (the shape is the schema's job). Every problem is `grants:<issue>`."""
+    out, seen_regions = [], set()
+    for g in grants or []:
+        kind = g.get("kind")
+        if kind == "state":
+            if not _live(store, "discovery_areas", kind="state", state_code=g.get("state_code")):
+                out.append({"field": "grants", "issue": "not_found"})
+        elif kind == "regions":
+            if any(c not in TERRITORIAL for c in g.get("capabilities", [])):
+                out.append({"field": "grants", "issue": "not_territorial"})
+            for rid in g.get("region_ids", []):
+                a = store.get("discovery_areas", rid)
+                if a is None or "deleted_at" in a or a.get("kind") != "region":
+                    out.append({"field": "grants", "issue": "not_found"})
+                elif a.get("state_code") != g.get("state_code"):
+                    out.append({"field": "grants", "issue": "wrong_state"})
+                if rid in seen_regions:
+                    out.append({"field": "grants", "issue": "duplicate_region"})
+                seen_regions.add(rid)
+    return out
+
+
 def _rules(store, doc, cur):
     problems = []
     cur_id = (cur or {}).get("id")
@@ -66,6 +90,8 @@ def _rules(store, doc, cur):
         a = store.get("discovery_areas", doc["scope_region_id"])
         if a is None or "deleted_at" in a or a.get("kind") != "region":
             problems.append({"field": "scope_region_id", "issue": "not_found"})
+    if doc.get("grants") and (cur is None or cur.get("grants") != doc.get("grants")):
+        problems.extend(grant_problems(store, doc["grants"]))
     if cur and is_super(store, cur) and not is_super(store, doc) and not other_super_persons(store, cur_id):
         problems.append({"field": "is_active" if not doc.get("is_active") else "role_id", "issue": "last_super_admin"})
     return problems
