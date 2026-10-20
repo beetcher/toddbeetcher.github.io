@@ -45,7 +45,8 @@ import json
 import logging
 from datetime import datetime
 
-from access import door as _door, policy as _policy
+from access import door as _door, guard as _guard, policy as _policy
+from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (access_persons_crud, access_roles_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
                   individual_restricted_details_service, message_templates_crud,
@@ -53,7 +54,7 @@ from crud import (access_persons_crud, access_roles_crud, assignments_service, a
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service,
                   discovery_areas_crud, discovery_models_crud, discovery_prompts_crud, discovery_runs_crud, discovery_settings_crud,
                   discovery_types_crud)
-from crud.schema_kit import failure
+from crud.schema_kit import failure, success
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -230,8 +231,16 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
                       f"For {op}: " + (f"missing {', '.join(missing)}. " if missing else "")
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
 
+    scope = Scope(access, Territory(store)) if actor is None and not access.is_super_admin else None   # a person with limited territory
     try:
+        if scope is not None and not _guard.before(scope, store, collection, op, args):
+            return _door.forbidden(tag)
         result = _run(HANDLERS[collection], store, op, args, now, who)
+        if scope is not None and result.ok:
+            shown = _guard.after(scope, store, collection, op, result.data)
+            if shown is None:
+                return _door.forbidden(tag)
+            result = success(shown)
     except Exception as exc:  # say nothing about the cause
         log.error("%s code=server_error op=%s exception=%s", tag, op, type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")

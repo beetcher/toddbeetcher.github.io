@@ -15,7 +15,8 @@ import re
 from datetime import datetime
 from typing import Optional
 
-from access import door as _door, policy as _policy
+from access import door as _door, places as _places, policy as _policy
+from access.territory import Scope, Territory
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -78,7 +79,12 @@ def handle_console(
         return _error(400, "validation_failed", "since must look like 2026-10-09T04:26:57Z.")
 
     try:
-        records = list_registration_requests(store, limit, since)
+        scope = None if access.is_super_admin else Scope(access, Territory(access_store))
+        if scope is not None and not scope.unlimited:   # a person with limited territory sees only the requests whose ZIP is theirs (P-65)
+            wide = list_registration_requests(store, MAX_LIMIT, since)
+            records = [r for r in wide if scope.can_read(_policy.RECORDS, _places.zip_of_request(access_store, r))][:max(1, min(limit, MAX_LIMIT))]
+        else:
+            records = list_registration_requests(store, limit, since)
     except Exception as exc:  # say nothing about the cause
         log.error("console_records code=server_error exception=%s", type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")

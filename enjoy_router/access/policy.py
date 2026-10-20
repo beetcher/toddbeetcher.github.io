@@ -66,7 +66,7 @@ WRITE = {
     "message_templates": ("manage_messages",),
     "comms_settings": ("manage_messages",),
     "communication_logs": ("manage_messages",),
-    "discovery_areas": ("edit_discovery_settings",),
+    "discovery_areas": ("edit_discovery_settings", "edit_regions"),   # edit_regions only inside the person's own territory (access/guard.py)
     "discovery_types": ("edit_discovery_settings",),
     "discovery_models": ("edit_discovery_settings",),
     "discovery_prompts": ("edit_discovery_settings",),

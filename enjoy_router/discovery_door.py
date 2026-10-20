@@ -23,6 +23,7 @@ import json
 import logging
 
 from access import door as _door, policy as _policy
+from access.territory import Scope, Territory
 from crud import discovery_runs_crud as RU
 from discovery.contract import RunRequest
 from handler import HttpResult, _error
@@ -77,7 +78,12 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
         return _error(400, "validation_failed", f"For {op}: " + (f"missing {', '.join(missing)}. " if missing else "")
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
     try:
+        scope = None if access.is_super_admin else Scope(access, Territory(store))
+        if scope is not None and not scope.unlimited and not _in_reach(scope, op, args, store):
+            return _door.forbidden("discovery")
         data = _run(op, args, store, engine, environ, access.actor)
+        if scope is not None and not scope.unlimited and data[0] and op in ("get_run", "list_runs") and not access.can("view_spend"):
+            data = (True, _runs_in_reach(scope, op, data[1], store))
     except Exception as exc:
         log.error("discovery code=server_error op=%s exception=%s", op, type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")
@@ -86,6 +92,36 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
         return HttpResult(200, {"ok": True, "data": data[1]}, {"Cache-Control": "no-store"})
     log.info("discovery op=%s code=%s", op, data[1])
     return _error(STATUS.get(data[1], 400), data[1], data[2])
+
+
+def _areas_in_reach(scope, area_ids, store):
+    """Every area named exists-or-is-unknown to the engine and, when it exists, is a place this person may run Discovery in."""
+    for aid in area_ids:
+        area = store.get("discovery_areas", aid) if isinstance(aid, str) else None
+        if area is not None and "deleted_at" not in area and not scope.area_has("run_discovery", area):
+            return False
+    return True
+
+
+def _in_reach(scope, op, a, store):
+    """A person with limited territory runs Discovery only in places they hold run_discovery for (P-60). Reading runs and the Spend tab is
+    a global capability (view_spend) and is filtered after the read, below."""
+    if op in ("quote", "plan"):
+        return isinstance(a.get("area_ids"), list) and _areas_in_reach(scope, a["area_ids"], store)
+    if op in ("step", "stop", "withdraw"):
+        run = store.get("discovery_runs", a.get("run_id")) if isinstance(a.get("run_id"), str) else None
+        return run is None or _areas_in_reach(scope, run.get("area_ids", []), store)
+    if op == "zips":
+        sc = a.get("state_code")
+        return scope.access.can("edit_discovery_settings") or any(g.get("state_code") == sc for g in scope.access.grants)
+    return True
+
+
+def _runs_in_reach(scope, op, data, store):
+    if op == "get_run":
+        return data if _areas_in_reach(scope, data.get("area_ids", []), store) else {"id": data.get("id")}
+    recs = [r for r in data.get("records", []) if _areas_in_reach(scope, r.get("area_ids", []), store)]
+    return {**data, "records": recs, "count": len(recs)}
 
 
 def _run(op, a, store, engine, environ, actor=ACTOR):
