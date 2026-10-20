@@ -240,7 +240,7 @@
   function drive(runId, planned) {
     if (S.driving) return; S.driving = runId; S.stopAsk = false;
     var host = $("dProgress"); if (S.tab !== "run") { S.tab = "run"; drawTabs(); } host = $("dProgress"); host.innerHTML = "";
-    var c = el("div", "dcard"); c.appendChild(el("h3", "", "Running")); var line = el("div", "", "Starting…"); line.id = "dRunLine"; line.setAttribute("role", "status");
+    var c = el("div", "dcard"); var head = el("h3", "", "Running"); c.appendChild(head); var line = el("div", "", "Starting…"); line.id = "dRunLine"; line.setAttribute("role", "status");
     var bar = el("div", "dprog"); var fill = el("div"); bar.appendChild(fill); c.appendChild(bar); c.appendChild(line);
     var stop = btn("Stop", "quiet", function () { S.stopAsk = true; stop.disabled = true; line.textContent = "Stopping after this call…"; }); stop.id = "dStop"; c.appendChild(stop); host.appendChild(c);
     var done = 0;
@@ -258,7 +258,7 @@
     function finish(text) {
       S.driving = ""; fill.style.width = text === "Finished." ? "100%" : fill.style.width; stop.remove();
       disc("get_run", { id: runId }, true).then(function (res) {
-        line.textContent = text; if ($("dEstimate")) $("dEstimate").disabled = false;
+        line.textContent = text; head.textContent = text.split(/[ .(…]/)[0] || "Run"; if ($("dEstimate")) $("dEstimate").disabled = false;
         if (ok(res)) { c.appendChild(runSummary(res.body.data)); c.appendChild(btn("Review this run", "", function () { S.tab = "runs"; drawTabs(); openRun(runId); })); }
       });
     }

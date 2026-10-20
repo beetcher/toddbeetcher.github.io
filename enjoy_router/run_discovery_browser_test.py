@@ -116,6 +116,7 @@ with sync_playwright() as p:
     pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard"); pg.click("#dGo")
     pg.wait_for_function("document.getElementById('dRunLine') && document.getElementById('dRunLine').textContent === 'Finished.'", timeout=20000)
     summ = pg.locator("#dProgress").inner_text()
+    check("when the run is done the heading says Finished, not Running", pg.locator("#dProgress .dcard h3").inner_text() == "Finished", pg.locator("#dProgress .dcard h3").inner_text())
     check("a finished run says what it found, saved and spent", "Found 3, saved 2" in summ and "need attention" in summ and "Spent" in summ, summ)
     runs = RU.list(store, None, "-created_at", 50).data["records"]
     check("one run record exists, finished", len(runs) == 1 and runs[0]["status"] == "finished" and runs[0]["spend_cap_cents"] == 9, runs and runs[0]["status"])
