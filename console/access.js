@@ -95,6 +95,16 @@
     if (g.kind === "state") return "Whole state: " + stateName(g.state_code);
     return "Regions in " + stateName(g.state_code) + ": " + regionNames(g);
   }
+  function titleOf(p, role) {
+    if (role && role.is_super_admin) return "Super admin: everywhere";
+    var gl = grantsOf(p), out = [];
+    gl.forEach(function (g) {
+      if (g.kind === "all") out.push("Whole US");
+      else if (g.kind === "state") out.push("State lead: " + stateName(g.state_code));
+      else out.push("Region head: " + (g.region_ids || []).length + (((g.region_ids || []).length === 1) ? " region" : " regions") + " in " + stateName(g.state_code));
+    });
+    return out.length ? out.join(" · ") : "No territory yet";
+  }
   function grantCaps(g) { return g.kind === "regions" ? (g.capabilities || []) : TERR; }
   function copyGrants(list) { return JSON.parse(JSON.stringify(list || [])); }
 
@@ -171,7 +181,7 @@
     f.appendChild(field("Google email (the account they sign in with)", email, "apEmail"));
     f.appendChild(field("Name (optional)", input("text", "apName", p ? p.display_name : ""), "apName"));
     var roles = S.roles.filter(function (r) { return r.is_active || (p && p.role_id === r.id); }).sort(sortBy("label")).map(function (r) { return [r.id, r.label + (r.is_super_admin ? " (super admin)" : "")]; });
-    f.appendChild(field("Role", select("apRole", roles, p ? p.role_id : (roles[0] || [""])[0]), "apRole"));
+    f.appendChild(field("Role (what they can do everywhere; their territory is set below)", select("apRole", roles, p ? p.role_id : (roles[0] || [""])[0]), "apRole"));
     f.appendChild(grantsEditor(p, f.querySelector("#apRole")));
     var err = mk("div", "acerr"); err.id = "apErr"; err.setAttribute("role", "alert"); f.appendChild(err);
     var row = mk("div", "acbtns");
@@ -292,6 +302,7 @@
       var bits = [];
       bits.push(p.last_sign_in_at ? "Last signed in " + K.when(p.last_sign_in_at) : "Has not signed in yet");
       r.appendChild(mk("div", "acm", bits.join(" · ")));
+      r.appendChild(mk("div", "acm actitle", "Title (from their territory): " + titleOf(p, role)));
       var gl = grantsOf(p);
       if (role && role.is_super_admin) r.appendChild(mk("div", "acm", "Territory: everywhere."));
       else if (!gl.length) r.appendChild(mk("div", "acm", "Territory: none yet (signs in, sees nothing in any region)."));

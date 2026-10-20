@@ -177,6 +177,7 @@ with sync_playwright() as p:
     pg.select_option("#apRole", sup["id"])
     check("picking the super admin role hides the territory editor and says why", "works everywhere" in pg.inner_text("#agBox") and pg.locator("#agKind").count() == 0)
     pg.get_by_role("button", name="Cancel", exact=True).click()
+    check("a person's title comes from their territory, not their role", "Title (from their territory): Super admin: everywhere" in row("Todd Beetcher").inner_text() and "Title (from their territory): Region head: 1 region in Colorado" in row("Olga Old").inner_text(), row("Olga Old").inner_text())
     check("Todd's row says everywhere", "Territory: everywhere" in row("Todd Beetcher").inner_text())
     # the retired single region
     check("a person with only the old single region shows it as a territory and says how to convert it", "Territory: Regions in Colorado: Longmont (from the old single-region setting" in row("Olga Old").inner_text(), row("Olga Old").inner_text())
