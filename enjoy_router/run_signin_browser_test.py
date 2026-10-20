@@ -36,8 +36,15 @@ V = Fake()
 store = MemoryDocStore("")
 def role(key, caps=None, sup=False):
     r = RO.create(store, {"key": key, "label": key, "is_super_admin": sup, **({} if sup else {"capabilities": caps})}, A); assert r.ok, r.problems; return r.data
+STATE_ID = "a0000000-0000-4000-8000-000000000001"
+REGION_ID = "a0000000-0000-4000-8000-000000000002"
+store.create("discovery_areas", STATE_ID, {"id": STATE_ID, "kind": "state", "state_code": "CO", "name": "Colorado", "is_active": True})
+store.create("discovery_areas", REGION_ID, {"id": REGION_ID, "kind": "region", "state_code": "CO", "name": "Boulder", "zip_codes": ["80301"], "is_active": True})
 def person(email, r, name):
-    p = PE.create(store, {"email": email, "display_name": name, "role_id": r["id"]}, A); assert p.ok, p.problems
+    from access.capabilities import TERRITORIAL
+    terr = [c for c in r.get("capabilities", []) if c in TERRITORIAL]
+    extra = {"grants": [{"kind": "regions", "state_code": "CO", "region_ids": [REGION_ID], "capabilities": terr}]} if terr else {}      # territorial capabilities now come from grants
+    p = PE.create(store, {"email": email, "display_name": name, "role_id": r["id"], **extra}, A); assert p.ok, p.problems
     tok = f"tok.{email.split('@')[0]}.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     V.tokens[tok] = {"uid": "uid-" + email, "email": email, "email_verified": True, "provider": "google.com", "name": name}
     return tok

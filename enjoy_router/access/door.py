@@ -63,4 +63,6 @@ def me(access) -> dict:
     """What the Console learns about who is signed in (the `me` op). Never the key, never the uid."""
     return {"name": access.name, "email": access.email, "role_key": access.role_key, "method": access.method,
             "is_super_admin": access.is_super_admin, "scope_region_id": access.scope_region_id,
-            "capabilities": sorted(access.capabilities)}
+            "capabilities": sorted(access.capabilities), "unlimited": bool(access.is_super_admin or any(g.get("kind") == "all" for g in access.grants)),
+            "grants": [{"kind": g.get("kind"), "state_code": g.get("state_code", ""), "region_ids": sorted(g.get("region_ids", ())),
+                        "capabilities": sorted(g.get("capabilities", ())), "group": g.get("group", "")} for g in access.grants]}

@@ -15,7 +15,8 @@ Refusal codes (Access.ok is False): not_configured (no key setting and no verifi
 key, a token that does not verify, unverified email or a non-Google provider), not_invited, account_changed. The messages that say why
 never name which part failed beyond these codes; nothing here logs a key, a token or an email.
 
-A super admin role holds every capability, listed or not (`can` is True for any name). Others hold only the capabilities their role lists.
+A super admin role holds every capability, listed or not (`can` is True for any name). Others hold the global capabilities their role lists plus the
+territorial capabilities of their grants (P-60: `access.territory` decides where a grant reaches).
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 from crud import access_persons_crud as PE
-from .capabilities import CAPABILITIES
+from .capabilities import CAPABILITIES, GLOBAL, TERRITORIAL
 
 MIN_KEY_LENGTH = 32            # same number as console.MIN_KEY_LENGTH (a test keeps them equal; console cannot be imported here)
 KEY_ACTOR = "user:admin"
@@ -42,11 +43,35 @@ class Access:
     role_key: str = ""
     capabilities: frozenset = frozenset()
     is_super_admin: bool = False
-    scope_region_id: str = ""      # stored now; enforced when regional ownership is built (P-60)
+    scope_region_id: str = ""      # RETIRED (see grants); still carried so older records work
+    grants: tuple = ()             # the territory: dicts with kind, state_code, region_ids (frozenset), capabilities (frozenset), group
     method: str = ""               # "key" or "google"
 
     def can(self, capability: str) -> bool:
         return self.ok and (self.is_super_admin or capability in self.capabilities)
+
+
+ALL_GRANT = {"kind": "all", "capabilities": frozenset(TERRITORIAL)}
+
+
+def _grants_of(store, person, role):
+    """The person's grants in the form the code reads. State and all grants carry every territorial capability. An older person with
+    only the retired `scope_region_id` counts as one grant for that region with the territorial capabilities their role lists."""
+    out = []
+    for g in person.get("grants") or []:
+        if g.get("kind") == "all":
+            out.append({"kind": "all", "capabilities": frozenset(TERRITORIAL), "group": g.get("group", "")})
+        elif g.get("kind") == "state":
+            out.append({"kind": "state", "state_code": g.get("state_code"), "capabilities": frozenset(TERRITORIAL), "group": g.get("group", "")})
+        elif g.get("kind") == "regions":
+            out.append({"kind": "regions", "state_code": g.get("state_code"), "region_ids": frozenset(g.get("region_ids", ())),
+                        "capabilities": frozenset(g.get("capabilities", ())) & frozenset(TERRITORIAL), "group": g.get("group", "")})
+    if not out and person.get("scope_region_id"):
+        area = store.get("discovery_areas", person["scope_region_id"])
+        if area and "deleted_at" not in area and area.get("kind") == "region":
+            out.append({"kind": "regions", "state_code": area.get("state_code"), "region_ids": frozenset([area["id"]]),
+                        "capabilities": frozenset(role.get("capabilities", ())) & frozenset(TERRITORIAL), "group": ""})
+    return tuple(out)
 
 
 def _refuse(code):
@@ -77,7 +102,7 @@ def authenticate(given, *, admin_key, verifier, store, now) -> Access:
         return _refuse("unauthorized")
     if key_on and hmac.compare_digest(given.encode("utf-8"), admin_key.encode("utf-8")):
         return Access(True, actor=KEY_ACTOR, name="Admin key", role_key="super_admin", capabilities=frozenset(CAPABILITIES),
-                      is_super_admin=True, method="key")
+                      is_super_admin=True, grants=(ALL_GRANT,), method="key")
     if verifier is None or not looks_like_token(given):
         return _refuse("unauthorized")
     try:
@@ -100,10 +125,12 @@ def authenticate(given, *, admin_key, verifier, store, now) -> Access:
     if not person.get("google_uid") or _stale(person, now):
         PE.record_sign_in(store, person, uid, now)
     sup = bool(role.get("is_super_admin"))
+    grants = (ALL_GRANT,) if sup else _grants_of(store, person, role)
+    # global capabilities come from the role; territorial ones only from the grants (the role's territorial list is just the default for a new grant)
+    caps = frozenset(CAPABILITIES) if sup else frozenset(c for c in role.get("capabilities", []) if c in GLOBAL).union(*(g["capabilities"] for g in grants))
     return Access(True, actor=f"user:{person['id']}", name=person.get("display_name") or claims.get("name") or person["email"],
-                  email=person["email"], role_key=role["key"],
-                  capabilities=frozenset(CAPABILITIES) if sup else frozenset(role.get("capabilities", [])),
-                  is_super_admin=sup, scope_region_id=person.get("scope_region_id", ""), method="google")
+                  email=person["email"], role_key=role["key"], capabilities=caps,
+                  is_super_admin=sup, scope_region_id=person.get("scope_region_id", ""), grants=grants, method="google")
 
 
 class FirebaseVerifier:

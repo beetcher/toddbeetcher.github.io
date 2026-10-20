@@ -45,7 +45,14 @@ def mkrole(key, caps=None, sup=False, **kw):
     r = RO.create(store, {"key": key, "label": key, "is_super_admin": sup, **({} if sup else {"capabilities": caps}), **kw}, A, now=tick())
     assert r.ok, r.problems
     return r.data
+STATE_ID, REGION_ID = "a0000000-0000-4000-8000-000000000001", "a0000000-0000-4000-8000-000000000002"
+store.create("discovery_areas", STATE_ID, {"id": STATE_ID, "kind": "state", "state_code": "CO", "name": "Colorado", "is_active": True})
+store.create("discovery_areas", REGION_ID, {"id": REGION_ID, "kind": "region", "state_code": "CO", "name": "Boulder", "zip_codes": ["80301"], "is_active": True})
+from access.capabilities import TERRITORIAL  # noqa: E402
 def mkperson(email, role, n, **kw):
+    terr = [c for c in role.get("capabilities", []) if c in TERRITORIAL]
+    if terr and "grants" not in kw:      # the role's territorial capabilities are the defaults for a grant (territory itself is tested in run_territory_tests.py)
+        kw["grants"] = [{"kind": "regions", "state_code": "CO", "region_ids": [REGION_ID], "capabilities": terr}]
     r = PE.create(store, {"email": email, "role_id": role["id"], **kw}, A, now=tick()); assert r.ok, r.problems
     V.tokens[tok(n)] = claims(email, uid=f"uid-{n}")
     return r.data
@@ -126,7 +133,7 @@ check("region head: no people records", code({"collection": "individuals", "op":
 check("region head: no messages", code({"collection": "communication_logs", "op": "list", "args": {}}, 2) == 403)
 check("region head: no curriculum writes", code({"collection": "curriculums", "op": "create", "args": {"data": {}}}, 2) == 403)
 check("region head: may delete a registration request (manage_requests)", not_denied(admin({"collection": "attendances", "op": "delete_request", "args": {"id": "x"}}, token=T(2))))
-check("region head: may save a place (venue editing)", not_denied(admin({"collection": "locations", "op": "create", "args": {"data": {}}}, token=T(2))))
+check("region head: may save a place (venue editing)", not_denied(admin({"collection": "locations", "op": "create", "args": {"data": {"addresses": [{"postal_code": "80301"}]}}}, token=T(2))))
 check("viewer: may read venues, may not write them", code(LV, 6) == 200 and code({"collection": "venues", "op": "create", "args": {"data": {}}}, 6) == 403)
 check("spend viewer: no venues at all", code(LV, 4) == 403)
 check("spend viewer: may read discovery_runs (not blocked by policy)", policy.allowed(authorize.authenticate(T(4), admin_key=KEY, verifier=V, store=store, now=tick()), policy.crud_need("discovery_runs", "list", {})))
@@ -169,7 +176,7 @@ check("role: an ordinary role may not hold manage_access (yet)", not r.ok and ("
 
 # ================================================================ the records door
 def reg_store():
-    s = MemoryStore([]); s.requests.append({"id": "r1", "created_at": "2026-10-09T04:26:00Z", "email": "p@example.com"}); return s
+    s = MemoryStore([]); s.requests.append({"id": "r1", "created_at": "2026-10-09T04:26:00Z", "email": "p@example.com", "postal_code": "80301"}); return s
 def records(n=None, key=None, lim=None, verifier=V):
     auth = f"Bearer {key}" if key else (f"Bearer {tok(n)}" if n else "")
     return handle_console("GET", auth, {}, KEY, "v", reg_store(), lim or make_failure_limiter(), tick(), verifier=verifier, access_store=store)
