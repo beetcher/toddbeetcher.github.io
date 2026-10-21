@@ -9,7 +9,7 @@
   var mk = K.mk, root = null, COLL = "activity_events", MAXN = 200;
 
   // The server takes ONE filter. Everything else (the search box) narrows what came back.
-  var S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: 0, pending: null, openIds: {} };
+  var S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: 0, pending: null, openIds: {}, names: {}, tried: {}, allNames: false };
 
   var TYPES = [["venue", "Venue"], ["scheduled_class", "Class"], ["registration_request", "Registration request"], ["individual", "Person"],
     ["location", "Place"], ["instructor_roster", "Instructor"], ["student_roster", "Student"], ["attendance", "Attendance"], ["organization", "Organization"],
@@ -26,7 +26,14 @@
   function typeName(t) { for (var i = 0; i < TYPES.length; i++) if (TYPES[i][0] === t) return TYPES[i][1]; return String(t || "").replace(/_/g, " "); }
   function human(f) { var s = String(f || "").replace(/_/g, " "); return s.charAt(0).toUpperCase() + s.slice(1); }
 
-  // user:admin -> "Admin key", web:enjoy -> "Website form", system:x -> "System (x)", user:<id> -> the id as stored
+  // Fields that hold who did something. Their values are actors (user:<id>, user:admin, web:enjoy ...) and are shown as names.
+  var ACTOR_FIELDS = { created_by: 1, updated_by: 1, deleted_by: 1, decided_by: 1, handled_by: 1, published_by: 1, unmerged_by: 1, withdrawn_by: 1 };
+
+  // A signed-in person is stored as user:<person id>. Not the admin key.
+  function personId(a) { a = String(a || ""); return a.indexOf("user:") === 0 && a !== "user:admin" ? a.slice(5) : ""; }
+
+  // user:admin -> "Admin key", web:enjoy -> "Website form", system:x -> "System (x)", user:<id> -> that person's name,
+  // or the user id itself when no name can be found (never a role, never a vague label).
   function actorName(a) {
     a = String(a || "");
     if (a === "user:admin") return "Admin key";
@@ -35,7 +42,45 @@
     if (a === "system:unattributed") return "System (no name recorded)";
     var i = a.indexOf(":"); if (i < 0) return a || "Unknown";
     var kind = a.slice(0, i), rest = a.slice(i + 1);
+    if (kind === "user") return S.names[rest] || rest;
     return kind === "system" ? "System (" + rest + ")" : kind === "web" ? "Website (" + rest + ")" : rest;
+  }
+
+  // The stored actor for a name typed in the "Person or source" box: a person's name (or part of an id), "Admin key", "Website form" ...
+  function actorId(typed) {
+    var t = String(typed || "").trim(); if (!t) return "";
+    if (t.indexOf(":") >= 0) return t;
+    var low = t.toLowerCase(), fixed = { "admin key": "user:admin", "website form": "web:enjoy", "completion link": "web:completion" };
+    if (fixed[low]) return fixed[low];
+    var hits = nameHits(low);
+    return hits.length === 1 ? "user:" + hits[0] : t;
+  }
+  function nameHits(low) { return Object.keys(S.names).filter(function (id) { return String(S.names[id]).toLowerCase() === low; }); }
+
+  // Every person actor in what came back that we have not yet tried to name.
+  function unknownPeople(records) {
+    var seen = {};
+    (records || []).forEach(function (e) {
+      [e.created_by].concat((e.changes || []).filter(function (c) { return ACTOR_FIELDS[c.field]; }).reduce(function (a, c) { return a.concat([jsonStr(c.old_value), jsonStr(c.new_value)]); }, []))
+        .forEach(function (a) { var id = personId(a); if (id && !S.names[id] && !S.tried[id]) seen[id] = 1; });
+    });
+    return Object.keys(seen);
+  }
+  function jsonStr(t) { try { var v = JSON.parse(t); return typeof v === "string" ? v : ""; } catch (e) { return ""; } }
+
+  // Look up the names of the people in the entries on screen (one call, only when some are not known yet). A failure leaves the ids showing.
+  function nameThem(records) {
+    var need = unknownPeople(records); if (!need.length) return Promise.resolve(false);
+    need.forEach(function (id) { S.tried[id] = 1; });
+    return fetchNames();
+  }
+  function fetchNames() {
+    return K.admin("list", { limit: 200 }, "access_persons").then(function (res) {
+      if (!ok(res)) return false;
+      var rows = (res.body.data && res.body.data.records) || [], got = false;
+      rows.forEach(function (p) { if (p && p.id && p.display_name && String(p.display_name).trim()) { S.names[p.id] = String(p.display_name).trim(); got = true; } });
+      return got;
+    }, function () { return false; });
   }
 
   // A value is stored as JSON text. Show it the way a person would write it.
@@ -77,7 +122,7 @@
 
   function serverFilter() {
     if (S.recId) return { related_ids: S.recId };
-    if (S.mode !== "all" && S.value) { var f = {}; f[S.mode] = S.value; return f; }
+    if (S.mode !== "all" && S.value) { var f = {}; f[S.mode] = S.mode === "created_by" ? actorId(S.value) : S.value; return f; }
     return {};
   }
 
@@ -88,13 +133,18 @@
     return hay.join(" \n ").toLowerCase().indexOf(q) >= 0;
   }
 
+  function changeValue(c, text) {
+    if (ACTOR_FIELDS[c.field]) { var a = jsonStr(text); if (a) return actorName(a); }
+    return valueText(text);
+  }
+
   function changeLine(e, c) {
     var li = mk("li"); li.appendChild(mk("span", "avfield", human(c.field) + ": "));
     if (c.values_withheld) { li.appendChild(mk("span", "avw", "changed (personal details are not recorded)")); return li; }
     var hasOld = c.old_value != null, hasNew = c.new_value != null;
-    if (e.action === "created" || !hasOld) { li.appendChild(mk("span", "avnew", valueText(c.new_value))); }
-    else if (!hasNew) { li.appendChild(mk("span", "avold", valueText(c.old_value))); li.appendChild(document.createTextNode(" → removed")); }
-    else { li.appendChild(mk("span", "avold", valueText(c.old_value))); li.appendChild(document.createTextNode(" → ")); li.appendChild(mk("span", "avnew", valueText(c.new_value))); }
+    if (e.action === "created" || !hasOld) { li.appendChild(mk("span", "avnew", changeValue(c, c.new_value))); }
+    else if (!hasNew) { li.appendChild(mk("span", "avold", changeValue(c, c.old_value))); li.appendChild(document.createTextNode(" → removed")); }
+    else { li.appendChild(mk("span", "avold", changeValue(c, c.old_value))); li.appendChild(document.createTextNode(" → ")); li.appendChild(mk("span", "avnew", changeValue(c, c.new_value))); }
     if (c.truncated) li.appendChild(mk("span", "avm", " (long value, cut short)"));
     return li;
   }
@@ -102,7 +152,7 @@
   function entryCard(e) {
     var r = mk("div", "avrow"); var top = mk("div", "av1");
     var left = mk("div"); left.appendChild(mk("div", "avwho", typeName(e.record_type) + (e.record_label ? " · " + e.record_label : "")));
-    left.appendChild(mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · ref " + String(e.record_id).slice(0, 8)))); top.appendChild(left);
+    var by = mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · ref " + String(e.record_id).slice(0, 8))); by.title = String(e.created_by || ""); left.appendChild(by); top.appendChild(left);
     var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); right.appendChild(document.createTextNode(" "));
     right.appendChild(btn("Change history", "quiet", function () { openFor(e.record_id, e.record_label || typeName(e.record_type)); })); top.appendChild(right); r.appendChild(top);
     var ch = e.changes || [];
@@ -124,7 +174,7 @@
   function valueControl() {
     if (S.mode === "record_type") { var t = select("avValue", [["", "Choose…"]].concat(TYPES), S.value); t.addEventListener("change", function () { S.value = t.value; load(); }); return field("Kind of record", t, "avValue"); }
     if (S.mode === "action") { var a = select("avValue", [["", "Choose…"]].concat(ACTIONS), S.value); a.addEventListener("change", function () { S.value = a.value; load(); }); return field("Kind of change", a, "avValue"); }
-    var i = mk("input"); i.type = "text"; i.id = "avValue"; i.value = S.value; i.placeholder = "such as user:admin or web:enjoy"; i.autocomplete = "off";
+    var i = mk("input"); i.type = "text"; i.id = "avValue"; i.value = S.value; i.placeholder = "a person's name, Admin key or Website form"; i.autocomplete = "off";
     i.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { S.value = i.value.trim(); load(); } });
     var f = field("Person or source (press Enter)", i, "avValue"); return f;
   }
@@ -179,12 +229,18 @@
     var my = ++S.seq; S.busy = true; S.msg = "";
     if (S.mode !== "all" && !S.recId && !S.value) { S.records = []; S.loaded = true; S.busy = false; draw(); return Promise.resolve(); }
     draw();
-    return K.admin("list", { filters: serverFilter(), order: "-created_at", limit: MAXN }, COLL).then(function (res) {
+    // Typing a person's name in "Person or source": we need the names before we can turn it into the stored id.
+    var pre = (S.mode === "created_by" && !S.recId && S.value && S.value.indexOf(":") < 0 && !S.allNames) ? (S.allNames = true, fetchNames()) : Promise.resolve(false);
+    return pre.then(function () {
+      if (S.mode === "created_by" && !S.recId && S.value && S.value.indexOf(":") < 0 && nameHits(S.value.trim().toLowerCase()).length > 1) S.msg = "More than one person has that name. Type the user id instead.";
+      return K.admin("list", { filters: serverFilter(), order: "-created_at", limit: MAXN }, COLL);
+    }).then(function (res) {
       if (my !== S.seq) return;
       S.busy = false;
       if (!ok(res)) { S.msg = why(res); S.records = []; S.loaded = true; }
       else { S.records = (res.body.data && res.body.data.records) || []; S.loaded = true; }
       draw();
+      if (S.records.length) return nameThem(S.records).then(function (got) { if (got && my === S.seq) draw(); });
     });
   }
 
@@ -202,6 +258,6 @@
 
   window.ActivityStation = {
     show: show, openFor: openFor,
-    reset: function () { S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: S.seq + 1, pending: null, openIds: {} }; var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: S.seq + 1, pending: null, openIds: {}, names: {}, tried: {}, allNames: false }; var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();
