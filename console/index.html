@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/console-favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/console-favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/console-favicon-48.png">
+<link rel="apple-touch-icon" href="assets/console-touch-180.png">
 <title>Console</title>
 <style>
   :root {
@@ -50,6 +54,11 @@
     max-width: min(92vw, 520px); padding: 12px 18px; border-radius: 999px; background: #1b1b1b; color: #fff; font-weight: 600; font-size: 15px;
     box-shadow: 0 6px 24px rgba(0,0,0,.35); transition: opacity .18s ease, transform .18s ease; display: flex; gap: 10px; align-items: center; }
   #workToast.on { opacity: 1; transform: translate(-50%, 0); }
+  #idleWarn { position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 10001; max-width: calc(100vw - 32px); box-sizing: border-box;
+    background: #fff8ec; color: #1c1a17; border: 3px solid var(--orange); border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-weight: 600; }
+  #idleWarn[hidden] { display: none; }
+  #idleWarn button { font: inherit; font-weight: 700; padding: 10px 16px; min-height: 44px; border-radius: 10px; border: 2px solid #1c1a17; background: var(--lime); color: #1c1a17; cursor: pointer; }
   #workToast .dot { flex: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--orange); border-right-color: transparent; animation: spin .7s linear infinite; }
   #workToast.ok { background: #14532d; } #workToast.ok .dot { animation: none; border-color: #fff; background: #fff; }
   #workToast.bad { background: var(--err); } #workToast.bad .dot { animation: none; border-color: #fff; background: #fff; }
@@ -424,6 +433,7 @@
 </style>
 </head>
 <body>
+<div id="idleWarn" role="alert" hidden><span>You will be signed out in <b id="idleCount"></b> because there has been no activity.</span><button type="button" id="idleStay">Stay signed in</button></div>
 <div id="workToast" role="status" aria-live="polite"><span class="dot"></span><span id="workText"></span></div>
 <header id="topbar">
   <div>
@@ -1536,7 +1546,7 @@
       if (message === "That key did not work.") message = "Your Google sign-in ended. Sign in again.";
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
-    ME = null; $("who").hidden = true;
+    ME = null; $("who").hidden = true; idleEnd();
     stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
@@ -1569,6 +1579,7 @@
         return;
       }
       if (method !== "google") setKey(k, remember);
+      idleStaleAtLoad = false; idleStart();
       show(false);
       applyAccess();
       merge(res.records);
@@ -2138,7 +2149,7 @@
   }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
   window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
-                        go: function (id) { goTo(id); }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
+                        go: function (id) { goTo(id); }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
   function canon(v) {
     if (v === null || v === undefined) return "null";
     if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
@@ -6694,6 +6705,7 @@
     user.getIdToken().then(function (t) {
       if (method === "google" && key) { key = t; return; }   // a refreshed token for the session already open
       if (key) return;                                       // already in with the admin key
+      if (idleStaleAtLoad) { idleStaleAtLoad = false; idleDrop(IDLE_AT); try { auth.signOut(); } catch (e) {} $("lockMsg").textContent = idleStaleMessage(); show(true); return; }   // a restored session that sat idle too long
       method = "google"; unlock(t, false);
     }).catch(function () {});
   }
@@ -6717,7 +6729,7 @@
   }
   $("googleBtn").addEventListener("click", function () {
     if (!auth) return;
-    $("lockMsg").textContent = "";
+    $("lockMsg").textContent = ""; idleStaleAtLoad = false;       // a deliberate sign-in is never dropped as stale
     var p = new window.firebase.auth.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
     auth.signInWithPopup(p).catch(function (e) {
@@ -6729,8 +6741,56 @@
   setInterval(refreshToken, 20 * 60 * 1000);
   initGoogle();
 
+  // ---- Automatic sign-out after inactivity (console_setting.session_timeout_minutes, set by a super admin in Access > Sign-in).
+  // This locks the page in this browser; it is not a server session (the admin key itself stays valid until it is changed). The clock
+  // is shared by every Console tab in this browser (localStorage); a Discovery run in progress counts as activity (it is driven from this
+  // page); a remembered key or Google session that has sat idle past the limit is dropped when the page loads instead of signing in.
+  // If the number cannot be read, the last known one is used, and 10 minutes if none was ever known: it fails closed, never open.
+  var IDLE_AT = "console_last_active", IDLE_MIN = "console_timeout_minutes", IDLE_DEFAULT = 10, IDLE_WARN_MS = 60000;
+  var idleMinutes = IDLE_DEFAULT, idleLast = Date.now(), idleWrote = 0, idleTimer = null, idleShown = false, idleStaleAtLoad = false;
+  function idleGet(k) { try { return parseInt(localStorage.getItem(k) || "", 10) || 0; } catch (e) { return 0; } }
+  function idleSet(k, v) { try { localStorage.setItem(k, String(v)); } catch (e) {} }
+  function idleDrop(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  function idleClamp(n) { n = Math.round(Number(n)); return n >= 1 && n <= 480 ? n : IDLE_DEFAULT; }
+  idleMinutes = idleClamp(idleGet(IDLE_MIN) || IDLE_DEFAULT);
+  function idleTouch() { var t = Date.now(); idleLast = t; if (t - idleWrote > 5000) { idleWrote = t; idleSet(IDLE_AT, t); } }
+  function idleLastActive() { return Math.max(idleLast, idleGet(IDLE_AT)); }
+  function idleBusy() { return !!(window.DiscoveryStation && window.DiscoveryStation.busy && window.DiscoveryStation.busy()); }
+  function idleWarn(ms) {
+    var w = $("idleWarn"); if (!w) return;
+    if (!ms) { if (idleShown) { w.hidden = true; idleShown = false; } return; }
+    var sec = Math.max(1, Math.ceil(ms / 1000)); $("idleCount").textContent = (sec >= 60 ? Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2) : sec + " second" + (sec === 1 ? "" : "s"));
+    if (!idleShown) { w.hidden = false; idleShown = true; }
+  }
+  function idleTick() {
+    if (!key) { idleWarn(0); return; }
+    if (idleBusy()) idleTouch();
+    var left = idleMinutes * 60000 - (Date.now() - idleLastActive());
+    if (left <= 0) { idleWarn(0); lock("You were signed out after " + idleMinutes + " minute" + (idleMinutes === 1 ? "" : "s") + " without activity. Sign in again."); return; }
+    idleWarn(left <= IDLE_WARN_MS ? left : 0);
+  }
+  function idleStart() {   // a person is signed in: start the clock and read the super admin's number
+    idleTouch();
+    if (!idleTimer) idleTimer = setInterval(idleTick, 1000);
+    if (!can("view_console")) return;                                  // this person may not read the setting: keep the last known number (no refused call)
+    adminCall("list", { limit: 1 }, "console_settings").then(function (r) {
+      var recs = r.status === 200 && r.body && r.body.ok && r.body.data && r.body.data.records;
+      if (!recs) return;                                              // could not read: keep the last known number
+      idleMinutes = idleClamp(recs.length ? recs[0].session_timeout_minutes : IDLE_DEFAULT); idleSet(IDLE_MIN, idleMinutes);
+    });
+  }
+  function idleEnd() { idleWarn(0); idleDrop(IDLE_AT); }
+  ["pointerdown", "keydown", "wheel", "touchstart", "scroll"].forEach(function (ev) {
+    document.addEventListener(ev, function () { if (!key) return; idleTouch(); if (idleShown) idleWarn(0); }, { capture: true, passive: true });
+  });
+  $("idleStay").addEventListener("click", function () { idleTouch(); idleWarn(0); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) idleTick(); });
+  idleStaleAtLoad = idleGet(IDLE_AT) > 0 && Date.now() - idleGet(IDLE_AT) > idleMinutes * 60000;   // a saved session that sat idle past the limit
+  function idleStaleMessage() { return "You were signed out after " + idleMinutes + " minute" + (idleMinutes === 1 ? "" : "s") + " without activity. Sign in again."; }
+
   var saved = getKey();
-  if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
+  if (saved.key && idleStaleAtLoad) { idleStaleAtLoad = false; setKey('', false); idleDrop(IDLE_AT); $("lockMsg").textContent = idleStaleMessage(); show(true); }
+  else if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
 })();
 </script>
 <script src="discovery.js"></script>

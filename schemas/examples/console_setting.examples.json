@@ -1,0 +1,57 @@
+{
+  "valid": {
+    "starting_value": {
+      "settings_key": "default",
+      "session_timeout_minutes": 10
+    },
+    "shortest": {
+      "settings_key": "default",
+      "session_timeout_minutes": 1
+    },
+    "longest": {
+      "settings_key": "default",
+      "session_timeout_minutes": 480
+    }
+  },
+  "invalid": {
+    "wrong_key": {
+      "settings_key": "second",
+      "session_timeout_minutes": 10
+    },
+    "missing_minutes": {
+      "settings_key": "default"
+    },
+    "missing_key": {
+      "session_timeout_minutes": 10
+    },
+    "zero_minutes_means_off_and_there_is_no_off": {
+      "settings_key": "default",
+      "session_timeout_minutes": 0
+    },
+    "negative_minutes": {
+      "settings_key": "default",
+      "session_timeout_minutes": -5
+    },
+    "over_eight_hours": {
+      "settings_key": "default",
+      "session_timeout_minutes": 481
+    },
+    "fraction_of_a_minute": {
+      "settings_key": "default",
+      "session_timeout_minutes": 7.5
+    },
+    "minutes_as_text": {
+      "settings_key": "default",
+      "session_timeout_minutes": "10"
+    },
+    "unknown_field": {
+      "settings_key": "default",
+      "session_timeout_minutes": 10,
+      "warn_seconds": 60
+    },
+    "camel_case_field": {
+      "settings_key": "default",
+      "sessionTimeoutMinutes": 10
+    }
+  }
+}

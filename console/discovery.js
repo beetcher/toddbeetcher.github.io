@@ -830,6 +830,7 @@
 
   // ---- entry point from the main page
   window.DiscoveryStation = {
+    busy: function () { return !!S.driving; },      // a run is being driven from this page: the Console's inactivity sign-out waits
     show: function () { if (!root) build(); if (!S.loaded) { loadAll(); } drawTabs(); },
     reset: function () { S = { tab: "run", sub: "models", loaded: false, status: null, models: [], areas: [], types: [], prompts: [], settings: null, runs: [], openRun: null, quote: null, quoteKey: "", driving: "", stopAsk: false, seq: S.seq + 1 }; root = null; var v = $("discoveryView"); if (v) v.innerHTML = ""; }
   };

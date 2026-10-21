@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/console_setting.schema.json",
+  "title": "console_setting",
+  "description": "The Console settings: one record for the whole Console, edited by a super admin in the Access station (Sign-in box). Today it holds one setting: how many minutes of inactivity before the Console signs a person out (see CONSOLE_SETTING_GUIDE.md). Rules the schema cannot express: exactly one record exists (settings_key is always default); only a super admin may change it (access/policy.py); any signed-in Console user may read it, because the page needs the number to know when to lock; a missing record means the Console uses 10 minutes; fields marked readOnly are set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept. The record is replaced in place; every change is also written to the activity log (activity_events). (A written policy only.)",
+  "required": [
+    "settings_key",
+    "session_timeout_minutes"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "settings_key": {
+      "description": "Always default. It makes the one-record rule checkable, because ids are UUIDs. Required.",
+      "const": "default"
+    },
+    "session_timeout_minutes": {
+      "description": "Minutes without a click, key press, scroll or touch before the Console signs the person out and asks for the key or Google sign-in again. Whole minutes, 1 to 480 (8 hours). There is no off setting. Required. Starting value 10.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 480
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

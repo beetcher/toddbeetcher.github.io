@@ -16,7 +16,7 @@
     ["curriculum", "Curriculum"], ["registration_assignment", "Assignment"], ["location_link", "Place link"], ["organization_link", "Organization link"],
     ["transaction_record", "Payment record"], ["merge_event", "Merge"], ["message_template", "Message wording"], ["comms_setting", "Message setting"],
     ["access_person", "Access person"], ["access_role", "Access role"], ["discovery_area", "Discovery area"], ["discovery_model", "Discovery model"],
-    ["discovery_type", "Discovery type"], ["discovery_prompt", "Discovery prompt"], ["discovery_setting", "Discovery setting"], ["individual_restricted_detail", "Sensitive details"]];
+    ["discovery_type", "Discovery type"], ["discovery_prompt", "Discovery prompt"], ["discovery_setting", "Discovery setting"], ["console_setting", "Console setting"], ["individual_restricted_detail", "Sensitive details"]];
   var ACTIONS = [["created", "Created"], ["edited", "Edited"], ["deleted", "Deleted"], ["restored", "Restored"]];
   var MODES = [["all", "Everything"], ["record_type", "One kind of record"], ["action", "One kind of change"], ["created_by", "One person or source"]];
   var VERB = { created: "Created", edited: "Edited", deleted: "Deleted", restored: "Restored" };

@@ -232,6 +232,14 @@
       "guide": "ACTIVITY_EVENT_GUIDE.md",
       "examples": "examples/activity_event.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "console_setting",
+      "collection": "console_settings",
+      "schema": "console_setting.schema.json",
+      "guide": "CONSOLE_SETTING_GUIDE.md",
+      "examples": "examples/console_setting.examples.json",
+      "schema_version": 1
     }
   ],
   "message_kinds": {

@@ -6,7 +6,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var mk = K.mk, root = null;
-  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null };
+  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } };
 
   // [name, what it allows, territorial?]. Territorial ones apply only inside a person's territory (their grants); global ones come from the role.
   var CAPS = [
@@ -308,6 +308,7 @@
     wrap.appendChild(mk("p", "acm", "Who may sign in with Google, and what each role may do. The admin key still works as a back door."));
     var msg = mk("div", "acerr", S.msg); msg.setAttribute("role", "status"); wrap.appendChild(msg);
 
+    if (!isDelegate()) wrap.appendChild(signInBox());
     var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
     S.persons.slice().sort(sortBy("email")).forEach(function (p) {
@@ -354,10 +355,49 @@
     wrap.appendChild(t);
   }
 
+  // ---- Sign-in box: how long the Console waits before it signs a person out (console_setting.session_timeout_minutes). Super admin only.
+  // The page that holds the timer is index.html; ConsoleKit.sessionMinutes applies a saved number to this window at once, other windows
+  // take it the next time they sign in or reload.
+  function signInBox() {
+    var rec = S.cs.rec, mins = rec ? rec.session_timeout_minutes : K.sessionMinutes();
+    var box = mk("div", "acform"); box.id = "acSignIn";
+    box.appendChild(mk("h2", "", "Sign-in"));
+    box.appendChild(mk("p", "acm", "Sign people out of the Console after this many minutes without a click, key press, scroll or touch. Everyone is held to the same number. A Discovery run in progress counts as activity."));
+    var f = mk("div", "acf"); var l = mk("label", "", "Minutes of inactivity before sign-out (1 to 480)"); l.htmlFor = "acMinutes";
+    var i = mk("input"); i.type = "number"; i.id = "acMinutes"; i.min = "1"; i.max = "480"; i.step = "1"; i.value = String(mins); i.setAttribute("inputmode", "numeric");
+    f.appendChild(l); f.appendChild(i); box.appendChild(f);
+    if (!rec && S.cs.ok) box.appendChild(mk("p", "acm", "Not set yet, so the Console uses 10 minutes."));
+    if (!S.cs.ok && S.loaded) box.appendChild(mk("p", "acm", "The current setting could not be read. Saving will still work."));
+    var save = btn("Save minutes", "", function () { saveMinutes(i.value); }); save.id = "acMinutesSave"; box.appendChild(save);
+    var m = mk("div", "acerr", S.cs.msg); m.id = "acMinutesMsg"; m.setAttribute("role", "status"); box.appendChild(m);
+    return box;
+  }
+  function saveMinutes(raw) {
+    var t = String(raw).trim();
+    if (!/^\d{1,3}$/.test(t) || +t < 1 || +t > 480) { S.cs.msg = "Enter a whole number of minutes from 1 to 480."; draw(); return Promise.resolve(); }
+    var n = +t, rec = S.cs.rec;
+    var call = rec ? adm("update", { id: rec.id, changes: { session_timeout_minutes: n }, expected_updated_at: rec.updated_at }, "console_settings")
+                   : adm("create", { data: { session_timeout_minutes: n } }, "console_settings");
+    return call.then(function (res) {
+      if (!ok(res)) {
+        var code = res.body && res.body.error && res.body.error.code;
+        S.cs.msg = res.status === 403 ? "Only a super admin may change this." : code === "conflict" ? "Someone changed this while you were editing. Reload and try again." : why(res);
+        draw(); return;
+      }
+      return adm("list", { limit: 1 }, "console_settings").then(function (r2) {
+        S.cs.rec = recs(r2)[0] || null; S.cs.ok = ok(r2);
+        K.sessionMinutes(n);
+        S.cs.msg = "Saved: " + n + " minute" + (n === 1 ? "" : "s") + ". This window uses it now; every other Console window takes it the next time it signs in or reloads.";
+        draw();
+      });
+    });
+  }
+
   function load() {
     var my = ++S.seq;
-    return Promise.all([adm("list", { limit: 200 }, "access_roles"), adm("list", { limit: 200 }, "access_persons"), adm("list", { limit: 200 }, "discovery_areas")]).then(function (all) {
+    return Promise.all([adm("list", { limit: 200 }, "access_roles"), adm("list", { limit: 200 }, "access_persons"), adm("list", { limit: 200 }, "discovery_areas"), adm("list", { limit: 1 }, "console_settings")]).then(function (all) {
       if (my !== S.seq) return;
+      S.cs.ok = ok(all[3]); S.cs.rec = ok(all[3]) ? (recs(all[3])[0] || null) : null;
       if (!ok(all[0]) || !ok(all[1])) { S.msg = why(!ok(all[0]) ? all[0] : all[1]); } else { S.roles = recs(all[0]); S.persons = recs(all[1]); S.areas = recs(all[2]); S.loaded = true; }
       draw();
     });
@@ -365,6 +405,6 @@
 
   window.AccessStation = {
     show: function () { style(); root = $("accessView"); draw(); load(); },
-    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();

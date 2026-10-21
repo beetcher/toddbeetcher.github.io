@@ -45,6 +45,7 @@ READ = {
     "access_roles": ("manage_access",),
     "access_persons": ("manage_access",),
     "activity_events": (SUPER_ONLY,),                     # the activity log: only a super admin reads it
+    "console_settings": ("view_console",),                # every signed-in person reads it: the page needs the sign-out time
 }
 
 # collection -> capabilities that allow WRITING it (any one)
@@ -76,6 +77,7 @@ WRITE = {
     "access_roles": ("manage_access",),
     "access_persons": ("manage_access",),
     "activity_events": (SUPER_ONLY,),                     # written by the ActivityStore only, never through a door
+    "console_settings": (SUPER_ONLY,),                    # only a super admin changes the sign-out time
 }
 
 
