@@ -279,6 +279,10 @@
       {
         "kind": "class_changed",
         "facts": "message_kinds/class_changed.facts.schema.json"
+      },
+      {
+        "kind": "access_invite",
+        "facts": "message_kinds/access_invite.facts.schema.json"
       }
     ]
   },

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/access_invite.facts.schema.json",
+  "title": "access_invite",
+  "description": "The facts the message kind access_invite (you are invited to the Console) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Access invite (you are invited to the Console)",
+    "audiences": [
+      "invitee"
+    ],
+    "triggers": [
+      "Someone is invited in Access (a new access person is saved): sent automatically, once.",
+      "An operator presses Resend invite email on a person in Access: sent again, by hand (manual sends ignore duplicate protection)."
+    ],
+    "recipient": "adhoc: the Google email on the access person, and their name when one is given. An access person is not an individual record.",
+    "dedupe": "explicit key: kind + access person id (the automatic send happens once per person; Resend is manual)",
+    "refs": [
+      "none: the person invited is an access person, not one of the records a log entry links to (request, class, attendance). The log entry's address and subject identify the send."
+    ]
+  },
+  "required": [
+    "name",
+    "inviter",
+    "role_name",
+    "email",
+    "console_url"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: the first word of the name given on the invitation, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Dana"
+      ],
+      "x_derived": true
+    },
+    "inviter": {
+      "description": "Who sent the invitation: the inviter's name when they signed in with Google and have a name on file, else their Google email, else (the admin key) the words The LAUNCH team.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Todd Beetcher"
+      ],
+      "x_derived": true
+    },
+    "role_name": {
+      "description": "The label of the role the person was given, as shown in Access.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Manager"
+      ]
+    },
+    "role_description": {
+      "description": "What that role is for, in the role's own words (its description in Access). Absent when the role has none.",
+      "type": "string",
+      "maxLength": 1000,
+      "examples": [
+        "Runs classes and requests in their own regions."
+      ]
+    },
+    "email": {
+      "description": "The Google address they must sign in with (the address on the invitation).",
+      "type": "string",
+      "maxLength": 254,
+      "examples": [
+        "dana@example.com"
+      ]
+    },
+    "console_url": {
+      "description": "The address of the Console. Public; never carries a key or a token.",
+      "type": "string",
+      "maxLength": 300,
+      "format": "uri",
+      "examples": [
+        "https://beetcher.com/console/"
+      ],
+      "x_derived": true
+    }
+  }
+}

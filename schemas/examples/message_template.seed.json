@@ -1,5 +1,5 @@
 {
-  "description": "The seed templates: today's receipt and placement emails word for word, plus the change notices (class cancelled, placement ended, participant left, instructor placed, students added), as blocks. The seed script writes these as published records. Golden masters in message_kinds/golden_masters.json prove the first two render exactly as the pre-refactor code did.",
+  "description": "The seed templates: today's receipt and placement emails word for word, plus the change notices (class cancelled, placement ended, participant left, instructor placed, students added), as blocks. The seed script writes these as published records. Golden masters in message_kinds/golden_masters.json prove the first two render exactly as the pre-refactor code did. The access_invite template (you are invited to the Console) was added for P-64.",
   "templates": [
     {
       "kind": "request_received",
@@ -673,6 +673,69 @@
           "type": "paragraph",
           "text": "The attached calendar file updates your calendar: it replaces the earlier entry.",
           "show_if": "uid"
+        },
+        {
+          "type": "paragraph",
+          "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "access_invite",
+      "channel": "email",
+      "audience": "invitee",
+      "name": "Access invite (invitee)",
+      "subject": "You're invited to the LAUNCH Console",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "{inviter} has invited you to the LAUNCH Console as **{role_name}**."
+        },
+        {
+          "type": "paragraph",
+          "text": "{role_description}",
+          "show_if": "role_description"
+        },
+        {
+          "type": "paragraph",
+          "text": "To sign in:"
+        },
+        {
+          "type": "button",
+          "label": "Open the Console",
+          "link": "{console_url}",
+          "plain_prefix": "Open the Console:",
+          "has_fallback_line": true
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "Then choose",
+              "value": "Sign in with Google"
+            },
+            {
+              "label": "Use this Google account",
+              "value": "{email}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "It has to be that exact address; a different Google account will be refused. If that address is not a Google account yet, you can make one at accounts.google.com by choosing Use my existing email instead."
+        },
+        {
+          "type": "paragraph",
+          "text": "For safety, the Console signs you out after a period of inactivity. Just sign in again."
         },
         {
           "type": "paragraph",

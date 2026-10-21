@@ -30,6 +30,7 @@ ops and their args:
     assign             data, person (optional), source (optional)   (attendances only: put a person in a class: person, roster entry and record together)
     send_confirmation  id                     (attendances only: send the placement confirmation email now)
     update_with_person id, changes and/or person, expected_updated_at (optional)   (the rosters only: roster fields and the person's name and contact, saved together)
+    send_invite        id                     (access_persons only: send the invitation email again, by hand)
 
 The test door is a TEST tool: main.py gives it a store whose collection names carry the prefix `test_`, so it can
 never read or write a real collection. Its actor is always system:crud_test. The admin door works on the real
@@ -48,7 +49,7 @@ from datetime import datetime
 from access import delegate as _delegate, door as _door, guard as _guard, policy as _policy
 from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (access_persons_crud, access_roles_crud, activity_events_crud, console_settings_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
+from crud import (access_persons_service, access_roles_crud, activity_events_crud, console_settings_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
                   individual_restricted_details_service, message_templates_crud,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service,
@@ -73,7 +74,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "message_templates": message_templates_crud, "communication_logs": communication_logs_crud,
             "comms_settings": comms_settings_crud, "discovery_models": discovery_models_crud, "discovery_areas": discovery_areas_crud,
             "discovery_types": discovery_types_crud, "discovery_prompts": discovery_prompts_crud, "discovery_settings": discovery_settings_crud,
-            "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_crud,
+            "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_service,
             "activity_events": activity_events_crud, "console_settings": console_settings_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs"})   # runs: only the Discovery service writes them
@@ -107,12 +108,13 @@ OPS = {
     "draft_from": ({"id"}, set()),                     # only message_templates: copy a published version into a new draft
     "mark_handled": ({"id"}, {"note"}),                # only communication_logs: a person dealt with a not_sent message
     "add_note": ({"id", "text"}, set()),               # only communication_logs: a comment on an entry (add only)
+    "send_invite": ({"id"}, set()),                    # only access_persons: send (or resend) the invitation email
 }
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
                        "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
-                       "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note"})
+                       "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note", "send_invite"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
 
@@ -121,7 +123,7 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
               "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "send_confirmation",
-              "publish", "draft_from", "mark_handled", "add_note"):
+              "publish", "draft_from", "mark_handled", "add_note", "send_invite"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
         if op == "create_with_place":
@@ -136,6 +138,8 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
             return module.mark_handled(store, a["id"], actor, a.get("note"), now=now)
         if op == "add_note":
             return module.add_note(store, a["id"], actor, a.get("text"), now=now)
+        if op == "send_invite":
+            return module.send_invite(store, a["id"], actor, now=now)
         if op == "assign":
             return module.assign(store, a["data"], actor, a.get("person"), a.get("source", "dashboard"), now=now, via_request_id=a.get("via_request_id"))
         if op == "delete_request":

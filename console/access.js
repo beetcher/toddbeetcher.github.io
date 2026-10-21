@@ -6,7 +6,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var mk = K.mk, root = null;
-  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } };
+  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } };
 
   // [name, what it allows, territorial?]. Territorial ones apply only inside a person's territory (their grants); global ones come from the role.
   var CAPS = [
@@ -31,7 +31,18 @@
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
     invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_allowed: "Not allowed.", immutable: "That cannot be changed once it is saved.",
     not_found: "Not found (is it switched on?).", conflict: "Someone changed this while you were editing. Reload and try again.",
-    last_super_admin: "That would leave no active super admin.", in_use: "People still hold this role.", not_territorial: "That capability is not one a territory can hold.", wrong_state: "A region must belong to the state of its grant.", duplicate_region: "A region can be in only one grant of the same person." };
+    last_super_admin: "That would leave no active super admin.", in_use: "People still hold this role.", not_territorial: "That capability is not one a territory can hold.", wrong_state: "A region must belong to the state of its grant.", duplicate_region: "A region can be in only one grant of the same person.",
+    not_enabled: "Email sending is not switched on here.", switched_off: "That person is switched off. Switch them on first." };
+  // Why an invitation email did not go, in words (the codes are the CMS's reasons; see CMS_GUIDE.md).
+  var MAIL_WHY = { cms_off: "email sending is switched off on the server", log_only: "email is in test mode, so it was only logged", no_template: "the invitation wording has not been added yet",
+    adapter_error: "the email service refused it", timeout: "the email service did not answer in time", channel_unavailable: "email is not available", no_contact: "there is no email address",
+    incomplete: "the wording is missing a detail", role_not_found: "their role could not be found", internal_error: "something went wrong while sending", duplicate: "it was already sent" };
+  function mailWords(inv) { return (inv && MAIL_WHY[inv.reason]) || "the email could not be sent"; }
+  function inviteNote(inv, email, added) {   // what to tell the person after an invitation or a resend
+    var sent = inv && inv.status === "sent";
+    if (added) return sent ? "Added. An invitation email went to " + email + "." : "Added. They can sign in with that Google account, but the invitation email did not go (" + mailWords(inv) + "). Use Resend invite email on their row.";
+    return sent ? "Invitation email sent to " + email + "." : "The invitation email did not go (" + mailWords(inv) + ").";
+  }
   var FIELD = { email: "Email", display_name: "Name", role_id: "Role", scope_region_id: "Region", grants: "Territory", key: "Key", label: "Name", capabilities: "Capabilities", description: "Description", id: "Record" };
 
   function $(id) { return document.getElementById(id); }
@@ -212,7 +223,7 @@
       var req = editing
         ? adm("update", { id: p.id, changes: changes, expected_updated_at: p.updated_at }, "access_persons")
         : adm("create", { data: Object.assign({ email: $("apEmail").value.trim(), role_id: $("apRole").value, is_active: true }, name ? { display_name: name } : {}, gr.length ? { grants: gr } : {}) }, "access_persons");
-      req.then(function (res) { if (ok(res)) { S.editP = null; S.addP = false; S.draft = null; S.msg = editing ? "Saved." : "Added. They can sign in with that Google account now."; load(); } else err.textContent = why(res); });
+      req.then(function (res) { if (ok(res)) { S.editP = null; S.addP = false; S.draft = null; S.msg = editing ? "Saved." : inviteNote(res.body.data && res.body.data.invite_email, res.body.data && res.body.data.email, true); load(); } else err.textContent = why(res); });
     }));
     row.appendChild(btn("Cancel", "quiet", function () { S.editP = null; S.addP = false; S.draft = null; draw(); }));
     f.appendChild(row); return f;
@@ -296,7 +307,7 @@
   function toggle(coll, rec, label) {
     return btn(rec.is_active ? "Switch off" : "Switch on", "quiet", function () {
       adm("update", { id: rec.id, changes: { is_active: !rec.is_active }, expected_updated_at: rec.updated_at }, coll).then(function (res) {
-        S.msg = ok(res) ? label + (rec.is_active ? " switched off." : " switched on.") : why(res); load();
+        S.rowMsg = null; S.msg = ok(res) ? label + (rec.is_active ? " switched off." : " switched on.") : why(res); load();
       });
     });
   }
@@ -306,10 +317,10 @@
     root.innerHTML = ""; var wrap = mk("div", "acs"); root.appendChild(wrap);
     wrap.appendChild(mk("h2", "", "Access"));
     wrap.appendChild(mk("p", "acm", "Who may sign in with Google, and what each role may do. The admin key still works as a back door."));
-    var msg = mk("div", "acerr", S.msg); msg.setAttribute("role", "status"); wrap.appendChild(msg);
+    var msg = mk("div", "acerr" + (/^Added\. An invitation email went/.test(S.msg) ? " acok" : ""), S.msg); msg.setAttribute("role", "status"); wrap.appendChild(msg);
 
     if (!isDelegate()) wrap.appendChild(signInBox());
-    var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; draw(); })); wrap.appendChild(h);
+    var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
     S.persons.slice().sort(sortBy("email")).forEach(function (p) {
       if (S.editP === p.id) { wrap.appendChild(personForm(p)); return; }
@@ -328,7 +339,14 @@
       if (role && role.is_super_admin) r.appendChild(mk("div", "acm", "Territory: everywhere."));
       else if (!gl.length) r.appendChild(mk("div", "acm", "Territory: none yet (signs in, sees nothing in any region)."));
       else gl.forEach(function (g) { r.appendChild(mk("div", "acm acg", "Territory: " + grantText(g) + (g.group ? "  [" + g.group + "]" : "") + (!(p.grants && p.grants.length) ? "  (from the old single-region setting; Edit then Save to convert)" : ""))); });
-      var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editP = p.id; S.addP = false; S.msg = ""; draw(); })); b.appendChild(toggle("access_persons", p, "Access")); r.appendChild(b);
+      var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editP = p.id; S.addP = false; S.msg = ""; S.rowMsg = null; draw(); })); b.appendChild(toggle("access_persons", p, "Access"));
+      if (p.is_active) b.appendChild(btn("Resend invite email", "quiet", function () {
+        adm("send_invite", { id: p.id }, "access_persons").then(function (res) {   // the answer shows on THIS person's row, where the button was pressed
+          S.msg = ""; S.rowMsg = { id: p.id, good: ok(res) && res.body.data && res.body.data.status === "sent", text: ok(res) ? inviteNote(res.body.data, p.email, false) : why(res) }; draw();
+        });
+      }));
+      r.appendChild(b);
+      if (S.rowMsg && S.rowMsg.id === p.id) { var rm = mk("div", "acerr acrowmsg" + (S.rowMsg.good ? " acok" : ""), S.rowMsg.text); rm.setAttribute("role", "status"); r.appendChild(rm); }
       wrap.appendChild(r);
     });
     if (!S.persons.length) wrap.appendChild(mk("p", "acm", "No one yet."));
@@ -336,7 +354,7 @@
     if (isDelegate()) { wrap.appendChild(mk("p", "acm", "You can invite people into your own regions and manage the people you invited. Roles and anything outside your regions are looked after by a super admin.")); return; }
     territoryView(wrap);
 
-    var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", "", function () { S.addR = true; S.editR = null; S.msg = ""; draw(); })); wrap.appendChild(h2);
+    var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", "", function () { S.addR = true; S.editR = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h2);
     if (S.addR) wrap.appendChild(roleForm(null));
     S.roles.slice().sort(sortBy("label")).forEach(function (ro) {
       if (S.editR === ro.id) { wrap.appendChild(roleForm(ro)); return; }
@@ -345,7 +363,7 @@
       var chips = mk("div"); if (ro.is_super_admin) chips.appendChild(mk("span", "acchip sup", "Super admin")); chips.appendChild(document.createTextNode(" "));
       chips.appendChild(mk("span", "acchip" + (ro.is_active ? " on" : ""), ro.is_active ? "On" : "Off")); top.appendChild(chips); r.appendChild(top);
       r.appendChild(mk("div", "acm", ro.is_super_admin ? "Everything, including access." : (ro.capabilities || []).join(", ")));
-      var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editR = ro.id; S.addR = false; S.msg = ""; draw(); })); b.appendChild(toggle("access_roles", ro, "Role")); r.appendChild(b);
+      var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editR = ro.id; S.addR = false; S.msg = ""; S.rowMsg = null; draw(); })); b.appendChild(toggle("access_roles", ro, "Role")); r.appendChild(b);
       wrap.appendChild(r);
     });
 
@@ -405,6 +423,6 @@
 
   window.AccessStation = {
     show: function () { style(); root = $("accessView"); draw(); load(); },
-    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();
