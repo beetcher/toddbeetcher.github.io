@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/activity_event.schema.json",
+  "title": "activity_event",
+  "description": "One line in the activity log: a record was created, edited, deleted or restored, with who did it (created_by), when (created_at), which record and, for each field that changed, what it was and what it became. Append-only: the server writes an entry in the same all-or-nothing step as the change it records, and nothing ever edits or deletes it. Personal data is never copied into an entry: for a field marked x_pii in its own schema, and for every field of the sensitive-details collection, the entry names the field and says the values are withheld. Rules the schema cannot express: entries are written only by the server's activity store; nothing can create, update or soft delete an entry through the endpoints; one entry per document write; a write that changes nothing but its own stamps writes no entry.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "append_only",
+  "x_retention": "Kept. Never edited, scrubbed or deleted, including when a person is erased: personal values are never copied into an entry, so there is nothing to scrub. The record purge job (P-48) must never touch this collection. (A written policy only; nothing enforces it yet.)",
+  "required": [
+    "action",
+    "record_type",
+    "collection",
+    "record_id"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "sequence_ms"
+  ],
+  "properties": {
+    "action": {
+      "description": "What happened to the record: created (a new record), edited (fields changed), deleted (soft deleted: the record is hidden and kept) or restored (a soft delete was taken back). Required.",
+      "enum": [
+        "created",
+        "edited",
+        "deleted",
+        "restored"
+      ]
+    },
+    "record_type": {
+      "description": "The kind of record, as the registry names it (venue, scheduled_class, individual and so on). Required.",
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "collection": {
+      "description": "The collection the record lives in (venues, scheduled_classes and so on). Required.",
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "record_id": {
+      "description": "The id of the record that changed. Required. Not checked against the collection.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "record_label": {
+      "description": "A short human label for the record at the time (its name, title or slug), only when the record has one that is not personal data. Optional.",
+      "type": "string",
+      "maxLength": 200
+    },
+    "changes": {
+      "description": "One item per field that changed, in field order. For a created record, one item per field it started with. Optional: a record with nothing to say about fields (for example one restored) has none.",
+      "type": "array",
+      "maxItems": 150,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field"
+        ],
+        "properties": {
+          "field": {
+            "description": "The name of a top-level field of the record. A change inside a list or object is shown as a change of the whole field.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "old_value": {
+            "description": "The value before, written as JSON text. Absent when the field did not exist before, or when the values are withheld.",
+            "type": "string",
+            "maxLength": 1000
+          },
+          "new_value": {
+            "description": "The value after, written as JSON text. Absent when the field was removed, or when the values are withheld.",
+            "type": "string",
+            "maxLength": 1000
+          },
+          "values_withheld": {
+            "description": "True when the field is personal or sensitive, so the entry names it but never holds its values.",
+            "type": "boolean"
+          },
+          "truncated": {
+            "description": "True when a value was longer than the entry holds and was cut short.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "fields_omitted": {
+      "description": "How many changed fields did not fit in the changes list (it holds at most 150). Absent when none were left out.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "related_ids": {
+      "description": "Ids to find this entry by: the record's own id plus the ids it points at (a person, a class, a request, a venue, a place). The History button on a card asks for one id and gets every entry that mentions it. At most 12.",
+      "type": "array",
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      }
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the change happened (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who made the change, as an actor string (user:<id>, system:<name>, web:<name>). Set by the server from the change itself.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "Same as created_at: an entry is never updated. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Same as created_by: an entry is never updated. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the entry came from: always system, because the activity store writes it. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "system"
+      ]
+    },
+    "sequence_ms": {
+      "description": "The moment of the change in milliseconds since 1970, so two changes in the same second keep their order. Set by the server.",
+      "readOnly": true,
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

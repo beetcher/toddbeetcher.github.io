@@ -1,0 +1,169 @@
+{
+ "valid": {
+  "created_venue": {
+   "action": "created",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "record_label": "Trident Booksellers & Cafe",
+   "changes": [
+    {
+     "field": "name",
+     "new_value": "\"Trident Booksellers & Cafe\""
+    },
+    {
+     "field": "email",
+     "values_withheld": true
+    }
+   ],
+   "related_ids": [
+    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+   ]
+  },
+  "edited_class": {
+   "action": "edited",
+   "record_type": "scheduled_class",
+   "collection": "scheduled_classes",
+   "record_id": "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+   "changes": [
+    {
+     "field": "capacity_max",
+     "old_value": "6",
+     "new_value": "8"
+    },
+    {
+     "field": "organizer_phone",
+     "values_withheld": true
+    }
+   ],
+   "related_ids": [
+    "4a3c9d2f-8b5e-4f60-8c7b-2d3e4f5a6b7c",
+    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+   ]
+  },
+  "deleted": {
+   "action": "deleted",
+   "record_type": "registration_request",
+   "collection": "registration_requests",
+   "record_id": "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e",
+   "changes": [
+    {
+     "field": "deleted_at",
+     "new_value": "\"2026-10-20T21:00:00Z\""
+    }
+   ],
+   "related_ids": [
+    "6c5e1f4b-0d7a-4b82-8e9d-4f5a6b7c8d9e"
+   ]
+  },
+  "restored_no_changes": {
+   "action": "restored",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+  },
+  "long_value_cut": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+   "changes": [
+    {
+     "field": "description",
+     "old_value": "\"first part\"",
+     "new_value": "\"a long text cut short\"",
+     "truncated": true
+    }
+   ],
+   "fields_omitted": 3
+  }
+ },
+ "invalid": {
+  "empty": {},
+  "bad_action": {
+   "action": "updated",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x"
+  },
+  "no_record_id": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues"
+  },
+  "camel_collection": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "Venues",
+   "record_id": "x"
+  },
+  "readonly_sent": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "created_by": "user:abc"
+  },
+  "value_not_text": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "changes": [
+    {
+     "field": "capacity_max",
+     "new_value": 8
+    }
+   ]
+  },
+  "change_without_field": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "changes": [
+    {
+     "new_value": "\"a\""
+    }
+   ]
+  },
+  "too_many_related": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "related_ids": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+   ]
+  },
+  "duplicate_related": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "related_ids": [
+    "a",
+    "a"
+   ]
+  },
+  "unknown_field": {
+   "action": "edited",
+   "record_type": "venue",
+   "collection": "venues",
+   "record_id": "x",
+   "reason": "because"
+  }
+ }
+}

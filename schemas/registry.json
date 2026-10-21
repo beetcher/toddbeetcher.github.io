@@ -224,6 +224,14 @@
       "guide": "ACCESS_PERSON_GUIDE.md",
       "examples": "examples/access_person.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "activity_event",
+      "collection": "activity_events",
+      "schema": "activity_event.schema.json",
+      "guide": "ACTIVITY_EVENT_GUIDE.md",
+      "examples": "examples/activity_event.examples.json",
+      "schema_version": 1
     }
   ],
   "message_kinds": {
