@@ -218,7 +218,7 @@ check("policy: every read op is a real op", policy.READ_OPS <= set(OPS))
 check("policy: every Discovery op has a rule, and nothing extra", set(policy.DISCOVERY) == set(__import__("discovery_door").OPS))
 check("policy: access management is super-admin-only (no ordinary role may hold manage_access)", policy.WRITE["access_roles"] == policy.WRITE["access_persons"] == ("manage_access",))
 sup_only_ops = [(c, o) for c in HANDLERS for o in OPS if policy.crud_need(c, o, {}) == policy._SUPER]
-check("policy: the only super-admin-only writes are the ones meant to be", sorted(set(c for c, _ in sup_only_ops)) == ["discovery_runs", "journal_events", "venues"] and all(o not in policy.READ_OPS for _, o in sup_only_ops), sup_only_ops[:6])
+check("policy: the only super-admin-only writes are the ones meant to be", sorted(set(c for c, _ in sup_only_ops)) == ["activity_events", "discovery_runs", "journal_events", "venues"] and all(o not in policy.READ_OPS or c == "activity_events" for c, o in sup_only_ops), sup_only_ops[:6])
 check("every Console collection is reachable by a super admin (key) except the blocked ones", all(not_denied(admin({"collection": c, "op": "list", "args": {}}, key=KEY)) for c in HANDLERS if c not in crud_endpoint.ADMIN_BLOCKED_COLLECTIONS))
 check("MIN_KEY_LENGTH is the same number in console and authorize", console.MIN_KEY_LENGTH == authorize.MIN_KEY_LENGTH == 32)
 check("KEY_ACTOR is what the Console door has always stamped", authorize.KEY_ACTOR == crud_endpoint.ADMIN_ACTOR == "user:admin")

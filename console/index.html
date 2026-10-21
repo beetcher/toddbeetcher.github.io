@@ -813,6 +813,7 @@
 
   <section id="discoveryView" hidden></section>
   <section id="accessView" hidden></section>
+  <section id="activityView" hidden></section>
 
   <section id="placesView" hidden>
     <div class="bar">
@@ -1188,6 +1189,24 @@
         '<li>Region limits are saved but not enforced yet.</li>' +
         '</ul>' +
         '<h3>Try this</h3><ul><li>Invite a second Google account as Region head, sign in with it in another browser, and see which stations it gets.</li></ul>' },
+    { id: "activity", admin: true, name: "Activity", short: "Activity", blurb: "Who changed what, and when. Read only.",
+      manual:
+        '<div class="kicker">Station 14</div><h2>Activity</h2>' +
+        '<h3>Mission</h3><p>A record of every change made through the Console: who did it, when, and which fields went from what to what. Only a super admin sees this station, and nothing in it can be edited or removed.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Newest first.</b> Each card says what happened (Created, Edited, Deleted or Restored), to which record, by whom, and when.</li>' +
+        '<li><b>Show</b> narrows the list to one kind of record, one kind of change, or one person or source. The server takes one of these at a time.</li>' +
+        '<li><b>Search</b> narrows what is already on the screen: a name, a field, a value, a person.</li>' +
+        '<li><b>Change history</b> on any card here, or on a class, venue, place, person, request or instructor card, shows everything that ever happened to that one record and the records that point at it.</li>' +
+        '<li><b>Refresh</b> reads the log again. The newest 200 entries are loaded; use Show or Change history to reach older ones.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>An entry is written at the same moment as the change. A change cannot happen without its entry.</li>' +
+        '<li><b>Personal details are never copied here.</b> A change to a name, email, phone, address or birth date shows that the field changed, and says its values are not recorded. So erasing a person leaves nothing to scrub.</li>' +
+        '<li>A save that changed nothing writes nothing. A person\'s last sign in time is not recorded.</li>' +
+        '<li>Not yet recorded: the public sign-up form and the completion link, and records created by tests.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Edit a venue, then open Activity and find the edit. Tap Change history on the venue card to see only that venue.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1276,11 +1295,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1306,6 +1325,8 @@
     if (r === "discovery" && window.DiscoveryStation) window.DiscoveryStation.show();
     $("accessView").hidden = r !== "access";
     if (r === "access" && window.AccessStation) window.AccessStation.show();
+    $("activityView").hidden = r !== "activity";
+    if (r === "activity" && window.ActivityStation) window.ActivityStation.show();
     if (r === "messages") loadMessagesStation();
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
@@ -1405,6 +1426,7 @@
       phost.hidden = false; putInClass(rec, phost);
     });
     putrow.appendChild(pb);
+    var hq = historyBtn(rec.id, "this request"); if (hq) putrow.appendChild(hq);
     var jb = document.createElement("button"); jb.type = "button"; jb.className = "quiet"; jb.textContent = "Journal";
     jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
     putrow.appendChild(jb);
@@ -1515,7 +1537,7 @@
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
     ME = null; $("who").hidden = true;
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -1913,6 +1935,7 @@
     var ed = document.createElement("button"); ed.type = "button"; ed.textContent = "Edit";
     var del = document.createElement("button"); del.type = "button"; del.className = "danger"; del.textContent = "Delete";
     row.appendChild(ed);
+    var hv = historyBtn(rec.id, rec.name); if (hv) row.appendChild(hv);
     if (rec.is_public_venue && rec.place) {
       var gb = document.createElement("button"); gb.type = "button"; gb.textContent = "Find GPS";
       gb.addEventListener("click", function () {
@@ -2106,6 +2129,13 @@
   var DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   var listUid = 0;
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  // The History button on a card: opens the Activity station on this one record. Only a super admin gets it (the server decides; this is courtesy).
+  function historyBtn(id, label) {
+    if (!id || !ME || ME.is_super_admin !== true) return null;
+    var b = mk("button", "quiet", "Change history"); b.type = "button"; b.setAttribute("data-history", id);
+    b.addEventListener("click", function (ev) { ev.stopPropagation(); if (window.ActivityStation) window.ActivityStation.openFor(id, label || ""); });
+    return b;
+  }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
   window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
                         go: function (id) { goTo(id); }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
@@ -2790,6 +2820,7 @@
     var cn = mk("button", "", "Cancel class"); cn.type = "button";
     var del = mk("button", "danger", "Delete"); del.type = "button";
     row.appendChild(ed);
+    var hc = historyBtn(rec.id, rec.title || rec.short_name); if (hc) row.appendChild(hc);
     if (rec.status !== "cancelled" && rec.status !== "completed") row.appendChild(cn);
     row.appendChild(del);
     var box = mk("div", "confirm"); box.hidden = true;
@@ -4738,7 +4769,7 @@
     var ad = mk("button", "quiet", "Addresses"); ad.type = "button";
     var mg = mk("button", "quiet", "Merge into another person"); mg.type = "button";
     var del = mk("button", "danger", "Delete"); del.type = "button";
-    row.appendChild(ed); row.appendChild(ad); row.appendChild(mg); row.appendChild(del);
+    row.appendChild(ed); var hp = historyBtn(rec.id, "this person"); if (hp) row.appendChild(hp); row.appendChild(ad); row.appendChild(mg); row.appendChild(del);
     var hi = mk("button", "quiet", "History"); hi.type = "button"; row.appendChild(hi);
     var histHost = mk("div");
     hi.addEventListener("click", function () { if (histHost.firstChild) histHost.textContent = ""; else personHistory(rec, histHost); });
@@ -5466,6 +5497,7 @@
     var err = mk("div", "msg"); err.setAttribute("role", "alert");
     function btn(label, cls) { var b = mk("button", cls || "", label); b.type = "button"; row.appendChild(b); return b; }
     var ed = btn("Edit"), aa = btn("Add address", "quiet"), ag = btn("Add GPS point", "quiet"), ra = btn("Remove an address or GPS point", "quiet");
+    var hl = historyBtn(rec.id, rec.name || rec.label || "this place"); if (hl) row.insertBefore(hl, aa);
     var rt = btn(rec.status === "retired" ? "Restore" : "Retire", "quiet"), del = btn("Delete", "danger");
     function open(builder) { box.hidden = true; err.textContent = ""; if (host.firstChild) { host.textContent = ""; return; } host.appendChild(builder()); }
     function save(changes, done) {
@@ -5817,7 +5849,7 @@
     function actions(rec) {
       var wrap = mk("div"), r = mk("div", "actions-row");
       var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Remove from " + cfg.Many.toLowerCase());
-      ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      ed.type = "button"; del.type = "button"; r.appendChild(ed); var hr = historyBtn(rec.individual_id || rec.id, rName(rec)); if (hr) r.appendChild(hr); r.appendChild(del);
       var host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
       box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? Their history is kept. You can add them again later."));
       var b = mk("div", "btns"), yes = mk("button", "danger", "Remove"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg");
@@ -6703,5 +6735,6 @@
 </script>
 <script src="discovery.js"></script>
 <script src="access.js"></script>
+<script src="activity.js"></script>
 </body>
 </html>

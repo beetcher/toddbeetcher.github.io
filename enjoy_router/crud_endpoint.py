@@ -48,7 +48,7 @@ from datetime import datetime
 from access import delegate as _delegate, door as _door, guard as _guard, policy as _policy
 from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (access_persons_crud, access_roles_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
+from crud import (access_persons_crud, access_roles_crud, activity_events_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
                   individual_restricted_details_service, message_templates_crud,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service,
@@ -73,7 +73,8 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "message_templates": message_templates_crud, "communication_logs": communication_logs_crud,
             "comms_settings": comms_settings_crud, "discovery_models": discovery_models_crud, "discovery_areas": discovery_areas_crud,
             "discovery_types": discovery_types_crud, "discovery_prompts": discovery_prompts_crud, "discovery_settings": discovery_settings_crud,
-            "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_crud}
+            "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_crud,
+            "activity_events": activity_events_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs"})   # runs: only the Discovery service writes them
 

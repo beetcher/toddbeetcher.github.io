@@ -139,19 +139,22 @@ def _get_doc_store():
 
 
 def _get_admin_store():
-    """The handler-file store for the Console's admin endpoint: the REAL collections, no prefix."""
+    """The handler-file store for the Console's admin endpoint: the REAL collections, no prefix. Wrapped in the ActivityStore (P-46), so every
+    write through it (the Console door, the Discovery door and engine, the comms service, the sign-in check) leaves an activity entry in the same
+    all-or-nothing step. The test door's store (_get_doc_store) is deliberately not wrapped."""
     global _admin_store
     if _admin_store is None:
+        from crud.activity_store import ActivityStore
         if os.environ.get("ICDT_STORE") == "memory":
             from crud.memory_doc_store import MemoryDocStore
-            _admin_store = MemoryDocStore("")
+            _admin_store = ActivityStore(MemoryDocStore(""))
         else:
             import firebase_admin
             from firebase_admin import firestore
             from crud.firestore_doc_store import FirestoreDocStore
             if not firebase_admin._apps:
                 firebase_admin.initialize_app()
-            _admin_store = FirestoreDocStore(firestore.client(), "")
+            _admin_store = ActivityStore(FirestoreDocStore(firestore.client(), ""))
     return _admin_store
 
 
