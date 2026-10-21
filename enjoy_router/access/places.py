@@ -52,6 +52,17 @@ def zip_of_venue(store, venue_id):
     return _zip_via_links(store, "venue", venue_id, ("operates_at",))
 
 
+def zip_of_region_id(store, region_id):
+    """The first ZIP (sorted) on the region's list, so a request that picked a region and gave no ZIP is placed inside it. None if none."""
+    if not region_id:
+        return None
+    r = store.get("discovery_areas", region_id)
+    if not isinstance(r, dict) or r.get("deleted_at") or r.get("kind") != "region":
+        return None
+    zips = sorted(z for z in (norm_zip(x) for x in r.get("zip_codes", [])) if z)
+    return zips[0] if zips else None
+
+
 def zip_of_person(store, individual_id):
     return _zip_via_links(store, "individual", individual_id, HOME_LINKS)
 
@@ -78,7 +89,10 @@ def zip_of_request(store, request_doc):
         z = zip_of_class(store, c) if _live(c) else None
         if z:
             return z
-    return zip_of_venue(store, request_doc.get("preferred_venue_id"))
+    z = zip_of_venue(store, request_doc.get("preferred_venue_id"))
+    if z:
+        return z
+    return zip_of_region_id(store, request_doc.get("region_id"))
 
 
 def zip_of_request_id(store, request_id):

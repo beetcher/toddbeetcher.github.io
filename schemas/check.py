@@ -33,7 +33,7 @@ except ImportError:
 D = pathlib.Path(__file__).parent
 SNAKE = re.compile(r"^[a-z][a-z0-9_]*$")
 HONEYPOT = "website"
-CODES = {"validation_failed", "over_capacity", "class_not_found", "venue_not_found", "curriculum_not_found", "class_closed",
+CODES = {"validation_failed", "over_capacity", "class_not_found", "venue_not_found", "curriculum_not_found", "region_not_found", "class_closed",
          "rate_limited", "not_found", "server_error"}
 fails = []
 

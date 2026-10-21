@@ -7,10 +7,12 @@ from core import DuplicateIdempotencyKey
 
 
 class MemoryStore:
-    def __init__(self, classes: list, venues: Optional[list] = None, curriculums: Optional[list] = None):
+    def __init__(self, classes: list, venues: Optional[list] = None, curriculums: Optional[list] = None,
+                 areas: Optional[list] = None):
         self.classes = {c["id"]: c for c in classes}
         self.venues = {v["id"]: v for v in (venues or [])}
         self.curriculums = {c["id"]: c for c in (curriculums or [])}
+        self.areas = {a["id"]: a for a in (areas or [])}
         self.requests: list = []  # stored documents, oldest first
 
     def get_class(self, class_id: str) -> Optional[dict]:
@@ -21,6 +23,13 @@ class MemoryStore:
 
     def get_curriculum(self, curriculum_id: str) -> Optional[dict]:
         return self.curriculums.get(curriculum_id)
+
+    def get_region(self, region_id: str) -> Optional[dict]:
+        a = self.areas.get(region_id)
+        return a if a and a.get("kind") == "region" else None
+
+    def get_state(self, state_code: str) -> Optional[dict]:
+        return next((a for a in self.areas.values() if a.get("kind") == "state" and a.get("state_code") == state_code), None)
 
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:
         return next((d for d in self.requests if d.get("idempotency_key") == key), None)

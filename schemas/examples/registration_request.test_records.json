@@ -268,6 +268,70 @@
         "deleted_at": "2026-09-01T17:00:00Z",
         "deleted_by": "user:test"
       }
+    ],
+    "registration_areas": [
+      {
+        "id": "b0000000-0000-4000-8000-000000000301",
+        "kind": "state",
+        "name": "Colorado",
+        "state_code": "CO",
+        "is_active": true,
+        "schema_version": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000302",
+        "kind": "region",
+        "name": "Boulder",
+        "state_code": "CO",
+        "is_active": true,
+        "schema_version": 1,
+        "zip_codes": [
+          "80301",
+          "80302"
+        ]
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000303",
+        "kind": "region",
+        "name": "Off region",
+        "state_code": "CO",
+        "is_active": false,
+        "schema_version": 1,
+        "zip_codes": [
+          "80401"
+        ]
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000304",
+        "kind": "region",
+        "name": "Gone region",
+        "state_code": "CO",
+        "is_active": true,
+        "schema_version": 1,
+        "zip_codes": [
+          "80501"
+        ],
+        "deleted_at": "2026-09-01T00:00:00Z"
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000305",
+        "kind": "state",
+        "name": "Utah",
+        "state_code": "UT",
+        "is_active": false,
+        "schema_version": 1
+      },
+      {
+        "id": "b0000000-0000-4000-8000-000000000306",
+        "kind": "region",
+        "name": "Salt Lake",
+        "state_code": "UT",
+        "is_active": true,
+        "schema_version": 1,
+        "zip_codes": [
+          "84101"
+        ]
+      }
     ]
   },
   "tests": [
@@ -1684,6 +1748,106 @@
       "expect": {
         "ok": true,
         "stored": true
+      }
+    },
+    {
+      "name": "t58_private_picks_region",
+      "layer": "endpoint",
+      "description": "A private request that picks a live region stores its id.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000058",
+        "email": "reg58@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000302"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "region_id": "b0000000-0000-4000-8000-000000000302"
+        }
+      }
+    },
+    {
+      "name": "t59_region_unknown",
+      "layer": "endpoint",
+      "description": "A region id that does not exist is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000059",
+        "email": "reg59@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000399"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "region_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t60_region_inactive",
+      "layer": "endpoint",
+      "description": "A switched-off region is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000060",
+        "email": "reg60@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000303"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "region_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t61_region_deleted",
+      "layer": "endpoint",
+      "description": "A deleted region is refused even when it says active.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000061",
+        "email": "reg61@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000304"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "region_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t62_region_in_inactive_state",
+      "layer": "endpoint",
+      "description": "A region in a switched-off state is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000062",
+        "email": "reg62@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000306"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "region_not_found",
+        "stored": false
+      }
+    },
+    {
+      "name": "t63_class_with_region",
+      "layer": "schema",
+      "description": "A class request may not carry a region.",
+      "request_from": "t05_class_pick_with_space",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000063",
+        "region_id": "b0000000-0000-4000-8000-000000000302"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "region_id"
+        ],
+        "stored": false
       }
     }
   ]

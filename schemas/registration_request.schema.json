@@ -225,6 +225,11 @@
       "pattern": "^[0-9]{5}$",
       "x_pii": true
     },
+    "region_id": {
+      "description": "UUID of the region the requester picked on the form (a State and then a Region drop-down; the form's default is Boulder, Colorado, and it remembers the last pick on the requester's device). Private and group requests only. The region must exist, not be deleted, be switched on and be in a state that is switched on (region_not_found otherwise). It narrows the public venue list to that region's venues and places the request in the region when there is no ZIP: a request with no postal_code, no class and no preferred venue is placed at the first ZIP on the region's list, so the region's head sees it. A ZIP, when given, wins. Optional.",
+      "type": "string",
+      "format": "uuid"
+    },
     "preferred_venue_id": {
       "description": "UUID of the venue the requester picked from the public list on the form. Private and group requests only, and only with location_type off_site (a home request has no venue). The venue must exist, be active and be a public venue (venue_not_found otherwise). It is a preference, not a booking: the operator may accept it when building the class or choose another place. Optional.",
       "type": "string",
@@ -593,6 +598,7 @@
           "duration_minutes_requested": false,
           "location_type": false,
           "postal_code": false,
+          "region_id": false,
           "preferred_venue_id": false,
           "venue_arrangement": false,
           "sessions_requested": false,

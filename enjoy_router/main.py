@@ -45,6 +45,7 @@ from crud_endpoint import handle_admin, handle_crud_test
 from discovery_door import handle_discovery
 from launch_discovery import wiring as discovery_wiring
 from handler import handle_http
+from public_regions import handle_public_regions
 from public_venues import handle_public_venues
 from public_curriculums import handle_public_curriculums
 from request_completion import handle_completion
@@ -83,6 +84,7 @@ _discovery_limiter = make_failure_limiter()
 _discovery_engine = None
 _venues_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _curriculums_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
+_regions_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _completion_limiter = RateLimiter(rules=((600, 60), (86400, 500)))
 _admin_store = None
 _store = None
@@ -98,7 +100,7 @@ def _get_store():
             from memory_store import MemoryStore
             records = pathlib.Path(__file__).resolve().parent.parent / "schemas" / "examples" / "registration_request.test_records.json"
             _setup = json.loads(records.read_text())["setup"]
-            _store = MemoryStore(_setup["scheduled_classes"], _setup.get("registration_venues", []), _setup.get("registration_curriculums", []))
+            _store = MemoryStore(_setup["scheduled_classes"], _setup.get("registration_venues", []), _setup.get("registration_curriculums", []), _setup.get("registration_areas", []))
         else:
             import firebase_admin
             from firebase_admin import firestore
@@ -323,6 +325,27 @@ def enjoy_public_venues(req: https_fn.Request) -> https_fn.Response:
         limiter=_venues_limiter,
         now=_now(),
         zip_code=req.args.get("zip"),
+        region_id=req.args.get("region"),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["GET", "OPTIONS"]),
+    max_instances=3,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=30,
+)
+def enjoy_public_regions(req: https_fn.Request) -> https_fn.Response:
+    """The registration form's State and Region drop-downs: switched-on regions in switched-on states. Read only, no sign-in."""
+    result = handle_public_regions(
+        method=req.method,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        limiter=_regions_limiter,
+        now=_now(),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
                              headers={"Content-Type": "application/json", **result.headers})

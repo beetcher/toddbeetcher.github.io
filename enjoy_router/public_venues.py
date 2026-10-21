@@ -20,6 +20,7 @@ from crud import locations_crud as LOC
 from crud import venues_crud as V
 from crud import venues_service as VS
 from geo_rank import ZIP_RE, miles_between, position_of_place, zip_origin, zip_table  # noqa: F401  (re-exported for callers and tests)
+from access.places import zip_of_venue
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
 
@@ -40,9 +41,15 @@ def _position(store, venue_id: str):
     return None
 
 
-def public_list(store, zip_code=None) -> list:
+def public_list(store, zip_code=None, region_id=None) -> list:
     """[{id, name, town}] for active public venues, by name. town is left out when the venue's place has none.
-    With a known zip_code: nearest first, each with miles."""
+    With a known zip_code: nearest first, each with miles. With region_id: only venues whose ZIP is on that live region's list
+    (an unknown, deleted or switched-off region gives an empty list)."""
+    region_zips = None
+    if region_id:
+        r = store.get("discovery_areas", region_id)
+        ok = isinstance(r, dict) and not r.get("deleted_at") and r.get("kind") == "region" and r.get("is_active") is True
+        region_zips = set(r.get("zip_codes", [])) if ok else set()
     got = V.list(store, {"status": "active"}, order="name", limit=MAX_VENUES)
     if not got.ok:
         return []
@@ -50,6 +57,8 @@ def public_list(store, zip_code=None) -> list:
     out, positions = [], {}
     for venue in got.data["records"]:
         if venue.get("is_public_venue") is not True:
+            continue
+        if region_zips is not None and zip_of_venue(store, venue["id"]) not in region_zips:
             continue
         item = {"id": venue["id"], "name": venue["name"]}
         place = VS._place_view(store, venue["id"]) or {}
@@ -67,14 +76,14 @@ def public_list(store, zip_code=None) -> list:
     return out
 
 
-def handle_public_venues(method: str, visitor: str, store, limiter: RateLimiter, now: datetime, zip_code=None) -> HttpResult:
+def handle_public_venues(method: str, visitor: str, store, limiter: RateLimiter, now: datetime, zip_code=None, region_id=None) -> HttpResult:
     if method.upper() != "GET":
         return _error(405, "validation_failed", "Use GET.", {"Allow": "GET"})
     if not limiter.allow(visitor, now.timestamp()):
         wait = limiter.retry_after(visitor, now.timestamp())
         return _error(429, "rate_limited", "Too many requests. Try again later.", {"Retry-After": str(wait)} if wait else {})
     try:
-        venues = public_list(store, zip_code)
+        venues = public_list(store, zip_code, region_id)
     except Exception as exc:  # last resort: the form falls back to its two plain choices
         log.error("public_venues code=server_error exception=%s", type(exc).__name__)
         return _error(500, "server_error", "Could not load the list.")

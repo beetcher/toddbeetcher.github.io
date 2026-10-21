@@ -52,6 +52,52 @@
     var e = endpoint();
     return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_curriculums') : CURRICULUMS_URL;
   }
+  // The region list (private page): State and Region drop-downs of switched-on places, read from our server.
+  var REGIONS_URL = 'https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_public_regions';
+  function regionsUrl() {
+    var e = endpoint();
+    return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_regions') : REGIONS_URL;
+  }
+  var REGION_KEY = 'icdt_region', regionList = [];
+  function rememberedRegion() { try { return window.localStorage.getItem(REGION_KEY) || ''; } catch (e) { return ''; } }
+  function rememberRegion(id) { try { if (id) window.localStorage.setItem(REGION_KEY, id); } catch (e) { /* storage blocked: no memory, still works */ } }
+  function regionId() { return FIELDS.region_id && !FIELDS.region_id.wrap.hidden ? val('region_id') : ''; }
+  function fillRegions(stateCode, wanted) {   // the Region box for one state; picks `wanted` if it is there, else the first
+    var sel = FIELDS.region_id.el;
+    while (sel.firstChild) sel.removeChild(sel.firstChild);
+    regionList.filter(function (r) { return r.state_code === stateCode; }).forEach(function (r) { sel.appendChild(h('option', { value: r.id, text: r.name })); });
+    if (wanted && regionList.some(function (r) { return r.id === wanted && r.state_code === stateCode; })) sel.value = wanted;
+  }
+  function loadRegions() {
+    if (!LEAN || !FIELDS.region_id || !window.fetch) return;
+    var ctl = ('AbortController' in window) ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(regionsUrl(), { method: 'GET', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        clearTimeout(to);
+        if (!(j && j.ok && j.data && Array.isArray(j.data.regions))) return;   // failed: the boxes stay hidden and the form works as before
+        regionList = j.data.regions.filter(function (r) { return r && typeof r.id === 'string' && typeof r.name === 'string' && typeof r.state_code === 'string'; });
+        if (!regionList.length) return;
+        var names = {}, codes = [];
+        regionList.forEach(function (r) { if (!names[r.state_code]) { names[r.state_code] = r.state_name || r.state_code; codes.push(r.state_code); } });
+        var ss = FIELDS.state_code.el;
+        while (ss.firstChild) ss.removeChild(ss.firstChild);
+        codes.sort(function (a, b) { return names[a].localeCompare(names[b]); }).forEach(function (c) { ss.appendChild(h('option', { value: c, text: names[c] })); });
+        var mine = rememberedRegion(), pick = regionList.filter(function (r) { return r.id === mine; })[0]
+          || regionList.filter(function (r) { return r.state_code === 'CO' && r.name.toLowerCase() === 'boulder'; })[0] || regionList[0];
+        ss.value = pick.state_code; fillRegions(pick.state_code, pick.id);
+        FIELDS.state_code.wrap.hidden = false; FIELDS.region_id.wrap.hidden = false;
+        loadVenues(ZIP_RE.test(val('postal_code')) ? val('postal_code') : '');
+      })
+      .catch(function () { clearTimeout(to); });
+  }
+  function onRegionPick(stateChanged) {
+    if (stateChanged) fillRegions(val('state_code'), '');
+    rememberRegion(val('region_id'));
+    shownZip = null;
+    loadVenues(ZIP_RE.test(val('postal_code')) ? val('postal_code') : '');
+  }
   var pendingCurriculum = '';   // a curriculum saved in the draft, applied once the list has loaded
   function loadCurriculums() {
     if (!LEAN || !FIELDS.curriculum_id || !window.fetch) return;
@@ -132,7 +178,10 @@
     var mine = ++venueSeq;
     var ctl = ('AbortController' in window) ? new AbortController() : null;
     var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
-    fetch(venuesUrl() + (zip ? '?zip=' + encodeURIComponent(zip) : ''), { method: 'GET', signal: ctl ? ctl.signal : undefined })
+    var q = [], rid = regionId();
+    if (zip) q.push('zip=' + encodeURIComponent(zip));
+    if (rid) q.push('region=' + encodeURIComponent(rid));
+    fetch(venuesUrl() + (q.length ? '?' + q.join('&') : ''), { method: 'GET', signal: ctl ? ctl.signal : undefined })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         clearTimeout(to);
@@ -369,7 +418,16 @@
     if (CFG.showWhere) {
       var zipField = textField('postal_code', LEAN ? 'ZIP code' : 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: LEAN ? 'Helps us find a place near you, and shows us where people want classes. Not required, but it helps a lot.' : 'Enter the ZIP code where you would like it, and we will show the closest places first.' });
       FIELDS.postal_code.noDraft = true;   // remembered on its own, below
-      if (LEAN) need.push(zipField); else whereAsk.push(zipField);
+      if (LEAN) {
+        need.push(h('div', { class: 'rf__row rf__row--2' }, [
+          selectField('state_code', 'State', [], { blank: 'State' }),
+          selectField('region_id', 'Region', [], { blank: 'Region' }),
+        ]));
+        ['state_code', 'region_id'].forEach(function (n) { FIELDS[n].noDraft = true; FIELDS[n].wrap.hidden = true; });   // shown once the list arrives; remembered on its own
+        FIELDS.state_code.el.addEventListener('change', function () { onRegionPick(true); });
+        FIELDS.region_id.el.addEventListener('change', function () { onRegionPick(false); });
+        need.push(zipField);
+      } else whereAsk.push(zipField);
       whereAsk.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: !LEAN }));
       if (!LEAN) { need = need.concat(whereAsk); whereAsk = []; }
     }
@@ -652,6 +710,7 @@
     if (val('has_minors_present')) r.has_minors_present = val('has_minors_present') === 'yes';
     if (val('attendee_count')) r.attendee_count = parseInt(val('attendee_count'), 10);
     if (FIELDS.curriculum_id && val('curriculum_id')) r.curriculum_id = val('curriculum_id');
+    if (!resumeToken && regionId()) r.region_id = regionId();
     r.presented_cost_cents = CFG.cents; r.presented_cost_basis = CFG.basis;
     if (CFG.duration) r.duration_minutes_requested = CFG.duration;
     var strs = ['phone', 'preferred_location', 'requested_date', 'alternate_requested_date', 'requested_time_of_day', 'preferred_times',
@@ -816,6 +875,7 @@
     FIELDS.postal_code.el.addEventListener('input', onZipInput);
   }
   loadVenues(FIELDS.postal_code ? rememberedZip() : '');
+  loadRegions();
   loadCurriculums();
   openMoreIfFilled();
   updateNeeds();

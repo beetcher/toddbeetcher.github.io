@@ -42,6 +42,7 @@ HTTP_STATUS = {
     "class_not_found": 404,
     "venue_not_found": 404,
     "curriculum_not_found": 404,
+    "region_not_found": 404,
     "not_found": 404,
     "class_closed": 409,
     "over_capacity": 409,
@@ -110,6 +111,8 @@ class Store(Protocol):
     def get_class(self, class_id: str) -> Optional[dict]: ...
     def get_venue(self, venue_id: str) -> Optional[dict]: ...
     def get_curriculum(self, curriculum_id: str) -> Optional[dict]: ...
+    def get_region(self, region_id: str) -> Optional[dict]: ...
+    def get_state(self, state_code: str) -> Optional[dict]: ...
     def find_by_idempotency_key(self, key: str) -> Optional[dict]: ...
     def find_latest_by_email_and_type(self, email: str, registration_type: str) -> Optional[dict]: ...
     def confirmation_number_exists(self, number: str) -> bool: ...
@@ -332,6 +335,15 @@ def handle_registration_request(
         curriculum = store.get_curriculum(curriculum_id)
         if curriculum is None or curriculum.get("deleted_at") or curriculum.get("status") != "active":
             return _err("curriculum_not_found", "That curriculum was not found.")
+
+    # 8d. A region picked on the form: it must exist, not be deleted, be a region, be switched on and sit in a state that is switched on.
+    region_id = body.get("region_id")
+    if region_id:
+        region = store.get_region(region_id)
+        state = store.get_state(region.get("state_code")) if region else None
+        if (region is None or region.get("deleted_at") or region.get("kind") != "region" or region.get("is_active") is not True
+                or state is None or state.get("deleted_at") or state.get("is_active") is not True):
+            return _err("region_not_found", "That region was not found.")
 
     # 9. Repeats are flagged, never blocked.
     previous = store.find_latest_by_email_and_type(body["email"], body["registration_type"])

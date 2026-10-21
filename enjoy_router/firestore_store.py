@@ -26,6 +26,7 @@ class FirestoreStore:
         self.keys = client.collection(KEYS_COLLECTION)
         self.venues = client.collection("venues")
         self.curriculums = client.collection("curriculums")
+        self.areas = client.collection("discovery_areas")
 
     def get_class(self, class_id: str) -> Optional[dict]:
         snap = self.classes.document(class_id).get()
@@ -38,6 +39,18 @@ class FirestoreStore:
     def get_curriculum(self, curriculum_id: str) -> Optional[dict]:
         snap = self.curriculums.document(curriculum_id).get()
         return snap.to_dict() if snap.exists else None
+
+    def get_region(self, region_id: str) -> Optional[dict]:
+        snap = self.areas.document(region_id).get()
+        doc = snap.to_dict() if snap.exists else None
+        return doc if doc and doc.get("kind") == "region" else None
+
+    def get_state(self, state_code: str) -> Optional[dict]:
+        for snap in self.areas.where("kind", "==", "state").where("state_code", "==", state_code).limit(5).stream():
+            doc = snap.to_dict()
+            if not doc.get("deleted_at"):
+                return doc
+        return None
 
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:
         marker = self.keys.document(key).get()
