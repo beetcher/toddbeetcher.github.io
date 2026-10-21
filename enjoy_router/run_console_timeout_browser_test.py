@@ -255,6 +255,11 @@ with sync_playwright() as p:
     for bad in ("0", "481", "1e2", "7.5", "", "-3"):
         pg.fill("#acMinutes", bad); pg.click("#acMinutesSave"); pg.wait_for_function("document.querySelector('#acMinutesMsg').innerText.includes('whole number')"); pg.wait_for_timeout(250)
     check("T8 0, 481, 1e2, a fraction, nothing and a negative are all refused with a plain message", CS.list(H["store"]).data["records"][0]["session_timeout_minutes"] == 7 and H["setting_writes"] == writes_before, (H["setting_writes"], writes_before))
+    col = pg.evaluate("getComputedStyle(document.querySelector('#acMinutesMsg')).color")
+    pg.fill("#acMinutes", "8"); pg.click("#acMinutesSave"); pg.wait_for_function("document.querySelector('#acMinutesMsg').innerText.includes('Saved')"); pg.wait_for_timeout(150)
+    ok_col = pg.evaluate("getComputedStyle(document.querySelector('#acMinutesMsg')).color")
+    check("T8 a refusal is shown in the error colour, a save in green", ok_col == "rgb(47, 93, 0)" and col != ok_col, (col, ok_col))
+    check("T8 the minutes box is wide enough to read and tap", pg.locator("#acMinutes").bounding_box()["width"] >= 120 and pg.locator("#acMinutes").bounding_box()["height"] >= 44)
     pg.screenshot(path="/tmp/timeout_access_box.png", full_page=True)
     pg.close()
 

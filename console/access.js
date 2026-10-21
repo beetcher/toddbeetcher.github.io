@@ -56,7 +56,7 @@
     s.textContent = ".acs{max-width:900px;margin:0 auto}.acs h2{margin:18px 0 6px}.acs .acrow{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff}" +
       ".acs .acrow.off{opacity:.62}.acs .ac1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.acs .acn{font-weight:700}.acs .acm{font-size:14px;color:var(--muted)}" +
       ".acs .acform{border:2px solid var(--orange);border-radius:10px;padding:12px;margin:10px 0;background:#fffaf0}.acs .acf{margin:10px 0}.acs .acf label{display:block;font-weight:700;margin-bottom:2px}" +
-      ".acs .acf input[type=text],.acs .acf input[type=email],.acs .acf select,.acs .acf textarea{width:100%;max-width:560px;box-sizing:border-box;font:inherit;padding:8px;min-height:44px}" +
+      ".acs .acerr.acok{color:#2f5d00}.acs .acf input[type=number]{width:140px;box-sizing:border-box;font:inherit;font-size:1.2rem;padding:8px 10px;min-height:44px;border:2px solid #1c1a17;border-radius:8px}.acs .acf input[type=text],.acs .acf input[type=email],.acs .acf select,.acs .acf textarea{width:100%;max-width:560px;box-sizing:border-box;font:inherit;padding:8px;min-height:44px}" +
       ".acs .accaps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px}.acs .accaps label{font-weight:400;display:flex;gap:8px;align-items:flex-start}" +
       ".acs .acerr{color:var(--err);font-weight:600;min-height:1.4em}.acs table{border-collapse:collapse;width:100%;font-size:14px}.acs td,.acs th{border-bottom:1px solid #e4dfd2;text-align:left;padding:5px 6px;vertical-align:top}" +
       ".acs td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace}.acs .acchip{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;border:1px solid #bbb;background:#f2efe6}" +
@@ -369,7 +369,7 @@
     if (!rec && S.cs.ok) box.appendChild(mk("p", "acm", "Not set yet, so the Console uses 10 minutes."));
     if (!S.cs.ok && S.loaded) box.appendChild(mk("p", "acm", "The current setting could not be read. Saving will still work."));
     var save = btn("Save minutes", "", function () { saveMinutes(i.value); }); save.id = "acMinutesSave"; box.appendChild(save);
-    var m = mk("div", "acerr", S.cs.msg); m.id = "acMinutesMsg"; m.setAttribute("role", "status"); box.appendChild(m);
+    var m = mk("div", /^Saved/.test(S.cs.msg || "") ? "acerr acok" : "acerr", S.cs.msg); m.id = "acMinutesMsg"; m.setAttribute("role", "status"); box.appendChild(m);
     return box;
   }
   function saveMinutes(raw) {
