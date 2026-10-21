@@ -78,6 +78,9 @@
   .lock .swap a { color: var(--muted); }
   #who { color: #f1ece3; font-size: 13px; font-weight: 600; margin-right: 8px; min-width: 0; max-width: 34vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #who .role { color: var(--orange); font-weight: 700; }
+  #viewOnly { background: #fff4d6; color: #5a3b00; border-bottom: 2px solid #e0a400; padding: 8px 16px; font-size: 14px; font-weight: 600; text-align: center; }
+  #viewOnly[hidden] { display: none; }
+  body.viewonly button[data-viewonly="1"] { opacity: 0.45; cursor: not-allowed; }
   .msg { min-height: 1.4em; margin: 10px 0 0; color: var(--err); font-weight: 600; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
   .bar .count { font-weight: 700; }
@@ -445,6 +448,7 @@
     <button class="quiet" id="lockBtn" hidden>Lock</button>
   </div>
 </header>
+<div id="viewOnly" role="status" hidden><b>View only.</b> You can look at everything and change nothing. Private details are hidden. You can start a Discovery run (25 cents at most).</div>
 
 <main>
   <section id="homeView" hidden>
@@ -939,9 +943,9 @@
     places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
     curriculums: ["view_console"], attendance: ["manage_classes", "manage_requests"], organizations: ["edit_people"], messages: ["view_messages"],
     discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access", "invite_people"] };
-  function can(c) { return !!ME && (ME.is_super_admin === true || (ME.capabilities || []).indexOf(c) >= 0); }
+  function can(c) { return !!ME && (ME.is_super_admin === true || ME.inspector === true || (ME.capabilities || []).indexOf(c) >= 0); }   // an inspector may LOOK at everything; the server refuses every write
   function canAny(list) { for (var i = 0; i < list.length; i++) if (can(list[i])) return true; return false; }
-  function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && ME.is_super_admin); }
+  function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && (ME.is_super_admin || ME.inspector)); }
   function canPlaced() { return canAny(["manage_requests", "manage_classes"]); }
   function keyMe() { return { name: "Admin key", role_key: "super_admin", method: "key", is_super_admin: true, capabilities: [], email: "", scope_region_id: "" }; }
 
@@ -1191,6 +1195,7 @@
         '<li><b>Edit</b> changes a person\'s name, role or region. Once someone has signed in, their email cannot change.</li>' +
         '<li><b>Switch off / Switch on</b> stops or restores a person\'s access at their very next request. Nothing is deleted.</li>' +
         '<li><b>Roles</b> are bundles of capabilities. Tick what a role may do; the table at the bottom says what each capability allows. A super admin role does everything.</li>' +
+        '<li><b>Global Inspector</b> is a view-only role for demos. A person with it sees every station (Activity, Access, Spend and Messages too) and can change nothing: the server refuses every save, delete, invitation and email, even if one is typed by hand, and the buttons that would change something are switched off. Private details are hidden (notes, birth details, home addresses, restricted details) or show as (hidden) (email, phone, ZIP); names show, and staff emails here show in full. An inspector may start a Discovery run, capped at 25 cents. Give it by choosing the Global Inspector role when you invite someone.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
         '<li>The last active super admin cannot be switched off or demoted, and you cannot change your own role, region, email or on/off switch.</li>' +
@@ -1268,6 +1273,26 @@
     who.textContent = ""; who.title = "";
     if (ME) { who.appendChild(document.createTextNode(ME.name + " · ")); var rl = document.createElement("span"); rl.className = "role"; rl.textContent = (ME.role_key || "").replace(/_/g, " "); who.appendChild(rl); who.title = who.textContent; }
     who.hidden = !ME || ME.method === "key";     // the admin key is no person: nothing to name
+    viewOnlyMode(!!(ME && ME.inspector));
+  }
+  // View only (P-78): a courtesy on top of the server, which refuses every write for an inspector. The banner shows, and the buttons that would
+  // change something are switched off as they appear (the words below). A button a screen needs for looking carries data-viewok.
+  var VIEW_WRITE = /^(edit|save|delete|remove|add|change|switch|cancel class|merge|undo|publish|resend|invite|put in|create|retire|withdraw|mark|send|assign|activate|deactivate|find gps|restore|rename|new |draft|end$)/i;
+  var viewObs = null;
+  function viewOnlyPass(root) {
+    Array.prototype.forEach.call((root || document).querySelectorAll("main button, #manual button"), function (b) {
+      if (b.getAttribute("data-viewok") || b.getAttribute("data-viewonly")) return;
+      var t = (b.textContent || "").trim();
+      if (b.classList.contains("stoggle") || VIEW_WRITE.test(t)) { b.disabled = true; b.setAttribute("data-viewonly", "1"); b.title = "View only: this account cannot change anything."; }
+    });
+  }
+  function viewOnlyMode(on) {
+    $("viewOnly").hidden = !on; document.body.classList.toggle("viewonly", on);
+    if (viewObs) { viewObs.disconnect(); viewObs = null; }
+    if (!on || !window.MutationObserver) return;
+    viewObs = new MutationObserver(function () { viewOnlyPass(); });
+    viewObs.observe(document.body, { childList: true, subtree: true });
+    viewOnlyPass();
   }
   function markManual() {
     Array.prototype.forEach.call(document.querySelectorAll(".mbtns button"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
@@ -1547,7 +1572,7 @@
       if (message === "That key did not work.") message = "Your Google sign-in ended. Sign in again.";
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
-    ME = null; $("who").hidden = true; idleEnd();
+    ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
     stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
@@ -1608,7 +1633,10 @@
     clearTimeout(toastTimer); el.className = (kind ? kind + " " : "") + "on"; document.getElementById("workText").textContent = text;
     if (ms) toastTimer = setTimeout(function () { el.className = el.className.replace(/\bon\b/, "").trim(); }, ms);
   }
+  var VIEW_READS = { list: 1, get: 1, find_by_address: 1, get_for_individual: 1, suggest: 1, queue: 1 };
+  function viewOnlyRefusal() { return { status: 403, body: { ok: false, error: { code: "view_only", message: "View only: this account can look at everything and change nothing." } } }; }
   function admin(op, args, coll) {
+    if (ME && ME.inspector && !VIEW_READS[op]) { toast("bad", "View only: nothing was changed.", 3500); return Promise.resolve(viewOnlyRefusal()); }   // the server would refuse it too
     if (READ_OPS[op]) return adminCall(op, args, coll);
     var btn = lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null;
     if (btn) { btn.classList.add("working"); btn.setAttribute("aria-busy", "true"); }
@@ -2143,8 +2171,8 @@
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   // The History button on a card: opens the Activity station on this one record. Only a super admin gets it (the server decides; this is courtesy).
   function historyBtn(id, label) {
-    if (!id || !ME || ME.is_super_admin !== true) return null;
-    var b = mk("button", "quiet", "Change history"); b.type = "button"; b.setAttribute("data-history", id);
+    if (!id || !ME || (ME.is_super_admin !== true && ME.inspector !== true)) return null;
+    var b = mk("button", "quiet", "Change history"); b.type = "button"; b.setAttribute("data-history", id); b.setAttribute("data-viewok", "1");
     b.addEventListener("click", function (ev) { ev.stopPropagation(); if (window.ActivityStation) window.ActivityStation.openFor(id, label || ""); });
     return b;
   }

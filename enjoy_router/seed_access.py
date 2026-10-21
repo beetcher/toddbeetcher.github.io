@@ -9,6 +9,7 @@ twice: anything already there is left alone. Default is a dry run: it says what 
 
 What it adds:
   role    Super admin (does everything, including inviting and removing people)
+  role    Global Inspector (looks at everything, changes nothing; for demos)
   role    Admin, Manager, Instructor (what a person can do everywhere; WHERE they work is their territory, set in the Console). Edit them there.
   move    the old "Region head" role is a territory word, not a role: if it exists, the people who hold it move to Manager and the old role is
           switched off (never deleted). A fresh setup never creates it.
@@ -43,6 +44,9 @@ ROLES = [
     dict(key="instructor", label="Instructor", is_super_admin=False, is_active=True,
          capabilities=["view_console", "manage_classes"],
          description="Sees the classes they teach (and who is in them), once their sign-in is linked to their person record."),
+    dict(key="global_inspector", label="Global Inspector", is_super_admin=False, is_active=True, capabilities=["inspect_everything"],
+         description="View only. Sees every station and list (Activity, Access, Spend, Discovery and Messages too) and changes nothing. Private details "
+                     "are hidden or masked. May start a Discovery run, capped at 25 cents. For demos."),
 ]
 OLD_ROLE = "region_head"
 NEW_ROLE = "manager"

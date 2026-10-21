@@ -27,6 +27,7 @@ from datetime import datetime, timezone
 from crud import access_persons_crud as PE
 from .capabilities import CAPABILITIES, GLOBAL, TERRITORIAL
 
+INSPECT = "inspect_everything"
 MIN_KEY_LENGTH = 32            # same number as console.MIN_KEY_LENGTH (a test keeps them equal; console cannot be imported here)
 KEY_ACTOR = "user:admin"
 PROVIDER = "google.com"
@@ -50,6 +51,12 @@ class Access:
 
     def can(self, capability: str) -> bool:
         return self.ok and (self.is_super_admin or capability in self.capabilities)
+
+    @property
+    def inspector(self) -> bool:
+        """A person whose role holds `inspect_everything` is VIEW ONLY at every door (P-78): they may look at everything, change nothing.
+        A super admin is never an inspector (the capability is listed on every super admin role only because a super admin holds them all)."""
+        return self.ok and not self.is_super_admin and INSPECT in self.capabilities
 
 
 ALL_GRANT = {"kind": "all", "capabilities": frozenset(TERRITORIAL)}

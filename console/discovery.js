@@ -45,6 +45,8 @@
 
   // ---- the two doors
   function disc(op, args, quiet) {
+    var m = K.me() || {};
+    if (m.inspector && op === "withdraw") { K.toast("bad", "View only: nothing was changed.", 3500); return Promise.resolve({ status: 403, body: { ok: false, error: { code: "view_only", message: "View only: this account cannot take a run back." } } }); }
     var b = !quiet && K.lastButton();
     if (b) { b.classList.add("working"); b.setAttribute("aria-busy", "true"); }
     if (!quiet) K.toast("", "Working…", 0);

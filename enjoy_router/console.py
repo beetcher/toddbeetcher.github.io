@@ -15,7 +15,7 @@ import re
 from datetime import datetime
 from typing import Optional
 
-from access import door as _door, places as _places, policy as _policy
+from access import door as _door, inspect as _inspect, places as _places, policy as _policy
 from access.territory import Scope, Territory
 from handler import HttpResult, _error
 from ratelimit import RateLimiter
@@ -67,7 +67,7 @@ def handle_console(
                                     visitor=visitor, now=now, tag="console_records")
     if refusal:
         return refusal
-    if not _policy.allowed(access, _policy.RECORDS):
+    if not access.inspector and not _policy.allowed(access, _policy.RECORDS):
         return _door.forbidden("console_records")
 
     try:
@@ -79,7 +79,7 @@ def handle_console(
         return _error(400, "validation_failed", "since must look like 2026-10-09T04:26:57Z.")
 
     try:
-        scope = None if access.is_super_admin else Scope(access, Territory(access_store))
+        scope = None if access.is_super_admin or access.inspector else Scope(access, Territory(access_store))
         if scope is not None and not scope.unlimited:   # a person with limited territory sees only the requests whose ZIP is theirs (P-65)
             wide = list_registration_requests(store, MAX_LIMIT, since)
             records = [r for r in wide if scope.can_read(_policy.RECORDS, _places.zip_of_request(access_store, r))][:max(1, min(limit, MAX_LIMIT))]
@@ -89,6 +89,8 @@ def handle_console(
         log.error("console_records code=server_error exception=%s", type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")
 
+    if access.inspector:                              # view only: the same requests, with private details hidden or masked (P-78)
+        records = _inspect.shape_records(records)
     log.info("console_records code=ok count=%d", len(records))
     body = {"ok": True, "data": {"records": records, "count": len(records),
                                  "server_time": now.strftime("%Y-%m-%dT%H:%M:%SZ")}}

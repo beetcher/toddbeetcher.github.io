@@ -48,7 +48,7 @@ def person(s, email, role_id, **kw):
 
 # ================================================================ the capability list
 schema = json.loads((SCHEMAS / "access_role.schema.json").read_text())
-check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 17)
+check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 18)
 guide = (SCHEMAS / "ACCESS_ROLE_GUIDE.md").read_text()
 check("every capability is explained in the role guide", all(f"| `{c}` |" in guide for c in CAPABILITIES), [c for c in CAPABILITIES if f"| `{c}` |" not in guide])
 check("every capability is territorial or global, never both, and the grant schema offers exactly the territorial ones",
@@ -312,11 +312,11 @@ check("no secret appears in the result", KEY not in repr(auth(tok(9))) and KEY n
 # ================================================================ the seed script
 s = fresh()
 todo, need = seed_access.plan(s, "toddbeetcher17@gmail.com")
-check("seed: empty store needs the four roles and the person (never the old Region head)", [r["key"] for r in todo] == ["super_admin", "admin", "manager", "instructor"] and need)
+check("seed: empty store needs the four roles and the person (never the old Region head)", [r["key"] for r in todo] == ["super_admin", "admin", "manager", "instructor", "global_inspector"] and need)
 done = seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher")
-check("seed: creates four roles and the person", len(done) == 5 and RO.list(s).data["count"] == 4 and PE.list(s).data["count"] == 1, done)
+check("seed: creates five roles and the person", len(done) == 6 and RO.list(s).data["count"] == 5 and PE.list(s).data["count"] == 1, done)
 check("seed: nothing left to do afterwards", seed_access.plan(s, "toddbeetcher17@gmail.com") == ([], False))
-check("seed: running again adds nothing", seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher") == [] and RO.list(s).data["count"] == 4 and PE.list(s).data["count"] == 1)
+check("seed: running again adds nothing", seed_access.apply(s, "toddbeetcher17@gmail.com", "Todd Beetcher") == [] and RO.list(s).data["count"] == 5 and PE.list(s).data["count"] == 1)
 rec = PE.find_live_by_email(s, "toddbeetcher17@gmail.com")
 check("seed: records are marked import by the seed actor", rec["source"] == "import" and rec["created_by"] == "system:access_seed")
 v = Fake(); v.tokens[tok(1)] = claims("toddbeetcher17@gmail.com", "uid-todd")

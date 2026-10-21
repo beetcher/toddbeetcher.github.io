@@ -22,7 +22,7 @@ import hmac
 import json
 import logging
 
-from access import door as _door, policy as _policy
+from access import door as _door, inspect as _inspect, policy as _policy
 from access.territory import Scope, Territory
 from crud import discovery_runs_crud as RU
 from discovery.contract import RunRequest
@@ -68,7 +68,7 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
     if not isinstance(body, dict) or body.get("op") not in OPS:
         return _error(400, "validation_failed", "Send a JSON object with op and args. Known ops: " + ", ".join(sorted(OPS)) + ".")
     op, args = body["op"], body.get("args", {})
-    if not _policy.allowed(access, _policy.discovery_need(op)):
+    if not access.inspector and not _policy.allowed(access, _policy.discovery_need(op)):
         return _door.forbidden("discovery")
     if not isinstance(args, dict):
         return _error(400, "validation_failed", "args must be an object.")
@@ -77,8 +77,12 @@ def handle_discovery(method, authorization, raw_body, admin_key, visitor, store,
     if missing or extra:
         return _error(400, "validation_failed", f"For {op}: " + (f"missing {', '.join(missing)}. " if missing else "")
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
+    if access.inspector:                              # view only (P-78): the Go flow and reading, a 25-cent cap, nothing that changes records
+        refusal = _inspect.discovery_refusal(store, access, op, args)
+        if refusal:
+            return _door.forbidden("discovery") if refusal[0] == "forbidden" else _error(400, refusal[0], refusal[1])
     try:
-        scope = None if access.is_super_admin else Scope(access, Territory(store))
+        scope = None if access.is_super_admin or access.inspector else Scope(access, Territory(store))
         if scope is not None and not scope.unlimited and not _in_reach(scope, op, args, store):
             return _door.forbidden("discovery")
         data = _run(op, args, store, engine, environ, access.actor)

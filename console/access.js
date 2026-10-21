@@ -25,7 +25,8 @@
     ["run_discovery", "Start, stop and review Discovery runs (spends money).", true],
     ["invite_people", "Invite people into this territory and manage the people they invited. They get only regions inside this territory, and nothing this person does not hold.", true],
     ["edit_discovery_settings", "Discovery models, areas, types, prompt and limits.", false],
-    ["view_spend", "Read the Spend tab.", false]
+    ["view_spend", "Read the Spend tab.", false],
+    ["inspect_everything", "View only: look at everything (private details hidden or masked) and change nothing. May start a Discovery run, capped at 25 cents. For demos.", false]
   ];   // manage_access is deliberately not offered: only a super admin manages access (delegation comes later)
   var TERR = CAPS.filter(function (c) { return c[2]; }).map(function (c) { return c[0]; });
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
@@ -107,8 +108,10 @@
     if (g.kind === "state") return "Whole state: " + stateName(g.state_code);
     return "Regions in " + stateName(g.state_code) + ": " + regionNames(g);
   }
+  function viewOnlyRole(role) { return !!(role && !role.is_super_admin && (role.capabilities || []).indexOf("inspect_everything") >= 0); }   // an inspector: sees everywhere, changes nothing
   function titleOf(p, role) {
     if (role && role.is_super_admin) return "Super admin: everywhere";
+    if (viewOnlyRole(role)) return "Inspector: sees everything, changes nothing";
     var gl = grantsOf(p), out = [];
     gl.forEach(function (g) {
       if (g.kind === "all") out.push("Whole US");
@@ -120,7 +123,7 @@
   // A delegate (someone who holds invite_people but is not a super admin) works only inside their own territory: regions grants, regions they
   // cover, capabilities they hold. The server enforces it; this just keeps the form honest.
   function me() { return K.me() || {}; }
-  function isDelegate() { var m = me(); return !!m.name && m.is_super_admin !== true && m.method !== "key"; }
+  function isDelegate() { var m = me(); return !!m.name && m.is_super_admin !== true && m.inspector !== true && m.method !== "key"; }
   function invGrants() { return (me().grants || []).filter(function (g) { return (g.capabilities || []).indexOf("invite_people") >= 0; }); }
   function delCovers(a) {
     return invGrants().some(function (g) { return g.kind === "all" || (g.kind === "state" && g.state_code === a.state_code) || (g.kind === "regions" && (g.region_ids || []).indexOf(a.id) >= 0); });
@@ -244,7 +247,7 @@
         var l = mk("label"); var cb = mk("input"); cb.type = "checkbox"; cb.value = c[0]; cb.checked = have.indexOf(c[0]) >= 0; l.appendChild(cb);
         var t = mk("span"); t.appendChild(mk("b", "", c[0])); t.appendChild(document.createTextNode(" " + c[1])); l.appendChild(t); box.appendChild(l);
       });
-      f.appendChild(mk("p", "acm", "Global capabilities (view_console, manage_curriculums, edit_discovery_settings, view_spend) apply everywhere. The others are only the starting choice offered when you give this role territory; what a person may do in a region comes from their territory."));
+      f.appendChild(mk("p", "acm", "Global capabilities (view_console, manage_curriculums, edit_discovery_settings, view_spend, inspect_everything) apply everywhere. The others are only the starting choice offered when you give this role territory; what a person may do in a region comes from their territory."));
       f.appendChild(field("Capabilities", box));
     }
     var err = mk("div", "acerr"); err.id = "arErr"; err.setAttribute("role", "alert"); f.appendChild(err);
@@ -337,6 +340,7 @@
       r.appendChild(mk("div", "acm actitle", "Title (from their territory): " + titleOf(p, role)));
       var gl = grantsOf(p);
       if (role && role.is_super_admin) r.appendChild(mk("div", "acm", "Territory: everywhere."));
+      else if (viewOnlyRole(role)) r.appendChild(mk("div", "acm", "Territory: not needed. A view-only role sees everywhere and changes nothing."));
       else if (!gl.length) r.appendChild(mk("div", "acm", "Territory: none yet (signs in, sees nothing in any region)."));
       else gl.forEach(function (g) { r.appendChild(mk("div", "acm acg", "Territory: " + grantText(g) + (g.group ? "  [" + g.group + "]" : "") + (!(p.grants && p.grants.length) ? "  (from the old single-region setting; Edit then Save to convert)" : ""))); });
       var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editP = p.id; S.addP = false; S.msg = ""; S.rowMsg = null; draw(); })); b.appendChild(toggle("access_persons", p, "Access"));

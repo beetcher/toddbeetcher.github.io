@@ -66,6 +66,7 @@
           "invite_people",
           "edit_discovery_settings",
           "view_spend",
+          "inspect_everything",
           "manage_access"
         ]
       }

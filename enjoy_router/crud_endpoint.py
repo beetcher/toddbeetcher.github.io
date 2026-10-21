@@ -46,7 +46,7 @@ import json
 import logging
 from datetime import datetime
 
-from access import delegate as _delegate, door as _door, guard as _guard, policy as _policy
+from access import delegate as _delegate, door as _door, guard as _guard, inspect as _inspect, policy as _policy
 from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (access_persons_service, access_roles_crud, activity_events_crud, console_settings_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
@@ -227,7 +227,11 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
         return _error(400, "validation_failed", "args must be an object.")
     if op not in allowed_ops or collection in blocked_collections:
         return _error(400, "validation_failed", "This op is not enabled here.")
-    if actor is None and not _policy.allowed(access, _policy.crud_need(collection, op, args)):
+    inspector = actor is None and access.inspector       # view only (P-78): reads of everything with private data hidden, never a write
+    if inspector:
+        if _inspect.refuses_op(collection, op) or _inspect.refuses_filters(collection, args.get("filters")):
+            return _door.forbidden(tag)
+    elif actor is None and not _policy.allowed(access, _policy.crud_need(collection, op, args)):
         # an instructor may LOOK at the roster of a class they teach; the guard then keeps only those classes' records
         if not ((collection == "attendances" and op in _policy.READ_OPS and access.ok and access.individual_id)
                 or (collection in _delegate.COLLECTIONS and _delegate.has_door(access))):
@@ -239,12 +243,17 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
                       f"For {op}: " + (f"missing {', '.join(missing)}. " if missing else "")
                       + (f"not allowed: {', '.join(extra)}." if extra else ""))
 
-    scope = Scope(access, Territory(store)) if actor is None and not access.is_super_admin else None   # a person with limited territory
+    scope = Scope(access, Territory(store)) if actor is None and not access.is_super_admin and not inspector else None   # a person with limited territory
     try:
         if scope is not None and not _guard.before(scope, store, collection, op, args):
             return _door.forbidden(tag)
         run_args, want = _guard.widen(scope, collection, op, args) if scope is not None else (args, None)
         result = _run(HANDLERS[collection], store, op, run_args, now, who)
+        if inspector and result.ok:
+            shown = _inspect.shape(store, collection, op, result.data)
+            if shown is None:
+                return _door.forbidden(tag)
+            result = success(shown)
         if scope is not None and result.ok:
             shown = _guard.after(scope, store, collection, op, result.data)
             shown = _guard.trim(shown, want)
