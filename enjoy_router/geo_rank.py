@@ -1,7 +1,7 @@
 """Distance helpers shared by the public venue list and the operator venue list (no store, no records).
 
-Colorado only for now: a ZIP is a Colorado ZIP (80000 to 81999) and the centre of each one is in co_zips.json.
-When another state is turned on, this is where its ZIP rule and table go.
+A ZIP is any five digits. The centre of a ZIP comes from the US table the Discovery module uses (launch_discovery/zip_table.py, every state),
+when it is loaded; otherwise from the Colorado table in co_zips.json, which stays as the fallback (and is what the cloud tests rely on).
 """
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import math
 import pathlib
 import re
 
-ZIP_RE = re.compile(r"^8[01][0-9]{3}$")
+ZIP_RE = re.compile(r"^[0-9]{5}$")
 _zips = None
 
 
@@ -22,9 +22,18 @@ def zip_table() -> dict:
     return _zips
 
 
+def centre_of_zip(z):
+    """[lat, lon] of a five-digit ZIP's centre: the US table first (any state), else the Colorado table, else None."""
+    from launch_discovery import zip_table as us
+    row = (us.table() or {}).get(z)
+    if row and len(row) >= 3:
+        return [row[1], row[2]]
+    return zip_table().get(z)
+
+
 def zip_origin(zip_code):
-    """[lat, lon] for a known Colorado ZIP, else None."""
-    return zip_table().get(str(zip_code)) if zip_code and ZIP_RE.match(str(zip_code)) else None
+    """[lat, lon] for a known ZIP (any state), else None."""
+    return centre_of_zip(str(zip_code)) if zip_code and ZIP_RE.match(str(zip_code)) else None
 
 
 def miles_between(a, b) -> float:
@@ -56,6 +65,8 @@ def position_of_place(loc: dict):
         return gps
     for a in loc.get("addresses", []):
         z = str(a.get("postal_code") or "")[:5]
-        if a.get("usage") != "former" and z in zip_table():
-            return zip_table()[z]
+        if a.get("usage") != "former":
+            c = centre_of_zip(z)
+            if c:
+                return c
     return None

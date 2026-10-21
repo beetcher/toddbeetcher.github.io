@@ -71,6 +71,23 @@ class Territory:
             return self.regions[rid].get("state_code")
         return None
 
+    def state_of_region(self, region_id):
+        self._load()
+        r = self.regions.get(region_id)
+        return r.get("state_code") if r else None
+
+    def covers_region(self, grant, region_id):
+        """Does one grant cover a whole region (a record that belongs to a region by id, not by ZIP)? `all` covers any; a state grant covers
+        every region of its state; a regions grant covers the regions it lists."""
+        kind = grant.get("kind")
+        if kind == "all":
+            return True
+        if kind == "state":
+            return self.state_of_region(region_id) == grant.get("state_code")
+        if kind == "regions":
+            return region_id in grant.get("region_ids", ())
+        return False
+
     def covers(self, grant, zip_code):
         kind = grant.get("kind")
         if kind == "all":
@@ -114,6 +131,38 @@ class Scope:
         if capability not in TERRITORIAL:
             return False
         return any(capability in g.get("capabilities", ()) and self.territory.covers(g, zip_code) for g in a.grants)
+
+    def has_in_region(self, capability, region_id):
+        """May this person use `capability` on a record that belongs to this region (by id)?"""
+        a = self.access
+        if not a.ok:
+            return False
+        if a.is_super_admin:
+            return True
+        if capability in GLOBAL:
+            return a.can(capability)
+        if capability not in TERRITORIAL:
+            return False
+        return any(capability in g.get("capabilities", ()) and self.territory.covers_region(g, region_id) for g in a.grants)
+
+    def satisfies_region(self, need, region_id):
+        return all(any(self.has_in_region(c, region_id) for c in group) for group in need)
+
+    def sees_region(self, region_id):
+        if not self.access.ok:
+            return False
+        return self.access.is_super_admin or any(self.territory.covers_region(g, region_id) for g in self.access.grants)
+
+    def teaches(self, store, class_id):
+        """Is this person attached to this class as an instructor (an attendance record, role instructor, for the person their sign-in is
+        linked to)? Looking only; it never lets them change anything."""
+        pid = self.access.individual_id if self.access.ok else ""
+        if not pid or not class_id:
+            return False
+        if not hasattr(self, "_taught"):
+            self._taught = {a.get("scheduled_class_id") for a in store.query("attendances", [("individual_id", "==", pid)], limit=1000)
+                            if a.get("role") == "instructor" and "deleted_at" not in a}
+        return class_id in self._taught
 
     def can_read(self, need, zip_code):
         """Reading a record in this ZIP: the collection's read need is met here AND a grant covers the place."""

@@ -54,6 +54,10 @@ spend = role("spend_viewer", ["view_spend"])
 T_TODD = person("todd@example.com", sup, "Todd Beetcher")
 T_HEAD = person("head@example.com", head, "Hana Head")
 T_SPEND = person("spend@example.com", spend, "Sam Spend")
+lead_r = role("lead_role", ["view_console", "view_spend"])
+PE.create(store, {"email": "lead@example.com", "display_name": "Lena Lead", "role_id": lead_r["id"], "grants": [{"kind": "regions", "state_code": "CO", "region_ids": [REGION_ID], "capabilities": ["manage_requests", "edit_venues", "activate_venues", "manage_instructors", "invite_people"]}]}, A)
+T_LEAD = "tok.lead.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+V.tokens[T_LEAD] = {"uid": "uid-lead", "email": "lead@example.com", "email_verified": True, "provider": "google.com", "name": "Lena Lead"}
 T_STRANGER = "tok.stranger.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 V.tokens[T_STRANGER] = {"uid": "uid-x", "email": "stranger@example.com", "email_verified": True, "provider": "google.com", "name": "Stranger"}
 
@@ -191,6 +195,30 @@ with sync_playwright() as p:
     check("a Discovery-only role sees just that station", tiles(pg) == ["Discovery"], tiles(pg))
     check("...the 'waiting to be placed' box is hidden for them", not pg.locator("#attnBox").is_visible())
     check("...and the home page made no refused calls", not [s for s in seen if s[2] in (401, 403)], seen)
+    pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+
+    # ---------- a lead who may invite people (P-68)
+    pg.evaluate("location.hash = '#/home'")
+    seen.clear(); sign_in(pg, T_LEAD); pg.wait_for_selector("#homeView:not([hidden])")
+    check("a lead with invite_people gets the Access station", any("Access" in t for t in tiles(pg)), tiles(pg))
+    pg.select_option("#collPick", "access"); pg.wait_for_timeout(1500); pg.wait_for_selector("#accessView .acrow")
+    body = pg.locator("#accessView").inner_text()
+    check("the lead sees the people in their regions and no Roles section", "Hana Head" in body and "Todd Beetcher" not in body and pg.locator("#accessView h2", has_text="Roles").count() == 0, body[:400])
+    pg.click("text=Invite someone"); pg.wait_for_selector("#apEmail")
+    check("the territory form offers only regions of a state they cover", pg.eval_on_selector_all("#agKind option", "o => o.map(x => x.value)") == ["regions"] and pg.eval_on_selector_all("#agState option", "o => o.map(x => x.value)") == ["CO"])
+    caps = pg.eval_on_selector_all("#agBox .accaps input", "o => o.map(x => x.value)")
+    check("...with only capabilities they hold, never invite_people", "invite_people" not in caps and "manage_requests" in caps and "edit_regions" not in caps, caps)
+    roles = pg.eval_on_selector_all("#apRole option", "o => o.map(x => x.textContent)")
+    check("...and only the roles they may hand out", "region_head" in roles and "super_admin" not in roles, roles)
+    pg.fill("#apEmail", "newbie@example.com"); pg.fill("#apName", "Newbie")
+    pg.locator("#agBox .accaps").first.locator("input").first.check(); pg.locator("#agBox .accaps").nth(1).locator("input").first.check()
+    pg.locator("#agBox button", has_text="Add this territory").click()
+    pg.locator("#accessView button", has_text="Send invitation").click()
+    pg.wait_for_function("document.querySelector('#accessView').innerText.indexOf('Newbie') >= 0")
+    mine = [x for x in store.query("access_persons", [], limit=100) if x["email"] == "newbie@example.com"]
+    check("the invitation is saved inside their regions", len(mine) == 1 and mine[0]["grants"][0]["region_ids"] == [REGION_ID] and "invite_people" not in mine[0]["grants"][0]["capabilities"], mine)
+    check("no refused calls for the lead", not [x for x in seen if x[2] in (401, 403)], seen)
+    pg.evaluate("location.hash = '#/home'"); pg.wait_for_timeout(200)
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
 
     # ---------- uninvited

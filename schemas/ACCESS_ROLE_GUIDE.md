@@ -37,11 +37,12 @@ Each capability is one thing the server can allow. The server maps every operati
 | `view_messages` | Read the Messages station (the send log). |
 | `manage_messages` | Edit message wording and settings, add notes, mark handled. |
 | `run_discovery` | Start, stop and review Discovery runs (spends money). |
+| `invite_people` | Invite people into the person's own territory and manage the people they invited (decided 2026-10-20, P-68). Territorial. The people they invite get only regions inside this territory, only capabilities this person holds there (never `invite_people` itself), and only a role that is not a super admin and carries no global capability this person lacks. They see and change only people whose whole territory is inside theirs (or who have none yet and were invited by them), never themselves. |
 | `edit_discovery_settings` | Discovery models, areas, types, prompt and limits. |
 | `view_spend` | Read the Spend tab. |
 | `manage_access` | Invite people, change roles, switch access on and off. Only a super admin should hold it. |
 
-Territorial or global (decided 2026-10-20): `manage_requests`, `manage_classes`, `manage_instructors`, `edit_venues`, `activate_venues`, `edit_people`, `edit_places`, `edit_regions`, `view_messages`, `manage_messages` and `run_discovery` apply only inside a person's territory and come from the person's grants (a role's list of these is the default offered when a grant is made). `view_console`, `manage_curriculums`, `edit_discovery_settings`, `view_spend` and `manage_access` are global and come from the role.
+Territorial or global (decided 2026-10-20): `manage_requests`, `manage_classes`, `manage_instructors`, `edit_venues`, `activate_venues`, `edit_people`, `edit_places`, `edit_regions`, `view_messages`, `manage_messages`, `run_discovery` and `invite_people` apply only inside a person's territory and come from the person's grants (a role's list of these is the default offered when a grant is made). `view_console`, `manage_curriculums`, `edit_discovery_settings`, `view_spend` and `manage_access` are global and come from the role.
 
 Todd may rename or split a capability later; a new one is added to the `capabilities` enum and to this table in the same change.
 

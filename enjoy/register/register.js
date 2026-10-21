@@ -73,7 +73,7 @@
       .catch(function () { clearTimeout(to); });
   }
   var pendingWhere = '';   // a venue choice saved in the draft, applied once the list has loaded
-  var ZIP_KEY = 'icdt_zip', ZIP_RE = /^8[01][0-9]{3}$/;   // Colorado ZIP codes
+  var ZIP_KEY = 'icdt_zip', ZIP_RE = /^[0-9]{5}$/;   // any US ZIP code (five digits)
   function rememberedZip() { try { var z = window.localStorage.getItem(ZIP_KEY); return z && ZIP_RE.test(z) ? z : ''; } catch (e) { return ''; } }
   function rememberZip(z) { try { if (z) window.localStorage.setItem(ZIP_KEY, z); else window.localStorage.removeItem(ZIP_KEY); } catch (e) { /* storage blocked: no memory, still works */ } }
   var venueLabels = [], moreSel = null, moreWrap = null, shownZip = null, venueSeq = 0, zipTimer = null;
@@ -572,7 +572,7 @@
   var FRIENDLY = {
     first_name: 'your first name', last_name: 'your last name', email: 'a valid email address',
     is_requester_attending: 'whether you will be taking part', attendee_count: 'how many people in total',
-    has_minors_present: 'whether anyone under 18 will be there', location_type: 'where you would like it', postal_code: 'a Colorado ZIP code',
+    has_minors_present: 'whether anyone under 18 will be there', location_type: 'where you would like it', postal_code: 'a five-digit ZIP code',
     curriculum_id: 'what you would like to learn', consent_to_contact: 'your OK for us to contact you', participants: 'the people you are arranging this for',
     requested_date: 'a date that is today or later', alternate_requested_date: 'a date that is today or later',
   };
@@ -606,7 +606,7 @@
       need('has_minors_present', 'Please choose one.');
       if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
     }
-    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'We are starting in Colorado, so for now please use a Colorado ZIP code, or leave it blank.']);
+    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please use a five-digit ZIP code, or leave it blank.']);
     var cnt = parseInt(val('attendee_count'), 10);
     var attending = val('is_requester_attending') === 'yes';
     var cntGiven = !isNaN(cnt) || !LEAN;

@@ -18,6 +18,7 @@ A roster is separate from the student roster. One person can be on both, with on
 - `bio`: a short paragraph about the instructor. Optional.
 - `capabilities`: short tags for what the instructor can teach or do. Optional list.
 - `curriculum_ids`: the curricula this instructor can teach (ids of `curriculum` records). A hint for choosing an instructor, never a rule: nothing is refused for teaching something not listed, and the code does not check that the ids exist. Optional.
+- `region_ids`: the regions this instructor works in (ids of `discovery_areas` records of kind region, up to 50). It is how a regional manager gets an instructor: a manager with a grant for any listed region can see and manage the entry, as well as managers covering the ZIP where the instructor lives. The code checks that each id is a live region; a person may only add a region their own grants let them manage instructors in. Optional.
 - `service_area`: where the instructor will travel, in plain words. Optional.
 - `availability`: the weekly hours the instructor can teach, same shape as a venue's `availability_hours` (a `day_of_week`, `opens_at` and `closes_at` per entry). Optional.
 - `availability_notes`: anything the weekly hours cannot say. Optional.

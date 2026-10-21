@@ -1239,9 +1239,9 @@
       }
     },
     {
-      "name": "t41_zip_not_colorado",
-      "layer": "schema",
-      "description": "A ZIP outside Colorado is refused.",
+      "name": "t41_zip_outside_colorado",
+      "layer": "endpoint",
+      "description": "A ZIP outside Colorado is accepted and stored (any US ZIP).",
       "request": {
         "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000041",
         "first_name": "Jane",
@@ -1268,12 +1268,11 @@
         "postal_code": "90210"
       },
       "expect": {
-        "ok": false,
-        "error_code": "validation_failed",
-        "stored": false,
-        "field_errors": [
-          "postal_code"
-        ]
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "postal_code": "90210"
+        }
       }
     },
     {

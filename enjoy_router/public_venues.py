@@ -4,8 +4,8 @@ Returns the active public venues as [{id, name, town}], sorted by name. Nothing 
 the server (no address, contact, GPS or notes). town is the locality of the venue's place; a venue with no
 town is returned with name alone. Rate limited per visitor like the registration endpoint.
 
-With ?zip=<Colorado ZIP> the list is nearest first and each item also carries miles (straight line, one decimal).
-A venue's position is its place's GPS point when it has one, otherwise the centre of its place's ZIP (co_zips.json).
+With ?zip=<five-digit ZIP, any state> the list is nearest first and each item also carries miles (straight line, one decimal).
+A venue's position is its place's GPS point when it has one, otherwise the centre of its place's ZIP (the US ZIP table, else co_zips.json).
 A venue with no position at all goes last, with no miles. A ZIP that is not valid or not in the table is ignored:
 the list stays alphabetical with no distances.
 
@@ -42,7 +42,7 @@ def _position(store, venue_id: str):
 
 def public_list(store, zip_code=None) -> list:
     """[{id, name, town}] for active public venues, by name. town is left out when the venue's place has none.
-    With a known Colorado zip_code: nearest first, each with miles."""
+    With a known zip_code: nearest first, each with miles."""
     got = V.list(store, {"status": "active"}, order="name", limit=MAX_VENUES)
     if not got.ok:
         return []

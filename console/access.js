@@ -23,6 +23,7 @@
     ["view_messages", "Read the Messages station (the send log).", true],
     ["manage_messages", "Edit message wording and settings, add notes, mark handled.", true],
     ["run_discovery", "Start, stop and review Discovery runs (spends money).", true],
+    ["invite_people", "Invite people into this territory and manage the people they invited. They get only regions inside this territory, and nothing this person does not hold.", true],
     ["edit_discovery_settings", "Discovery models, areas, types, prompt and limits.", false],
     ["view_spend", "Read the Spend tab.", false]
   ];   // manage_access is deliberately not offered: only a super admin manages access (delegation comes later)
@@ -105,6 +106,18 @@
     });
     return out.length ? out.join(" · ") : "No territory yet";
   }
+  // A delegate (someone who holds invite_people but is not a super admin) works only inside their own territory: regions grants, regions they
+  // cover, capabilities they hold. The server enforces it; this just keeps the form honest.
+  function me() { return K.me() || {}; }
+  function isDelegate() { var m = me(); return !!m.name && m.is_super_admin !== true && m.method !== "key"; }
+  function invGrants() { return (me().grants || []).filter(function (g) { return (g.capabilities || []).indexOf("invite_people") >= 0; }); }
+  function delCovers(a) {
+    return invGrants().some(function (g) { return g.kind === "all" || (g.kind === "state" && g.state_code === a.state_code) || (g.kind === "regions" && (g.region_ids || []).indexOf(a.id) >= 0); });
+  }
+  function delCaps() {
+    var out = {}; invGrants().forEach(function (g) { (g.capabilities || []).forEach(function (c) { out[c] = true; }); });
+    return TERR.filter(function (c) { return c !== "invite_people" && out[c]; });
+  }
   function grantCaps(g) { return g.kind === "regions" ? (g.capabilities || []) : TERR; }
   function copyGrants(list) { return JSON.parse(JSON.stringify(list || [])); }
 
@@ -127,8 +140,9 @@
       });
       var ed = S.draft.editing, eg = ed != null ? S.draft.grants[ed] : null, fresh = !!eg;     // fresh: the form still shows the grant being edited
       var add = mk("div", "acadd"); add.appendChild(mk("b", "", eg ? "Edit this territory" : "Add territory"));
-      var kind = select("agKind", [["regions", "Some regions in a state"], ["state", "A whole state (state administrator)"], ["all", "The whole US"]], eg ? eg.kind : "regions");
-      var states = areaByKind("state").sort(sortBy("name")).map(function (a) { return [a.state_code, a.name]; });
+      var DEL = isDelegate();
+      var kind = select("agKind", DEL ? [["regions", "Some regions in a state"]] : [["regions", "Some regions in a state"], ["state", "A whole state (state administrator)"], ["all", "The whole US"]], eg ? eg.kind : "regions");
+      var states = areaByKind("state").sort(sortBy("name")).filter(function (a) { return !DEL || regionsOf(a.state_code).some(delCovers); }).map(function (a) { return [a.state_code, a.name]; });
       var st = select("agState", states, eg && eg.state_code ? eg.state_code : (states[0] || [""])[0]);
       var regionBox = mk("div", "accaps"); var capBox = mk("div", "accaps"); var copy = select("agCopy", [["", "Start from this role's defaults"]].concat(S.draft.grants.map(function (g, i) { return g.kind === "regions" ? [String(i), "Copy from: " + grantText(g)] : null; }).filter(Boolean)), "");
       var group = input("text", "agGroup", eg && eg.group ? eg.group : ""); group.placeholder = "Label for the list (optional), such as Wisconsin team";
@@ -137,7 +151,7 @@
       function roleCaps() { var r = null; if (roleSel) S.roles.forEach(function (x) { if (x.id === roleSel.value) r = x; }); return terrOfRole(r); }
       function fillRegions() {
         regionBox.innerHTML = "";
-        regionsOf(st.value).forEach(function (a) {
+        regionsOf(st.value).filter(function (a) { return !DEL || delCovers(a); }).forEach(function (a) {
           var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = a.id; cb.disabled = !!used[a.id]; cb.checked = !!(fresh && eg.region_ids && eg.state_code === st.value && eg.region_ids.indexOf(a.id) >= 0); l.appendChild(cb);
           l.appendChild(mk("span", "", " " + a.name + (used[a.id] ? " (already in a grant)" : ""))); regionBox.appendChild(l);
         });
@@ -146,7 +160,7 @@
       function fillCaps() {
         var have = fresh && eg.capabilities ? eg.capabilities : copy.value !== "" ? (S.draft.grants[+copy.value].capabilities || []) : roleCaps();
         capBox.innerHTML = "";
-        TERR.forEach(function (c) { var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = c; cb.checked = have.indexOf(c) >= 0; l.appendChild(cb); l.appendChild(mk("span", "", " " + c)); capBox.appendChild(l); });
+        (DEL ? delCaps() : TERR).forEach(function (c) { var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = c; cb.checked = have.indexOf(c) >= 0; l.appendChild(cb); l.appendChild(mk("span", "", " " + c)); capBox.appendChild(l); });
       }
       function show() {
         var k = kind.value; st.parentNode.hidden = k === "all"; regionBox.parentNode.hidden = k !== "regions"; capBox.parentNode.hidden = k !== "regions"; copy.parentNode.hidden = k !== "regions";
@@ -318,6 +332,7 @@
     });
     if (!S.persons.length) wrap.appendChild(mk("p", "acm", "No one yet."));
 
+    if (isDelegate()) { wrap.appendChild(mk("p", "acm", "You can invite people into your own regions and manage the people you invited. Roles and anything outside your regions are looked after by a super admin.")); return; }
     territoryView(wrap);
 
     var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", "", function () { S.addR = true; S.editR = null; S.msg = ""; draw(); })); wrap.appendChild(h2);

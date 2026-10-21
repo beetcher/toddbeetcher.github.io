@@ -150,6 +150,16 @@ class Roster:
                     out["residence_state"] = state   # derived, never stored: only the state leaves, not the address
         return out
 
+    def _region_problems(self, store, doc):
+        """region_ids (instructors) must each be a live region record."""
+        out = []
+        for rid in doc.get("region_ids") or []:
+            a = store.get("discovery_areas", rid)
+            if a is None or "deleted_at" in a or a.get("kind") != "region":
+                out.append({"field": "region_ids", "issue": "not_found"})
+                break
+        return out
+
     # ---- create ------------------------------------------------------------
     def _create(self, store, data, actor, source, tx, now, person_known=False):
         problems = check_actor(actor)
@@ -165,6 +175,9 @@ class Roster:
         doc = drop_empty({k: self._normalize(k, v) for k, v in data.items()})
         doc.setdefault("status", "active")
         problems = check_document(self.C, doc) or self._rules(doc)
+        if problems:
+            return _bad(problems)
+        problems = self._region_problems(store, doc)
         if problems:
             return _bad(problems)
         if not person_known:
@@ -301,7 +314,7 @@ class Roster:
         merged = {**cur, **sets}
         for f in removals:
             merged.pop(f, None)
-        problems = check_document(self.C, merged) or self._rules(merged)
+        problems = check_document(self.C, merged) or self._rules(merged) or (self._region_problems(store, merged) if "region_ids" in sets else [])
         if problems:
             return _bad(problems)
         stamp = stamp_update(actor, now)

@@ -1,104 +1,125 @@
 {
- "valid": {
-  "full": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "status": "active",
-   "bio": "Retired nurse and longtime volunteer who teaches calm, step-by-step AI basics.",
-   "capabilities": [
-    "prompting basics",
-    "large rooms",
-    "patient with beginners"
-   ],
-   "service_area": "Denver metro",
-   "availability": [
-    {
-     "day_of_week": "tuesday",
-     "opens_at": "09:00",
-     "closes_at": "15:00"
+  "valid": {
+    "full": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "status": "active",
+      "bio": "Retired nurse and longtime volunteer who teaches calm, step-by-step AI basics.",
+      "capabilities": [
+        "prompting basics",
+        "large rooms",
+        "patient with beginners"
+      ],
+      "service_area": "Denver metro",
+      "availability": [
+        {
+          "day_of_week": "tuesday",
+          "opens_at": "09:00",
+          "closes_at": "15:00"
+        },
+        {
+          "day_of_week": "thursday",
+          "opens_at": "13:00",
+          "closes_at": "18:00"
+        }
+      ],
+      "availability_notes": "Not the first week of June.",
+      "notes": "Prefers email.",
+      "curriculum_ids": [
+        "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+      ]
     },
-    {
-     "day_of_week": "thursday",
-     "opens_at": "13:00",
-     "closes_at": "18:00"
+    "pointer_only": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+    },
+    "inactive": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "status": "inactive",
+      "notes": "On leave until fall."
+    },
+    "with_regions": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "status": "active",
+      "region_ids": [
+        "8c1f0a52-3d4e-4b6a-9f10-2a3b4c5d6e7f",
+        "9d2e1b63-4e5f-4c7b-8a21-3b4c5d6e7f80"
+      ]
     }
-   ],
-   "availability_notes": "Not the first week of June.",
-   "notes": "Prefers email.",
-   "curriculum_ids": [
-    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
-   ]
   },
-  "pointer_only": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
-  },
-  "inactive": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "status": "inactive",
-   "notes": "On leave until fall."
+  "invalid": {
+    "empty": {},
+    "missing_individual": {
+      "status": "active"
+    },
+    "individual_not_uuid": {
+      "individual_id": "nope"
+    },
+    "bad_status": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "status": "retired"
+    },
+    "capabilities_not_list": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "capabilities": "prompting"
+    },
+    "empty_tag": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "capabilities": [
+        ""
+      ]
+    },
+    "bio_too_long": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "bio": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "bad_day": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "availability": [
+        {
+          "day_of_week": "funday",
+          "opens_at": "09:00",
+          "closes_at": "10:00"
+        }
+      ]
+    },
+    "bad_time": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "availability": [
+        {
+          "day_of_week": "monday",
+          "opens_at": "9am",
+          "closes_at": "10:00"
+        }
+      ]
+    },
+    "unknown_field": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "email": "a@b.com"
+    },
+    "curriculum_ids_not_uuid": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "curriculum_ids": [
+        "abc"
+      ]
+    },
+    "curriculum_ids_duplicate": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "curriculum_ids": [
+        "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+        "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
+      ]
+    },
+    "region_ids_not_uuid": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "region_ids": [
+        "boulder"
+      ]
+    },
+    "region_ids_duplicate": {
+      "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
+      "region_ids": [
+        "8c1f0a52-3d4e-4b6a-9f10-2a3b4c5d6e7f",
+        "8c1f0a52-3d4e-4b6a-9f10-2a3b4c5d6e7f"
+      ]
+    }
   }
- },
- "invalid": {
-  "empty": {},
-  "missing_individual": {
-   "status": "active"
-  },
-  "individual_not_uuid": {
-   "individual_id": "nope"
-  },
-  "bad_status": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "status": "retired"
-  },
-  "capabilities_not_list": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "capabilities": "prompting"
-  },
-  "empty_tag": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "capabilities": [
-    ""
-   ]
-  },
-  "bio_too_long": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "bio": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  },
-  "bad_day": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "availability": [
-    {
-     "day_of_week": "funday",
-     "opens_at": "09:00",
-     "closes_at": "10:00"
-    }
-   ]
-  },
-  "bad_time": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "availability": [
-    {
-     "day_of_week": "monday",
-     "opens_at": "9am",
-     "closes_at": "10:00"
-    }
-   ]
-  },
-  "unknown_field": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "email": "a@b.com"
-  },
-  "curriculum_ids_not_uuid": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "curriculum_ids": [
-    "abc"
-   ]
-  },
-  "curriculum_ids_duplicate": {
-   "individual_id": "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-   "curriculum_ids": [
-    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b",
-    "3f2b8c1e-7a4d-4e5f-9b6a-1c2d3e4f5a6b"
-   ]
-  }
- }
 }

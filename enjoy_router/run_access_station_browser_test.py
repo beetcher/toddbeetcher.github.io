@@ -55,7 +55,7 @@ with sync_playwright() as p:
     check("both people are listed with their roles", rows(pg, "#accessView .acrow") >= 4 and "Todd Beetcher" in pg.inner_text("#accessView") and "Hana Head" in pg.inner_text("#accessView"))
     txt = pg.inner_text("#accessView")
     check("a person who never signed in says so", "Has not signed in yet" in txt)
-    check("the capability table lists all 16, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 17 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
+    check("the capability table lists all 17, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 18 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
     check("the super admin role says it does everything", "Everything, including access" in txt)
 
     # ---- invite
@@ -97,7 +97,7 @@ with sync_playwright() as p:
     # ---- roles
     pg.get_by_role("button", name="Add a role", exact=True).click(); pg.wait_for_selector("#arKey")
     labels = pg.locator("#accessView .accaps input").evaluate_all("els => els.map(e => e.value)")
-    check("the role form offers 15 capabilities and never manage_access", len(labels) == 15 and "manage_access" not in labels and "edit_regions" in labels, labels)
+    check("the role form offers 16 capabilities and never manage_access", len(labels) == 16 and "manage_access" not in labels and "edit_regions" in labels, labels)
     pg.fill("#arKey", "helper"); pg.fill("#arLabel", "Helper")
     for c in ("view_console", "view_messages"): pg.locator('#accessView .accaps input[value="%s"]' % c).check()
     pg.locator('#accessView .accaps input[value="view_console"]').uncheck(); pg.locator('#accessView .accaps input[value="view_messages"]').uncheck()
@@ -237,7 +237,7 @@ with sync_playwright() as p:
     check("by capability: who holds it and where", "Olga Old: Longmont (CO)" in t and "Todd Beetcher: everywhere" in t, t)
     pg.locator("#acTerr details", has_text="manage_requests").first.locator("summary").click()
     check("by capability: a whole-state grant holds every territorial capability there", "Nora Newman: all of Wisconsin" in pg.locator("#acTerr details", has_text="manage_requests").first.inner_text())
-    check("the capability list in this view is only the territorial ones", pg.locator("#acTerr details").count() == 11)
+    check("the capability list in this view is only the territorial ones", pg.locator("#acTerr details").count() == 12)
     pg.get_by_role("button", name="By region", exact=True).click()
 
     # ---- an email is locked after a first sign-in

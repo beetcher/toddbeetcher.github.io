@@ -927,7 +927,7 @@
   var STATION_CAPS = { requests: ["manage_requests", "manage_classes"], venues: ["view_console"], classes: ["view_console"], people: ["edit_people"],
     places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
     curriculums: ["view_console"], attendance: ["manage_classes", "manage_requests"], organizations: ["edit_people"], messages: ["view_messages"],
-    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access"] };
+    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access", "invite_people"] };
   function can(c) { return !!ME && (ME.is_super_admin === true || (ME.capabilities || []).indexOf(c) >= 0); }
   function canAny(list) { for (var i = 0; i < list.length; i++) if (can(list[i])) return true; return false; }
   function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && ME.is_super_admin); }
@@ -3790,9 +3790,9 @@
     }
     var venTouched = false;
     ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
-    // The request has a Colorado ZIP: ask the server for the venues nearest first, show the distances, and (unless the requester
+    // The request has a ZIP: ask the server for the venues nearest first, show the distances, and (unless the requester
     // picked a venue, or chose a home) fill in the nearest public place. The operator may change it. Without a ZIP nothing changes.
-    if (req && /^8[01][0-9]{3}$/.test(req.postal_code || "")) {
+    if (req && /^[0-9]{5}$/.test(req.postal_code || "")) {
       admin("list", { filters: { status: "active" }, limit: 200, expand: true, near_zip: req.postal_code }, "venues").then(function (res) {
         if (res.status !== 200 || !res.body.ok) return;
         var recs = res.body.data.records || [], keep = ven.value, pickedByRequester = !!(req.preferred_venue_id && keep === req.preferred_venue_id);
@@ -5607,7 +5607,7 @@
                  immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed.",
                  address_required: "An instructor needs an address first. Use Add address on their card, or enter it in the form." };
   var RLABEL = { individual_id: "Person", status: "Status", bio: "Bio", capabilities: "What they can teach or do", service_area: "Where they will travel",
-                 availability: "Weekly hours", availability_notes: "Availability notes", notes: "Notes", person: "Person",
+                 availability: "Weekly hours", availability_notes: "Availability notes", notes: "Notes", person: "Person", region_ids: "Regions they work in",
                  "person.given_name": "Given name", "person.family_name": "Family name", "person.email": "Email", "person.phone": "Phone" };
   var RDAYS = [["monday", "Mon"], ["tuesday", "Tue"], ["wednesday", "Wed"], ["thursday", "Thu"], ["friday", "Fri"], ["saturday", "Sat"], ["sunday", "Sun"]];
   var RPERSON = [["given_name", "Given name"], ["family_name", "Family name"], ["email", "Email"], ["phone", "Phone (text messages)"]];
@@ -5753,7 +5753,12 @@
         S.all = res.body.data.records || []; S.loaded = true;
         var done = function () { render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
         if (!cfg.curricula) { done(); return; }
-        return admin("list", { limit: 200 }, "curriculums").then(function (cr) { S.curr = (cr.status === 200 && cr.body.ok) ? (cr.body.data.records || []) : []; done(); });
+        return Promise.all([admin("list", { limit: 200 }, "curriculums"), admin("list", { limit: 200 }, "discovery_areas")]).then(function (all) {
+          var cr = all[0], ar = all[1];
+          S.curr = (cr.status === 200 && cr.body.ok) ? (cr.body.data.records || []) : [];
+          S.regions = ((ar.status === 200 && ar.body && ar.body.ok) ? (ar.body.data.records || []) : []).filter(function (a) { return a.kind === "region"; });
+          done();
+        });
       });
     }
     S.load = load;
@@ -5855,6 +5860,17 @@
         chosen.forEach(function (id) { if (!cEls[id]) { var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = true; cb.value = id; lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode("(removed curriculum)")); box2.appendChild(lab); cEls[id] = cb; } });
         if (!Object.keys(cEls).length) box2.appendChild(mk("div", "hint", "No curricula yet. Add some in the Curriculum station."));
       }
+      var gEls = {};
+      if (cfg.curricula) {
+        form.appendChild(mk("div", "f", "Regions they work in")); form.appendChild(mk("div", "hint", "Place them in regions of their own, wherever they live. People who look after a region see them there. You can only pick regions you manage."));
+        var inRegs = rec.region_ids || [], box3 = mk("div", "rgbox"); form.appendChild(box3);
+        (S.regions || []).forEach(function (a) {
+          var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = inRegs.indexOf(a.id) >= 0; cb.value = a.id;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode((a.name || "(region)") + (a.state_code ? ", " + a.state_code : ""))); box3.appendChild(lab); gEls[a.id] = cb;
+        });
+        inRegs.forEach(function (id) { if (!gEls[id]) { var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = true; cb.value = id; lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode("(a region not shown to you)")); box3.appendChild(lab); gEls[id] = cb; } });
+        if (!Object.keys(gEls).length) box3.appendChild(mk("div", "hint", "No regions yet. Add some in the Access or Discovery station."));
+      }
       if (cfg.hours) {
         form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
         var by = {}; (rec.availability || []).forEach(function (h) { by[h.day_of_week] = h; });
@@ -5891,6 +5907,10 @@
         if (cfg.curricula) {
           var picked = Object.keys(cEls).filter(function (id) { return cEls[id].checked; }).sort(), was = (rec.curriculum_ids || []).slice().sort();
           if (JSON.stringify(picked) !== JSON.stringify(was)) changes.curriculum_ids = picked.length ? picked : null;
+        }
+        if (cfg.curricula) {
+          var pickedR = Object.keys(gEls).filter(function (id) { return gEls[id].checked; }).sort(), wasR = (rec.region_ids || []).slice().sort();
+          if (JSON.stringify(pickedR) !== JSON.stringify(wasR)) changes.region_ids = pickedR.length ? pickedR : null;
         }
         if (havePerson) Object.keys(pEls).forEach(function (k) {
           var v = pEls[k].el.value.trim(), cur = rec.person[pEls[k].k];

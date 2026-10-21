@@ -55,6 +55,9 @@ with sync_playwright() as p:
     check("manual buttons for both rosters", pg.locator("#homeManualBtns button", has_text="Instructors").count() == 1 and pg.locator("#homeManualBtns button", has_text="Students").count() == 1)
 
     bob = IS.create(store, {"given_name": "Bob", "family_name": "Ray", "email": "bob@example.com"}, "user:admin").data
+    rid = "00000000-0000-4000-8000-0000000000aa"
+    store.create("discovery_areas", rid, {"id": rid, "kind": "region", "state_code": "CO", "name": "Boulder", "is_active": True, "schema_version": 1,
+                                         "created_at": "2026-10-01T00:00:00Z", "updated_at": "2026-10-01T00:00:00Z", "zip_codes": ["80301"]})
 
     pg.select_option("#collPick", "instructors")
     pg.wait_for_selector("#instructorsView:not([hidden])")
@@ -218,6 +221,25 @@ with sync_playwright() as p:
     sw.click(); pg.wait_for_timeout(2400)
     st = [r["status"] for r in store.data.get("instructor_rosters", {}).values()]
     check("the roster switch changes the saved status after the pause", sw.get_attribute("aria-checked") != was and ("inactive" in st) == (was == "true"))
+    # P-66: place an instructor in a region by ticking it on the edit form
+    pg.select_option("#collPick", "instructors"); pg.select_option("#riFilter", "active")
+    pg.wait_for_selector("#riList li"); pg.wait_for_timeout(500)
+    li = pg.locator("#riList li", has_text="Toddy"); li.locator("button.head").click()
+    li.get_by_role("button", name="Edit", exact=True).click()
+    check("the edit form offers the regions", li.get_by_text("Regions they work in").count() == 1 and li.locator("input[value='%s']" % rid).count() == 1)
+    li.locator("input[value='%s']" % rid).check()
+    li.get_by_role("button", name="Save changes").click()
+    pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Saved') === 0")
+    got = [r.get("region_ids") for r in store.data.get("instructor_rosters", {}).values() if r.get("individual_id") == tb["id"]]
+    check("ticking a region saves region_ids on the instructor", got == [[rid]])
+    pg.wait_for_timeout(500)
+    li = pg.locator("#riList li", has_text="Toddy"); li.locator("button.head").click()
+    li.get_by_role("button", name="Edit", exact=True).click()
+    check("the saved region comes back ticked", li.locator("input[value='%s']" % rid).is_checked())
+    li.locator("input[value='%s']" % rid).uncheck(); li.get_by_role("button", name="Save changes").click()
+    pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Saved') === 0")
+    got = [r.get("region_ids") for r in store.data.get("instructor_rosters", {}).values() if r.get("individual_id") == tb["id"]]
+    check("unticking removes region_ids", got == [None] or got == [[]])
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()

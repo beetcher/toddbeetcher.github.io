@@ -27,7 +27,7 @@ ACTOR = "system:access_seed"
 DEFAULT_EMAIL = "toddbeetcher17@gmail.com"
 DEFAULT_NAME = "Todd Beetcher"
 TERRITORIAL = ["manage_requests", "manage_classes", "manage_instructors", "edit_venues", "activate_venues", "edit_people", "edit_places",
-               "edit_regions", "view_messages", "manage_messages", "run_discovery"]
+               "edit_regions", "view_messages", "manage_messages", "run_discovery", "invite_people"]
 ROLES = [
     dict(key="super_admin", label="Super admin", is_super_admin=True, is_active=True,
          description="The owner. May do everything, including inviting and removing other people."),
@@ -42,7 +42,7 @@ ROLES = [
                      "runs Discovery searches. Cannot create regions or send messages. Where they work is their territory."),
     dict(key="instructor", label="Instructor", is_super_admin=False, is_active=True,
          capabilities=["view_console", "manage_classes"],
-         description="Works with classes in their territory. (Cannot yet be limited to their own classes.)"),
+         description="Sees the classes they teach (and who is in them), once their sign-in is linked to their person record."),
 ]
 OLD_ROLE = "region_head"
 NEW_ROLE = "manager"

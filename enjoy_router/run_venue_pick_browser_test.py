@@ -147,9 +147,9 @@ with sync_playwright() as p:
     OPEN(zq); zq.goto(FORM)
     check("clearing the field forgets it", zq.input_value("input[name=postal_code]") == "")
     zr = z1.new_page(); zr.route("**/enjoy_public_venues*", venues_route); zr.route(re.compile(r"enjoy-registration-request"), reg_route); sent.clear()
-    OPEN(zr); zr.goto(FORM); fill_form(zr); zr.check("input[name=location_type][value=home]", force=True); zr.fill("input[name=postal_code]", "90210")
+    OPEN(zr); zr.goto(FORM); fill_form(zr); zr.check("input[name=location_type][value=home]", force=True); zr.fill("input[name=postal_code]", "9021")
     zr.click("button[type=submit]"); zr.wait_for_timeout(500)
-    check("a ZIP outside Colorado is stopped on the form", not sent and "Colorado ZIP" in zr.locator("form").inner_text())
+    check("a ZIP that is not five digits is stopped on the form", not sent and "five-digit ZIP" in zr.locator("form").inner_text())
     zr.fill("input[name=postal_code]", "80301"); zr.click("button[type=submit]"); zr.wait_for_function("document.getElementById('rf-done').getAttribute('data-show') === '1'")
     check("a home request can carry a ZIP", sent and sent[-1].get("postal_code") == "80301" and "preferred_venue_id" not in sent[-1] and sent[-1].get("location_type") == "home", sent[-1:])
     # storage blocked: still works

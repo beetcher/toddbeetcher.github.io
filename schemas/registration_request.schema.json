@@ -220,9 +220,9 @@
       "x_pii": true
     },
     "postal_code": {
-      "description": "The Colorado ZIP code where the requester would like the session, five digits (80000 to 81999). Private and group requests only, with any location_type. Used to put the nearest venues first on the form; the form remembers it on the requester's device. Optional.",
+      "description": "The US ZIP code where the requester would like the session, five digits (any state). Private and group requests only, with any location_type. Used to put the nearest venues first on the form and to place the request in a region (a person with a regions grant sees only the requests whose ZIP falls in their regions); the form remembers it on the requester's device. Optional.",
       "type": "string",
-      "pattern": "^8[01][0-9]{3}$",
+      "pattern": "^[0-9]{5}$",
       "x_pii": true
     },
     "preferred_venue_id": {

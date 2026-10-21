@@ -45,7 +45,7 @@ import json
 import logging
 from datetime import datetime
 
-from access import door as _door, guard as _guard, policy as _policy
+from access import delegate as _delegate, door as _door, guard as _guard, policy as _policy
 from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
 from crud import (access_persons_crud, access_roles_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
@@ -223,7 +223,10 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
     if op not in allowed_ops or collection in blocked_collections:
         return _error(400, "validation_failed", "This op is not enabled here.")
     if actor is None and not _policy.allowed(access, _policy.crud_need(collection, op, args)):
-        return _door.forbidden(tag)
+        # an instructor may LOOK at the roster of a class they teach; the guard then keeps only those classes' records
+        if not ((collection == "attendances" and op in _policy.READ_OPS and access.ok and access.individual_id)
+                or (collection in _delegate.COLLECTIONS and _delegate.has_door(access))):
+            return _door.forbidden(tag)
     required, optional = OPS[op]
     missing, extra = sorted(required - set(args)), sorted(set(args) - required - optional)
     if missing or extra:
@@ -235,9 +238,11 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
     try:
         if scope is not None and not _guard.before(scope, store, collection, op, args):
             return _door.forbidden(tag)
-        result = _run(HANDLERS[collection], store, op, args, now, who)
+        run_args, want = _guard.widen(scope, collection, op, args) if scope is not None else (args, None)
+        result = _run(HANDLERS[collection], store, op, run_args, now, who)
         if scope is not None and result.ok:
             shown = _guard.after(scope, store, collection, op, result.data)
+            shown = _guard.trim(shown, want)
             if shown is None:
                 return _door.forbidden(tag)
             result = success(shown)

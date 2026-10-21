@@ -18,7 +18,7 @@ address, ...). Ops not listed here are refused for a limited person on a PLACED 
 """
 from __future__ import annotations
 
-from . import places, policy
+from . import delegate, places, policy
 from .territory import norm_zip
 
 PLACED = frozenset({"venues", "scheduled_classes", "registration_assignments", "attendances", "instructor_rosters", "student_rosters",
@@ -126,6 +126,30 @@ def _area_write_ok(scope, store, op, args):
     return cur.get("kind") == "region" and scope.area_has("edit_regions", cur)
 
 
+def _instructor_roster_ok(scope, store, op, args):
+    """Instructor entries belong to a place two ways: the ZIP where the person lives (as for any person) and the regions listed in
+    `region_ids`. A write is allowed when the entry (as it is now, or as a new one will be) is in reach by EITHER way, and every region a
+    person puts an instructor into is one they may manage instructors in. A new entry for someone new (no address yet) needs a region."""
+    a = args if isinstance(args, dict) else {}
+    data = a.get("data") if isinstance(a.get("data"), dict) else (a.get("changes") if isinstance(a.get("changes"), dict) else {})
+    need = policy.crud_need("instructor_rosters", op, args)
+    new = [r for r in data.get("region_ids") or [] if isinstance(r, str)]
+    if not all(scope.satisfies_region(need, r) and scope.sees_region(r) for r in new):
+        return False
+    cur = _doc(store, "instructor_rosters", a.get("id")) if "id" in a else None
+    if "id" in a:
+        if cur is None:
+            return True                                        # the handler says not_found; nothing is revealed
+        z = places.zip_of(store, "instructor_rosters", cur)
+        by_zip = scope.satisfies(need, z) and scope.sees(z)
+        by_region = any(scope.satisfies_region(need, r) and scope.sees_region(r) for r in cur.get("region_ids") or [])
+        return by_zip or by_region
+    pid = data.get("individual_id")                            # creating
+    z = places.zip_of_person(store, pid) if pid else None
+    by_zip = z is not None and scope.satisfies(need, z) and scope.sees(z)
+    return by_zip or bool(new)
+
+
 def before(scope, store, collection, op, args):
     if scope.unlimited:
         return True
@@ -133,6 +157,8 @@ def before(scope, store, collection, op, args):
         if op in policy.READ_OPS:
             return True                                                # filtered or checked after the read
         return _area_write_ok(scope, store, op, args)
+    if collection in delegate.COLLECTIONS:                              # people and roles: only a delegate (invite_people) gets here
+        return delegate.has_door(scope.access) and delegate.allowed(scope, store, collection, op, args, policy.READ_OPS)
     if collection in UNPLACED:
         return False
     if collection not in PLACED:
@@ -141,6 +167,10 @@ def before(scope, store, collection, op, args):
         return scope.can_read(policy.crud_need(collection, op, args), places.zip_of_request_id(store, (args or {}).get("request_id")))
     if op in policy.READ_OPS:
         return True                                                    # checked per record after the read
+    if collection == "instructor_rosters":
+        return _instructor_roster_ok(scope, store, op, args)
+    if collection == "individuals" and op == "create":                # a new person has no home yet: whoever may edit people somewhere may add one
+        return any("edit_people" in g.get("capabilities", ()) for g in scope.access.grants)
     zips = call_zips(store, collection, op, args)
     if zips is NO_PLACE:
         return False
@@ -152,7 +182,14 @@ def _readable(scope, store, collection, doc):
     caps = policy.READ.get(collection)
     if not caps:
         return False
-    return scope.can_read((tuple(caps),), places.zip_of(store, collection, doc))
+    if scope.can_read((tuple(caps),), places.zip_of(store, collection, doc)):
+        return True
+    if collection == "scheduled_classes" and scope.teaches(store, doc.get("id")):
+        return True                                                    # a class they teach (looking only)
+    if collection == "attendances" and scope.teaches(store, doc.get("scheduled_class_id")):
+        return True
+    return collection == "instructor_rosters" and any(scope.satisfies_region((tuple(caps),), r) and scope.sees_region(r)
+                                                        for r in doc.get("region_ids") or [])         # an instructor placed in a region by id
 
 
 def after(scope, store, collection, op, data):
@@ -166,6 +203,8 @@ def after(scope, store, collection, op, data):
             recs = [r for r in data["records"] if scope.area_sees(r)]
             return {**data, "records": recs, "count": len(recs)}
         return data if isinstance(data, dict) and scope.area_sees(data) else None
+    if collection in delegate.COLLECTIONS:
+        return delegate.show(scope, store, collection, data)
     if collection not in PLACED:
         return data
     if op == "queue":                                                   # registration_assignments: the state of each recent request
@@ -180,4 +219,33 @@ def after(scope, store, collection, op, data):
         return {**data, "records": recs, "count": len(recs)}
     if isinstance(data, dict) and "id" in data and op in ("get", "get_for_individual"):
         return data if _readable(scope, store, collection, data) else None
+    return data
+
+
+WIDE = 200      # the most any handler returns in one call
+
+
+def widen(scope, collection, op, args):
+    """Limits come BEFORE the territory filter inside the handlers, so a limited person asking for the newest 100 would get fewer than
+    their own newest 100 whenever others' records are mixed in. For a list or queue on a PLACED collection, ask the handler for the most
+    it will give, and trim to what the person asked for AFTER filtering. Returns (args to run, the limit to trim to or None)."""
+    if scope.unlimited or collection not in PLACED or op not in ("list", "queue") or not isinstance(args, dict):
+        return args, None
+    want = args.get("limit")
+    return {**args, "limit": WIDE}, (want if isinstance(want, int) and not isinstance(want, bool) and want > 0 else 100)
+
+
+def trim(data, want):
+    """Cut a filtered list or queue to the limit the person asked for."""
+    if want is None or not isinstance(data, dict):
+        return data
+    if isinstance(data.get("records"), list):
+        recs = data["records"][:want]
+        return {**data, "records": recs, "count": len(recs)}
+    if isinstance(data.get("items"), list):
+        items = data["items"][:want]
+        counts = {k: 0 for k in data.get("counts", {})}
+        for i in items:
+            counts[i["state"]] = counts.get(i["state"], 0) + 1
+        return {**data, "items": items, "counts": counts}
     return data

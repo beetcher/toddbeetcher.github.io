@@ -46,6 +46,7 @@ class Access:
     scope_region_id: str = ""      # RETIRED (see grants); still carried so older records work
     grants: tuple = ()             # the territory: dicts with kind, state_code, region_ids (frozenset), capabilities (frozenset), group
     method: str = ""               # "key" or "google"
+    individual_id: str = ""        # the person record this sign-in is linked to (an instructor sees the classes they teach)
 
     def can(self, capability: str) -> bool:
         return self.ok and (self.is_super_admin or capability in self.capabilities)
@@ -130,7 +131,7 @@ def authenticate(given, *, admin_key, verifier, store, now) -> Access:
     caps = frozenset(CAPABILITIES) if sup else frozenset(c for c in role.get("capabilities", []) if c in GLOBAL).union(*(g["capabilities"] for g in grants))
     return Access(True, actor=f"user:{person['id']}", name=person.get("display_name") or claims.get("name") or person["email"],
                   email=person["email"], role_key=role["key"], capabilities=caps,
-                  is_super_admin=sup, scope_region_id=person.get("scope_region_id", ""), grants=grants, method="google")
+                  is_super_admin=sup, scope_region_id=person.get("scope_region_id", ""), grants=grants, method="google", individual_id=person.get("individual_id", "") or "")
 
 
 class FirebaseVerifier:

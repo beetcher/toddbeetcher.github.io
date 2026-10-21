@@ -100,7 +100,8 @@
                 "edit_regions",
                 "view_messages",
                 "manage_messages",
-                "run_discovery"
+                "run_discovery",
+                "invite_people"
               ]
             }
           },

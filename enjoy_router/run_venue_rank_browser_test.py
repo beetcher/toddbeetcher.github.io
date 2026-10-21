@@ -73,11 +73,11 @@ with sync_playwright() as p:
     check("it explains why, and is not marked required", "find a place near you" in lab and "optional" not in lab.split("\n")[0].lower(), lab)
     check("the checklist still has three items", len(pg.locator("#rf-need li").all_inner_texts()) == 3)
     pg.fill("input[name=first_name]", "Pat"); pg.fill("input[name=last_name]", "Lee"); pg.fill("input[name=email]", "pat@example.com"); pg.check("input[name=consent_to_contact]", force=True)
-    pg.fill("input[name=postal_code]", "90210"); pg.click("button[type=submit]"); pg.wait_for_timeout(400)
+    pg.fill("input[name=postal_code]", "9021"); pg.click("button[type=submit]"); pg.wait_for_timeout(400)
     msg = pg.locator("#rf").inner_text()
-    check("a non-Colorado ZIP is stopped with the friendlier message", not sent and "We are starting in Colorado" in msg, msg[-300:])
-    pg.fill("input[name=postal_code]", "80027"); pg.click("button[type=submit]"); pg.wait_for_function("document.getElementById('rf-done').getAttribute('data-show') === '1'")
-    check("a Colorado ZIP from the top block is sent", sent and sent[0].get("postal_code") == "80027", sent)
+    check("a ZIP that is not five digits is stopped with a plain message", not sent and "five-digit ZIP" in msg and "Colorado" not in msg, msg[-300:])
+    pg.fill("input[name=postal_code]", "90210"); pg.click("button[type=submit]"); pg.wait_for_function("document.getElementById('rf-done').getAttribute('data-show') === '1'")
+    check("a ZIP in another state from the top block is sent", sent and sent[0].get("postal_code") == "90210", sent)
     check("no script errors on the form", not errs, errs)
 
     # ---- the Console

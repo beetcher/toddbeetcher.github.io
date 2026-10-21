@@ -52,6 +52,16 @@
         "format": "uuid"
       }
     },
+    "region_ids": {
+      "description": "The regions this instructor works in: ids of `discovery_areas` records of kind region (up to 50). A manager of any of these regions can see and manage this entry, in addition to those who cover the ZIP where the instructor lives. Only a person who may manage instructors in a region can put an instructor in it. Optional.",
+      "type": "array",
+      "maxItems": 50,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
     "service_area": {
       "description": "Where the instructor will travel to teach, in plain words: 'Denver metro', 'online only'. Up to 300 characters. Optional.",
       "type": "string",

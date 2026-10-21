@@ -203,7 +203,7 @@ check("instructor roster: a Boulder head sees only the instructor who lives in B
 check("instructor roster: update out of reach refused, creating one for a new person refused", code(2, "instructor_rosters", "update", {"id": irL, "changes": {"notes": "x"}}) == 403
       and code(2, "instructor_rosters", "create_with_person", {"data": {}, "person": {"given_name": "N", "family_name": "P"}}) == 403)
 check("people: a Boulder head sees only the person who lives in Boulder", ids(2, "individuals") == (200, [pB]))
-check("people: creating, merging or erasing people is for unlimited people only", code(2, "individuals", "create", {"data": {}}) == 403 and code(2, "individuals", "merge", {"survivor_id": pB, "duplicate_id": pL, "reason": "x"}) == 403)
+check("people: merging or erasing people is for unlimited people only; creating one needs edit_people in some grant (a Boulder head may, the venues-only person may not)", code(2, "individuals", "create", {"data": {}}) != 403 and code(7, "individuals", "create", {"data": {}}) == 403 and code(3, "individuals", "create", {"data": {}}) == 403 and code(2, "individuals", "merge", {"survivor_id": pB, "duplicate_id": pL, "reason": "x"}) == 403)
 check("messages: a Boulder head sees only the Boulder class's message", ids(2, "communication_logs") == (200, [mB]))
 check("messages: mark handled out of reach is refused", code(2, "communication_logs", "mark_handled", {"id": mL}) == 403)
 check("organizations: no place of their own, so a limited person is refused, the all-US person and super admin are not", code(2, "organizations", "list") == 403 and code(4, "organizations", "list") == 403
@@ -268,6 +268,93 @@ check("discovery: a head who holds view_spend (transparency) sees every run", so
 check("discovery: zips (the map) only for a state the person has a grant in, unless they hold the global settings capability", disc(10, "zips", {"state_code": "CO"})[0] == 200
       and disc(10, "zips", {"state_code": "WI"})[0] == 403 and disc(9, "zips", {"state_code": "WI"})[0] == 200)
 check("discovery: the super admin is not held back", disc(1, "quote", REQ([MADISON]))[0] == 200 and disc(None, "quote", REQ([MADISON]), key=True)[0] == 200)
+
+# ================================================================ an instructor sees only the classes they teach (P-71)
+pT = raw("individuals", 260, display_name="Teaching Person", status="active")
+instr_role = RO.create(store, {"key": "instructor", "label": "Instructor", "is_super_admin": False, "capabilities": ["view_console", "manage_classes"]}, A, now=tick()).data
+r = PE.create(store, {"email": "teach@x.com", "role_id": instr_role["id"], "grants": [], "individual_id": pT}, A, now=tick()); assert r.ok, r.problems
+V.tokens[tok(20)] = {"uid": "uid-20", "email": "teach@x.com", "email_verified": True, "provider": "google.com", "name": "teach@x.com"}
+r = PE.create(store, {"email": "plain@x.com", "role_id": instr_role["id"], "grants": []}, A, now=tick()); assert r.ok, r.problems
+V.tokens[tok(21)] = {"uid": "uid-21", "email": "plain@x.com", "email_verified": True, "provider": "google.com", "name": "plain@x.com"}
+tT = raw("attendances", 222, scheduled_class_id=cL, individual_id=pT, role="instructor")
+tS = raw("attendances", 223, scheduled_class_id=cB, individual_id=pT, role="student")
+tL2 = raw("attendances", 224, scheduled_class_id=cL, individual_id=uid(232), role="student")
+check("own classes: an instructor with no territory sees exactly the class they teach (not the one they only attend)", ids(20, "scheduled_classes") == (200, [cL]))
+check("own classes: ...and may open it, but not another class", code(20, "scheduled_classes", "get", {"id": cL}) == 200 and code(20, "scheduled_classes", "get", {"id": cB}) == 403)
+check("own classes: ...and sees who is in that class (its roster), no other class's", ids(20, "attendances") == (200, sorted([tT, tL, tL2])))
+check("own classes: ...but cannot change anything", code(20, "scheduled_classes", "update", {"id": cL, "changes": {"description": "x"}}) == 403 and code(20, "attendances", "update", {"id": tL2, "changes": {"notes": "x"}}) == 403)
+check("own classes: ...and sees no venues, requests or people", ids(20, "venues") == (200, []) and code(20, "individuals", "list") == 403 and code(20, "registration_assignments", "list") == 403)
+check("own classes: a signed-in person not linked to anyone sees no classes and no rosters", ids(21, "scheduled_classes") == (200, []) and code(21, "attendances", "list") == 403)
+check("own classes: an instructor who stops teaching loses the class", code(1, "attendances", "soft_delete", {"id": tT}) == 200 and ids(20, "scheduled_classes") == (200, []))
+
+# ================================================================ state leads can invite (P-68)
+INV = TERR + ["invite_people"]
+mgr_role = RO.create(store, {"key": "mgr", "label": "Mgr", "is_super_admin": False, "capabilities": ["view_console", "view_spend", "manage_requests"]}, A, now=tick()).data
+rich_role = RO.create(store, {"key": "rich", "label": "Rich", "is_super_admin": False, "capabilities": ["view_console", "manage_curriculums"]}, A, now=tick()).data
+who(30, "lead@x.com", mgr_role, grants=[reg([BOULDER, LONGMONT], INV)])
+who(31, "bonly@x.com", mgr_role, grants=[reg([BOULDER], INV)])
+def add(n, email, role, grants, **kw): return call(n, "access_persons", "create", {"data": {"email": email, "role_id": role["id"], "grants": grants, **kw}})
+def pid(email): return next(p["id"] for p in store.query("access_persons", [], limit=500) if p["email"] == email)
+check("invite: a person without invite_people anywhere cannot touch the access collections", code(2, "access_persons", "list") == 403 and code(2, "access_roles", "list") == 403)
+st, b = add(30, "inv1@x.com", mgr_role, [reg([BOULDER], ["manage_requests", "edit_venues"])]); check("invite: a lead invites someone into one of their regions with capabilities they hold", st == 200)
+check("invite: ...the invitation is stamped with who made it", store.get("access_persons", pid("inv1@x.com"))["created_by"] == f"user:{pid('lead@x.com')}")
+check("invite: a region outside their territory is refused", add(30, "inv2@x.com", mgr_role, [reg([MADISON], ["manage_requests"], "WI")])[0] == 403 and add(31, "inv3@x.com", mgr_role, [reg([LONGMONT], ["manage_requests"])])[0] == 403)
+check("invite: a region grant that mixes an outside region is refused", add(31, "inv4@x.com", mgr_role, [reg([BOULDER, LONGMONT], ["manage_requests"])])[0] == 403)
+check("invite: a state grant or an all grant is refused", add(30, "inv5@x.com", mgr_role, [{"kind": "state", "state_code": "CO"}])[0] == 403 and add(30, "inv6@x.com", mgr_role, [{"kind": "all"}])[0] == 403)
+check("invite: handing on invite_people is refused (no chains)", add(30, "inv7@x.com", mgr_role, [reg([BOULDER], ["invite_people"])])[0] == 403)
+check("invite: giving a capability the lead does not hold in that place is refused", add(30, "inv8@x.com", mgr_role, [reg([BOULDER], ["edit_regions"])])[0] == 403 and add(30, "inv8@x.com", mgr_role, [reg([BOULDER], ["edit_venues"])])[0] == 200)
+check("invite: roles: a super admin role, or a role with a global power the lead lacks are refused",
+      add(30, "inv9@x.com", sup, [])[0] == 403 and add(30, "inv11@x.com", rich_role, [])[0] == 403)
+check("invite: a plain role with no territory yet is fine", add(30, "inv12@x.com", mgr_role, [])[0] == 200)
+check("invite: the retired scope_region_id is refused", add(30, "inv13@x.com", mgr_role, [], scope_region_id=BOULDER)[0] == 403)
+st, b = call(30, "access_persons", "list"); seen = sorted(p["email"] for p in b["data"]["records"])
+check("invite: the lead sees the people inside their territory and those they invited, not themselves, other leads or the super admin", "inv1@x.com" in seen and "inv12@x.com" in seen and "boulder@x.com" in seen and "lead@x.com" not in seen and "bonly@x.com" not in seen and "todd@x.com" not in seen and "co@x.com" not in seen and "wi@x.com" not in seen)
+check("invite: ...the Boulder-only lead does not see an invitee who holds a Longmont region", "inv1@x.com" in [p["email"] for p in call(31, "access_persons", "list")[1]["data"]["records"]] and "lead@x.com" not in [p["email"] for p in call(31, "access_persons", "list")[1]["data"]["records"]])
+check("invite: a person with no territory who someone else invited is not theirs to see or change", "nobody@x.com" not in seen and code(30, "access_persons", "update", {"id": pid("nobody@x.com"), "changes": {"display_name": "x"}}) == 403)
+i1 = pid("inv1@x.com")
+check("invite: they can change an invitee (name, switch off)", code(30, "access_persons", "update", {"id": i1, "changes": {"display_name": "Inv One"}}) == 200 and code(30, "access_persons", "update", {"id": i1, "changes": {"is_active": False}}) == 200)
+check("invite: moving an invitee out of their territory or to a state grant is refused", code(30, "access_persons", "update", {"id": i1, "changes": {"grants": [reg([MADISON], ["manage_requests"], "WI")]}}) == 403 and code(30, "access_persons", "update", {"id": i1, "changes": {"grants": [{"kind": "all"}]}}) == 403)
+check("invite: they cannot change a person outside their territory, a state owner, a super admin or themselves",
+      code(31, "access_persons", "update", {"id": pid("lead@x.com"), "changes": {"display_name": "x"}}) == 403
+      and code(30, "access_persons", "update", {"id": pid("co@x.com"), "changes": {"display_name": "x"}}) == 403
+      and code(30, "access_persons", "update", {"id": pid("todd@x.com"), "changes": {"display_name": "x"}}) == 403
+      and code(30, "access_persons", "update", {"id": pid("lead@x.com"), "changes": {"display_name": "x"}}) == 403)
+check("invite: they cannot remove a person outside their territory, but can remove their invitee", code(30, "access_persons", "soft_delete", {"id": pid("co@x.com")}) == 403 and code(30, "access_persons", "soft_delete", {"id": i1}) == 200)
+st, b = call(30, "access_roles", "list"); names = sorted(r["key"] for r in b["data"]["records"])
+check("invite: they list only the roles they may hand out", "mgr" in names and "member" in names and "super_admin" not in names and "rich" not in names and "runner" not in names)
+check("invite: they cannot write roles", code(30, "access_roles", "create", {"data": {"key": "zz", "label": "Z", "is_super_admin": False, "capabilities": ["view_console"]}}) == 403)
+check("invite: the super admin still sees everyone", len(call(1, "access_persons", "list")[1]["data"]["records"]) >= 15 and "lead@x.com" in [p["email"] for p in call(1, "access_persons", "list")[1]["data"]["records"]])
+
+# ================================================================ instructors placed in regions by id (P-66)
+def rid_of(n, coll="instructor_rosters"): return ids(n, coll)[1] or []
+def put(n, rid, **changes): return code(n, "instructor_rosters", "update", {"id": rid, "changes": changes})
+check("instructors: a Boulder head sees Boulder's instructor and not Longmont's", irB in rid_of(2) and irL not in rid_of(2))
+check("instructors: a head cannot put someone else's instructor into their own region (they cannot manage that entry at all)", put(2, irL, region_ids=[BOULDER]) == 403 and "region_ids" not in store.get("instructor_rosters", irL))
+check("instructors: a regions id that is not a live region is refused: not_found for the super admin, out of reach for a state owner", put(1, irL, region_ids=[uid(999)]) == 400 and put(1, irL, region_ids=[uid(1)]) == 400 and put(4, irL, region_ids=[uid(999)]) == 403)
+check("instructors: the Colorado state owner places Longmont's instructor in the Boulder region", put(4, irL, region_ids=[BOULDER]) == 200 and store.get("instructor_rosters", irL)["region_ids"] == [BOULDER])
+check("instructors: the Boulder head now sees that instructor too (by region), still not by ZIP", irL in rid_of(2) and irB in rid_of(2))
+check("instructors: ...and may manage the entry", put(2, irL, notes="Boulder manager notes") == 200 and store.get("instructor_rosters", irL)["notes"] == "Boulder manager notes")
+st, b = call(2, "instructor_rosters", "get", {"id": irL}); check("instructors: get works for an entry placed in their region", st == 200)
+check("instructors: a head with edit_venues only (no manage_instructors) in Boulder cannot manage it", put(3, irL, notes="x") == 403 and irL not in rid_of(3))
+check("instructors: the head cannot send an entry into a region they do not manage (Longmont, Madison)", put(2, irB, region_ids=[BOULDER, LONGMONT]) == 403 and put(2, irB, region_ids=[MADISON]) == 403)
+check("instructors: but may add one of their own regions", put(2, irB, region_ids=[BOULDER]) == 200)
+check("instructors: the Wisconsin state owner does not see them", irL not in rid_of(5) and irB not in rid_of(5))
+check("instructors: taking the region away takes the head's reach away", put(4, irL, region_ids=None) == 200 and irL not in rid_of(2) and put(2, irL, notes="x") == 403)
+check("instructors: the super admin sees both", {irB, irL} <= set(rid_of(1)))
+
+# ================================================================ limits apply AFTER the territory filter (P-70)
+fillers = [venue("Aa %03d Longmont" % i, "80501", status="inactive") for i in range(130)]      # 130 venues of another region that sort first
+check("limits: the other region's 130 venues are there", ids(8, "venues", limit=200)[1] is not None and len(ids(8, "venues", limit=200)[1]) >= 130)
+check("limits: a Boulder head still sees BOTH Boulder venues in a default list (100 others sort first)", {vB, vB2} <= set(ids(2, "venues")[1]), ids(2, "venues"))
+check("limits: and none of the other region's", not (set(ids(2, "venues")[1]) & set(fillers)) and vL not in ids(2, "venues")[1])
+st, b = call(2, "venues", "list", {"limit": 1}); check("limits: the limit the person asked for is still honoured after filtering", st == 200 and b["data"]["count"] == 1 and len(b["data"]["records"]) == 1)
+check("limits: the Colorado state owner asking for 100 gets 100 of the 130+ they can see", len(ids(4, "venues", limit=100)[1]) == 100)
+st, b = call(2, "venues", "list", {"limit": 3}); check("limits: a limit of 3 returns at most 3", st == 200 and len(b["data"]["records"]) <= 3)
+st, b = call(1, "venues", "list", {"limit": 5}); check("limits: the super admin is cut exactly as before", st == 200 and len(b["data"]["records"]) == 5)
+for i in range(120):
+    raw("registration_requests", 5000 + i, postal_code="80501", first_name="Fill%d" % i, registration_type="private", attendee_count=1, created_at="2026-11-01T00:%02d:%02dZ" % (i // 60, i % 60))
+st, b = call(2, "registration_assignments", "queue", {"limit": 100})
+check("limits: the queue is filtered BEFORE it is cut: a Boulder head still sees their own request among 120 newer Longmont ones", st == 200 and rU in [i["request_id"] for i in b["data"]["items"]] and all(not i["request_id"].startswith("0000500") and not i["request_id"].startswith("0000501") for i in b["data"]["items"]), (st, str(b)[:200]))
 
 print(f"\n{total - len(fails)}/{total} checks passed" + (f"; FAILED: {fails}" if fails else ""))
 sys.exit(1 if fails else 0)
