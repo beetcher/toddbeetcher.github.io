@@ -105,6 +105,18 @@ mid = venue_at("Mid Denver", "mid_den", "80202")
 far = venue_at("Far Grand Junction", "far_gj", "81501")
 gps = venue_at("Gps Boulder Spot", "gps_bou", "81501", gps=(40.015, -105.27))   # ZIP says Grand Junction, GPS says Boulder
 nopos = venue_at("Nowhere Hall", "nowhere", "99999")
+def area(i, kind, name, state="CO", active=True, zips=None, deleted=False):
+    d = {"id": i, "kind": kind, "name": name, "state_code": state, "is_active": active, "schema_version": 1}
+    if kind == "region":
+        d["zip_codes"] = zips or []
+    if deleted:
+        d["deleted_at"] = "2026-09-01T00:00:00Z"
+    s.create("discovery_areas", i, d)
+
+
+area("s-co", "state", "Colorado")
+area("s-ca", "state", "California", "CA")
+area("r-all", "region", "Everywhere test region", "CO", zips=["80301", "80027", "80202", "81501", "99999", "90210", "90211"])
 ranked = public_list(s, "80301")
 nm = [v["name"] for v in ranked]
 check("a ZIP puts the nearest first (Boulder area before Denver before Grand Junction)", nm[:4] == ["Gps Boulder Spot", "Near Louisville", "Mid Denver", "Far Grand Junction"], str(nm))
@@ -113,7 +125,7 @@ check("GPS beats the ZIP centre (miles are small for the GPS venue)", ranked[0][
 check("miles are numbers with one decimal", all(isinstance(v["miles"], float) for v in ranked[:-1]))
 check("Louisville is about 12 miles from 80301", 5 < ranked[1]["miles"] < 20, str(ranked[1]))
 check("no ZIP: alphabetical and no miles", [v["name"] for v in public_list(s)] == sorted(v["name"] for v in public_list(s)) and all("miles" not in v for v in public_list(s)))
-check("an unknown ZIP is ignored (alphabetical, no miles)", all("miles" not in v for v in public_list(s, "80999")))
+check("a ZIP no active region holds lists nothing", public_list(s, "80999") == [])
 check("a ZIP in another state is ranked too (from the US table), far from Colorado", all("miles" in v and v["miles"] > 500 for v in public_list(s, "90210") if v["name"] != "Nowhere Hall"))
 la = venue_at("Beverly Hall", "bev", "90211")
 check("a venue in the visitor's own state comes first for that state's ZIP", public_list(s, "90210")[0]["name"] == "Beverly Hall" and public_list(s, "90210")[0]["miles"] < 5, str(public_list(s, "90210")[0]))
@@ -121,6 +133,46 @@ check("a ZIP that is not five digits is ignored", all("miles" not in v for v in 
 check("junk in the ZIP is ignored", all("miles" not in v for v in public_list(s, "80301; drop")))
 res = handle_public_venues("GET", "z1", s, RateLimiter(rules=((600, 5),)), START, zip_code="80301")
 check("the handler passes the ZIP through", res.status == 200 and "miles" in res.body["data"]["venues"][0])
+s = s_main
+
+# ---- a ZIP means its own active region, and nothing else
+s = MemoryDocStore("")
+area("s-co", "state", "Colorado")
+area("s-ut", "state", "Utah", "UT", active=False)
+area("r-bou", "region", "Boulder", "CO", zips=["80301", "80027"])
+area("r-den", "region", "Denver", "CO", zips=["80202", "80203", "80204"])
+area("r-off", "region", "Switched off", "CO", active=False, zips=["80401"])
+area("r-gone", "region", "Deleted", "CO", zips=["80501"], deleted=True)
+area("r-ut", "region", "Salt Lake", "UT", zips=["84101"])
+area("r-empty", "region", "Empty", "CO", zips=["80601"])
+venue_at("Boulder Lib", "bou_lib", "80301")
+venue_at("Louisville Hall", "lou_hall", "80027")
+for i in range(8):
+    venue_at("Denver Spot %d" % (i + 1), "den_%d" % i, ["80202", "80203", "80204"][i % 3])
+venue_at("Golden Cafe", "golden", "80401")      # in the switched-off region
+venue_at("Fort Collins Cafe", "fc", "80501")    # in the deleted region
+venue_at("Salt Lake Cafe", "slc", "84101")      # in the inactive state
+venue_at("Lone Pine", "lone", "81999")          # in no region
+res = handle_public_venues("GET", "q1", s, RateLimiter(rules=((600, 50),)), START, zip_code="80301")
+d = res.body["data"]
+check("a ZIP lists only its region's venues", {v["name"] for v in d["venues"]} == {"Boulder Lib", "Louisville Hall"}, str(d))
+check("nearest first: the ZIP's own venue before the next town", [v["name"] for v in d["venues"]][0] == "Boulder Lib", str(d["venues"]))
+check("the reply says covered and names the region", d["covered"] is True and d["region"]["name"] == "Boulder", str(d))
+d = handle_public_venues("GET", "q2", s, RateLimiter(rules=((600, 50),)), START, zip_code="80203").body["data"]
+check("a big region lists every venue in it (the page shows five and a More list)", len(d["venues"]) == 8 and d["covered"] is True, str(len(d["venues"])))
+check("another region's venues never appear", all(v["name"].startswith("Denver") for v in d["venues"]))
+for label, z in (("no region holds it", "81999"), ("the region is switched off", "80401"), ("the region is deleted", "80501"), ("the region's state is switched off", "84101"), ("not a ZIP anyone knows", "12345")):
+    d = handle_public_venues("GET", "q3", s, RateLimiter(rules=((600, 50),)), START, zip_code=z).body["data"]
+    check("not covered: " + label, d["venues"] == [] and d["covered"] is False and "region" not in d, str(d))
+d = handle_public_venues("GET", "q4", s, RateLimiter(rules=((600, 50),)), START, zip_code="80601").body["data"]
+check("a covered ZIP in a region with no venues: covered, empty list", d["covered"] is True and d["venues"] == [], str(d))
+d = handle_public_venues("GET", "q5", s, RateLimiter(rules=((600, 50),)), START, zip_code="80301", region_id="r-den").body["data"]
+check("a ZIP wins over a region sent with it", {v["name"] for v in d["venues"]} == {"Boulder Lib", "Louisville Hall"}, str(d))
+d = handle_public_venues("GET", "q6", s, RateLimiter(rules=((600, 50),)), START, region_id="r-bou").body["data"]
+check("a region alone still works and carries no covered flag", {v["name"] for v in d["venues"]} == {"Boulder Lib", "Louisville Hall"} and "covered" not in d, str(d))
+d = handle_public_venues("GET", "q7", s, RateLimiter(rules=((600, 50),)), START, zip_code="8030").body["data"]
+check("a ZIP that is not five digits is ignored: everything, no covered flag", "covered" not in d and len(d["venues"]) >= 12, str(d)[:120])
+check("no ZIP, no region: unchanged, everything, no covered flag", "covered" not in handle_public_venues("GET", "q8", s, RateLimiter(rules=((600, 50),)), START).body["data"])
 s = s_main
 
 print(f"{'OK' if not fails else 'FAILED'}: {total - len(fails)}/{total} checks")

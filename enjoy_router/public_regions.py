@@ -18,13 +18,18 @@ log = logging.getLogger("enjoy_router")
 CACHE = "public, max-age=60"
 
 
+def active_region_docs(store) -> list:
+    """The live region records a visitor may use: switched on, not deleted, in a switched-on, not deleted state."""
+    areas = [a for a in store.query("discovery_areas", [], limit=1000) if not a.get("deleted_at")]
+    states = {a.get("state_code"): a for a in areas if a.get("kind") == "state" and a.get("is_active") is True}
+    return [a for a in areas if a.get("kind") == "region" and a.get("is_active") is True and a.get("state_code") in states]
+
+
 def public_list(store) -> list:
     areas = [a for a in store.query("discovery_areas", [], limit=1000) if not a.get("deleted_at")]
     states = {a.get("state_code"): a for a in areas if a.get("kind") == "state" and a.get("is_active") is True}
     out = []
-    for a in areas:
-        if a.get("kind") != "region" or a.get("is_active") is not True or a.get("state_code") not in states:
-            continue
+    for a in active_region_docs(store):
         st = states[a["state_code"]]
         out.append({"id": a["id"], "name": a["name"], "state_code": a["state_code"], "state_name": st.get("name") or a["state_code"]})
     out.sort(key=lambda r: (r["state_name"].lower(), r["name"].lower()))
