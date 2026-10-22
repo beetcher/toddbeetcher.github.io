@@ -516,6 +516,7 @@
       <p>Enter your key to open the Console.</p>
       <form class="row" id="lockForm" autocomplete="off">
         <input type="password" id="keyInput" placeholder="Key" aria-label="Key" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button type="button" id="keyShow" class="quiet" aria-pressed="false" aria-controls="keyInput">Show</button>
         <button type="submit" id="unlockBtn">Unlock</button>
       </form>
       <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
@@ -1657,7 +1658,7 @@
     }
     ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
     stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset();
-    $("keyInput").value = "";
+    $("keyInput").value = ""; $("keyInput").type = "password"; $("keyShow").textContent = "Show"; $("keyShow").setAttribute("aria-pressed", "false");
     $("lockMsg").textContent = message || "";
     show(true);
   }
@@ -3743,6 +3744,10 @@
     var k = $("keyInput").value.trim();
     if (!k) { $("lockMsg").textContent = "That key did not work."; return; }
     unlock(k, $("rememberBox").checked);
+  });
+  $("keyShow").addEventListener("click", function () {      // see what you typed or pasted; starts hidden again after every lock
+    var i = $("keyInput"), reveal = i.type === "password";
+    i.type = reveal ? "text" : "password"; this.textContent = reveal ? "Hide" : "Show"; this.setAttribute("aria-pressed", reveal ? "true" : "false"); i.focus();
   });
   $("lockBtn").addEventListener("click", function () { lock(""); });
   $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });

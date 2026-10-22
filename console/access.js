@@ -69,7 +69,7 @@
     s.textContent = ".acs{max-width:900px;margin:0 auto}.acs h2{margin:18px 0 6px}.acs .acrow{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff}" +
       ".acs .acrow.off{opacity:.62}.acs .ac1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}.acs .acn{font-weight:700}.acs .acm{font-size:14px;color:var(--muted)}" +
       ".acs .acform{border:2px solid var(--orange);border-radius:10px;padding:12px;margin:10px 0;background:#fffaf0}.acs .acf{margin:10px 0}.acs .acf label{display:block;font-weight:700;margin-bottom:2px}" +
-      ".acs .acerr.acok{color:#2f5d00}.acs .acf input[type=number]{width:140px;box-sizing:border-box;font:inherit;font-size:1.2rem;padding:8px 10px;min-height:44px;border:2px solid #1c1a17;border-radius:8px}.acs .acf input[type=text],.acs .acf input[type=email],.acs .acf select,.acs .acf textarea{width:100%;max-width:560px;box-sizing:border-box;font:inherit;padding:8px;min-height:44px}" +
+      ".acs .acgive{margin-top:6px;font-weight:700}.acs #acReviewShown{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:1.15rem;color:#1d4ed8;background:#e8eefc;padding:3px 10px;border-radius:6px;user-select:all;overflow-wrap:anywhere}.acs .acerr.acok{color:#2f5d00}.acs .acf input[type=number]{width:140px;box-sizing:border-box;font:inherit;font-size:1.2rem;padding:8px 10px;min-height:44px;border:2px solid #1c1a17;border-radius:8px}.acs .acf input[type=text],.acs .acf input[type=email],.acs .acf select,.acs .acf textarea{width:100%;max-width:560px;box-sizing:border-box;font:inherit;padding:8px;min-height:44px}" +
       ".acs .accaps{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px}.acs .accaps label{font-weight:400;display:flex;gap:8px;align-items:flex-start}" +
       ".acs .acerr{color:var(--err);font-weight:600;min-height:1.4em}.acs table{border-collapse:collapse;width:100%;font-size:14px}.acs td,.acs th{border-bottom:1px solid #e4dfd2;text-align:left;padding:5px 6px;vertical-align:top}" +
       ".acs td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace}.acs .acchip{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;border:1px solid #bbb;background:#f2efe6}" +
@@ -437,24 +437,28 @@
     f.appendChild(l); f.appendChild(i); box.appendChild(f);
     var save = btn("Set code (24 hours)", "", function () { saveReviewCode(i.value); }); save.id = "acReviewSave"; box.appendChild(save);
     var m = mk("div", S.rv.good ? "acerr acok" : "acerr", S.rv.msg); m.id = "acReviewMsg"; m.setAttribute("role", "status"); box.appendChild(m);
+    if (S.rv.good && S.rv.code) {      // the code itself, on its own line, easy to see and to select
+      var g = mk("div", "acgive"); g.appendChild(mk("span", "acgivel", "Give them exactly this: ")); var cs = mk("span", "", S.rv.code); cs.id = "acReviewShown"; g.appendChild(cs); box.appendChild(g);
+    }
     return box;
   }
   function saveReviewCode(raw) {
     var code = String(raw || "").trim();
-    if (code.length < 8) { S.rv.msg = REVIEW_WHY.too_short; S.rv.good = false; draw(); return Promise.resolve(); }
+    if (code.length < 8) { S.rv.msg = REVIEW_WHY.too_short; S.rv.good = false; S.rv.code = ""; draw(); return Promise.resolve(); }
     return adm("set_review_code", { code: code }, "console_settings").then(function (res) {
       if (!ok(res)) {
         var p = res.body && res.body.error && res.body.error.problems;
         S.rv.msg = res.status === 403 ? "Only a super admin may set this." : (p && p.length && REVIEW_WHY[p[0].issue]) || (res.status === 429 ? "Too many tries. Wait a few minutes." : "Could not set the code. Try again.");
-        S.rv.good = false; draw(); return;
+        S.rv.good = false; S.rv.code = ""; draw(); return;
       }
       return loadReviewStatus().then(function () {
-        S.rv.msg = "Code set: " + code + "   Give them exactly this. It lasts until " + mountain(res.body.data.expires_at) + " and cannot be shown again. Any earlier code no longer works.";
-        S.rv.good = true; draw();
+        S.rv.msg = "Code set. It lasts until " + mountain(res.body.data.expires_at) + " and cannot be shown again. Any earlier code no longer works.";
+        S.rv.code = code; S.rv.good = true; draw();
       });
     });
   }
-  function loadReviewStatus() {
+  function loadReviewStatus() {      // only a super admin (or the admin key) may read it, so nobody else is even asked: no refused call, no box
+    var m = me(); if (m.is_super_admin !== true || m.inspector === true) { S.rv.st = null; return Promise.resolve(); }
     return adm("review_code_status", {}, "console_settings").then(function (res) { S.rv.st = ok(res) && res.body.data ? res.body.data : null; });
   }
 
