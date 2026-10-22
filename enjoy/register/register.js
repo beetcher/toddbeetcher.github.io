@@ -26,7 +26,37 @@
   // A + before the @ is fine (name+tag@gmail.com); a + after it is not, so that case gets its own hint.
   var EMAIL_OK = /^[^\s@]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$/;
   function emailOk(v) { return EMAIL_OK.test(v); }
-  function emailHint(v) { return /@[^@]*\+/.test(v) ? 'The + part goes before the @ (name+tag@gmail.com).' : 'That email address does not look right.'; }
+  // Says exactly what is wrong with an address ('' when it is fine). Never returns '' when emailOk() is false.
+  function emailProblem(v) {
+    v = (v || '').trim();
+    if (!v) return '';
+    if (/\s/.test(v)) return "An email can't contain spaces.";
+    var parts = v.split('@');
+    if (parts.length < 2) return 'Your email needs an @, like name@gmail.com.';
+    if (parts.length > 2) return 'An email can only have one @.';
+    var local = parts[0], dom = parts[1], plus = dom.indexOf('+');
+    if (!local) return 'Please put your name before the @, like name@gmail.com.';
+    if (!dom) return 'Please add the rest after the @, like gmail.com.';
+    if (plus >= 0) {
+      var tag = dom.slice(plus + 1), base = dom.slice(0, plus);
+      if (base && base.indexOf('.') < 0) base += '.com';
+      if (local.indexOf('+') < 0 && tag && /^[A-Za-z0-9._-]+$/.test(tag) && /^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$/.test(base)) {
+        return 'The +' + tag + ' part has to come before the @. Did you mean ' + local + '+' + tag + '@' + base + '?';
+      }
+      return 'A + has to come before the @ (name+tag@gmail.com), not after it.';
+    }
+    if (dom.indexOf('.') < 0) return 'After the @ we need a full address ending like .com, for example name@gmail.com.';
+    if (!emailOk(v)) return 'The part after the @ should end like .com, for example name@gmail.com.';
+    return '';
+  }
+  // Common slips in the domain of an address that is otherwise fine: offered as a question, never forced.
+  var EMAIL_TYPOS = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.cm': 'gmail.com',
+    'hotmial.com': 'hotmail.com', 'hotmal.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'yaho.com': 'yahoo.com', 'yahooo.com': 'yahoo.com', 'yahoo.con': 'yahoo.com',
+    'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'iclod.com': 'icloud.com', 'icloud.con': 'icloud.com', 'comcast.nt': 'comcast.net' };
+  function emailTypo(v) {
+    var m = /^([^\s@]+)@([^\s@]+)$/.exec((v || '').trim());
+    return m && EMAIL_TYPOS[m[2].toLowerCase()] ? m[1] + '@' + EMAIL_TYPOS[m[2].toLowerCase()] : '';
+  }
   var resumeToken = (function () { if (!LEAN) return ''; var t = new URLSearchParams(location.search).get('r'); return t && /^[A-Za-z0-9_-]{43}$/.test(t) ? t : ''; })();   // the receipt-email link
   var form = document.getElementById('rf');
   if (!form) return;
@@ -321,7 +351,7 @@
       return false;
     }
     if (r.email.value.trim() && !emailOk(r.email.value.trim())) {
-      r.err.textContent = emailHint(r.email.value.trim());
+      r.err.textContent = emailProblem(r.email.value.trim());
       r.err.setAttribute('data-show', '1');
       return false;
     }
@@ -663,13 +693,13 @@
     need('last_name', 'Please add your last name.');
     var em = val('email');
     if (!em) bad.push(['email', 'Please add your email address.']);
-    else if (!emailOk(em)) bad.push(['email', emailHint(em)]);
+    else if (!emailOk(em)) bad.push(['email', emailProblem(em)]);
     if (!LEAN) {
       need('is_requester_attending', 'Please choose one.');
       need('has_minors_present', 'Please choose one.');
       if (CFG.showWhere) need('location_type', 'Please choose where you would like it.');
     }
-    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please use a five-digit ZIP code, or leave it blank.']);
+    if (CFG.showWhere && val('postal_code') && !ZIP_RE.test(val('postal_code'))) bad.push(['postal_code', 'Please use a five-digit ZIP code, like 80027, or leave it blank.']);
     var cnt = parseInt(val('attendee_count'), 10);
     var attending = val('is_requester_attending') === 'yes';
     var cntGiven = !isNaN(cnt) || !LEAN;
@@ -678,7 +708,7 @@
     var named = ppl.filter(function (p) { return p.first || p.last || p.email; });
     named.forEach(function (p, i) {
       if (!p.first && !p.last) bad.push(['__person' + i, 'Please add a first or last name for each person, or remove the row.']);
-      if (p.email && !emailOk(p.email)) bad.push(['__person' + i, emailHint(p.email)]);
+      if (p.email && !emailOk(p.email)) bad.push(['__person' + i, emailProblem(p.email)]);
     });
     if (val('is_requester_attending') === 'no' && named.length < 1) bad.push(['is_requester_attending', 'Please add at least one person who will be taking part, below.']);
     if (cnt >= 1 && named.length + (attending ? 1 : 0) > cnt) bad.push(['attendee_count', 'You have listed more people than the total. Please raise the total.']);
@@ -866,6 +896,57 @@
       })
       .catch(function () { note.textContent = 'We could not reach the server. Please reload this page to try again.'; });
   }
+
+  // ---------- check as you go: email and ZIP are checked the moment the cursor leaves the field ----------
+  function unflag(name) {
+    var f = FIELDS[name]; if (!f) return;
+    var err = f.wrap.querySelector('.rf__error');
+    if (err) { err.textContent = ''; err.removeAttribute('data-show'); }
+    if (f.el) f.el.removeAttribute('aria-invalid');
+  }
+  function errShown(f) { var e = f.wrap.querySelector('.rf__error'); return !!e && e.getAttribute('data-show') === '1'; }
+  function hideNote(f) { var n = f.wrap.querySelector('.rf__note'); if (n) { n.textContent = ''; n.removeAttribute('data-show'); } }
+  function showTypoNote(f, fixed) {
+    var n = f.wrap.querySelector('.rf__note');
+    if (!n) { n = h('div', { class: 'rf__note', role: 'status' }); f.wrap.appendChild(n); }
+    n.textContent = 'Did you mean ' + fixed + '? ';
+    var b = h('button', { type: 'button', class: 'rf__use', text: 'Yes, use that' });
+    b.addEventListener('click', function () { f.el.value = fixed; hideNote(f); f.el.dispatchEvent(new Event('input', { bubbles: true })); f.el.focus(); });
+    n.appendChild(b); n.setAttribute('data-show', '1');
+  }
+  function emailField() { var f = FIELDS.email; return f && f.el && !f.el.readOnly ? f : null; }
+  function checkEmailField(leaving) {
+    var f = emailField(); if (!f) return;
+    var v = f.el.value.trim(), msg = emailProblem(v);
+    hideNote(f);
+    if (msg) { flag('email', msg); return; }
+    unflag('email');
+    if (leaving && v) { var fix = emailTypo(v); if (fix) showTypoNote(f, fix); }
+  }
+  function checkZipField() {
+    var z = FIELDS.postal_code; if (!z) return;
+    var v = z.el.value.trim();
+    if (v && !ZIP_RE.test(v)) flag('postal_code', 'Please use a five-digit ZIP code, like 80027, or leave it blank.'); else unflag('postal_code');
+  }
+  function checkRowEmail(r) {
+    var msg = emailProblem(r.email.value);
+    if (msg) { r.err.textContent = msg; r.err.setAttribute('data-show', '1'); r.err.setAttribute('data-kind', 'email'); r.email.setAttribute('aria-invalid', 'true'); }
+    else if (r.err.getAttribute('data-kind') === 'email') { r.err.textContent = ''; r.err.removeAttribute('data-show'); r.err.removeAttribute('data-kind'); r.email.removeAttribute('aria-invalid'); }
+  }
+  form.addEventListener('focusout', function (e) {
+    var f = emailField();
+    if (f && e.target === f.el) { checkEmailField(true); return; }
+    var z = FIELDS.postal_code;
+    if (z && e.target === z.el) { checkZipField(); return; }
+    peopleRows.forEach(function (r) { if (e.target === r.email) checkRowEmail(r); });
+  });
+  form.addEventListener('input', function (e) {   // once a message is showing, it follows what they type and clears the moment the entry is right
+    var f = emailField();
+    if (f && e.target === f.el) { if (errShown(f)) checkEmailField(false); else hideNote(f); return; }
+    var z = FIELDS.postal_code;
+    if (z && e.target === z.el) { if (errShown(z)) checkZipField(); return; }
+    peopleRows.forEach(function (r) { if (e.target === r.email && r.err.getAttribute('data-show') === '1' && r.err.getAttribute('data-kind') === 'email') checkRowEmail(r); });
+  });
 
   // ---------- start ----------
   var resumeAnswers = null, resumeConf = '';

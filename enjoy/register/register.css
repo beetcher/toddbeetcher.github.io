@@ -119,3 +119,8 @@
   .rf__need-item { width: 100%; text-align: left; }
 }
 .rf input[readonly] { opacity: .75; cursor: not-allowed; }
+
+/* Check-as-you-go note (P-85): a soft, non-blocking suggestion under a field, e.g. "Did you mean name@gmail.com?" */
+.rf__note { display: none; margin-top: 6px; font-size: 1rem; color: #5b4a00; }
+.rf__note[data-show="1"] { display: block; }
+.rf__use { background: none; border: 0; padding: 8px 4px; font: inherit; font-weight: 700; color: #1a4fa0; text-decoration: underline; cursor: pointer; min-height: 44px; }
