@@ -39,8 +39,17 @@ with sync_playwright() as p:
     t, vis = leave("pat@gmial.com"); note = pg.locator(".rf__note")
     check("typo domain: soft question, not an error", not vis and note.is_visible() and "pat@gmail.com" in note.inner_text())
     pg.screenshot(path="/tmp/claude-0/shots/email_blur_typo.png")
-    pg.locator(".rf__use").click(); pg.wait_for_timeout(100)
+    pg.locator(".rf__use", has_text="Yes").click(); pg.wait_for_timeout(100)
     check("Yes, use that fixes the field", em.input_value() == "pat@gmail.com" and not note.is_visible())
+    for bad_dom, want in (("joinlaunchnow+barry22@gmali.com", "joinlaunchnow+barry22@gmail.com"), ("a@gnail.com", "a@gmail.com"), ("a@hotmial.com", "a@hotmail.com")):
+        t, vis = leave(bad_dom)
+        check("caught slip %s -> %s" % (bad_dom, want), not vis and note.is_visible() and want in note.inner_text())
+    for fine in ("a@mail.com", "a@ymail.com", "a@smithco.com", "a@gmail.com", "a@boulderschools.net"):
+        t, vis = leave(fine)
+        check("not questioned: " + fine, not note.is_visible())
+    t, vis = leave("a@gmali.com"); pg.locator(".rf__use", has_text="No").click(); pg.wait_for_timeout(100)
+    check("No, keep mine hides the question", not note.is_visible() and em.input_value() == "a@gmali.com")
+    t, vis = leave("a@gmali.com"); check("...and it is not asked again for the same address", not note.is_visible())
     zip_ = pg.locator("input[name=postal_code]")
     zip_.fill("5484"); pg.keyboard.press("Tab"); pg.wait_for_timeout(100)
     zerr = pg.locator("#" + zip_.get_attribute("id") + "-err")

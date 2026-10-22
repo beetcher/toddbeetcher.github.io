@@ -49,13 +49,32 @@
     if (!emailOk(v)) return 'The part after the @ should end like .com, for example name@gmail.com.';
     return '';
   }
-  // Common slips in the domain of an address that is otherwise fine: offered as a question, never forced.
-  var EMAIL_TYPOS = { 'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gmal.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gmail.co': 'gmail.com', 'gmail.con': 'gmail.com', 'gmail.cm': 'gmail.com',
-    'hotmial.com': 'hotmail.com', 'hotmal.com': 'hotmail.com', 'hotmail.con': 'hotmail.com', 'yaho.com': 'yahoo.com', 'yahooo.com': 'yahoo.com', 'yahoo.con': 'yahoo.com',
-    'outlok.com': 'outlook.com', 'outlook.con': 'outlook.com', 'iclod.com': 'icloud.com', 'icloud.con': 'icloud.com', 'comcast.nt': 'comcast.net' };
+  // Domain slips: the typed domain is compared with the big mail providers and, when it is one slip away (a letter swapped, missing,
+  // extra or wrong), we ask "Did you mean ...?". Domains in MAIL_OK are real and never questioned. This is a soft question only.
+  var MAIL_SUGGEST = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'comcast.net', 'live.com', 'msn.com', 'me.com', 'protonmail.com', 'sbcglobal.net', 'att.net', 'verizon.net'];
+  var MAIL_OK = ['mail.com', 'email.com', 'inbox.com', 'gmx.com', 'gmx.net', 'hey.com', 'zoho.com', 'ymail.com', 'rocketmail.com', 'mac.com', 'pm.me', 'proton.me', 'fastmail.com', 'cox.net', 'charter.net', 'bellsouth.net',
+    'earthlink.net', 'frontier.com', 'aim.com', 'hotmail.co.uk', 'yahoo.co.uk', 'live.co.uk', 'outlook.co.uk', 'googlemail.com'];
+  function slips(a, b) {   // letters that differ, counting a swapped pair as one slip (optimal string alignment distance)
+    var d = [], x, y;
+    for (x = 0; x <= a.length; x++) { d[x] = [x]; }
+    for (y = 1; y <= b.length; y++) d[0][y] = y;
+    for (x = 1; x <= a.length; x++) for (y = 1; y <= b.length; y++) {
+      d[x][y] = Math.min(d[x - 1][y] + 1, d[x][y - 1] + 1, d[x - 1][y - 1] + (a[x - 1] === b[y - 1] ? 0 : 1));
+      if (x > 1 && y > 1 && a[x - 1] === b[y - 2] && a[x - 2] === b[y - 1]) d[x][y] = Math.min(d[x][y], d[x - 2][y - 2] + 1);
+    }
+    return d[a.length][b.length];
+  }
   function emailTypo(v) {
     var m = /^([^\s@]+)@([^\s@]+)$/.exec((v || '').trim());
-    return m && EMAIL_TYPOS[m[2].toLowerCase()] ? m[1] + '@' + EMAIL_TYPOS[m[2].toLowerCase()] : '';
+    if (!m) return '';
+    var dom = m[2].toLowerCase();
+    if (MAIL_SUGGEST.indexOf(dom) >= 0 || MAIL_OK.indexOf(dom) >= 0) return '';
+    var best = '', bestN = 99;
+    MAIL_SUGGEST.forEach(function (k) {
+      var n = slips(dom, k);
+      if ((n <= 1 || (n === 2 && k.length >= 11)) && n < bestN) { best = k; bestN = n; }
+    });
+    return best ? m[1] + '@' + best : '';
   }
   var resumeToken = (function () { if (!LEAN) return ''; var t = new URLSearchParams(location.search).get('r'); return t && /^[A-Za-z0-9_-]{43}$/.test(t) ? t : ''; })();   // the receipt-email link
   var form = document.getElementById('rf');
@@ -906,13 +925,15 @@
   }
   function errShown(f) { var e = f.wrap.querySelector('.rf__error'); return !!e && e.getAttribute('data-show') === '1'; }
   function hideNote(f) { var n = f.wrap.querySelector('.rf__note'); if (n) { n.textContent = ''; n.removeAttribute('data-show'); } }
-  function showTypoNote(f, fixed) {
+  function showTypoNote(f, fixed, typed) {
     var n = f.wrap.querySelector('.rf__note');
     if (!n) { n = h('div', { class: 'rf__note', role: 'status' }); f.wrap.appendChild(n); }
     n.textContent = 'Did you mean ' + fixed + '? ';
-    var b = h('button', { type: 'button', class: 'rf__use', text: 'Yes, use that' });
-    b.addEventListener('click', function () { f.el.value = fixed; hideNote(f); f.el.dispatchEvent(new Event('input', { bubbles: true })); f.el.focus(); });
-    n.appendChild(b); n.setAttribute('data-show', '1');
+    var yes = h('button', { type: 'button', class: 'rf__use', text: 'Yes, use that' });
+    yes.addEventListener('click', function () { f.el.value = fixed; hideNote(f); f.el.dispatchEvent(new Event('input', { bubbles: true })); f.el.focus(); });
+    var no = h('button', { type: 'button', class: 'rf__use', text: 'No, keep mine' });
+    no.addEventListener('click', function () { f.keepEmail = typed; hideNote(f); });
+    n.appendChild(yes); n.appendChild(no); n.setAttribute('data-show', '1');
   }
   function emailField() { var f = FIELDS.email; return f && f.el && !f.el.readOnly ? f : null; }
   function checkEmailField(leaving) {
@@ -921,7 +942,7 @@
     hideNote(f);
     if (msg) { flag('email', msg); return; }
     unflag('email');
-    if (leaving && v) { var fix = emailTypo(v); if (fix) showTypoNote(f, fix); }
+    if (leaving && v && f.keepEmail !== v) { var fix = emailTypo(v); if (fix) showTypoNote(f, fix, v); }
   }
   function checkZipField() {
     var z = FIELDS.postal_code; if (!z) return;
