@@ -75,6 +75,13 @@
   .remember input { width: 22px; height: 22px; margin: 0; }
   .lock .gbtn { width: 100%; min-height: 48px; font-weight: 700; }
   .lock .swap { margin: 14px 0 0; font-size: 14px; }
+  #launching { text-align: center; padding: 28px 0 8px; }
+  #launching[hidden] { display: none; }
+  #launching img { display: block; margin: 0 auto 18px; animation: launchSpin 2.8s linear infinite; }
+  #launching .lline { color: var(--muted); font-weight: 600; min-height: 1.5em; }
+  @keyframes launchSpin { to { transform: rotate(360deg); } }
+  @keyframes launchPulse { 50% { opacity: 0.5; } }
+  @media (prefers-reduced-motion: reduce) { #launching img { animation: launchPulse 2.4s ease-in-out infinite; } }
   .lock .swap a { color: var(--muted); }
   #who { color: #f1ece3; font-size: 13px; font-weight: 600; margin-right: 8px; min-width: 0; max-width: 34vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #who .role { color: var(--orange); font-weight: 700; }
@@ -504,6 +511,7 @@
       <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
     </div>
     <p class="swap"><a href="#" id="swapLink" hidden>Use admin key</a></p>
+    <div id="launching" role="status" aria-live="polite" hidden><img src="assets/launch-tile.webp" width="84" height="84" alt=""><div class="lline" id="launchLine"></div></div>
     <div class="msg" id="lockMsg" role="alert"></div>
   </section>
 
@@ -1568,6 +1576,7 @@
   }
 
   function lock(message) {
+    launchStop();
     if (method === "google") {
       if (message === "That key did not work.") message = "Your Google sign-in ended. Sign in again.";
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
@@ -1585,13 +1594,64 @@
     if (method !== "google") return fetchRecords("").then(function (r) { if (r.status === "ok") ME = keyMe(); return r; });
     return adminCall("me", {}, "access_persons").then(function (r) {
       if (r.status !== 200 || !r.body || !r.body.ok) return { status: r.status === 401 ? "unauthorized" : r.status === 403 ? "forbidden" : r.status === 429 ? "limited" : r.status === 0 ? "network" : "error" };
-      ME = r.body.data;
+      ME = r.body.data; launchStage(3);
       return canPlaced() ? fetchRecords("") : { status: "ok", records: [] };
+    });
+  }
+
+  // ---- The launch screen: instant feedback while a sign-in is in progress (a spinning tile, a line that follows the real stages, a spinning tab icon).
+  // It hides the sign-in buttons so nobody presses twice; a failure or a lock brings the form back.
+  var launching = false, launchN = 0, launchTimers = [], launchSaved = null, spinTimer = null, iconKeep = null;
+  var LAUNCH_LINES = ["Boarding pass accepted…", "Mission control is checking your clearance…", "Fueling the stations…"];
+  var LAUNCH_SLOW = "Still on the launch pad. Slow link or cold engines. Hang tight.";
+  function launchStage(n) { if (!launching || n <= launchN) return; launchN = n; $("launchLine").textContent = LAUNCH_LINES[n - 1]; }
+  function spinIcons(on) {
+    if (!on) {
+      if (spinTimer) { clearInterval(spinTimer); spinTimer = null; }
+      if (iconKeep) { iconKeep.forEach(function (k) { k.el.setAttribute("href", k.href); }); iconKeep = null; }
+      return;
+    }
+    if (spinTimer || iconKeep) return;
+    try { if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+    var links = document.querySelectorAll('link[rel="icon"]'); if (!links.length) return;
+    var img = new Image();
+    img.onload = function () {
+      if (!launching || spinTimer || iconKeep) return;
+      iconKeep = [].map.call(links, function (el) { return { el: el, href: el.getAttribute("href") }; });
+      var c = document.createElement("canvas"); c.width = 32; c.height = 32; var x = c.getContext("2d"), a = 0;
+      spinTimer = setInterval(function () {
+        a += Math.PI / 6; x.clearRect(0, 0, 32, 32); x.save(); x.translate(16, 16); x.rotate(a); x.drawImage(img, -11, -11, 22, 22); x.restore();
+        try { var u = c.toDataURL("image/png"); iconKeep.forEach(function (k) { k.el.setAttribute("href", u); }); } catch (e) { spinIcons(false); }
+      }, 100);
+    };
+    img.src = "assets/console-favicon-32.png";
+  }
+  function launchStart() {
+    if (launching) return;
+    launching = true; launchN = 0;
+    launchSaved = { g: $("googleBox").hidden, k: $("keyBox").hidden, s: $("swapLink").hidden };
+    $("googleBox").hidden = true; $("keyBox").hidden = true; $("swapLink").hidden = true; $("lockMsg").textContent = "";
+    $("launching").hidden = false; launchStage(1); spinIcons(true);
+    launchTimers.push(setTimeout(function () { launchStage(2); }, 700));
+    launchTimers.push(setTimeout(function () { if (launching) { launchN = 9; $("launchLine").textContent = LAUNCH_SLOW; } }, 8000));
+  }
+  function launchStop() {
+    launchTimers.forEach(clearTimeout); launchTimers = []; spinIcons(false);
+    if (!launching) return;
+    launching = false; $("launching").hidden = true;
+    if (launchSaved) { $("googleBox").hidden = launchSaved.g; $("keyBox").hidden = launchSaved.k; $("swapLink").hidden = launchSaved.s; launchSaved = null; }
+  }
+  function launchDone() {   // a short "Liftoff!" before the Console opens, only when the launch screen was showing
+    return new Promise(function (ok) {
+      if (!launching) { ok(); return; }
+      launchTimers.forEach(clearTimeout); launchTimers = []; $("launchLine").textContent = "Liftoff!";
+      setTimeout(function () { launchStop(); ok(); }, 350);
     });
   }
 
   function unlock(k, remember) {
     var mine = ++unlockSeq;
+    launchStart();
     idleTouch();                                       // a sign-in starts a fresh clock: after a timeout the old "last active" time must not sign this person straight out again
     key = k; reset();
     $("lockMsg").textContent = "";
@@ -1600,8 +1660,8 @@
       $("unlockBtn").disabled = false;
       if (mine !== unlockSeq || !key) return;          // the page was locked, or signed in again, while this was in flight: this answer is out of date
       if (res.status !== "ok") {
-        key = "";
-        $("lockMsg").textContent = problem(res.status);
+        key = ""; launchStop();
+        $("lockMsg").textContent = "Launch aborted: " + problem(res.status);
         if (method === "google") { method = "key"; try { if (auth) auth.signOut(); } catch (e) {} }
         ME = null;
         show(true);
@@ -1609,12 +1669,15 @@
       }
       if (method !== "google") setKey(k, remember);
       idleStaleAtLoad = false; idleStart();
-      show(false);
-      applyAccess();
-      merge(res.records);
-      firstLoadDone = true;
-      $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
-      route();
+      return launchDone().then(function () {
+        if (mine !== unlockSeq || !key) return;
+        show(false);
+        applyAccess();
+        merge(res.records);
+        firstLoadDone = true;
+        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+        route();
+      });
     });
   }
 
@@ -3580,7 +3643,7 @@
   });
 
   $("lockForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    e.preventDefault(); if (launching) return;
     var k = $("keyInput").value.trim();
     if (!k) { $("lockMsg").textContent = "That key did not work."; return; }
     unlock(k, $("rememberBox").checked);
@@ -6760,7 +6823,7 @@
     }).catch(function () { /* stays key-only */ });
   }
   $("googleBtn").addEventListener("click", function () {
-    if (!auth) return;
+    if (!auth || launching) return;
     $("lockMsg").textContent = ""; idleStaleAtLoad = false;       // a deliberate sign-in is never dropped as stale
     var p = new window.firebase.auth.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
