@@ -52,6 +52,9 @@ class FirestoreStore:
                 return doc
         return None
 
+    def list_areas(self) -> list:
+        return [s.to_dict() for s in self.areas.limit(1000).stream()]
+
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:
         marker = self.keys.document(key).get()
         if not marker.exists:

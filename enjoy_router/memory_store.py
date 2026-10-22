@@ -31,6 +31,9 @@ class MemoryStore:
     def get_state(self, state_code: str) -> Optional[dict]:
         return next((a for a in self.areas.values() if a.get("kind") == "state" and a.get("state_code") == state_code), None)
 
+    def list_areas(self) -> list:
+        return list(self.areas.values())
+
     def find_by_idempotency_key(self, key: str) -> Optional[dict]:
         return next((d for d in self.requests if d.get("idempotency_key") == key), None)
 

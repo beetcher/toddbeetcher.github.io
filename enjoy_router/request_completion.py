@@ -15,6 +15,7 @@ import logging
 import re
 from datetime import datetime, timezone
 
+import request_coverage
 from core import HONEYPOT, TIME_ZONE, _date_before, _field_errors, utc_stamp
 from crud import attendances_service as ATT
 from crud.store_errors import DocMissing, StaleUpdate
@@ -30,6 +31,7 @@ MAX_BODY_BYTES = 64 * 1024
 LOCKED = frozenset({"registration_type", "idempotency_key", "first_name", "last_name", "email", "consent_to_contact",
                     "presented_cost_cents", "presented_cost_basis", "scheduled_class_id", "no_class_fits"})
 SHOWN_IDENTITY = ("first_name", "last_name", "email")
+HANDLED_FIELDS = ("coverage_handled_at", "coverage_handled_by", "coverage_handled_note")
 
 
 def editable_fields(schemas) -> frozenset:
@@ -134,6 +136,17 @@ def _post(raw_body, store, schemas, now) -> HttpResult:
         c = store.get("curriculums", cid)
         if c is None or c.get("deleted_at") or c.get("status") != "active":
             return _error(404, "curriculum_not_found", "That curriculum was not found.")
+    if {"postal_code", "region_id"} & (set(sets) | set(removals)):
+        # The ZIP or region changed: judge coverage again. A request that turns (or stays) urgent after a different ZIP starts over: it is not "handled" any more.
+        cov = request_coverage.fields_for(store.query("discovery_areas", [], limit=1000), merged)
+        for k in ("coverage", "coverage_state_code"):
+            if k in cov:
+                sets[k] = cov[k]
+            elif k in doc:
+                removals.append(k)
+        if cov.get("coverage") == request_coverage.OPEN and (doc.get("coverage") != request_coverage.OPEN or sets.get("postal_code", doc.get("postal_code")) != doc.get("postal_code")):
+            removals.extend(k for k in HANDLED_FIELDS if k in doc)
+        removals = sorted(set(removals))
     if not sets and not removals:
         return HttpResult(200, {"ok": True, "data": {"updated": False, "confirmation_number": doc["confirmation_number"]}}, {"Cache-Control": "no-store"})
     try:

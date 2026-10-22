@@ -1902,6 +1902,192 @@
         ],
         "stored": false
       }
+    },
+    {
+      "name": "t67_coverage_zip_in_active_region",
+      "layer": "endpoint",
+      "description": "A private request whose ZIP an active region lists is covered.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov67@example.com",
+        "postal_code": "80301",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000067"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "covered",
+          "coverage_state_code": "CO"
+        }
+      }
+    },
+    {
+      "name": "t68_coverage_zip_in_no_region",
+      "layer": "endpoint",
+      "description": "A ZIP no region lists is the urgent case: no_active_region, with the ZIP's state.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov68@example.com",
+        "postal_code": "80202",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000068"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "no_active_region",
+          "coverage_state_code": "CO"
+        }
+      }
+    },
+    {
+      "name": "t69_coverage_zip_in_switched_off_region",
+      "layer": "endpoint",
+      "description": "A ZIP only a switched-off region lists is not covered.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov69@example.com",
+        "postal_code": "80401",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000069"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "no_active_region"
+        }
+      }
+    },
+    {
+      "name": "t70_coverage_zip_in_deleted_region",
+      "layer": "endpoint",
+      "description": "A ZIP only a deleted region lists is not covered.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov70@example.com",
+        "postal_code": "80501",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000070"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "no_active_region"
+        }
+      }
+    },
+    {
+      "name": "t71_coverage_zip_in_inactive_state",
+      "layer": "endpoint",
+      "description": "A ZIP in a region of a switched-off state is not covered, and its state is told.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov71@example.com",
+        "postal_code": "84101",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000071"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "no_active_region",
+          "coverage_state_code": "UT"
+        }
+      }
+    },
+    {
+      "name": "t72_coverage_region_only",
+      "layer": "endpoint",
+      "description": "With no ZIP, a picked active region counts as covered.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov72@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000302",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000072"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "covered",
+          "coverage_state_code": "CO"
+        }
+      }
+    },
+    {
+      "name": "t73_coverage_zip_wins_over_region",
+      "layer": "endpoint",
+      "description": "A ZIP wins over a region picked on the form: Boulder picked, but the ZIP is in no region.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov73@example.com",
+        "region_id": "b0000000-0000-4000-8000-000000000302",
+        "postal_code": "80202",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000073"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": "no_active_region",
+          "coverage_state_code": "CO"
+        }
+      }
+    },
+    {
+      "name": "t74_coverage_nothing_to_judge",
+      "layer": "endpoint",
+      "description": "No ZIP and no region: coverage is not set.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "email": "cov74@example.com",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000074"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": null
+        }
+      }
+    },
+    {
+      "name": "t75_coverage_group_not_judged",
+      "layer": "endpoint",
+      "description": "A group request is not judged yet (private only): no coverage even with a ZIP no region holds.",
+      "request_from": "t03_group_organization",
+      "override": {
+        "email": "cov75@example.com",
+        "postal_code": "80202",
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000075"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "coverage": null
+        }
+      }
+    },
+    {
+      "name": "t76_coverage_sender_may_not_set",
+      "layer": "schema",
+      "description": "coverage and the handled fields belong to the server: a sender who supplies one is refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000076",
+        "email": "cov76@example.com",
+        "coverage": "covered"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "coverage"
+        ],
+        "stored": false
+      }
     }
   ]
 }

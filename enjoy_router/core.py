@@ -28,6 +28,7 @@ from zoneinfo import ZoneInfo
 from jsonschema import Draft202012Validator, FormatChecker
 
 import email_check  # noqa: F401  (replaces jsonschema's weak email check; must come before any validator is built)
+import request_coverage
 
 HONEYPOT = "website"
 ACTOR = "web:enjoy"
@@ -115,6 +116,7 @@ class Store(Protocol):
     def get_curriculum(self, curriculum_id: str) -> Optional[dict]: ...
     def get_region(self, region_id: str) -> Optional[dict]: ...
     def get_state(self, state_code: str) -> Optional[dict]: ...
+    def list_areas(self) -> list: ...   # every state and region record (for the coverage stamp)
     def find_by_idempotency_key(self, key: str) -> Optional[dict]: ...
     def find_latest_by_email_and_type(self, email: str, registration_type: str) -> Optional[dict]: ...
     def confirmation_number_exists(self, number: str) -> bool: ...
@@ -376,6 +378,7 @@ def handle_registration_request(
     })
     if previous is not None:
         doc["previous_id"] = previous["id"]
+    doc.update(request_coverage.fields_for(store.list_areas(), doc))   # private requests with a ZIP or region: covered, or the urgent no_active_region
 
     # 11. Self-check: the stored record must itself satisfy the schema and carry every server field.
     problems = list(schemas.validator.iter_errors(doc))

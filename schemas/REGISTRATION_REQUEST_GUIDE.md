@@ -203,6 +203,16 @@ A request is decided by a registration assignment (`REGISTRATION_ASSIGNMENT_GUID
 
 ## Acknowledgment email (CMS proof of concept, October 14, 2026)
 
+### Coverage: is a trainer region active where the requester wants it? (P-83, Todd 2026-10-22)
+
+Every ZIP the form offers belongs to an ACTIVE region (a region that is switched on, not deleted, in a state that is switched on). A requester can still type a ZIP no active region holds. That is the urgent case ("a 911"): the request is taken, but it follows its own path so a person finds a trainer by hand.
+
+- `coverage`: optional server-only enum, `covered` or `no_active_region`. Set by the server on PRIVATE requests only (group and class requests are not covered by this rule yet), when the request has a ZIP or a region. A ZIP wins over a region picked on the form. With no ZIP, a picked region counts as `covered`. With neither, the field is absent. When the requester changes the ZIP or region through the completion link, the server sets it again. Absent on requests saved before this field existed.
+- `coverage_state_code`: optional server-only two-letter state: the state of the ZIP (ZIP table), else of the covering region. Lets staff and the state's owner find the request.
+- `coverage_handled_at`, `coverage_handled_by`, `coverage_handled_note`: optional server-only. A person with the right to manage this request marks a `no_active_region` request handled and must write a note saying what was done. `coverage_handled_by` is the actor (`user:<id>`). They are set only by that Console action, never by a form.
+
+A `no_active_region` request is STILL OPEN until it is handled, or until a region comes to hold its ZIP (the server recomputes coverage when it looks, so adding the region closes the request without anyone pressing anything). Open ones are flagged in the Console, counted in the banner there, and repeated by the daily reminder (see `CMS_GUIDE.md`). All five fields are readOnly, so a browser supplying one is refused.
+
 After a newly created request is saved, CMS attempts one acknowledgment. It says a request was received, not that the person is registered. Replays, rejected requests and honeypot responses send nothing. The normal success response contains only the confirmation number and registration type, even when email or recording the result fails. There is no automatic retry or email outbox.
 
 DEPRECATED October 15, 2026 (the next three fields): the CMS refactor stopped writing and reading them; the receipt's outcome is in the message log (`COMMUNICATION_LOG_GUIDE.md`, filter `request_id`). They stay in the schema so older records remain valid and are removed after the test-data cleanup.

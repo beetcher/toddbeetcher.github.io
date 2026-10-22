@@ -457,6 +457,38 @@
       "format": "date-time",
       "readOnly": true
     },
+    "coverage": {
+      "description": "Whether a trainer region is active where the requester wants the session. Set by the server, private requests only, when the request has a ZIP or a region: covered when a switched-on region in a switched-on state lists the ZIP (a ZIP wins over a region picked on the form; with no ZIP, a picked region counts as covered), no_active_region when no active region lists the ZIP. Re-set by the server when the requester changes the ZIP or region through the completion link. Absent on other request types, on requests with neither a ZIP nor a region, and on requests saved before this field existed. A no_active_region request is the urgent case: staff are told at once, the Console flags it, and it stays flagged until it is handled or a region comes to hold its ZIP.",
+      "enum": [
+        "covered",
+        "no_active_region"
+      ],
+      "readOnly": true
+    },
+    "coverage_state_code": {
+      "description": "The two-letter state of the ZIP (from the ZIP table), or of the covering region, so staff and the state's owner can find the request. Set by the server together with coverage; absent when the state cannot be told.",
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "readOnly": true
+    },
+    "coverage_handled_at": {
+      "description": "When a person marked a no_active_region request handled (UTC). Set by the server only; absent while the request is still waiting for a trainer.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "coverage_handled_by": {
+      "description": "Who marked it handled, as an actor string (user:<access person id>). Set by the server together with coverage_handled_at.",
+      "type": "string",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "coverage_handled_note": {
+      "description": "What was done or decided, in the handler's words; required when a request is marked handled. Up to 2000 characters.",
+      "type": "string",
+      "maxLength": 2000,
+      "readOnly": true
+    },
     "class_registered_at_request": {
       "description": "Snapshot: how many people were registered in the class when this request arrived. Present only when a class was picked. Set by the server.",
       "type": "integer",
