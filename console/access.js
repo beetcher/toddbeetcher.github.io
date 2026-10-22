@@ -142,8 +142,10 @@
     function render() {
       box.innerHTML = "";
       box.appendChild(mk("label", "", "Territory"));
-      var sup = roleSel && (function () { var r = null; S.roles.forEach(function (x) { if (x.id === roleSel.value) r = x; }); return r && r.is_super_admin; })();
+      var picked = roleSel && (function () { var r = null; S.roles.forEach(function (x) { if (x.id === roleSel.value) r = x; }); return r; })();
+      var sup = picked && picked.is_super_admin;
       if (sup) { box.appendChild(mk("p", "acm", "A super admin works everywhere with every capability. Territory is not needed.")); return; }
+      if (viewOnlyRole(picked)) { box.appendChild(mk("p", "acm", "Territory: not needed. A view-only role sees everywhere and changes nothing.")); return; }
       if (!S.draft.grants.length) box.appendChild(mk("p", "acm", "No territory yet: this person can sign in but sees nothing in any region."));
       S.draft.grants.forEach(function (g, i) {
         var row = mk("div", "acgrant"); row.appendChild(mk("b", "", grantText(g) + (g.group ? "  [" + g.group + "]" : "")));

@@ -937,7 +937,7 @@
   // ---- Who is signed in. method "key" = the admin key (the back door); "google" = a Google sign-in (Firebase). While signed in with
   // Google, `key` holds the current Google ID token and every call sends it as the Bearer value, exactly like the key. ME is what the
   // server's `me` op said (or, for the key, a super admin). Hiding stations here is a courtesy: the server decides what is allowed.
-  var method = "key", ME = null, auth = null;
+  var method = "key", ME = null, auth = null, unlockSeq = 0;
   var SDK = "https://www.gstatic.com/firebasejs/10.14.1/";
   var STATION_CAPS = { requests: ["manage_requests", "manage_classes"], venues: ["view_console"], classes: ["view_console"], people: ["edit_people"],
     places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
@@ -1591,11 +1591,14 @@
   }
 
   function unlock(k, remember) {
+    var mine = ++unlockSeq;
+    idleTouch();                                       // a sign-in starts a fresh clock: after a timeout the old "last active" time must not sign this person straight out again
     key = k; reset();
     $("lockMsg").textContent = "";
     $("unlockBtn").disabled = true;
     return accessProbe().then(function (res) {
       $("unlockBtn").disabled = false;
+      if (mine !== unlockSeq || !key) return;          // the page was locked, or signed in again, while this was in flight: this answer is out of date
       if (res.status !== "ok") {
         key = "";
         $("lockMsg").textContent = problem(res.status);
@@ -6808,7 +6811,7 @@
       idleMinutes = idleClamp(recs.length ? recs[0].session_timeout_minutes : IDLE_DEFAULT); idleSet(IDLE_MIN, idleMinutes);
     });
   }
-  function idleEnd() { idleWarn(0); idleDrop(IDLE_AT); }
+  function idleEnd() { idleWarn(0); idleDrop(IDLE_AT); idleLast = Date.now(); }   // locked: forget the old activity time too (a later sign-in must not inherit it)
   ["pointerdown", "keydown", "wheel", "touchstart", "scroll"].forEach(function (ev) {
     document.addEventListener(ev, function () { if (!key) return; idleTouch(); if (idleShown) idleWarn(0); }, { capture: true, passive: true });
   });

@@ -217,6 +217,15 @@ with sync_playwright() as p:
     check("...and can still edit (the Edit button works)", pg.locator("#venuesView button", has_text="Edit").first.is_enabled())
     txt = pg.locator("#venuesView").inner_text(); goto(pg, "people"); pg.locator("#peopleView li").first.click(); pg.wait_for_timeout(500)
     check("...and sees the real contact details", "ann.private@home.example" in pg.locator("#peopleView").inner_text(), pg.locator("#peopleView").inner_text()[:300])
+    # the edit form for a person with the view-only role says territory is not needed (no "No territory yet", no Add territory form), and follows the role picker
+    goto(pg, "access"); pg.locator("#accessView .acrow", has_text="Ivy Inspector").first.get_by_role("button", name="Edit", exact=True).click(); pg.wait_for_selector("#agBox"); pg.wait_for_timeout(200)
+    box = pg.locator("#agBox").inner_text()
+    check("Edit form, view-only role: says territory is not needed", "Territory: not needed. A view-only role sees everywhere and changes nothing." in box, box)
+    check("Edit form, view-only role: no 'No territory yet' and no Add territory form", "No territory yet" not in box and "Add territory" not in box and pg.locator("#agKind").count() == 0, box)
+    pg.select_option("#apRole", value=sup_role["id"]); pg.wait_for_timeout(200)
+    check("...switching the picker to super admin shows the super admin text", "A super admin works everywhere" in pg.locator("#agBox").inner_text())
+    pg.select_option("#apRole", value=insp_role["id"]); pg.wait_for_timeout(200)
+    check("...and back to the view-only role shows the view-only text again", "Territory: not needed. A view-only role" in pg.locator("#agBox").inner_text())
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
 
     # ---------- phone width
