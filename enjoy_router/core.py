@@ -27,6 +27,8 @@ from zoneinfo import ZoneInfo
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+import email_check  # noqa: F401  (replaces jsonschema's weak email check; must come before any validator is built)
+
 HONEYPOT = "website"
 ACTOR = "web:enjoy"
 SOURCE = "web_enjoy"

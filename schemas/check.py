@@ -29,6 +29,12 @@ try:
     from jsonschema import Draft202012Validator as V, FormatChecker
 except ImportError:
     sys.exit("check.py needs jsonschema:  pip install jsonschema")
+# Use the same email check as the server (the library replaces jsonschema's weak one: see enjoy_router/email_check.py).
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "enjoy_router"))
+try:
+    import email_check  # noqa: F401
+except ImportError:
+    sys.exit("check.py needs email-validator:  pip install email-validator")
 
 D = pathlib.Path(__file__).parent
 SNAKE = re.compile(r"^[a-z][a-z0-9_]*$")

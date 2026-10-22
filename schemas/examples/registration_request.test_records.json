@@ -1849,6 +1849,59 @@
         ],
         "stored": false
       }
+    },
+    {
+      "name": "t64_email_plus_tag",
+      "layer": "endpoint",
+      "description": "A plus tag before the @ is kept and accepted (used for test addresses).",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000064",
+        "email": "name+test64@gmail.com"
+      },
+      "expect": {
+        "ok": true,
+        "stored": true,
+        "stored_fields": {
+          "email": "name+test64@gmail.com"
+        }
+      }
+    },
+    {
+      "name": "t65_email_plus_after_domain",
+      "layer": "schema",
+      "description": "A plus typed after the domain is refused: that is not an address.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000065",
+        "email": "name@gmail.com+test65"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "email"
+        ],
+        "stored": false
+      }
+    },
+    {
+      "name": "t66_email_two_ats",
+      "layer": "schema",
+      "description": "Two @ signs are refused.",
+      "request_from": "t47_private_small_ask",
+      "override": {
+        "idempotency_key": "2c0d0e0f-0000-5000-8000-000000000066",
+        "email": "name@@gmail.com"
+      },
+      "expect": {
+        "ok": false,
+        "error_code": "validation_failed",
+        "field_errors": [
+          "email"
+        ],
+        "stored": false
+      }
     }
   ]
 }

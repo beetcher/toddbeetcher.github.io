@@ -21,6 +21,8 @@ from typing import Any, Optional
 
 from jsonschema import Draft202012Validator, FormatChecker
 
+import email_check  # noqa: F401  (replaces jsonschema's weak email check; must come before any validator is built)
+
 ACTOR_PATTERN = re.compile(r"^(web|system|user):[A-Za-z0-9_.-]{1,90}$")
 UUID_PATTERN = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 

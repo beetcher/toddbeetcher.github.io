@@ -22,6 +22,11 @@
   var CFG = TYPES[TYPE];
   if (!CFG) return;
   var LEAN = TYPE === 'private';   // the small ask: name and email up top, the rest is "add details now"
+  // Soft email check (the server does the strict one): one @, no spaces, a domain of letters, digits, dots and hyphens with a dot in it.
+  // A + before the @ is fine (name+tag@gmail.com); a + after it is not, so that case gets its own hint.
+  var EMAIL_OK = /^[^\s@]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$/;
+  function emailOk(v) { return EMAIL_OK.test(v); }
+  function emailHint(v) { return /@[^@]*\+/.test(v) ? 'The + part goes before the @ (name+tag@gmail.com).' : 'That email address does not look right.'; }
   var resumeToken = (function () { if (!LEAN) return ''; var t = new URLSearchParams(location.search).get('r'); return t && /^[A-Za-z0-9_-]{43}$/.test(t) ? t : ''; })();   // the receipt-email link
   var form = document.getElementById('rf');
   if (!form) return;
@@ -315,8 +320,8 @@
       r.err.setAttribute('data-show', '1');
       return false;
     }
-    if (r.email.value.trim() && !/^\S+@\S+\.\S+$/.test(r.email.value.trim())) {
-      r.err.textContent = 'That email address does not look right.';
+    if (r.email.value.trim() && !emailOk(r.email.value.trim())) {
+      r.err.textContent = emailHint(r.email.value.trim());
       r.err.setAttribute('data-show', '1');
       return false;
     }
@@ -486,7 +491,7 @@
     // ===== The checklist at the top =====
     NEEDS = [
       { label: 'Your name', field: 'first_name', done: function () { return !!(val('first_name') && val('last_name')); } },
-      { label: 'Your email', field: 'email', done: function () { return /^\S+@\S+\.\S+$/.test(val('email')); } }
+      { label: 'Your email', field: 'email', done: function () { return emailOk(val('email')); } }
     ];
     if (!LEAN) {
       NEEDS.push({ label: 'Taking part?', field: 'is_requester_attending', done: function () { return !!val('is_requester_attending'); } });
@@ -658,7 +663,7 @@
     need('last_name', 'Please add your last name.');
     var em = val('email');
     if (!em) bad.push(['email', 'Please add your email address.']);
-    else if (!/^\S+@\S+\.\S+$/.test(em)) bad.push(['email', 'That email address does not look right.']);
+    else if (!emailOk(em)) bad.push(['email', emailHint(em)]);
     if (!LEAN) {
       need('is_requester_attending', 'Please choose one.');
       need('has_minors_present', 'Please choose one.');
@@ -673,7 +678,7 @@
     var named = ppl.filter(function (p) { return p.first || p.last || p.email; });
     named.forEach(function (p, i) {
       if (!p.first && !p.last) bad.push(['__person' + i, 'Please add a first or last name for each person, or remove the row.']);
-      if (p.email && !/^\S+@\S+\.\S+$/.test(p.email)) bad.push(['__person' + i, 'That email address does not look right.']);
+      if (p.email && !emailOk(p.email)) bad.push(['__person' + i, emailHint(p.email)]);
     });
     if (val('is_requester_attending') === 'no' && named.length < 1) bad.push(['is_requester_attending', 'Please add at least one person who will be taking part, below.']);
     if (cnt >= 1 && named.length + (attending ? 1 : 0) > cnt) bad.push(['attendee_count', 'You have listed more people than the total. Please raise the total.']);
