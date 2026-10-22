@@ -509,6 +509,32 @@ def delete_request(store, request_id, actor, now=None):
     return success({"id": request_id, "deleted_at": stamp})
 
 
+def mark_request_handled(store, request_id, actor, note, now=None):
+    """Mark a request that no active region could take as HANDLED (P-83): someone has dealt with it. A note saying what was done is required.
+    Refused when the request is not (or is no longer) waiting for a trainer: not an urgent one, already handled, deleted, or a region now
+    holds its ZIP (it closed itself). Stamps coverage_handled_at / _by / _note; nothing else on the request changes."""
+    import request_coverage
+    problems = check_actor(actor)
+    req = store.get(REQUESTS.name, request_id) if isinstance(request_id, str) and UUID_PATTERN.match(request_id) else None
+    if req is None or _deleted(req):
+        return failure("not_found")
+    text = note.strip() if isinstance(note, str) else ""
+    if not text:
+        problems.append({"field": "note", "issue": "required"})
+    elif len(text) > 2000:
+        problems.append({"field": "note", "issue": "out_of_range"})
+    if problems:
+        return _bad(problems)
+    if not request_coverage.is_open(store.query("discovery_areas", [], limit=1000), req):
+        return _bad([{"field": "request_id", "issue": "not_waiting"}])
+    stamp = utc_stamp(now)
+    try:
+        store.update(REQUESTS.name, request_id, {"coverage_handled_at": stamp, "coverage_handled_by": actor, "coverage_handled_note": text}, ())
+    except DocMissing:
+        return failure("not_found")
+    return success({"id": request_id, "coverage_handled_at": stamp})
+
+
 def assign_request(store, data, actor, requester=None, source="dashboard", now=None):
     """Put EVERYONE named on a registration request in one class, as students, together or not at all: the requester (when `requester`
     is given: {"individual_id"} for a person we have, or {"person": {...}} for a new one) and every person in the request's

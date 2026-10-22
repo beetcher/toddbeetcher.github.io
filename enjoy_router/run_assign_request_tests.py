@@ -191,6 +191,7 @@ rq9 = request([{"first_name": "Del"}], attending=False)
 check("delete request: a request nobody is placed from is marked deleted and kept", AT.delete_request(s, rq9["id"], A, now=tick()).ok and s.data["t_registration_requests"][rq9["id"]].get("deleted_at") and s.data["t_registration_requests"][rq9["id"]].get("deleted_by") == A)
 class _Req:   # the Console's list reads requests through list_requests
     def list_requests(self, limit, since=None): return sorted(s.data["t_registration_requests"].values(), key=lambda d: d["created_at"], reverse=True)[:limit]
+    def list_areas(self): return []
 shown = [x["id"] for x in CON.list_registration_requests(_Req(), 200)]
 check("delete request: it no longer appears in the Console list, the others still do", rq9["id"] not in shown and rq["id"] in shown, str(len(shown)))
 check("delete request: deleting it again says not found", AT.delete_request(s, rq9["id"], A, now=tick()).code == "not_found")

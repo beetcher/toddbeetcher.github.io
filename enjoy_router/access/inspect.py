@@ -30,7 +30,7 @@ OWN_RUN_OPS = frozenset({"step", "stop"})        # only on a run the Inspector s
 
 BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details"})      # never, not even to look at
 
-HIDE_FIELDS = frozenset({"street_address", "handled_note", "note", "birth_date", "birth_date_certainty", "birth_date_verification",
+HIDE_FIELDS = frozenset({"street_address", "handled_note", "coverage_handled_note", "note", "birth_date", "birth_date_certainty", "birth_date_verification",
                          "birth_place_city", "birth_place_region", "birth_country", "multiple_birth_count", "multiple_birth_order",
                          "death_date", "death_date_certainty", "death_place_city", "death_place_region", "death_country", "death_evidence",
                          "google_uid", "preferred_location", "address_keys"})

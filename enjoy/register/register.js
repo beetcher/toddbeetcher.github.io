@@ -227,6 +227,16 @@
     if (cur && f.els.some(function (e) { return e.value === cur; })) setVal('location_type', cur);
     syncMore(); updateNeeds();
   }
+  var trainerNote = null, trainerZip = '';
+  var TRAINER_MSG = "We're securing the best trainer for your area. Go ahead and send your request.";
+  function showTrainerNote(zip) {   // a ZIP no active region holds: say so at once; the request is still taken
+    if (!trainerNote) return;
+    trainerZip = zip; trainerNote.textContent = TRAINER_MSG; trainerNote.setAttribute('data-show', '1');
+  }
+  function hideTrainerNote() {
+    if (!trainerNote) return;
+    trainerZip = ''; trainerNote.textContent = ''; trainerNote.removeAttribute('data-show');
+  }
   function loadVenues(zip) {
     if (!CFG.showWhere || !window.fetch) return;
     var mine = ++venueSeq;
@@ -241,12 +251,14 @@
         clearTimeout(to);
         if (mine !== venueSeq || !(j && j.ok && j.data && Array.isArray(j.data.venues))) return;   // failed or out of date: leave things as they are
         shownZip = zip || '';
+        if (LEAN && zip && j.data.covered === false && val('postal_code') === zip) showTrainerNote(zip); else if (trainerZip !== val('postal_code')) hideTrainerNote();
         renderVenues(j.data.venues, !!zip && j.data.venues.some(function (v) { return typeof v.miles === 'number'; }));
       })
       .catch(function () { clearTimeout(to); });
   }
   function onZipInput() {   // remember a good ZIP on this device; refresh the list when it changes
     var z = val('postal_code'), target;
+    if (trainerZip && z !== trainerZip) hideTrainerNote();   // the message belongs to the ZIP it was said for
     if (z === '') target = ''; else if (ZIP_RE.test(z)) target = z; else return;   // half-typed: wait
     rememberZip(target);
     if (target === shownZip) return;
@@ -472,6 +484,8 @@
     if (CFG.showWhere) {
       var zipField = textField('postal_code', LEAN ? 'ZIP code' : 'ZIP code (optional)', { max: 5, inputmode: 'numeric', autocomplete: 'postal-code', hint: LEAN ? 'Helps us find a place near you, and shows us where people want classes. Not required, but it helps a lot.' : 'Enter the ZIP code where you would like it, and we will show the closest places first.' });
       FIELDS.postal_code.noDraft = true;   // remembered on its own, below
+      trainerNote = h('div', { class: 'rf__note', role: 'status', 'aria-live': 'polite' });   // shown when no active region holds the ZIP (P-83)
+      zipField.appendChild(trainerNote);
       if (LEAN) {
         need.push(h('div', { class: 'rf__row rf__row--2' }, [
           selectField('state_code', 'State', [], { blank: 'State' }),

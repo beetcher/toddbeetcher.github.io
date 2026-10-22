@@ -82,7 +82,7 @@ def call_zips(store, collection, op, args):
             return [places.zip_of_class_id(store, data.get("scheduled_class_id"))]
         if op == "assign_request":
             return [places.zip_of_class_id(store, data.get("scheduled_class_id")), places.zip_of_request_id(store, data.get("request_id"))]
-        if op == "delete_request":
+        if op in ("delete_request", "mark_request_handled"):
             req = _doc(store, "registration_requests", a.get("id"))
             return [places.zip_of_request(store, req)] if req is not None else []
         return here                                                    # update, soft_delete, send_confirmation

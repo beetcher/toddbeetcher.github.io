@@ -15,6 +15,7 @@ import re
 from datetime import datetime
 from typing import Optional
 
+import request_coverage
 from access import door as _door, inspect as _inspect, places as _places, policy as _policy
 from access.territory import Scope, Territory
 from handler import HttpResult, _error
@@ -37,8 +38,11 @@ def list_registration_requests(store, limit: int = DEFAULT_LIMIT, since: Optiona
     """Newest first. since (an ISO string) keeps only records created at or after it."""
     limit = max(1, min(int(limit), MAX_LIMIT))
     # completion_token is the secret in the receipt-email link: it never goes to the Console
+    # coverage_waiting is worked out here on every read (not stored): the request is urgent, nobody handled it, and no active region holds its ZIP yet
     # a request marked deleted is kept but never shown
-    return [{k: v for k, v in d.items() if k != "completion_token"} for d in store.list_requests(limit, since) if not d.get("deleted_at")]
+    areas = store.list_areas()
+    return [dict({k: v for k, v in d.items() if k != "completion_token"}, **({"coverage_waiting": True} if request_coverage.is_open(areas, d) else {}))
+            for d in store.list_requests(limit, since) if not d.get("deleted_at")]
 
 
 def _bearer(authorization: str) -> str:

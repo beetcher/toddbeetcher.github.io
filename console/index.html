@@ -385,6 +385,16 @@
   .qchip { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 14px; font-weight: 700; background: #e9e4d8; color: #4a443a; }
   .qchip.ok { background: var(--new); color: #1d4d00; }
   .qchip.warn { background: #ffe0c2; color: #8a2f00; border: 1px solid var(--orange); }
+  .chips .nochip { background: #fde7e4; color: #a1261b; border: 1px solid #e29a92; border-radius: 999px; padding: 1px 10px; font-weight: 700; }
+  .chips .donechip { background: #e9e4d8; color: #4a443a; border-radius: 999px; padding: 1px 10px; font-weight: 700; }
+  .covBanner { margin: 8px 0; padding: 12px 14px; border: 1px solid #e29a92; border-radius: 8px; background: #fde7e4; color: #7d1a11; font-weight: 700; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .covBanner[hidden] { display: none; }
+  .covbox { margin: 4px 14px 14px; padding: 12px 16px 16px; border: 1px solid #e29a92; border-radius: 12px; background: #fff8f7; }
+  .covbox[hidden] { display: none; }
+  .covbox label.f { display: block; font-weight: 600; margin-bottom: 6px; }
+  .covbox textarea { display: block; width: 100%; box-sizing: border-box; min-height: 96px; padding: 8px 12px; font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: #fff; color: var(--ink); }
+  .covbox .btns { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .covbox .ferr { margin-top: 6px; color: var(--err); font-weight: 600; font-size: 14px; }
   .qrow .go { min-height: 44px; background: var(--orange); border-color: var(--orange); color: #1a0d00; }
   .qrow .go:disabled { opacity: .6; }
   .qrow .qmsg { flex: 1 1 100%; color: var(--err); font-weight: 600; font-size: 14px; }
@@ -520,11 +530,12 @@
       <div>
         <div class="count" id="countText"></div>
         <div class="meta" id="checkedText"></div>
-        <label class="f" for="reqShow">Show <select id="reqShow"><option value="open">Open requests</option><option value="closed">Closed requests</option><option value="all">All requests</option></select></label>
+        <label class="f" for="reqShow">Show <select id="reqShow"><option value="open">Open requests</option><option value="closed">Closed requests</option><option value="all">All requests</option><option value="notrainer">No active trainer</option></select></label>
       </div>
       <div class="actions"><button type="button" class="quiet infoBtn" id="reqInfo" aria-label="Help: how to place a request" title="How to place a request">ⓘ</button><button type="button" class="quiet manualBtn" data-m="requests">Manual</button><button id="refreshBtn" class="quiet">Refresh</button></div>
     </div>
     <div class="msg" id="listMsg" role="alert"></div>
+    <div class="covBanner" id="covBanner" role="status" hidden></div>
     <div class="note" id="reqDone" role="status" hidden></div>
     <ul id="list"></ul>
     <div class="empty" id="empty" hidden>No requests yet.</div>
@@ -975,6 +986,7 @@
         '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes. <b>Delete</b> (two presses: the second says Really delete?) hides a request from this list; the record is kept for now. A request with someone still in a class is not deleted: cancel or remove them in the class Attendance first.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
+        '<li><b>No active trainer</b> (a red chip): the request came from a ZIP that no active region holds. The requester was told we are securing the best trainer, and the staff were emailed. A red bar at the top counts them; the <b>Show</b> list has a <b>No active trainer</b> choice. <b>Mark handled…</b> asks what was done (required) and closes it; it also closes itself once an active region holds that ZIP. A view-only account sees these and cannot mark them.</li>' +
         '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -1451,6 +1463,8 @@
     var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
     chips.appendChild(ppl); chips.appendChild(st);
     if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
+    if (rec.coverage_waiting) { var nc = document.createElement("span"); nc.className = "nochip"; nc.textContent = "No active trainer"; chips.appendChild(nc); }
+    else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
     if (rec.preferred_venue_id) {
       var vc = document.createElement("span"); vc.className = "venuechip";
       vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");
@@ -1496,6 +1510,13 @@
     var ib = document.createElement("button"); ib.type = "button"; ib.className = "quiet infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
     ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
     putrow.appendChild(ib);
+    // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
+    var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
+    if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
+      var mh = document.createElement("button"); mh.type = "button"; mh.className = "quiet"; mh.textContent = "Mark handled…";
+      mh.addEventListener("click", function () { covbox.hidden = !covbox.hidden; if (!covbox.hidden) { covbox.textContent = ""; fillCovBox(covbox, rec, li); } });
+      putrow.appendChild(mh);
+    }
     // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
     var db = document.createElement("button"); db.type = "button"; db.className = "quiet"; db.textContent = "Delete"; db.style.marginLeft = "auto";
     var armedT = null;
@@ -1523,11 +1544,41 @@
       });
     });
     putrow.appendChild(db);
-    li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(detail);
+    li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(covbox); li.appendChild(detail);
     li._q = qrow; li._rec = rec;
     fillQRow(qrow, rec);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
+  }
+
+  // The Mark handled form on a request with no active trainer: what was done (required), then the server stamps who and when.
+  function fillCovBox(box, rec, li) {
+    var lab = mk("label", "f", "What was done about this request? (required)"); var id = "cov" + rec.id.slice(0, 8); lab.setAttribute("for", id);
+    var ta = document.createElement("textarea"); ta.id = id; ta.maxLength = 2000;
+    var err = mk("div", "ferr", ""); err.setAttribute("role", "alert");
+    var btns = mk("div", "btns"); var go = mk("button", "", "Mark handled"); go.type = "button";
+    var no = mk("button", "quiet", "Cancel"); no.type = "button";
+    no.addEventListener("click", function () { box.hidden = true; box.textContent = ""; });
+    go.addEventListener("click", function () {
+      var note = ta.value.trim(); err.textContent = "";
+      if (!note) { err.textContent = "Say what was done, so the next person knows."; ta.focus(); return; }
+      go.disabled = true;
+      admin("mark_request_handled", { id: rec.id, note: note }, "attendances").then(function (res) {
+        go.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var d = res.body.data || {}; delete rec.coverage_waiting; rec.coverage_handled_at = d.coverage_handled_at || new Date().toISOString(); rec.coverage_handled_note = note;
+          var fresh = buildRow(rec, false); if (li.parentNode) li.parentNode.replaceChild(fresh, li); rows[rec.id] = fresh;
+          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " marked handled."; $("reqDone").hidden = false; applyReqFilter();
+          return;
+        }
+        var probs = (res.body && res.body.error && res.body.error.problems) || [];
+        err.textContent = probs.some(function (x) { return x.issue === "not_waiting"; }) ? "This request is no longer waiting for a trainer. Refresh the list."
+          : res.status === 403 ? "You may not mark this request handled." : res.status === 404 ? "That request is gone. Refresh the list." : adminProblem(res.status);
+      });
+    });
+    btns.appendChild(go); btns.appendChild(no);
+    box.appendChild(lab); box.appendChild(ta); box.appendChild(err); box.appendChild(btns);
   }
 
   // Add records we have not seen. Existing rows are never rebuilt, so nothing moves while reading.
@@ -3738,15 +3789,23 @@
     Object.keys(rows).forEach(function (id) {
       var closed = P.loaded && !!P.ids[id];
       if (!closed) open++;
-      var show = mode === "all" || (mode === "closed" ? closed : !closed);
+      var show = mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed);
       rows[id].style.display = show ? "" : "none";
       if (show) shown++;
     });
     var n = Object.keys(known).length;
-    $("countText").textContent = !P.loaded ? n + (n === 1 ? " request" : " requests")
+    var wait = Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length, cb = $("covBanner");
+    cb.textContent = "";
+    if (wait) {
+      cb.appendChild(document.createTextNode(wait + (wait === 1 ? " request is" : " requests are") + " waiting for a trainer"));
+      if (mode !== "notrainer") { var sb = mk("button", "", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
+      if (!ME || !ME.inspector) { /* the reminder button arrives with the daily reminder (build 4) */ }
+    }
+    cb.hidden = !wait;
+    $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")
       : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
       : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
-    $("empty").textContent = mode === "open" ? "No open requests. Every request is in a class." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
+    $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer." : mode === "open" ? "No open requests. Every request is in a class." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
     $("empty").hidden = shown > 0;
   }
   $("reqShow").addEventListener("change", applyReqFilter);
@@ -3761,6 +3820,12 @@
       badge.hidden = true; box.className = "attn"; return;
     }
     if (!P.loaded) { body.textContent = "Checking the requests…"; badge.hidden = true; box.className = "attn"; return; }
+    var noTrainer = P.reqs.filter(function (r) { return r.coverage_waiting; }).length;
+    if (noTrainer) {
+      var cov = mk("div", "aitem"); cov.appendChild(mk("b", "", noTrainer + (noTrainer === 1 ? " request is" : " requests are") + " waiting for a trainer"));
+      var crow = mk("div", "arow"); var cg = mk("button", "", "Show them"); cg.type = "button"; cg.addEventListener("click", function () { $("reqShow").value = "notrainer"; goTo("requests"); applyReqFilter(); });
+      crow.appendChild(cg); cov.appendChild(crow); body.appendChild(cov);
+    }
     var waiting = P.reqs.filter(function (r) { return !P.ids[r.id]; }).sort(function (a, b) { return (a.created_at || "") < (b.created_at || "") ? 1 : -1; });
     badge.hidden = !waiting.length; badge.textContent = waiting.length;
     box.className = "attn" + (waiting.length ? " hot" : "");
