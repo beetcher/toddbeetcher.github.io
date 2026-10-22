@@ -41,13 +41,13 @@
   function style() {
     if ($("perfStyle")) return;
     var s = document.createElement("style"); s.id = "perfStyle";
-    s.textContent = ".pfv{max-width:1000px;margin:0 auto}.pfv .pfbar{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}.pfv .pfseg{display:flex;gap:4px}" +
+    s.textContent = ".pfv{max-width:1100px;margin:0 auto}.pfv .pfbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}.pfv .pfbar h2{margin:0}.pfv .pfseg{display:flex;gap:4px}" +
       ".pfv .pfseg button{min-height:44px}.pfv .pfseg button.on{background:var(--ink,#1a1a2e);color:#fff}.pfv select{font:inherit;padding:8px;min-height:44px}" +
       ".pfv .pftiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}.pfv .pfT{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;background:#fff}" +
       ".pfv .pfV{font-size:24px;font-weight:800}.pfv .pfL{font-weight:700;font-size:14px}.pfv .pfN,.pfv .pfm{font-size:13px;color:var(--muted)}" +
       ".pfv .pfstack{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid #d8d2c4;margin:8px 0}.pfv .pfstack div{min-width:2px}" +
       ".pfv .pfkey{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin:6px 0 14px}.pfv .pfkey i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}" +
-      ".pfv .pftab{width:100%;border-collapse:collapse;font-size:14px;background:#fff}.pfv .pftab th,.pfv .pftab td{text-align:left;padding:6px 8px;border-bottom:1px solid #e6e0d2;white-space:nowrap}" +
+      ".pfv .pftab{width:100%;border-collapse:collapse;font-size:14px;background:#fff}.pfv .pftab th,.pfv .pftab td{text-align:left;padding:6px 6px;border-bottom:1px solid #e6e0d2;white-space:nowrap}" +
       ".pfv .pfscroll{overflow-x:auto}.pfv .pfcold{color:#c0392b;font-weight:700}";
     document.head.appendChild(s);
   }
@@ -93,7 +93,7 @@
     ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"].forEach(function (t) { hd.appendChild(mk("th", "", t)); }); tb.appendChild(hd);
     rows.slice(0, 30).forEach(function (r) {
       var tr = mk("tr", ""), cold = r.cold === true ? "yes" : r.cold === false ? "no" : "n/a";
-      [K.when(r.created_at), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
+      [K.when(r.created_at).replace(/ Mountain$/, ""), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
        fmt(r.total_ms), fmt(num(r, "check_ms")), fmt(num(r, "server_ms")), fmt(num(r, "load_ms")), cold].forEach(function (t, i) {
         var td = mk("td", i === 8 && cold === "yes" ? "pfcold" : "", t); tr.appendChild(td);
       }); tb.appendChild(tr);
