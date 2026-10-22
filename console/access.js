@@ -6,7 +6,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var mk = K.mk, root = null;
-  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } };
+  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } };
 
   // [name, what it allows, territorial?]. Territorial ones apply only inside a person's territory (their grants); global ones come from the role.
   var CAPS = [
@@ -325,7 +325,7 @@
     wrap.appendChild(mk("p", "acm", "Who may sign in with Google, and what each role may do. The admin key still works as a back door."));
     var msg = mk("div", "acerr" + (/^Added\. An invitation email went/.test(S.msg) ? " acok" : ""), S.msg); msg.setAttribute("role", "status"); wrap.appendChild(msg);
 
-    if (!isDelegate()) wrap.appendChild(signInBox());
+    if (!isDelegate()) { wrap.appendChild(signInBox()); var rb = reviewBox(); if (rb) wrap.appendChild(rb); }
     var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
     S.persons.slice().sort(sortBy("email")).forEach(function (p) {
@@ -418,6 +418,46 @@
     });
   }
 
+  // ---- Review access code (REVIEW_CODE_GUIDE.md): ONE temporary view-only code a super admin sets for a reviewer. 24 hours; a new code replaces the old one.
+  // The server keeps only a hash, so the code is shown once, in the message after it is set. The box appears only when the server lets this person read the status (super admin).
+  var REVIEW_WHY = { too_short: "Use at least 8 characters.", too_long: "Use 64 characters at most.", bad_characters: "Use letters, numbers, spaces and punctuation only.",
+    looks_like_a_token: "That looks like a sign-in token. Use a plain phrase.", same_as_the_admin_key: "That is the admin key. Use a different phrase." };
+  function mountain(stamp) {
+    var d = new Date(stamp); if (isNaN(d.getTime())) return String(stamp || "");
+    try { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Denver" }) + " Mountain"; } catch (e) { return d.toString(); }
+  }
+  function reviewBox() {
+    var st = S.rv.st; if (!st) return null;
+    var box = mk("div", "acform"); box.id = "acReview";
+    box.appendChild(mk("h2", "", "Review access code"));
+    box.appendChild(mk("p", "acm", "Lets one reviewer look at everything for 24 hours. It is view only: they can open every screen but change nothing, and private contact details stay hidden. They type the code into the Key box on the sign-in screen. A new code replaces the old one and starts the 24 hours again. Only one code works at a time."));
+    var line = mk("p", "acm", st.active ? "A code is active until " + mountain(st.expires_at) + "." : "No code is active."); line.id = "acReviewStatus"; box.appendChild(line);
+    var f = mk("div", "acf"); var l = mk("label", "", "New code (8 to 64 characters; spaces are fine)"); l.htmlFor = "acReviewCode";
+    var i = mk("input"); i.type = "text"; i.id = "acReviewCode"; i.maxLength = 64; i.autocomplete = "off"; i.autocapitalize = "off"; i.spellcheck = false;
+    f.appendChild(l); f.appendChild(i); box.appendChild(f);
+    var save = btn("Set code (24 hours)", "", function () { saveReviewCode(i.value); }); save.id = "acReviewSave"; box.appendChild(save);
+    var m = mk("div", S.rv.good ? "acerr acok" : "acerr", S.rv.msg); m.id = "acReviewMsg"; m.setAttribute("role", "status"); box.appendChild(m);
+    return box;
+  }
+  function saveReviewCode(raw) {
+    var code = String(raw || "").trim();
+    if (code.length < 8) { S.rv.msg = REVIEW_WHY.too_short; S.rv.good = false; draw(); return Promise.resolve(); }
+    return adm("set_review_code", { code: code }, "console_settings").then(function (res) {
+      if (!ok(res)) {
+        var p = res.body && res.body.error && res.body.error.problems;
+        S.rv.msg = res.status === 403 ? "Only a super admin may set this." : (p && p.length && REVIEW_WHY[p[0].issue]) || (res.status === 429 ? "Too many tries. Wait a few minutes." : "Could not set the code. Try again.");
+        S.rv.good = false; draw(); return;
+      }
+      return loadReviewStatus().then(function () {
+        S.rv.msg = "Code set: " + code + "   Give them exactly this. It lasts until " + mountain(res.body.data.expires_at) + " and cannot be shown again. Any earlier code no longer works.";
+        S.rv.good = true; draw();
+      });
+    });
+  }
+  function loadReviewStatus() {
+    return adm("review_code_status", {}, "console_settings").then(function (res) { S.rv.st = ok(res) && res.body.data ? res.body.data : null; });
+  }
+
   function load() {
     var my = ++S.seq;
     return Promise.all([adm("list", { limit: 200 }, "access_roles"), adm("list", { limit: 200 }, "access_persons"), adm("list", { limit: 200 }, "discovery_areas"), adm("list", { limit: 1 }, "console_settings")]).then(function (all) {
@@ -425,11 +465,12 @@
       S.cs.ok = ok(all[3]); S.cs.rec = ok(all[3]) ? (recs(all[3])[0] || null) : null;
       if (!ok(all[0]) || !ok(all[1])) { S.msg = why(!ok(all[0]) ? all[0] : all[1]); } else { S.roles = recs(all[0]); S.persons = recs(all[1]); S.areas = recs(all[2]); S.loaded = true; }
       draw();
+      return loadReviewStatus().then(function () { if (my === S.seq) draw(); });
     });
   }
 
   window.AccessStation = {
     show: function () { style(); root = $("accessView"); draw(); load(); },
-    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();

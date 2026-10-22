@@ -242,6 +242,14 @@
       "schema_version": 1
     },
     {
+      "name": "review_code",
+      "collection": "review_codes",
+      "schema": "review_code.schema.json",
+      "guide": "REVIEW_CODE_GUIDE.md",
+      "examples": "examples/review_code.examples.json",
+      "schema_version": 1
+    },
+    {
       "name": "performance_event",
       "collection": "performance_events",
       "schema": "performance_event.schema.json",

@@ -2,10 +2,13 @@
 
     access = authenticate(given, admin_key=..., verifier=..., store=..., now=...)
 
-`given` is the Bearer value (already taken out of the Authorization header). Two ways in:
+`given` is the Bearer value (already taken out of the Authorization header). Three ways in:
 
   * the admin key (the back door): acts as a super admin with the actor `user:admin`, exactly as the doors have always stamped it.
     Compared in constant time. Only when the key setting is present and at least MIN_KEY_LENGTH characters long.
+  * the temporary review code (REVIEW_CODE_GUIDE.md): a super admin sets one code that works for 24 hours; it signs in as the view-only
+    Global Inspector (method `code`, actor `review-code`). Only a hash is stored. Anything that is not a token and not the admin key is tried
+    against it; wrong or expired codes are refused as `unauthorized` like any bad credential.
   * a Google sign-in token: the verifier says who Google says it is (uid, email, email_verified, provider, name). The email must be
     verified and the provider must be google.com. The email must match a live, switched-on `access_person` whose role is live and
     switched on; otherwise `not_invited`. The first sign-in saves Google's account id on the person; a later sign-in from a different
@@ -25,6 +28,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 from crud import access_persons_crud as PE
+from . import review_code
 from .capabilities import CAPABILITIES, GLOBAL, TERRITORIAL
 
 INSPECT = "inspect_everything"
@@ -111,7 +115,10 @@ def authenticate(given, *, admin_key, verifier, store, now) -> Access:
     if key_on and hmac.compare_digest(given.encode("utf-8"), admin_key.encode("utf-8")):
         return Access(True, actor=KEY_ACTOR, name="Admin key", role_key="super_admin", capabilities=frozenset(CAPABILITIES),
                       is_super_admin=True, grants=(ALL_GRANT,), method="key")
-    if verifier is None or not looks_like_token(given):
+    if not looks_like_token(given):    # not a Google token: it may be the temporary review code (view only, 24 hours)
+        coded = review_code.access_for(given, store, now)
+        return coded if coded is not None else _refuse("unauthorized")
+    if verifier is None:
         return _refuse("unauthorized")
     try:
         claims = verifier.verify(given)

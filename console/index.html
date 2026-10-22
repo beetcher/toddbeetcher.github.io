@@ -1224,6 +1224,7 @@
         '<li>A role that people still hold cannot be deleted. Switch it off instead.</li>' +
         '<li>Only a super admin may manage access; that capability cannot be given to an ordinary role yet.</li>' +
         '<li>The admin key still opens the Console as a super admin, whatever is set here.</li>' +
+        '<li>The <b>Review access code</b> (Sign-in box, super admin only) is a temporary way in for a reviewer: one code, 24 hours, view only. Type a new one and it replaces the old one and starts the 24 hours again. The reviewer types it into the Key box on the sign-in screen. The code is shown once when you set it.</li>' +
         '<li>Region limits are saved but not enforced yet.</li>' +
         '</ul>' +
         '<h3>Try this</h3><ul><li>Invite a second Google account as Region head, sign in with it in another browser, and see which stations it gets.</li></ul>' },
@@ -1325,6 +1326,9 @@
   }
   function viewOnlyMode(on) {
     $("viewOnly").hidden = !on; document.body.classList.toggle("viewonly", on);
+    $("viewOnly").innerHTML = (on && ME && ME.method === "code")      // a review code never starts a Discovery run (REVIEW_CODE_GUIDE.md)
+      ? "<b>View only.</b> You can look at everything and change nothing. Private details are hidden. This temporary review access ends on its own."
+      : "<b>View only.</b> You can look at everything and change nothing. Private details are hidden. You can start a Discovery run (25 cents at most).";
     if (viewObs) { viewObs.disconnect(); viewObs = null; }
     if (!on || !window.MutationObserver) return;
     viewObs = new MutationObserver(function () { viewOnlyPass(); });
@@ -1661,7 +1665,15 @@
   // The first call after a key or sign-in: who is this, and may they in? The key proves itself by reading the registration records
   // (as it always did). A Google sign-in asks the server's `me` op; the records are read only if the role may see requests.
   function accessProbe() {
-    if (method !== "google") return fetchRecords("").then(function (r) { if (r.status === "ok") ME = keyMe(); return r; });
+    if (method !== "google") return fetchRecords("").then(function (r) {
+      if (r.status !== "ok") return r;
+      ME = keyMe();
+      // A temporary review code is typed into the same Key box but is view only: ask the server who this really is (anything else stays the admin key).
+      return adminCall("me", {}, "access_persons").then(function (m) {
+        if (m && m.status === 200 && m.body && m.body.ok && m.body.data && m.body.data.method === "code") ME = m.body.data;
+        return r;
+      }, function () { return r; });
+    });
     return adminCall("me", {}, "access_persons").then(function (r) {
       if (r.status !== 200 || !r.body || !r.body.ok) return { status: r.status === 401 ? "unauthorized" : r.status === 403 ? "forbidden" : r.status === 429 ? "limited" : r.status === 0 ? "network" : "error" };
       ME = r.body.data; launchStage(3); if (timing) timing.tMe = tnow();

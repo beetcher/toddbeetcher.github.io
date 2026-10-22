@@ -1,0 +1,32 @@
+{
+  "valid": {
+    "the_one_record": {
+      "access_key": "current"
+    }
+  },
+  "invalid": {
+    "wrong_key": {
+      "access_key": "second"
+    },
+    "missing_key": {},
+    "sender_supplies_the_hash": {
+      "access_key": "current",
+      "code_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "sender_supplies_the_salt": {
+      "access_key": "current",
+      "salt": "0123456789abcdef"
+    },
+    "sender_supplies_the_expiry": {
+      "access_key": "current",
+      "expires_at": "2030-01-01T00:00:00Z"
+    },
+    "unknown_field": {
+      "access_key": "current",
+      "code": "plain text must never be stored"
+    },
+    "camel_case_field": {
+      "accessKey": "current"
+    }
+  }
+}

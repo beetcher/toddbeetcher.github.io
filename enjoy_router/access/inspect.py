@@ -142,8 +142,13 @@ def shape_records(records):
 
 # ---- Discovery ----------------------------------------------------------------------------------------------------------------------
 
+CODE_DISCOVERY_OPS = frozenset({"status", "quote", "get_run", "list_runs", "zips"})   # a review-code sign-in may read and quote, never start or step a run (no spend)
+
+
 def discovery_refusal(store, access, op, args):
     """None when an Inspector's Discovery call may run, else (error code, plain message)."""
+    if getattr(access, "method", "") == "code" and op not in CODE_DISCOVERY_OPS:
+        return "forbidden", "A review code cannot start or change a Discovery run."
     if op not in INSPECTOR_DISCOVERY_OPS:
         return "forbidden", "This account is view only."
     if op in ("quote", "plan"):

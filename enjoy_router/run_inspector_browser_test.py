@@ -136,7 +136,7 @@ with sync_playwright() as p:
 
     check("the name and role show", "Ivy Inspector" in pg.locator("#who").inner_text() and "global inspector" in pg.locator("#who").inner_text(), pg.locator("#who").inner_text())
     check("the View only band shows, in plain words", pg.locator("#viewOnly").is_visible() and "View only" in pg.locator("#viewOnly").inner_text() and "change nothing" in pg.locator("#viewOnly").inner_text())
-    check("every station is open, Access, Activity and Discovery included", len(tiles(pg)) == 14 and any("Access" in t for t in tiles(pg)) and any("Activity" in t for t in tiles(pg)) and any("Discovery" in t for t in tiles(pg)), tiles(pg))
+    check("every station is open, Access, Activity and Discovery included", len(tiles(pg)) == 15 and any("Access" in t for t in tiles(pg)) and any("Activity" in t for t in tiles(pg)) and any("Discovery" in t for t in tiles(pg)), tiles(pg))
     check("the home page made no refused calls", not [s for s in seen if s[2] in (401, 403)], [s for s in seen if s[2] in (401, 403)])
     pg.screenshot(path=str(SHOTS / "inspector_home.png"))
 

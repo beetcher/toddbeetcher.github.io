@@ -79,7 +79,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_service,
             "activity_events": activity_events_crud, "console_settings": console_settings_crud, "performance_events": performance_events_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
-ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs"})   # runs: only the Discovery service writes them
+ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs", "review_codes"})   # runs: only the Discovery service writes them
 
 # op -> (required args, optional args)
 OPS = {
@@ -255,6 +255,29 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
             return _error(500, "server_error", "Could not complete the request.")
         log.info("%s op=send_coverage_reminders code=ok", tag)
         return HttpResult(200, {"ok": True, "data": summary}, {"Cache-Control": "no-store"})
+
+    if body.get("op") in ("set_review_code", "review_code_status"):   # the 24-hour view-only review code (Console door only; super admin or the admin key only)
+        if not allow_me:
+            return _error(400, "validation_failed", "This op is not enabled here.")
+        if not access.is_super_admin or access.inspector or access.method == "code":
+            return _door.forbidden(tag)
+        import access.review_code as RC
+        if body["op"] == "review_code_status":
+            return HttpResult(200, {"ok": True, "data": RC.status(store, now)}, {"Cache-Control": "no-store"})
+        args = body.get("args", {})
+        if not isinstance(args, dict) or set(args) != {"code"} or not isinstance(args.get("code"), str):
+            return _error(400, "validation_failed", "Send args with just a code (text).")
+        try:
+            res = RC.set_code(store, args["code"], who, now, admin_key=admin_key)
+        except Exception as exc:  # say nothing about the cause; never log the code
+            log.error("%s code=server_error op=set_review_code exception=%s", tag, type(exc).__name__)
+            return _error(500, "server_error", "Could not complete the request.")
+        if not res.ok:
+            out = _error(400, "validation_failed", "That code cannot be used.")
+            out.body["error"]["problems"] = res.problems
+            return out
+        log.info("%s op=set_review_code code=ok", tag)
+        return HttpResult(200, {"ok": True, "data": res.data}, {"Cache-Control": "no-store"})
 
     collection, op, args = body.get("collection"), body.get("op"), body.get("args", {})
     if collection not in HANDLERS:

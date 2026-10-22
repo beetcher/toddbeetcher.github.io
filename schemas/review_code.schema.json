@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/review_code.schema.json",
+  "title": "review_code",
+  "description": "The Console review code: ONE record that holds a temporary, view-only way into the Console for a reviewer (see REVIEW_CODE_GUIDE.md). A super admin sets a code in the Access station (Sign-in box); it works for 24 hours; setting another code replaces it and restarts the 24 hours. Rules the schema cannot express: exactly one record exists (access_key is always current); only a super admin (or the admin key) may set it or ask its status, through two dedicated operations (set_review_code, review_code_status), never through the generic Console CRUD (the collection is blocked there); the code itself is never stored: only a salted hash; the hash and salt are never returned by any door; a sign-in by code acts as the view-only Global Inspector role and may not start a Discovery run; every field is set by the server only.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "in_place",
+  "x_retention": "Kept. The record is replaced in place when a new code is set; every change is also written to the activity log (hash and salt withheld). (A written policy only.)",
+  "required": [
+    "access_key"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source",
+    "code_hash",
+    "salt",
+    "expires_at"
+  ],
+  "properties": {
+    "access_key": {
+      "description": "Always current. It makes the one-record rule checkable, because ids are UUIDs. Required.",
+      "const": "current"
+    },
+    "code_hash": {
+      "description": "A salted hash (HMAC-SHA256, hex) of the code. The code itself is never kept. Never returned by any door. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "x_pii": true
+    },
+    "salt": {
+      "description": "Random text mixed into the hash, new for every code. Never returned by any door. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 64,
+      "x_pii": true
+    },
+    "expires_at": {
+      "description": "When the code stops working (UTC): 24 hours after it was set. The server compares it with its own clock on every request. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was first created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who first created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the code was last set (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last set the code. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server. Not used: the record is replaced, never deleted.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server. Not used.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}
