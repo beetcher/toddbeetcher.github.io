@@ -29,7 +29,7 @@ import pathlib
 import time
 from datetime import datetime, timezone
 
-from firebase_functions import https_fn, options
+from firebase_functions import https_fn, options, scheduler_fn
 from firebase_functions.params import SecretParam
 
 from core import Schemas
@@ -395,3 +395,19 @@ def enjoy_request_completion(req: https_fn.Request) -> https_fn.Response:
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
                              headers={"Content-Type": "application/json", **result.headers})
+
+
+# The daily reminder about requests still waiting for a trainer (P-83): 8:00 Mountain, every day. Needs the Cloud Scheduler API switched on for the
+# project before the deploy (a hand step). It tells each person only about the requests in their reach, and nothing at all when none are waiting.
+# Send reminders now in the Console runs the same function by hand.
+@scheduler_fn.on_schedule(
+    schedule="0 8 * * *",
+    timezone=scheduler_fn.Timezone("America/Denver"),
+    max_instances=1,
+    memory=options.MemoryOption.MB_256,
+    timeout_sec=120,
+    secrets=[BREVO_SMTP_KEY],
+)
+def enjoy_coverage_digest(event: scheduler_fn.ScheduledEvent) -> None:
+    import coverage_digest
+    coverage_digest.run(_get_admin_store(), _now(), manual=False, by="system:coverage")

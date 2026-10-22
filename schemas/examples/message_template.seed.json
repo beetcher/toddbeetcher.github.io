@@ -857,7 +857,7 @@
       "channel": "email",
       "audience": "staff",
       "name": "Requests waiting for a trainer (daily)",
-      "subject": "Reminder: {count} requests still waiting for a trainer",
+      "subject": "Reminder: requests still waiting for a trainer ({count})",
       "is_active": true,
       "blocks": [
         {
@@ -866,7 +866,7 @@
         },
         {
           "type": "paragraph",
-          "text": "**{count}** requests are still waiting for a trainer in your area. The longest has waited {oldest_days} days."
+          "text": "Requests still waiting for a trainer in your area: **{count}**. Longest wait so far: {longest_wait}."
         },
         {
           "type": "facts_table",

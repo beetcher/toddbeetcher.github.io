@@ -133,11 +133,11 @@ check("an edit that leaves it urgent sends nothing more", len(sent()) == n)
 # ---- the digest wording
 rec = {"person_id": "p-adm", "email": "admin@example.com", "name": "Ada Admin"}
 call = CC.digest_call(rec, [("Hayward", "WI"), ("Hayward", "WI"), ("Denver", "CO")], 4, "2026-10-22")
-check("digest facts: count, places most first, oldest", call["context"]["count"] == "3" and call["context"]["places"] == "Hayward, WI (2); Denver, CO (1)" and call["context"]["oldest_days"] == "4")
+check("digest facts: count, places most first, oldest", call["context"]["count"] == "3" and call["context"]["places"] == "Hayward, WI (2); Denver, CO (1)" and call["context"]["longest_wait"] == "4 days" and CC.wait_words(0) == "less than a day" and CC.wait_words(1) == "1 day")
 check("digest context passes the kind's schema", K.registry().validate("no_trainer_digest", call["context"]) == [])
 n = len(sent()); out = comms.notify(**call)
 sub = sent()[n]["content"]["subject"] if len(sent()) > n else ""
-check("digest renders with an urgent-but-plain subject and no private data", out.status == "sent" and sub == "Reminder: 3 requests still waiting for a trainer" and "@" not in sent()[n]["content"]["text"].replace("admin@example.com", ""))
+check("digest renders with an urgent-but-plain subject and no private data", out.status == "sent" and sub == "Reminder: requests still waiting for a trainer (3)" and "@" not in sent()[n]["content"]["text"].replace("admin@example.com", ""))
 check("a digest for the same person and day is not repeated, but a hand send is", comms.notify(**call).reason == "duplicate" and comms.notify(**dict(call, trigger="manual")).status == "sent")
 
 print(f"{'OK' if not fails else 'FAILED'}: {total - len(fails)}/{total} checks")

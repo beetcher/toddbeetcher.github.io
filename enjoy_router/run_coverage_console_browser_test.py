@@ -16,6 +16,12 @@ from crud_endpoint import handle_admin
 from discovery_door import handle_discovery
 from memory_store import MemoryStore
 import seed_access
+import comms
+from comms.channels.fake import FakeChannel
+from crud import comms_settings_crud as CSET, message_templates_crud as MT
+from launch_comms import kinds as K
+from launch_comms.directory import IndividualDirectory
+from launch_comms.stores import LogStore, SettingsStore, TemplateStore
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
@@ -70,6 +76,13 @@ class RegView:
         return [r for r in rows if not since or r["created_at"] >= since][:limit]
     def list_areas(self): return store.query("discovery_areas", [], limit=1000)
 
+SEED = json.loads((HERE.parent / "schemas" / "examples" / "message_template.seed.json").read_text())["templates"]
+for tpl in SEED:
+    rr = MT.create(store, {k: tpl[k] for k in ("kind", "channel", "audience", "name", "subject", "blocks", "is_active")}, A); assert rr.ok, rr.problems; assert MT.publish(store, rr.data["id"], A).ok
+assert CSET.create(store, {}, A).ok
+chan = FakeChannel()
+comms.configure(comms.Comms(kinds=K.registry(), directory=IndividualDirectory(store), templates=TemplateStore(store), log=LogStore(store), settings=SettingsStore(store),
+                            channels=[chan], mode="live"))
 CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
 limiter, climiter, dlimiter = make_failure_limiter(), make_failure_limiter(), make_failure_limiter()
 seen = []
@@ -165,6 +178,11 @@ with sync_playwright() as p:
     pg.select_option("#reqShow", "all"); pg.wait_for_timeout(200)
     check("The handled request shows a Handled chip, not the red one", pg.locator("#list .donechip").count() == 1 and pg.locator("#list .nochip").count() == 1)
     pg.screenshot(path=str(SHOTS / "coverage_after.png"))
+    pg.select_option("#reqShow", "open"); pg.wait_for_timeout(200)
+    pg.locator("#covBanner button", has_text="Send reminders now").click(); pg.wait_for_timeout(1200)
+    done_txt = pg.locator("#reqDone").inner_text()
+    check("Send reminders now: says who was told, and the emails really went (to the super admin and the Inspector)", "Reminders sent to 2 people about 1 request waiting for a trainer" in done_txt and sorted(x["to"] for x in chan.sent) == ["inspector@example.com", "todd@example.com"], (done_txt, [x["to"] for x in chan.sent]))
+    pg.screenshot(path=str(SHOTS / "coverage_reminders.png"))
     check("no script errors (super admin)", not errs, errs)
 
     pg2, errs2 = new_page(b)
@@ -175,6 +193,7 @@ with sync_playwright() as p:
     pg2.locator("#list li", has=pg2.locator(".nochip")).first.locator("button.head").click(); pg2.wait_for_timeout(200)
     txt = pg2.locator("#listView").inner_text()
     check("Inspector: no Mark handled button, and no private value or note on screen", pg2.locator("button", has_text="Mark handled").count() == 0 and not any(s in txt for s in SECRETS) and "Fort Collins" not in txt, txt[:300])
+    check("Inspector: no Send reminders now button either", pg2.locator("button", has_text="Send reminders now").count() == 0)
     pg2.select_option("#reqShow", "all"); pg2.wait_for_timeout(200)
     check("Inspector: the handled request's note is not shown", "Fort Collins" not in pg2.locator("#listView").inner_text())
     pg2.screenshot(path=str(SHOTS / "coverage_inspector.png"))

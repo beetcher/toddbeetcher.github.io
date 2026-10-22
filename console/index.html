@@ -986,7 +986,7 @@
         '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes. <b>Delete</b> (two presses: the second says Really delete?) hides a request from this list; the record is kept for now. A request with someone still in a class is not deleted: cancel or remove them in the class Attendance first.</li>' +
         '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
         '<li><b>Refresh</b> checks right now.</li>' +
-        '<li><b>No active trainer</b> (a red chip): the request came from a ZIP that no active region holds. The requester was told we are securing the best trainer, and the staff were emailed. A red bar at the top counts them; the <b>Show</b> list has a <b>No active trainer</b> choice. <b>Mark handled…</b> asks what was done (required) and closes it; it also closes itself once an active region holds that ZIP. A view-only account sees these and cannot mark them.</li>' +
+        '<li><b>No active trainer</b> (a red chip): the request came from a ZIP that no active region holds. The requester was told we are securing the best trainer, and the staff were emailed. A red bar at the top counts them (a super admin or admin also sees <b>Send reminders now</b>, which sends the daily 8:00 reminder email to everyone who should get it, right away); the <b>Show</b> list has a <b>No active trainer</b> choice. <b>Mark handled…</b> asks what was done (required) and closes it; it also closes itself once an active region holds that ZIP. A view-only account sees these and cannot mark them.</li>' +
         '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
         '</ul>' +
         '<h3>Ship\'s rules</h3><ul>' +
@@ -3799,7 +3799,22 @@
     if (wait) {
       cb.appendChild(document.createTextNode(wait + (wait === 1 ? " request is" : " requests are") + " waiting for a trainer"));
       if (mode !== "notrainer") { var sb = mk("button", "", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
-      if (!ME || !ME.inspector) { /* the reminder button arrives with the daily reminder (build 4) */ }
+      if (ME && !ME.inspector && (ME.is_super_admin || ME.role_key === "admin")) {   // Send reminders now: the daily reminder, by hand (the server checks too)
+        var rb = mk("button", "quiet", "Send reminders now"); rb.type = "button";
+        rb.addEventListener("click", function () {
+          rb.disabled = true;
+          admin("send_coverage_reminders", {}, "attendances").then(function (res) {
+            rb.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            var d = res.status === 200 && res.body && res.body.ok ? res.body.data : null;
+            $("reqDone").textContent = d ? (d.sent ? "Reminders sent to " + plural(d.sent, "person", "people") + " about " + plural(d.waiting, "request", "requests") + " waiting for a trainer."
+              + (d.not_sent ? " " + plural(d.not_sent, "message was", "messages were") + " not sent: see Messages." : "") : "No reminders went out. " + (d.waiting ? "See Messages for why." : "Nothing is waiting for a trainer."))
+              : res.status === 403 ? "Only a super admin or an admin may send reminders." : adminProblem(res.status);
+            $("reqDone").hidden = false;
+          });
+        });
+        cb.appendChild(rb);
+      }
     }
     cb.hidden = !wait;
     $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")

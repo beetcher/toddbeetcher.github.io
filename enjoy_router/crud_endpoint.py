@@ -242,6 +242,20 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
             return out
         return HttpResult(200, {"ok": True, "data": {"recorded": bool(res.data.get("recorded", True))}}, {"Cache-Control": "no-store"})
 
+    if body.get("op") == "send_coverage_reminders":   # Send reminders now (P-83): the daily no-trainer reminder, by hand. Super admin and admin only; never a view-only account.
+        if not allow_me:
+            return _error(400, "validation_failed", "This op is not enabled here.")
+        if access.inspector or not (access.is_super_admin or access.role_key == "admin"):
+            return _door.forbidden(tag)
+        try:
+            import coverage_digest
+            summary = coverage_digest.run(store, now, manual=True, by=who)
+        except Exception as exc:  # say nothing about the cause
+            log.error("%s code=server_error op=send_coverage_reminders exception=%s", tag, type(exc).__name__)
+            return _error(500, "server_error", "Could not complete the request.")
+        log.info("%s op=send_coverage_reminders code=ok", tag)
+        return HttpResult(200, {"ok": True, "data": summary}, {"Cache-Control": "no-store"})
+
     collection, op, args = body.get("collection"), body.get("op"), body.get("args", {})
     if collection not in HANDLERS:
         return _error(400, "validation_failed", "Unknown collection. Known: " + ", ".join(sorted(HANDLERS)) + ".")

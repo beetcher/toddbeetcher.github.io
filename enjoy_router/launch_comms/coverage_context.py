@@ -57,11 +57,15 @@ def places_text(items) -> str:
     return "; ".join(f"{t}, {s} ({n})" for (t, s), n in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0][1], kv[0][0])))
 
 
+def wait_words(days: int) -> str:
+    return "less than a day" if days <= 0 else "1 day" if days == 1 else f"{days} days"
+
+
 def digest_call(rec: dict, items: list, oldest_days: int, day: str, manual: bool = False, by: str = "system:coverage") -> dict:
     """items: [(town, state)] for this person's territory. The text carries places and counts only, so it is safe for every recipient."""
     first = (rec.get("name") or "").split()
     ctx = {"name": first[0] if first else "there", "count": str(len(items)), "places": places_text(items)[:1000],
-           "oldest_days": str(max(0, oldest_days)), "console_url": CONSOLE_URL}
+           "longest_wait": wait_words(oldest_days), "console_url": CONSOLE_URL}
     return dict(kind="no_trainer_digest", recipient={"type": "adhoc", "name": rec.get("name") or "", "email": rec["email"]}, context=ctx, by=by,
                 trigger="manual" if manual else "automatic", refs={}, audience="staff",
                 dedupe_key=f"no_trainer_digest:{rec['person_id']}:{day}")
