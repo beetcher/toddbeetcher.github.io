@@ -240,6 +240,14 @@
       "guide": "CONSOLE_SETTING_GUIDE.md",
       "examples": "examples/console_setting.examples.json",
       "schema_version": 1
+    },
+    {
+      "name": "performance_event",
+      "collection": "performance_events",
+      "schema": "performance_event.schema.json",
+      "guide": "PERFORMANCE_EVENT_GUIDE.md",
+      "examples": "examples/performance_event.examples.json",
+      "schema_version": 1
     }
   ],
   "message_kinds": {

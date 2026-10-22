@@ -108,7 +108,7 @@ def ids(n, collection, **args):
 # ================================================================ who is an inspector
 st, b = call(2, "venues", "list")        # the first call also saves the person's first sign-in (a system write); the snapshot comes after it
 m = lambda n: handle_admin("POST", f"Bearer {tok(n)}", json.dumps({"op": "me"}).encode(), KEY, "v", store, make_failure_limiter(), tick(), verifier=V).body["data"]
-check("capability: inspect_everything is one of the 18 listed capabilities", "inspect_everything" in CAPABILITIES and len(CAPABILITIES) == 18)
+check("capability: inspect_everything is one of the 19 listed capabilities", "inspect_everything" in CAPABILITIES and len(CAPABILITIES) == 19)
 check("me: the Inspector is told they are an inspector and holds only that capability", m(2)["inspector"] is True and m(2)["capabilities"] == ["inspect_everything"] and m(2)["is_super_admin"] is False, m(2))
 check("me: a super admin is not an inspector", m(1)["inspector"] is False)
 check("me: a role with the capability AND others is still an inspector (the capability wins)", m(3)["inspector"] is True)

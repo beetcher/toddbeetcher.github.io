@@ -46,6 +46,7 @@ READ = {
     "access_persons": ("manage_access",),
     "activity_events": (SUPER_ONLY,),                     # the activity log: only a super admin reads it
     "console_settings": ("view_console",),                # every signed-in person reads it: the page needs the sign-out time
+    "performance_events": ("view_performance",),          # the Performance station (a super admin holds every capability; the Inspector reads view only)
 }
 
 # collection -> capabilities that allow WRITING it (any one)
@@ -78,6 +79,7 @@ WRITE = {
     "access_persons": ("manage_access",),
     "activity_events": (SUPER_ONLY,),                     # written by the ActivityStore only, never through a door
     "console_settings": (SUPER_ONLY,),                    # only a super admin changes the sign-out time
+    "performance_events": (SUPER_ONLY,),                  # written only by the record_timing op (crud/performance_service.py), never edited through a door
 }
 
 

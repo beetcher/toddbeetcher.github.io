@@ -43,13 +43,14 @@ from __future__ import annotations
 
 import hmac
 import json
+import time
 import logging
 from datetime import datetime
 
 from access import delegate as _delegate, door as _door, guard as _guard, inspect as _inspect, policy as _policy
 from access.territory import Scope, Territory
 from console import MIN_KEY_LENGTH, _bearer, make_failure_limiter  # noqa: F401  (make_failure_limiter re-exported)
-from crud import (access_persons_service, access_roles_crud, activity_events_crud, console_settings_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
+from crud import (performance_events_crud, performance_service, access_persons_service, access_roles_crud, activity_events_crud, console_settings_crud, assignments_service, attendances_service, classes_service, communication_logs_crud, comms_settings_crud, curriculums_crud,
                   individual_restricted_details_service, message_templates_crud,
                   individuals_service, journal_events_crud, instructor_rosters_service, location_links_service, locations_service,
                   merge_events_service, organization_links_service, organizations_crud, student_rosters_service, venues_service,
@@ -65,6 +66,7 @@ ADMIN_ACTOR = "user:admin"   # what the admin key stamps (access.authorize.KEY_A
 MAX_BODY_BYTES = 100_000
 
 # collection -> module with the handler's function names (a handler file, or a service wrapping one). New collections are added here.
+_FIRST_REQUEST = True
 HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "registration_assignments": assignments_service,
             "individuals": individuals_service, "individual_restricted_details": individual_restricted_details_service,
             "merge_events": merge_events_service, "locations": locations_service, "location_links": location_links_service,
@@ -75,7 +77,7 @@ HANDLERS = {"venues": venues_service, "scheduled_classes": classes_service, "reg
             "comms_settings": comms_settings_crud, "discovery_models": discovery_models_crud, "discovery_areas": discovery_areas_crud,
             "discovery_types": discovery_types_crud, "discovery_prompts": discovery_prompts_crud, "discovery_settings": discovery_settings_crud,
             "discovery_runs": discovery_runs_crud, "access_roles": access_roles_crud, "access_persons": access_persons_service,
-            "activity_events": activity_events_crud, "console_settings": console_settings_crud}
+            "activity_events": activity_events_crud, "console_settings": console_settings_crud, "performance_events": performance_events_crud}
 # Collections the Console door does not reach yet (sensitive: needs the Console panel and sign-in roles first). The test door reaches them.
 ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discovery_runs"})   # runs: only the Discovery service writes them
 
@@ -196,6 +198,9 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
                 blocked_collections=frozenset(), verifier=None, allow_me=False) -> HttpResult:
     """actor: a fixed actor string (the test door: key only, no per-person rules), or None = who signed in (the Console door:
     the key or a Google sign-in, with the capability rules in access/policy.py)."""
+    global _FIRST_REQUEST
+    started, cold = time.perf_counter(), _FIRST_REQUEST       # cold: this server instance had not answered anything before
+    _FIRST_REQUEST = False
     if method.upper() != "POST":
         return _error(405, "validation_failed", "Use POST.", {"Allow": "POST"})
 
@@ -216,7 +221,23 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
     if body.get("op") == "me":   # who is signed in and what they may do (the Console door only)
         if not allow_me:
             return _error(400, "validation_failed", "This op is not enabled here.")
-        return HttpResult(200, {"ok": True, "data": _door.me(access)}, {"Cache-Control": "no-store"})
+        data = _door.me(access)
+        data["server_ms"], data["cold"] = int((time.perf_counter() - started) * 1000), cold     # for the Performance station
+        return HttpResult(200, {"ok": True, "data": data}, {"Cache-Control": "no-store"})
+    if body.get("op") == "record_timing":   # a page reports how long its own sign-in took (the Console door only; never a write for an inspector)
+        if not allow_me:
+            return _error(400, "validation_failed", "This op is not enabled here.")
+        if access.inspector:
+            return _door.forbidden(tag)
+        args = body.get("args", {})
+        if not isinstance(args, dict):
+            return _error(400, "validation_failed", "args must be an object.")
+        res = performance_service.record(store, access, args, who, now=now)
+        if not res.ok:
+            out = _error(STATUS.get(res.code, 400), res.code, "The request was refused.")
+            out.body["error"]["problems"] = res.problems
+            return out
+        return HttpResult(200, {"ok": True, "data": {"recorded": bool(res.data.get("recorded", True))}}, {"Cache-Control": "no-store"})
 
     collection, op, args = body.get("collection"), body.get("op"), body.get("args", {})
     if collection not in HANDLERS:

@@ -67,6 +67,7 @@
           "edit_discovery_settings",
           "view_spend",
           "inspect_everything",
+          "view_performance",
           "manage_access"
         ]
       }

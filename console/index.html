@@ -511,7 +511,7 @@
       <label class="remember"><input type="checkbox" id="rememberBox"> Remember on this device</label>
     </div>
     <p class="swap"><a href="#" id="swapLink" hidden>Use admin key</a></p>
-    <div id="launching" role="status" aria-live="polite" hidden><img src="assets/launch-tile.webp" width="84" height="84" alt=""><div class="lline" id="launchLine"></div></div>
+    <div id="launching" role="status" aria-live="polite" hidden><img src="assets/console-touch-180.png" width="84" height="84" alt=""><div class="lline" id="launchLine"></div></div>
     <div class="msg" id="lockMsg" role="alert"></div>
   </section>
 
@@ -836,6 +836,7 @@
   <section id="discoveryView" hidden></section>
   <section id="accessView" hidden></section>
   <section id="activityView" hidden></section>
+  <section id="performanceView" hidden></section>
 
   <section id="placesView" hidden>
     <div class="bar">
@@ -945,12 +946,13 @@
   // ---- Who is signed in. method "key" = the admin key (the back door); "google" = a Google sign-in (Firebase). While signed in with
   // Google, `key` holds the current Google ID token and every call sends it as the Bearer value, exactly like the key. ME is what the
   // server's `me` op said (or, for the key, a super admin). Hiding stations here is a courtesy: the server decides what is allowed.
-  var method = "key", ME = null, auth = null, unlockSeq = 0;
+  var method = "key", ME = null, auth = null, unlockSeq = 0, timing = null;
+  function tnow() { return window.performance && performance.now ? performance.now() : Date.now(); }
   var SDK = "https://www.gstatic.com/firebasejs/10.14.1/";
   var STATION_CAPS = { requests: ["manage_requests", "manage_classes"], venues: ["view_console"], classes: ["view_console"], people: ["edit_people"],
     places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
     curriculums: ["view_console"], attendance: ["manage_classes", "manage_requests"], organizations: ["edit_people"], messages: ["view_messages"],
-    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access", "invite_people"] };
+    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access", "invite_people"], performance: ["view_performance"] };
   function can(c) { return !!ME && (ME.is_super_admin === true || ME.inspector === true || (ME.capabilities || []).indexOf(c) >= 0); }   // an inspector may LOOK at everything; the server refuses every write
   function canAny(list) { for (var i = 0; i < list.length; i++) if (can(list[i])) return true; return false; }
   function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && (ME.is_super_admin || ME.inspector)); }
@@ -1231,6 +1233,21 @@
         '<li>Not yet recorded: the public sign-up form and the completion link, and records created by tests.</li>' +
         '</ul>' +
         '<h3>Try this</h3><ul><li>Edit a venue, then open Activity and find the edit. Tap Change history on the venue card to see only that venue.</li></ul>' },
+    { id: "performance", admin: true, name: "Performance", short: "Performance", blurb: "How fast the Console is. Read only.",
+      manual:
+        '<div class="kicker">Station 15</div><h2>Performance</h2>' +
+        '<h3>Mission</h3><p>How fast the Console is, so slow spots can be found and fixed. Today it shows sign-in speed: every sign-in sends the time each step took, measured by that person\'s own page. More measures (Spend and others) will be added here.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>7, 30 or 90 days</b> and <b>device</b> narrow what the numbers cover.</li>' +
+        '<li><b>The bar</b> shows where the time goes, on average: the server waking up and the network, the server\'s own work, loading the lists, and everything else.</li>' +
+        '<li><b>Asleep</b> means the server had just woken up (a cold start), the usual cause of a slow first sign-in.</li>' +
+        '<li><b>Refresh</b> reads the timings again.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Needs the View performance capability (a super admin has it; give it to Admin in Access). Read only, nothing can be changed here.</li>' +
+        '<li>No names, emails or keys are stored: only the role, the device and the times.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Sign out, sign in again, then Refresh here and look at the newest row.</li></ul>' },
   ];
   var COMING = [
     { name: "More stations", blurb: "New collections dock here as they are built." }
@@ -1339,11 +1356,11 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; }
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -1371,6 +1388,8 @@
     if (r === "access" && window.AccessStation) window.AccessStation.show();
     $("activityView").hidden = r !== "activity";
     if (r === "activity" && window.ActivityStation) window.ActivityStation.show();
+    $("performanceView").hidden = r !== "performance";
+    if (r === "performance" && window.PerformanceStation) window.PerformanceStation.show();
     if (r === "messages") loadMessagesStation();
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
@@ -1582,7 +1601,7 @@
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
     ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset();
     $("keyInput").value = "";
     $("lockMsg").textContent = message || "";
     show(true);
@@ -1594,7 +1613,7 @@
     if (method !== "google") return fetchRecords("").then(function (r) { if (r.status === "ok") ME = keyMe(); return r; });
     return adminCall("me", {}, "access_persons").then(function (r) {
       if (r.status !== 200 || !r.body || !r.body.ok) return { status: r.status === 401 ? "unauthorized" : r.status === 403 ? "forbidden" : r.status === 429 ? "limited" : r.status === 0 ? "network" : "error" };
-      ME = r.body.data; launchStage(3);
+      ME = r.body.data; launchStage(3); if (timing) timing.tMe = tnow();
       return canPlaced() ? fetchRecords("") : { status: "ok", records: [] };
     });
   }
@@ -1649,8 +1668,19 @@
     });
   }
 
+  // The Performance log: after a sign-in, send how long each step took (numbers only; the server stamps who). Never for a view-only account; a failure is ignored.
+  function sendTiming(tm) {
+    if (!tm || !tm.tReady || !ME || ME.inspector) return;
+    var ms = function (n) { return Math.max(0, Math.min(600000, Math.round(n))); }, a = { kind: "sign_in", device: window.innerWidth < 700 ? "phone" : "desktop", method: tm.method,
+      total_ms: ms(tm.tReady - tm.t0), check_ms: ms(tm.tMe - tm.t0), load_ms: ms(tm.tRecords - tm.tMe) };
+    if (tm.method === "google" && typeof ME.server_ms === "number") a.server_ms = ms(ME.server_ms);
+    if (tm.method === "google" && typeof ME.cold === "boolean") a.cold = ME.cold;
+    try { adminCall("record_timing", a, "performance_events").catch(function () {}); } catch (e) {}
+  }
+
   function unlock(k, remember) {
     var mine = ++unlockSeq;
+    timing = { t0: tnow(), method: method === "google" ? "google" : "key" };
     launchStart();
     idleTouch();                                       // a sign-in starts a fresh clock: after a timeout the old "last active" time must not sign this person straight out again
     key = k; reset();
@@ -1659,6 +1689,7 @@
     return accessProbe().then(function (res) {
       $("unlockBtn").disabled = false;
       if (mine !== unlockSeq || !key) return;          // the page was locked, or signed in again, while this was in flight: this answer is out of date
+      if (timing) { timing.tRecords = tnow(); if (!timing.tMe) timing.tMe = timing.tRecords; }
       if (res.status !== "ok") {
         key = ""; launchStop();
         $("lockMsg").textContent = "Launch aborted: " + problem(res.status);
@@ -1669,6 +1700,7 @@
       }
       if (method !== "google") setKey(k, remember);
       idleStaleAtLoad = false; idleStart();
+      var tm = timing; timing = null; if (tm) tm.tReady = tnow();
       return launchDone().then(function () {
         if (mine !== unlockSeq || !key) return;
         show(false);
@@ -1677,6 +1709,7 @@
         firstLoadDone = true;
         $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
         route();
+        sendTiming(tm);
       });
     });
   }
@@ -6891,5 +6924,6 @@
 <script src="discovery.js"></script>
 <script src="access.js"></script>
 <script src="activity.js"></script>
+<script src="performance.js"></script>
 </body>
 </html>

@@ -46,7 +46,7 @@ KEEP_SUBTREE = {"venues": frozenset({"place"}),                         # the pl
                 "locations": frozenset({"addresses"})}                  # places that belong to people are dropped before this (see shape)
 # Collections whose records are not about people at all: nothing is hidden or masked in them.
 PLAIN = frozenset({"curriculums", "message_templates", "discovery_areas", "discovery_types", "discovery_models", "discovery_prompts",
-                   "discovery_settings", "discovery_runs", "console_settings", "access_roles", "comms_settings"})
+                   "discovery_settings", "discovery_runs", "console_settings", "access_roles", "comms_settings", "performance_events"})
 PERSON_SUBJECT = "individual"
 
 

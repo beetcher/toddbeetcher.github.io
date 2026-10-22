@@ -1,0 +1,87 @@
+{
+  "valid": {
+    "google_cold_start": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 6400,
+      "check_ms": 4900,
+      "load_ms": 1300,
+      "server_ms": 420,
+      "cold": true
+    },
+    "google_warm_phone": {
+      "kind": "sign_in",
+      "device": "phone",
+      "method": "google",
+      "total_ms": 1500,
+      "check_ms": 700,
+      "load_ms": 650,
+      "server_ms": 90,
+      "cold": false
+    },
+    "key_sign_in": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "key",
+      "total_ms": 900
+    },
+    "zero": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 0
+    }
+  },
+  "invalid": {
+    "unknown_kind": {
+      "kind": "page_view",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 10
+    },
+    "unknown_device": {
+      "kind": "sign_in",
+      "device": "tablet",
+      "method": "google",
+      "total_ms": 10
+    },
+    "negative": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": -1
+    },
+    "too_big": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 600001
+    },
+    "decimal": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 10.5
+    },
+    "missing_total": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google"
+    },
+    "unknown_field": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 10,
+      "email": "a@b.example"
+    },
+    "cold_not_boolean": {
+      "kind": "sign_in",
+      "device": "desktop",
+      "method": "google",
+      "total_ms": 10,
+      "cold": "yes"
+    }
+  }
+}

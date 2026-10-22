@@ -48,7 +48,7 @@ def person(s, email, role_id, **kw):
 
 # ================================================================ the capability list
 schema = json.loads((SCHEMAS / "access_role.schema.json").read_text())
-check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 18)
+check("CAPABILITIES is read from the schema enum", CAPABILITIES == tuple(schema["properties"]["capabilities"]["items"]["enum"]) and len(CAPABILITIES) == 19)
 guide = (SCHEMAS / "ACCESS_ROLE_GUIDE.md").read_text()
 check("every capability is explained in the role guide", all(f"| `{c}` |" in guide for c in CAPABILITIES), [c for c in CAPABILITIES if f"| `{c}` |" not in guide])
 check("every capability is territorial or global, never both, and the grant schema offers exactly the territorial ones",

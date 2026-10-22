@@ -55,7 +55,7 @@ with sync_playwright() as p:
     check("both people are listed with their roles", rows(pg, "#accessView .acrow") >= 4 and "Todd Beetcher" in pg.inner_text("#accessView") and "Hana Head" in pg.inner_text("#accessView"))
     txt = pg.inner_text("#accessView")
     check("a person who never signed in says so", "Has not signed in yet" in txt)
-    check("the capability table lists all 18, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 19 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
+    check("the capability table lists all 19, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 20 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
     check("the super admin role says it does everything", "Everything, including access" in txt)
 
     # ---- invite
@@ -97,7 +97,7 @@ with sync_playwright() as p:
     # ---- roles
     pg.get_by_role("button", name="Add a role", exact=True).click(); pg.wait_for_selector("#arKey")
     labels = pg.locator("#accessView .accaps input").evaluate_all("els => els.map(e => e.value)")
-    check("the role form offers 17 capabilities and never manage_access", len(labels) == 17 and "inspect_everything" in labels and "manage_access" not in labels and "edit_regions" in labels, labels)
+    check("the role form offers 18 capabilities and never manage_access", len(labels) == 18 and "inspect_everything" in labels and "manage_access" not in labels and "edit_regions" in labels, labels)
     pg.fill("#arKey", "helper"); pg.fill("#arLabel", "Helper")
     for c in ("view_console", "view_messages"): pg.locator('#accessView .accaps input[value="%s"]' % c).check()
     pg.locator('#accessView .accaps input[value="view_console"]').uncheck(); pg.locator('#accessView .accaps input[value="view_messages"]').uncheck()

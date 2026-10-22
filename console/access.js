@@ -26,6 +26,7 @@
     ["invite_people", "Invite people into this territory and manage the people they invited. They get only regions inside this territory, and nothing this person does not hold.", true],
     ["edit_discovery_settings", "Discovery models, areas, types, prompt and limits.", false],
     ["view_spend", "Read the Spend tab.", false],
+    ["view_performance", "Performance: open the Performance station (how fast the Console is). Read only.", false],
     ["inspect_everything", "View only: look at everything (private details hidden or masked) and change nothing. May start a Discovery run, capped at 25 cents. For demos.", false]
   ];   // manage_access is deliberately not offered: only a super admin manages access (delegation comes later)
   var TERR = CAPS.filter(function (c) { return c[2]; }).map(function (c) { return c[0]; });
@@ -249,7 +250,7 @@
         var l = mk("label"); var cb = mk("input"); cb.type = "checkbox"; cb.value = c[0]; cb.checked = have.indexOf(c[0]) >= 0; l.appendChild(cb);
         var t = mk("span"); t.appendChild(mk("b", "", c[0])); t.appendChild(document.createTextNode(" " + c[1])); l.appendChild(t); box.appendChild(l);
       });
-      f.appendChild(mk("p", "acm", "Global capabilities (view_console, manage_curriculums, edit_discovery_settings, view_spend, inspect_everything) apply everywhere. The others are only the starting choice offered when you give this role territory; what a person may do in a region comes from their territory."));
+      f.appendChild(mk("p", "acm", "Global capabilities (view_console, manage_curriculums, edit_discovery_settings, view_spend, view_performance, inspect_everything) apply everywhere. The others are only the starting choice offered when you give this role territory; what a person may do in a region comes from their territory."));
       f.appendChild(field("Capabilities", box));
     }
     var err = mk("div", "acerr"); err.id = "arErr"; err.setAttribute("role", "alert"); f.appendChild(err);

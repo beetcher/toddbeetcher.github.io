@@ -41,9 +41,10 @@ Each capability is one thing the server can allow. The server maps every operati
 | `edit_discovery_settings` | Discovery models, areas, types, prompt and limits. |
 | `view_spend` | Read the Spend tab. |
 | `inspect_everything` | LOOK at everything and change nothing (decided 2026-10-21, P-78). Read access to every station and list, including Activity, Access, Spend, Discovery results and Messages, with private data hidden or masked (see section 5, rule 4). A person whose role holds it is VIEW ONLY: the server refuses every write whatever else the role lists, except starting a Discovery run (capped at 25 cents a run). A sales and demo tool. |
+| `view_performance` | Open the Performance station: how fast the Console is (sign-in timings today). Read only. Global: comes from the role. A super admin has it; give it to Admin in Access. |
 | `manage_access` | Invite people, change roles, switch access on and off. Only a super admin should hold it. |
 
-Territorial or global (decided 2026-10-20): `manage_requests`, `manage_classes`, `manage_instructors`, `edit_venues`, `activate_venues`, `edit_people`, `edit_places`, `edit_regions`, `view_messages`, `manage_messages`, `run_discovery` and `invite_people` apply only inside a person's territory and come from the person's grants (a role's list of these is the default offered when a grant is made). `view_console`, `manage_curriculums`, `edit_discovery_settings`, `view_spend`, `inspect_everything` and `manage_access` are global and come from the role.
+Territorial or global (decided 2026-10-20): `manage_requests`, `manage_classes`, `manage_instructors`, `edit_venues`, `activate_venues`, `edit_people`, `edit_places`, `edit_regions`, `view_messages`, `manage_messages`, `run_discovery` and `invite_people` apply only inside a person's territory and come from the person's grants (a role's list of these is the default offered when a grant is made). `view_console`, `manage_curriculums`, `edit_discovery_settings`, `view_spend`, `inspect_everything`, `view_performance` and `manage_access` are global and come from the role.
 
 Todd may rename or split a capability later; a new one is added to the `capabilities` enum and to this table in the same change.
 

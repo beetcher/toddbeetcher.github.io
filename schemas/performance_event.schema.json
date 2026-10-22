@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/performance_event.schema.json",
+  "title": "performance_event",
+  "description": "One timing measurement of the Console, for the Performance station (see PERFORMANCE_EVENT_GUIDE.md). Today only kind sign_in: how long a Console sign-in took, step by step, measured by the page of the person who signed in and sent through the record_timing op. Rules the schema cannot express: the person sending cannot choose who it is recorded for (the server stamps created_by and role_key); numbers are milliseconds, 0 to 600000; records are create-only (no edit, no delete through any door); only a person holding view_performance (a super admin has every capability) reads them; the Global Inspector reads them too (view only); no name, email or token is ever stored; one record per person per 10 seconds is kept (more are dropped quietly).",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_history": "none",
+  "x_retention": "Kept. Records are never edited. The station shows the last 90 days; permanent removal after that is a separate job (parking lot). (A written policy only.)",
+  "required": [
+    "kind",
+    "device",
+    "method",
+    "total_ms"
+  ],
+  "x_server_required": [
+    "id",
+    "schema_version",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by",
+    "source"
+  ],
+  "properties": {
+    "kind": {
+      "description": "What was measured. Today only sign_in. Required.",
+      "enum": [
+        "sign_in"
+      ]
+    },
+    "device": {
+      "description": "phone or desktop, worked out by the page from the screen width. Required.",
+      "enum": [
+        "phone",
+        "desktop"
+      ]
+    },
+    "method": {
+      "description": "How the person signed in: google or key (the admin key). Required.",
+      "enum": [
+        "google",
+        "key"
+      ]
+    },
+    "total_ms": {
+      "description": "Milliseconds from the moment the sign-in was accepted by Google (or the key was sent) until the Console was ready to open. The cosmetic Liftoff pause is not counted. Required.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 600000
+    },
+    "check_ms": {
+      "description": "Milliseconds the first call to the server took (asking who is signed in, or for a key, loading the first list), including any cold start. Optional.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 600000
+    },
+    "load_ms": {
+      "description": "Milliseconds loading the first lists after that. Optional.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 600000
+    },
+    "server_ms": {
+      "description": "Milliseconds the server itself spent on the who-am-I call, as the server measured it (so the rest of check_ms is the network and the wake-up). Optional.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 600000
+    },
+    "cold": {
+      "description": "True when the server instance that answered had just woken up (it was the first request that instance handled). Optional.",
+      "type": "boolean"
+    },
+    "role_key": {
+      "description": "The role of the person who signed in (for example manager). Set by the server, never by the sender.",
+      "type": "string",
+      "maxLength": 100
+    },
+    "id": {
+      "description": "UUID v4, set by the server; also the Firestore document id.",
+      "readOnly": true,
+      "type": "string",
+      "format": "uuid"
+    },
+    "schema_version": {
+      "description": "Version of this schema the record was written under (currently 1). Set by the server.",
+      "readOnly": true,
+      "const": 1
+    },
+    "created_at": {
+      "description": "When the record was created (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_by": {
+      "description": "Who created it, as an actor string. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "updated_at": {
+      "description": "When the record last changed (UTC). Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_by": {
+      "description": "Who last changed it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    },
+    "source": {
+      "description": "Where the record came from: dashboard or import. Set by the server.",
+      "readOnly": true,
+      "enum": [
+        "dashboard",
+        "import"
+      ]
+    },
+    "deleted_at": {
+      "description": "When the record was soft deleted (UTC); absent while live. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "format": "date-time"
+    },
+    "deleted_by": {
+      "description": "Who soft deleted it. Set by the server.",
+      "readOnly": true,
+      "type": "string",
+      "maxLength": 100
+    }
+  }
+}

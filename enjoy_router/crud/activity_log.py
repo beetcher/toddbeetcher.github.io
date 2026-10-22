@@ -21,7 +21,7 @@ ACTIVITY = load_collection("activity_event")
 COLLECTION = ACTIVITY.name      # activity_events
 
 # Logs themselves, and what the server writes constantly. Everything else in the registry is covered automatically.
-EXCLUDED_COLLECTIONS = frozenset({"activity_events", "communication_logs", "journal_events", "discovery_runs"})
+EXCLUDED_COLLECTIONS = frozenset({"activity_events", "communication_logs", "journal_events", "discovery_runs", "performance_events"})
 # Collections whose every field is sensitive: the entry names the fields and never holds a value.
 WITHHOLD_COLLECTIONS = frozenset({"individual_restricted_details"})
 # Fields that are not marked x_pii but must never be copied into a log.
