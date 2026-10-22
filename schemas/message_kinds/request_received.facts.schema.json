@@ -52,6 +52,15 @@
       ],
       "format": "uri",
       "x_derived": true
+    },
+    "trainer_notice": {
+      "description": "A line telling the requester we are finding them a trainer. Present only for a private request from a ZIP no active region holds; absent otherwise.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "We're securing the best trainer for your area."
+      ],
+      "x_derived": true
     }
   }
 }

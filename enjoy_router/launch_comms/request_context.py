@@ -4,6 +4,7 @@ The recipient is ad hoc: the name and email on the request (the person has no in
 """
 from __future__ import annotations
 
+TRAINER_NOTICE = "We're securing the best trainer for your area."
 COMPLETION_LINK = "https://beetcher.com/enjoy/register/private/?r="
 
 
@@ -11,6 +12,8 @@ def facts(doc: dict) -> dict:
     out = {"name": " ".join((doc["first_name"], doc["last_name"])), "confirmation_number": doc["confirmation_number"]}
     if doc.get("registration_type") == "private" and doc.get("completion_token"):
         out["completion_link"] = COMPLETION_LINK + doc["completion_token"]
+    if doc.get("coverage") == "no_active_region":
+        out["trainer_notice"] = TRAINER_NOTICE
     return out
 
 

@@ -257,7 +257,7 @@ st.create(ACT, new_id(20), {"id": new_id(20), "created_by": "user:admin", "updat
 st.update(ACT, new_id(20), {"x": 2, "updated_at": stamp(), "updated_by": "user:admin"})
 check("A7a a write to the log itself writes no entry about the entry (no loop)", len(inner.query(ACT, limit=50)) == 1)
 inner.data[ACT].clear()
-check("A7b the excluded list is exactly the logs and the constant writers", EXCLUDED_COLLECTIONS == {"activity_events", "communication_logs", "journal_events", "discovery_runs"})
+check("A7b the excluded list is exactly the logs and the constant writers", EXCLUDED_COLLECTIONS == {"activity_events", "communication_logs", "journal_events", "discovery_runs", "performance_events"})
 st.create("something_unregistered", new_id(21), {"id": new_id(21), "created_by": "user:admin", "x": 1})
 check("A7c a collection the registry does not know is written but not logged", inner.get("something_unregistered", new_id(21)) is not None and len(entries(inner)) == 0)
 st.create("individual_history", new_id(22), {"id": new_id(22), "created_by": "system:x", "before": {}, "after": {}})

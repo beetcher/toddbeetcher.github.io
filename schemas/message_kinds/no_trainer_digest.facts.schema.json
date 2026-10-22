@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/no_trainer_digest.facts.schema.json",
+  "title": "no_trainer_digest",
+  "description": "The facts the message kind no_trainer_digest (daily reminder: requests still waiting for a trainer) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "Requests waiting for a trainer (daily reminder)",
+    "audiences": [
+      "staff"
+    ],
+    "triggers": [
+      "The daily 8:00 Mountain scheduled job, or Send reminders now in the Console (super admin and admin): sent to the same people as the urgent notice, each told only about requests in their own territory. Nothing is sent to a person when nothing in their territory is waiting."
+    ],
+    "recipient": "adhoc: the Google email and name on each access person. The wording carries towns, states and counts only, so one copy is safe for every recipient including the Global Inspector.",
+    "dedupe": "explicit key: kind + access person id + the day; a hand send (Send reminders now) bypasses it",
+    "refs": [
+      "none: the digest covers several requests, so it links to no single record."
+    ]
+  },
+  "required": [
+    "name",
+    "count",
+    "places",
+    "oldest_days",
+    "console_url"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: the first word of their name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Dana"
+      ],
+      "x_derived": true
+    },
+    "count": {
+      "description": "How many requests are still waiting for a trainer in this person's territory, as a number in words of digits.",
+      "type": "string",
+      "maxLength": 10,
+      "examples": [
+        "3"
+      ],
+      "x_derived": true
+    },
+    "places": {
+      "description": "Where they are, the towns with the number waiting in each, most first. Towns and states only, no names or contacts.",
+      "type": "string",
+      "maxLength": 1000,
+      "examples": [
+        "Hayward, WI (2); Denver, CO (1)"
+      ],
+      "x_derived": true
+    },
+    "oldest_days": {
+      "description": "How many whole days the longest-waiting request has been waiting.",
+      "type": "string",
+      "maxLength": 10,
+      "examples": [
+        "4"
+      ],
+      "x_derived": true
+    },
+    "console_url": {
+      "description": "The address of the Console. Public; never carries a key or a token.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "https://beetcher.com/console/"
+      ],
+      "format": "uri",
+      "x_derived": true
+    }
+  }
+}

@@ -6,7 +6,9 @@ whether it is sent at all (mode, duplicates) and logs it (R-2, R-4). A message p
 import logging
 
 import comms
+import coverage_alerts
 from core import handle_registration_request
+from request_coverage import OPEN
 from launch_comms import request_context
 
 log = logging.getLogger("enjoy_router")
@@ -20,4 +22,6 @@ def register(body, store, schemas, now):
         comms.notify(**request_context.call_for(result.doc))
     except Exception:
         log.error("receipt id=%s code=notify_failed", result.doc.get("id"))
+    if result.doc.get("coverage") == OPEN:
+        coverage_alerts.send(store, result.doc, "new", result.doc.get("created_at", ""))
     return result

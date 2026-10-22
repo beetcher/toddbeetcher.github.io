@@ -15,6 +15,7 @@ import logging
 import re
 from datetime import datetime, timezone
 
+import coverage_alerts
 import request_coverage
 from core import HONEYPOT, TIME_ZONE, _date_before, _field_errors, utc_stamp
 from crud import attendances_service as ATT
@@ -136,6 +137,7 @@ def _post(raw_body, store, schemas, now) -> HttpResult:
         c = store.get("curriculums", cid)
         if c is None or c.get("deleted_at") or c.get("status") != "active":
             return _error(404, "curriculum_not_found", "That curriculum was not found.")
+    turned_urgent = False
     if {"postal_code", "region_id"} & (set(sets) | set(removals)):
         # The ZIP or region changed: judge coverage again. A request that turns (or stays) urgent after a different ZIP starts over: it is not "handled" any more.
         cov = request_coverage.fields_for(store.query("discovery_areas", [], limit=1000), merged)
@@ -146,6 +148,7 @@ def _post(raw_body, store, schemas, now) -> HttpResult:
                 removals.append(k)
         if cov.get("coverage") == request_coverage.OPEN and (doc.get("coverage") != request_coverage.OPEN or sets.get("postal_code", doc.get("postal_code")) != doc.get("postal_code")):
             removals.extend(k for k in HANDLED_FIELDS if k in doc)
+            turned_urgent = True
         removals = sorted(set(removals))
     if not sets and not removals:
         return HttpResult(200, {"ok": True, "data": {"updated": False, "confirmation_number": doc["confirmation_number"]}}, {"Cache-Control": "no-store"})
@@ -156,4 +159,6 @@ def _post(raw_body, store, schemas, now) -> HttpResult:
     except DocMissing:
         return _error(404, "not_found", "That link is not valid.")
     log.info("request_completion op=post code=updated n=%d", len(sets) + len(removals))
+    if turned_urgent:
+        coverage_alerts.send(store, {**merged, **sets}, "changed", utc_stamp(now))
     return HttpResult(200, {"ok": True, "data": {"updated": True, "confirmation_number": doc["confirmation_number"]}}, {"Cache-Control": "no-store"})

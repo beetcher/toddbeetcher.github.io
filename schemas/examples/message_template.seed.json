@@ -19,6 +19,11 @@
         },
         {
           "type": "paragraph",
+          "text": "{trainer_notice}",
+          "show_if": "trainer_notice"
+        },
+        {
+          "type": "paragraph",
           "text": "Want to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in.",
           "plain": "Want to tell us a little more so we can find the right fit? It takes about two minutes, and what you already told us is filled in:",
           "show_if": "completion_link"
@@ -740,6 +745,148 @@
         {
           "type": "paragraph",
           "text": "Questions? Just reply to this email."
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "no_trainer_alert",
+      "channel": "email",
+      "audience": "staff",
+      "name": "No trainer for a request (staff)",
+      "subject": "ACTION: no trainer for {who} in {town}, {state_code}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "**Action needed.** A request came from {town}, {state_code}, where no active region has a trainer. {reason}"
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "Name",
+              "value": "{requester_name}",
+              "show_if": "requester_name"
+            },
+            {
+              "label": "Email",
+              "value": "{requester_email}",
+              "show_if": "requester_email"
+            },
+            {
+              "label": "Phone",
+              "value": "{requester_phone}",
+              "show_if": "requester_phone"
+            },
+            {
+              "label": "ZIP",
+              "value": "{postal_code}",
+              "show_if": "postal_code"
+            },
+            {
+              "label": "Place",
+              "value": "{town}, {state_code}"
+            },
+            {
+              "label": "Confirmation",
+              "value": "{confirmation_number}",
+              "show_if": "confirmation_number"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "They have been told we are securing the best trainer for their area. Please find a trainer or a region for this ZIP, or reach out to them yourself. In the Console, open Requests and choose Mark handled when it is dealt with."
+        },
+        {
+          "type": "button",
+          "label": "Open the Console",
+          "link": "{console_url}",
+          "plain_prefix": "Open the Console:",
+          "has_fallback_line": true
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "no_trainer_alert",
+      "channel": "email",
+      "audience": "inspector",
+      "name": "No trainer for a request (inspector)",
+      "subject": "ACTION: no trainer for {who} in {town}, {state_code}",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "**Action needed.** A request came from {town}, {state_code}, where no active region has a trainer. {reason}"
+        },
+        {
+          "type": "paragraph",
+          "text": "You can see it in the Console, with the person's details kept private. The staff have been told."
+        },
+        {
+          "type": "button",
+          "label": "Open the Console",
+          "link": "{console_url}",
+          "plain_prefix": "Open the Console:",
+          "has_fallback_line": true
+        },
+        {
+          "type": "paragraph",
+          "text": "Launch"
+        }
+      ]
+    },
+    {
+      "kind": "no_trainer_digest",
+      "channel": "email",
+      "audience": "staff",
+      "name": "Requests waiting for a trainer (daily)",
+      "subject": "Reminder: {count} requests still waiting for a trainer",
+      "is_active": true,
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Hello {name},"
+        },
+        {
+          "type": "paragraph",
+          "text": "**{count}** requests are still waiting for a trainer in your area. The longest has waited {oldest_days} days."
+        },
+        {
+          "type": "facts_table",
+          "rows": [
+            {
+              "label": "Where",
+              "value": "{places}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "In the Console, open Requests and filter by No active trainer. Choose Mark handled when one is dealt with."
+        },
+        {
+          "type": "button",
+          "label": "Open the Console",
+          "link": "{console_url}",
+          "plain_prefix": "Open the Console:",
+          "has_fallback_line": true
         },
         {
           "type": "paragraph",

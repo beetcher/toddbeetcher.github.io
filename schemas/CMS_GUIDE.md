@@ -20,7 +20,7 @@ notify(kind, recipient, context, by, trigger, refs, audience=None, suppress=None
 notify_many(items, time_budget_s) -> list[Result]
 ```
 
-- `kind`: a registered kind. Today `request_received`, `placement_confirmation`, `class_cancelled`, `placement_ended`, `participant_left`, `instructor_placed`, `students_added`, `class_changed` and `access_invite`.
+- `kind`: a registered kind. Today `request_received`, `placement_confirmation`, `class_cancelled`, `placement_ended`, `participant_left`, `instructor_placed`, `students_added`, `class_changed`, `access_invite`, `no_trainer_alert` and `no_trainer_digest`.
 - `recipient`: `{type: "individual", individual_id}` or `{type: "adhoc", name, email?, phone?}` (the receipt goes out before the requester has an individual record).
 - `context`: the facts of the event, plain JSON, validated against the kind's fact schema (`schemas/message_kinds/<kind>.facts.schema.json`). Facts only: no wording, no channel.
 - `by`: who caused it. `trigger`: `automatic` or `manual`.
@@ -93,6 +93,8 @@ See `COMMUNICATION_LOG_GUIDE.md`. Message history on an attendance row or a requ
 | `students_added` | `instructor` | individual | students are placed in a class (one placement, however many people): every instructor in it gets one message listing them |
 | `class_changed` | `student`, `instructor` | individual | a scheduled class that has not started changes its date, start time, length, time zone, venue, room or venue notes; its lead instructor changes; or its venue's name or place changes: everyone with an open placement (assigned, confirmed or waitlisted) is told what was and what is, one message per person per save, with a calendar update (not for a person on the waiting list, who has no calendar event) |
 | `access_invite` | `invitee` | adhoc (the Google email and name on the access person) | someone is invited in Access (sent automatically, once); or an operator presses Resend invite email (sent again, by hand). Carries the Console link, who invited them, their role and what it is for, and the exact Google address to sign in with. No key or token is ever in it. |
+| `no_trainer_alert` | `staff`, `inspector` | adhoc (the Google email and name on each access person) | a private request is saved from a ZIP that no active region holds, or a completion-link edit turns a request urgent: every active super admin, admin and Global Inspector, and anyone with a state-level grant for that ZIP's state, is told at once. The staff copy has the requester's details; the Inspector's copy has the town and state only. |
+| `no_trainer_digest` | `staff` | adhoc (the Google email and name on each access person) | the daily reminder (8:00 Mountain) or Send reminders now: the same people, each told how many requests are still waiting in their own territory, with towns and counts only. Nothing is sent when nothing is waiting. |
 
 ## 10. Rules (each becomes a named test)
 

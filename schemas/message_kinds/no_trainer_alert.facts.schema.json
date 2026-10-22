@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://beetcher.com/schemas/message_kinds/no_trainer_alert.facts.schema.json",
+  "title": "no_trainer_alert",
+  "description": "The facts the message kind no_trainer_alert (urgent: a private request came from a ZIP no active region holds) can use. A fact schema is the one definition of what a template of this kind may mention: the Console offers exactly these as placeholders and the checker refuses any other. Facts marked x_derived are worked out by the kind's fact builder in the product, not typed by anyone and not computed by the template.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": {
+    "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "x_kind": {
+    "name": "No trainer for a request (urgent)",
+    "audiences": [
+      "staff",
+      "inspector"
+    ],
+    "triggers": [
+      "A private request is saved from a ZIP that no active region holds (registration_service.register, outcome created): sent automatically to every active super admin, admin and Global Inspector, and to anyone holding a state-level grant for that ZIP's state.",
+      "An edit through the completion link turns a request urgent (a new ZIP that no active region holds): sent again, once for that edit. An edit that leaves it urgent does not send it again."
+    ],
+    "recipient": "adhoc: the Google email and name on each access person told. The staff audience gets the requester's details; the inspector audience (a Global Inspector, who is view only and never sees private data) gets the town and state only.",
+    "dedupe": "explicit key: kind + request id + access person id + the stamp of the event (the request's creation time, or the edit's time), so a retry never doubles a notice and a later edit that turns it urgent again is still told",
+    "refs": [
+      "request_id"
+    ]
+  },
+  "required": [
+    "name",
+    "who",
+    "town",
+    "state_code",
+    "reason",
+    "console_url"
+  ],
+  "properties": {
+    "name": {
+      "description": "How the email greets the person: the first word of their name, else the word there.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Dana"
+      ],
+      "x_derived": true
+    },
+    "who": {
+      "description": "Who the subject line names: the requester's full name in the staff copy, the words a request in the Inspector's copy (who never sees a name).",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Barty Crouch"
+      ],
+      "x_derived": true
+    },
+    "town": {
+      "description": "The town of the requester's ZIP, from the ZIP table. Public place information, safe for the Inspector's copy.",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "Hayward"
+      ],
+      "x_derived": true
+    },
+    "state_code": {
+      "description": "The two-letter state of the requester's ZIP.",
+      "type": "string",
+      "maxLength": 2,
+      "examples": [
+        "WI"
+      ],
+      "x_derived": true
+    },
+    "console_url": {
+      "description": "The address of the Console. Public; never carries a key or a token.",
+      "type": "string",
+      "maxLength": 300,
+      "examples": [
+        "https://beetcher.com/console/"
+      ],
+      "format": "uri",
+      "x_derived": true
+    },
+    "requester_name": {
+      "description": "The requester's full name. Staff copy only; never in the Inspector's copy.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "Barty Crouch"
+      ],
+      "x_pii": true
+    },
+    "requester_email": {
+      "description": "The requester's email address. Staff copy only.",
+      "type": "string",
+      "maxLength": 254,
+      "examples": [
+        "barty@example.com"
+      ],
+      "x_pii": true
+    },
+    "requester_phone": {
+      "description": "The requester's phone number, when they gave one. Staff copy only.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "715-555-0100"
+      ],
+      "x_pii": true
+    },
+    "postal_code": {
+      "description": "The ZIP the requester gave. Staff copy only.",
+      "type": "string",
+      "maxLength": 10,
+      "examples": [
+        "54843"
+      ],
+      "x_pii": true
+    },
+    "confirmation_number": {
+      "description": "The confirmation number of the request. Staff copy only.",
+      "type": "string",
+      "maxLength": 40,
+      "examples": [
+        "ICDT-Y9D2FT"
+      ]
+    },
+    "reason": {
+      "description": "Why this notice went out now: a new request, or a request whose ZIP changed to one no active region holds.",
+      "type": "string",
+      "maxLength": 200,
+      "examples": [
+        "A new request just came in."
+      ],
+      "x_derived": true
+    }
+  }
+}

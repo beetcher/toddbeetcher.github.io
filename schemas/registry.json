@@ -291,6 +291,14 @@
       {
         "kind": "access_invite",
         "facts": "message_kinds/access_invite.facts.schema.json"
+      },
+      {
+        "kind": "no_trainer_alert",
+        "facts": "message_kinds/no_trainer_alert.facts.schema.json"
+      },
+      {
+        "kind": "no_trainer_digest",
+        "facts": "message_kinds/no_trainer_digest.facts.schema.json"
       }
     ]
   },

@@ -35,6 +35,13 @@ def state_of(zip_code: str):
     return row[0] if row else None
 
 
+def town_of(zip_code: str):
+    """The town the table gives a ZIP (public place information), or None."""
+    t = table()
+    row = t.get(zip_code) if t else None
+    return row[3] if row and len(row) > 3 and row[3] else None
+
+
 def zips_in_state(state_code: str) -> list:
     t = table() or {}
     return sorted(z for z, row in t.items() if row[0] == state_code)
