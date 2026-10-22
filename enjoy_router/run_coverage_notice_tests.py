@@ -140,5 +140,17 @@ sub = sent()[n]["content"]["subject"] if len(sent()) > n else ""
 check("digest renders with an urgent-but-plain subject and no private data", out.status == "sent" and sub == "Reminder: requests still waiting for a trainer (3)" and "@" not in sent()[n]["content"]["text"].replace("admin@example.com", ""))
 check("a digest for the same person and day is not repeated, but a hand send is", comms.notify(**call).reason == "duplicate" and comms.notify(**dict(call, trigger="manual")).status == "sent")
 
+# ---- BREAK-IT (live bug 2026-10-22): the registration door holds a plain registration store with NO people in it; the people come from configure()
+coverage_alerts.configure(None)
+n = len(sent())
+RS.register(body("x", email="plain0@example.com", postal_code="54843", idempotency_key="2c0d0e0f-0000-5000-8000-000000000504"), reg, schemas, NOW)
+check("with no people store configured, a plain registration store sends no alert (and does not crash)", len([x for x in sent()[n:] if "ACTION" in x["content"]["subject"]]) == 0)
+coverage_alerts.configure(lambda: s)
+n = len(sent())
+RS.register(body("x", email="plain1@example.com", postal_code="54843", idempotency_key="2c0d0e0f-0000-5000-8000-000000000505"), reg, schemas, NOW)
+live = sorted(x["to"] for x in sent()[n:] if "ACTION" in x["content"]["subject"])
+check("with the people store configured, a plain registration store still reaches every recipient", live == ["admin@example.com", "eli@example.com", "todd@example.com", "wi@example.com"], str(live))
+coverage_alerts.configure(None)
+
 print(f"{'OK' if not fails else 'FAILED'}: {total - len(fails)}/{total} checks")
 sys.exit(1 if fails else 0)

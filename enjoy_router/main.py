@@ -34,6 +34,7 @@ from firebase_functions.params import SecretParam
 
 from core import Schemas
 import comms
+import coverage_alerts
 import registration_service  # noqa: F401  (handler.py calls it; it asks the CMS for the receipt)
 import smtp_transport
 from comms.settings import resolve_mode
@@ -179,6 +180,7 @@ COMMS_MODE = "off" if LOCAL_TESTING else resolve_mode(os.environ)
 if COMMS_MODE != "off":
     smtp_transport.transport = smtp_transport.send_brevo
     comms.configure(wiring.build(wiring.LazyStore(lambda: _get_admin_store()), lambda: BREVO_SMTP_KEY.value, os.environ))
+    coverage_alerts.configure(lambda: _get_admin_store())
 
 
 @https_fn.on_request(

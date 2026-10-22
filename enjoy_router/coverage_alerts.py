@@ -15,13 +15,20 @@ from launch_comms import coverage_recipients as CR
 
 log = logging.getLogger("enjoy_router")
 BUDGET_SECONDS = 25
+_people_store = None   # () -> the ACCESS store (people and roles). The registration doors hold the registration store, which has no people.
+
+
+def configure(provider) -> None:
+    """main.py: tell this module where the people live. Tests leave it unset and the store they pass is used."""
+    global _people_store
+    _people_store = provider
 
 
 def send(store, doc: dict, event: str, stamp: str) -> list:
     if not comms.is_configured():
         return []
     try:
-        calls = [CC.alert_call(r, doc, event, stamp) for r in CR.recipients(store, doc.get("coverage_state_code"))]
+        calls = [CC.alert_call(r, doc, event, stamp) for r in CR.recipients(_people_store() if _people_store else store, doc.get("coverage_state_code"))]
         results = comms.notify_many(calls, BUDGET_SECONDS)
         log.info("no_trainer_alert id=%s event=%s n=%d", doc.get("id"), event, len(results))
         return [(r.status, r.reason) for r in results]
