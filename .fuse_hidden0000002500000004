@@ -1,0 +1,16 @@
+[debug] [2026-10-23T19:20:46.437Z] ----------------------------------------------------------------------
+[debug] [2026-10-23T19:20:46.438Z] Command:       /usr/bin/node /sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/.bin/firebase login 4/0AXlqoi7okqiypnwA-eJ89PcXq1OIPvfO-q9CjyVSmaOEfudM0IQNJTdIz9F_y2m7siUG1Q
+[debug] [2026-10-23T19:20:46.438Z] CLI Version:   15.34.1
+[debug] [2026-10-23T19:20:46.439Z] Platform:      linux
+[debug] [2026-10-23T19:20:46.439Z] Node Version:  v22.23.4
+[debug] [2026-10-23T19:20:46.439Z] Detected Agent: unknown
+[debug] [2026-10-23T19:20:46.439Z] Time:          Fri Oct 23 2026 19:20:46 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-10-23T19:20:46.439Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-23T19:20:46.444Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-10-23T19:20:46.453Z] >>> [apiv2][query] POST https://accounts.google.com/o/oauth2/token [none]
+[debug] [2026-10-23T19:20:46.453Z] >>> [apiv2][body] POST https://accounts.google.com/o/oauth2/token [omitted]
+[debug] [2026-10-23T19:20:46.469Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET","dispatcher":{"_events":{},"_eventsCount":0}}): Error: Request was cancelled.
+[warn] ⚠  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2026-10-23T19:20:46.469Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json
+[debug] [2026-10-23T19:20:46.748Z] <<< [apiv2][status] POST https://accounts.google.com/o/oauth2/token 200

@@ -346,13 +346,13 @@
         <div class="meta" id="aChecked"></div>
       </div>
       <div class="actions">
-        <button type="button" class="quiet manualBtn" data-m="attendance">Manual</button>
-        <button id="aRefresh" type="button">Refresh</button>
+        <button type="button" class="btn-link manualBtn" data-m="attendance">Manual</button>
+        <button id="aRefresh" type="button" class="btn-secondary">Refresh</button>
       </div>
     </div>
     <div class="mquick">
       <input type="search" id="aSearch" maxlength="100" placeholder="Search: name, class, ICDT-A-… or ICDT-… number" aria-label="Search attendance" autocomplete="off">
-      <button type="button" id="aGo">Search</button>
+      <button type="button" id="aGo" class="btn-primary">Search</button>
     </div>
     <details class="more filters" id="aFilters">
       <summary id="aFilterSummary">Filters: all records shown</summary>
@@ -367,7 +367,7 @@
           <label class="chk"><input type="checkbox" data-f="source" value="request" checked> A registration request</label>
           <label class="chk"><input type="checkbox" data-f="source" value="direct" checked> Added by us</label>
         </fieldset>
-        <div class="btns"><button type="button" id="aApply">Refresh with these filters</button> <button type="button" class="quiet" id="aShowAll">Show all</button></div>
+        <div class="btns"><button type="button" id="aApply" class="btn-secondary">Refresh with these filters</button> <button type="button" class="btn-link" id="aShowAll">Show all</button></div>
       </div>
     </details>
     <div class="notice" id="aNotice" role="status"></div>
@@ -460,7 +460,7 @@
 </div>
 
 <dialog class="lsdlg" id="atDlg" aria-labelledby="atTitle">
-  <div class="lshead"><h2 id="atTitle">Attendance</h2><button type="button" class="quiet" id="atClose">Close</button></div>
+  <div class="lshead"><h2 id="atTitle">Attendance</h2><button type="button" class="btn-secondary" id="atClose">Close</button></div>
   <div class="dmsg" id="atMsg" role="status"></div>
   <div class="lsbody" id="atBody" tabindex="0" role="region" aria-labelledby="atTitle"></div>
 </dialog>

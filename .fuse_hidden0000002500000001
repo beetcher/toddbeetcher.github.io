@@ -1,0 +1,26 @@
+[debug] [2026-10-23T19:13:09.644Z] ----------------------------------------------------------------------
+[debug] [2026-10-23T19:13:09.645Z] Command:       /usr/bin/node /sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/.bin/firebase functions:list --project launch-ai-workshop
+[debug] [2026-10-23T19:13:09.645Z] CLI Version:   15.34.1
+[debug] [2026-10-23T19:13:09.645Z] Platform:      linux
+[debug] [2026-10-23T19:13:09.645Z] Node Version:  v22.23.4
+[debug] [2026-10-23T19:13:09.645Z] Detected Agent: unknown
+[debug] [2026-10-23T19:13:09.645Z] Time:          Fri Oct 23 2026 19:13:09 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-10-23T19:13:09.645Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-23T19:13:09.650Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-10-23T19:13:09.662Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-23T19:13:09.680Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET","dispatcher":{"_events":{},"_eventsCount":0}}): Error: Request was cancelled.
+[warn] ⚠  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2026-10-23T19:13:09.681Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json
+[debug] [2026-10-23T19:13:09.683Z] Error: Could not load the default credentials. Browse to https://cloud.google.com/docs/authentication/getting-started for more information.
+    at GoogleAuth.getApplicationDefaultAsync (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/google-auth-library/build/src/auth/googleauth.js:287:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async GoogleAuth._GoogleAuth_determineClient (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/google-auth-library/build/src/auth/googleauth.js:834:32)
+    at async GoogleAuth.getClient (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/google-auth-library/build/src/auth/googleauth.js:698:20)
+    at async GoogleAuth.getAccessToken (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/google-auth-library/build/src/auth/googleauth.js:722:24)
+    at async autoAuth (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/firebase-tools/lib/requireAuth.js:38:19)
+    at async requireAuth (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/firebase-tools/lib/requireAuth.js:100:20)
+    at async Object.requirePermissions [as fn] (/sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/firebase-tools/lib/requirePermissions.js:12:5)
+    at async /sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/firebase-tools/lib/command.js:285:17
+[error] 
+[error] Error: Failed to authenticate, have you run firebase login?

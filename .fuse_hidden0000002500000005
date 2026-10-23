@@ -1,0 +1,32 @@
+[debug] [2026-10-23T19:20:49.366Z] ----------------------------------------------------------------------
+[debug] [2026-10-23T19:20:49.366Z] Command:       /usr/bin/node /sessions/rcw-01xc4zwdsx5dm1v6aqtuqous/.npm/_npx/36e7d4fb91a22cc5/node_modules/.bin/firebase functions:list --project launch-ai-workshop
+[debug] [2026-10-23T19:20:49.367Z] CLI Version:   15.34.1
+[debug] [2026-10-23T19:20:49.367Z] Platform:      linux
+[debug] [2026-10-23T19:20:49.367Z] Node Version:  v22.23.4
+[debug] [2026-10-23T19:20:49.367Z] Detected Agent: unknown
+[debug] [2026-10-23T19:20:49.367Z] Time:          Fri Oct 23 2026 19:20:49 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-10-23T19:20:49.367Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-23T19:20:49.372Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-10-23T19:20:49.385Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-23T19:20:49.385Z] > authorizing via signed-in user (toddbeetcher17@gmail.com)
+[debug] [2026-10-23T19:20:49.385Z] [iam] checking project launch-ai-workshop for permissions ["cloudfunctions.functions.list","firebase.projects.get","run.services.list"]
+[debug] [2026-10-23T19:20:49.386Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:49.386Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:49.386Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/launch-ai-workshop:testIamPermissions [none]
+[debug] [2026-10-23T19:20:49.386Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/launch-ai-workshop:testIamPermissions  x-goog-user-project=launch-ai-workshop
+[debug] [2026-10-23T19:20:49.386Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/launch-ai-workshop:testIamPermissions {"permissions":["cloudfunctions.functions.list","firebase.projects.get","run.services.list"]}
+[debug] [2026-10-23T19:20:49.403Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET","dispatcher":{"_events":{},"_eventsCount":0}}): Error: Request was cancelled.
+[warn] ⚠  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2026-10-23T19:20:49.404Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json
+[debug] [2026-10-23T19:20:49.650Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/launch-ai-workshop:testIamPermissions 200
+[debug] [2026-10-23T19:20:49.651Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/launch-ai-workshop:testIamPermissions {"permissions":["cloudfunctions.functions.list","firebase.projects.get","run.services.list"]}
+[debug] [2026-10-23T19:20:49.651Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:49.651Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:49.651Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/launch-ai-workshop/locations/-/functions [none]
+[debug] [2026-10-23T19:20:50.303Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/launch-ai-workshop/locations/-/functions 200
+[debug] [2026-10-23T19:20:50.303Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/launch-ai-workshop/locations/-/functions {}
+[debug] [2026-10-23T19:20:50.303Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:50.303Z] Checked if tokens are valid: true, expires at: 1792786845748
+[debug] [2026-10-23T19:20:50.303Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/launch-ai-workshop/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2026-10-23T19:20:50.853Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/launch-ai-workshop/locations/-/functions 200

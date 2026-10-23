@@ -314,7 +314,7 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('aEmpty').hidden === false || document.querySelectorAll('#aList li').length === 0")
     check("role filter hides students", pg.locator("#aList li").count() == 0)
     pg.click("#aShowAll"); pg.wait_for_function("document.querySelectorAll('#aList li').length === %d" % n_all)
-    pg.locator("#aList li").first.locator("button.chiplink").click()
+    pg.locator("#aList li").first.locator("button.btn-link").click()
     pg.wait_for_selector("#atDlg[open]")
     check("class name opens that class's attendance", "Attendance:" in pg.locator("#atTitle").inner_text())
     pg.click("#atClose")
