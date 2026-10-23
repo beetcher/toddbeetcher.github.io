@@ -113,7 +113,7 @@
   #workToast.bad { background: var(--err); } #workToast.bad .dot { animation: none; border-color: var(--white); background: var(--card); }
   @media (prefers-reduced-motion: reduce) { button.working::before, #workToast .dot { animation-duration: 3s; } button { transition: none; } }
   .mdetail button.quiet:hover, .mdetail button.quiet:focus-visible { background: rgba(0,0,0,.08); box-shadow: 0 0 0 2px currentColor; }
-  .mdetail button.quiet.copied { background: var(--ok); color: var(--white); border-color: var(--ok); }
+  .mdetail button.copied { background: var(--ok); color: var(--white); border-color: var(--ok); }
   header button.quiet { color: var(--white); border-color: var(--muted); min-height: 40px; }
   input[type=password], #keyInput { font: inherit; width: 100%; min-height: 48px; padding: 0 var(--space-6); border: 1px solid var(--muted); border-radius: 10px; background: var(--card); }
   body:not(.withnav) main { max-width: 1120px; }
@@ -376,7 +376,7 @@
   details.more { margin-bottom: var(--space-5); }
   .mquick { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; margin: 0 0 var(--space-5); }
   .mquick input[type=search] { flex: 1 1 280px; min-width: 0; min-height: 44px; }
-  .tog { min-height: 44px; padding: 0 var(--space-6); border-radius: 999px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+  .tog { min-height: 40px; padding: 0 var(--space-6); border-radius: 999px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
   .tog[aria-pressed="true"] { background: var(--ink); color: var(--white); }
   .tog:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
   .msumm { margin: 0 0 var(--space-5); color: var(--muted); font-size: var(--text-m); }

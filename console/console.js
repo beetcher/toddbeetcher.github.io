@@ -3977,7 +3977,7 @@
     box.appendChild(lab); box.appendChild(ta);
     var err = mk("div", "msg", ""); err.setAttribute("role", "alert");
     var btns = mk("div", "btns");
-    var add = mk("button", "", "Add note"); add.type = "button";
+    var add = mk("button", "btn-secondary", "Add note"); add.type = "button";
     add.addEventListener("click", function () {
       var text = ta.value.trim(); err.textContent = "";
       if (!text) { err.textContent = "Write the note first."; return; }
@@ -3991,7 +3991,7 @@
     });
     btns.appendChild(add);
     if (e.status === "not_sent" && !e.handled_at) {
-      var h = mk("button", "quiet", "Mark handled"); h.type = "button";
+      var h = mk("button", "btn-primary", "Mark handled"); h.type = "button";
       h.title = "Say what you did about it, for example phoned her. The note box above is used as the comment.";
       h.addEventListener("click", function () {
         err.textContent = ""; h.disabled = true;
@@ -4005,11 +4005,11 @@
       });
       btns.appendChild(h);
     }
-    var c1 = mk("button", "quiet", "Copy entry"); c1.type = "button"; c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry", c1); });
-    var c2 = mk("button", "quiet", "Copy as JSON"); c2.type = "button"; c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON", c2); });
+    var c1 = mk("button", "btn-link", "Copy entry"); c1.type = "button"; c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry", c1); });
+    var c2 = mk("button", "btn-link", "Copy as JSON"); c2.type = "button"; c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON", c2); });
     btns.appendChild(c1); btns.appendChild(c2);
     if (e.scheduled_class_id) {
-      var j = mk("button", "quiet", "Open the class attendance"); j.type = "button";
+      var j = mk("button", "btn-link", "Open the class attendance"); j.type = "button";
       j.addEventListener("click", function () { var c = aClassById[e.scheduled_class_id]; if (c) openAttendance(c); else $("mMsg").textContent = "That class could not be found."; });
       btns.appendChild(j);
     }
