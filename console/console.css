@@ -554,3 +554,8 @@
   .flab { display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--text-s); font-weight: 700; color: var(--ink-soft); }
   .flab select { font-weight: 400; min-width: 12rem; }
   @media (max-width: 520px) { .flab, .flab select { width: 100%; } }
+
+  /* ---- Required marks and the sidebar group labels (step 1.3d) */
+  .req { color: var(--err); font-weight: 700; margin-left: var(--space-2); }
+  .reqnote { margin: 0 0 var(--space-5); }
+  #sideNav .nhead { margin: 0; }

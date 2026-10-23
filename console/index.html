@@ -165,6 +165,7 @@
       <div class="msg" id="editMsg" role="alert"></div>
       <button type="button" class="quiet" id="editReload" hidden>Close and reload the latest</button>
       <form id="editForm" novalidate autocomplete="off">
+        <div class="hint reqnote">* means required</div>
         <div id="editSections"></div>
         <div class="stickybar">
           <button type="submit" id="editSave">Save changes</button>
@@ -261,6 +262,7 @@
       <div class="msg" id="cEditMsg" role="alert"></div>
       <button type="button" class="quiet" id="cEditReload" hidden>Close and reload the latest</button>
       <form id="cEditForm" novalidate autocomplete="off">
+        <div class="hint reqnote">* means required</div>
         <div id="cEditSections"></div>
         <div class="stickybar">
           <button type="submit" id="cEditSave">Save changes</button>
@@ -455,23 +457,23 @@
 <dialog class="lsdlg" id="atDlg" aria-labelledby="atTitle">
   <div class="lshead"><h2 id="atTitle">Attendance</h2><button type="button" class="quiet" id="atClose">Close</button></div>
   <div class="dmsg" id="atMsg" role="status"></div>
-  <div class="lsbody" id="atBody"></div>
+  <div class="lsbody" id="atBody" tabindex="0" role="region" aria-labelledby="atTitle"></div>
 </dialog>
 <dialog class="lsdlg" id="jrDlg" aria-labelledby="jrTitle">
   <div class="lshead"><h2 id="jrTitle">Journal</h2><button type="button" class="quiet" id="jrClose">Close</button></div>
   <div class="dmsg" id="jrMsg" role="status"></div>
-  <div class="lsbody" id="jrBody"></div>
+  <div class="lsbody" id="jrBody" tabindex="0" role="region" aria-labelledby="jrTitle"></div>
 </dialog>
 <dialog class="lsdlg" id="wfDlg" aria-labelledby="wfTitle">
   <div class="lshead"><h2 id="wfTitle">Workflow</h2><button type="button" class="quiet" id="wfClose">Close</button></div>
-  <div class="lsbody" id="wfBody"></div>
+  <div class="lsbody" id="wfBody" tabindex="0" role="region" aria-labelledby="wfTitle"></div>
 </dialog>
 <div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
   <div class="mhead">
     <div class="mbtns" id="overlayBtns"></div>
     <button type="button" class="mclose" id="manualClose">Close</button>
   </div>
-  <div class="mscroll" id="manualScroll" tabindex="0"></div>
+  <div class="mscroll" id="manualScroll" tabindex="0" role="region" aria-label="Manual"></div>
 </div>
 
 

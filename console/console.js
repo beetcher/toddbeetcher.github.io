@@ -409,7 +409,7 @@
     if (rest.length) groups.push({ name: "More", ids: rest });
     groups.forEach(function (g, gi) {
       var sec = document.createElement("div"); sec.className = "ngroup";
-      var h = document.createElement("h2"); h.className = "nhead"; h.id = "navg" + gi; h.textContent = g.name; sec.appendChild(h);
+      var h = document.createElement("div"); h.className = "nhead"; h.id = "navg" + gi; h.textContent = g.name; sec.appendChild(h);
       var ul = document.createElement("ul"); ul.className = "nlist"; ul.setAttribute("aria-labelledby", h.id);
       g.ids.forEach(function (id) { var sf = surfaceById(id); if (sf) ul.appendChild(navLink(id, sf.short || sf.name, !!sf.admin)); });
       sec.appendChild(ul); nav.appendChild(sec);
@@ -443,10 +443,26 @@
     if (ME) { who.appendChild(document.createTextNode(ME.name + " · ")); var rl = document.createElement("span"); rl.className = "role"; rl.textContent = (ME.role_key || "").replace(/_/g, " "); who.appendChild(rl); who.title = who.textContent; }
     who.hidden = !ME || ME.method === "key";     // the admin key is no person: nothing to name
     viewOnlyMode(!!(ME && ME.inspector));
+    capPass();
+    if (!capObs && window.MutationObserver) { capObs = new MutationObserver(function () { capPass(); }); capObs.observe(document.body, { childList: true, subtree: true }); }
   }
   // View only (P-78): a courtesy on top of the server, which refuses every write for an inspector. The banner shows, and the buttons that would
   // change something are switched off as they appear (the words below). A button a screen needs for looking carries data-viewok.
   var VIEW_WRITE = /^(edit|save|delete|remove|add|change|switch|cancel class|merge|undo|publish|resend|invite|put in|create|retire|withdraw|mark|send|assign|activate|deactivate|find gps|restore|rename|new |draft|end$)/i;
+  // data-needs="cap1 cap2" on a control that changes data (any one capability is enough). A role that can never use it does not see it;
+  // a view-only account sees it switched off with the reason. Stations being ported use this instead of the label list above, which stays
+  // only for controls that have not been marked yet (it goes when the last station is ported).
+  function canWrite(list) { if (!ME || ME.inspector) return false; if (ME.is_super_admin === true) return true; for (var i = 0; i < list.length; i++) if ((ME.capabilities || []).indexOf(list[i]) >= 0) return true; return false; }
+  function capEl(el) {
+    var list = (el.getAttribute("data-needs") || "").split(/\s+/).filter(Boolean);
+    if (ME && ME.inspector) { el.hidden = false; el.disabled = true; el.setAttribute("data-viewonly", "1"); el.title = "View only: this account cannot change anything."; return; }
+    var ok = canWrite(list);
+    el.hidden = !ok;
+    if (ok && el.getAttribute("data-viewonly")) { el.disabled = false; el.removeAttribute("data-viewonly"); el.removeAttribute("title"); }
+  }
+  function capPass(root) { Array.prototype.forEach.call((root || document).querySelectorAll("[data-needs]"), capEl); }
+  function needs(el, caps) { el.setAttribute("data-needs", caps); capEl(el); return el; }
+  var capObs = null;
   var viewObs = null;
   function viewOnlyPass(root) {
     Array.prototype.forEach.call((root || document).querySelectorAll("main button, #manual button"), function (b) {
@@ -510,6 +526,12 @@
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
   function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
+  var SELF_TITLED = { access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
+  function stationHead(r) {
+    var v = $((r === "requests" ? "list" : r) + "View"), sf = surfaceById(r);
+    if (!v || !sf || SELF_TITLED[r] || v.querySelector(":scope > .stnh")) return;
+    var h = document.createElement("h2"); h.className = "sr stnh"; h.textContent = sf.name; v.insertBefore(h, v.firstChild);
+  }
   var lastRoute = null;
   function route() {
     if (!key) return;
@@ -548,6 +570,7 @@
     if (r === "attendance") loadAttendanceStation();
     if (r === "home" || r === "requests") loadPlaced();
     if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
+    stationHead(r);   // after the stations that redraw their own page (Discovery) have drawn it
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
@@ -1410,6 +1433,7 @@
     var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + P + name;
     label.appendChild(document.createTextNode(humanize(name)));
     var isReq = (SCH.required || []).indexOf(name) >= 0;
+    if (isReq) { var star = document.createElement("span"); star.className = "req"; star.setAttribute("aria-hidden", "true"); star.textContent = "*"; label.appendChild(star); }
     var orig = rec[name] === undefined ? null : rec[name];
     var kind, el, other = null;
     var choices = (def.type === "string" && !def["enum"]) ? choicesFor(name) : null;
@@ -1459,7 +1483,7 @@
       el.autocomplete = "off"; el.autocapitalize = "off"; el.spellcheck = false;
       el.value = orig === null ? "" : String(orig);
     }
-    el.id = "ef_" + P + name;
+    el.id = "ef_" + P + name; if (isReq) el.setAttribute("aria-required", "true");
     wrap.appendChild(label); wrap.appendChild(el);
     if (other) wrap.appendChild(other);
     if (kind === "money") { var k = document.createElement("div"); k.className = "fhint keep"; k.textContent = "In dollars."; wrap.appendChild(k); }

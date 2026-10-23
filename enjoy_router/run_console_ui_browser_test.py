@@ -52,6 +52,9 @@ T_HEAD = person("head@example.com", head, "Hana Head")
 T_SPEND = person("spend@example.com", spend, "Sam Spend")
 lead_r = role("lead_role", ["view_console", "view_spend"])
 PE.create(store, {"email": "lead@example.com", "display_name": "Lena Lead", "role_id": lead_r["id"], "grants": [{"kind": "regions", "state_code": "CO", "region_ids": [REGION_ID], "capabilities": ["manage_requests", "edit_venues", "activate_venues", "manage_instructors", "invite_people"]}]}, A)
+import seed_access
+insp_role = role("global_inspector", seed_access.ROLES[-1]["capabilities"])
+T_INSP = person("inspector@example.com", insp_role, "Ivy Inspector")
 T_LEAD = "tok.lead.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 V.tokens[T_LEAD] = {"uid": "uid-lead", "email": "lead@example.com", "email_verified": True, "provider": "google.com", "name": "Lena Lead"}
 T_STRANGER = "tok.stranger.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -203,6 +206,41 @@ with sync_playwright() as p:
     if pg.locator("#vFilterPanel").is_hidden(): pg.click("#vFilterBtn")
     pg.screenshot(path="/tmp/claude-0/ui_filters_390.png")
     check("at 390 the panel opens and nothing scrolls sideways", pg.locator("#vFilter").is_visible() and pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"))
+
+    # ---- 1.3d: a heading for every station, labelled scroll boxes, sidebar labels that are not headings
+    pg.set_viewport_size({"width": 1440, "height": 900})
+    check("the sidebar's group labels are not headings", pg.locator("#sideNav h2").count() == 0 and pg.locator("#sideNav .nhead").count() == 4)
+    ids = ["requests", "messages", "classes", "attendance", "venues", "curriculums", "instructors", "people", "students", "organizations", "places", "discovery", "access", "activity", "performance"]
+    bad = []
+    for sid in ids:
+        pg.click('#sideNav a[data-nav="%s"]' % sid); pg.wait_for_timeout(350)
+        vid = "list" if sid == "requests" else sid; view = pg.locator("#%sView" % vid)
+        n_sr = view.locator(":scope > .stnh").count()
+        n_visible_h2 = pg.evaluate("Array.from(document.querySelectorAll('#%sView h2')).filter(h => h.offsetParent !== null || h.classList.contains('stnh')).length" % vid)
+        if sid in ("access", "activity", "performance"):
+            if n_sr != 0 or n_visible_h2 < 1: bad.append((sid, "self-titled", n_sr, n_visible_h2))
+        elif n_sr != 1: bad.append((sid, "needs one", n_sr))
+    check("every station has exactly one title heading (the three that draw their own keep theirs)", not bad, bad)
+    check("the heading carries the station's name", pg.evaluate("document.querySelector('#venuesView > .stnh').textContent") == "Venues" and pg.evaluate("document.querySelector('#listView > .stnh').textContent") == "Registration requests")
+    check("the three dialog bodies and the manual are keyboard-reachable, named regions", all(pg.evaluate("(function(){var e=document.getElementById('%s'); return e.getAttribute('tabindex')==='0' && e.getAttribute('role')==='region' && (e.getAttribute('aria-labelledby')||e.getAttribute('aria-label'))})()" % i) for i in ("atBody", "jrBody", "wfBody", "manualScroll")))
+
+    # ---- 1.3d: capability markers (data-needs) for four kinds of sign-in
+    PROBE = """(function(){ ['pbtnA','pbtnB'].forEach(function(id){ var o=document.getElementById(id); if(o) o.remove(); });
+      var a=document.createElement('button'); a.id='pbtnA'; a.textContent='Probe A'; a.setAttribute('data-needs','edit_venues'); document.body.appendChild(a);
+      var b=document.createElement('button'); b.id='pbtnB'; b.textContent='Probe B'; b.setAttribute('data-needs','edit_people invite_people'); document.body.appendChild(b); })()"""
+    STATE = "(function(){ var a=document.getElementById('pbtnA'), b=document.getElementById('pbtnB'); return { a: [a.hidden, a.disabled], b: [b.hidden, b.disabled], bt: b.title }; })()"
+    st = {}
+    pg.evaluate(PROBE); pg.wait_for_timeout(200); st["super"] = pg.evaluate(STATE)
+    check("a super admin sees and can use a marked control", st["super"]["a"] == [False, False] and st["super"]["b"] == [False, False], st["super"])
+    b.close() if False else None
+    for label, tok in (("head", T_HEAD), ("spend", T_SPEND), ("inspector", T_INSP)):
+        q, qe = new_page(b, w=1440); go(q, 1440, tok)
+        q.evaluate(PROBE); q.wait_for_timeout(250); st[label] = q.evaluate(STATE)
+        if label == "inspector": st["itext"] = q.inner_text("#viewOnly") if q.locator("#viewOnly").is_visible() else ""
+        q.context.close()
+    check("a region head with edit_venues sees the venue control, and not the people control it has no right to", st["head"]["a"] == [False, False] and st["head"]["b"] == [True, False], st["head"])
+    check("a role with neither right sees neither control (hidden, not greyed)", st["spend"]["a"][0] is True and st["spend"]["b"][0] is True, st["spend"])
+    check("a view-only inspector sees both, switched off, with the reason", st["inspector"]["a"] == [False, True] and st["inspector"]["b"] == [False, True] and "View only" in st["inspector"]["bt"], st["inspector"])
     check("the page made no script errors", not errs, errs)
     b.close()
 
