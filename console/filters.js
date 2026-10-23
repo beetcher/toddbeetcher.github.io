@@ -11,16 +11,21 @@
    kind "multi"         tick boxes. start "all" (default): every entry ticked, the filter is off until something is unticked. start "none": nothing ticked, off until something is ticked ("Only show").
    kind "one"           pick one (radio). The first option is the "any" choice and is the default.
    kind "search-multi"  like multi, with a search box inside the popover (long lists, for example regions).
+   kind "toggle"        a switch chip: no popover, no caret, pressed or not (for a quick filter such as "Needs attention"). Optional: noun ("messages", used in its spoken name) and a number beside the words (setBadge).
+   Any filter may carry a title (a hover hint).
 
    cf.getSelection()            -> { filterId: [values ticked] }   (for "one": a one-item array)
    cf.setSelection(sel)         -> set choices from code; does not fire onChange
    cf.setOptions(id, options)   -> replace a filter's entries; choices the person made are kept, new entries start ticked (start "all") or unticked (start "none")
    cf.setCounts({ id: { value: n } }) -> the small number beside each entry; {} blanks them
    cf.setNote(text), cf.setCount(text) -> a plain line after the chips ("" hides it)
+   cf.setBadge(id, n)           -> the number beside a switch chip's words ("" hides it)
+   cf.setResult(text)           -> a live line inside every popover, above Clear and Done ("4 of 74 messages"), so the effect of a tick is visible even though the popover covers part of the list; "" hides it
    cf.isNarrowed(), cf.clearAll() (fires onChange once), cf.refresh(), cf.destroy()
 
    A chip says its own state: "Status" when off, "Status: Not sent, Failed" or "Status: 3 of 5" when narrowed (filled dark, like the Needs attention pill).
-   Spoken name of a chip: "Status filter, 3 of 5 selected". Keyboard: Tab to a chip, Enter / Space / Down opens, Up and Down move between ticks, Space ticks, Escape closes and returns to the chip.
+   Spoken name of a chip: "Status filter, 3 of 5 selected" (a switch: "Needs attention filter, on, 6 messages"). Keyboard: Tab to a chip, Enter / Space / Down opens, Up and Down move between ticks, Space ticks, Escape closes and returns to the chip.
+   Focus on open: by keyboard it lands on the first entry; by mouse or touch it stays on the popover itself, so no entry shows a focus ring it was never given. A search list always focuses its search box.
    On a phone (520 px and under) the popover is a bottom sheet with a dimmed backdrop. */
 (function () {
   "use strict";
@@ -31,7 +36,7 @@
   function phone() { return !!(window.matchMedia && window.matchMedia("(max-width: 520px)").matches); }
 
   function chipFilters(o) {
-    var uid = "cf" + (++counter), filters = [], byId = {}, openF = null;
+    var uid = "cf" + (++counter), filters = [], byId = {}, openF = null, resultText = "";
     var row = el("div", "cf-row"); row.setAttribute("role", "group"); row.setAttribute("aria-label", o.label || "Filters");
     var clearAllBtn = el("button", "btn-link cf-clearall", "Clear all"); clearAllBtn.type = "button"; clearAllBtn.hidden = true;
     var noteEl = el("span", "cf-note"); noteEl.setAttribute("role", "status");
@@ -40,11 +45,13 @@
     function copyOption(x) { return { value: String(x.value), label: x.label != null ? String(x.label) : String(x.value), count: x.count }; }
     function resetSel(f) {
       f.sel = {};
+      if (f.kind === "toggle") { f.on = false; return; }
       if (f.kind === "one") f.one = f.options.length ? f.options[0].value : "";
       else if (f.start === "all") f.options.forEach(function (x) { f.sel[x.value] = true; });
     }
     function pickedOptions(f) { return f.options.filter(function (x) { return f.sel[x.value]; }); }
     function narrowed(f) {
+      if (f.kind === "toggle") return !!f.on;
       if (f.kind === "one") return f.options.length > 0 && f.one !== f.options[0].value;
       var n = pickedOptions(f).length;
       return f.start === "all" ? n < f.options.length : n > 0;
@@ -60,6 +67,7 @@
       return picked.length <= 2 && names.length <= 28 ? names : picked.length + " selected";
     }
     function spoken(f) {
+      if (f.kind === "toggle") return (f.on ? "on" : "off") + (f.badge !== "" ? ", " + f.badge + (f.noun ? " " + f.noun : "") : "");
       if (f.kind === "one") return "showing " + oneLabel(f);
       var n = pickedOptions(f).length;
       if (f.start === "all") return narrowed(f) ? n + " of " + f.options.length + " selected" : "all selected";
@@ -69,7 +77,8 @@
 
     function refreshChip(f) {
       var on = narrowed(f);
-      f.lab.textContent = on ? f.label + ": " + summary(f) : f.label;
+      if (f.kind === "toggle") { f.lab.textContent = f.label; f.badgeEl.textContent = f.badge; f.chip.setAttribute("aria-pressed", on ? "true" : "false"); }
+      else f.lab.textContent = on ? f.label + ": " + summary(f) : f.label;
       f.chip.setAttribute("data-on", on ? "true" : "false");
       f.chip.setAttribute("aria-label", f.label + " filter, " + spoken(f));
     }
@@ -114,11 +123,12 @@
       var r = f.pop.getBoundingClientRect(), vw = document.documentElement.clientWidth;
       if (r.right > vw - 8) { f.pop.style.left = "auto"; f.pop.style.right = "0"; }   // near the right edge: open towards the left
     }
-    function open(f) {
+    function open(f, byKeyboard) {
       if (openF && openF !== f) close(openF, false);
       if (f.search) { f.search.value = ""; applySearch(f); }   // a list that opens still filtered by old text would look like entries had vanished
       f.pointer = false; f.pop.hidden = false; f.wrap.classList.add("cf-open"); f.chip.setAttribute("aria-expanded", "true"); openF = f; place(f);
-      var first = f.search || f.list.querySelector("input:checked") || f.list.querySelector("input");
+      // by keyboard: the first entry; by mouse or touch: the popover itself (no ring on an entry nobody chose); a search list: the search box
+      var first = f.search || (byKeyboard ? (f.list.querySelector("input:checked") || f.list.querySelector("input")) : null);
       if (first) first.focus(); else f.pop.focus();
     }
     function close(f, restore) {
@@ -129,13 +139,23 @@
     }
 
     function add(def) {
-      var kind = def.kind === "one" || def.kind === "search-multi" ? def.kind : "multi";
+      var kind = def.kind === "one" || def.kind === "search-multi" || def.kind === "toggle" ? def.kind : "multi";
       var f = { id: def.id, label: def.label, kind: kind, start: kind === "one" ? "first" : (def.start === "none" ? "none" : "all"), options: [], sel: {}, one: "", n: {}, inputs: {} };
       f.options = (def.options || []).map(function (x) { var c = copyOption(x); if (x.count != null) f.n[c.value] = x.count; return c; });
       resetSel(f);
+      if (kind === "toggle") {   // a switch chip: no popover at all
+        f.badge = ""; f.noun = def.noun || "";
+        f.wrap = el("div", "cf-chipwrap");
+        f.chip = el("button", "cf-chip cf-switch"); f.chip.type = "button"; if (def.title) f.chip.title = def.title;
+        f.lab = el("span", "cf-lab"); f.badgeEl = el("span", "cf-badge"); f.chip.appendChild(f.lab); f.chip.appendChild(f.badgeEl);
+        f.chip.addEventListener("click", function () { f.on = !f.on; refreshAll(); emit(); });
+        f.wrap.appendChild(f.chip); refreshChip(f);
+        filters.push(f); byId[f.id] = f; row.appendChild(f.wrap);
+        return;
+      }
       var pid = uid + "-" + f.id + "-pop";
       f.wrap = el("div", "cf-chipwrap");
-      f.chip = el("button", "cf-chip"); f.chip.type = "button"; f.chip.setAttribute("aria-haspopup", "dialog"); f.chip.setAttribute("aria-expanded", "false"); f.chip.setAttribute("aria-controls", pid);
+      f.chip = el("button", "cf-chip"); f.chip.type = "button"; if (def.title) f.chip.title = def.title; f.chip.setAttribute("aria-haspopup", "dialog"); f.chip.setAttribute("aria-expanded", "false"); f.chip.setAttribute("aria-controls", pid);
       f.lab = el("span", "cf-lab"); var caret = el("span", "cf-caret", "▾"); caret.setAttribute("aria-hidden", "true");
       f.chip.appendChild(f.lab); f.chip.appendChild(caret);
       f.back = el("div", "cf-back"); f.back.setAttribute("aria-hidden", "true");
@@ -150,14 +170,16 @@
       }
       f.list = el("div", "cf-list"); f.list.setAttribute("role", "group"); f.list.setAttribute("aria-label", f.label);
       f.pop.appendChild(f.list);
+      f.result = el("div", "cf-result", resultText); f.result.setAttribute("role", "status"); f.result.setAttribute("aria-live", "polite");
+      f.pop.appendChild(f.result);
       var foot = el("div", "cf-foot");
       var clear = el("button", "btn-link cf-clear", "Clear"); clear.type = "button"; clear.setAttribute("aria-label", "Clear " + f.label + " filter");
       var done = el("button", "btn-secondary cf-done", "Done"); done.type = "button"; done.setAttribute("aria-label", "Done with " + f.label + " filter");
       foot.appendChild(clear); foot.appendChild(done); f.pop.appendChild(foot);
       f.wrap.appendChild(f.chip); f.wrap.appendChild(f.back); f.wrap.appendChild(f.pop);
 
-      f.chip.addEventListener("click", function () { if (f.pop.hidden) open(f); else close(f, false); });
-      f.chip.addEventListener("keydown", function (e) { if (e.key === "ArrowDown" && f.pop.hidden) { e.preventDefault(); open(f); } });
+      f.chip.addEventListener("click", function (e) { if (f.pop.hidden) open(f, e.detail === 0); else close(f, false); });   // a click with no mouse behind it (detail 0) is Enter or Space
+      f.chip.addEventListener("keydown", function (e) { if (e.key === "ArrowDown" && f.pop.hidden) { e.preventDefault(); open(f, true); } });
       f.back.addEventListener("click", function () { close(f, true); });
       done.addEventListener("click", function () { close(f, true); });
       clear.addEventListener("click", function () { resetSel(f); syncInputs(f); refreshAll(); emit(); });
@@ -193,20 +215,21 @@
 
     function getSelection() {
       var out = {};
-      filters.forEach(function (f) { out[f.id] = f.kind === "one" ? [f.one] : pickedOptions(f).map(function (x) { return x.value; }); });
+      filters.forEach(function (f) { out[f.id] = f.kind === "toggle" ? (f.on ? ["on"] : []) : f.kind === "one" ? [f.one] : pickedOptions(f).map(function (x) { return x.value; }); });
       return out;
     }
     function setSelection(sel) {
       Object.keys(sel || {}).forEach(function (id) {
         var f = byId[id], vals = sel[id]; if (!f || !vals) return;
-        if (f.kind === "one") { var has = f.options.some(function (x) { return x.value === String(vals[0]); }); if (has) f.one = String(vals[0]); }
+        if (f.kind === "toggle") f.on = vals.length > 0;
+        else if (f.kind === "one") { var has = f.options.some(function (x) { return x.value === String(vals[0]); }); if (has) f.one = String(vals[0]); }
         else { f.sel = {}; vals.forEach(function (v) { f.sel[String(v)] = true; }); }
         syncInputs(f);
       });
       refreshAll();
     }
     function setOptions(id, options) {
-      var f = byId[id]; if (!f) return;
+      var f = byId[id]; if (!f || f.kind === "toggle") return;
       var known = {}; f.options.forEach(function (x) { known[x.value] = true; });
       f.options = (options || []).map(function (x) { var c = copyOption(x); if (x.count != null) f.n[c.value] = x.count; return c; });
       if (f.kind === "one") { if (!f.options.some(function (x) { return x.value === f.one; })) f.one = f.options.length ? f.options[0].value : ""; }
@@ -240,6 +263,8 @@
     var api = {
       getSelection: getSelection, setSelection: setSelection, setOptions: setOptions, setCounts: setCounts,
       setNote: function (t) { noteEl.textContent = t || ""; }, setCount: function (t) { countEl.textContent = t || ""; },
+      setBadge: function (id, n) { var f = byId[id]; if (!f || f.kind !== "toggle") return; f.badge = n == null ? "" : String(n); refreshChip(f); },
+      setResult: function (t) { resultText = t || ""; filters.forEach(function (f) { if (f.result) f.result.textContent = resultText; }); },
       isNarrowed: function () { return filters.some(narrowed); }, clearAll: doClearAll, refresh: refreshAll,
       destroy: function () { document.removeEventListener("mousedown", onDocDown); o.mount.textContent = ""; }
     };

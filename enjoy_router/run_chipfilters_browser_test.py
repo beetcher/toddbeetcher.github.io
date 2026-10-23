@@ -38,7 +38,8 @@ window.cf = UI.chipFilters({
     { id: 'how', label: 'How it was sent', kind: 'multi', options: [{ value: 'automatic', label: 'Automatic' }, { value: 'manual', label: 'By hand' }] },
     { id: 'only', label: 'Only show', kind: 'multi', start: 'none', options: [{ value: 'notes', label: 'Has notes' }, { value: 'redir', label: 'Went to a test address' }] },
     { id: 'region', label: 'Region', kind: 'search-multi', options: regions.map(function (r) { return { value: r, label: r }; }) },
-    { id: 'sort', label: 'Sort', kind: 'one', options: [{ value: 'new', label: 'Newest first' }, { value: 'old', label: 'Oldest first' }] }
+    { id: 'sort', label: 'Sort', kind: 'one', options: [{ value: 'new', label: 'Newest first' }, { value: 'old', label: 'Oldest first' }] },
+    { id: 'attention', label: 'Needs attention', kind: 'toggle', noun: 'messages', title: 'Failed, unknown, or not sent and not yet handled' }
   ],
   onChange: function (sel) { window.__log.push(JSON.parse(JSON.stringify(sel))); }
 });
@@ -61,7 +62,7 @@ with sync_playwright() as p:
     def sel(): return pg.evaluate("window.cf.getSelection()")
 
     # --- the row
-    check("six chips, each named for its filter, none narrowed", labels() == ["Status", "Message", "How it was sent", "Only show", "Region", "Sort"], labels())
+    check("seven chips, each named for its filter, none narrowed", labels() == ["Status", "Message", "How it was sent", "Only show", "Region", "Sort", "Needs attention"], labels())
     check("Clear all is hidden while nothing is narrowed", not pg.locator(".cf-clearall").is_visible())
     check("the sheet title is a phone-only thing: hidden on desktop", pg.locator(".cf-title:visible").count() == 0)
     check("every chip is 40 px tall and the popovers start closed", all(h == 40 for h in pg.eval_on_selector_all(".cf-chip", "els => els.map(e => Math.round(e.getBoundingClientRect().height))")) and pg.locator(".cf-pop:visible").count() == 0)
@@ -127,7 +128,7 @@ with sync_playwright() as p:
 
     # --- Clear all fires once
     n1 = log_n(); pg.click(".cf-clearall")
-    check("Clear all resets every chip and fires onChange once", labels() == ["Status", "Message", "How it was sent", "Only show", "Region", "Sort"] and log_n() == n1 + 1 and not pg.locator(".cf-clearall").is_visible(), (labels(), log_n() - n1))
+    check("Clear all resets every chip and fires onChange once", labels() == ["Status", "Message", "How it was sent", "Only show", "Region", "Sort", "Needs attention"] and log_n() == n1 + 1 and not pg.locator(".cf-clearall").is_visible(), (labels(), log_n() - n1))
     check("focus goes to the first chip after Clear all", pg.evaluate("document.activeElement.textContent.indexOf('Status') === 0"))
 
     # --- keyboard walk
@@ -147,6 +148,59 @@ with sync_playwright() as p:
     pg.keyboard.press("Tab")
     check("one more Tab leaves the popover, closes it, and lands on the next chip", not pop_of("Status").is_visible() and pg.evaluate("document.activeElement.classList.contains('cf-chip') && document.activeElement.textContent.indexOf('Message') === 0"), pg.evaluate("document.activeElement.textContent"))
     pg.click(".cf-clearall")
+
+    # --- switch chip (J-1)
+    sw = chip("Needs attention")
+    check("a switch chip has no caret, no popover, and starts off", sw.locator(".cf-caret").count() == 0 and pg.locator(".cf-chipwrap", has=sw).locator(".cf-pop").count() == 0 and sw.get_attribute("aria-pressed") == "false" and sw.get_attribute("data-on") == "false")
+    check("its spoken name says off", sw.get_attribute("aria-label") == "Needs attention filter, off", sw.get_attribute("aria-label"))
+    check("it carries its hover hint", sw.get_attribute("title") == "Failed, unknown, or not sent and not yet handled")
+    pg.evaluate("window.cf.setBadge('attention', 6)")
+    check("a badge number shows beside the words and is spoken with its noun", sw.locator(".cf-badge").inner_text() == "6" and sw.get_attribute("aria-label") == "Needs attention filter, off, 6 messages", sw.get_attribute("aria-label"))
+    n3 = log_n(); sw.click()
+    check("clicking turns it on, fires onChange once, and shows Clear all", sw.get_attribute("aria-pressed") == "true" and sw.get_attribute("data-on") == "true" and log_n() == n3 + 1 and sel()["attention"] == ["on"] and pg.locator(".cf-clearall").is_visible(), (sel()["attention"], log_n() - n3))
+    check("spoken name says on", sw.get_attribute("aria-label") == "Needs attention filter, on, 6 messages", sw.get_attribute("aria-label"))
+    sw.click()
+    check("clicking again turns it off", sw.get_attribute("aria-pressed") == "false" and sel()["attention"] == [] and not pg.locator(".cf-clearall").is_visible())
+    sw.focus(); pg.keyboard.press("Space")
+    check("Space toggles it from the keyboard", sw.get_attribute("aria-pressed") == "true")
+    pg.screenshot(path=str(shots / "cf-1440-switch-on.png"))
+    pg.click(".cf-clearall")
+    check("Clear all switches it off too", sw.get_attribute("aria-pressed") == "false" and sel()["attention"] == [])
+    pg.evaluate("window.cf.setSelection({ attention: ['on'] })")
+    check("setSelection can switch it on without firing onChange", sw.get_attribute("aria-pressed") == "true")
+    pg.evaluate("window.cf.clearAll(); window.cf.setBadge('attention', '')")
+    check("an empty badge is hidden", sw.locator(".cf-badge:visible").count() == 0 and sw.get_attribute("aria-label") == "Needs attention filter, off")
+
+    # --- live result line inside the popover (J-1)
+    chip("Status").click()
+    check("the result line is hidden until there is text", pop_of("Status").locator(".cf-result:visible").count() == 0)
+    pg.evaluate("window.cf.setResult('4 messages of 74')")
+    check("setResult shows a polite live line above Clear and Done", pop_of("Status").locator(".cf-result").inner_text() == "4 messages of 74" and pop_of("Status").locator(".cf-result").get_attribute("role") == "status" and pop_of("Status").locator(".cf-result").get_attribute("aria-live") == "polite")
+    pg.evaluate("window.cf.setResult('2 messages of 74')")
+    check("it follows later changes", pop_of("Status").locator(".cf-result").inner_text() == "2 messages of 74")
+    check("it sits between the list and the footer", pg.evaluate("(function(){var p=document.querySelector('.cf-pop:not([hidden])'),c=Array.prototype.map.call(p.children,function(e){return e.className});return c.indexOf('cf-result')>c.indexOf('cf-list') && c.indexOf('cf-result')<c.indexOf('cf-foot')})()"))
+    pg.keyboard.press("Escape")
+    chip("Region").click()
+    check("every popover shows the same line, including a searched one", pop_of("Region").locator(".cf-result").inner_text() == "2 messages of 74")
+    pg.keyboard.press("Escape")
+    pg.evaluate("window.cf.setResult('')")
+    chip("Status").click()
+    check("an empty line is hidden again", pop_of("Status").locator(".cf-result:visible").count() == 0)
+    pg.keyboard.press("Escape")
+
+    # --- where focus lands on open (J-1, item 6)
+    chip("Status").click()
+    check("opened by mouse, focus rests on the popover itself: no entry shows a focus ring", pg.evaluate("document.activeElement.classList.contains('cf-pop')") and pop_of("Status").locator("input:focus").count() == 0, pg.evaluate("document.activeElement.className"))
+    pg.keyboard.press("Escape")
+    chip("Status").focus(); pg.keyboard.press("Enter")
+    check("opened by Enter, focus goes to the first entry", pg.evaluate("document.activeElement.type === 'checkbox' && document.activeElement.value === 'sent'"), pg.evaluate("document.activeElement.value"))
+    pg.keyboard.press("Escape")
+    chip("Region").click()
+    check("a searched list always focuses its search box, even by mouse", pg.evaluate("document.activeElement.classList.contains('cf-search')"))
+    pg.keyboard.press("Escape")
+    chip("Status").click(); pg.keyboard.press("ArrowDown")
+    check("opened by mouse, Down still starts at the first entry", pg.evaluate("document.activeElement.type === 'checkbox'"), pg.evaluate("document.activeElement.className"))
+    pg.keyboard.press("Escape")
 
     # --- code interface
     n2 = log_n()

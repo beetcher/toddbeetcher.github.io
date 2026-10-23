@@ -690,6 +690,11 @@
   .cf-t { flex: 1; }
   .cf-n { font-weight: 700; font-size: var(--text-s); background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 0 var(--space-3); min-width: 1.6em; text-align: center; }
   .cf-n:empty { display: none; }
+  .cf-badge { font-weight: 700; font-size: var(--text-s); background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 0 var(--space-3); min-width: 1.6em; text-align: center; }
+  .cf-badge:empty { display: none; }
+  button.cf-chip[data-on="true"] .cf-badge { background: var(--white); color: var(--ink); }
+  .cf-result { padding: var(--space-3) var(--space-4) 0; color: var(--muted); font-size: var(--text-m); font-weight: 600; }
+  .cf-result:empty { display: none; }
   .cf-none { padding: var(--space-5); color: var(--muted); }
   .cf-none[hidden] { display: none; }
   .cf-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--line); }
