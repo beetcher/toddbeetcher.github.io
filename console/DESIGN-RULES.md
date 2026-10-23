@@ -43,10 +43,24 @@ Applied so far: Requests (B-1 to B-9, C-1 to C-9). Next: Attendance, then Messag
 Applied so far: Requests, Attendance. Next: Messages.
 
 ## Added with the Messages tune (E-1 to E-4)
-- Page-level: Manual is a plain link, Refresh is quiet, Show all is a plain link; the "Needs attention" toggle keeps its pill shape (40 px). No orange on the page itself.
+- Page-level: Manual is a plain link, Refresh is quiet; the "Needs attention" toggle keeps its pill shape (40 px). No orange on the page itself. (Show all was replaced by the chip row's Clear all, see "Chip filters" below.)
 - Inside an open entry: **Mark handled** is the one orange button (it is the "do this next", shown only for a not-sent entry nobody handled); Add note is quiet; Copy entry, Copy as JSON and Open the class attendance are plain links.
 - Chips are flat and tinted: green Sent, red only for a problem (Failed, Unknown, Not sent), grey Skipped. Card edge and tint follow: green sent, red needs attention, grey skipped or handled. Orange is never an edge colour.
 - A needs-attention row carries one "Next:" line (what to do). Avoid putting a button's own label inside such text, tests and screen readers match by label.
 - Spoken names: "Mark handled (Placement confirmation to bea@example.com)". A button whose text changes (Copy → "Copied ✓") changes its aria-label too.
 - Status filter boxes show a count chip.
 Applied so far: Requests, Attendance, Messages.
+
+## Chip filters (H-1 to H-3): the standard for every station
+Source: Todd, 2026-10-23 (a column of tick boxes "looks dumb"). One shared control draws every filter on every page.
+- **Where the code lives:** `console/filters.js`, loaded after `ui.js`, exposes `UI.chipFilters`. A station never draws its own tick-box list and never copies the component: it declares its filters and reacts to `onChange`. Nothing about filters goes into `console.js`. Contract and examples are in the comment at the top of `filters.js`; styles are the "Chip filters" block at the end of `console.css`.
+- **Layout:** one chip per filter, in one row under the page's Search box. A quick pill such as Needs attention stays above, beside Search. Old stations still on `UI.filterBar` (Venues) move over when they are converted.
+- **Three kinds:** multi (tick boxes; `start:"all"` = everything ticked and the filter is off until something is unticked; `start:"none"` = "Only show" style, off until something is ticked), pick-one (radio; the first entry is "any"), search-multi (a search box inside the popover; use it for lists longer than about ten, for example regions).
+- **What a chip says:** off = its plain name ("Status"). Narrowing = filled dark with the choice ("Status: Not sent, Failed", or "Status: 3 of 5" when it is long). A **Clear all** link appears only while something is narrowed. A chip is a control, never a status chip: no red, no orange.
+- **Popover:** the entries with a count beside each when the page knows it (`setCounts`, from the loaded records, blank until loaded), then **Clear** (this filter back to off) and **Done**. The list shows 7 and a half rows, then scrolls inside the popover, so a long list never looks complete. One popover open at a time; closes on Escape, a click elsewhere, Done, or Tab out. Opening a search list starts with the search empty.
+- **Entries that come from the data** (message kinds, regions): `setOptions`; the person's choices are kept and a brand new entry starts ticked.
+- **Phone (520 px and under):** the popover is a bottom sheet with the filter's name as a title, a dimmed page behind it, 48 px rows; chips are 44 px (40 px on desktop).
+- **Keyboard and spoken:** Tab to a chip, Enter, Space or Down opens it, Up and Down move between ticks, Space ticks, Escape closes and returns to the chip. A chip's spoken name is "Status filter, 3 of 5 selected"; Clear and Done say which filter ("Done with Status filter").
+- **Search wins:** when a page has a Search box that looks at the whole log, the filters are ignored while searching; say so with `setNote` ("Searching the whole log for ...: the filters are ignored.").
+- **Tests:** the control has its own test, `enjoy_router/run_chipfilters_browser_test.py`. A station test works the chips through `#<mount> .cf-chip`, the entry labels, and the "Done with <Name> filter" button.
+Applied so far: Messages (Status, Message, How it was sent, Only show). Next: Requests and Attendance as they are extracted.
