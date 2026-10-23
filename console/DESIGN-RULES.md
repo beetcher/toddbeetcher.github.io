@@ -11,3 +11,5 @@ Same meaning on every page. Source: Todd, 2026-10-23. Research and measurements:
 | Flat tinted chip with words | not button-shaped | Status only | green done, amber waiting, grey neutral, red only for a problem |
 
 Same height and corner radius for every button on a page (40 px desktop, 44 px phone). Order in a card: orange first, outlined next, Delete last at the far right, set apart. Orange text only on black; lime only on dark; white text on orange fails contrast, so orange buttons use dark text.
+
+Last checked 2026-10-23: checkpoint push test.
