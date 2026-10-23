@@ -911,18 +911,21 @@
 
 
 <script src="firebase-config.js"></script>
+<script src="console-config.js"></script>
 <script>
 (function () {
   "use strict";
 
-  // One entry for now. A second app later is one more line here.
-  var APPS = [
-    { id: "launch", name: "LAUNCH", endpoint: "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_console_records" }
-  ];
-  var APP = APPS[0];
+  // Settings come from console-config.js. Without them nothing below can run, so say so plainly.
+  var CFG = window.CONSOLE_CONFIG;
+  if (!CFG || !CFG.appId || !CFG.brandName || !CFG.endpoints || !CFG.endpoints.records || !CFG.endpoints.admin || !CFG.endpoints.discovery) {
+    document.body.textContent = "The Console settings file (console-config.js) is missing or incomplete.";
+    return;
+  }
+
   var REFRESH_MS = 20000;
   var MAX = 100;
-  var KEY_STORE = "console_key_" + APP.id;
+  var KEY_STORE = "console_key_" + CFG.appId;
   var TYPES = { private: "One on one", group: "Small group", "class": "Workshop" };
   var FIRST_FIELDS = ["confirmation_number", "registration_type", "created_at", "processing_status", "first_name", "last_name",
                       "email", "phone", "attendee_count", "program_slug", "source", "id"];
@@ -936,7 +939,7 @@
   var firstLoadDone = false;
   var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
 
-  $("appName").textContent = APP.name;
+  $("appName").textContent = CFG.brandName;
 
   // Remember off: the key lives in sessionStorage (gone when the tab closes). On: localStorage (stays until Lock).
   function getKey() {
@@ -1415,7 +1418,7 @@
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
   function fetchRecords(since) {
-    var url = APP.endpoint + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
+    var url = CFG.endpoints.records + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
     return fetch(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" })
       .then(function (r) {
         if (r.status === 401) return { status: "unauthorized" };
@@ -1779,7 +1782,7 @@
   }
 
   // ---- Venues view: list and add, through the admin endpoint (the CRUD handler file does the checking).
-  var ADMIN_URL = "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_admin";
+  var ADMIN_URL = CFG.endpoints.admin;
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
                 out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
                 not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That contact was not found.",

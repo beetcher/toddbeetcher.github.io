@@ -6,7 +6,7 @@
   "use strict";
   var K = window.ConsoleKit;
   if (!K) return;
-  var DISC_URL = "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_discovery";
+  var DISC_URL = window.CONSOLE_CONFIG.endpoints.discovery;
   var mk = K.mk, root = null;
   var S = { tab: "run", sub: "models", loaded: false, status: null, models: [], areas: [], types: [], prompts: [], settings: null,
             runs: [], openRun: null, quote: null, quoteKey: "", driving: "", stopAsk: false, seq: 0 };
