@@ -488,22 +488,23 @@
     sc.scrollTop = mScroll[id] || 0;
     markManual();
   }
-  function leaveOk() {
-    if (editRec && editDirty() && !window.confirm("Discard your changes?")) return false;
-    if (cRec && classDirty() && !window.confirm("Discard your changes?")) return false;
-    return true;
+  var DISCARD = { title: "Discard your changes?", message: "You have edits that are not saved.", yes: "Discard", no: "Keep editing", danger: true };
+  function askDiscard(dirty, go, stay) {   // runs go() at once when nothing is unsaved; otherwise asks first
+    if (!dirty) { go(); return; }
+    UI.confirm(DISCARD).then(function (ok) { if (ok) go(); else if (stay) stay(); });
   }
   function goTo(id) {
-    if (!leaveOk()) { $("collPick").value = currentRoute(); return; }
-    closeManual();
-    if (location.hash === "#/" + id) route(); else location.hash = "#/" + id;
+    askDiscard((editRec && editDirty()) || (cRec && classDirty()), function () {
+      closeManual();
+      if (location.hash === "#/" + id) route(); else location.hash = "#/" + id;
+    }, function () { $("collPick").value = currentRoute(); });
   }
 
   function show(locked) {
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; }
+    document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; UI.dismiss(); }
     if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
@@ -1989,8 +1990,7 @@
     $("helpBtn").textContent = on ? "Hide field help" : "Show field help";
   });
   $("editCancel").addEventListener("click", function () {
-    if (editDirty() && !window.confirm("Discard your changes?")) return;
-    closeEdit();
+    askDiscard(editDirty(), closeEdit);
   });
   $("editReload").addEventListener("click", function () { closeEdit(); loadVenues(); });
 
@@ -2729,8 +2729,7 @@
     $("cHelpBtn").textContent = on ? "Hide field help" : "Show field help";
   });
   $("cEditCancel").addEventListener("click", function () {
-    if (classDirty() && !window.confirm("Discard your changes?")) return;
-    closeClassEdit();
+    askDiscard(classDirty(), closeClassEdit);
   });
   $("cEditReload").addEventListener("click", function () { closeClassEdit(); loadClasses(); });
 
@@ -3536,14 +3535,20 @@
     row.appendChild(top);
     if (r.role === "student") attCorrespondence(r, row, say, redraw);
     sel.addEventListener("change", function () {
-      if (leftOpen(r.status, sel.value) && !window.confirm(attName(r) + " will be set to " + ATT_WORD[sel.value].toLowerCase() + " and emailed" + (r.role === "student" ? ", and the instructors too" : "") + ". Go ahead?")) { sel.value = r.status; return; }
-      sel.disabled = true;
-      admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
-        sel.disabled = false;
-        if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[sel.value].toLowerCase() + "." + (leftOpen(r.status, sel.value) ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); redraw(); return; }
-        sel.value = r.status; say(attFail(res));
-      });
+      var want = sel.value;
+      function apply() {
+        sel.disabled = true;
+        admin("update", { id: r.id, changes: { status: want }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
+          sel.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[want].toLowerCase() + "." + (leftOpen(r.status, want) ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); redraw(); return; }
+          sel.value = r.status; say(attFail(res));
+        });
+      }
+      if (!leftOpen(r.status, want)) { apply(); return; }
+      UI.confirm({ title: "Change " + attName(r) + " to " + ATT_WORD[want].toLowerCase() + "?",
+        message: attName(r) + " will be set to " + ATT_WORD[want].toLowerCase() + " and emailed" + (r.role === "student" ? ", and the instructors too" : "") + ".",
+        yes: "Go ahead", no: "Cancel" }).then(function (ok) { if (ok) apply(); else sel.value = r.status; });
     });
     var armed = false;
     rm.addEventListener("click", function () {

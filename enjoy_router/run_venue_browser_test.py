@@ -48,7 +48,8 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 420, "height": 1000})
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
-    pg.on("dialog", lambda d: d.accept())
+    # the Console's own dialog replaced the browser's confirm box (1.3a): answer Yes to any it shows
+    pg.add_init_script("new MutationObserver(function () { var d = document.getElementById('uiDialog'), y = document.getElementById('uiYes'); if (window.__autoYes !== false && d && d.open && y) y.click(); }).observe(document, { subtree: true, attributes: true, childList: true });")
     pg.route("**/enjoy_admin", cors)
     pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers={"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"}, body=json.dumps({"ok": True, "data": {"records": []}})))
     SCHEMA = (HERE.parent / "schemas" / "venue.schema.json").read_text()
@@ -243,6 +244,22 @@ with sync_playwright() as p:
     pt = pd.locator(".detail").inner_text()
     check("a bare venue shows Not entered, no phone/website links, no came-from fold", "Public hours: Not entered" in pt and "Open days for classes: Not entered" in pt and pd.locator(".detail a.dlink").count() <= 2 and pd.locator(".detail details.dfold").count() == 1)
 
+    # 1.3a: the Discard question is the Console's own dialog
+    if pg.locator("#editPanel:not([hidden])").count(): pg.click("#editCancel"); pg.wait_for_timeout(300)
+    pg.evaluate("window.__autoYes = false")
+    open_edit("Park Draft")
+    pg.select_option("#ef_status", "active")
+    pg.click("#editCancel"); pg.wait_for_selector("#uiDialog[open]")
+    check("Cancel on an edited venue asks 'Discard your changes?' with Discard / Keep editing", pg.locator("#uiTitle").inner_text() == "Discard your changes?" and pg.locator("#uiYes").inner_text() == "Discard" and pg.locator("#uiNo").inner_text() == "Keep editing")
+    pg.click("#uiNo"); pg.wait_for_timeout(200)
+    check("Keep editing leaves the form open with the change", pg.locator("#editPanel:not([hidden])").count() == 1 and pg.input_value("#ef_status") == "active")
+    pg.select_option("#collPick", "messages"); pg.wait_for_selector("#uiDialog[open]"); pg.click("#uiNo"); pg.wait_for_timeout(300)
+    check("leaving for another station asks too; Keep editing stays on Venues with the picker back on Venues", pg.evaluate("location.hash") in ("#/venues", "") or "venues" in pg.evaluate("location.hash"))
+    check("...and the picker shows Venues again", pg.input_value("#collPick") == "venues")
+    pg.click("#editCancel"); pg.wait_for_selector("#uiDialog[open]"); pg.click("#uiYes"); pg.wait_for_timeout(300)
+    check("Discard closes the form", pg.locator("#editPanel:not([hidden])").count() == 0)
+    open_edit("Park Draft"); pg.click("#editCancel"); pg.wait_for_timeout(300)
+    check("an untouched form closes with no question", pg.locator("#uiDialog[open]").count() == 0 and pg.locator("#editPanel:not([hidden])").count() == 0)
     check("no page errors", not errors)
     if errors: print(errors[:3])
     b.close()

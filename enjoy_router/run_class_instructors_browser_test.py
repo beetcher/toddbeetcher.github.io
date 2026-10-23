@@ -70,7 +70,8 @@ with sync_playwright() as p:
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
     pg = b.new_page(viewport={"width": 420, "height": 1100}); errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
-    pg.on("dialog", lambda d: d.accept())
+    # the Console's own dialog replaced the browser's confirm box (1.3a): answer Yes to any it shows
+    pg.add_init_script("new MutationObserver(function () { var d = document.getElementById('uiDialog'), y = document.getElementById('uiYes'); if (d && d.open && y) y.click(); }).observe(document, { subtree: true, attributes: true, childList: true });")
     pg.route("**/enjoy_admin", admin_route)
     pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": []}})))
     SCHEMA = (HERE.parent / "schemas" / "scheduled_class.schema.json").read_text()
