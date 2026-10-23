@@ -294,6 +294,8 @@ with sync_playwright() as p:
     check("the page has one visible title, Attendance", pg.locator("#aTitle").is_visible() and pg.locator("#attendanceView h2:visible").count() == 1)
     check("the filters start closed, with Search and its button always in view", not pg.evaluate("document.getElementById('aFilters').open") and pg.locator("#aSearch").is_visible() and pg.locator("#aGo").is_visible())
     check("the first record is near the top, not pushed down by a filter panel", pg.evaluate("document.querySelector('#aList li').getBoundingClientRect().top") < 600, pg.evaluate("document.querySelector('#aList li').getBoundingClientRect().top"))
+    check("each status filter box shows how many records have it", pg.locator("#aStatusBoxes .segn").count() == 9 and sum(int(t) for t in pg.eval_on_selector_all("#aStatusBoxes .segn", "els => els.map(e => e.textContent)")) == n_all)
+    check("buttons name the person and the class", pg.evaluate("""() => { var li = document.querySelector("#aList li"); var rm = Array.from(li.querySelectorAll("button")).find(b => b.textContent === "Remove"); var lk = li.querySelector("button.btn-link"); return !!rm && /^Remove \\(.+, .+\\)$/.test(rm.getAttribute("aria-label")) && /^Open class attendance: /.test(lk.getAttribute("aria-label")); }"""))
     pg.fill("#aSearch", "chuck"); pg.click("#aGo")
     pg.wait_for_function("Array.from(document.querySelectorAll('#aList li')).every(function (l) { return /chuck/i.test(l.innerText); }) && document.querySelectorAll('#aList li').length > 0")
     check("the Search button runs the search", True)

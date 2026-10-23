@@ -1713,6 +1713,8 @@
       r = r || {};
       var box = mk("div", "rcard"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
       var rm = mk("button", "btn-secondary", "Remove"); rm.type = "button";
+    var who = attName(r) + (r["class"] && r["class"].title ? ", " + r["class"].title : "");
+    rm.setAttribute("aria-label", "Remove (" + who + ")");
       head.appendChild(title); head.appendChild(rm); box.appendChild(head);
       var f = buildRoomFields(box, r);
       var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
@@ -3683,6 +3685,7 @@
       all.forEach(function (e) { body.appendChild(corrLine(e)); });
     });
     var b = mk("button", "btn-secondary asend", "Send confirmation email"); b.type = "button";
+    b.setAttribute("aria-label", "Send confirmation email (" + attName(r) + ")");
     b.addEventListener("click", function () {
       b.disabled = true; b.textContent = "Sending…";
       admin("send_confirmation", { id: r.id }, ATT).then(function (res) {
@@ -3710,6 +3713,8 @@
     ATT_STATUSES.forEach(function (s) { var o = mk("option", "", ATT_WORD[s]); o.value = s; sel.appendChild(o); });
     sel.value = r.status;
     var rm = mk("button", "btn-secondary", "Remove"); rm.type = "button";
+    var who = attName(r) + (r["class"] && r["class"].title ? ", " + r["class"].title : "");
+    rm.setAttribute("aria-label", "Remove (" + who + ")");
     top.appendChild(sel); top.appendChild(rm);
     row.appendChild(top);
     if (r.role === "student") attCorrespondence(r, row, say, redraw);
@@ -3731,12 +3736,12 @@
     });
     var armed = false;
     rm.addEventListener("click", function () {
-      if (!armed) { armed = true; rm.textContent = "Really remove?"; rm.className = "btn-danger"; return; }
+      if (!armed) { armed = true; rm.textContent = "Really remove?"; rm.setAttribute("aria-label", "Really remove? (" + who + ")"); rm.className = "btn-danger"; return; }
       rm.disabled = true;
       admin("soft_delete", { id: r.id }, ATT).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept." + (ATT_OPEN[r.status] ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); loadPlaced(); redraw(); return; }
-        rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "btn-secondary"; say(attFail(res));
+        rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.setAttribute("aria-label", "Remove (" + who + ")"); rm.className = "btn-secondary"; say(attFail(res));
       });
     });
     return row;
@@ -3794,8 +3799,12 @@
     var host = $("aStatusBoxes"); if (host.firstChild) return;
     ATT_STATUSES.forEach(function (s) {
       var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
-      l.appendChild(c); l.appendChild(document.createTextNode(" " + ATT_WORD[s])); host.appendChild(l);
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + ATT_WORD[s])); var n = mk("span", "segn"); n.setAttribute("data-n", s); l.appendChild(n); host.appendChild(l);
     });
+  }
+  function asCounts() {
+    var by = {}; AS.recs.forEach(function (r) { by[r.status] = (by[r.status] || 0) + 1; });
+    Array.prototype.forEach.call(document.querySelectorAll("#aStatusBoxes .segn"), function (n) { var k = n.getAttribute("data-n"); n.textContent = AS.loaded ? String(by[k] || 0) : ""; });
   }
   function asSelected() {
     var o = { status: {}, role: {}, source: {} };
@@ -3822,7 +3831,7 @@
       var li = mk("li", "attrec");
       var top = mk("div", "lchips");
       var cl = mk("button", "btn-link", ((r["class"] && r["class"].title) || "(class not found)") + (r["class"] && r["class"].starts_at ? " · " + classWhen(r["class"]) : ""));
-      cl.type = "button";
+      cl.type = "button"; cl.setAttribute("aria-label", "Open class attendance: " + cl.textContent);
       cl.addEventListener("click", function () { var c = aClassById[r.scheduled_class_id]; if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
       top.appendChild(cl); top.appendChild(mk("span", "", ROLE_WORD[r.role] || r.role));
       var tn = ATT_TONE[r.status] || ATT_TONE.assigned;
@@ -3837,7 +3846,7 @@
     });
     $("aCount").textContent = shown.length + (shown.length === 1 ? " record" : " records") + (shown.length !== AS.recs.length ? " of " + AS.recs.length : "");
     $("aEmpty").hidden = shown.length > 0 || !AS.loaded;
-    asSummary(sel, q);
+    asCounts(); asSummary(sel, q);
   }
   function loadAttendanceStation() {
     asBuildStatusBoxes();
