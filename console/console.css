@@ -163,7 +163,7 @@
   @media (min-width: 1180px) {
     body.withnav #aList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
     body.withnav #aList > li.open { grid-column: 1 / -1; }
-    body.withnav #list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    body.withnav #list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
     body.withnav #list > li.open { grid-column: 1 / -1; }
   }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
@@ -481,7 +481,8 @@
   .qchip.warn { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--orange); }
   .chips .nochip { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--warn-edge); border-radius: 999px; padding: 1px var(--space-5); font-weight: 700; }
   .chips .donechip { background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 1px var(--space-5); font-weight: 700; }
-  .covBanner { margin: var(--space-4) 0; padding: var(--space-6) var(--space-7); border: 1px solid var(--err-edge); border-radius: 8px; background: var(--err-bg); color: var(--err); font-weight: 700; display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap; }
+  .covBanner { margin: var(--space-4) 0 var(--space-6); padding: var(--space-6) var(--space-7); border: 1px solid var(--warn-edge); border-radius: 8px; background: var(--warn-bg); color: var(--warn-ink); font-weight: 700; display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap; }
+  #listMsg:empty { display: none; }
   .covBanner[hidden] { display: none; }
   .covbox { margin: var(--space-2) var(--space-7) var(--space-7); padding: var(--space-6) var(--space-8) var(--space-8); border: 1px solid var(--err-edge); border-radius: 12px; background: var(--err-bg); }
   .covbox[hidden] { display: none; }
