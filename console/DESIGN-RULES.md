@@ -41,3 +41,12 @@ Applied so far: Requests (B-1 to B-9, C-1 to C-9). Next: Attendance, then Messag
 - Spoken names: "Remove (Ann Able, Evening Basics)", "Send confirmation email (Ann Able)", "Open class attendance: <class>". Armed Remove reads "Really remove? (…)".
 - Class dialog: the Show, Instructors and Students bands are neutral white; colour only means a person's status (tone edge and chip on each row), never the band.
 Applied so far: Requests, Attendance. Next: Messages.
+
+## Added with the Messages tune (E-1 to E-4)
+- Page-level: Manual is a plain link, Refresh is quiet, Show all is a plain link; the "Needs attention" toggle keeps its pill shape (40 px). No orange on the page itself.
+- Inside an open entry: **Mark handled** is the one orange button (it is the "do this next", shown only for a not-sent entry nobody handled); Add note is quiet; Copy entry, Copy as JSON and Open the class attendance are plain links.
+- Chips are flat and tinted: green Sent, red only for a problem (Failed, Unknown, Not sent), grey Skipped. Card edge and tint follow: green sent, red needs attention, grey skipped or handled. Orange is never an edge colour.
+- A needs-attention row carries one "Next:" line (what to do). Avoid putting a button's own label inside such text, tests and screen readers match by label.
+- Spoken names: "Mark handled (Placement confirmation to bea@example.com)". A button whose text changes (Copy → "Copied ✓") changes its aria-label too.
+- Status filter boxes show a count chip.
+Applied so far: Requests, Attendance, Messages.
