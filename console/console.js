@@ -643,6 +643,7 @@
   function buildRow(rec, isNew) {
     var li = document.createElement("li");
     if (isNew) li.className = "isnew";
+    li.setAttribute("data-tone", rec.coverage_waiting ? "wait" : rec.coverage_handled_at ? "done" : "none");
 
     var head = document.createElement("button");
     head.className = "head";
@@ -3049,7 +3050,8 @@
     if (!P.loaded) { box.hidden = true; return; }
     box.hidden = false;
     var n = P.ids[rec.id];
-    var rli = box.parentNode;   // the card: once placed, "Open class" is the main button and "Put in a class" steps back
+    var rli = box.parentNode;
+    if (rli) rli.setAttribute("data-tone", n ? "ok" : rec.coverage_waiting ? "wait" : rec.coverage_handled_at ? "done" : "none");   // a quiet edge and tint; the chip carries the words   // the card: once placed, "Open class" is the main button and "Put in a class" steps back
     if (rli && rli._pb) { rli._ob.hidden = !n; rli._pb.className = n ? "btn-secondary" : "btn-primary"; }
     if (n) box.appendChild(mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")));
     else if (!rec.coverage_waiting) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a request with no trainer already shows its own chip above

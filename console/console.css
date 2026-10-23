@@ -13,6 +13,10 @@
     --card: #ffffff;
     --paper: #fcfaf5;
     --white: #ffffff;
+    --tone-wait-edge: #c76a00;
+    --tone-wait-bg: #ffefd6;
+    --tone-ok-bg: #e9f4e4;
+    --tone-done-bg: #f4f1ea;
     /* brand */
     --orange: #fc7d2d;
     --on-orange: #1a0d00;
@@ -477,6 +481,10 @@
   /* ---- Assignments, one-touch row, Needs attention ---- */
   .qrow { padding: 0 var(--space-7) var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
   .qrow[hidden] { display: none; }
+  /* Card tone (Requests): a 4 px edge and a faint tint that repeat the chip's words. Amber waiting for a trainer, green placed, grey handled. */
+  #list > li[data-tone="wait"] { border-left: 4px solid var(--tone-wait-edge); background: var(--tone-wait-bg); }
+  #list > li[data-tone="ok"] { border-left: 4px solid var(--ok); background: var(--tone-ok-bg); }
+  #list > li[data-tone="done"] { border-left: 4px solid var(--line-strong); background: var(--tone-done-bg); }
   .dsum { margin-bottom: var(--space-5); }
   .dsum div { padding: var(--space-1) 0; }
   details.rawd { border-top: 1px solid var(--line); padding-top: var(--space-4); }
