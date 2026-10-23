@@ -103,7 +103,7 @@ with sync_playwright() as p:
 
     # ---- the manual
     pg.select_option("#collPick", "home")
-    pg.click('#homeManualBtns button[data-m="activity"]'); pg.wait_for_selector("#manual:not([hidden])")
+    pg.click("#helpOpen"); pg.click('#overlayBtns button[data-m="activity"]'); pg.wait_for_selector("#manual:not([hidden])")
     check("the manual explains the station", "Personal details are never copied" in pg.inner_text("#manual") and "station 14" in pg.inner_text("#manual").lower())
     pg.screenshot(path=str(SHOTS / "04_manual.png"))
 

@@ -52,7 +52,9 @@ with sync_playwright() as p:
     red = pg.evaluate("Array.from(document.querySelectorAll('#collPick option')).filter(o => o.style.color).map(o => o.textContent)")
     check("Access, Activity, Discovery, Performance, People and Places are red in the station menu", sorted(red) == ["Access (admin)", "Activity (admin)", "Discovery (admin)", "People (admin)", "Performance (admin)", "Places (admin)"])
     check("Access, Activity, Discovery, Performance, People and Places tiles are red on Home", pg.locator("#stationTiles .tile.adm").count() == 6)
-    check("manual buttons for both rosters", pg.locator("#homeManualBtns button", has_text="Instructors").count() == 1 and pg.locator("#homeManualBtns button", has_text="Students").count() == 1)
+    pg.click("#helpOpen")
+    check("manual buttons for both rosters", pg.locator("#overlayBtns button", has_text="Instructors").count() == 1 and pg.locator("#overlayBtns button", has_text="Students").count() == 1)
+    pg.click("#manualClose")
 
     bob = IS.create(store, {"given_name": "Bob", "family_name": "Ray", "email": "bob@example.com"}, "user:admin").data
     rid = "00000000-0000-4000-8000-0000000000aa"

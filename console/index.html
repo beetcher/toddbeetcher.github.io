@@ -23,6 +23,7 @@
   <div class="hright">
     <span id="who" hidden></span>
     <select id="collPick" aria-label="Go to" hidden></select>
+    <button class="quiet" id="helpOpen" type="button" aria-controls="manual" aria-expanded="false" hidden>Help</button>
     <button class="quiet" id="lockBtn" hidden>Lock</button>
   </div>
 </header>
@@ -59,15 +60,10 @@
       <h3>Stations</h3>
       <div class="tiles" id="stationTiles"></div>
     </div>
-    <div class="dash" id="wfHome">
-      <h3>Workflows</h3>
-      <p class="mhint">Step by step, with a button that jumps to the right station.</p>
-      <div id="wfHomeList"></div>
-    </div>
-    <div class="dash">
-      <h3>Ship's manual</h3>
-      <p class="mhint">Tap a button to open its manual. Tap it again to close. Only one is open at a time.</p>
-      <div class="mbtns" id="homeManualBtns"></div>
+    <div class="dash" id="helpHome">
+      <h3>Help</h3>
+      <p class="mhint">The ship's manuals and the step-by-step workflows live in one place. Open it from any screen with the Help button at the top.</p>
+      <div class="mbtns"><button type="button" id="helpHomeM">Ship's manuals</button><button type="button" id="helpHomeW">Workflows</button></div>
     </div>
   </section>
 
@@ -464,17 +460,24 @@
   <div class="dmsg" id="jrMsg" role="status"></div>
   <div class="lsbody" id="jrBody" tabindex="0" role="region" aria-labelledby="jrTitle"></div>
 </dialog>
-<dialog class="lsdlg" id="wfDlg" aria-labelledby="wfTitle">
-  <div class="lshead"><h2 id="wfTitle">Workflow</h2><button type="button" class="quiet" id="wfClose">Close</button></div>
-  <div class="lsbody" id="wfBody" tabindex="0" role="region" aria-labelledby="wfTitle"></div>
-</dialog>
-<div class="manual" id="manual" role="region" aria-label="Ship's manual" hidden>
+<aside class="manual" id="manual" role="complementary" aria-label="Help" hidden>
   <div class="mhead">
-    <div class="mbtns" id="overlayBtns"></div>
+    <h2 class="mtitle" id="helpTitle">Help</h2>
     <button type="button" class="mclose" id="manualClose">Close</button>
   </div>
-  <div class="mscroll" id="manualScroll" tabindex="0" role="region" aria-label="Manual"></div>
-</div>
+  <div class="mtabs" role="tablist" aria-label="Help sections">
+    <button type="button" role="tab" id="hTabM" aria-controls="paneM" aria-selected="true">Manuals</button>
+    <button type="button" role="tab" id="hTabW" aria-controls="paneW" aria-selected="false" tabindex="-1">Workflows</button>
+  </div>
+  <div class="mpane" id="paneM" role="tabpanel" aria-labelledby="hTabM">
+    <p class="mhint mpad">Tap a button to open its manual. Tap it again to close help.</p>
+    <div class="mbtns mpad" id="overlayBtns"></div>
+    <div class="mscroll" id="manualScroll" tabindex="0" role="region" aria-label="Manual"></div>
+  </div>
+  <div class="mpane" id="paneW" role="tabpanel" aria-labelledby="hTabW" hidden>
+    <div class="mscroll" id="wfBody" tabindex="0" role="region" aria-label="Workflows"></div>
+  </div>
+</aside>
 
 
 <script src="firebase-config.js"></script>

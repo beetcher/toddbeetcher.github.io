@@ -375,7 +375,7 @@
       d.querySelector(".tname").textContent = c.name; d.querySelector(".tdesc").textContent = c.blurb;
       tiles.appendChild(d);
     });
-    ["homeManualBtns", "overlayBtns"].forEach(function (host) {
+    ["overlayBtns"].forEach(function (host) {
       SURFACES.forEach(function (sf) {
         var b = document.createElement("button"); b.type = "button"; b.dataset.m = sf.id; b.setAttribute("aria-pressed", "false"); b.textContent = sf.short || sf.name;
         $(host).appendChild(b);
@@ -482,21 +482,40 @@
     viewObs.observe(document.body, { childList: true, subtree: true });
     viewOnlyPass();
   }
+  var WF_TAB = "_workflows";   // mOpen holds the open manual's id, or this when the drawer shows the workflows
   function markManual() {
-    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
+    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button[data-m]"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
+    var wf = mOpen === WF_TAB;
+    $("hTabM").setAttribute("aria-selected", wf ? "false" : "true"); $("hTabM").tabIndex = wf ? -1 : 0;
+    $("hTabW").setAttribute("aria-selected", wf ? "true" : "false"); $("hTabW").tabIndex = wf ? 0 : -1;
+    $("paneM").hidden = wf; $("paneW").hidden = !wf;
+    $("helpOpen").setAttribute("aria-expanded", mOpen ? "true" : "false");
   }
   function closeManual() {
     if (!mOpen) return;
-    mScroll[mOpen] = $("manualScroll").scrollTop;
+    mScroll[mOpen] = (mOpen === WF_TAB ? $("wfBody") : $("manualScroll")).scrollTop;
     mOpen = null; $("manual").hidden = true; document.body.classList.remove("mopen"); markManual();
     if (mOpener && document.body.contains(mOpener) && mOpener.offsetParent) { try { mOpener.focus(); } catch (e) {} }
     mOpener = null;
   }
-  function openManual(id, opener) {
+  function openHelp(tab, opener, keepScroll) {   // the drawer, on the Manuals tab (first manual, or the last one used) or the Workflows tab
+    if (tab === "workflows") {
+      if (mOpen === WF_TAB) return;
+      if (mOpen) mScroll[mOpen] = $("manualScroll").scrollTop; else mOpener = opener || null;
+      $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px");
+      mOpen = WF_TAB; $("manual").hidden = false; document.body.classList.add("mopen");
+      markManual(); if (!keepScroll) $("wfBody").scrollTop = mScroll[WF_TAB] || 0;
+      return;
+    }
+    openManual(lastManual || (SURFACES[0] && SURFACES[0].id), opener, true);
+  }
+  var lastManual = null;
+  function openManual(id, opener, noToggle) {
     if (!surfaceById(id)) return;
-    if (mOpen === id) { closeManual(); return; }
+    if (mOpen === id) { if (!noToggle) closeManual(); return; }
+    lastManual = id;
     var sc = $("manualScroll");
-    if (mOpen) mScroll[mOpen] = sc.scrollTop; else mOpener = opener || null;
+    if (mOpen) mScroll[mOpen] = (mOpen === WF_TAB ? $("wfBody") : sc).scrollTop; else mOpener = opener || null;
     $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px");
     mOpen = id;
     Object.keys(mPages).forEach(function (k) { mPages[k].hidden = k !== id; });
@@ -520,6 +539,7 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
+    $("helpOpen").hidden = locked;
     document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; UI.dismiss(); netOk(); }
     if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
@@ -4056,20 +4076,28 @@
     wf.steps.forEach(function (st) {
       var li = mk("li", "", st.t);
       var b = mk("button", "quiet wfgo", st.b); b.type = "button";
-      b.addEventListener("click", function () { var dl = $("wfDlg"); if (dl.open) dl.close(); goTo(st.go); });
+      b.addEventListener("click", function () { goTo(st.go); });
       li.appendChild(b); ol.appendChild(li);
     });
     det.appendChild(ol); host.appendChild(det);
   }
-  function openWorkflows(ids) {
+  function openWorkflows(ids) {   // ids[0] (if given) opens expanded; every workflow is listed
     var body = $("wfBody"); body.textContent = "";
-    $("wfTitle").textContent = "How to do this";
-    WORKFLOWS.forEach(function (wf) { if (!ids || ids.indexOf(wf.id) >= 0) wfCard(wf, body, ids && ids[0] === wf.id); });
-    if (!$("wfDlg").open) $("wfDlg").showModal();
+    var hint = mk("p", "mhint", "Step by step, with a button that jumps to the right station."); body.appendChild(hint);
+    WORKFLOWS.forEach(function (wf) { wfCard(wf, body, !!(ids && ids[0] === wf.id)); });
+    mScroll[WF_TAB] = 0; var was = mOpen === WF_TAB; if (was) body.scrollTop = 0;
+    openHelp("workflows", document.activeElement, false);
+    var first = body.querySelector("details[open] summary") || body.querySelector("summary"); if (first) { try { first.focus(); } catch (e) {} }
   }
-  function buildWorkflows() { var h = $("wfHomeList"); h.textContent = ""; WORKFLOWS.forEach(function (wf) { wfCard(wf, h, false); }); }
-  buildWorkflows();
-  $("wfClose").addEventListener("click", function () { $("wfDlg").close(); });
+  $("helpOpen").addEventListener("click", function () { if (mOpen) closeManual(); else openHelp("manuals", $("helpOpen")); });
+  $("hTabM").addEventListener("click", function () { openHelp("manuals", null, true); });
+  $("hTabW").addEventListener("click", function () { if (mOpen !== WF_TAB) openWorkflows(null); });
+  $("helpHomeM").addEventListener("click", function () { openHelp("manuals", $("helpHomeM")); });
+  $("helpHomeW").addEventListener("click", function () { openWorkflows(null); });
+  $("hTabM").parentNode.addEventListener("keydown", function (e) {   // arrow keys move between the two tabs
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault(); var toW = mOpen !== WF_TAB; if (toW) { openWorkflows(null); $("hTabW").focus(); } else { openHelp("manuals", null, true); $("hTabM").focus(); }
+  });
   $("reqInfo").addEventListener("click", function () { openWorkflows(["place_existing", "build_class", "class_cancelled", "setup"]); });
 
   function resetPlaced() {
