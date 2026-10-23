@@ -91,7 +91,7 @@ with sync_playwright() as p:
     check("Ann and Bob were emailed; Cy has no email and nothing went to anyone else", to == ["ann@example.com", "bob@example.com"], to)
     # a request where the requester is not attending
     n = len(sent)
-    c.select_option("#reqShow", "all") if c.locator("#reqShow option[value=all]").count() else None
+    c.click('#reqSeg [data-v="all"]') if c.locator('#reqSeg [data-v="all"]').count() else None
     li2 = open_put("Dora")
     said2 = li2.locator(".putbox .note", has_text="will be placed").first.inner_text()
     check("not attending: the requester is not in the list", "Dora" not in said2 and "Eve" in said2 and "(1)" in said2, said2)
@@ -100,7 +100,7 @@ with sync_playwright() as p:
     check("Eve was emailed, Dora was not", [m["to"] for m in sent][n:] == ["eve@example.com", "ina@example.com"], [m["to"] for m in sent][n:])
     # Delete on a request card: two presses, refused while people are placed, hidden once deleted
     c.select_option("#collPick", "requests"); c.wait_for_selector("#list li", state="attached")
-    c.select_option("#reqShow", "all") if c.locator("#reqShow option[value=all]").count() else None
+    c.click('#reqSeg [data-v="all"]') if c.locator('#reqSeg [data-v="all"]').count() else None
     def card(name):
         li = c.locator("#list li", has_text=name).first
         li.locator("button.head").click()

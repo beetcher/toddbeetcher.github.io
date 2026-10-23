@@ -546,7 +546,7 @@
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
   function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
-  var SELF_TITLED = { access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
+  var SELF_TITLED = { requests: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
   function stationHead(r) {
     var v = $((r === "requests" ? "list" : r) + "View"), sf = surfaceById(r);
     if (!v || !sf || SELF_TITLED[r] || v.querySelector(":scope > .stnh")) return;
@@ -3026,7 +3026,22 @@
     box.appendChild(n ? mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")) : mk("span", "qchip warn", "Open · not placed yet"));
   }
   // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
+  // The Show filter is a segmented control (a radio group). The hidden #reqShow select stays as the one place the choice is kept, so code elsewhere can set it and call applyReqFilter().
+  function buildReqSeg() {
+    var host = $("reqSeg"); host.textContent = "";
+    Array.prototype.forEach.call($("reqShow").options, function (o) {
+      var b = mk("button", "", o.textContent.replace(/ requests$/, "").replace(/^No active trainer$/, "No active trainer")); b.type = "button"; b.dataset.v = o.value;
+      b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false"); b.tabIndex = -1;
+      host.appendChild(b);
+    });
+  }
+  function syncReqSeg() {
+    var v = $("reqShow").value;
+    Array.prototype.forEach.call($("reqSeg").children, function (b) { var on = b.dataset.v === v; b.setAttribute("aria-checked", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
+  }
+  function pickReq(v, focus) { $("reqShow").value = v; applyReqFilter(); if (focus) { var t = $("reqSeg").querySelector('[data-v="' + v + '"]'); if (t) t.focus(); } }
   function applyReqFilter() {
+    syncReqSeg();
     var mode = $("reqShow").value, shown = 0, open = 0;
     Object.keys(rows).forEach(function (id) {
       var closed = P.loaded && !!P.ids[id];
@@ -3066,6 +3081,15 @@
     $("empty").hidden = shown > 0;
   }
   $("reqShow").addEventListener("change", applyReqFilter);
+  buildReqSeg(); syncReqSeg();
+  $("reqSeg").addEventListener("click", function (e) { var b = e.target.closest ? e.target.closest("button[data-v]") : null; if (b) pickReq(b.dataset.v, false); });
+  $("reqSeg").addEventListener("keydown", function (e) {   // radio-group keys: arrows move and choose, Home and End jump
+    var k = e.key, bs = Array.prototype.slice.call($("reqSeg").children), i = bs.indexOf(document.activeElement);
+    if (i < 0 || ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(k) < 0) return;
+    e.preventDefault();
+    var j = k === "Home" ? 0 : k === "End" ? bs.length - 1 : (i + (k === "ArrowRight" || k === "ArrowDown" ? 1 : -1) + bs.length) % bs.length;
+    pickReq(bs[j].dataset.v, true);
+  });
 
   // Home: the "Waiting to be placed" panel.
   function renderAttention() {
