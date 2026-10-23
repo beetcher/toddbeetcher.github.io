@@ -3097,7 +3097,7 @@
     $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")
       : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
       : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
-    $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer." : mode === "open" ? "No open requests. Every request is in a class." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
+    $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer. Nothing to do here." : mode === "open" ? "No open requests. Every request is in a class. New sign-ups from the website show up here by themselves." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
     $("empty").hidden = shown > 0;
   }
   $("reqShow").addEventListener("change", applyReqFilter);
