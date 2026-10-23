@@ -3006,7 +3006,7 @@
 
 
   // ======== Placed requests: a request is placed once attendance exists for it (old seat decisions are retired) ========
-  var P = { loaded: false, ids: {}, cls: {}, num: {}, reqs: [], error: "" };
+  var P = { loaded: false, ids: {}, cls: {}, num: {}, st: {}, reqs: [], error: "" };
   var qSeq = 0;
   var aClasses = [], aClassById = {};
   function personOf(it) { return [it.first_name, it.last_name].filter(Boolean).join(" ") || "(no name)"; }
@@ -3021,8 +3021,8 @@
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { P.error = adminProblem(res.status); P.loaded = P.loaded && true; }
       else {
-        P.error = ""; P.loaded = true; P.ids = {}; P.cls = {}; P.num = {};
-        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) { P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; P.cls[r.request_id] = (r["class"] && r["class"].title) || P.cls[r.request_id] || "a class"; } });
+        P.error = ""; P.loaded = true; P.ids = {}; P.cls = {}; P.num = {}; P.st = {};
+        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) { var rk = ATT_RANK[r.status] || 1; if (rk > (P.st[r.request_id] || 0)) P.st[r.request_id] = rk; P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; P.cls[r.request_id] = (r["class"] && r["class"].title) || P.cls[r.request_id] || "a class"; } });
       }
       if (both[1] && both[1].status === "ok") P.reqs = both[1].records || [];
       else if (firstLoadDone) P.reqs = Object.keys(known).map(function (id) { return known[id]; });
@@ -3044,6 +3044,13 @@
       : rec.coverage_waiting ? "Next: find a trainer for this ZIP, then Mark handled."
       : "Next: put this request in a class.";
     box.appendChild(mk("span", "qnext", next));
+    // Where the request is on its way: New, Placed, Confirmed, Attended (the furthest placement counts).
+    var at = n ? (P.st[rec.id] || 1) : 0, strip = mk("ol", "qstrip");
+    strip.setAttribute("aria-label", "Progress of this request");
+    ["New", "Placed", "Confirmed", "Attended"].forEach(function (w, i) {
+      var li2 = mk("li", i < at ? "done" : i === at ? "now" : "", w); if (i === at) li2.setAttribute("aria-current", "step"); strip.appendChild(li2);
+    });
+    box.appendChild(strip);
   }
   // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
   // The Show filter is a segmented control (a radio group). The hidden #reqShow select stays as the one place the choice is kept, so code elsewhere can set it and call applyReqFilter().
@@ -3154,6 +3161,7 @@
   var ROLE_WORD = { student: "Student", primary_instructor: "Lead instructor", instructor: "Instructor" };
   var ATT_STATUSES = ["assigned", "waitlisted", "confirmed", "attended", "late", "no_show", "declined", "withdrawn", "cancelled"];
   var ATT_WORD = { assigned: "Assigned", confirmed: "Confirmed", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
+  var ATT_RANK = { assigned: 1, waitlisted: 1, confirmed: 2, attended: 3, late: 3, no_show: 3 };   // how far a placement has come: placed, confirmed, then the class happened
   var ATT_GONE = { declined: 1, withdrawn: 1, cancelled: 1 };   // a request with only these is back to waiting
   var ATT_OPEN = { assigned: 1, waitlisted: 1, confirmed: 1 };   // a placement still open: ending it sends emails
   function leftOpen(from, to) { return !!ATT_OPEN[from] && !!ATT_GONE[to]; }
