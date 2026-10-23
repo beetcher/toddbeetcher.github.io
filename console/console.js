@@ -281,7 +281,7 @@
         '<h3>Mission</h3><p>One list of every message the system tried to send: receipts, placement confirmations and whatever comes next. Use it to check that a message went out, to see why one did not, and to leave a note so the next person does not repeat your investigation.</p>' +
         '<h3>Controls</h3><ul>' +
         '<li>The newest message is first. The coloured edge shows trouble: red means it needs attention, grey is skipped or already handled, green is sent.</li>' +
-        '<li><b>Filter chips</b> sit under the search box: <b>Status</b>, <b>Message</b>, <b>How it was sent</b> and <b>Only show</b>. Tap one and tick what you want to see. A dark chip means that filter is narrowing the list, and <b>Clear all</b> puts every chip back. They apply as you tick them. <b>Needs attention</b> shows failed and unknown messages and anything not sent that nobody has handled yet.</li>' +
+        '<li><b>Filter chips</b> sit under the search box. <b>Needs attention</b> is the first chip: it is a switch, not a menu. Press it to see only failed and unknown messages and anything not sent that nobody has handled yet; the number beside it is how many there are. The others, <b>Status</b>, <b>Message</b>, <b>How it was sent</b> and <b>Only show</b>, open a short list: tick what you want to see. A dark chip means that filter is narrowing the list, and <b>Clear all</b> puts every chip back. They apply as you tick them, and the line at the bottom of each list says how many messages are showing.</li>' +
         '<li><b>Search</b> looks at the address, subject, reason, notes and ids, across the whole log. The filter chips are ignored while you are searching.</li>' +
         '<li><b>Tap a message</b> for everything we recorded about it. The text of the message itself is never kept.</li>' +
         '<li><b>Add a note</b> saves a comment on that message. Notes can be added but never edited or removed; to correct one, add another.</li>' +
@@ -3918,7 +3918,7 @@
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
   // ---- Messages station: the whole message log (communication_logs), chip filters (UI.chipFilters, filters.js), notes (add only), copy
-  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {}, attn: false, cf: null };
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {}, cf: null };
   function mConf(e) { return MS.conf[e.id] || ""; }   // the request's confirmation number, worked out when the log loads
   var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
   var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
@@ -3932,6 +3932,7 @@
     MS.cf = UI.chipFilters({
       mount: $("mChips"), label: "Message filters",
       filters: [
+        { id: "attention", label: "Needs attention", kind: "toggle", noun: "messages", title: "Failed, unknown, or not sent and not yet handled" },
         { id: "status", label: "Status", kind: "multi", options: M_STATUS.map(function (s) { return { value: s, label: M_STATUS_WORD[s] }; }) },
         { id: "kind", label: "Message", kind: "multi", options: [] },
         { id: "how", label: "How it was sent", kind: "multi", options: [{ value: "automatic", label: "Automatic" }, { value: "manual", label: "By hand" }] },
@@ -3948,7 +3949,7 @@
   }
   function mSelected() {
     var g = mChips().getSelection(), set = function (a) { var o = {}; a.forEach(function (v) { o[v] = 1; }); return o; };
-    return { status: set(g.status), kind: set(g.kind), how: set(g.how), notes: g.only.indexOf("notes") >= 0, redir: g.only.indexOf("redir") >= 0 };
+    return { attn: g.attention.length > 0, status: set(g.status), kind: set(g.kind), how: set(g.how), notes: g.only.indexOf("notes") >= 0, redir: g.only.indexOf("redir") >= 0 };
   }
   function mText(e) {
     return [e.to, e.subject, e.kind, mKindWord(e.kind), e.status, M_STATUS_WORD[e.status], e.reason, mReasonWord(e.reason), e.error_code, e.message_ref, e.id, e.request_id,
@@ -3960,7 +3961,7 @@
       return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
     }
     if (!sel.status[e.status] || !sel.kind[e.kind] || !sel.how[e.trigger === "manual" ? "manual" : "automatic"]) return false;
-    if (MS.attn && !mNeedsAttention(e)) return false;
+    if (sel.attn && !mNeedsAttention(e)) return false;
     if (sel.notes && !(e.notes && e.notes.length)) return false;
     if (sel.redir && !e.is_redirected) return false;
     return true;
@@ -4098,7 +4099,8 @@
     var attn = MS.recs.filter(mNeedsAttention).length;
     $("mSummary").textContent = MS.recs.length ? M_STATUS.filter(function (s) { return n[s]; }).map(function (s) { return n[s] + " " + M_STATUS_WORD[s].toLowerCase(); }).join(" · ") + (attn ? " · " + attn + " need" + (attn === 1 ? "s" : "") + " attention" : " · nothing needs attention") : "";
     mChips().setNote(q ? "Searching the whole log for \u201c" + q + "\u201d: the filters are ignored." : "");
-    $("mAttnBtn").setAttribute("aria-pressed", MS.attn ? "true" : "false");
+    mChips().setBadge("attention", MS.loaded ? attn : "");
+    mChips().setResult(MS.loaded ? $("mCount").textContent : "");   // the same line as the head, repeated inside the popover so a tick can be watched while it covers the list
   }
   function loadMessagesStation() {
     var my = ++MS.seq;
@@ -4135,7 +4137,6 @@
   }
   $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });
   $("mSearch").addEventListener("input", function () { mRender(); });
-  $("mAttnBtn").addEventListener("click", function () { MS.attn = !MS.attn; mRender(); });
 
   // On a person's card: every class they are in, in any role.
   function personHistory(rec, host) {
