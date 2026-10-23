@@ -273,6 +273,7 @@
   .arow .asend { margin-top: var(--space-2); }
   .arow .atop { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
   .arow .aname { flex: 1 1 140px; font-weight: 600; }
+  #aList .aref { display: block; font-weight: 400; font-size: .85em; color: var(--muted); overflow-wrap: anywhere; }   /* the reference numbers go on their own line under the name (the Attendance station; the class dialog has its own rule) */
   .addbox { margin-top: var(--space-6); border: 1px solid var(--line); border-radius: 10px; padding: var(--space-4) var(--space-6); }
   .addbox summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
   .putbox { padding: 0 var(--space-7) var(--space-6); }

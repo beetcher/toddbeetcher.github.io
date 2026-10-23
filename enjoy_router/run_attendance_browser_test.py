@@ -290,6 +290,7 @@ with sync_playwright() as p:
     n_all = pg.locator("#aList li").count()
     check("Attendance station lists every record", n_all >= 4 and "Chuck Norris" in pg.locator("#aList").inner_text(), n_all)
     check("rows show reference numbers", "ICDT-A-" in pg.locator("#aList").inner_text())
+    check("the reference numbers sit on their own line, not run into the name", pg.evaluate("Array.from(document.querySelectorAll('#aList .aref')).length > 0 && Array.from(document.querySelectorAll('#aList .aref')).every(e => getComputedStyle(e).display === 'block')"))
     check("the page has one visible title, Attendance", pg.locator("#aTitle").is_visible() and pg.locator("#attendanceView h2:visible").count() == 1)
     check("the filters start closed, with Search and its button always in view", not pg.evaluate("document.getElementById('aFilters').open") and pg.locator("#aSearch").is_visible() and pg.locator("#aGo").is_visible())
     check("the first record is near the top, not pushed down by a filter panel", pg.evaluate("document.querySelector('#aList li').getBoundingClientRect().top") < 600, pg.evaluate("document.querySelector('#aList li').getBoundingClientRect().top"))
