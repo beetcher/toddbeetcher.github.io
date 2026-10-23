@@ -280,9 +280,9 @@
         '<div class="kicker">Station 11</div><h2>Messages</h2>' +
         '<h3>Mission</h3><p>One list of every message the system tried to send: receipts, placement confirmations and whatever comes next. Use it to check that a message went out, to see why one did not, and to leave a note so the next person does not repeat your investigation.</p>' +
         '<h3>Controls</h3><ul>' +
-        '<li>The newest message is first. The coloured edge shows trouble: red means it needs attention, orange is skipped, green is sent.</li>' +
-        '<li><b>Filters</b> are tick boxes for status, which message, and how it was sent. They apply as you tick them. <b>Needs attention</b> shows failed and unknown messages and anything not sent that nobody has handled yet.</li>' +
-        '<li><b>Search</b> looks at the address, subject, reason, notes and ids, across the whole log. The tick boxes are ignored while you are searching.</li>' +
+        '<li>The newest message is first. The coloured edge shows trouble: red means it needs attention, grey is skipped or already handled, green is sent.</li>' +
+        '<li><b>Filter chips</b> sit under the search box: <b>Status</b>, <b>Message</b>, <b>How it was sent</b> and <b>Only show</b>. Tap one and tick what you want to see. A dark chip means that filter is narrowing the list, and <b>Clear all</b> puts every chip back. They apply as you tick them. <b>Needs attention</b> shows failed and unknown messages and anything not sent that nobody has handled yet.</li>' +
+        '<li><b>Search</b> looks at the address, subject, reason, notes and ids, across the whole log. The filter chips are ignored while you are searching.</li>' +
         '<li><b>Tap a message</b> for everything we recorded about it. The text of the message itself is never kept.</li>' +
         '<li><b>Add a note</b> saves a comment on that message. Notes can be added but never edited or removed; to correct one, add another.</li>' +
         '<li><b>Mark handled</b> appears on a message that was not sent: say what you did, for example phoned her.</li>' +
@@ -3917,8 +3917,8 @@
   $("aGo").addEventListener("click", function () { loadAttendanceStation(); });
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
-  // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy
-  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {} };
+  // ---- Messages station: the whole message log (communication_logs), chip filters (UI.chipFilters, filters.js), notes (add only), copy
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {}, attn: false, cf: null };
   function mConf(e) { return MS.conf[e.id] || ""; }   // the request's confirmation number, worked out when the log loads
   var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
   var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
@@ -3926,27 +3926,29 @@
   function mReasonWord(r) { return REASON_WORD[r] || String(r || "").replace(/_/g, " "); }
   function mNeedsAttention(e) { return e.status === "failed" || e.status === "unknown" || (e.status === "not_sent" && !e.handled_at); }
   function mWhen(e) { return e.created_at ? fmtTime.format(new Date(e.created_at)) : ""; }
-  function mBoxes() { return document.querySelectorAll("#mFilters input[type=checkbox]"); }
-  function mBuildBoxes() {
-    var host = $("mStatusBoxes");
-    if (!host.firstChild) M_STATUS.forEach(function (s) {
-      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
-      l.appendChild(c); l.appendChild(document.createTextNode(" " + M_STATUS_WORD[s])); var n = mk("span", "segn"); n.setAttribute("data-n", s); l.appendChild(n); host.appendChild(l);
+  // The filter chips: one shared control (filters.js). The page only says which filters it has and what to do when the person changes one.
+  function mChips() {
+    if (MS.cf) return MS.cf;
+    MS.cf = UI.chipFilters({
+      mount: $("mChips"), label: "Message filters",
+      filters: [
+        { id: "status", label: "Status", kind: "multi", options: M_STATUS.map(function (s) { return { value: s, label: M_STATUS_WORD[s] }; }) },
+        { id: "kind", label: "Message", kind: "multi", options: [] },
+        { id: "how", label: "How it was sent", kind: "multi", options: [{ value: "automatic", label: "Automatic" }, { value: "manual", label: "By hand" }] },
+        { id: "only", label: "Only show", kind: "multi", start: "none", options: [{ value: "notes", label: "Has notes" }, { value: "redir", label: "Went to a test address" }] }
+      ],
+      onChange: function () { mRender(); }
     });
-    // The kinds come from the log itself, so a new kind of message appears here without changing this page. A kind the user has unticked stays unticked.
-    var kh = $("mKindBoxes"), off = {};
-    Array.prototype.forEach.call(kh.querySelectorAll("input"), function (c) { if (!c.checked) off[c.value] = 1; });
+    return MS.cf;
+  }
+  function mBuildChips() {
+    // The kinds come from the log itself, so a new kind of message appears here without changing this page. A kind the person has unticked stays unticked.
     var kinds = {}; MS.recs.forEach(function (e) { if (e.kind) kinds[e.kind] = 1; });
-    kh.textContent = "";
-    Object.keys(kinds).sort().forEach(function (k) {
-      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = !off[k]; c.value = k; c.setAttribute("data-f", "kind");
-      l.appendChild(c); l.appendChild(document.createTextNode(" " + mKindWord(k))); kh.appendChild(l);
-    });
+    mChips().setOptions("kind", Object.keys(kinds).sort().map(function (k) { return { value: k, label: mKindWord(k) }; }));
   }
   function mSelected() {
-    var o = { status: {}, kind: {}, how: {} };
-    Array.prototype.forEach.call(mBoxes(), function (c) { var f = c.getAttribute("data-f"); if (f && c.checked) o[f][c.value] = 1; });
-    return o;
+    var g = mChips().getSelection(), set = function (a) { var o = {}; a.forEach(function (v) { o[v] = 1; }); return o; };
+    return { status: set(g.status), kind: set(g.kind), how: set(g.how), notes: g.only.indexOf("notes") >= 0, redir: g.only.indexOf("redir") >= 0 };
   }
   function mText(e) {
     return [e.to, e.subject, e.kind, mKindWord(e.kind), e.status, M_STATUS_WORD[e.status], e.reason, mReasonWord(e.reason), e.error_code, e.message_ref, e.id, e.request_id,
@@ -3958,9 +3960,9 @@
       return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
     }
     if (!sel.status[e.status] || !sel.kind[e.kind] || !sel.how[e.trigger === "manual" ? "manual" : "automatic"]) return false;
-    if ($("mAttn").checked && !mNeedsAttention(e)) return false;
-    if ($("mNotes").checked && !(e.notes && e.notes.length)) return false;
-    if ($("mRedir").checked && !e.is_redirected) return false;
+    if (MS.attn && !mNeedsAttention(e)) return false;
+    if (sel.notes && !(e.notes && e.notes.length)) return false;
+    if (sel.redir && !e.is_redirected) return false;
     return true;
   }
   // Names for the ids in a log entry, worked out when the log loads (the log itself keeps ids, never names).
@@ -4091,19 +4093,17 @@
     $("mCount").textContent = shown.length + (shown.length === 1 ? " message" : " messages") + (shown.length !== MS.recs.length ? " of " + MS.recs.length : "");
     $("mEmpty").hidden = shown.length > 0 || !MS.loaded;
     var n = {}; MS.recs.forEach(function (e) { n[e.status] = (n[e.status] || 0) + 1; });
-    Array.prototype.forEach.call(document.querySelectorAll("#mStatusBoxes .segn"), function (x) { x.textContent = MS.loaded ? String(n[x.getAttribute("data-n")] || 0) : ""; });
+    var cnt = {}; M_STATUS.forEach(function (s) { cnt[s] = n[s] || 0; });
+    mChips().setCounts(MS.loaded ? { status: cnt } : {});
     var attn = MS.recs.filter(mNeedsAttention).length;
     $("mSummary").textContent = MS.recs.length ? M_STATUS.filter(function (s) { return n[s]; }).map(function (s) { return n[s] + " " + M_STATUS_WORD[s].toLowerCase(); }).join(" · ") + (attn ? " · " + attn + " need" + (attn === 1 ? "s" : "") + " attention" : " · nothing needs attention") : "";
-    var all = true; Array.prototype.forEach.call(mBoxes(), function (c) { if (c.getAttribute("data-f") && !c.checked) all = false; });
-    var some = !all || q || $("mAttn").checked || $("mNotes").checked || $("mRedir").checked;
-    $("mFilterSummary").textContent = some ? (q ? "Searching the whole log for “" + q + "” (tick boxes ignored)" : "Filters: some messages are hidden") : "Filters: all messages shown";
-    $("mFilterSummary").className = some ? "some" : "";
-    $("mAttnBtn").setAttribute("aria-pressed", $("mAttn").checked ? "true" : "false");
+    mChips().setNote(q ? "Searching the whole log for \u201c" + q + "\u201d: the filters are ignored." : "");
+    $("mAttnBtn").setAttribute("aria-pressed", MS.attn ? "true" : "false");
   }
   function loadMessagesStation() {
     var my = ++MS.seq;
     $("mMsg").textContent = "";
-    mBuildBoxes();
+    mBuildChips();
     Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
                  (Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; })), admin("list", { limit: 200, order: "-created_at", expand: true }, "attendances"), admin("list", { limit: 200 }, "individuals")]).then(function (both) {
       if (my !== MS.seq || !key) return;
@@ -4122,7 +4122,7 @@
       if (res.status !== 200 || !res.body || !res.body.ok) { $("mMsg").textContent = "Could not load the messages. " + adminProblem(res.status); return; }
       MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;
       $("mChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
-      mBuildBoxes(); mRender();
+      mBuildChips(); mRender();
       // A student who left (or was removed) is no longer in the live list, so ask for those placements by id and fill in the names.
       var gone = []; MS.recs.forEach(function (e) { if (e.attendance_id && !MS.att[e.attendance_id] && gone.indexOf(e.attendance_id) < 0 && gone.length < 60) gone.push(e.attendance_id); });
       if (!gone.length) return;
@@ -4134,13 +4134,8 @@
     });
   }
   $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });
-  $("mFilters").addEventListener("change", function () { mRender(); });
   $("mSearch").addEventListener("input", function () { mRender(); });
-  $("mAttnBtn").addEventListener("click", function () { $("mAttn").checked = !$("mAttn").checked; mRender(); });   // the quick toggle and the box inside Filters are one setting
-  $("mShowAll").addEventListener("click", function () {
-    Array.prototype.forEach.call(mBoxes(), function (c) { c.checked = !(c.id === "mAttn" || c.id === "mNotes" || c.id === "mRedir"); });
-    $("mSearch").value = ""; mRender();
-  });
+  $("mAttnBtn").addEventListener("click", function () { MS.attn = !MS.attn; mRender(); });
 
   // On a person's card: every class they are in, in any role.
   function personHistory(rec, host) {

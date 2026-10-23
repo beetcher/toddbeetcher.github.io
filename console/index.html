@@ -393,25 +393,9 @@
     <div class="msumm" id="mSummary" role="status"></div>
     <div class="mquick">
       <input type="search" id="mSearch" maxlength="100" placeholder="Search: email address, subject, reason, note or id" aria-label="Search messages" autocomplete="off">
-      <button type="button" class="tog" id="mAttnBtn" aria-pressed="false">Needs attention</button>
+      <button type="button" class="tog" id="mAttnBtn" aria-pressed="false" title="Failed, unknown, or not sent and not yet handled">Needs attention</button>
     </div>
-    <details class="more filters" id="mFilters">
-      <summary id="mFilterSummary">Filters: all messages shown</summary>
-      <div class="mbody">
-        <fieldset class="fs"><legend>Status</legend><div id="mStatusBoxes"></div></fieldset>
-        <fieldset class="fs"><legend>Message</legend><div id="mKindBoxes"></div></fieldset>
-        <fieldset class="fs"><legend>How it was sent</legend>
-          <label class="chk"><input type="checkbox" data-f="how" value="automatic" checked> Automatic</label>
-          <label class="chk"><input type="checkbox" data-f="how" value="manual" checked> By hand</label>
-        </fieldset>
-        <fieldset class="fs"><legend>Only show</legend>
-          <label class="chk"><input type="checkbox" id="mAttn"> Needs attention (failed, unknown, or not sent and not yet handled)</label>
-          <label class="chk"><input type="checkbox" id="mNotes"> Has notes</label>
-          <label class="chk"><input type="checkbox" id="mRedir"> Went to a test address</label>
-        </fieldset>
-        <div class="btns"><button type="button" class="btn-link" id="mShowAll">Show all</button></div>
-      </div>
-    </details>
+    <div id="mChips"></div>
     <div class="notice" id="mNotice" role="status"></div>
     <div class="msg" id="mMsg" role="alert"></div>
     <ul id="mList"></ul>
