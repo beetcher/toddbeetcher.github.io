@@ -245,7 +245,7 @@ with sync_playwright() as p:
     check("class Journal shows who was placed", "Dana Fox" in jt and "Placed in a class" in jt, jt)
     pg.click("#jrClose")
     pg.select_option("#collPick", "requests"); pg.wait_for_selector("#list li", state="attached"); pg.click('#reqSeg [data-v="all"]')
-    pg.locator("#list li", has_text="Chuck Norris").get_by_role("button", name="Journal").click()
+    pg.locator("#list li", has_text="Chuck Norris").get_by_role("button", name="History").click()
     pg.wait_for_function("document.getElementById('jrBody').innerText.indexOf('Placed in a class') >= 0")
     check("request Journal opens", True); pg.click("#jrClose")
     pg.click("#reqInfo"); pg.wait_for_selector("#manual:not([hidden]) #wfBody")

@@ -704,13 +704,10 @@
     var ob = document.createElement("button"); ob.type = "button"; ob.className = "btn-primary"; ob.textContent = "Open class"; ob.hidden = true;
     ob.addEventListener("click", function () { location.hash = "#/classes"; });
     putrow.appendChild(ob); putrow.appendChild(pb); li._pb = pb; li._ob = ob;
-    var hq = historyBtn(rec.id, "this request"); if (hq) { hq.className = "btn-link"; putrow.appendChild(hq); }
-    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "Journal";
-    jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
+    // One History link: the journal of what happened to this request; people allowed to see it also get a link inside to every recorded change.
+    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "History"; jb.setAttribute("aria-label", "History of this request");
+    jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "History: " + personOf(rec), { id: rec.id, label: "this request" }); });
     putrow.appendChild(jb);
-    var ib = document.createElement("button"); ib.type = "button"; ib.className = "btn-link infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
-    ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
-    putrow.appendChild(ib);
     // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
     var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
     if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
@@ -4071,7 +4068,7 @@
 
   // ---- Journal: the append-only log of placing, status changes and cancellations
   var JR_WORD = { placed: "Placed in a class", status_changed: "Status changed", removed: "Removed from a class", class_cancelled: "Class cancelled", class_removed: "Class deleted", request_unassigned: "Request back to waiting to be placed" };
-  function openJournal(filter, title) {
+  function openJournal(filter, title, hist) {
     var dlg = $("jrDlg"), body = $("jrBody"), msg = $("jrMsg");
     $("jrTitle").textContent = title || "Journal"; msg.textContent = ""; body.textContent = "Loading…";
     if (!dlg.open) dlg.showModal();
@@ -4079,6 +4076,8 @@
       body.textContent = "";
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { msg.textContent = "Could not load the journal. " + adminProblem(res.status); return; }
+      var hb = hist && historyBtn(hist.id, hist.label);
+      if (hb) { hb.className = "btn-link"; hb.textContent = "See every recorded change"; hb.addEventListener("click", function () { dlg.close(); }); body.appendChild(hb); }
       var recs = res.body.data.records || [];
       if (!recs.length) { body.appendChild(mk("div", "empty", "Nothing has happened here yet.")); return; }
       recs.forEach(function (e) {
