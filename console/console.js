@@ -4035,7 +4035,9 @@
       l1.appendChild(mConf(e) ? mk("span", "mconf", mConf(e)) : mk("span", "mconf none", "—"));
       head.appendChild(l1);
       var why = e.status === "sent" ? "" : (e.status === "failed" || e.status === "unknown" ? M_STATUS_WORD[e.status] + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : mReasonWord(e.reason));
+      var nx = !mNeedsAttention(e) ? "" : e.status === "failed" ? "Next: check the address, send it again if needed, and add a note." : e.status === "unknown" ? "Next: find out if it arrived, then add a note." : "Next: reach them another way, then mark it as dealt with.";
       head.appendChild(mk("div", "mline2", [e.to ? "To " + e.to : "", e.subject || "", why].filter(Boolean).join(" · ")));
+      if (nx) head.appendChild(mk("div", "mnext", nx));
       head.addEventListener("click", function () {
         MS.open[e.id] = !MS.open[e.id]; mRender();
         var again = $("mList").querySelector('[data-log="' + e.id + '"] .mhead'); if (again) again.focus();

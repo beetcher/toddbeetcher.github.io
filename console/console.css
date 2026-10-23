@@ -383,15 +383,18 @@
   .mrec { list-style: none; border: 1px solid var(--line); border-left-width: 6px; border-radius: 12px; margin: 0 0 var(--space-5); padding: 0; background: var(--card); }
   .mrec.bad { border-left-color: var(--err); }
   .mrec.ok { border-left-color: var(--ok); }
-  .mrec.mid { border-left-color: var(--orange); }
+  .mrec.mid { border-left-color: var(--line-strong); background: var(--tone-done-bg); }
+  .mrec.ok { background: var(--tone-ok-bg); }
+  .mrec .mnext { margin-top: var(--space-2); color: var(--ink-soft); font-size: var(--text-m); font-weight: 600; }
   .mrec .mhead { all: unset; box-sizing: border-box; display: block; width: 100%; padding: var(--space-5) var(--space-7); cursor: pointer; min-height: 44px; }
   .mrec .mhead:focus-visible { outline: 3px solid var(--orange); }
   .mrec .mline1 { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); align-items: baseline; font-weight: 700; }
   .mrec .mline2 { color: var(--muted); font-size: var(--text-m); margin-top: var(--space-1); word-break: break-word; }
-  .mchip { font-size: var(--text-s); font-weight: 800; border-radius: 999px; padding: 1px var(--space-5); border: 1px solid var(--line); }
-  .mchip.sent { color: var(--ok-ink); border-color: var(--ok); }
-  .mchip.failed, .mchip.unknown, .mchip.not_sent { color: var(--err); border-color: var(--err); }
-  .mchip.skipped { color: var(--muted); }
+  /* flat tinted chips: green sent, red only for a problem, grey skipped */
+  .mchip { font-size: var(--text-s); font-weight: 800; border-radius: 999px; padding: 1px var(--space-5); border: 0; background: var(--line); color: var(--ink-soft); }
+  .mchip.sent { background: var(--new); color: var(--ok-ink); }
+  .mchip.failed, .mchip.unknown, .mchip.not_sent { background: var(--err-bg); color: var(--err); }
+  .mchip.skipped { background: var(--line); color: var(--ink-soft); }
   .mconf { margin-left: auto; font-size: var(--text-s); font-weight: 800; letter-spacing: .04em; color: var(--ink-soft); background: rgba(0,0,0,.06); border-radius: 6px; padding: 1px var(--space-4); white-space: nowrap; }
   .mconf.none { font-weight: 600; color: var(--muted); background: transparent; }
   .mtag { font-size: var(--text-s); color: var(--warn-ink); font-weight: 700; }
