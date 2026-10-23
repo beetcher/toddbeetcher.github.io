@@ -363,7 +363,7 @@
     var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
     var tiles = $("stationTiles");
     SURFACES.forEach(function (sf, i) {
-      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "#c00000"; op.className = "adminstn"; } pick.appendChild(op);
+      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "var(--err)"; op.className = "adminstn"; } pick.appendChild(op);
       var t = document.createElement("button"); t.type = "button"; t.className = "tile" + (sf.admin ? " adm" : ""); t.dataset.go = sf.id;
       t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
       t.querySelector(".tname").textContent = sf.name; if (sf.admin) t.querySelector(".tno").textContent += " · admin"; t.querySelector(".tdesc").textContent = sf.blurb;
@@ -3216,7 +3216,7 @@
     var clsSel = null, bx = null;
     if (!opts.cls) {
       clsSel = mk("select"); opt(clsSel, "", "Choose a class");
-      if (opts.canBuild) { opt(clsSel, BUILD, "+ A new class (build it now)"); var nb = clsSel.lastChild; nb.style.color = "#17692f"; nb.style.fontWeight = "700"; }
+      if (opts.canBuild) { opt(clsSel, BUILD, "+ A new class (build it now)"); var nb = clsSel.lastChild; nb.style.color = "var(--ok)"; nb.style.fontWeight = "700"; }
       (opts.classes || []).slice().sort(function (a, b) { return (a.starts_at || "9") < (b.starts_at || "9") ? -1 : 1; }).forEach(function (c) { opt(clsSel, c.id, (c.title || "(no title)") + " · " + classWhen(c) + " (" + c.status + ")"); });
       field("Class", clsSel, "cls");
       if (opts.canBuild) {
