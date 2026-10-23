@@ -217,10 +217,10 @@ with sync_playwright() as p:
         vid = "list" if sid == "requests" else sid; view = pg.locator("#%sView" % vid)
         n_sr = view.locator(":scope > .stnh").count()
         n_visible_h2 = pg.evaluate("Array.from(document.querySelectorAll('#%sView h2')).filter(h => h.offsetParent !== null || h.classList.contains('stnh')).length" % vid)
-        if sid in ("requests", "messages", "access", "activity", "performance"):
+        if sid in ("requests", "messages", "attendance", "access", "activity", "performance"):
             if n_sr != 0 or n_visible_h2 < 1: bad.append((sid, "self-titled", n_sr, n_visible_h2))
         elif n_sr != 1: bad.append((sid, "needs one", n_sr))
-    check("every station has exactly one title heading (the five that draw their own keep theirs)", not bad, bad)
+    check("every station has exactly one title heading (the six that draw their own keep theirs)", not bad, bad)
     check("the heading carries the station's name", pg.evaluate("document.querySelector('#venuesView > .stnh').textContent") == "Venues" and pg.evaluate("document.getElementById('reqTitle').textContent") == "Registration requests")
     check("the three dialog bodies and the manual are keyboard-reachable, named regions", all(pg.evaluate("(function(){var e=document.getElementById('%s'); return e.getAttribute('tabindex')==='0' && e.getAttribute('role')==='region' && (e.getAttribute('aria-labelledby')||e.getAttribute('aria-label'))})()" % i) for i in ("atBody", "jrBody", "wfBody", "manualScroll")))
 

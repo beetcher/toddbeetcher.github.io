@@ -546,7 +546,7 @@
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
   function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
-  var SELF_TITLED = { requests: 1, messages: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
+  var SELF_TITLED = { requests: 1, messages: 1, attendance: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
   function stationHead(r) {
     var v = $((r === "requests" ? "list" : r) + "View"), sf = surfaceById(r);
     if (!v || !sf || SELF_TITLED[r] || v.querySelector(":scope > .stnh")) return;
@@ -3777,6 +3777,7 @@
   $("aRefresh").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
   $("aApply").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
   $("aShowAll").addEventListener("click", function () { Array.prototype.forEach.call(asBoxes(), function (c) { c.checked = true; }); $("aSearch").value = ""; loadAttendanceStation(); });
+  $("aGo").addEventListener("click", function () { loadAttendanceStation(); });
   $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
 
   // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy

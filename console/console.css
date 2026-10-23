@@ -137,6 +137,8 @@
   .seg button:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
   @media (max-width: 520px) { .seg { display: flex; } .seg button { flex: 1 1 45%; justify-content: center; padding: 0 var(--space-4); border-bottom: 1px solid var(--line); } }
   @media (min-width: 1180px) {
+    body.withnav #aList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    body.withnav #aList > li.open { grid-column: 1 / -1; }
     body.withnav #list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
     body.withnav #list > li.open { grid-column: 1 / -1; }
   }
