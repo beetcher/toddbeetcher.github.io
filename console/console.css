@@ -168,7 +168,7 @@
   .seg button:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
   @media (max-width: 520px) { .seg { display: flex; } .seg button { flex: 1 1 45%; justify-content: center; padding: 0 var(--space-4); border-bottom: 1px solid var(--line); } }
   @media (min-width: 1180px) {
-    body.withnav #aList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    body.withnav #aList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
     body.withnav #aList > li.open { grid-column: 1 / -1; }
     body.withnav #list { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
     body.withnav #list > li.open { grid-column: 1 / -1; }
@@ -489,6 +489,16 @@
   #list > li[data-tone="wait"] { border-left: 4px solid var(--tone-wait-edge); background: var(--tone-wait-bg); }
   #list > li[data-tone="ok"] { border-left: 4px solid var(--ok); background: var(--tone-ok-bg); }
   #list > li[data-tone="done"] { border-left: 4px solid var(--line-strong); background: var(--tone-done-bg); }
+  /* Attendance cards use the same tone, chip and "Next" line as Requests; the quiet buttons sit at the bottom of every card so heights stay steady. */
+  #aList > li { box-shadow: 0 1px 2px rgba(28,26,23,.06), 0 4px 14px rgba(28,26,23,.06); display: flex; flex-direction: column; }
+  #aList > li[data-tone="wait"] { border-left: 4px solid var(--tone-wait-edge); background: var(--tone-wait-bg); }
+  #aList > li[data-tone="ok"] { border-left: 4px solid var(--ok); background: var(--tone-ok-bg); }
+  #aList > li[data-tone="done"] { border-left: 4px solid var(--line-strong); background: var(--tone-done-bg); }
+  #aList > li .lchips .btn-link { flex: 1 1 100%; justify-content: flex-start; text-align: left; height: auto; }
+  #aList > li .qnext { color: var(--ink-soft); font-size: var(--text-m); font-weight: 600; }
+  #aList > li .qhold { flex: 1 1 auto; display: flex; flex-direction: column; }
+  #aList > li .qhold .arow { flex: 1 1 auto; display: flex; flex-direction: column; }
+  #aList > li .qhold .arow .asend { margin-top: auto; align-self: flex-start; }
   .dsum { margin-bottom: var(--space-5); }
   .dsum div { padding: var(--space-1) 0; }
   details.rawd { border-top: 1px solid var(--line); padding-top: var(--space-4); }

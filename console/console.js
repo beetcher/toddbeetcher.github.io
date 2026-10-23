@@ -3219,6 +3219,18 @@
       return p.field + ": " + (PISSUE[p.issue] || p.issue);
     }).join(" ");
   }
+  // The card's tone, chip words and "Next" line, by status (the cue rules in console/DESIGN-RULES.md)
+  var ATT_TONE = {
+    assigned: { tone: "wait", next: "Next: wait for them to confirm." },
+    waitlisted: { tone: "wait", next: "Next: they stay waiting until a seat opens." },
+    confirmed: { tone: "ok", next: "Next: take attendance on class day." },
+    attended: { tone: "ok", next: "Done: they came to class." },
+    late: { tone: "ok", next: "Done: they came late." },
+    no_show: { tone: "done", next: "Closed: they did not show." },
+    declined: { tone: "done", next: "Closed: they declined." },
+    withdrawn: { tone: "done", next: "Closed: they withdrew." },
+    cancelled: { tone: "done", next: "Closed: this was cancelled." }
+  };
   function attName(r) { return (r.person && r.person.display_name) || "(person not found)"; }
 
   // People that fit what was typed. Every word must appear somewhere in the name, email or phone (any order), so "Todd Beecher" finds a Todd Beecher.
@@ -3813,8 +3825,12 @@
       cl.type = "button";
       cl.addEventListener("click", function () { var c = aClassById[r.scheduled_class_id]; if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
       top.appendChild(cl); top.appendChild(mk("span", "", ROLE_WORD[r.role] || r.role));
+      var tn = ATT_TONE[r.status] || ATT_TONE.assigned;
+      top.appendChild(mk("span", "qchip" + (tn.tone === "wait" ? " warn" : tn.tone === "ok" ? " ok" : ""), ATT_WORD[r.status] || r.status));
+      li.setAttribute("data-tone", tn.tone);
       li.appendChild(top);
-      var holder = mk("div", ""); holder.style.padding = "0 14px 8px";
+      var nx = mk("div", "qnext", tn.next); nx.style.padding = "0 var(--space-7) var(--space-2)"; li.appendChild(nx);
+      var holder = mk("div", "qhold"); holder.style.padding = "0 14px 8px";
       holder.appendChild(attRow(r, function (m) { $("aNotice").textContent = m; }, loadAttendanceStation));
       li.appendChild(holder);
       list.appendChild(li);
