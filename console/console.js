@@ -3067,10 +3067,11 @@
     if (rli) rli.setAttribute("data-tone", n ? "ok" : rec.coverage_waiting ? "wait" : rec.coverage_handled_at ? "done" : "none");   // a quiet edge and tint; the chip carries the words   // the card: once placed, "Open class" is the main button and "Put in a class" steps back
     if (rli && rli._pb) { rli._ob.hidden = !n; rli._pb.className = n ? "btn-secondary" : "btn-primary"; }
     if (n) box.appendChild(mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")));
-    else if (!rec.coverage_waiting) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a request with no trainer already shows its own chip above
+    else if (!rec.coverage_waiting && !rec.coverage_handled_at) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a handled request already shows "Handled: …" above, so no second status chip   // a request with no trainer already shows its own chip above
     // One plain line saying what to do next, from fields the card already has.
     var next = n ? "Next: nothing. Open the class to see attendance."
       : rec.coverage_waiting ? "Next: find a trainer for this ZIP, then Mark handled."
+      : rec.coverage_handled_at ? "Next: put this request in a class when a trainer is found."
       : "Next: put this request in a class.";
     box.appendChild(mk("span", "qnext", next));
     // Where the request is on its way: New, Placed, Confirmed, Attended (the furthest placement counts).

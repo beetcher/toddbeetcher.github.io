@@ -177,6 +177,8 @@ with sync_playwright() as p:
     check("The banner drops to 1 and the handled one leaves the filter", banner(pg).startswith("1 request is waiting") and pg.locator("#list li:visible").count() == 1, (banner(pg), pg.locator("#list li:visible").count()))
     pg.click('#reqSeg [data-v="all"]'); pg.wait_for_timeout(200)
     check("The handled request shows a Handled chip, not the red one", pg.locator("#list .donechip").count() == 1 and pg.locator("#list .nochip").count() == 1)
+    hli = pg.locator("#list li", has=pg.locator(".donechip")); ht = hli.inner_text()
+    check("The handled card has one status chip (Handled), no second 'Open' chip, and a Next line that fits", "Open \u00b7 not placed yet" not in ht and "when a trainer is found" in ht and hli.get_attribute("data-tone") == "done", ht)
     pg.screenshot(path=str(SHOTS / "coverage_after.png"))
     pg.click('#reqSeg [data-v="open"]'); pg.wait_for_timeout(200)
     pg.locator("#covBanner button", has_text="Send reminders now").click(); pg.wait_for_timeout(1200)
