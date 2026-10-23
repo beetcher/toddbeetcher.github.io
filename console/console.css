@@ -289,9 +289,14 @@
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .atband { margin: var(--space-4) 0 var(--space-6); padding: var(--space-5) var(--space-6); border-radius: 12px; border: 1px solid transparent; }
   .atband .bandname { font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 var(--space-3); }
-  .atband.show { background: var(--info-bg); border-color: var(--info-edge); font-size: 0.72em; }
-  .atband.inst { background: var(--ok-bg); border-color: var(--ok-edge); font-size: 0.72em; }
-  .atband.stu { background: var(--warn-bg); border-color: var(--warn-edge); border-width: 2px; }
+  /* Bands are neutral: colour in the dialog means a person's status (tone edge and chip on each row), never the band. */
+  .atband.show, .atband.inst, .atband.stu { background: var(--card); border-color: var(--line-strong); }
+  .atband.show, .atband.inst { font-size: 0.72em; }
+  .atband .arow[data-tone] { padding-left: var(--space-5); border-left: 4px solid var(--line-strong); margin-bottom: var(--space-3); border-radius: 6px; }
+  .atband .arow[data-tone="wait"] { border-left-color: var(--tone-wait-edge); background: var(--tone-wait-bg); }
+  .atband .arow[data-tone="ok"] { border-left-color: var(--ok); background: var(--tone-ok-bg); }
+  .atband .arow[data-tone="done"] { background: var(--tone-done-bg); }
+  .atband .qchip { margin-left: var(--space-4); font-size: var(--text-s); }
   .atband.stu .bandname { font-size: 1.05em; }
   .atband.show select, .atband.inst select, .atband.inst button { min-height: 36px; padding: var(--space-2) var(--space-4); }
   .atband .arow { border-bottom-color: rgba(0,0,0,.12); }

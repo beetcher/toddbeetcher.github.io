@@ -3747,6 +3747,14 @@
     return row;
   }
 
+  // In the class dialog a row carries the same tone edge and chip words as the station cards.
+  function attRowDlg(r, say, redraw) {
+    var row = attRow(r, say, redraw), tn = ATT_TONE[r.status] || ATT_TONE.assigned;
+    row.setAttribute("data-tone", tn.tone);
+    var nm = row.querySelector(".aname");
+    if (nm) nm.insertBefore(mk("span", "qchip" + (tn.tone === "wait" ? " warn" : tn.tone === "ok" ? " ok" : ""), ATT_WORD[r.status] || r.status), nm.querySelector(".aref"));
+    return row;
+  }
   function openAttendance(cls) {
     var dlg = $("atDlg"), body = $("atBody"), msg = $("atMsg");
     $("atTitle").textContent = "Attendance: " + (cls.title || "class");
@@ -3776,10 +3784,10 @@
         });
         var stu = recs.filter(function (r) { return r.role === "student"; });
         bInst.appendChild(mk("div", "bandname", "Instructors (" + inst.length + ")"));
-        inst.forEach(function (r) { bInst.appendChild(attRow(r, say, draw)); });
+        inst.forEach(function (r) { bInst.appendChild(attRowDlg(r, say, draw)); });
         if (!inst.length) bInst.appendChild(mk("div", "empty", "No instructor yet."));
         bStu.appendChild(mk("div", "bandname", "Students (" + stu.length + ")"));
-        stu.forEach(function (r) { bStu.appendChild(attRow(r, say, draw)); });
+        stu.forEach(function (r) { bStu.appendChild(attRowDlg(r, say, draw)); });
         if (!stu.length) bStu.appendChild(mk("div", "empty", "No students yet."));
         var seats = stu.filter(function (r) { return !ATT_OFF[r.status]; }).length, wait = stu.filter(function (r) { return r.status === "waitlisted"; }).length;
         bStu.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
