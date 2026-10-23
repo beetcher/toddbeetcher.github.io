@@ -682,7 +682,7 @@
   .cf-pop { position: absolute; z-index: 40; top: calc(100% + var(--space-3)); left: 0; box-sizing: border-box; min-width: 250px; max-width: min(360px, calc(100vw - 32px)); padding: var(--space-4); background: var(--card); color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.18); outline: none; }
   .cf-pop[hidden] { display: none; }
   .cf-search { width: 100%; box-sizing: border-box; min-height: 40px; margin: 0 0 var(--space-3); }
-  .cf-list { max-height: 280px; overflow-y: auto; padding: var(--space-2) 0; }
+  .cf-list { max-height: 300px; overflow-y: auto; padding: var(--space-2) 0; }   /* 7 and a half rows: a half row always peeks out, so a cut-off list never looks complete */
   label.cf-opt { display: flex; align-items: center; gap: var(--space-5); min-height: 40px; padding: 0 var(--space-4); border-radius: 8px; cursor: pointer; }
   label.cf-opt[hidden] { display: none; }
   label.cf-opt:hover { background: var(--paper); }
