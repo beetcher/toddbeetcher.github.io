@@ -22,5 +22,14 @@ Classes live in `console/console.css`, just under the base `button` rules. Add t
 - Heights: 40 px; 44 px at 520 px wide and under. Focus ring: 3 px ink outline.
 - A card says what is next in one plain line (`.qnext`), for example "Next: put this request in a class."
 - Old `quiet` and `danger` classes still exist for stations not yet tuned; convert a station by replacing them with the classes above and updating its browser test labels in the same commit.
-Applied so far: Requests (commits B-1 to B-7 on `finish-now`). Next: Attendance, then Messages.
 
+## Added with run sheet 2 (C-1 to C-9)
+- **Card tone (list pages with statuses):** a 4 px left edge plus a faint tint that repeats the chip's words, never alone. `data-tone` = `wait` (amber: waiting), `ok` (green: placed or done), `done` (grey: handled or closed), `none` (white). Colours are tokens `--tone-wait-edge`, `--tone-wait-bg`, `--tone-ok-bg`, `--tone-done-bg` in `console.css`; all text on them is above 5:1.
+- **Steady heights:** cards in a row share one height; the action row sits at the bottom of every card (`.qacts`, pushed down with `margin-top:auto`).
+- **Progress strip:** `.qstrip` of spans (not list items, so list selectors in tests do not count them): New, Placed, Confirmed, Attended; done steps green, current step dark.
+- **Filter counts:** each segment of the Show filter carries its count in a `.segn` chip; a count that cannot be known yet is left off.
+- **Detail:** a short plain summary first, every stored field under "All details".
+- **Spoken names:** every card button names the person (`aria-label` "Put in a class… (Dana Test)"); the Delete label follows its armed state.
+- **One orange per card:** banners use outlined buttons; the orange button is the card's own main action.
+- **Sidebar:** items are not boxed; the active station is the black pill with an orange marker on its left edge.
+Applied so far: Requests (B-1 to B-9, C-1 to C-9). Next: Attendance, then Messages, using the same classes.
