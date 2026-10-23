@@ -745,7 +745,17 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           delete known[rec.id]; delete rows[rec.id]; if (li.parentNode) li.parentNode.removeChild(li);
-          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " deleted. It is hidden from this list; the record is kept for now.";
+          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " deleted. It is hidden from this list; the record is kept for now. ";
+          var ub = document.createElement("button"); ub.type = "button"; ub.className = "btn-secondary"; ub.textContent = "Undo"; ub.setAttribute("aria-label", "Undo the delete of " + personOf(rec));
+          ub.addEventListener("click", function () {
+            ub.disabled = true;
+            admin("restore_request", { id: rec.id }, "attendances").then(function (r2) {
+              if (r2.status === 401) { lock("That key did not work."); return; }
+              if (r2.status === 200 && r2.body && r2.body.ok) { $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " is back in the list."; check(true); return; }
+              ub.disabled = false; $("reqDone").appendChild(document.createTextNode(" Could not undo. " + adminProblem(r2.status)));
+            });
+          });
+          $("reqDone").appendChild(ub);
           $("reqDone").hidden = false; applyReqFilter();
           return;
         }

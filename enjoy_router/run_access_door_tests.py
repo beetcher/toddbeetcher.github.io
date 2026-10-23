@@ -133,6 +133,7 @@ check("region head: no people records", code({"collection": "individuals", "op":
 check("region head: no messages", code({"collection": "communication_logs", "op": "list", "args": {}}, 2) == 403)
 check("region head: no curriculum writes", code({"collection": "curriculums", "op": "create", "args": {"data": {}}}, 2) == 403)
 check("region head: may delete a registration request (manage_requests)", not_denied(admin({"collection": "attendances", "op": "delete_request", "args": {"id": "x"}}, token=T(2))))
+check("region head: may restore a deleted registration request (manage_requests)", not_denied(admin({"collection": "attendances", "op": "restore_request", "args": {"id": "x"}}, token=T(2))))
 check("region head: may save a place (venue editing)", not_denied(admin({"collection": "locations", "op": "create", "args": {"data": {"addresses": [{"postal_code": "80301"}]}}}, token=T(2))))
 check("viewer: may read venues, may not write them", code(LV, 6) == 200 and code({"collection": "venues", "op": "create", "args": {"data": {}}}, 6) == 403)
 check("spend viewer: no venues at all", code(LV, 4) == 403)

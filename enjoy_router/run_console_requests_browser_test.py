@@ -189,6 +189,13 @@ with sync_playwright() as p:
     pg.set_viewport_size({"width": 1000, "height": 900}); pg.wait_for_timeout(250)
     cols = pg.evaluate("getComputedStyle(document.getElementById('list')).gridTemplateColumns.split(' ').length")
     check("below the sidebar width the cards stack in one column", cols == 1, cols)
+    # Delete, then Undo (C-7): the server restores the request and the card comes back
+    n0 = pg.locator("#list > li:visible").count()
+    pg.locator("#list > li:visible").first.get_by_role("button", name="Delete").click()
+    pg.locator("#list > li:visible").first.get_by_role("button", name="Really delete").click(); pg.wait_for_timeout(600)
+    check("deleting hides the card and offers Undo", pg.locator("#list > li:visible").count() == n0 - 1 and pg.locator("#reqDone button", has_text="Undo").is_visible(), pg.locator("#reqDone").inner_text())
+    pg.locator("#reqDone button", has_text="Undo").click(); pg.wait_for_timeout(900)
+    check("Undo brings the card back", pg.locator("#list > li:visible").count() == n0 and "is back in the list" in pg.locator("#reqDone").inner_text(), pg.locator("#reqDone").inner_text())
     # phone
     pg.set_viewport_size({"width": 390, "height": 900}); pg.wait_for_timeout(250)
     check("no sideways scroll on a phone", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))

@@ -216,6 +216,25 @@ rq10 = request([{"first_name": "Gone"}], attending=False)
 res2 = handle_admin("POST", "Bearer " + "k" * 16 + "Z" * 16 + "-test", json.dumps({"collection": "attendances", "op": "delete_request", "args": {"id": rq10["id"]}}).encode(),
                     "k" * 16 + "Z" * 16 + "-test", "v", s, make_failure_limiter(), NOW)
 check("endpoint: delete_request through the admin door", res2.status == 200 and s.data["t_registration_requests"][rq10["id"]].get("deleted_at"), f"{res2.status} {res2.body}")
+# undoing a delete (Console C-7)
+rq11 = request([{"first_name": "Back"}], attending=False)
+check("restore request: a request that is not deleted is not found", AT.restore_request(s, rq11["id"], A, now=tick()).code == "not_found")
+AT.delete_request(s, rq11["id"], A, now=tick())
+r_ = AT.restore_request(s, rq11["id"], A, now=tick())
+d11 = s.data["t_registration_requests"][rq11["id"]]
+check("restore request: a deleted request comes back and the delete stamps are gone", r_.ok and "deleted_at" not in d11 and "deleted_by" not in d11 and d11.get("updated_by") == A, str(r_.problems))
+shown = [x["id"] for x in CON.list_registration_requests(_Req(), 200)]
+check("restore request: it is in the Console list again", rq11["id"] in shown)
+check("restore request: restoring it twice says not found", AT.restore_request(s, rq11["id"], A, now=tick()).code == "not_found")
+check("restore request: an unknown id or a bad id is not found", AT.restore_request(s, str(uuid.uuid4()), A, now=tick()).code == "not_found" and AT.restore_request(s, "nope", A, now=tick()).code == "not_found")
+rq12 = request([{"first_name": "Door"}], attending=False)
+AT.delete_request(s, rq12["id"], A, now=tick())
+res3 = handle_admin("POST", "Bearer " + "k" * 16 + "Z" * 16 + "-test", json.dumps({"collection": "attendances", "op": "restore_request", "args": {"id": rq12["id"]}}).encode(),
+                    "k" * 16 + "Z" * 16 + "-test", "v", s, make_failure_limiter(), NOW)
+check("endpoint: restore_request through the admin door", res3.status == 200 and "deleted_at" not in s.data["t_registration_requests"][rq12["id"]], f"{res3.status} {res3.body}")
+res4 = handle_admin("POST", "Bearer " + "k" * 16 + "Z" * 16 + "-test", json.dumps({"collection": "venues", "op": "restore_request", "args": {"id": rq12["id"]}}).encode(),
+                    "k" * 16 + "Z" * 16 + "-test", "v", s, make_failure_limiter(), NOW)
+check("endpoint: restore_request on another collection is refused", res4.status in (400, 403, 404), f"{res4.status}")
 check("endpoint: assign_request through the admin door places both", res.status == 200 and body.get("ok") and len(body["data"]["records"]) == 2, f"{res.status} {body}")
 print(f"\n{total - len(fails)}/{total} checks passed" + ("" if not fails else "\nFAILED:\n - " + "\n - ".join(fails)))
 sys.exit(1 if fails else 0)

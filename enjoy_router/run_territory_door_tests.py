@@ -199,6 +199,7 @@ check("attendance assign_request: both the request and the class must be in reac
       and code(2, "attendances", "assign_request", {"data": {"request_id": rB, "scheduled_class_id": cL}}) == 403)
 check("attendance delete_request: a request out of reach is refused", code(2, "attendances", "delete_request", {"id": rL}) == 403 and code(2, "attendances", "delete_request", {"id": rNone}) == 403)
 check("attendance delete_request: a request in reach goes through to the handler", code(2, "attendances", "delete_request", {"id": rB}) in (200, 400, 409))
+check("attendance restore_request: a request out of reach is refused, one in reach goes through", code(2, "attendances", "restore_request", {"id": rL}) == 403 and code(2, "attendances", "restore_request", {"id": rB}) in (200, 400, 404, 409))
 check("instructor roster: a Boulder head sees only the instructor who lives in Boulder", ids(2, "instructor_rosters") == (200, [irB]))
 check("instructor roster: update out of reach refused, creating one for a new person refused", code(2, "instructor_rosters", "update", {"id": irL, "changes": {"notes": "x"}}) == 403
       and code(2, "instructor_rosters", "create_with_person", {"data": {}, "person": {"given_name": "N", "family_name": "P"}}) == 403)

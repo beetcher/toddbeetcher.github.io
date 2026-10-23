@@ -92,7 +92,7 @@ def crud_need(collection, op, args):
     caps = WRITE.get(collection)
     if not caps:
         return _SUPER
-    if collection == "attendances" and op in ("delete_request", "mark_request_handled"):
+    if collection == "attendances" and op in ("delete_request", "restore_request", "mark_request_handled"):
         return (("manage_requests",),)
     if collection == "venues":
         if op == "soft_delete":

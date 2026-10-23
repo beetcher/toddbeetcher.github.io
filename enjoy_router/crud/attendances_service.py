@@ -509,6 +509,23 @@ def delete_request(store, request_id, actor, now=None):
     return success({"id": request_id, "deleted_at": stamp})
 
 
+def restore_request(store, request_id, actor, now=None):
+    """Undo delete_request: a request the Console deleted comes back (the record was kept). Only a deleted request can be restored; a
+    request that is not deleted, or does not exist, is not found. The stamps deleted_at and deleted_by are removed (no new field is stored;
+    updated_at / updated_by say who brought it back). Nothing else on the request changes."""
+    problems = check_actor(actor)
+    req = store.get(REQUESTS.name, request_id) if isinstance(request_id, str) and UUID_PATTERN.match(request_id) else None
+    if req is None or not _deleted(req):
+        return failure("not_found")
+    if problems:
+        return _bad(problems)
+    try:
+        store.update(REQUESTS.name, request_id, {"updated_by": actor, "updated_at": utc_stamp(now)}, ("deleted_at", "deleted_by"))
+    except DocMissing:
+        return failure("not_found")
+    return success({"id": request_id, "restored": True})
+
+
 def mark_request_handled(store, request_id, actor, note, now=None):
     """Mark a request that no active region could take as HANDLED (P-83): someone has dealt with it. A note saying what was done is required.
     Refused when the request is not (or is no longer) waiting for a trainer: not an urgent one, already handled, deleted, or a region now
