@@ -2,3 +2,6 @@
 /bfv /bfv/ 301
 /BFV /bfv/ 301
 /BFV/* /bfv/:splat 301
+
+# Founder edition: preserve the trailing slash for relative assets.
+/bfvfounder /bfvfounder/ 301
