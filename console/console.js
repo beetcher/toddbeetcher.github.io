@@ -3890,7 +3890,7 @@
     var host = $("mStatusBoxes");
     if (!host.firstChild) M_STATUS.forEach(function (s) {
       var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
-      l.appendChild(c); l.appendChild(document.createTextNode(" " + M_STATUS_WORD[s])); host.appendChild(l);
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + M_STATUS_WORD[s])); var n = mk("span", "segn"); n.setAttribute("data-n", s); l.appendChild(n); host.appendChild(l);
     });
     // The kinds come from the log itself, so a new kind of message appears here without changing this page. A kind the user has unticked stays unticked.
     var kh = $("mKindBoxes"), off = {};
@@ -3945,8 +3945,8 @@
   function mCopy(text, what, btn) {
     var done = function () {
       $("mNotice").textContent = what + " copied.";
-      if (btn) { var was = btn.getAttribute("data-was") || btn.textContent; btn.setAttribute("data-was", was); btn.textContent = "Copied ✓"; btn.classList.add("copied");
-        clearTimeout(btn._t); btn._t = setTimeout(function () { btn.textContent = was; btn.classList.remove("copied"); btn.removeAttribute("data-was"); }, 2000); }
+      if (btn) { var was = btn.getAttribute("data-was") || btn.textContent; btn.setAttribute("data-was", was); var wasL = btn.getAttribute("data-wasl") || btn.getAttribute("aria-label") || ""; btn.setAttribute("data-wasl", wasL); btn.textContent = "Copied ✓"; if (wasL) btn.setAttribute("aria-label", "Copied ✓ " + wasL); btn.classList.add("copied");
+        clearTimeout(btn._t); btn._t = setTimeout(function () { btn.textContent = was; if (wasL) btn.setAttribute("aria-label", wasL); btn.removeAttribute("data-wasl"); btn.classList.remove("copied"); btn.removeAttribute("data-was"); }, 2000); }
     };
     var fallback = function () {
       var t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select();
@@ -3962,7 +3962,8 @@
     return t.join("\n");
   }
   function mDetail(e) {
-    var box = mk("div", "mdetail");
+    var box = mk("div", "mdetail"), desc = mKindWord(e.kind) + (e.to ? " to " + e.to : "");
+    function say(b, t) { b.setAttribute("aria-label", t + " (" + desc + ")"); return b; }
     var dl = mk("dl", ""); mFactsText(e).forEach(function (x) { dl.appendChild(mk("dt", "", x[0])); dl.appendChild(mk("dd", "", String(x[1]))); });
     box.appendChild(dl);
     var nb = mk("div", "mnotes"); nb.appendChild(mk("b", "", "Notes (" + (e.notes ? e.notes.length : 0) + ")"));
@@ -3977,7 +3978,7 @@
     box.appendChild(lab); box.appendChild(ta);
     var err = mk("div", "msg", ""); err.setAttribute("role", "alert");
     var btns = mk("div", "btns");
-    var add = mk("button", "btn-secondary", "Add note"); add.type = "button";
+    var add = mk("button", "btn-secondary", "Add note"); add.type = "button"; say(add, "Add note");
     add.addEventListener("click", function () {
       var text = ta.value.trim(); err.textContent = "";
       if (!text) { err.textContent = "Write the note first."; return; }
@@ -3991,7 +3992,7 @@
     });
     btns.appendChild(add);
     if (e.status === "not_sent" && !e.handled_at) {
-      var h = mk("button", "btn-primary", "Mark handled"); h.type = "button";
+      var h = mk("button", "btn-primary", "Mark handled"); h.type = "button"; say(h, "Mark handled");
       h.title = "Say what you did about it, for example phoned her. The note box above is used as the comment.";
       h.addEventListener("click", function () {
         err.textContent = ""; h.disabled = true;
@@ -4005,11 +4006,11 @@
       });
       btns.appendChild(h);
     }
-    var c1 = mk("button", "btn-link", "Copy entry"); c1.type = "button"; c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry", c1); });
-    var c2 = mk("button", "btn-link", "Copy as JSON"); c2.type = "button"; c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON", c2); });
+    var c1 = mk("button", "btn-link", "Copy entry"); c1.type = "button"; say(c1, "Copy entry"); c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry", c1); });
+    var c2 = mk("button", "btn-link", "Copy as JSON"); c2.type = "button"; say(c2, "Copy as JSON"); c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON", c2); });
     btns.appendChild(c1); btns.appendChild(c2);
     if (e.scheduled_class_id) {
-      var j = mk("button", "btn-link", "Open the class attendance"); j.type = "button";
+      var j = mk("button", "btn-link", "Open the class attendance"); j.type = "button"; say(j, "Open the class attendance");
       j.addEventListener("click", function () { var c = aClassById[e.scheduled_class_id]; if (c) openAttendance(c); else $("mMsg").textContent = "That class could not be found."; });
       btns.appendChild(j);
     }
@@ -4049,6 +4050,7 @@
     $("mCount").textContent = shown.length + (shown.length === 1 ? " message" : " messages") + (shown.length !== MS.recs.length ? " of " + MS.recs.length : "");
     $("mEmpty").hidden = shown.length > 0 || !MS.loaded;
     var n = {}; MS.recs.forEach(function (e) { n[e.status] = (n[e.status] || 0) + 1; });
+    Array.prototype.forEach.call(document.querySelectorAll("#mStatusBoxes .segn"), function (x) { x.textContent = MS.loaded ? String(n[x.getAttribute("data-n")] || 0) : ""; });
     var attn = MS.recs.filter(mNeedsAttention).length;
     $("mSummary").textContent = MS.recs.length ? M_STATUS.filter(function (s) { return n[s]; }).map(function (s) { return n[s] + " " + M_STATUS_WORD[s].toLowerCase(); }).join(" · ") + (attn ? " · " + attn + " need" + (attn === 1 ? "s" : "") + " attention" : " · nothing needs attention") : "";
     var all = true; Array.prototype.forEach.call(mBoxes(), function (c) { if (c.getAttribute("data-f") && !c.checked) all = false; });

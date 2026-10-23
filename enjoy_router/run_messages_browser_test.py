@@ -62,6 +62,7 @@ with sync_playwright() as p:
     pg.select_option("#collPick", "messages"); pg.wait_for_selector("#mList li")
     check("the page has one visible title, Messages", pg.locator("#mTitle").is_visible() and pg.locator("#messagesView h2:visible").count() == 1)
     check("the filters start closed, but Search and Needs attention are always in view", not pg.evaluate("document.getElementById('mFilters').open") and pg.locator("#mSearch").is_visible() and pg.locator("#mAttnBtn").is_visible())
+    check("each status filter box shows its count and the buttons in an open entry name the message", pg.locator("#mStatusBoxes .segn").count() == 5 and sum(int(t) for t in pg.eval_on_selector_all("#mStatusBoxes .segn", "els => els.map(e => e.textContent)")) == 7)
     check("the first message is near the top, not pushed down by a filter panel", pg.evaluate("document.querySelector('#mList li').getBoundingClientRect().top") < 600, pg.evaluate("document.querySelector('#mList li').getBoundingClientRect().top"))
     pg.click("#mFilterSummary")   # the rest of this test works the boxes inside Filters
     def rows(): return pg.locator("#mList li").count()
