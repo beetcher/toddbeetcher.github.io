@@ -668,3 +668,41 @@
   .req { color: var(--err); font-weight: 700; margin-left: var(--space-2); }
   .reqnote { margin: 0 0 var(--space-5); }
   #sideNav .nhead { margin: 0; }
+
+  /* ---- Chip filters (run sheet H-1): the control drawn by UI.chipFilters in filters.js. Colours are explicit because the global button rule is white on dark. */
+  .cf-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin: 0 0 var(--space-6); }
+  .cf-chipwrap { position: relative; }
+  button.cf-chip { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 40px; padding: 0 var(--space-6); border-radius: 999px; border: 2px solid var(--line-strong); background: var(--card); color: var(--ink); font-weight: 700; font-size: var(--text-m); }
+  button.cf-chip[data-on="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  button.cf-chip[aria-expanded="true"] { border-color: var(--ink); }
+  button.cf-chip:not(:disabled):not(.working):hover { filter: none; box-shadow: none; background: var(--line); }
+  button.cf-chip[data-on="true"]:not(:disabled):not(.working):hover { background: var(--ink-soft); }
+  button.cf-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .cf-caret { font-size: var(--text-s); }
+  .cf-pop { position: absolute; z-index: 40; top: calc(100% + var(--space-3)); left: 0; box-sizing: border-box; min-width: 250px; max-width: min(360px, calc(100vw - 32px)); padding: var(--space-4); background: var(--card); color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.18); outline: none; }
+  .cf-pop[hidden] { display: none; }
+  .cf-search { width: 100%; box-sizing: border-box; min-height: 40px; margin: 0 0 var(--space-3); }
+  .cf-list { max-height: 280px; overflow-y: auto; padding: var(--space-2) 0; }
+  label.cf-opt { display: flex; align-items: center; gap: var(--space-5); min-height: 40px; padding: 0 var(--space-4); border-radius: 8px; cursor: pointer; }
+  label.cf-opt[hidden] { display: none; }
+  label.cf-opt:hover { background: var(--paper); }
+  label.cf-opt input { width: 22px; height: 22px; margin: 0; flex: none; }
+  .cf-t { flex: 1; }
+  .cf-n { font-weight: 700; font-size: var(--text-s); background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 0 var(--space-3); min-width: 1.6em; text-align: center; }
+  .cf-n:empty { display: none; }
+  .cf-none { padding: var(--space-5); color: var(--muted); }
+  .cf-none[hidden] { display: none; }
+  .cf-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-top: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--line); }
+  .cf-back { display: none; }
+  .cf-title { display: none; }
+  .cf-note, .cf-count { color: var(--muted); font-size: var(--text-m); }
+  .cf-note:empty, .cf-count:empty { display: none; }
+  @media (max-width: 520px) {
+    button.cf-chip { min-height: 44px; }
+    .cf-pop { position: fixed; z-index: 90; left: 0; right: 0; bottom: 0; top: auto; min-width: 0; max-width: none; max-height: 75vh; display: flex; flex-direction: column; padding: var(--space-6); border-width: 2px 0 0; border-radius: 16px 16px 0 0; }
+    .cf-pop[hidden] { display: none; }
+    .cf-list { flex: 1 1 auto; max-height: none; }
+    .cf-title { display: block; margin: 0 0 var(--space-3); padding: 0 var(--space-4); font-size: var(--text-l); font-weight: 700; }
+    label.cf-opt { min-height: 48px; }
+    .cf-open .cf-back { display: block; position: fixed; inset: 0; z-index: 89; background: rgba(0,0,0,.4); }
+  }
