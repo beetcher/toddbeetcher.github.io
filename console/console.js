@@ -1591,7 +1591,16 @@
   }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
   window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
-                        go: function (id) { goTo(id); }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
+                        go: function (id) { goTo(id); }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; },
+                        // Added for station files (M-1, the Messages extraction). Functions, not values, because the things they read are filled in later or replaced.
+                        adminProblem: function (status) { return adminProblem(status); },
+                        time: function (d) { return fmtTime.format(d); },
+                        attName: function (r) { return attName(r); },
+                        classChoices: function () { return loadClassChoices(); },
+                        classById: function (id) { return aClassById ? aClassById[id] : undefined; },
+                        openAttendance: function (cls) { openAttendance(cls); },
+                        requests: function () { return Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
+                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD }; } };
   function canon(v) {
     if (v === null || v === undefined) return "null";
     if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
