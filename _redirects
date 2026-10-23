@@ -1,0 +1,4 @@
+# Black Flag Ventures: canonical lowercase route and directory URL.
+/bfv /bfv/ 301
+/BFV /bfv/ 301
+/BFV/* /bfv/:splat 301

@@ -4,15 +4,15 @@ A 12-panel enterprise-facing explanation of the Black Flag manufacturing and ven
 
 ## Preview
 
-From the repository root, run a local static server and open `/BFV/`. For example:
+From the repository root, run a local static server and open `/bfv/`. For example:
 
 ```sh
 python3 -m http.server 8874 --bind 127.0.0.1
 ```
 
-Then visit http://127.0.0.1:8874/BFV/.
+Then visit http://127.0.0.1:8874/bfv/.
 
-There are no build dependencies, external fonts, analytics, submission forms, or remote image dependencies. Paths are relative so the page works under `/BFV/`.
+There are no build dependencies, external fonts, analytics, submission forms, or remote image dependencies. Paths are relative so the page works under `/bfv/`.
 
 ## Contents
 
