@@ -33,3 +33,11 @@ Classes live in `console/console.css`, just under the base `button` rules. Add t
 - **One orange per card:** banners use outlined buttons; the orange button is the card's own main action.
 - **Sidebar:** items are not boxed; the active station is the black pill with an orange marker on its left edge.
 Applied so far: Requests (B-1 to B-9, C-1 to C-9). Next: Attendance, then Messages, using the same classes.
+
+## Added with the Attendance tune (D-1 to D-5)
+- Same classes as Requests. The page's one orange button is Search; Refresh, Remove and Send confirmation email are quiet (white); Show all and the class name are plain text links. Remove arms to red "Really remove?" on the second press only.
+- Cards: status chip plus tone edge and tint from the person's status (amber waiting: assigned, on the waiting list; green: confirmed, attended, late; grey: did not show, declined, withdrawn, cancelled), and a "Next:" / "Done:" / "Closed:" line. Steady heights; the Send confirmation button sits at the bottom.
+- Status filter boxes show a count chip each (`.segn`); counts come from the loaded records.
+- Spoken names: "Remove (Ann Able, Evening Basics)", "Send confirmation email (Ann Able)", "Open class attendance: <class>". Armed Remove reads "Really remove? (…)".
+- Class dialog: the Show, Instructors and Students bands are neutral white; colour only means a person's status (tone edge and chip on each row), never the band.
+Applied so far: Requests, Attendance. Next: Messages.
