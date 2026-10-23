@@ -709,34 +709,35 @@
 
     var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
     var putrow = document.createElement("div"); putrow.className = "qrow qacts";
-    var pb = document.createElement("button"); pb.type = "button"; pb.className = "btn-primary"; pb.textContent = "Put in a class…";
+    var who2 = personOf(rec);   // every button names the request it acts on, for a screen reader
+    var pb = document.createElement("button"); pb.type = "button"; pb.className = "btn-primary"; pb.textContent = "Put in a class…"; pb.setAttribute("aria-label", "Put in a class… (" + who2 + ")");
     var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
     pb.addEventListener("click", function () {
       $("reqDone").hidden = true;
       if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
       phost.hidden = false; putInClass(rec, phost);
     });
-    var ob = document.createElement("button"); ob.type = "button"; ob.className = "btn-primary"; ob.textContent = "Open class"; ob.hidden = true;
+    var ob = document.createElement("button"); ob.type = "button"; ob.className = "btn-primary"; ob.textContent = "Open class"; ob.hidden = true; ob.setAttribute("aria-label", "Open class (" + who2 + ")");
     ob.addEventListener("click", function () { location.hash = "#/classes"; });
     putrow.appendChild(ob); putrow.appendChild(pb); li._pb = pb; li._ob = ob;
     // One History link: the journal of what happened to this request; people allowed to see it also get a link inside to every recorded change.
-    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "History"; jb.setAttribute("aria-label", "History of this request");
+    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "History"; jb.setAttribute("aria-label", "History (" + who2 + ")");
     jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "History: " + personOf(rec), { id: rec.id, label: "this request" }); });
     putrow.appendChild(jb);
     // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
     var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
     if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
-      var mh = document.createElement("button"); mh.type = "button"; mh.className = "btn-secondary"; mh.textContent = "Mark handled…";
+      var mh = document.createElement("button"); mh.type = "button"; mh.className = "btn-secondary"; mh.textContent = "Mark handled…"; mh.setAttribute("aria-label", "Mark handled… (" + who2 + ")");
       mh.addEventListener("click", function () { covbox.hidden = !covbox.hidden; if (!covbox.hidden) { covbox.textContent = ""; fillCovBox(covbox, rec, li); } });
       putrow.appendChild(mh);
     }
     // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
-    var db = document.createElement("button"); db.type = "button"; db.className = "btn-danger"; db.textContent = "Delete"; db.style.marginLeft = "auto";
+    var db = document.createElement("button"); db.type = "button"; db.className = "btn-danger"; db.textContent = "Delete"; db.style.marginLeft = "auto"; db.setAttribute("aria-label", "Delete (" + who2 + ")");
     var armedT = null;
-    function disarm() { clearTimeout(armedT); db.className = "btn-danger"; db.textContent = "Delete"; db.removeAttribute("data-armed"); }
+    function disarm() { clearTimeout(armedT); db.className = "btn-danger"; db.textContent = "Delete"; db.setAttribute("aria-label", "Delete (" + who2 + ")"); db.removeAttribute("data-armed"); }
     db.addEventListener("click", function () {
       if (!db.getAttribute("data-armed")) {
-        db.setAttribute("data-armed", "1"); db.className = "btn-danger"; db.textContent = "Really delete?";
+        db.setAttribute("data-armed", "1"); db.className = "btn-danger"; db.textContent = "Really delete?"; db.setAttribute("aria-label", "Really delete the request from " + who2 + "?");
         armedT = setTimeout(disarm, 6000); return;
       }
       clearTimeout(armedT);
