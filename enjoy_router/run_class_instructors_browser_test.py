@@ -120,7 +120,7 @@ with sync_playwright() as p:
         pg.wait_for_timeout(250)
     r_ = roles()
     check("promoting someone already in the class: they lead, the old lead steps back", r_["Ina"][0] == "primary_instructor" and r_["Zed"][0] == "instructor", r_)
-    check("promoting: one lead-change notice each for the student and the old lead", len(changed("ann@example.com")) == 1 and len(changed("zed@example.com")) == 1, [(m["to"], m["subject"]) for m in sent], r_, [(k, v) for k, v in [(a["individual_id"][-4:], (a["role"], a.get("order"), a.get("created_at"), a.get("updated_at"))) for a in store.query("attendances", [("scheduled_class_id", "==", sc["id"])], limit=50)]])
+    check("promoting: one lead-change notice each for the student and the old lead", len(changed("ann@example.com")) == 1 and len(changed("zed@example.com")) == 1, ([(m["to"], m["subject"]) for m in sent], r_, [(k, v) for k, v in [(a["individual_id"][-4:], (a["role"], a.get("order"), a.get("created_at"), a.get("updated_at"))) for a in store.query("attendances", [("scheduled_class_id", "==", sc["id"])], limit=50)]]))
     # choosing the current lead says so and changes nothing
     lead_box.locator("input").fill("ina"); lead_box.get_by_role("button", name="Ina Teach").click(); sent.clear(); n = len(sent)
     lead_box.get_by_role("button", name="Make lead").click()

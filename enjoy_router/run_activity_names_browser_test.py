@@ -111,7 +111,7 @@ with sync_playwright() as p:
     check("N11b ...whatever the capital letters", True)
     pg.fill("#avValue", "Admin key"); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
     check("N12 filtering by 'Admin key' finds the key's entries", "Key Venue" in pg.inner_text("#avList"))
-    pg.fill("#avValue", "user:" + PB); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
+    pg.fill("#avValue", "user:" + PB); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1 && document.getElementById('avList').innerText.indexOf('Blank Venue') >= 0")   # wait for THIS filter's row, not the one row left from the last filter
     check("N13 an id still works in the filter", "Blank Venue" in pg.inner_text("#avList"))
     pg.fill("#avValue", "Nobody Atall"); pg.press("#avValue", "Enter"); pg.wait_for_selector("#avList >> text=Nothing has been recorded")
     check("N14 a name nobody has gives an empty list, not an error", True)
