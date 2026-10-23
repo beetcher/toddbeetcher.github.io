@@ -3082,6 +3082,13 @@
     var v = $("reqShow").value;
     Array.prototype.forEach.call($("reqSeg").children, function (b) { var on = b.dataset.v === v; b.setAttribute("aria-checked", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
   }
+  // How many each choice would show, written on the choice itself ("Open 3"). A count we cannot know yet is left off.
+  function setSegCounts(c) {
+    Array.prototype.forEach.call($("reqSeg").children, function (b) {
+      var sp = b.querySelector(".segn"); if (!sp) { sp = mk("span", "segn", ""); b.appendChild(sp); }
+      var v = c[b.dataset.v]; sp.textContent = (v === null || v === undefined) ? "" : String(v);
+    });
+  }
   function pickReq(v, focus) { $("reqShow").value = v; applyReqFilter(); if (focus) { var t = $("reqSeg").querySelector('[data-v="' + v + '"]'); if (t) t.focus(); } }
   function applyReqFilter() {
     syncReqSeg();
@@ -3094,6 +3101,7 @@
       if (show) shown++;
     });
     var n = Object.keys(known).length;
+    setSegCounts({ open: open, closed: P.loaded ? Object.keys(rows).length - open : null, all: Object.keys(rows).length, notrainer: Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length });
     var wait = Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length, cb = $("covBanner");
     cb.textContent = "";
     if (wait) {

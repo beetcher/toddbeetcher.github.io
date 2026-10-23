@@ -161,6 +161,9 @@
   .seg { display: inline-flex; flex-wrap: wrap; gap: 0; margin: 0 0 var(--space-6); border: 1px solid var(--muted); border-radius: 12px; overflow: hidden; background: var(--card); max-width: 100%; }
   .seg button { all: unset; box-sizing: border-box; cursor: pointer; min-height: 44px; padding: 0 var(--space-7); display: inline-flex; align-items: center; font-weight: 600; color: var(--ink); border-right: 1px solid var(--line); }
   .seg button:last-child { border-right: 0; }
+  .seg .segn { margin-left: var(--space-3); font-weight: 700; font-size: var(--text-s); background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 0 var(--space-3); min-width: 1.6em; text-align: center; }
+  .seg .segn:empty { display: none; }
+  .seg button[aria-checked="true"] .segn { background: var(--white); color: var(--ink); }
   .seg button[aria-checked="true"] { background: var(--ink); color: var(--white); }
   .seg button:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
   @media (max-width: 520px) { .seg { display: flex; } .seg button { flex: 1 1 45%; justify-content: center; padding: 0 var(--space-4); border-bottom: 1px solid var(--line); } }

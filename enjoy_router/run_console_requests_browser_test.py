@@ -156,7 +156,7 @@ with sync_playwright() as p:
     check("the count and last-checked sit under the title", pg.evaluate("(function(){var t=document.getElementById('reqTitle').getBoundingClientRect(),c=document.getElementById('countText').getBoundingClientRect(),m=document.getElementById('checkedText').getBoundingClientRect(); return t.bottom<=c.top+1 && c.bottom<=m.top+1})()"))
     check("the tab title names the station", pg.title().startswith("Requests"), pg.title())
     segs = pg.locator("#reqSeg button")
-    check("the Show filter is a radio group of four", pg.get_attribute("#reqSeg", "role") == "radiogroup" and segs.count() == 4 and segs.all_inner_texts() == ["Open", "Closed", "All", "No active trainer"], segs.all_inner_texts())
+    check("the Show filter is a radio group of four", pg.get_attribute("#reqSeg", "role") == "radiogroup" and segs.count() == 4 and [__import__("re").sub(r"\s*\d+\s*$", "", x) for x in segs.all_inner_texts()] == ["Open", "Closed", "All", "No active trainer"], segs.all_inner_texts())
     check("Open is chosen at first, the others are out of the tab order", pg.get_attribute('#reqSeg [data-v="open"]', "aria-checked") == "true" and pg.evaluate("Array.from(document.querySelectorAll('#reqSeg button')).filter(b => b.tabIndex === 0).length") == 1)
     check("no drop-down for it on the page (the stored select is hidden)", pg.locator("#reqShow").is_hidden())
     cols = pg.evaluate("getComputedStyle(document.getElementById('list')).gridTemplateColumns.split(' ').length")
