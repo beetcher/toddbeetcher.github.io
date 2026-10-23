@@ -78,6 +78,17 @@
   button.quiet:not(:disabled):not(.working):hover { filter: none; background: rgba(0,0,0,.07); }
   button:not(:disabled):not(.working):active { transform: translateY(1px) scale(.985); box-shadow: none; }
   button:disabled { opacity: .55; cursor: not-allowed; }
+  /* Button cues (design rules: console/DESIGN-RULES.md). Same meaning on every page.
+     btn-primary = the one "do this next" button; btn-secondary = a normal action; btn-danger = Delete and nothing else; btn-link = look at more. */
+  button.btn-primary, button.btn-secondary, button.btn-danger { min-height: 40px; padding: 0 var(--space-7); border-radius: 10px; font-weight: 700; }
+  button.btn-primary { background: var(--orange); border-color: var(--ink); color: var(--on-orange); }
+  button.btn-secondary { background: var(--card); border-color: var(--ink); color: var(--ink); }
+  button.btn-danger { background: var(--err); border-color: var(--err); color: var(--white); }
+  button.btn-secondary:not(:disabled):not(.working):hover { filter: none; background: var(--line); }
+  button.btn-link { background: none; border: 0; box-shadow: none; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; min-height: 40px; padding: 0 var(--space-4); }
+  button.btn-link:not(:disabled):not(.working):hover { filter: none; box-shadow: none; background: rgba(0,0,0,.07); }
+  button.btn-primary:focus-visible, button.btn-secondary:focus-visible, button.btn-danger:focus-visible, button.btn-link:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  @media (max-width: 520px) { button.btn-primary, button.btn-secondary, button.btn-danger, button.btn-link { min-height: 44px; } }
   /* A save in progress: the button that was pressed shows a spinner and cannot be pressed again. */
   button.working { position: relative; pointer-events: none; cursor: progress; opacity: .85; }
   button.working::before { content: ""; display: inline-block; width: .9em; height: .9em; margin-right: .55em; vertical-align: -.1em;
