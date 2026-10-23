@@ -529,3 +529,13 @@
   .banner-info { background: var(--info-bg); border-color: var(--info-edge); color: var(--ink); }
   .empty-title { margin: 0 0 var(--space-3); font-size: var(--text-l); font-weight: 700; color: var(--ink-soft); }
   .empty-hint { margin: 0 0 var(--space-7); font-size: var(--text-m); }
+
+  /* ---- Loading skeleton, cut-off note, connection banner (step 1.3b) */
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skel { display: grid; gap: var(--space-5); padding: var(--space-4) 0; }
+  .skel-row { height: 56px; border-radius: 12px; background: linear-gradient(90deg, var(--line) 0%, var(--paper) 50%, var(--line) 100%); background-size: 200% 100%; animation: skelmove 1.4s ease-in-out infinite; }
+  @keyframes skelmove { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  @media (prefers-reduced-motion: reduce) { .skel-row { animation: none; } }
+  .limitnote { margin: var(--space-5) 0; padding: var(--space-5) var(--space-7); border-radius: 10px; background: var(--info-bg); border: 1px solid var(--info-edge); font-size: var(--text-m); }
+  #netBanner { margin-bottom: var(--space-7); }
+  #netBanner button { margin-left: var(--space-5); min-height: 44px; }

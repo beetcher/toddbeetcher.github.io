@@ -5,6 +5,7 @@
 window.CONSOLE_CONFIG = {
   appId: "launch",        // names the browser's saved-key slot; do not change for a live Console
   brandName: "LAUNCH",    // shown in the top bar
+  timeouts: { readSeconds: 20, writeSeconds: 60 },   // how long to wait for the server before saying so (writes wait longer: emails are slow)
   endpoints: {
     records: "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_console_records",
     admin: "https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_admin",

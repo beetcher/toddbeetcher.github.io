@@ -504,7 +504,7 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; UI.dismiss(); }
+    document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; UI.dismiss(); netOk(); }
     if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
@@ -553,8 +553,9 @@
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
   function fetchRecords(since) {
     var url = CFG.endpoints.records + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
-    return fetch(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" })
+    return fetchT(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" }, READ_MS)
       .then(function (r) {
+        if (r.ok) netOk();
         if (r.status === 401) return { status: "unauthorized" };
         if (r.status === 429) return { status: "limited" };
         if (!r.ok) return { status: "error" };
@@ -562,7 +563,7 @@
           return { status: "ok", records: (j && j.data && j.data.records) || [] };
         });
       })
-      .catch(function () { return { status: "network" }; });
+      .catch(function (e) { netShow(!!(e && e.timedOut)); return { status: "network" }; });
   }
 
   function newest() {
@@ -761,6 +762,7 @@
       if (res.status === "ok") {
         $("listMsg").textContent = "";
         merge(res.records);
+        if (!firstLoadDone) UI.limitNote($("list"), res.records.length, MAX, "Showing the newest " + MAX + " requests. Older ones are not listed here.");
         firstLoadDone = true;
         $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
       } else if (res.status === "unauthorized") {
@@ -947,18 +949,44 @@
       return res;
     });
   }
+  // ---- Time limits and the connection banner (1.3b). A read that gets no answer shows a banner with Try again; a write that gets no answer says it may have gone through.
+  var TMO = CFG.timeouts || {}, READ_MS = (TMO.readSeconds || 20) * 1000, WRITE_MS = (TMO.writeSeconds || 60) * 1000, netWhy = "";
+  function fetchT(url, opts, ms) {
+    var ctl = typeof AbortController === "function" ? new AbortController() : null, t = null;
+    if (ctl) { opts.signal = ctl.signal; t = setTimeout(function () { ctl.abort(); }, ms); }
+    return fetch(url, opts).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); e.timedOut = !!(ctl && ctl.signal.aborted); throw e; });
+  }
+  function netShow(timedOut) {
+    $("netText").textContent = (timedOut ? "The server did not answer in time." : "Could not reach the server.") + " What is on screen may be out of date.";
+    $("netBanner").hidden = false;
+  }
+  function skelOn(host) { if (host && !host.querySelector(".skel")) { host.textContent = ""; host.appendChild(UI.skeleton(4)); } }
+  function skelOff(host) { var s = host && host.querySelector(".skel"); if (s) s.parentNode.removeChild(s); }
+  function netOk() { $("netBanner").hidden = true; }
+  function netRetry() {   // load the current station again, from scratch
+    netOk(); vLoaded = false; cLoaded = false; pLoaded = false; lLoaded = false;
+    Object.keys(ROSTER).forEach(function (k) { ROSTER[k].loaded = false; });
+    route();
+  }
   function adminCall(op, args, coll) {
-    return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
+    var isRead = !!VIEW_READS[op];
+    return fetchT(ADMIN_URL, { method: "POST", cache: "no-store",
         headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
-        body: JSON.stringify({ collection: coll || "venues", op: op, args: args }) })
+        body: JSON.stringify({ collection: coll || "venues", op: op, args: args }) }, isRead ? READ_MS : WRITE_MS)
       .then(function (r) {
+        if (isRead && r.ok) netOk();
         return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
       })
-      .catch(function () { return { status: 0, body: {} }; });
+      .catch(function (e) {
+        var to = !!(e && e.timedOut);
+        netWhy = to ? (isRead ? "read-timeout" : "write-timeout") : "down";
+        if (isRead) netShow(to);
+        return { status: 0, body: {}, timedOut: to };
+      });
   }
   function adminProblem(status) {
     if (status === 429) return "Too many tries. Wait a few minutes.";
-    if (status === 0) return "Could not reach the server.";
+    if (status === 0) return netWhy === "write-timeout" ? "No answer after " + (WRITE_MS / 1000) + " seconds. It may still have gone through: check the list before trying again." : netWhy === "read-timeout" ? "The server did not answer in time." : "Could not reach the server.";
     return "Something went wrong. Try again.";
   }
 
@@ -1162,13 +1190,15 @@
   function loadVenues() {
     if (vBusy) { vAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
     vBusy = true; $("vMsg").textContent = "";
+    if (!vLoaded) skelOn($("vList"));
     var f = $("vFilter").value;
     return admin("list", { filters: f ? { status: f } : {}, limit: 200, expand: true }).then(function (res) {
       vBusy = false;
       if (vAgain) { vAgain = false; return loadVenues(); }
       if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { $("vMsg").textContent = adminProblem(res.status); return; }
+      if (res.status !== 200 || !res.body.ok) { skelOff($("vList")); $("vMsg").textContent = adminProblem(res.status); return; }
       vRecs = res.body.data.records || [];
+      UI.limitNote($("vList"), vRecs.length, 200);
       return (vAreas ? Promise.resolve() : loadAreas()).then(function () {
         drawVenueFilters(); renderVenues(); vNewId = ""; vLoaded = true;
         $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
@@ -2282,14 +2312,16 @@
   function loadClasses() {
     var my = ++cSeq;   // only the newest load may change the page, so a slow older answer can never overwrite a newer one
     $("cMsg").textContent = ""; $("cRetry").hidden = true;
+    if (!cLoaded) skelOn($("cList"));
     return Promise.all([loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
       if (my !== cSeq) return;
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) {
-        $("cMsg").textContent = "Could not load the classes. " + adminProblem(res.status); $("cRetry").hidden = false; return;
+        skelOff($("cList")); $("cMsg").textContent = "Could not load the classes. " + adminProblem(res.status); $("cRetry").hidden = false; return;
       }
       cAll = res.body.data.records || [];
+      UI.limitNote($("cList"), cAll.length, 200);
       cLoaded = true;
       renderClasses();
       $("cChecked").textContent = "Last checked " + fmtClock.format(new Date());
@@ -2888,6 +2920,7 @@
   $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
+  $("netRetry").addEventListener("click", netRetry);
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a.skip"); if (!a) return;
     e.preventDefault(); $("main").focus();
@@ -4103,12 +4136,14 @@
   function loadPeople() {
     var my = ++pSeq;
     $("pMsg").textContent = ""; $("pRetry").hidden = true;
+    if (!pLoaded) skelOn($("pList"));
     var f = $("pFilter").value;
     return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_P).then(function (res) {
       if (my !== pSeq) return;
       if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { $("pMsg").textContent = "Could not load the people. " + adminProblem(res.status); $("pRetry").hidden = false; return; }
+      if (res.status !== 200 || !res.body.ok) { skelOff($("pList")); $("pMsg").textContent = "Could not load the people. " + adminProblem(res.status); $("pRetry").hidden = false; return; }
       pAll = res.body.data.records || []; pLoaded = true;
+      UI.limitNote($("pList"), pAll.length, 200);
       renderPeople();
       $("pChecked").textContent = "Last checked " + fmtClock.format(new Date());
       if ($("pHist").open) loadMerges();
@@ -4811,12 +4846,14 @@
   function loadPlaces() {
     var my = ++lSeq;
     $("lMsg").textContent = ""; $("lRetry").hidden = true;
+    if (!lLoaded) skelOn($("lList"));
     var f = $("lFilter").value;
     return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_L).then(function (res) {
       if (my !== lSeq) return;
       if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { $("lMsg").textContent = "Could not load the places. " + adminProblem(res.status); $("lRetry").hidden = false; return; }
+      if (res.status !== 200 || !res.body.ok) { skelOff($("lList")); $("lMsg").textContent = "Could not load the places. " + adminProblem(res.status); $("lRetry").hidden = false; return; }
       lAll = res.body.data.records || []; lLoaded = true;
+      UI.limitNote($("lList"), lAll.length, 200);
       renderPlaces();
       $("lChecked").textContent = "Last checked " + fmtClock.format(new Date());
     });

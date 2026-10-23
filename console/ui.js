@@ -4,7 +4,9 @@
    window.UI.dismiss() -> closes an open dialog as 'no' (used when the Console locks).
    window.UI.chip(kind, text) -> a status chip. kind: ok | warn | err | info | quiet. The words always carry the meaning; colour only helps.
    window.UI.banner(kind, text) -> a message strip. kind: ok | warn | err | info. Errors are announced at once (role=alert).
-   window.UI.empty(title, hint, actionNode) -> an empty-state block. */
+   window.UI.empty(title, hint, actionNode) -> an empty-state block.
+   window.UI.skeleton(rows) -> grey placeholder rows for a list that is loading (announced once as "Loading").
+   window.UI.limitNote(listEl, shown, limit, text) -> after a list, a note that appears only when the list hit its cap (the server returns no total). */
 (function () {
   "use strict";
   var dlg = null, pending = null, opener = null;
@@ -73,5 +75,20 @@
     return d;
   }
 
-  window.UI = { dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+  function skeleton(rows) {
+    var d = el("div", "skel"); d.setAttribute("role", "status");
+    d.appendChild(el("span", "sr", "Loading"));
+    for (var i = 0; i < (rows || 4); i++) { var r = el("div", "skel-row"); r.setAttribute("aria-hidden", "true"); d.appendChild(r); }
+    return d;
+  }
+  function limitNote(listEl, shown, limit, text) {
+    if (!listEl || !listEl.parentNode) return null;
+    var id = listEl.id + "Limit", n = document.getElementById(id);
+    if (!n) { n = el("div", "limitnote"); n.id = id; listEl.parentNode.insertBefore(n, listEl.nextSibling); }
+    n.textContent = text || ("Showing the first " + limit + ". There may be more: use the filters to narrow the list.");
+    n.hidden = !(shown >= limit);
+    return n;
+  }
+
+  window.UI = { skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();
