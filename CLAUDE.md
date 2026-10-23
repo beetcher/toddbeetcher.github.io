@@ -20,6 +20,15 @@ This is a static GitHub Pages site for Todd Beetcher, a CDL school bus driver. T
 
 Each HTML file links exactly one `style.css` and one `main.js` from its own directory. Never add `<style>` blocks or `<script>` tags with inline code to HTML files.
 
+### The Console (`console/`) follows its own policy
+The Strict File Rule above is for the public site. The staff Console is a different app with a different shape (one stylesheet, a small set of shared files, **one JS file per station**). **Read `console/ARCHITECTURE.md` before touching anything in `console/`** (and `console/DESIGN-RULES.md` for look and feel). The hard rules:
+1. **New station code never goes into `console/console.js`.** A new station is a new file, `console/<name>.js`, using `window.ConsoleKit`. `console.js` only shrinks.
+2. **Reach the big file only through `ConsoleKit`.** Never copy a helper into a station file; add it to the kit (own commit, no behaviour change).
+3. **Filters are `UI.chipFilters` (`console/filters.js`).** Never draw a tick-box list.
+4. **Every station file has a browser test** (`enjoy_router/run_<name>*_browser_test.py`), and sign-out must empty the station's data (`reset()`).
+5. **An extraction changes no behaviour**, proved with before and after pictures and the station's test.
+After any change in `console/`, run `python3 enjoy_router/run_console_architecture_test.py` (it fails if `console.js` grows or a station file has no test). When a station is extracted, lower the cap in that test.
+
 ### Site Structure
 
 - **Surface 1** (`index.html` + `style.css` + `main.js`) — Main job application surface. Five-layer scrolling page.
