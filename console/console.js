@@ -701,7 +701,9 @@
       if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
       phost.hidden = false; putInClass(rec, phost);
     });
-    putrow.appendChild(pb);
+    var ob = document.createElement("button"); ob.type = "button"; ob.className = "btn-primary"; ob.textContent = "Open class"; ob.hidden = true;
+    ob.addEventListener("click", function () { location.hash = "#/classes"; });
+    putrow.appendChild(ob); putrow.appendChild(pb); li._pb = pb; li._ob = ob;
     var hq = historyBtn(rec.id, "this request"); if (hq) { hq.className = "btn-link"; putrow.appendChild(hq); }
     var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "Journal";
     jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
@@ -3036,6 +3038,8 @@
     if (!P.loaded) { box.hidden = true; return; }
     box.hidden = false;
     var n = P.ids[rec.id];
+    var rli = box.parentNode;   // the card: once placed, "Open class" is the main button and "Put in a class" steps back
+    if (rli && rli._pb) { rli._ob.hidden = !n; rli._pb.className = n ? "btn-secondary" : "btn-primary"; }
     if (n) box.appendChild(mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")));
     else if (!rec.coverage_waiting) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a request with no trainer already shows its own chip above
     // One plain line saying what to do next, from fields the card already has.
