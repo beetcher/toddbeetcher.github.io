@@ -74,6 +74,7 @@ with sync_playwright() as p:
     pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers={"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"}, body=json.dumps({"ok": True, "data": {"records": []}})))
     pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
     pg.click("#sideNav a[data-nav=venues]"); pg.wait_for_function("document.getElementById('vChecked').textContent.length > 0")
+    pg.click("#vFilterBtn")   # the filters sit behind one Filters button, closed by default (1.3c)
     names = lambda: sorted(pg.locator("#vList > li .name, #vList > li h3, #vList > li b").first.evaluate_all("x => []") or [])
     def shown():
         return sorted(pg.locator("#vList > li").evaluate_all("els => els.map(e => (e.querySelector('.vname') || e).innerText.split('\\n')[0].trim())"))

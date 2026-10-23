@@ -173,6 +173,36 @@ with sync_playwright() as p:
     check("an error banner is announced at once; the others politely", r["err"] == ["banner banner-err", "alert", "Not saved"] and r["warn"] == ["status"], r)
     check("an empty state has a title, a hint and an action", r["empty"] == ["empty", 3, True], r["empty"])
 
+
+    # ---- filter bar, in Venues (Status, State, Region)
+    pg.click('#sideNav a[data-nav="venues"]'); pg.wait_for_selector("#addBtn"); pg.wait_for_function("document.getElementById('vChecked').textContent.length > 0")
+    check("Venues has one Filters button, closed by default, with its three selects tucked away", pg.locator("#vFilterBtn").inner_text() == "Filters" and pg.get_attribute("#vFilterBtn", "aria-expanded") == "false" and not pg.locator("#vFilter").is_visible() and not pg.locator("#vState").is_visible() and not pg.locator("#vRegion").is_visible())
+    check("no chips and no stray panel while nothing is filtered", pg.locator("#vFilterPanel").is_hidden() and pg.locator(".fchips .chip").count() == 0)
+    pg.click("#vFilterBtn")
+    check("the button opens the panel with the three labelled selects", pg.get_attribute("#vFilterBtn", "aria-expanded") == "true" and pg.locator("#vFilter").is_visible() and pg.locator("#vFilterPanel label.flab").all_inner_texts() and [t.split("\n")[0] for t in pg.locator("#vFilterPanel label.flab").all_inner_texts()] == ["Status", "State", "Region"])
+    pg.select_option("#vFilter", "active"); pg.wait_for_timeout(500)
+    check("choosing a status shows a chip and puts the count on the button", pg.locator(".fchips .chip").inner_text().replace("\n", "").startswith("Status: Active") and pg.locator("#vFilterBtn").inner_text() == "Filters (1)", pg.locator("#vFilterBtn").inner_text())
+    check("the chip's remove button names what it removes", pg.locator(".fchips .fx").get_attribute("aria-label") == "Remove filter Status: Active")
+    pg.screenshot(path="/tmp/claude-0/ui_filters_1440.png")
+    pg.click(".fchips .fx"); pg.wait_for_timeout(500)
+    check("removing the chip puts the filter back to All and the count back to Filters", pg.input_value("#vFilter") == "" and pg.locator(".fchips .chip").count() == 0 and pg.locator("#vFilterBtn").inner_text() == "Filters")
+    check("focus lands on the Filters button after a removal", pg.evaluate("document.activeElement.id") == "vFilterBtn")
+    r = pg.evaluate("""(function(){
+      var bar = document.createElement('div'); bar.id = 'pbar'; var b = document.createElement('button'); b.id = 'pbtn'; bar.appendChild(b);
+      var a = document.createElement('select'), c = document.createElement('select'), fired = [];
+      [['A', ['All', 'x', 'y']], ['C', ['Any', 'p']]].forEach(function (d, i) { var s = i ? c : a; d[1].forEach(function (t, j) { var o = document.createElement('option'); o.value = j ? t : ''; o.textContent = t; s.appendChild(o); }); s.addEventListener('change', function () { fired.push(d[0]); }); });
+      document.body.appendChild(bar);
+      var fb = UI.filterBar({ id: 'p', toggleBefore: b, after: bar, fields: [{ el: a, label: 'Alpha' }, { el: c, label: 'Charlie' }] });
+      a.value = 'x'; c.value = 'p'; a.dispatchEvent(new Event('change')); c.dispatchEvent(new Event('change'));
+      var two = { btn: document.getElementById('pFilterBtn').textContent, chips: document.querySelectorAll('#pbar + .fwrap .chip').length, clear: !!document.querySelector('#pbar + .fwrap .fclear') };
+      document.querySelector('#pbar + .fwrap .fclear').click();
+      return { two: two, a: a.value, c: c.value, fired: fired.slice(2), after: document.getElementById('pFilterBtn').textContent, chipsAfter: document.querySelectorAll('#pbar + .fwrap .chip').length, clearAfter: !!document.querySelector('#pbar + .fwrap .fclear') };})()""")
+    check("two filters on: 'Filters (2)', two chips and a Clear all", r["two"] == {"btn": "Filters (2)", "chips": 2, "clear": True}, r["two"])
+    check("Clear all sets every filter off and tells each select's own listeners", r["a"] == "" and r["c"] == "" and sorted(r["fired"]) == ["A", "C"] and r["after"] == "Filters" and r["chipsAfter"] == 0 and not r["clearAfter"], r)
+    pg.set_viewport_size({"width": 390, "height": 900}); pg.wait_for_timeout(300)
+    if pg.locator("#vFilterPanel").is_hidden(): pg.click("#vFilterBtn")
+    pg.screenshot(path="/tmp/claude-0/ui_filters_390.png")
+    check("at 390 the panel opens and nothing scrolls sideways", pg.locator("#vFilter").is_visible() and pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"))
     check("the page made no script errors", not errs, errs)
     b.close()
 

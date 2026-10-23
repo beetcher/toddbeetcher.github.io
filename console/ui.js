@@ -6,6 +6,10 @@
    window.UI.banner(kind, text) -> a message strip. kind: ok | warn | err | info. Errors are announced at once (role=alert).
    window.UI.empty(title, hint, actionNode) -> an empty-state block.
    window.UI.skeleton(rows) -> grey placeholder rows for a list that is loading (announced once as "Loading").
+   window.UI.filterBar(opts) -> { refresh } . Takes the page's existing filter <select>s and tucks them behind one "Filters" button, closed by default.
+        What is switched on shows as removable chips ("Status: Active"), with "Clear all" from two up. The button carries the count: "Filters (2)".
+        opts: { id, toggleBefore: element the button goes before, after: element the chips and panel go after, fields: [{ el: select, label }] }.
+        The first option of each select is its "off" value. Call refresh() after changing a select's options or value from code.
    window.UI.limitNote(listEl, shown, limit, text) -> after a list, a note that appears only when the list hit its cap (the server returns no total). */
 (function () {
   "use strict";
@@ -90,5 +94,44 @@
     return n;
   }
 
-  window.UI = { skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+  function filterBar(o) {
+    var fields = o.fields, id = o.id || "fb";
+    var toggle = el("button", "quiet fbtn"); toggle.type = "button"; toggle.id = id + "FilterBtn";
+    toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-controls", id + "FilterPanel");
+    var wrap = el("div", "fwrap"), chips = el("div", "fchips"), panel = el("div", "fpanel");
+    chips.setAttribute("role", "group"); chips.setAttribute("aria-label", "Filters in use");
+    panel.id = id + "FilterPanel"; panel.hidden = true;
+    o.toggleBefore.parentNode.insertBefore(toggle, o.toggleBefore);   // place the button and the chips first: the selects are about to move into the panel
+    o.after.parentNode.insertBefore(wrap, o.after.nextSibling);
+    fields.forEach(function (f) {
+      var lab = el("label", "flab"); lab.appendChild(el("span", "", f.label)); lab.appendChild(f.el); panel.appendChild(lab);
+      f.el.addEventListener("change", refresh);
+    });
+    wrap.appendChild(chips); wrap.appendChild(panel);
+    function off(f) { return f.el.options.length ? f.el.options[0].value : ""; }
+    function active() { return fields.filter(function (f) { return f.el.value !== off(f); }); }
+    function clear(f) { f.el.value = off(f); f.el.dispatchEvent(new Event("change", { bubbles: true })); }
+    function setOpen(on) { panel.hidden = !on; toggle.setAttribute("aria-expanded", on ? "true" : "false"); }
+    function refresh() {
+      var on = active();
+      toggle.textContent = on.length ? "Filters (" + on.length + ")" : "Filters";
+      chips.textContent = "";
+      on.forEach(function (f) {
+        var text = f.label + ": " + f.el.options[f.el.selectedIndex].text;
+        var c = chip("info", text), x = el("button", "fx", "\u00d7"); x.type = "button"; x.setAttribute("aria-label", "Remove filter " + text);
+        x.addEventListener("click", function () { clear(f); toggle.focus(); });
+        c.appendChild(x); chips.appendChild(c);
+      });
+      if (on.length > 1) {
+        var all = el("button", "quiet fclear", "Clear all"); all.type = "button";
+        all.addEventListener("click", function () { on.forEach(function (f) { f.el.value = off(f); }); fields.forEach(function (f) { f.el.dispatchEvent(new Event("change", { bubbles: true })); }); toggle.focus(); });
+        chips.appendChild(all);
+      }
+    }
+    toggle.addEventListener("click", function () { setOpen(panel.hidden); });
+    refresh();
+    return { refresh: refresh, open: function () { setOpen(true); }, close: function () { setOpen(false); } };
+  }
+
+  window.UI = { filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();

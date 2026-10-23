@@ -1224,6 +1224,7 @@
     sel.value = keep; if (sel.value !== keep) sel.value = "";
   }
   function drawVenueFilters() {
+    if (vBar) setTimeout(vBar.refresh, 0);
     var areas = vAreas || [], states = areas.filter(function (a) { return a.kind === "state" && a.is_active; }).sort(vByName);
     var on = {}; states.forEach(function (s) { on[s.state_code] = s.name; });
     vOptions($("vState"), "All states", function (sel) {
@@ -2826,7 +2827,7 @@
     vLoaded = false; vBusy = false; vNewId = "";
     $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
     $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
-    $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; vRecs = []; vAreas = null; closeForm(); closeEdit();
+    $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; if (vBar) vBar.refresh(); vRecs = []; vAreas = null; closeForm(); closeEdit();
   }
 
   function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
@@ -2843,6 +2844,8 @@
   $("addBtn").addEventListener("click", openForm);
   $("cancelBtn").addEventListener("click", closeForm);
   $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; vAreas = null; loadVenues(); });
+  var vBar = UI.filterBar({ id: "v", toggleBefore: $("vFilter"), after: $("vFilter").closest(".bar"),
+    fields: [{ el: $("vFilter"), label: "Status" }, { el: $("vState"), label: "State" }, { el: $("vRegion"), label: "Region" }] });
   $("vState").addEventListener("change", function () { drawVenueFilters(); renderVenues(); });
   $("vRegion").addEventListener("change", renderVenues);
   $("vGps").addEventListener("click", function () {   // look up GPS for every public venue that has an address but no point

@@ -163,6 +163,7 @@ with sync_playwright() as p:
 
     # 11. the Active/Inactive switch on the card: taps are collected, one save 1.5 seconds after the last tap
     pg.click("#cancelBtn") if pg.locator("#editPanel:not([hidden])").count() and pg.locator("#cancelBtn").is_visible() else None
+    if pg.locator("#vFilterPanel").is_hidden(): pg.click("#vFilterBtn")
     pg.select_option("#vFilter", "") if pg.locator("#vFilter").count() else None
     pg.wait_for_function("document.querySelectorAll('#vList li').length >= 2")
     import re as _re
