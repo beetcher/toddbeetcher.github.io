@@ -683,9 +683,23 @@
     [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
 
     var detail = document.createElement("div"); detail.className = "detail";
+    // A short plain summary first; every stored field stays available under "All details".
+    var sum = document.createElement("div"); sum.className = "dsum";
+    function srow(k, v) { if (v === undefined || v === null || v === "") return; sum.appendChild(line(k, String(v))); }
+    srow("Name", [rec.first_name, rec.last_name].filter(Boolean).join(" "));
+    srow("Email", rec.email); srow("Phone", rec.phone);
+    srow("Kind", TYPES[rec.registration_type] || rec.registration_type);
+    srow("People", rec.attendee_count);
+    srow("ZIP", rec.postal_code);
+    srow("Sent", rec.created_at ? when(rec.created_at) : "");
+    srow("Notes", rec.notes || rec.message || rec.comments);
+    detail.appendChild(sum);
+    var raw = document.createElement("details"); raw.className = "rawd";
+    var rsum = document.createElement("summary"); rsum.textContent = "All details"; raw.appendChild(rsum);
     var done = {};
-    FIRST_FIELDS.forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    FIRST_FIELDS.forEach(function (f) { if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
+    detail.appendChild(raw);
 
     head.addEventListener("click", function () {
       var open = li.classList.toggle("open");
@@ -3045,10 +3059,10 @@
       : "Next: put this request in a class.";
     box.appendChild(mk("span", "qnext", next));
     // Where the request is on its way: New, Placed, Confirmed, Attended (the furthest placement counts).
-    var at = n ? (P.st[rec.id] || 1) : 0, strip = mk("ol", "qstrip");
-    strip.setAttribute("aria-label", "Progress of this request");
+    var at = n ? (P.st[rec.id] || 1) : 0, strip = mk("div", "qstrip");
+    strip.setAttribute("role", "group"); strip.setAttribute("aria-label", "Progress of this request");
     ["New", "Placed", "Confirmed", "Attended"].forEach(function (w, i) {
-      var li2 = mk("li", i < at ? "done" : i === at ? "now" : "", w); if (i === at) li2.setAttribute("aria-current", "step"); strip.appendChild(li2);
+      var li2 = mk("span", i < at ? "done" : i === at ? "now" : "", w); if (i === at) li2.setAttribute("aria-current", "step"); strip.appendChild(li2);
     });
     box.appendChild(strip);
   }
