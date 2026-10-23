@@ -120,7 +120,7 @@ with sync_playwright() as p:
     li = c.locator("#list li", has_text="Chuck Norris")
     c.wait_for_function("document.querySelector('.curchip') && document.querySelector('.curchip').textContent.indexOf('Photos and memories') >= 0", timeout=8000)
     check("the card shows 'Interested in:' with the real title", "Interested in: Photos and memories" in li.inner_text(), li.inner_text())
-    check("the card does not claim a head count it never got", "People: —" in li.inner_text(), li.inner_text())
+    check("the card does not claim a head count it never got", "People:" not in li.inner_text() and "—" not in li.inner_text(), li.inner_text())
     li.locator("button.head").click(); li.get_by_role("button", name="Put in a class…").click()
     c.wait_for_selector(".putbox select[id$='_cls']")
     li.locator("select[id$='_cls']").select_option(label="+ A new class (build it now)")

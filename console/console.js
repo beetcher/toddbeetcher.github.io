@@ -660,9 +660,7 @@
     var email = document.createElement("div"); email.className = "sub"; email.textContent = rec.email || "";
 
     var chips = document.createElement("div"); chips.className = "chips";
-    var ppl = document.createElement("span"); ppl.textContent = "People: " + (rec.attendee_count != null ? rec.attendee_count : "—");
-    var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
-    chips.appendChild(ppl); chips.appendChild(st);
+    if (rec.attendee_count != null && rec.attendee_count > 1) { var ppl = document.createElement("span"); ppl.textContent = rec.attendee_count + " people"; chips.appendChild(ppl); }
     if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
     if (rec.coverage_waiting) { var nc = document.createElement("span"); nc.className = "nochip"; nc.textContent = "No active trainer"; chips.appendChild(nc); }
     else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
@@ -3038,7 +3036,13 @@
     if (!P.loaded) { box.hidden = true; return; }
     box.hidden = false;
     var n = P.ids[rec.id];
-    box.appendChild(n ? mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")) : mk("span", "qchip warn", "Open · not placed yet"));
+    if (n) box.appendChild(mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")));
+    else if (!rec.coverage_waiting) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a request with no trainer already shows its own chip above
+    // One plain line saying what to do next, from fields the card already has.
+    var next = n ? "Next: nothing. Open the class to see attendance."
+      : rec.coverage_waiting ? "Next: find a trainer for this ZIP, then Mark handled."
+      : "Next: put this request in a class.";
+    box.appendChild(mk("span", "qnext", next));
   }
   // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
   // The Show filter is a segmented control (a radio group). The hidden #reqShow select stays as the one place the choice is kept, so code elsewhere can set it and call applyReqFilter().

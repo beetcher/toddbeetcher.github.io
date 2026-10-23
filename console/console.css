@@ -206,7 +206,7 @@
   li > button.head:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
   .conf { font-size: var(--text-2xl); font-weight: 800; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
   .top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-  .type { font-size: var(--text-s); font-weight: 700; color: var(--warn-ink); background: var(--warn-bg); border-radius: 999px; padding: var(--space-1) var(--space-5); white-space: nowrap; }
+  .type { font-size: var(--text-s); font-weight: 700; color: var(--ink-soft); background: var(--line); border-radius: 999px; padding: var(--space-1) var(--space-5); white-space: nowrap; }
   .when { color: var(--muted); font-size: var(--text-m); margin-top: var(--space-1); }
   .who { margin-top: var(--space-3); font-weight: 600; }
   .sub { color: var(--muted); font-size: var(--text-m); }
@@ -475,10 +475,11 @@
   /* ---- Assignments, one-touch row, Needs attention ---- */
   .qrow { padding: 0 var(--space-7) var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
   .qrow[hidden] { display: none; }
+  .qrow .qnext { flex: 1 1 100%; color: var(--ink-soft); font-size: var(--text-m); font-weight: 600; }
   .qchip { display: inline-block; border-radius: 999px; padding: 3px var(--space-6); font-size: var(--text-m); font-weight: 700; background: var(--line); color: var(--ink-soft); }
   .qchip.ok { background: var(--new); color: var(--ok-ink); }
   .qchip.warn { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--orange); }
-  .chips .nochip { background: var(--err-bg); color: var(--err); border: 1px solid var(--err-edge); border-radius: 999px; padding: 1px var(--space-5); font-weight: 700; }
+  .chips .nochip { background: var(--warn-bg); color: var(--warn-ink); border: 1px solid var(--warn-edge); border-radius: 999px; padding: 1px var(--space-5); font-weight: 700; }
   .chips .donechip { background: var(--line); color: var(--ink-soft); border-radius: 999px; padding: 1px var(--space-5); font-weight: 700; }
   .covBanner { margin: var(--space-4) 0; padding: var(--space-6) var(--space-7); border: 1px solid var(--err-edge); border-radius: 8px; background: var(--err-bg); color: var(--err); font-weight: 700; display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap; }
   .covBanner[hidden] { display: none; }
