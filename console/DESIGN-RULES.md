@@ -12,4 +12,15 @@ Same meaning on every page. Source: Todd, 2026-10-23. Research and measurements:
 
 Same height and corner radius for every button on a page (40 px desktop, 44 px phone). Order in a card: orange first, outlined next, Delete last at the far right, set apart. Orange text only on black; lime only on dark; white text on orange fails contrast, so orange buttons use dark text.
 
-Last checked 2026-10-23: checkpoint push test.
+## How to use them in code (added with the Requests tune, B-1 to B-8)
+Classes live in `console/console.css`, just under the base `button` rules. Add the class to a `<button>`; nothing else is needed.
+- `btn-primary`: orange fill, dark text, dark edge. The one "do this next" button per card or page (Requests: Put in a class, Open class, Show them).
+- `btn-secondary`: white with a dark outline. Normal actions (Mark handled, Send reminders now, Refresh).
+- `btn-danger`: red fill, white text. Delete only. Keep the two-press confirmation ("Really delete?"); both states keep the class. Put it last, at the far right (`margin-left:auto`).
+- `btn-link`: plain underlined text. Looks at more, never changes data (History, How placing works).
+- Status is a chip (`.qchip`, `.chips span`, `.type`), never a button. Waiting is amber, done is green, kind is grey. Red is for Delete only.
+- Heights: 40 px; 44 px at 520 px wide and under. Focus ring: 3 px ink outline.
+- A card says what is next in one plain line (`.qnext`), for example "Next: put this request in a class."
+- Old `quiet` and `danger` classes still exist for stations not yet tuned; convert a station by replacing them with the classes above and updating its browser test labels in the same commit.
+Applied so far: Requests (commits B-1 to B-7 on `finish-now`). Next: Attendance, then Messages.
+
