@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Mutation check for the launch screen (P-79): break each rule in console/index.html on purpose and run_launch_screen_browser_test.py must fail.
+"""Mutation check for the launch screen (P-79): break each rule in console/console.js (and console.css) on purpose and run_launch_screen_browser_test.py must fail.
 Restores the file afterwards. Run from enjoy_router/:  python3 mutate_launch_page.py"""
 import os, subprocess, sys, pathlib
-HERE = pathlib.Path(__file__).resolve().parent; PAGE = HERE.parent / "console" / "index.html"
+HERE = pathlib.Path(__file__).resolve().parent; CON = HERE.parent / "console"; JS = CON / "console.js"; CSS = CON / "console.css"
 M = [
  ("the launch screen never starts", 'unlockSeq;\n    launchStart();', 'unlockSeq;\n    '),
  ("the sign-in buttons stay while it shows", '$("googleBox").hidden = true; $("keyBox").hidden = true; $("swapLink").hidden = true; $("lockMsg").textContent = "";\n    $("launching")', '$("lockMsg").textContent = "";\n    $("launching")'),
@@ -28,6 +28,7 @@ M = [
 ]
 survivors = []; env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
 for label, a, b in M:
+    PAGE = CSS if a.startswith(("@media", "#launching")) else JS   # the style rules live in console.css, everything else in console.js
     src = PAGE.read_text(encoding="utf-8")
     if src.count(a) != 1: print("CANNOT APPLY:", label, src.count(a)); survivors.append(label + " (pattern)"); continue
     PAGE.write_text(src.replace(a, b), encoding="utf-8")

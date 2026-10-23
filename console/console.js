@@ -1,0 +1,6108 @@
+/* Console script (the "legacy" file). Moved out of index.html unchanged (master plan step 0.2). Stations are peeled out of this file one by one in Phase 2. */
+(function () {
+  "use strict";
+
+  // Settings come from console-config.js. Without them nothing below can run, so say so plainly.
+  var CFG = window.CONSOLE_CONFIG;
+  if (!CFG || !CFG.appId || !CFG.brandName || !CFG.endpoints || !CFG.endpoints.records || !CFG.endpoints.admin || !CFG.endpoints.discovery) {
+    document.body.textContent = "The Console settings file (console-config.js) is missing or incomplete.";
+    return;
+  }
+
+  var REFRESH_MS = 20000;
+  var MAX = 100;
+  var KEY_STORE = "console_key_" + CFG.appId;
+  var TYPES = { private: "One on one", group: "Small group", "class": "Workshop" };
+  var FIRST_FIELDS = ["confirmation_number", "registration_type", "created_at", "processing_status", "first_name", "last_name",
+                      "email", "phone", "attendee_count", "program_slug", "source", "id"];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var known = {};        // id -> record
+  var rows = {};         // id -> <li>
+  var key = "";
+  var timer = null;
+  var busy = false;
+  var firstLoadDone = false;
+  var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
+
+  $("appName").textContent = CFG.brandName;
+
+  // Remember off: the key lives in sessionStorage (gone when the tab closes). On: localStorage (stays until Lock).
+  function getKey() {
+    try {
+      var l = localStorage.getItem(KEY_STORE);
+      if (l) return { key: l, remember: true };
+      var s = sessionStorage.getItem(KEY_STORE);
+      if (s) return { key: s, remember: false };
+    } catch (e) {}
+    return { key: "", remember: false };
+  }
+  function setKey(v, remember) {
+    try { sessionStorage.removeItem(KEY_STORE); } catch (e) {}
+    try { localStorage.removeItem(KEY_STORE); } catch (e) {}
+    if (!v) return;
+    try { (remember ? localStorage : sessionStorage).setItem(KEY_STORE, v); } catch (e) {}
+  }
+
+  // ---- Who is signed in. method "key" = the admin key (the back door); "google" = a Google sign-in (Firebase). While signed in with
+  // Google, `key` holds the current Google ID token and every call sends it as the Bearer value, exactly like the key. ME is what the
+  // server's `me` op said (or, for the key, a super admin). Hiding stations here is a courtesy: the server decides what is allowed.
+  var method = "key", ME = null, auth = null, unlockSeq = 0, timing = null;
+  function tnow() { return window.performance && performance.now ? performance.now() : Date.now(); }
+  var SDK = "https://www.gstatic.com/firebasejs/10.14.1/";
+  var STATION_CAPS = { requests: ["manage_requests", "manage_classes"], venues: ["view_console"], classes: ["view_console"], people: ["edit_people"],
+    places: ["edit_places", "edit_venues"], instructors: ["manage_instructors", "manage_classes"], students: ["manage_classes", "manage_requests"],
+    curriculums: ["view_console"], attendance: ["manage_classes", "manage_requests"], organizations: ["edit_people"], messages: ["view_messages"],
+    discovery: ["run_discovery", "view_spend", "edit_discovery_settings"], access: ["manage_access", "invite_people"], performance: ["view_performance"] };
+  function can(c) { return !!ME && (ME.is_super_admin === true || ME.inspector === true || (ME.capabilities || []).indexOf(c) >= 0); }   // an inspector may LOOK at everything; the server refuses every write
+  function canAny(list) { for (var i = 0; i < list.length; i++) if (can(list[i])) return true; return false; }
+  function stationAllowed(id) { var l = STATION_CAPS[id]; return l ? canAny(l) : !!(ME && (ME.is_super_admin || ME.inspector)); }
+  function canPlaced() { return canAny(["manage_requests", "manage_classes"]); }
+  function keyMe() { return { name: "Admin key", role_key: "super_admin", method: "key", is_super_admin: true, capabilities: [], email: "", scope_region_id: "" }; }
+
+  var fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
+  function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d) + " Mountain"; }
+
+
+  // ---- Stations and manuals. To add a station: one SURFACES entry (name, blurb, manual), one view section, one line in route().
+  var SURFACES = [
+    { id: "requests", name: "Registration requests", short: "Requests", blurb: "Sign-ups arriving from the website, newest first.",
+      manual:
+        '<div class="kicker">Station 1</div><h2>Registration requests</h2>' +
+        '<h3>Mission</h3><p>Every time someone registers on the website, a request lands here. This is where you watch them arrive and put them in a class.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Tap a card</b> to open it and see every answer they gave.</li>' +
+        '<li><b>Put in a class…</b> places the requester in a class, and <b>everyone else named on the request</b> with them (each as a student, all together or none; the requester is left out if they said they are not attending). It says who will be added to the student roster. Each person with an email is sent the confirmation; anyone without one is placed and not told. Choose the class, then <b>Add to class</b>. If we already have someone with the same email or name, you are asked whether to use them, so nobody is added twice. Use <b>Change the name or contact details</b> to fix a typo first. The request is remembered, so the card then lists where it was placed. Choose <b>+ A new class (build it now)</b> (shown in green) in the class list to build one on the spot: pick the curriculum, venue and room, date and time, and a lead instructor. With a venue, date and time it is saved as scheduled; otherwise as an idea to finish in Classes. A multi-session curriculum starts a series at session 1; add the other sessions in Classes. <b>Delete</b> (two presses: the second says Really delete?) hides a request from this list; the record is kept for now. A request with someone still in a class is not deleted: cancel or remove them in the class Attendance first.</li>' +
+        '<li><b>New requests glow lime</b> and appear on their own: the list checks for news every 20 seconds while this station is open.</li>' +
+        '<li><b>Refresh</b> checks right now.</li>' +
+        '<li><b>No active trainer</b> (a red chip): the request came from a ZIP that no active region holds. The requester was told we are securing the best trainer, and the staff were emailed. A red bar at the top counts them (a super admin or admin also sees <b>Send reminders now</b>, which sends the daily 8:00 reminder email to everyone who should get it, right away); the <b>Show</b> list has a <b>No active trainer</b> choice. <b>Mark handled…</b> asks what was done (required) and closes it; it also closes itself once an active region holds that ZIP. A view-only account sees these and cannot mark them.</li>' +
+        '<li><b>The chip under each card</b> says <b>Placed</b> (with how many people are in classes from it) or <b>Not placed yet</b>. A request counts as placed while anyone is in a class from it. If that class is cancelled it goes back to Waiting to be placed.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Nothing is placed by itself. You choose the class, so a full class never turns anyone away: a student simply starts on the waiting list unless you pick another status.</li>' +
+        '<li>Home lists every request that is <b>Waiting to be placed</b>.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Register on the website in another window, watch the card appear, tap Put in a class…, build a class for it, and watch the chip turn to Placed.</li></ul>' },
+    { id: "venues", name: "Venues", short: "Venues", blurb: "Places where classes happen: where, rooms, hours, rules.",
+      manual:
+        '<div class="kicker">Station 2</div><h2>Venues</h2>' +
+        '<h3>Mission</h3><p>A venue is a place where a class can happen: a library, a cafe, a community room or a private home. Its rooms and opening hours live inside it.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Status menu</b> filters the list to Active or Inactive.</li>' +
+        '<li><b>Add venue</b> needs only a name, a short name and the kind of place. It starts <b>inactive</b>. Type an address too and the place is saved with it; if that address is already saved you are offered the saved place.</li>' +
+        '<li><b>Tap a card</b> to read the details. <b>Edit</b> opens the form: Basics, Place and Contact first, everything else under More details. <b>Change place</b> saves right away; the old place is kept.</li>' +
+        '<li>The venue\'s <b>email and phone</b> are the venue\'s own. The <b>main and backup contacts</b> are contacts you choose by name; the venue keeps only a pointer, so their details stay in one place.</li>' +
+        '<li><b>Rooms: N</b> and <b>Open days: N</b> on a card open a window where you can add, change or remove them without opening the whole form.</li>' +
+        '<li><b>What is needed to make this active?</b> is a checklist in the edit form. It updates as you fill in fields.</li>' +
+        '<li><b>Delete</b> asks first. The venue disappears from the list but the record is kept.</li>' +
+        '<li>Venues found by <b>Discovery</b> (AI) arrive here <b>inactive</b>, with a note saying what still needs a look. Check the facts, then activate. See the Discovery station.</li>' +
+        '<li>Changing a venue name, or moving it to another place, emails everyone placed in an upcoming class here, with the old and the new.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>To make a venue <b>active</b> it needs one thing: a place with an address or a GPS point. Everything else is optional (a park has no one to call and no rooms).</li>' +
+        '<li>The short name cannot be changed once saved.</li>' +
+        '<li>A venue that has live classes <b>cannot be deleted</b>. Set it inactive instead.</li>' +
+        '<li>A room a live class uses cannot be removed, renamed, or made smaller than that class\'s biggest size.</li>' +
+        '<li>If someone else changed the venue while you were editing, you are asked to reload. Nothing is overwritten.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> a class that is scheduled or enrolling needs an <b>active</b> venue, so fill a venue in and activate it before scheduling.</div>' +
+        '<h3>Try this</h3><ul><li>Add a venue, edit it, add a room, then open Rooms: 1 and change the room size.</li></ul>' },
+    { id: "classes", name: "Classes", short: "Classes", blurb: "Scheduled sessions: when, where, how many seats.",
+      manual:
+        '<div class="kicker">Station 3</div><h2>Classes</h2>' +
+        '<h3>Mission</h3><p>A class is one scheduled session: a workshop, a group, or a one on one. It points at a venue and a room.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Filters</b> are tick boxes for status and kind. Everything is ticked at first, so you see every class. Untick to narrow, or tap Show all.</li>' +
+        '<li><b>Add class</b> needs a title, a short name, the kind, whether it shows in the public list, and the people numbers. It starts as an <b>idea</b> with no date.</li>' +
+        '<li><b>Edit</b> adds the venue, room, date and time, price and notes. Pick the venue first; the room list then shows that venue\'s rooms.</li>' +
+        '<li><b>Start time</b> is typed in the class\'s own time zone and saved correctly for everyone else.</li>' +
+        '<li><b>Attendance</b> on a card opens the real list: the instructors and students of that class, each with a status you can change. Open <b>Add a student or instructor</b> to pick someone we already know or add someone new. A new student or instructor is added to the student or instructor list in the same step. A student joins as <b>assigned</b>, or on the <b>waiting list</b> if the class is full; you can pick any status yourself (assigned, waiting list, confirmed, attended, late, did not show, declined, withdrawn, cancelled), and a full class never refuses anyone. <b>Journal</b> on the card shows who was placed, changed or removed, and when. <b>Setting a class to cancelled</b> cancels everyone in it, students and instructors, and puts each request back to Waiting to be placed. <b>Remove</b> takes a mistaken entry out; their record is kept. <b>People are emailed when a placement ends</b>: everyone in a cancelled or deleted class gets a cancel notice (with a calendar file that removes the event); a person set to declined, withdrawn or cancelled, or removed, is told, and when a student who held a seat leaves, every instructor of the class is told. Choosing a status that ends a person’s place (declined, withdrawn, cancelled) asks you to confirm first, because they are emailed. Every save shows a spinner on the button and a Working, then Done, message at the bottom of the screen. Messages shows every one of these emails, including any that could not be sent.</li>' +
+        '<li><b>Curriculum, series and session number</b> are in Edit, under Basics. The curriculum says what is taught. A curriculum with several sessions is taught as several classes, one per session: give them all the same <b>series</b> (choose "A new series" on the first, then pick that series on the rest) and a session number each. Two classes in one series cannot share a number.</li>' +
+        '<li><b>Cancel class</b> is for a real class that does not happen. It stays in the list marked cancelled, and everyone in it is cancelled and emailed (students and instructors).</li>' +
+        '<li><b>Delete</b> is for a class built by mistake, such as a duplicate. It asks first, then disappears from the list. The record is kept.</li>' +
+        '<li><b>Saving a change</b> to the date, start time, length, time zone, venue, room or venue notes of a class that has not started emails everyone placed in it (students, the waiting list and instructors) what changed and what it is now. Students and instructors get a calendar update that replaces the old entry; the waiting list gets no calendar file. It is one message per person per save. Changing the lead instructor does the same. A class that is given its first date emails the people already placed in it the usual placement emails. Titles, sizes and prices send nothing.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Fewest people, target and biggest size must go in order: fewest, then target, then biggest.</li>' +
+        '<li>The biggest size cannot be more than the chosen room holds.</li>' +
+        '<li>A <b>scheduled</b> or <b>enrolling</b> class needs a venue that exists and is <b>active</b>.</li>' +
+        '<li>A cancelled reason is only for cancelled classes.</li>' +
+        '<li>The short name cannot be changed once saved. The counts (registered, waiting, attended, reviews) belong to the ship and cannot be typed in.</li>' +
+        '<li>A class that holds registrations <b>cannot be deleted</b> (cancel the registrations first), and its biggest size cannot drop below the seats already taken.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> if a class seems missing, open Filters and tap Show all, then Refresh.</div>' +
+        '<h3>Try this</h3><ul><li>Add a one on one class, then edit it and give it a venue, a room and a start time.</li></ul>' },
+    { id: "people", admin: true, name: "People", short: "People", blurb: "The people behind the sign-ups: names, birth dates, merging duplicates.",
+      manual:
+        '<div class="kicker">Station 4</div><h2>People</h2>' +
+        '<h3>Mission</h3><p>A person is one human, recorded once, whatever they do with LAUNCH: a student, a payer, a leader, a guest. Roles and details that change over time are kept elsewhere and point back here.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Status menu</b> shows Active, Inactive, or all. <b>Find by name</b> narrows the list as you type.</li>' +
+        '<li><b>Add person</b> needs only a given name.</li>' +
+        '<li><b>History</b> on a card lists every class the person is in, as a student or an instructor, and how it went.</li>' +
+        '<li><b>Tap a card</b> to read everything on file. <b>Edit</b> changes names, birth date, language, status and notes. Clear a box to remove that value.</li>' +
+        '<li><b>Merge into another person</b> is for duplicates. Pick who to keep and say why. Gaps on the kept person are filled from the duplicate, records pointing at the duplicate move over, and the duplicate is marked merged.</li>' +
+        '<li><b>Addresses</b> opens the person\'s addresses: where they live, mail goes, and so on, each with dates. <b>Add an address</b> finds the place if it is already saved, or saves it, and links the person. <b>End</b> records a move; <b>Remove</b> is only for a mistake.</li>' +
+        '<li>To link a person to an organization (a superintendent, a teacher, a volunteer), open the organization in <b>Organizations</b> and tap <b>Add link</b>. The person\'s card does not show it yet.</li>' +
+        '<li><b>Merge history</b> lists every merge. <b>Undo this merge</b> puts the records back. Values changed since the merge are left alone.</li>' +
+        '<li><b>Delete</b> asks first. The person is hidden from the lists but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The ship never merges two people on its own, and never because an email or phone matches. A person decides.</li>' +
+        '<li>Dates are typed month first: 04-17-1961, 04-1961, or just 1961 when that is all you know. Whether someone is under 18 is worked out by the ship, never typed.</li>' +
+        '<li>Protected details (health and similar) have no screen here on purpose. They need a recorded purpose and consent first.</li>' +
+        '<li>Erasing a person for good is not available here. It waits for sign-in roles.</li>' +
+        '<li>If someone else changed the person while you were editing, you are asked to refresh. Nothing is overwritten.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> a name like "Bob Smith" twice is not proof of one person. Check a birth date or ask before merging.</div>' +
+        '<h3>Try this</h3><ul><li>Add two people with nearly the same name, merge one into the other, then undo it from Merge history.</li></ul>' },
+    { id: "places", admin: true, name: "Places", short: "Places", blurb: "Locations on Earth: addresses, GPS points, and who is linked.",
+      manual:
+        '<div class="kicker">Station 5</div><h2>Places</h2>' +
+        '<h3>Mission</h3><p>A place is somewhere on Earth, big or small: a doorway, a street address, a whole property with several GPS points. It never says who lives, owns or works there. People and venues are <b>linked</b> to a place, with dates, so a move ends one link and starts another while the places stay as they are.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add place</b> saves a place by itself. To give a person an address, open their card in <b>People</b> and tap <b>Addresses</b>: that finds the place if it is already saved, or saves it, and links the person with a start date.</li>' +
+        '<li><b>Tap a card</b> to see every address and GPS point. <b>Add address</b> and <b>Add GPS point</b> put more on the same place. <b>Show who is linked here</b> lists the people, venues and organizations. An organization is linked to a place from its own card in <b>Organizations</b> (<b>Add place</b>).</li>' +
+        '<li>Changing a place address emails everyone placed in an upcoming class at a venue there, with the old and the new address.</li>' +
+        '<li><b>Retire</b> hides a place that is no longer used. <b>Delete</b> hides a mistake. Neither works while anyone is still linked: end those links first.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Two places with the same address are reported, never merged by the ship.</li>' +
+        '<li>Living at the same place does not make two people related. The ship never guesses family from an address.</li>' +
+        '<li>Homes of people marked confidential or sealed are not shown here.</li>' +
+        '<li>Structures (how many bedrooms) and neighborhoods or cities are not part of a place.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> use End, not Remove, when someone moves. Remove is for a mistake.</div>' +
+        '<h3>Try this</h3><ul><li>Add an address to a person, then add a second person at the same address and see the ship offer the saved place.</li></ul>' },
+    { id: "instructors", name: "Instructors", short: "Instructors", blurb: "The people who teach: bio, what they teach, where and when.",
+      manual:
+        '<div class="kicker">Station 6</div><h2>Instructors</h2>' +
+        '<h3>Mission</h3><p>The instructor roster is the list of who can teach a LAUNCH class. A name or phone number is kept in one place only, and each entry adds what LAUNCH needs to know about them as an instructor.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add instructor</b> is one window. Type a name and pick them from the list, or choose <b>Someone new</b> and fill in their name, email and phone. If anything is refused, nothing is saved.</li>' +
+        '<li><b>Tap a card</b> to read it. <b>Edit</b> changes the instructor details and their name, email and phone together. The weekly hours are one row per day: leave a day empty if they cannot teach.</li>' +
+        '<li><b>Remove from instructors</b> takes them off the roster. Their history is kept, and you can add them again later.</li>' +
+        '<li>The status menu shows Active, Inactive or all. Inactive instructors are kept but will not be offered when assigning.</li>' +
+        '<li>An instructor needs an address. When you add one, enter where they live (saved privately; only the state is shown afterwards). A card that says <b>No address on file</b> has an <b>Add address</b> button, and an instructor without an address cannot be made active again until you add one.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Someone is an instructor once. If you pick someone who already is, the window says so and opens their card.</li>' +
+        '<li>The ship never matches a typed name on its own. You pick, or you say it is someone new.</li>' +
+        '<li>The weekly hours, bio and tags are optional. The roster is expected to grow more fields.</li>' +
+        '<li>If two records for the same person are merged, their roster entries move to the one kept. Erasing someone removes their entries.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> someone can be both an instructor and a student. They have one entry on each roster.</div>' +
+        '<h3>Try this</h3><ul><li>Add a new instructor, then open their card and add a bio and Tuesday hours.</li></ul>' },
+    { id: "students", name: "Students", short: "Students", blurb: "Who takes classes: a simple roster with a status and a note.",
+      manual:
+        '<div class="kicker">Station 7</div><h2>Students</h2>' +
+        '<h3>Mission</h3><p>The student roster is the list of who takes LAUNCH classes. Each entry holds a status and a note. It is deliberately thin and will grow.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add student</b> works like adding an instructor: type a name, pick them, or choose <b>Someone new</b>.</li>' +
+        '<li><b>Edit</b> changes the status, the note, and their name, email and phone together.</li>' +
+        '<li><b>Remove from students</b> takes them off the roster but keeps the history. They can be added again later.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Someone is a student once. Nothing is matched for you.</li>' +
+        '<li>Merging and erasing carry over to this roster.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> People and Places show in red in the station menu. They are the super-admin stations that will be hidden from other operators once sign-in exists.</div>' +
+        '<h3>Try this</h3><ul><li>Add two friends as students, then remove one and add them back.</li></ul>' },
+    { id: "curriculums", name: "Curriculum", short: "Curriculum", blurb: "What is taught: the portfolio of curricula a class points at.",
+      manual:
+        '<div class="kicker">Station 8</div><h2>Curriculum</h2>' +
+        '<h3>Mission</h3><p>A curriculum is what is taught, such as Introduction to AI Use. A class is a place at a time with one curriculum. LAUNCH keeps a small portfolio of them; which instructors can teach which is set on each instructor\'s card.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add curriculum</b> needs a title and a short identifier (it fills itself in from the title; lowercase letters, digits and underscores). Sessions and minutes per session are optional.</li>' +
+        '<li><b>Edit</b> changes everything except the identifier. Setting a curriculum to <b>inactive</b> keeps it but stops offering it when a class is built.</li>' +
+        '<li><b>Delete</b> asks first. The curriculum disappears from the list but the record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The short identifier is unique and cannot be changed once saved.</li>' +
+        '<li>Each session of a multi-session curriculum is its own class. The curriculum only says how many sessions there are and how long each lasts.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> start with one or two curricula. You can add more any time.</div>' +
+        '<h3>Try this</h3><ul><li>Add Introduction to AI Use as one session of 60 minutes.</li></ul>' },
+    { id: "attendance", name: "Attendance", short: "Attendance", blurb: "Everyone in every class: find, filter and change their status.",
+      manual:
+        '<div class="kicker">Station 9</div><h2>Attendance</h2>' +
+        '<h3>Mission</h3><p>One list of every student and instructor in every class. Use it to answer questions like who is waiting, who has not confirmed, or where a reference number went.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Filters</b> are tick boxes for status, role and where the record came from. Tick what you want to see, then tap <b>Refresh</b>. Nothing changes until you do.</li>' +
+        '<li><b>Search</b> looks at the name, the class title, and the reference or request number.</li>' +
+        '<li>Each row shows the class (tap it to open that class\'s attendance), the person, their reference and request numbers, and a status menu you can change right there.</li>' +
+        '<li><b>Remove</b> asks twice. The record is kept.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>A reference (ICDT-A-…) belongs to one person in one class. A request number (ICDT-…) is the sign-up it came from.</li>' +
+        '<li>The list shows the newest 200 records. If you see a note about that, narrow it with the filters or search.</li>' +
+        '</ul>' },
+    { id: "organizations", name: "Organizations", short: "Organizations", blurb: "Companies, schools, districts and other organized groups.",
+      manual:
+        '<div class="kicker">Station 10</div><h2>Organizations</h2>' +
+        '<h3>Mission</h3><p>An organization is a company, nonprofit, school, school district, board, club or other organized group, such as Ozo Coffee or Boulder Valley School District. It is not a place and not a venue: a place is on Earth, a venue is somewhere a class happens. An organization may <b>sponsor</b> a class, but a shop it runs is a venue. Only the name is needed.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Add organization</b> needs a name. Tick every kind that fits (one organization can be a nonprofit and a school). Short name, web address, email and phone are optional.</li>' +
+        '<li><b>Search</b> looks at the name, short name, legal name and other names. The status menu narrows the list; choose All to see everything.</li>' +
+        '<li><b>Tap a card</b> for the details. <b>Edit</b> shows the main fields, with <b>More details</b> for the legal name, other names, description, outside identifiers, dates and notes.</li>' +
+        '<li><b>Outside identifiers</b> go one per line as <i>type: value</i>, for example <i>ein: 00-0000000</i>.</li>' +
+        '<li>The <b>switch</b> on a card sets it active or inactive. In Edit you can also choose <b>Closed</b> for an organization that no longer exists.</li>' +
+        '<li><b>Delete</b> asks first. The organization disappears from the list but the record is kept.</li>' +
+        '<li><b>Show links</b> lists what is linked to the organization (people, venues, other organizations) and what the organization is itself linked to, such as a school that is <i>part of</i> a district. <b>Add link</b> picks a person, venue or organization, then how they are linked, with an optional title (Superintendent) and dates. <b>End</b> sets the last day to today; <b>Delete</b> (tap twice) is for a mistake.</li>' +
+        '<li><b>Show places</b> and <b>Add place</b> link the organization to a place, for example <i>Operates here</i> for a factory, with the main-place tick for headquarters.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Two organizations can share a name; nothing warns you. One organization can have many other names.</li>' +
+        '<li>No date check: the closing date is not compared with the founding date.</li>' +
+        '<li>Addresses, people and the schools that belong to a district are not typed on the organization. They are <b>links</b>, added from its card.</li>' +
+        '<li>A link is never an access right. Linking a person to an organization gives them no permission to anything.</li>' +
+        '</ul>' +
+        '<div class="tip"><b>Captain\'s tip:</b> start with the few organizations LAUNCH deals with. More can be added any time.</div>' +
+        '<h3>Try this</h3><ul><li>Add Ozo Coffee as a business, then search for it.</li></ul>' },
+    { id: "messages", name: "Messages", short: "Messages", blurb: "Every message the system sent or tried to send, with notes.",
+      manual:
+        '<div class="kicker">Station 11</div><h2>Messages</h2>' +
+        '<h3>Mission</h3><p>One list of every message the system tried to send: receipts, placement confirmations and whatever comes next. Use it to check that a message went out, to see why one did not, and to leave a note so the next person does not repeat your investigation.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li>The newest message is first. The coloured edge shows trouble: red means it needs attention, orange is skipped, green is sent.</li>' +
+        '<li><b>Filters</b> are tick boxes for status, which message, and how it was sent. They apply as you tick them. <b>Needs attention</b> shows failed and unknown messages and anything not sent that nobody has handled yet.</li>' +
+        '<li><b>Search</b> looks at the address, subject, reason, notes and ids, across the whole log. The tick boxes are ignored while you are searching.</li>' +
+        '<li><b>Tap a message</b> for everything we recorded about it. The text of the message itself is never kept.</li>' +
+        '<li><b>Add a note</b> saves a comment on that message. Notes can be added but never edited or removed; to correct one, add another.</li>' +
+        '<li><b>Mark handled</b> appears on a message that was not sent: say what you did, for example phoned her.</li>' +
+        '<li><b>Copy entry</b> and <b>Copy as JSON</b> put the whole message, notes included, on your clipboard.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Messages cannot be edited or deleted here. This is the record of what happened.</li>' +
+        '<li>The list shows the newest 200. If you see a note about that, narrow it with the filters or search.</li>' +
+        '<li>A message with a test-address mark went to our own test inbox, not to the person.</li>' +
+        '</ul>' },
+    { id: "discovery", admin: true, name: "Discovery", short: "Discovery", blurb: "Find venues with AI: pick a model and an area, set a spend cap, review what comes back.",
+      manual:
+        '<div class="kicker">Station 12</div><h2>Discovery</h2>' +
+        '<h3>Mission</h3><p>Discovery asks an AI model to find places in an area you choose (venues first) and saves what it finds as <b>inactive candidates</b> for you to check. Nobody is contacted. Nothing goes live until you activate a venue in Venues.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>The banner</b> at the top says whether Discovery is off, a dry run (plans and prompts only, nothing sent, nothing spent) or live.</li>' +
+        '<li><b>Find venues</b>: choose the model, the state, then the whole state or a region, the kinds of place, the most results and a spend cap in cents. <b>Estimate</b> shows how many AI calls, the expected cost range and the exact prompts that would be sent. <b>Go</b> is only enabled after an estimate, and the run never spends past the cap. <b>Stop</b> ends it after the current call.</li>' +
+        '<li><b>Runs</b>: every run ever made. Open one to see each call and its exact prompt, what was rejected and why, and the candidates. <b>Continue</b> restarts a run that paused. <b>Withdraw</b> (two presses) takes back what the run created, except venues a person has already activated, edited or used.</li>' +
+        '<li><b>Candidates</b>: each fact is labelled <b>Sure</b> (a source was cited), <b>Check</b> (the AI could not confirm it) or <b>Unknown</b> (blank). A venue flagged <b>No street address</b> or <b>Operator is a new organization</b> needs a look before you activate it. Open Venues to finish and activate it.</li>' +
+        '<li><b>Settings</b>: <b>Models</b> (add one, switch one on or off; only the NAME of a key setting is stored), <b>Areas</b> (a US map: click a state to switch it on or off and see its ZIP codes as dots; drag a box over dots to build a region, click a dot to pick or drop one, or change an existing region; <b>List</b> does the same with typed ZIP codes), <b>Types</b> (the tick boxes), <b>Prompt</b> (read the wording sent to the AI, edit it as a draft, publish it, or start a new draft from an older version), <b>Limits</b> (starting and maximum spend cap, results per run and per call).</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The mode (off, dry run, live) is set on the server, never here, so a slip in the Console cannot start spending.</li>' +
+        '<li>A new state starts switched off. Only states and regions switched on can be searched.</li>' +
+        '<li>A fact marked Sure means a source was cited, not that it is certainly true. Always look before activating.</li>' +
+        '<li>Run records are history: they are never deleted. A published prompt is never edited; edit a draft and publish it as the next version.</li>' +
+        '<li>The money fields are whole cents. The Find venues tab cannot go above the maximum in Limits.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Estimate a small run for one library type in a region, open the prompts, read them, then press Go.</li></ul>' },
+    { id: "access", admin: true, name: "Access", short: "Access", blurb: "Who may sign in with Google, and what each role may do.",
+      manual:
+        '<div class="kicker">Station 13</div><h2>Access</h2>' +
+        '<h3>Mission</h3><p>Decide who may sign in to the Console with their Google account and what they may do there. Only a super admin sees this station.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Invite someone</b>: type the Google email they sign in with, pick a role (and a territory if you like) and press Send invitation. They can sign in at once, and an email goes to that address with the Console link, who invited them, their role and the exact Google account to use. If the email did not go, the message says why.</li>' +
+        '<li><b>Resend invite email</b> (on each person who is switched on) sends that email again, for example when it was missed or the address was only just corrected. Every send is in the Messages station.</li>' +
+        '<li><b>Edit</b> changes a person\'s name, role or region. Once someone has signed in, their email cannot change.</li>' +
+        '<li><b>Switch off / Switch on</b> stops or restores a person\'s access at their very next request. Nothing is deleted.</li>' +
+        '<li><b>Roles</b> are bundles of capabilities. Tick what a role may do; the table at the bottom says what each capability allows. A super admin role does everything.</li>' +
+        '<li><b>Global Inspector</b> is a view-only role for demos. A person with it sees every station (Activity, Access, Spend and Messages too) and can change nothing: the server refuses every save, delete, invitation and email, even if one is typed by hand, and the buttons that would change something are switched off. Private details are hidden (notes, birth details, home addresses, restricted details) or show as (hidden) (email, phone, ZIP); names show, and staff emails here show in full. An inspector may start a Discovery run, capped at 25 cents. Give it by choosing the Global Inspector role when you invite someone.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>The last active super admin cannot be switched off or demoted, and you cannot change your own role, region, email or on/off switch.</li>' +
+        '<li>A role that people still hold cannot be deleted. Switch it off instead.</li>' +
+        '<li>Only a super admin may manage access; that capability cannot be given to an ordinary role yet.</li>' +
+        '<li>The admin key still opens the Console as a super admin, whatever is set here.</li>' +
+        '<li>The <b>Review access code</b> (Sign-in box, super admin only) is a temporary way in for a reviewer: one code, 24 hours, view only. Type a new one and it replaces the old one and starts the 24 hours again. The reviewer types it into the Key box on the sign-in screen. The code is shown once when you set it.</li>' +
+        '<li>Region limits are saved but not enforced yet.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Invite a second Google account as Region head, sign in with it in another browser, and see which stations it gets.</li></ul>' },
+    { id: "activity", admin: true, name: "Activity", short: "Activity", blurb: "Who changed what, and when. Read only.",
+      manual:
+        '<div class="kicker">Station 14</div><h2>Activity</h2>' +
+        '<h3>Mission</h3><p>A record of every change made through the Console: who did it, when, and which fields went from what to what. Only a super admin sees this station, and nothing in it can be edited or removed.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>Newest first.</b> Each card says what happened (Created, Edited, Deleted or Restored), to which record, by whom, and when.</li>' +
+        '<li><b>Show</b> narrows the list to one kind of record, one kind of change, or one person or source. The server takes one of these at a time.</li>' +
+        '<li><b>Search</b> narrows what is already on the screen: a name, a field, a value, a person.</li>' +
+        '<li><b>Change history</b> on any card here, or on a class, venue, place, person, request or instructor card, shows everything that ever happened to that one record and the records that point at it.</li>' +
+        '<li><b>Refresh</b> reads the log again. The newest 200 entries are loaded; use Show or Change history to reach older ones.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>An entry is written at the same moment as the change. A change cannot happen without its entry.</li>' +
+        '<li><b>Personal details are never copied here.</b> A change to a name, email, phone, address or birth date shows that the field changed, and says its values are not recorded. So erasing a person leaves nothing to scrub.</li>' +
+        '<li>A save that changed nothing writes nothing. A person\'s last sign in time is not recorded.</li>' +
+        '<li>Not yet recorded: the public sign-up form and the completion link, and records created by tests.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Edit a venue, then open Activity and find the edit. Tap Change history on the venue card to see only that venue.</li></ul>' },
+    { id: "performance", admin: true, name: "Performance", short: "Performance", blurb: "How fast the Console is. Read only.",
+      manual:
+        '<div class="kicker">Station 15</div><h2>Performance</h2>' +
+        '<h3>Mission</h3><p>How fast the Console is, so slow spots can be found and fixed. Today it shows sign-in speed: every sign-in sends the time each step took, measured by that person\'s own page. More measures (Spend and others) will be added here.</p>' +
+        '<h3>Controls</h3><ul>' +
+        '<li><b>7, 30 or 90 days</b> and <b>device</b> narrow what the numbers cover.</li>' +
+        '<li><b>The bar</b> shows where the time goes, on average: the server waking up and the network, the server\'s own work, loading the lists, and everything else.</li>' +
+        '<li><b>Asleep</b> means the server had just woken up (a cold start), the usual cause of a slow first sign-in.</li>' +
+        '<li><b>Refresh</b> reads the timings again.</li>' +
+        '</ul>' +
+        '<h3>Ship\'s rules</h3><ul>' +
+        '<li>Needs the View performance capability (a super admin has it; give it to Admin in Access). Read only, nothing can be changed here.</li>' +
+        '<li>No names, emails or keys are stored: only the role, the device and the times.</li>' +
+        '</ul>' +
+        '<h3>Try this</h3><ul><li>Sign out, sign in again, then Refresh here and look at the newest row.</li></ul>' },
+  ];
+  var COMING = [
+    { name: "More stations", blurb: "New collections dock here as they are built." }
+  ];
+
+  var mOpen = null, mScroll = {}, mOpener = null, mPages = {};
+  function surfaceById(id) { for (var i = 0; i < SURFACES.length; i++) if (SURFACES[i].id === id) return SURFACES[i]; return null; }
+  function buildHome() {
+    var pick = $("collPick"); pick.innerHTML = "";
+    var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
+    var tiles = $("stationTiles");
+    SURFACES.forEach(function (sf, i) {
+      var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "#c00000"; op.className = "adminstn"; } pick.appendChild(op);
+      var t = document.createElement("button"); t.type = "button"; t.className = "tile" + (sf.admin ? " adm" : ""); t.dataset.go = sf.id;
+      t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
+      t.querySelector(".tname").textContent = sf.name; if (sf.admin) t.querySelector(".tno").textContent += " · admin"; t.querySelector(".tdesc").textContent = sf.blurb;
+      tiles.appendChild(t);
+    });
+    COMING.forEach(function (c) {
+      var d = document.createElement("div"); d.className = "tile soon";
+      d.innerHTML = '<span class="tno">Coming soon</span><span class="tname"></span><span class="tdesc"></span>';
+      d.querySelector(".tname").textContent = c.name; d.querySelector(".tdesc").textContent = c.blurb;
+      tiles.appendChild(d);
+    });
+    ["homeManualBtns", "overlayBtns"].forEach(function (host) {
+      SURFACES.forEach(function (sf) {
+        var b = document.createElement("button"); b.type = "button"; b.dataset.m = sf.id; b.setAttribute("aria-pressed", "false"); b.textContent = sf.short || sf.name;
+        $(host).appendChild(b);
+      });
+    });
+    var sc = $("manualScroll");
+    SURFACES.forEach(function (sf) {
+      var pg = document.createElement("div"); pg.className = "mpage"; pg.hidden = true; pg.innerHTML = sf.manual; sc.appendChild(pg); mPages[sf.id] = pg;
+    });
+  }
+  var ALL_OPTS = null;
+  function applyAccess() {
+    var pick = $("collPick");
+    if (!ALL_OPTS) ALL_OPTS = Array.prototype.slice.call(pick.options);
+    var cur = pick.value;
+    pick.innerHTML = "";
+    ALL_OPTS.forEach(function (o) { if (o.value === "home" || stationAllowed(o.value)) pick.appendChild(o); });
+    pick.value = cur;
+    Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = stationAllowed(b.dataset.go) ? "" : "none"; });
+    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button[data-m]"), function (b) { b.style.display = stationAllowed(b.dataset.m) ? "" : "none"; });
+    $("attnBox").hidden = !canPlaced();
+    var who = $("who");
+    who.textContent = ""; who.title = "";
+    if (ME) { who.appendChild(document.createTextNode(ME.name + " · ")); var rl = document.createElement("span"); rl.className = "role"; rl.textContent = (ME.role_key || "").replace(/_/g, " "); who.appendChild(rl); who.title = who.textContent; }
+    who.hidden = !ME || ME.method === "key";     // the admin key is no person: nothing to name
+    viewOnlyMode(!!(ME && ME.inspector));
+  }
+  // View only (P-78): a courtesy on top of the server, which refuses every write for an inspector. The banner shows, and the buttons that would
+  // change something are switched off as they appear (the words below). A button a screen needs for looking carries data-viewok.
+  var VIEW_WRITE = /^(edit|save|delete|remove|add|change|switch|cancel class|merge|undo|publish|resend|invite|put in|create|retire|withdraw|mark|send|assign|activate|deactivate|find gps|restore|rename|new |draft|end$)/i;
+  var viewObs = null;
+  function viewOnlyPass(root) {
+    Array.prototype.forEach.call((root || document).querySelectorAll("main button, #manual button"), function (b) {
+      if (b.getAttribute("data-viewok") || b.getAttribute("data-viewonly")) return;
+      var t = (b.textContent || "").trim();
+      if (b.classList.contains("stoggle") || VIEW_WRITE.test(t)) { b.disabled = true; b.setAttribute("data-viewonly", "1"); b.title = "View only: this account cannot change anything."; }
+    });
+  }
+  function viewOnlyMode(on) {
+    $("viewOnly").hidden = !on; document.body.classList.toggle("viewonly", on);
+    $("viewOnly").innerHTML = (on && ME && ME.method === "code")      // a review code never starts a Discovery run (REVIEW_CODE_GUIDE.md)
+      ? "<b>View only.</b> You can look at everything and change nothing. Private details are hidden. This temporary review access ends on its own."
+      : "<b>View only.</b> You can look at everything and change nothing. Private details are hidden. You can start a Discovery run (25 cents at most).";
+    if (viewObs) { viewObs.disconnect(); viewObs = null; }
+    if (!on || !window.MutationObserver) return;
+    viewObs = new MutationObserver(function () { viewOnlyPass(); });
+    viewObs.observe(document.body, { childList: true, subtree: true });
+    viewOnlyPass();
+  }
+  function markManual() {
+    Array.prototype.forEach.call(document.querySelectorAll(".mbtns button"), function (b) { b.setAttribute("aria-pressed", b.dataset.m === mOpen ? "true" : "false"); });
+  }
+  function closeManual() {
+    if (!mOpen) return;
+    mScroll[mOpen] = $("manualScroll").scrollTop;
+    mOpen = null; $("manual").hidden = true; document.body.classList.remove("mopen"); markManual();
+    if (mOpener && document.body.contains(mOpener) && mOpener.offsetParent) { try { mOpener.focus(); } catch (e) {} }
+    mOpener = null;
+  }
+  function openManual(id, opener) {
+    if (!surfaceById(id)) return;
+    if (mOpen === id) { closeManual(); return; }
+    var sc = $("manualScroll");
+    if (mOpen) mScroll[mOpen] = sc.scrollTop; else mOpener = opener || null;
+    $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px");
+    mOpen = id;
+    Object.keys(mPages).forEach(function (k) { mPages[k].hidden = k !== id; });
+    $("manual").hidden = false; document.body.classList.add("mopen");
+    sc.scrollTop = mScroll[id] || 0;
+    markManual();
+  }
+  function leaveOk() {
+    if (editRec && editDirty() && !window.confirm("Discard your changes?")) return false;
+    if (cRec && classDirty() && !window.confirm("Discard your changes?")) return false;
+    return true;
+  }
+  function goTo(id) {
+    if (!leaveOk()) { $("collPick").value = currentRoute(); return; }
+    closeManual();
+    if (location.hash === "#/" + id) route(); else location.hash = "#/" + id;
+  }
+
+  function show(locked) {
+    $("lockView").hidden = !locked;
+    $("lockBtn").hidden = locked;
+    $("collPick").hidden = locked;
+    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
+  }
+
+  // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
+  function route() {
+    if (!key) return;
+    var r = currentRoute();
+    if (r !== "home" && !stationAllowed(r)) { location.hash = "#/home"; return; }
+    closeManual();
+    $("homeView").hidden = r !== "home";
+    if (r !== "venues") closeEdit();
+    if (r !== "classes") closeClassEdit();
+    $("collPick").value = r;
+    markPick();
+    $("listView").hidden = r !== "requests";
+    $("venuesView").hidden = r !== "venues";
+    $("classesView").hidden = r !== "classes";
+    $("peopleView").hidden = r !== "people";
+    $("placesView").hidden = r !== "places";
+    $("instructorsView").hidden = r !== "instructors";
+    $("studentsView").hidden = r !== "students";
+    $("curriculumsView").hidden = r !== "curriculums";
+    $("organizationsView").hidden = r !== "organizations";
+    $("attendanceView").hidden = r !== "attendance";
+    $("messagesView").hidden = r !== "messages";
+    $("discoveryView").hidden = r !== "discovery";
+    if (r === "discovery" && window.DiscoveryStation) window.DiscoveryStation.show();
+    $("accessView").hidden = r !== "access";
+    if (r === "access" && window.AccessStation) window.AccessStation.show();
+    $("activityView").hidden = r !== "activity";
+    if (r === "activity" && window.ActivityStation) window.ActivityStation.show();
+    $("performanceView").hidden = r !== "performance";
+    if (r === "performance" && window.PerformanceStation) window.PerformanceStation.show();
+    if (r === "messages") loadMessagesStation();
+    if (r === "attendance") loadAttendanceStation();
+    if (r === "home" || r === "requests") loadPlaced();
+    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
+  }
+
+  // Returns {status, records} ; status: ok | unauthorized | limited | network | error
+  function fetchRecords(since) {
+    var url = CFG.endpoints.records + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
+    return fetch(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" })
+      .then(function (r) {
+        if (r.status === 401) return { status: "unauthorized" };
+        if (r.status === 429) return { status: "limited" };
+        if (!r.ok) return { status: "error" };
+        return r.json().then(function (j) {
+          return { status: "ok", records: (j && j.data && j.data.records) || [] };
+        });
+      })
+      .catch(function () { return { status: "network" }; });
+  }
+
+  function newest() {
+    var best = "";
+    Object.keys(known).forEach(function (id) { if (known[id].created_at > best) best = known[id].created_at; });
+    return best;
+  }
+
+  function line(label, value) {
+    var d = document.createElement("div");
+    var b = document.createElement("b");
+    b.textContent = label + ": ";
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(value));
+    return d;
+  }
+  function str(v) { return (v !== null && typeof v === "object") ? JSON.stringify(v) : String(v); }
+
+  function buildRow(rec, isNew) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+
+    var head = document.createElement("button");
+    head.className = "head";
+    head.type = "button";
+    head.setAttribute("aria-expanded", "false");
+
+    var top = document.createElement("div"); top.className = "top";
+    var conf = document.createElement("span"); conf.className = "conf"; conf.textContent = rec.confirmation_number || rec.id || "";
+    var type = document.createElement("span"); type.className = "type"; type.textContent = TYPES[rec.registration_type] || rec.registration_type || "";
+    top.appendChild(conf); top.appendChild(type);
+
+    var w = document.createElement("div"); w.className = "when"; w.textContent = when(rec.created_at);
+    var who = document.createElement("div"); who.className = "who";
+    who.textContent = [rec.first_name, rec.last_name].filter(Boolean).join(" ") || "(no name)";
+    var email = document.createElement("div"); email.className = "sub"; email.textContent = rec.email || "";
+
+    var chips = document.createElement("div"); chips.className = "chips";
+    var ppl = document.createElement("span"); ppl.textContent = "People: " + (rec.attendee_count != null ? rec.attendee_count : "—");
+    var st = document.createElement("span"); st.textContent = "Status: " + (rec.processing_status || "—");
+    chips.appendChild(ppl); chips.appendChild(st);
+    if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
+    if (rec.coverage_waiting) { var nc = document.createElement("span"); nc.className = "nochip"; nc.textContent = "No active trainer"; chips.appendChild(nc); }
+    else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
+    if (rec.preferred_venue_id) {
+      var vc = document.createElement("span"); vc.className = "venuechip";
+      vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");
+      vc.setAttribute("data-vid", rec.preferred_venue_id);
+      chips.appendChild(vc);
+      if (!cVenues.length && !venueChipFetch) venueChipFetch = loadVenueChoices().then(refreshVenueChips);
+    }
+
+    if (rec.curriculum_id) {   // the topic the requester picked on the form
+      var cc = document.createElement("span"); cc.className = "curchip";
+      cc.textContent = "Interested in: " + (curriculumAsked(rec.curriculum_id) || "picked on the form");
+      cc.setAttribute("data-cid", rec.curriculum_id);
+      chips.appendChild(cc);
+      if (!cCurricula.length && !curChipFetch) curChipFetch = loadCurriculumChoices().then(refreshCurriculumChips);
+    }
+
+    [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
+
+    var detail = document.createElement("div"); detail.className = "detail";
+    var done = {};
+    FIRST_FIELDS.forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+
+    head.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
+    var putrow = document.createElement("div"); putrow.className = "qrow";
+    var pb = document.createElement("button"); pb.type = "button"; pb.className = "quiet"; pb.textContent = "Put in a class…";
+    var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
+    pb.addEventListener("click", function () {
+      $("reqDone").hidden = true;
+      if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
+      phost.hidden = false; putInClass(rec, phost);
+    });
+    putrow.appendChild(pb);
+    var hq = historyBtn(rec.id, "this request"); if (hq) putrow.appendChild(hq);
+    var jb = document.createElement("button"); jb.type = "button"; jb.className = "quiet"; jb.textContent = "Journal";
+    jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
+    putrow.appendChild(jb);
+    var ib = document.createElement("button"); ib.type = "button"; ib.className = "quiet infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
+    ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
+    putrow.appendChild(ib);
+    // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
+    var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
+    if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
+      var mh = document.createElement("button"); mh.type = "button"; mh.className = "quiet"; mh.textContent = "Mark handled…";
+      mh.addEventListener("click", function () { covbox.hidden = !covbox.hidden; if (!covbox.hidden) { covbox.textContent = ""; fillCovBox(covbox, rec, li); } });
+      putrow.appendChild(mh);
+    }
+    // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
+    var db = document.createElement("button"); db.type = "button"; db.className = "quiet"; db.textContent = "Delete"; db.style.marginLeft = "auto";
+    var armedT = null;
+    function disarm() { clearTimeout(armedT); db.className = "quiet"; db.textContent = "Delete"; db.removeAttribute("data-armed"); }
+    db.addEventListener("click", function () {
+      if (!db.getAttribute("data-armed")) {
+        db.setAttribute("data-armed", "1"); db.className = "danger"; db.textContent = "Really delete?";
+        armedT = setTimeout(disarm, 6000); return;
+      }
+      clearTimeout(armedT);
+      admin("delete_request", { id: rec.id }, "attendances").then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          delete known[rec.id]; delete rows[rec.id]; if (li.parentNode) li.parentNode.removeChild(li);
+          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " deleted. It is hidden from this list; the record is kept for now.";
+          $("reqDone").hidden = false; applyReqFilter();
+          return;
+        }
+        disarm();
+        var probs = (res.body && res.body.error && res.body.error.problems) || [];
+        $("reqDone").textContent = probs.some(function (x) { return x.issue === "has_placements"; })
+          ? "Not deleted: someone from this request is still in a class. Cancel or remove them in the class Attendance first, then delete the request."
+          : res.status === 404 ? "That request is already gone. Refresh the list." : adminProblem(res.status);
+        $("reqDone").hidden = false;
+      });
+    });
+    putrow.appendChild(db);
+    li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(covbox); li.appendChild(detail);
+    li._q = qrow; li._rec = rec;
+    fillQRow(qrow, rec);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  // The Mark handled form on a request with no active trainer: what was done (required), then the server stamps who and when.
+  function fillCovBox(box, rec, li) {
+    var lab = mk("label", "f", "What was done about this request? (required)"); var id = "cov" + rec.id.slice(0, 8); lab.setAttribute("for", id);
+    var ta = document.createElement("textarea"); ta.id = id; ta.maxLength = 2000;
+    var err = mk("div", "ferr", ""); err.setAttribute("role", "alert");
+    var btns = mk("div", "btns"); var go = mk("button", "", "Mark handled"); go.type = "button";
+    var no = mk("button", "quiet", "Cancel"); no.type = "button";
+    no.addEventListener("click", function () { box.hidden = true; box.textContent = ""; });
+    go.addEventListener("click", function () {
+      var note = ta.value.trim(); err.textContent = "";
+      if (!note) { err.textContent = "Say what was done, so the next person knows."; ta.focus(); return; }
+      go.disabled = true;
+      admin("mark_request_handled", { id: rec.id, note: note }, "attendances").then(function (res) {
+        go.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var d = res.body.data || {}; delete rec.coverage_waiting; rec.coverage_handled_at = d.coverage_handled_at || new Date().toISOString(); rec.coverage_handled_note = note;
+          var fresh = buildRow(rec, false); if (li.parentNode) li.parentNode.replaceChild(fresh, li); rows[rec.id] = fresh;
+          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " marked handled."; $("reqDone").hidden = false; applyReqFilter();
+          return;
+        }
+        var probs = (res.body && res.body.error && res.body.error.problems) || [];
+        err.textContent = probs.some(function (x) { return x.issue === "not_waiting"; }) ? "This request is no longer waiting for a trainer. Refresh the list."
+          : res.status === 403 ? "You may not mark this request handled." : res.status === 404 ? "That request is gone. Refresh the list." : adminProblem(res.status);
+      });
+    });
+    btns.appendChild(go); btns.appendChild(no);
+    box.appendChild(lab); box.appendChild(ta); box.appendChild(err); box.appendChild(btns);
+  }
+
+  // Add records we have not seen. Existing rows are never rebuilt, so nothing moves while reading.
+  function merge(records) {
+    var list = $("list");
+    var fresh = records.filter(function (r) { return r && r.id && !known[r.id]; });
+    fresh.sort(function (a, b) { return a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0; }); // oldest first, then each goes on top
+    fresh.forEach(function (r) {
+      known[r.id] = r;
+      var li = buildRow(r, firstLoadDone);
+      rows[r.id] = li;
+      list.insertBefore(li, list.firstChild);
+    });
+    // First load arrives newest first from the server; sort the whole list once to be safe.
+    if (!firstLoadDone) {
+      Object.keys(rows).sort(function (a, b) {
+        var x = known[a].created_at, y = known[b].created_at;
+        return x < y ? 1 : x > y ? -1 : 0;
+      }).forEach(function (id) { list.appendChild(rows[id]); });
+    }
+    if (fresh.length && firstLoadDone) loadPlaced();
+    applyReqFilter();
+  }
+
+  function problem(status) {
+    if (status === "unauthorized") return method === "google" ? "Google sign-in did not work. Try again." : "That key did not work.";
+    if (status === "forbidden") return "This Google account has not been invited. Ask the owner.";
+    if (status === "limited") return "Too many tries. Wait a few minutes.";
+    if (status === "network") return "Could not reach the server.";
+    return "Something went wrong. Try again.";
+  }
+
+  function check(manual) {
+    if (busy) return Promise.resolve();
+    busy = true;
+    return fetchRecords(firstLoadDone ? newest() : "").then(function (res) {
+      busy = false;
+      if (res.status === "ok") {
+        $("listMsg").textContent = "";
+        merge(res.records);
+        firstLoadDone = true;
+        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+      } else if (res.status === "unauthorized") {
+        lock("That key did not work.");
+      } else if (manual || !firstLoadDone || res.status !== "network") {
+        $("listMsg").textContent = problem(res.status);
+      } else {
+        $("listMsg").textContent = "Could not reach the server. Will try again.";
+      }
+      return res;
+    });
+  }
+
+  function startTimer() {
+    stopTimer();
+    timer = setInterval(function () { if (!document.hidden) check(false); }, REFRESH_MS);
+  }
+  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+
+  function reset() {
+    known = {}; rows = {}; firstLoadDone = false;
+    $("list").textContent = "";
+    $("countText").textContent = ""; $("checkedText").textContent = ""; $("listMsg").textContent = "";
+    $("empty").hidden = true;
+  }
+
+  function lock(message) {
+    launchStop();
+    if (method === "google") {
+      if (message === "That key did not work.") message = "Your Google sign-in ended. Sign in again.";
+      method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
+    }
+    ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset();
+    $("keyInput").value = ""; $("keyInput").type = "password"; $("keyShow").textContent = "Show"; $("keyShow").setAttribute("aria-pressed", "false");
+    $("lockMsg").textContent = message || "";
+    show(true);
+  }
+
+  // The first call after a key or sign-in: who is this, and may they in? The key proves itself by reading the registration records
+  // (as it always did). A Google sign-in asks the server's `me` op; the records are read only if the role may see requests.
+  function accessProbe() {
+    if (method !== "google") return fetchRecords("").then(function (r) {
+      if (r.status !== "ok") return r;
+      ME = keyMe();
+      // A temporary review code is typed into the same Key box but is view only: ask the server who this really is (anything else stays the admin key).
+      return adminCall("me", {}, "access_persons").then(function (m) {
+        if (m && m.status === 200 && m.body && m.body.ok && m.body.data && m.body.data.method === "code") ME = m.body.data;
+        return r;
+      }, function () { return r; });
+    });
+    return adminCall("me", {}, "access_persons").then(function (r) {
+      if (r.status !== 200 || !r.body || !r.body.ok) return { status: r.status === 401 ? "unauthorized" : r.status === 403 ? "forbidden" : r.status === 429 ? "limited" : r.status === 0 ? "network" : "error" };
+      ME = r.body.data; launchStage(3); if (timing) timing.tMe = tnow();
+      return canPlaced() ? fetchRecords("") : { status: "ok", records: [] };
+    });
+  }
+
+  // ---- The launch screen: instant feedback while a sign-in is in progress (a spinning tile, a line that follows the real stages, a spinning tab icon).
+  // It hides the sign-in buttons so nobody presses twice; a failure or a lock brings the form back.
+  var launching = false, launchN = 0, launchTimers = [], launchSaved = null, spinTimer = null, iconKeep = null;
+  var LAUNCH_LINES = ["Boarding pass accepted…", "Mission control is checking your clearance…", "Fueling the stations…"];
+  var LAUNCH_SLOW = "Still on the launch pad. Slow link or cold engines. Hang tight.";
+  function launchStage(n) { if (!launching || n <= launchN) return; launchN = n; $("launchLine").textContent = LAUNCH_LINES[n - 1]; }
+  function spinIcons(on) {
+    if (!on) {
+      if (spinTimer) { clearInterval(spinTimer); spinTimer = null; }
+      if (iconKeep) { iconKeep.forEach(function (k) { k.el.setAttribute("href", k.href); }); iconKeep = null; }
+      return;
+    }
+    if (spinTimer || iconKeep) return;
+    try { if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+    var links = document.querySelectorAll('link[rel="icon"]'); if (!links.length) return;
+    var img = new Image();
+    img.onload = function () {
+      if (!launching || spinTimer || iconKeep) return;
+      iconKeep = [].map.call(links, function (el) { return { el: el, href: el.getAttribute("href") }; });
+      var c = document.createElement("canvas"); c.width = 32; c.height = 32; var x = c.getContext("2d"), a = 0;
+      spinTimer = setInterval(function () {
+        a += Math.PI / 6; x.clearRect(0, 0, 32, 32); x.save(); x.translate(16, 16); x.rotate(a); x.drawImage(img, -11, -11, 22, 22); x.restore();
+        try { var u = c.toDataURL("image/png"); iconKeep.forEach(function (k) { k.el.setAttribute("href", u); }); } catch (e) { spinIcons(false); }
+      }, 100);
+    };
+    img.src = "assets/console-favicon-32.png";
+  }
+  function launchStart() {
+    if (launching) return;
+    launching = true; launchN = 0;
+    launchSaved = { g: $("googleBox").hidden, k: $("keyBox").hidden, s: $("swapLink").hidden };
+    $("googleBox").hidden = true; $("keyBox").hidden = true; $("swapLink").hidden = true; $("lockMsg").textContent = "";
+    $("launching").hidden = false; launchStage(1); spinIcons(true);
+    launchTimers.push(setTimeout(function () { launchStage(2); }, 700));
+    launchTimers.push(setTimeout(function () { if (launching) { launchN = 9; $("launchLine").textContent = LAUNCH_SLOW; } }, 8000));
+  }
+  function launchStop() {
+    launchTimers.forEach(clearTimeout); launchTimers = []; spinIcons(false);
+    if (!launching) return;
+    launching = false; $("launching").hidden = true;
+    if (launchSaved) { $("googleBox").hidden = launchSaved.g; $("keyBox").hidden = launchSaved.k; $("swapLink").hidden = launchSaved.s; launchSaved = null; }
+  }
+  function launchDone() {   // a short "Liftoff!" before the Console opens, only when the launch screen was showing
+    return new Promise(function (ok) {
+      if (!launching) { ok(); return; }
+      launchTimers.forEach(clearTimeout); launchTimers = []; $("launchLine").textContent = "Liftoff!";
+      setTimeout(function () { launchStop(); ok(); }, 350);
+    });
+  }
+
+  // The Performance log: after a sign-in, send how long each step took (numbers only; the server stamps who). Never for a view-only account; a failure is ignored.
+  function sendTiming(tm) {
+    if (!tm || !tm.tReady || !ME || ME.inspector) return;
+    var ms = function (n) { return Math.max(0, Math.min(600000, Math.round(n))); }, a = { kind: "sign_in", device: window.innerWidth < 700 ? "phone" : "desktop", method: tm.method,
+      total_ms: ms(tm.tReady - tm.t0), check_ms: ms(tm.tMe - tm.t0), load_ms: ms(tm.tRecords - tm.tMe) };
+    if (tm.method === "google" && typeof ME.server_ms === "number") a.server_ms = ms(ME.server_ms);
+    if (tm.method === "google" && typeof ME.cold === "boolean") a.cold = ME.cold;
+    try { adminCall("record_timing", a, "performance_events").catch(function () {}); } catch (e) {}
+  }
+
+  function unlock(k, remember) {
+    var mine = ++unlockSeq;
+    timing = { t0: tnow(), method: method === "google" ? "google" : "key" };
+    launchStart();
+    idleTouch();                                       // a sign-in starts a fresh clock: after a timeout the old "last active" time must not sign this person straight out again
+    key = k; reset();
+    $("lockMsg").textContent = "";
+    $("unlockBtn").disabled = true;
+    return accessProbe().then(function (res) {
+      $("unlockBtn").disabled = false;
+      if (mine !== unlockSeq || !key) return;          // the page was locked, or signed in again, while this was in flight: this answer is out of date
+      if (timing) { timing.tRecords = tnow(); if (!timing.tMe) timing.tMe = timing.tRecords; }
+      if (res.status !== "ok") {
+        key = ""; launchStop();
+        $("lockMsg").textContent = "Launch aborted: " + problem(res.status);
+        if (method === "google") { method = "key"; try { if (auth) auth.signOut(); } catch (e) {} }
+        ME = null;
+        show(true);
+        return;
+      }
+      if (method !== "google") setKey(k, remember);
+      idleStaleAtLoad = false; idleStart();
+      var tm = timing; timing = null; if (tm) tm.tReady = tnow();
+      return launchDone().then(function () {
+        if (mine !== unlockSeq || !key) return;
+        show(false);
+        applyAccess();
+        merge(res.records);
+        firstLoadDone = true;
+        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+        route();
+        sendTiming(tm);
+      });
+    });
+  }
+
+  // ---- Venues view: list and add, through the admin endpoint (the CRUD handler file does the checking).
+  var ADMIN_URL = CFG.endpoints.admin;
+  var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
+                out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
+                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That contact was not found.",
+                choose_one: "Choose one." };
+  var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
+  var slugTouched = false, addPlace = null;
+
+  // Anything that changes data shows a working indicator on the button that was pressed (which then cannot be pressed twice) and a
+  // toast at the bottom: "Working…", then "Done" or "Did not go through". Reading (list, get, lookups) stays silent.
+  var READ_OPS = { list: 1, get: 1, find_gps: 1 }, lastBtn = null, lastBtnAt = 0, workN = 0, toastTimer = null;
+  document.addEventListener("click", function (e) { var b = e.target && e.target.closest && e.target.closest("button"); if (b) { lastBtn = b; lastBtnAt = Date.now(); } }, true);
+  function toast(kind, text, ms) {
+    var el = document.getElementById("workToast"); if (!el) return;
+    clearTimeout(toastTimer); el.className = (kind ? kind + " " : "") + "on"; document.getElementById("workText").textContent = text;
+    if (ms) toastTimer = setTimeout(function () { el.className = el.className.replace(/\bon\b/, "").trim(); }, ms);
+  }
+  var VIEW_READS = { list: 1, get: 1, find_by_address: 1, get_for_individual: 1, suggest: 1, queue: 1 };
+  function viewOnlyRefusal() { return { status: 403, body: { ok: false, error: { code: "view_only", message: "View only: this account can look at everything and change nothing." } } }; }
+  function admin(op, args, coll) {
+    if (ME && ME.inspector && !VIEW_READS[op]) { toast("bad", "View only: nothing was changed.", 3500); return Promise.resolve(viewOnlyRefusal()); }   // the server would refuse it too
+    if (READ_OPS[op]) return adminCall(op, args, coll);
+    var btn = lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null;
+    if (btn) { btn.classList.add("working"); btn.setAttribute("aria-busy", "true"); }
+    workN++; toast("", "Working… this can take a few seconds when emails are sent.", 0);
+    return adminCall(op, args, coll).then(function (res) {
+      workN--; if (btn) { btn.classList.remove("working"); btn.removeAttribute("aria-busy"); }
+      if (!workN) { var ok = res.status === 200 && res.body && res.body.ok; if (ok) toast("ok", "Done", 1800); else if (res.status === 401) toast("", "", 1); else toast("bad", "That did not go through. See the message above.", 3500); }
+      return res;
+    });
+  }
+  function adminCall(op, args, coll) {
+    return fetch(ADMIN_URL, { method: "POST", cache: "no-store",
+        headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" },
+        body: JSON.stringify({ collection: coll || "venues", op: op, args: args }) })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
+      })
+      .catch(function () { return { status: 0, body: {} }; });
+  }
+  function adminProblem(status) {
+    if (status === 429) return "Too many tries. Wait a few minutes.";
+    if (status === 0) return "Could not reach the server.";
+    return "Something went wrong. Try again.";
+  }
+
+  // A one-tap status switch on a card. Taps are collected: 1.5 seconds after the LAST tap the server is asked once, and only if the
+  // final choice differs from what is saved (two taps cancel out). opts: coll (admin collection or undefined), on, off (status words), problem(res).
+  var TOGGLE_WAIT = 1500;
+  function statusToggle(rec, li, opts) {
+    var b = mk("button", "stoggle"); b.type = "button"; b.setAttribute("role", "switch");
+    var knob = mk("span", "knob"), word = mk("span", "");
+    b.appendChild(knob); b.appendChild(word);
+    var want = rec.status === opts.on, timer = null, busy = false;
+    var msg = mk("div", "stmsg"); msg.setAttribute("role", "alert");
+    function draw() {
+      var saved = rec.status === opts.on;
+      b.classList.toggle("on", want); b.classList.toggle("pending", want !== saved || !!timer);
+      b.setAttribute("aria-checked", want ? "true" : "false");
+      word.textContent = want ? (opts.onWord || "Active") : (opts.offWord || "Inactive");
+      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? (opts.onWord || "Active") : (opts.offWord || "Inactive")).toLowerCase() + (timer ? ", saving soon" : "") + ". Tap to change.");
+    }
+    function send() {
+      timer = null;
+      if (want === (rec.status === opts.on)) { draw(); return; }
+      busy = true; b.disabled = true; msg.textContent = "";
+      var args = { id: rec.id, changes: { status: want ? opts.on : opts.off }, expected_updated_at: rec.updated_at };
+      (opts.coll ? admin("update", args, opts.coll) : admin("update", args)).then(function (res) {
+        busy = false; b.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          rec.status = want ? opts.on : opts.off;
+          var u = res.body.data && res.body.data.updated_at; if (u) rec.updated_at = u;
+          draw(); return;
+        }
+        want = rec.status === opts.on; draw();
+        msg.textContent = res.status === 409 ? "This changed somewhere else. Tap Refresh, then try again." : res.status === 400 ? opts.problem(res) : adminProblem(res.status);
+      });
+    }
+    b.addEventListener("click", function () {
+      if (busy) return;
+      want = !want; if (timer) clearTimeout(timer);
+      timer = setTimeout(send, TOGGLE_WAIT); draw();
+    });
+    li.classList.add("hasToggle"); draw();
+    return { btn: b, msg: msg };
+  }
+
+  // ---- one line per venue (scan it fast), with Details to open the rest
+  var HOURS_PREFIX = "Public hours per the web (check before relying on them): ";
+  function vAddrLine(rec) {
+    var pl = rec.place, a = pl && pl.address;
+    if (!pl) return "No place yet";
+    if (!a) return pl.name || "Place saved";
+    var st = [a.street_number, a.street].filter(Boolean).join(" "), cs = [a.locality, a.region].filter(Boolean).join(", ");
+    return [st, cs].filter(Boolean).join(", ") || pl.name || "Place saved";
+  }
+  function vHoursShort(rec) {
+    var n = String(rec.availability_notes || "");
+    if (n.indexOf(HOURS_PREFIX) !== 0) return { text: "", full: "" };
+    var t = n.slice(HOURS_PREFIX.length).trim();
+    return { text: t.length > 90 ? t.slice(0, 89) + "\u2026" : t, full: t };
+  }
+  // ---- the opened view of a venue: what people look for first, the raw record folded away
+  var DAY_ABBR = { monday: "Mon", tuesday: "Tue", wednesday: "Wed", thursday: "Thu", friday: "Fri", saturday: "Sat", sunday: "Sun" };
+  function dRow(label, content) {
+    var d = document.createElement("div"); d.className = "vfact";
+    var b = document.createElement("b"); b.textContent = label; d.appendChild(b);
+    if (typeof content === "string") d.appendChild(document.createTextNode(content)); else d.appendChild(content);
+    return d;
+  }
+  function dLink(text, href, newTab) {
+    var a = document.createElement("a"); a.className = "dlink"; a.textContent = text; a.href = href;
+    if (newTab) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+    return a;
+  }
+  function vMapQuery(rec) {
+    var pl = rec.place, a = pl && pl.address;
+    if (a) { var q = [vAddrLine(rec)].concat(a.postal_code ? [a.postal_code] : []).join(" "); return (rec.name ? rec.name + ", " : "") + q; }
+    return rec.name || "";
+  }
+  function vSourceLabel(u) {
+    try {
+      var h = new URL(u).hostname.replace(/^www\./, "");
+      if (/vertexaisearch\.cloud\.google\.com$|google\.com$/.test(h) && /grounding-api-redirect/.test(u)) return "Google search result";
+      return h;
+    } catch (e) { return "source"; }
+  }
+  function vMoney(c) { return "$" + (c / 100).toFixed(c % 100 ? 2 : 0); }
+  function venueDetail(rec) {
+    var detail = document.createElement("div"); detail.className = "detail";
+    detail.appendChild(venueActions(rec));
+
+    var pl = rec.place, hasAddr = !!(pl && pl.address);
+    var wh = document.createElement("div"); wh.className = "dlinks";
+    wh.appendChild(document.createTextNode((rec.is_public_venue ? "Public venue" : "Private space") + " \u00b7 " + vAddrLine(rec) + (pl && pl.address && pl.address.postal_code ? " " + pl.address.postal_code : "")));
+    detail.appendChild(wh);
+    var q = vMapQuery(rec);
+    if (hasAddr || rec.name) {
+      var ml = document.createElement("div"); ml.className = "dlinks";
+      ml.appendChild(dLink("Open in map", "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q), true));
+      ml.appendChild(dLink("See photos", "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q), true));
+      detail.appendChild(ml);
+    }
+    if (pl) detail.appendChild(dRow("GPS: ", pl.has_gps ? (pl.gps_source === "entered" ? "entered" : "looked up") : "none yet"));
+
+    var cl = document.createElement("div"); cl.className = "dlinks";
+    if (/^https?:\/\//i.test(String(rec.website_url || ""))) cl.appendChild(dLink("Website", rec.website_url, true));
+    if (rec.phone) cl.appendChild(dLink(String(rec.phone), "tel:" + String(rec.phone).replace(/[^+0-9]/g, ""), false));
+    if (rec.email) cl.appendChild(dLink(String(rec.email), "mailto:" + rec.email, false));
+    if (cl.childNodes.length) detail.appendChild(cl);
+    if (rec.main_contact) detail.appendChild(dRow("Contact: ", rec.main_contact.display_name || "(unavailable)"));
+    if (rec.description) { var ds = document.createElement("div"); ds.className = "ddesc"; ds.textContent = rec.description; detail.appendChild(ds); }
+
+    // hours: the web's public hours (to check), and the class days we entered
+    var hr = vHoursShort(rec);
+    detail.appendChild(dRow("Public hours: ", hr.full ? hr.full + " (from the web \u2014 check before relying on it)" : "Not entered"));
+    var days = (rec.availability_hours || []).map(function (h) { return (DAY_ABBR[h.day_of_week] || h.day_of_week) + " " + h.opens_at + "\u2013" + h.closes_at; });
+    detail.appendChild(dRow("Open days for classes: ", days.length ? days.join(", ") : "Not entered"));
+
+    // can we meet here: only facts we actually hold
+    var can = [];
+    (rec.rooms || []).forEach(function (r) {
+      var n = r.max_occupancy || r.preferred_occupancy;
+      can.push(r.label + (n ? " (up to " + n + ")" : ""));
+    });
+    var facts = [];
+    if (rec.is_accessible === true) facts.push("Accessible"); else if (rec.is_accessible === false) facts.push("Not accessible");
+    if (rec.has_wifi === true) facts.push("Wi-Fi"); else if (rec.has_wifi === false) facts.push("No Wi-Fi");
+    if (rec.allows_minors === true) facts.push("Minors allowed"); else if (rec.allows_minors === false) facts.push("No minors");
+    if (rec.parking_description) facts.push("Parking: " + rec.parking_description);
+    if (typeof rec.cost_cents === "number") facts.push("Cost: " + (rec.cost_cents === 0 ? "free" : vMoney(rec.cost_cents) + (rec.cost_basis ? " " + String(rec.cost_basis).replace("_", " ") : "")));
+    detail.appendChild(dRow("Rooms: ", can.length ? can.join("; ") : "None entered"));
+    if (facts.length) detail.appendChild(dRow("Good to know: ", facts.join(" \u00b7 ")));
+
+    var chips = document.createElement("div"); chips.className = "lchips";
+    var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
+    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
+    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
+    rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
+    hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
+    var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
+    chips.appendChild(rlink); chips.appendChild(hlink); chips.appendChild(added);
+    detail.appendChild(chips);
+
+    // where an AI-found record came from
+    var dc = rec.discovery;
+    if (dc) {
+      var w = document.createElement("details"); w.className = "dfold";
+      var ws = document.createElement("summary"); ws.textContent = "Where this came from"; w.appendChild(ws);
+      var reasons = (dc.attention_reasons || []);
+      w.appendChild(dRow("", "Found by AI search on " + when(dc.found_at) + (reasons.indexOf("operator_unconfirmed") >= 0 ? " \u2014 operator unconfirmed" : "") + "."));
+      var srcs = dc.source_urls || [];
+      if (srcs.length) {
+        var sl = document.createElement("div"); sl.className = "dlinks";
+        srcs.slice(0, 8).forEach(function (u) { sl.appendChild(dLink(vSourceLabel(u), u, true)); });
+        w.appendChild(sl);
+      }
+      detail.appendChild(w);
+    }
+
+    // everything the record holds, folded
+    var raw = document.createElement("details"); raw.className = "dfold";
+    var rs = document.createElement("summary"); rs.textContent = "All fields"; raw.appendChild(rs);
+    var done = {};
+    ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
+    detail.appendChild(raw);
+    return detail;
+  }
+  function venueRow(rec, isNew) {
+    var li = document.createElement("li"); li.className = "vrow" + (isNew ? " isnew" : "");
+    var ln = document.createElement("div"); ln.className = "vline";
+    var vm = document.createElement("div"); vm.className = "vmain";
+    var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
+    var ad = document.createElement("span"); ad.className = "vaddr"; ad.textContent = vAddrLine(rec);
+    vm.appendChild(nm); vm.appendChild(ad);
+    var hr = vHoursShort(rec);
+    if (hr.text) { var hs = document.createElement("span"); hs.className = "vhours"; hs.textContent = hr.text; hs.title = hr.full; vm.appendChild(hs); }
+    ln.appendChild(vm);
+    var acts = document.createElement("div"); acts.className = "vacts";
+    if (/^https?:\/\//i.test(String(rec.website_url || ""))) {
+      var lk = document.createElement("a"); lk.className = "vlink"; lk.textContent = "Link"; lk.href = rec.website_url;
+      lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.setAttribute("aria-label", "Website for " + (rec.name || "this venue"));
+      acts.appendChild(lk);
+    }
+    var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
+    acts.appendChild(tg.btn);
+    var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.setAttribute("aria-expanded", "false");
+    acts.appendChild(dt);
+    ln.appendChild(acts);
+
+    var detail = venueDetail(rec);
+
+    dt.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      dt.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    li.appendChild(ln); li.appendChild(tg.msg); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function loadVenues() {
+    if (vBusy) { vAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
+    vBusy = true; $("vMsg").textContent = "";
+    var f = $("vFilter").value;
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200, expand: true }).then(function (res) {
+      vBusy = false;
+      if (vAgain) { vAgain = false; return loadVenues(); }
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("vMsg").textContent = adminProblem(res.status); return; }
+      vRecs = res.body.data.records || [];
+      return (vAreas ? Promise.resolve() : loadAreas()).then(function () {
+        drawVenueFilters(); renderVenues(); vNewId = ""; vLoaded = true;
+        $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    });
+  }
+
+  // State and Region filters. They narrow the venues already loaded (no extra trip), and combine with the status filter.
+  // The regions are the Discovery areas; a venue is in a region when its ZIP is on the region's list.
+  function loadAreas() {
+    return admin("list", { limit: 200 }, "discovery_areas").then(function (res) {
+      vAreas = res.status === 200 && res.body && res.body.ok ? (res.body.data.records || []) : [];
+    });
+  }
+  function vAddr(r) { return (r.place && r.place.address) || {}; }
+  function vStateOf(r) { return String(vAddr(r).region || r.state_region || "").toUpperCase(); }
+  function vZipOf(r) { return String(vAddr(r).postal_code || r.postal_code || "").slice(0, 5); }
+  function vByName(a, b) { return String(a.name).toLowerCase() < String(b.name).toLowerCase() ? -1 : 1; }
+  function vOptions(sel, first, items, keep) {
+    sel.textContent = "";
+    var o = document.createElement("option"); o.value = ""; o.textContent = first; sel.appendChild(o);
+    items(sel);
+    sel.value = keep; if (sel.value !== keep) sel.value = "";
+  }
+  function drawVenueFilters() {
+    var areas = vAreas || [], states = areas.filter(function (a) { return a.kind === "state" && a.is_active; }).sort(vByName);
+    var on = {}; states.forEach(function (s) { on[s.state_code] = s.name; });
+    vOptions($("vState"), "All states", function (sel) {
+      states.forEach(function (s) { var o = document.createElement("option"); o.value = s.state_code; o.textContent = s.name; sel.appendChild(o); });
+    }, $("vState").value);
+    var sc = $("vState").value;
+    vOptions($("vRegion"), "All regions", function (sel) {
+      states.filter(function (s) { return !sc || s.state_code === sc; }).forEach(function (s) {
+        var regs = areas.filter(function (a) { return a.kind === "region" && a.is_active && a.state_code === s.state_code; }).sort(vByName);
+        if (!regs.length) return;
+        var g = document.createElement("optgroup"); g.label = s.name;
+        regs.forEach(function (a) { var o = document.createElement("option"); o.value = a.id; o.textContent = a.name; g.appendChild(o); });
+        sel.appendChild(g);
+      });
+    }, $("vRegion").value);
+  }
+  function renderVenues() {
+    var st = $("vState").value, rg = $("vRegion").value, zips = null;
+    if (rg) { var ra = (vAreas || []).filter(function (a) { return a.id === rg; })[0]; zips = {}; ((ra && ra.zip_codes) || []).forEach(function (z) { zips[z] = 1; }); }
+    var shown = vRecs.filter(function (r) { return (!st || vStateOf(r) === st) && (!zips || zips[vZipOf(r)]); });
+    var ul = $("vList"); ul.textContent = "";
+    shown.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
+    var word = function (n) { return n + (n === 1 ? " venue" : " venues"); };
+    $("vCount").textContent = (st || rg) ? "Showing " + shown.length + " of " + word(vRecs.length) : word(vRecs.length);
+    $("vEmpty").textContent = vRecs.length ? "No venues match these filters." : "No venues yet.";
+    $("vEmpty").hidden = shown.length > 0;
+  }
+
+  // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
+  var SCHEMA_URL = "/schemas/venue.schema.json";
+  var PRIMARY = ["Basics", "Place", "Contact"];   // shown open; everything else sits under "More details"
+  var LAYOUT = [
+    ["Basics", ["name", "description", "status", "is_public_venue"]],
+    ["Place", []],
+    ["Contact", ["email", "phone"]],
+    ["Map and access", ["parking_description", "parking_latitude", "parking_longitude",
+                        "entry_description", "entry_latitude", "entry_longitude", "transit_description"]],
+    ["Booking", ["website_url", "booking_process", "booking_lead_days", "availability_notes", "setup_minutes_before", "teardown_minutes_after"]],
+    ["Facilities and rules", ["has_wifi", "wifi_notes", "is_accessible", "has_step_free_entry", "has_elevator", "has_accessible_restroom",
+                              "accessibility_notes", "allows_minors", "allows_animals", "allows_food", "allows_alcohol", "requires_insurance", "insurance_notes"]],
+    ["Cost", ["cost_cents", "cost_basis", "deposit_cents", "cancellation_terms", "cost_notes"]],
+    ["Notes", ["notes"]]
+  ];
+  var US_STATES = [["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],["CT","Connecticut"],
+    ["DE","Delaware"],["DC","District of Columbia"],["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],
+    ["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],
+    ["MN","Minnesota"],["MS","Mississippi"],["MO","Missouri"],["MT","Montana"],["NE","Nebraska"],["NV","Nevada"],["NH","New Hampshire"],["NJ","New Jersey"],
+    ["NM","New Mexico"],["NY","New York"],["NC","North Carolina"],["ND","North Dakota"],["OH","Ohio"],["OK","Oklahoma"],["OR","Oregon"],["PA","Pennsylvania"],
+    ["RI","Rhode Island"],["SC","South Carolina"],["SD","South Dakota"],["TN","Tennessee"],["TX","Texas"],["UT","Utah"],["VT","Vermont"],["VA","Virginia"],
+    ["WA","Washington"],["WV","West Virginia"],["WI","Wisconsin"],["WY","Wyoming"]];
+  var schemaP = null, editSchema = null, editRec = null, editFields = {}, editActive = {}, editAny = [];
+
+  function getSchema() {
+    if (!schemaP) {
+      schemaP = fetch(SCHEMA_URL, { cache: "no-cache" })
+        .then(function (r) { if (!r.ok) throw new Error("x"); return r.json(); })
+        .catch(function () { schemaP = null; return null; });
+    }
+    return schemaP;
+  }
+  var LABELS = { is_public_venue: "Public venue", state_region: "State or region", postal_code: "ZIP or postal code", time_zone: "Time zone",
+                 has_wifi: "Has Wi-Fi", wifi_notes: "Wi-Fi notes", is_accessible: "Accessible", has_step_free_entry: "Step-free entry",
+                 cost_cents: "Cost", deposit_cents: "Deposit", booking_lead_days: "Booking lead time (days)", allows_minors: "Allows minors",
+                 allows_animals: "Allows animals", allows_food: "Allows food", allows_alcohol: "Allows alcohol", website_url: "Website" };
+  function humanize(n) { if (LABELS[n]) return LABELS[n]; var t = n.replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); }
+  function firstSentence(t) { if (!t) return ""; var m = t.match(/^.*?[.!?](\s|$)/); return (m ? m[0] : t).trim(); }
+
+  var GPS_SAID = {
+    found: "GPS found and saved (looked up from the address).",
+    no_match: "the lookup did not find that address. Enter a point by hand in Places if you need one.",
+    skipped_entered: "this place already has a point someone entered, so it was left alone.",
+    skipped_not_public: "private spaces are not looked up.",
+    skipped_no_address: "this place has no street address to look up.",
+    skipped_off: "the lookup is not turned on."
+  };
+  function venueActions(rec) {
+    var wrap = document.createElement("div");
+    var row = document.createElement("div"); row.className = "actions-row";
+    var ed = document.createElement("button"); ed.type = "button"; ed.textContent = "Edit";
+    var del = document.createElement("button"); del.type = "button"; del.className = "danger"; del.textContent = "Delete";
+    row.appendChild(ed);
+    var hv = historyBtn(rec.id, rec.name); if (hv) row.appendChild(hv);
+    if (rec.is_public_venue && rec.place) {
+      var gb = document.createElement("button"); gb.type = "button"; gb.textContent = "Find GPS";
+      gb.addEventListener("click", function () {
+        gb.disabled = true; $("vNotice").textContent = "Looking up GPS for " + (rec.name || "the venue") + "…";
+        admin("find_gps", { id: rec.id }).then(function (res) {
+          gb.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { $("vNotice").textContent = (rec.name || "Venue") + ": " + GPS_SAID[res.body.data.gps]; loadVenues(); }
+          else $("vNotice").textContent = adminProblem(res.status);
+        });
+      });
+      row.appendChild(gb);
+    }
+    row.appendChild(del);
+
+    var box = document.createElement("div"); box.className = "confirm"; box.hidden = true;
+    var q = document.createElement("div");
+    q.textContent = "Delete this venue? It is hidden from the lists but kept in the database. If a class uses this venue, make it inactive instead.";
+    var btns = document.createElement("div"); btns.className = "btns";
+    var yes = document.createElement("button"); yes.type = "button"; yes.className = "danger"; yes.textContent = "Delete venue";
+    var no = document.createElement("button"); no.type = "button"; no.className = "quiet"; no.textContent = "Cancel";
+    var err = document.createElement("div"); err.className = "msg"; err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no); box.appendChild(q); box.appendChild(btns); box.appendChild(err);
+
+    ed.addEventListener("click", function () { openEdit(rec); });
+    del.addEventListener("click", function () { box.hidden = !box.hidden; err.textContent = ""; });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      admin("soft_delete", { id: rec.id }).then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          $("vNotice").textContent = "Deleted " + (rec.name || "venue") + ".";
+          loadVenues();
+        } else if (res.status === 404) {
+          $("vNotice").textContent = "That venue was already gone.";
+          loadVenues();
+        } else if (res.status === 409 && res.body && res.body.error && (res.body.error.problems || []).some(function (p) { return p.issue === "in_use"; })) {
+          err.textContent = "Classes use this venue, so it cannot be deleted. Set it inactive instead, or move or delete those classes first.";
+          admin("list", { filters: { venue_id: rec.id }, limit: 50 }, "scheduled_classes").then(function (r2) {
+            var names = (r2.status === 200 && r2.body.ok ? r2.body.data.records : []).map(function (c) { return c.title; });
+            if (names.length) err.textContent += " Classes: " + names.join(", ") + ".";
+          });
+        } else {
+          err.textContent = adminProblem(res.status);
+        }
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(box);
+    return wrap;
+  }
+
+  function activationInfo(schema) {
+    editActive = {}; editAny = [];
+    (schema.allOf || []).forEach(function (b) {
+      var c = b["if"] && b["if"].properties && b["if"].properties.status;
+      if (c && c["const"] === "active" && b.then) {
+        (b.then.required || []).forEach(function (f) { editActive[f] = 1; });
+        (b.then.anyOf || []).forEach(function (br) { (br.required || []).forEach(function (f) { if (editAny.indexOf(f) < 0) editAny.push(f); }); });
+      }
+    });
+  }
+
+  // Pick lists for fields where free text is hard to get right. The saved value is the same kind of string the schema allows.
+  function choicesFor(name) {
+    if (name === "country") {
+      var names = null, out = [];
+      try { names = new Intl.DisplayNames(["en"], { type: "region" }); } catch (e) {}
+      if (names) {
+        for (var a = 65; a <= 90; a++) for (var b = 65; b <= 90; b++) {
+          var code = String.fromCharCode(a, b), nm = "";
+          try { nm = names.of(code); } catch (e) { continue; }
+          if (nm && nm !== code && nm !== "Unknown Region") out.push([code, nm]);
+        }
+        out.sort(function (x, y) { return x[1] < y[1] ? -1 : 1; });
+      }
+      out = [["US", "United States"]].concat(out.filter(function (o) { return o[0] !== "US"; }));
+      if (out.length < 5) out = [["US", "United States"], ["CA", "Canada"], ["MX", "Mexico"], ["GB", "United Kingdom"]];
+      return { groups: [{ label: "", opts: out }], other: false };
+    }
+    if (name === "state_region") {
+      return { groups: [{ label: "", opts: US_STATES }], other: true };
+    }
+    if (name === "time_zone") {
+      var us = [["America/New_York", "Eastern"], ["America/Chicago", "Central"], ["America/Denver", "Mountain"], ["America/Phoenix", "Arizona, no daylight time"],
+                ["America/Los_Angeles", "Pacific"], ["America/Anchorage", "Alaska"], ["Pacific/Honolulu", "Hawaii"]]
+        .map(function (z) { return [z[0], z[1] + " (" + z[0] + ")"]; });
+      var all = [];
+      try { all = Intl.supportedValuesOf("timeZone").map(function (z) { return [z, z]; }); } catch (e) {}
+      var groups = [{ label: "United States", opts: us }];
+      if (all.length) groups.push({ label: "All time zones", opts: all });
+      return { groups: groups, other: all.length === 0 };
+    }
+    return null;
+  }
+
+  function buildField(name, def, rec, ctx) {
+    var P = ctx ? ctx.prefix : "", SCH = ctx ? ctx.schema : editSchema, FLD = ctx ? ctx.fields : editFields;
+    var wrap = document.createElement("div");
+    var label = document.createElement("label"); label.className = "f"; label.htmlFor = "ef_" + P + name;
+    label.appendChild(document.createTextNode(humanize(name)));
+    var isReq = (SCH.required || []).indexOf(name) >= 0;
+    var orig = rec[name] === undefined ? null : rec[name];
+    var kind, el, other = null;
+    var choices = (def.type === "string" && !def["enum"]) ? choicesFor(name) : null;
+    function opt(sel, value, text) { var o = document.createElement("option"); o.value = value; o.textContent = text; sel.appendChild(o); }
+    if (def.type === "boolean") {
+      kind = "bool"; el = document.createElement("select");
+      if (!isReq) opt(el, "", "Not answered");
+      opt(el, "true", "Yes"); opt(el, "false", "No");
+      el.value = orig === null ? "" : String(orig);
+    } else if (def["enum"]) {
+      kind = "text"; el = document.createElement("select");
+      if (!isReq) opt(el, "", "Not set");
+      def["enum"].forEach(function (v) { opt(el, String(v), String(v).replace(/_/g, " ")); });
+      el.value = orig === null ? "" : String(orig);
+    } else if (def.type === "integer" || def.type === "number") {
+      kind = /_cents$/.test(name) ? "money" : "num";
+      el = document.createElement("input"); el.type = "number"; el.inputMode = "decimal";
+      el.step = kind === "money" ? "0.01" : (def.type === "integer" ? "1" : "any");
+      var div = kind === "money" ? 100 : 1;
+      if (def.minimum != null) el.min = def.minimum / div;
+      if (def.maximum != null) el.max = def.maximum / div;
+      el.value = orig === null ? "" : (kind === "money" ? (orig / 100).toFixed(2) : String(orig));
+    } else if (choices) {
+      kind = "text"; el = document.createElement("select");
+      opt(el, "", "Not set");
+      choices.groups.forEach(function (g) {
+        var parent = el;
+        if (g.label) { parent = document.createElement("optgroup"); parent.label = g.label; el.appendChild(parent); }
+        g.opts.forEach(function (o) { opt(parent, o[0], o[1]); });
+      });
+      if (choices.other) {
+        opt(el, "__other__", "Other (type it)");
+        other = document.createElement("input"); other.type = "text"; other.className = "other"; other.id = "ef_" + P + name + "_other";
+        other.maxLength = def.maxLength || 100; other.placeholder = "Type it"; other.hidden = true; other.autocomplete = "off";
+        el.addEventListener("change", function () { other.hidden = el.value !== "__other__"; if (!other.hidden) other.focus(); });
+      }
+      var has = orig !== null && Array.prototype.some.call(el.options, function (o) { return o.value === orig; });
+      if (orig === null) el.value = "";
+      else if (has) el.value = orig;
+      else if (other) { el.value = "__other__"; other.value = orig; other.hidden = false; }
+      else { opt(el, orig, orig); el.value = orig; }
+    } else {
+      kind = "text";
+      el = (def.maxLength || 0) > 200 ? document.createElement("textarea") : document.createElement("input");
+      if (el.tagName === "INPUT") el.type = def.format === "email" ? "email" : def.format === "uri" ? "url" : /_phone$/.test(name) ? "tel" : "text";
+      if (def.maxLength) el.maxLength = def.maxLength;
+      el.autocomplete = "off"; el.autocapitalize = "off"; el.spellcheck = false;
+      el.value = orig === null ? "" : String(orig);
+    }
+    el.id = "ef_" + P + name;
+    wrap.appendChild(label); wrap.appendChild(el);
+    if (other) wrap.appendChild(other);
+    if (kind === "money") { var k = document.createElement("div"); k.className = "fhint keep"; k.textContent = "In dollars."; wrap.appendChild(k); }
+    var hintText = firstSentence(def.description);
+    if (hintText) { var h = document.createElement("div"); h.className = "fhint"; h.textContent = hintText; wrap.appendChild(h); }
+    var er = document.createElement("div"); er.className = "ferr"; er.id = "ee_" + P + name; wrap.appendChild(er);
+    FLD[name] = { el: el, other: other, kind: kind, def: def, sec: null, summary: null };
+    return wrap;
+  }
+
+  function openSec(f) {
+    f.sec.open = true;
+    var m = f.sec.closest("details.more");
+    if (m) { m.open = true; m.firstChild.className = "haserr"; }
+  }
+
+  // "What's needed to make this active?": a venue needs only a place (an address or a GPS point).
+  function renderReady() {
+    var box = $("readyBox"); if (!box) return;
+    box.textContent = "";
+    var p = editRec && editRec.place, ok = !!(p && (p.address || p.has_gps));
+    var sum = document.createElement("div"); sum.className = "sum";
+    sum.textContent = ok ? "Everything needed is filled in." : "Still needed: 1";
+    box.appendChild(sum);
+    var d = document.createElement("div"); d.className = ok ? "ok" : "todo";
+    d.textContent = (ok ? "✓ " : "○ ") + "A place with an address or a GPS point";
+    box.appendChild(d);
+  }
+  function addReady(body) {
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "linkbtn"; btn.textContent = "What’s needed to make this active?";
+    var box = document.createElement("div"); box.id = "readyBox"; box.className = "ready"; box.hidden = true;
+    btn.addEventListener("click", function () { box.hidden = !box.hidden; if (!box.hidden) renderReady(); });
+    body.appendChild(btn); body.appendChild(box);
+  }
+
+  // Rooms and hours: lists inside the venue record. Edited as rows; the whole list is sent when anything in it changed.
+  var editLists = {};
+  var DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  var listUid = 0;
+  function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  // The History button on a card: opens the Activity station on this one record. Only a super admin gets it (the server decides; this is courtesy).
+  function historyBtn(id, label) {
+    if (!id || !ME || (ME.is_super_admin !== true && ME.inspector !== true)) return null;
+    var b = mk("button", "quiet", "Change history"); b.type = "button"; b.setAttribute("data-history", id); b.setAttribute("data-viewok", "1");
+    b.addEventListener("click", function (ev) { ev.stopPropagation(); if (window.ActivityStation) window.ActivityStation.openFor(id, label || ""); });
+    return b;
+  }
+  // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
+  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
+                        go: function (id) { goTo(id); }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; } };
+  function canon(v) {
+    if (v === null || v === undefined) return "null";
+    if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
+    if (typeof v === "object") return "{" + Object.keys(v).sort().map(function (k) { return JSON.stringify(k) + ":" + canon(v[k]); }).join(",") + "}";
+    return JSON.stringify(v);
+  }
+  function wholeNum(txt) { var t = String(txt).trim(); if (t === "") return null; var n = Number(t); return (isFinite(n) && Math.floor(n) === n) ? n : NaN; }
+  function dayIndex(e) { return DAYS.indexOf(e.day_of_week); }
+  function sortDays(a) {
+    return a.map(function (e, i) { return [e, i]; }).sort(function (x, y) { return (dayIndex(x[0]) - dayIndex(y[0])) || (x[1] - y[1]); }).map(function (x) { return x[0]; });
+  }
+  var LIST_ISSUES = {
+    rooms: { required: "Add at least one room.", duplicate: "Two rooms have the same name.", in_use: "A class uses this room. Change that class first." },
+    availability_hours: { out_of_range: "Each open day must open before it closes." }
+  };
+  function listIssueText(field, issue) {
+    return (LIST_ISSUES[field] && LIST_ISSUES[field][issue]) || ("Check the " + (field === "rooms" ? "rooms" : "hours") + ".");
+  }
+
+  function lfield(parent, key, text, node) {
+    var w = mk("div"); var id = "lf" + (++listUid) + "_" + key;
+    var l = mk("label", "f", text); l.htmlFor = id; node.id = id;
+    w.appendChild(l); w.appendChild(node); parent.appendChild(w); return w;
+  }
+  function lopt(sel, value, text) { var o = mk("option", "", text); o.value = value; sel.appendChild(o); }
+
+  // The fields of one room, appended to box. Returns the inputs.
+  function buildRoomFields(box, r) {
+    var f = {};
+    f.label = mk("input"); f.label.type = "text"; f.label.maxLength = 100; f.label.autocomplete = "off"; f.label.value = r.label || "";
+    lfield(box, "label", "Room name (like Main room)", f.label);
+    var two = mk("div", "two"); box.appendChild(two);
+    f.max = mk("input"); f.max.type = "number"; f.max.inputMode = "numeric"; f.max.step = 1; f.max.value = r.max_occupancy == null ? "" : r.max_occupancy;
+    lfield(two, "max", "Most people (optional)", f.max);
+    f.pref = mk("input"); f.pref.type = "number"; f.pref.inputMode = "numeric"; f.pref.step = 1; f.pref.value = r.preferred_occupancy == null ? "" : r.preferred_occupancy;
+    lfield(two, "pref", "Comfortable number (optional)", f.pref);
+    f.acc = mk("select"); lopt(f.acc, "", "Not answered"); lopt(f.acc, "true", "Yes"); lopt(f.acc, "false", "No");
+    f.acc.value = r.is_accessible == null ? "" : String(r.is_accessible);
+    lfield(box, "acc", "Accessible room", f.acc);
+    f.seat = mk("input"); f.seat.type = "text"; f.seat.maxLength = 200; f.seat.autocomplete = "off"; f.seat.value = r.seating_layout || "";
+    lfield(box, "seat", "Seating (tables, rows, a circle)", f.seat);
+    f.equip = mk("input"); f.equip.type = "text"; f.equip.autocomplete = "off"; f.equip.placeholder = "Screen, projector, whiteboard"; f.equip.value = (r.equipment || []).join(", ");
+    lfield(box, "equip", "Equipment (separate with commas)", f.equip);
+    f.notes = mk("textarea"); f.notes.maxLength = 500; f.notes.value = r.notes || "";
+    lfield(box, "notes", "Notes about this room", f.notes);
+    return f;
+  }
+  function readRoomFields(f) {
+    var o = {}, blank = true, bad = false, miss = false;
+    var lab = f.label.value.trim(), mx = wholeNum(f.max.value), pf = wholeNum(f.pref.value);
+    var seat = f.seat.value.trim(), notes = f.notes.value.trim();
+    var eq = f.equip.value.split(",").map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+    if (lab || f.max.value.trim() || f.pref.value.trim() || seat || notes || eq.length || f.acc.value) blank = false;
+    if (blank) return { blank: true };
+    if (lab) o.label = lab; else miss = true;
+    if (mx !== null) { if (isNaN(mx)) bad = true; else o.max_occupancy = mx; }
+    if (pf !== null) { if (isNaN(pf)) bad = true; else o.preferred_occupancy = pf; }
+    if (f.acc.value) o.is_accessible = f.acc.value === "true";
+    if (seat) o.seating_layout = seat;
+    if (eq.length) o.equipment = eq;
+    if (notes) o.notes = notes;
+    return { value: o, bad: bad, miss: miss };
+  }
+  // Seven day rows (tick = open). Returns count, clearErr and read.
+  function buildHoursRows(parent, entries) {
+    var hours = {}, extras = [], byDay = {};
+    (entries || []).forEach(function (e) { if (byDay[e.day_of_week]) extras.push(e); else byDay[e.day_of_week] = e; });
+    DAYS.forEach(function (d) {
+      var e = byDay[d];
+      var row = mk("div", "drow");
+      var lab = mk("label", "day"); var cb = mk("input"); cb.type = "checkbox"; cb.checked = !!e;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(d)); row.appendChild(lab);
+      var times = mk("div", "times"); times.hidden = !e; row.appendChild(times);
+      var o = mk("input"); o.type = "time"; var c = mk("input"); c.type = "time";
+      o.value = e ? e.opens_at : ""; c.value = e ? e.closes_at : "";
+      var ow = mk("div"); ow.appendChild(mk("span", "", "Opens"));
+      var cw = mk("div"); cw.appendChild(mk("span", "", "Closes"));
+      o.id = "lf" + (++listUid) + "_o"; c.id = "lf" + (++listUid) + "_c"; o.setAttribute("aria-label", d + " opens"); c.setAttribute("aria-label", d + " closes");
+      ow.appendChild(o); cw.appendChild(c); times.appendChild(ow); times.appendChild(cw);
+      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); row.appendChild(re);
+      cb.addEventListener("change", function () {
+        times.hidden = !cb.checked;
+        if (cb.checked) { if (!o.value) o.value = "09:00"; if (!c.value) c.value = "17:00"; }
+      });
+      hours[d] = { cb: cb, o: o, c: c, err: re };
+      parent.appendChild(row);
+    });
+    return {
+      count: function () { return DAYS.filter(function (d) { return hours[d].cb.checked; }).length; },
+      clearErr: function () { DAYS.forEach(function (d) { hours[d].err.textContent = ""; }); },
+      read: function () {
+        var vals = [], bad = false;
+        DAYS.forEach(function (d) {
+          var h = hours[d]; h.err.textContent = "";
+          if (!h.cb.checked) return;
+          if (!h.o.value || !h.c.value) { bad = true; h.err.textContent = "Give both an opening and a closing time."; return; }
+          vals.push({ day_of_week: d, opens_at: h.o.value, closes_at: h.c.value });
+        });
+        vals = sortDays(vals.concat(extras));
+        return { value: vals.length ? vals : null, bad: bad };
+      }
+    };
+  }
+
+  function buildListEditors(sec, rec) {
+    var body = sec.body;
+    body.appendChild(mk("div", "note", "Changes are saved when you press Save, along with the rest of the form."));
+    function updateSummary() {
+      var nr = editLists.rooms ? editLists.rooms.count() : 0, nh = editLists.availability_hours ? editLists.availability_hours.count() : 0;
+      sec.sm.textContent = "Rooms and hours (" + nr + (nr === 1 ? " room, " : " rooms, ") + nh + (nh === 1 ? " day open)" : " days open)");
+    }
+
+    body.appendChild(mk("div", "lsub", "Rooms"));
+    var rlist = mk("div", "rlist");
+    var rerr = mk("div", "ferr"); rerr.id = "ee_rooms"; rerr.setAttribute("role", "alert");
+    var rooms = [];
+    function renumber() { rooms.forEach(function (r, i) { r.title.textContent = "Room " + (i + 1); }); }
+    function addRoom(r) {
+      r = r || {};
+      var box = mk("div", "rcard"), head = mk("div", "rhead"), title = mk("strong", "", "Room");
+      var rm = mk("button", "quiet", "Remove"); rm.type = "button";
+      head.appendChild(title); head.appendChild(rm); box.appendChild(head);
+      var f = buildRoomFields(box, r);
+      var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
+      var row = { box: box, title: title, f: f, err: re };
+      rooms.push(row); rlist.appendChild(box); renumber();
+      rm.addEventListener("click", function () {
+        rooms.splice(rooms.indexOf(row), 1); rlist.removeChild(box); renumber(); updateSummary();
+        document.getElementById("editSections").dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      return row;
+    }
+    var addRoomBtn = mk("button", "quiet", "Add a room"); addRoomBtn.type = "button";
+    addRoomBtn.addEventListener("click", function () { var r = addRoom(); updateSummary(); r.f.label.focus(); });
+    (rec.rooms || []).forEach(function (r) { addRoom(r); });
+    body.appendChild(rlist); body.appendChild(rerr); body.appendChild(addRoomBtn);
+
+    body.appendChild(mk("div", "lsub", "Open hours"));
+    body.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
+    var hr = buildHoursRows(body, rec.availability_hours);
+    var herr = mk("div", "ferr"); herr.id = "ee_availability_hours"; herr.setAttribute("role", "alert"); body.appendChild(herr);
+
+    editLists.rooms = {
+      sec: sec.d, summary: sec.sm, el: rerr, msg: "Fix the marked rooms.",
+      count: function () { return rooms.filter(function (r) { return !readRoomFields(r.f).blank; }).length; },
+      clearRowErrs: function () { rooms.forEach(function (r) { r.err.textContent = ""; }); },
+      read: function () {
+        var vals = [], bad = false;
+        rooms.forEach(function (r) {
+          var v = readRoomFields(r.f); r.err.textContent = "";
+          if (v.blank) return;
+          if (v.bad) { bad = true; r.err.textContent = "Use whole numbers."; }
+          else if (v.miss) { bad = true; r.err.textContent = "Give the room a name."; }
+          else vals.push(v.value);
+        });
+        return { value: vals.length ? vals : null, bad: bad, orig: rec.rooms && rec.rooms.length ? rec.rooms : null };
+      }
+    };
+    editLists.availability_hours = {
+      sec: sec.d, summary: sec.sm, el: herr, msg: "Fix the marked days.",
+      count: hr.count, clearRowErrs: hr.clearErr,
+      read: function () {
+        var x = hr.read();
+        return { value: x.value, bad: x.bad, orig: rec.availability_hours && rec.availability_hours.length ? sortDays(rec.availability_hours) : null };
+      }
+    };
+    sec.d.addEventListener("input", updateSummary);
+    sec.d.addEventListener("change", updateSummary);
+    updateSummary();
+  }
+
+  // ---- Popup on the venue card: view, edit, add and remove rooms; view and edit the open hours.
+  var D = { dlg: null, rec: null, kind: "", editing: null, busy: false, body: null, msg: null, title: null };
+  function clockLabel(t) {
+    var m = /^(\d\d):(\d\d)$/.exec(t || ""); if (!m) return t || "";
+    var h = Number(m[1]), ap = h >= 12 ? "PM" : "AM"; h = h % 12; if (h === 0) h = 12;
+    return h + ":" + m[2] + " " + ap;
+  }
+  function cap(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  function ensureDlg() {
+    if (D.dlg) return;
+    var d = mk("dialog", "lsdlg"); d.setAttribute("aria-labelledby", "lsTitle");
+    var head = mk("div", "lshead"); D.title = mk("h2"); D.title.id = "lsTitle";
+    var close = mk("button", "quiet", "Close"); close.type = "button";
+    head.appendChild(D.title); head.appendChild(close);
+    D.msg = mk("div", "dmsg"); D.msg.setAttribute("role", "status");
+    D.body = mk("div", "lsbody");
+    d.appendChild(head); d.appendChild(D.msg); d.appendChild(D.body);
+    document.body.appendChild(d); D.dlg = d;
+    close.addEventListener("click", function () { d.close(); });
+    d.addEventListener("close", function () { D.rec = null; D.editing = null; loadVenues(); });
+  }
+  function dmsg(t, ok) { D.msg.textContent = t || ""; D.msg.className = "dmsg" + (ok ? " ok" : ""); }
+  function openListDlg(rec, kind) {
+    ensureDlg();
+    D.rec = rec; D.kind = kind; D.editing = null; D.busy = false;
+    D.title.textContent = (kind === "rooms" ? "Rooms: " : "Open hours: ") + (rec.name || "venue");
+    dmsg(""); renderDlg();
+    if (!D.dlg.open) D.dlg.showModal();
+    D.body.scrollTop = 0;
+  }
+  function renderDlg() { if (D.kind === "rooms") renderRooms(); else renderHours(); }
+
+  // Sends one list field. onOk runs after a saved change.
+  function saveList(field, value, onOk) {
+    if (D.busy) return;
+    D.busy = true; dmsg("");
+    var changes = {}; changes[field] = value;
+    admin("update", { id: D.rec.id, changes: changes, expected_updated_at: D.rec.updated_at }).then(function (res) {
+      D.busy = false;
+      if (res.status === 401) { D.dlg.close(); lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        if (value === null) delete D.rec[field]; else D.rec[field] = value;
+        var u = res.body.data && res.body.data.updated_at; if (u) D.rec.updated_at = u;
+        dmsg("Saved.", true); onOk(); return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) { dmsg("This venue changed since you opened this. Nothing was saved. Close this window and open it again."); return; }
+      if (res.status === 404) { dmsg("This venue no longer exists. Close this window."); return; }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var mine = err.problems.filter(function (p) { return p.field === field; })[0];
+        dmsg("Not saved. " + (mine ? listIssueText(field, mine.issue) : "Check the values and try again."));
+        return;
+      }
+      dmsg(adminProblem(res.status));
+    });
+  }
+
+  function roomLines(r) {
+    var out = [];
+    var nums = [];
+    if (r.max_occupancy != null) nums.push("Up to " + r.max_occupancy + " people");
+    if (r.preferred_occupancy != null) nums.push("comfortable " + r.preferred_occupancy);
+    if (nums.length) out.push(nums.join(", "));
+    if (r.is_accessible != null) out.push(r.is_accessible ? "Accessible" : "Not accessible");
+    if (r.seating_layout) out.push("Seating: " + r.seating_layout);
+    if (r.equipment && r.equipment.length) out.push("Equipment: " + r.equipment.join(", "));
+    if (r.notes) out.push("Notes: " + r.notes);
+    return out;
+  }
+  function renderRooms() {
+    var body = D.body; body.textContent = "";
+    var list = D.rec.rooms || [];
+    body.appendChild(mk("div", "note", "Saving a room here saves it right away. It does not wait for the venue form."));
+    if (!list.length && D.editing !== "new") body.appendChild(mk("div", "empty", "No rooms yet."));
+    list.forEach(function (r, i) {
+      if (D.editing === i) { body.appendChild(roomForm(i, r)); return; }
+      var e = mk("div", "rentry"); e.appendChild(mk("strong", "", r.label));
+      roomLines(r).forEach(function (t) { e.appendChild(mk("div", "rl", t)); });
+      var row = mk("div", "actions-row");
+      var ed = mk("button", "", "Edit"); ed.type = "button";
+      var rm = mk("button", "danger", "Remove"); rm.type = "button";
+      row.appendChild(ed); row.appendChild(rm); e.appendChild(row);
+      var box = mk("div", "confirm"); box.hidden = true;
+      box.appendChild(mk("div", "", "Remove " + r.label + " from this venue?"));
+      var bt = mk("div", "btns"); var yes = mk("button", "danger", "Remove room"); yes.type = "button";
+      var no = mk("button", "quiet", "Cancel"); no.type = "button"; bt.appendChild(yes); bt.appendChild(no); box.appendChild(bt); e.appendChild(box);
+      ed.addEventListener("click", function () { D.editing = i; dmsg(""); renderRooms(); });
+      rm.addEventListener("click", function () { box.hidden = !box.hidden; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        var next = list.filter(function (x, j) { return j !== i; });
+        saveList("rooms", next.length ? next : null, function () { renderRooms(); });
+      });
+      body.appendChild(e);
+    });
+    if (D.editing === "new") body.appendChild(roomForm("new", {}));
+    else if (D.editing === null) {
+      var add = mk("button", "quiet", "Add a room"); add.type = "button";
+      add.addEventListener("click", function () { D.editing = "new"; dmsg(""); renderRooms(); var l = D.body.querySelector("input"); if (l) l.focus(); });
+      body.appendChild(add);
+    }
+  }
+  function roomForm(idx, r) {
+    var box = mk("div", "rcard"); box.appendChild(mk("strong", "", idx === "new" ? "New room" : "Edit room"));
+    var f = buildRoomFields(box, r);
+    var re = mk("div", "rowerr"); re.setAttribute("role", "alert"); box.appendChild(re);
+    var bt = mk("div", "btns"); var save = mk("button", "", "Save room"); save.type = "button";
+    var cancel = mk("button", "quiet", "Cancel"); cancel.type = "button"; bt.appendChild(save); bt.appendChild(cancel); box.appendChild(bt);
+    cancel.addEventListener("click", function () { D.editing = null; dmsg(""); renderRooms(); });
+    save.addEventListener("click", function () {
+      var v = readRoomFields(f); re.textContent = "";
+      if (v.blank || v.miss) { re.textContent = "Give the room a name."; return; }
+      if (v.bad) { re.textContent = "Use whole numbers."; return; }
+      var next = (D.rec.rooms || []).slice();
+      if (idx === "new") next.push(v.value); else next[idx] = v.value;
+      if (idx !== "new" && canon(next[idx]) === canon((D.rec.rooms || [])[idx])) { dmsg("Nothing changed."); return; }
+      saveList("rooms", next, function () { D.editing = null; renderRooms(); });
+    });
+    return box;
+  }
+
+  function renderHours() {
+    var body = D.body; body.textContent = "";
+    var list = D.rec.availability_hours || [];
+    body.appendChild(mk("div", "note", "Saving here saves right away. It does not wait for the venue form."));
+    if (D.editing === "hours") {
+      var wrap = mk("div", "rcard"); wrap.appendChild(mk("div", "note", "Tick the days the venue can be used. A day that is not ticked is closed."));
+      var hr = buildHoursRows(wrap, list);
+      var bt = mk("div", "btns"); var save = mk("button", "", "Save hours"); save.type = "button";
+      var cancel = mk("button", "quiet", "Cancel"); cancel.type = "button"; bt.appendChild(save); bt.appendChild(cancel); wrap.appendChild(bt);
+      cancel.addEventListener("click", function () { D.editing = null; dmsg(""); renderHours(); });
+      save.addEventListener("click", function () {
+        var x = hr.read();
+        if (x.bad) { dmsg("Fix the marked days."); return; }
+        var orig = list.length ? sortDays(list) : null;
+        if (canon(x.value) === canon(orig)) { dmsg("Nothing changed."); return; }
+        saveList("availability_hours", x.value, function () { D.editing = null; renderHours(); });
+      });
+      body.appendChild(wrap); return;
+    }
+    if (!list.length) body.appendChild(mk("div", "empty", "No hours set. Every day counts as closed."));
+    else {
+      var box = mk("div", "rentry");
+      sortDays(list).forEach(function (e) { box.appendChild(mk("div", "rl", cap(e.day_of_week) + ": " + clockLabel(e.opens_at) + " to " + clockLabel(e.closes_at))); });
+      body.appendChild(box);
+    }
+    var ed = mk("button", "quiet", list.length ? "Edit hours" : "Set hours"); ed.type = "button";
+    ed.addEventListener("click", function () { D.editing = "hours"; dmsg(""); renderHours(); });
+    body.appendChild(ed);
+  }
+
+  function buildSections(rec) {
+    var host = $("editSections"); host.textContent = "";
+    editFields = {}; editLists = {};
+    var props = editSchema.properties, used = {};
+    function section(title, open, parent) {
+      var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
+      var sm = document.createElement("summary"); sm.textContent = title; d.appendChild(sm);
+      var body = document.createElement("div"); body.className = "body"; d.appendChild(body);
+      (parent || host).appendChild(d);
+      return { d: d, sm: sm, body: body };
+    }
+    function eligible(n) { var df = props[n]; return df && !df.readOnly && df.type !== "array" && n !== "slug" && n !== "contact_individual_id" && n !== "backup_contact_individual_id"; }
+    function fill(sec, names) {
+      names.forEach(function (n) {
+        used[n] = 1;
+        sec.body.appendChild(buildField(n, props[n], rec));
+        editFields[n].sec = sec.d; editFields[n].summary = sec.sm;
+      });
+    }
+    function names(title) { return LAYOUT.filter(function (l) { return l[0] === title; })[0][1].filter(eligible); }
+
+    PRIMARY.forEach(function (t) {
+      var s2 = section(t, true);
+      fill(s2, names(t));
+      if (t === "Basics") addReady(s2.body);
+      if (t === "Place") s2.body.appendChild(placePanel(rec));
+      if (t === "Contact") {
+        s2.body.appendChild(contactPicker("contact_individual_id", "Main contact", rec.main_contact, s2.d, s2.sm));
+        s2.body.appendChild(contactPicker("backup_contact_individual_id", "Backup contact", rec.backup_contact, s2.d, s2.sm));
+      }
+    });
+    var sr = section("Rooms and hours", false);
+    buildListEditors(sr, rec);
+
+    var more = document.createElement("details"); more.className = "more";
+    var msm = document.createElement("summary"); msm.textContent = "More details (map, booking, facilities, cost, notes)"; more.appendChild(msm);
+    var mbody = document.createElement("div"); mbody.className = "mbody"; more.appendChild(mbody);
+    host.appendChild(more);
+    LAYOUT.forEach(function (l) {
+      if (PRIMARY.indexOf(l[0]) >= 0) return;
+      var nm = names(l[0]);
+      if (nm.length) fill(section(l[0], false, mbody), nm);
+    });
+    var rest = Object.keys(props).filter(function (n) { return !used[n] && eligible(n); });
+    if (rest.length) fill(section("Other", false, mbody), rest);
+  }
+
+  function readValue(f) {
+    var raw = f.el.value;
+    if (f.other && raw === "__other__") raw = f.other.value;
+    if (f.kind === "bool") return raw === "" ? null : raw === "true";
+    var t = raw.trim();
+    if (f.kind === "text") return t === "" ? null : t;
+    if (t === "") return null;
+    var n = Number(t);
+    if (!isFinite(n)) return undefined;
+    return f.kind === "money" ? Math.round(n * 100) : n;
+  }
+  function collectChanges() {
+    var changes = {}, bad = [];
+    Object.keys(editFields).forEach(function (n) {
+      var v = readValue(editFields[n]);
+      if (v === undefined) { bad.push(n); return; }
+      var orig = editRec[n] === undefined ? null : editRec[n];
+      if (v !== orig) changes[n] = v;
+    });
+    Object.keys(editLists).forEach(function (n) {
+      if (n === "availability_hours" || n === "rooms") {
+        var r = editLists[n].read();
+        if (r.bad) { bad.push(n); return; }
+        if (canon(r.value) !== canon(r.orig)) changes[n] = r.value;
+      }
+    });
+    return { changes: changes, bad: bad };
+  }
+  function editDirty() {
+    if (!editRec) return false;
+    var c = collectChanges();
+    return c.bad.length > 0 || Object.keys(c.changes).length > 0;
+  }
+  function clearEditErrs() {
+    $("editMsg").textContent = ""; $("editReload").hidden = true;
+    Object.keys(editFields).forEach(function (n) {
+      $("ee_" + n).textContent = "";
+      if (editFields[n].summary) editFields[n].summary.className = "";
+    });
+    Object.keys(editLists).forEach(function (n) {
+      $("ee_" + n).textContent = ""; editLists[n].summary.className = ""; editLists[n].clearRowErrs();
+    });
+    document.querySelectorAll("details.more > summary").forEach(function (sm) { sm.className = ""; });
+  }
+  function closeEdit() {
+    editRec = null; editFields = {}; editLists = {};
+    $("editPanel").hidden = true; $("vMain").hidden = false;
+  }
+  function openEdit(rec) {
+    $("vMsg").textContent = "";
+    getSchema().then(function (schema) {
+      if (!schema) { $("vMsg").textContent = "Could not load the venue form. Try again."; return; }
+      editSchema = schema; editRec = rec; activationInfo(schema);
+      $("editTitle").textContent = "Edit " + (rec.name || "venue");
+      $("editSub").textContent = "Slug: " + rec.slug + " (cannot be changed)";
+      buildSections(rec);
+      clearEditErrs();
+      $("editPanel").classList.remove("showhelp"); $("helpBtn").textContent = "Show field help";
+      $("vMain").hidden = true; $("editPanel").hidden = false;
+      window.scrollTo(0, 0);
+    });
+  }
+
+  function issueText(p, f) {
+    var def = f.def;
+    if (p.issue === "choose_one") return "Give at least one of the contact options.";
+    if (p.issue === "required") return "Required.";
+    if (p.issue === "invalid_format") {
+      if (def.format === "email") return "That email address does not look right.";
+      if (def.format === "uri") return "Start with https://";
+      if (p.field === "country") return "Two capital letters, like US.";
+      return "That value is not valid.";
+    }
+    if (p.issue === "out_of_range") return "That number is outside the allowed range.";
+    return ISSUE[p.issue] || "That value is not valid.";
+  }
+
+  $("editForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!editRec) return;
+    clearEditErrs();
+    var c = collectChanges();
+    if (c.bad.length) {
+      c.bad.forEach(function (n) {
+        var L = editLists[n];
+        $("ee_" + n).textContent = L ? L.msg : "Enter a number.";
+        if (L) L.summary.className = "haserr";
+        openSec(L || editFields[n]);
+      });
+      $("editMsg").textContent = "Not saved. Fix the marked fields.";
+      return;
+    }
+    if (!Object.keys(c.changes).length) { $("editMsg").textContent = "Nothing changed."; return; }
+    $("editSave").disabled = true;
+    admin("update", { id: editRec.id, changes: c.changes, expected_updated_at: editRec.updated_at }).then(function (res) {
+      $("editSave").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        vNewId = editRec.id;
+        $("vNotice").textContent = "Saved " + (c.changes.name || editRec.name) + "." + ("name" in c.changes ? " People in upcoming classes here are emailed the new name. Messages shows the result." : "");
+        closeEdit(); loadVenues();
+        return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) {
+        $("editMsg").textContent = "This venue changed since you opened it. Nothing was saved.";
+        $("editReload").hidden = false;
+        return;
+      }
+      if (res.status === 404) {
+        $("editMsg").textContent = "This venue no longer exists.";
+        $("editReload").hidden = false;
+        return;
+      }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var other = [], first = null, n = 0;
+        err.problems.forEach(function (p) {
+          var f = editFields[p.field] || editLists[p.field];
+          if (f) {
+            $("ee_" + p.field).textContent = editLists[p.field] ? listIssueText(p.field, p.issue) : issueText(p, f);
+            openSec(f); f.summary.className = "haserr"; n++;
+            if (!first) first = f.el;
+          } else {
+            other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
+          }
+        });
+        $("editMsg").textContent = "Not saved. " + (n ? n + " field" + (n === 1 ? "" : "s") + " need attention, marked below." : "")
+          + (other.length ? " Also needed: " + other.join(", ") + "." : "");
+        if (first) first.scrollIntoView({ block: "center" });
+        return;
+      }
+      $("editMsg").textContent = adminProblem(res.status);
+    });
+  });
+  function liveReady() { var b = $("readyBox"); if (b && !b.hidden) renderReady(); }
+  $("editSections").addEventListener("input", liveReady);
+  $("editSections").addEventListener("change", liveReady);
+  $("helpBtn").addEventListener("click", function () {
+    var on = $("editPanel").classList.toggle("showhelp");
+    $("helpBtn").textContent = on ? "Hide field help" : "Show field help";
+  });
+  $("editCancel").addEventListener("click", function () {
+    if (editDirty() && !window.confirm("Discard your changes?")) return;
+    closeEdit();
+  });
+  $("editReload").addEventListener("click", function () { closeEdit(); loadVenues(); });
+
+  // ======================================================================================================
+  // ---- Classes view: list, add, edit, delete. Same pattern as venues; the server does all the checking.
+  // The form is built from the published scheduled_class schema. The venue and room are pick lists made from
+  // the venues collection; the start time is typed in the venue's time zone and saved as UTC.
+  // ======================================================================================================
+  var CLS_SCHEMA_URL = "/schemas/scheduled_class.schema.json";
+  var CTYPES = { workshop: "Workshop", group: "Group", "private": "One on one" };
+  var CPRIMARY = ["Basics", "When and where", "Capacity and price"];
+  var CLAYOUT = [
+    ["Basics", ["title", "class_type", "curriculum_id", "series_id", "session_number", "status", "is_public", "description", "cancelled_reason"]],
+    ["When and where", ["venue_id", "venue_room_label", "starts_at", "time_zone", "duration_minutes", "is_venue_confirmed", "venue_notes"]],
+    ["Capacity and price", ["capacity_minimum", "capacity_target", "capacity_max", "is_waitlist_enabled", "waitlist_max", "price_cents", "price_basis"]],
+    ["Program and organizer", ["program_slug", "accessibility_notes", "organizer_name", "organizer_email", "organizer_phone"]]
+  ];
+  var CLABELS = { title: "Title", class_type: "Kind of class", is_public: "Show in the public list", program_slug: "Program", session_number: "Session number in the series",
+                  venue_id: "Venue", venue_room_label: "Room", starts_at: "Starts", duration_minutes: "Length (minutes)",
+                  is_venue_confirmed: "Venue confirmed with them", venue_notes: "Notes about the venue for this class",
+                  capacity_minimum: "Fewest people (needed to run)", capacity_target: "Target number", capacity_max: "Most people",
+                  is_waitlist_enabled: "Keep a waiting list", waitlist_max: "Waiting list limit", price_cents: "Price", price_basis: "Price is",
+                  cancelled_reason: "Why it was cancelled", organizer_name: "Organizer name", organizer_email: "Organizer email", organizer_phone: "Organizer phone" };
+  Object.keys(CLABELS).forEach(function (k) { if (!LABELS[k]) LABELS[k] = CLABELS[k]; });
+  var CISSUE = {
+    venue_id: { not_found: "That venue was not found.", inactive: "That venue is not active. Make the venue active first, or keep this class as an idea.", required: "Choose a venue." },
+    venue_room_label: { not_found: "That venue has no room with that name." },
+    curriculum_id: { not_found: "That curriculum was not found." },
+    series_id: { required: "Choose a series for the session number, or clear the session number." },
+    session_number: { duplicate: "Another class in this series already has that number.", out_of_range: "A whole number from 1 to 50." },
+    capacity_minimum: { out_of_range: "The fewest people is above the target." },
+    capacity_max: { out_of_range: "Check the numbers: fewest ≤ target ≤ most, and the most cannot be above the room's size." },
+    cancelled_reason: { not_allowed: "Only for a cancelled class." }
+  };
+
+  var cCtx = { prefix: "c_", schema: null, fields: {} };
+  var cSchemaP = null, cRec = null, cVenues = [], cVenueById = {}, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
+
+  function getClassSchema() {
+    if (!cSchemaP) {
+      cSchemaP = fetch(CLS_SCHEMA_URL, { cache: "no-cache" })
+        .then(function (r) { if (!r.ok) throw new Error("x"); return r.json(); })
+        .catch(function () { cSchemaP = null; return null; });
+    }
+    return cSchemaP;
+  }
+  function loadVenueChoices() {
+    return admin("list", { limit: 200, expand: true }, "venues").then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return false; }
+      if (res.status !== 200 || !res.body.ok) return false;
+      cVenues = (res.body.data.records || []).slice().sort(function (a, b) { return (a.name || "").toLowerCase() < (b.name || "").toLowerCase() ? -1 : 1; });
+      cVenueById = {}; cVenues.forEach(function (v) { cVenueById[v.id] = v; });
+      return true;
+    });
+  }
+
+  var venueChipFetch = null, curChipFetch = null;
+  function refreshCurriculumChips() {   // the curriculum titles arrive after the request cards are drawn
+    Array.prototype.forEach.call(document.querySelectorAll(".curchip[data-cid]"), function (c) {
+      var n = curriculumAsked(c.getAttribute("data-cid")); if (n) c.textContent = "Interested in: " + n;
+    });
+  }
+  function curriculumAsked(id) {
+    var r = "";
+    cCurricula.forEach(function (c) { if (c.id === id) r = c.title || "(no title)"; });
+    return r;
+  }
+  function refreshVenueChips() {   // the venue names arrive after the request cards are drawn
+    Array.prototype.forEach.call(document.querySelectorAll(".venuechip[data-vid]"), function (c) {
+      var n = venueAsked(c.getAttribute("data-vid")); if (n) c.textContent = "Venue asked for: " + n;
+    });
+  }
+  // "Name, Town" for a venue the requester picked on the form. Empty until the venues are loaded or when it is gone.
+  function venueAsked(id) {
+    var v = id ? cVenueById[id] : null;
+    if (!v) return "";
+    var town = v.place && v.place.address && v.place.address.locality;
+    return (v.name || "(no name)") + (town ? ", " + town : "");
+  }
+
+  // ---- time zone helpers: the time is typed in the class's time zone and saved as UTC
+  function zoneParts(ms, tz) {
+    var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
+                                                hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    var o = {}; f.formatToParts(new Date(ms)).forEach(function (p) { o[p.type] = p.value; });
+    return o;
+  }
+  function zoneOffsetMin(ms, tz) {
+    var o = zoneParts(ms, tz), h = Number(o.hour) === 24 ? 0 : Number(o.hour);
+    return (Date.UTC(Number(o.year), Number(o.month) - 1, Number(o.day), h, Number(o.minute), Number(o.second)) - Math.floor(ms / 1000) * 1000) / 60000;
+  }
+  function zonedToUtc(date, time, tz) {
+    var m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(date || ""), t = /^(\d\d):(\d\d)$/.exec(time || "");
+    if (!m || !t || !tz) return null;
+    try {
+      var naive = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]), Number(t[1]), Number(t[2]));
+      var off = zoneOffsetMin(naive, tz), guess = naive - off * 60000, off2 = zoneOffsetMin(guess, tz);
+      if (off2 !== off) guess = naive - off2 * 60000;
+      return new Date(guess).toISOString().replace(/\.\d{3}Z$/, "Z");
+    } catch (e) { return null; }
+  }
+  function utcToZoned(iso, tz) {
+    var d = new Date(iso); if (isNaN(d) || !tz) return null;
+    try {
+      var o = zoneParts(d.getTime(), tz), h = Number(o.hour) === 24 ? "00" : o.hour;
+      return { date: o.year + "-" + o.month + "-" + o.day, time: h + ":" + o.minute };
+    } catch (e) { return null; }
+  }
+  function classWhen(rec) {
+    if (!rec.starts_at) return "No date yet";
+    try {
+      var d = new Date(rec.starts_at);
+      return new Intl.DateTimeFormat("en-US", { timeZone: rec.time_zone || "America/Denver", weekday: "short", month: "short", day: "numeric",
+                                                 hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(d);
+    } catch (e) { return String(rec.starts_at); }
+  }
+  function money(cents) { return "$" + (cents / 100).toFixed(cents % 100 === 0 ? 0 : 2); }
+
+  // ---- list
+  function classRow(rec, isNew) {
+    var li = document.createElement("li");
+    if (isNew) li.className = "isnew";
+    var head = document.createElement("button");
+    head.className = "head"; head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", rec.title || "(no title)"));
+    top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), rec.status || ""));
+    head.appendChild(top);
+    head.appendChild(mk("div", "who", classWhen(rec)));
+    var v = rec.venue_id ? cVenueById[rec.venue_id] : null;
+    var where = rec.venue_id ? ((v ? v.name : "(venue not found)") + (rec.venue_room_label ? " · " + rec.venue_room_label : "")) : "No venue yet";
+    head.appendChild(mk("div", "sub", where));
+    var chips = mk("div", "chips");
+    chips.appendChild(mk("span", "", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", public" : ", not public")));
+    if (rec.session_number) chips.appendChild(mk("span", "", "Session " + rec.session_number));
+    chips.appendChild(mk("span", "", "People: " + rec.capacity_minimum + " to " + rec.capacity_target + " (up to " + rec.capacity_max + ")"));
+    var links = mk("div", "lchips");   // outside the card's head button: a button cannot sit inside a button
+    var at = mk("button", "chiplink", "Attendance"); at.type = "button";
+    at.addEventListener("click", function () { openAttendance(rec); });
+    links.appendChild(at);
+    var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
+    jl.addEventListener("click", function () { openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
+    links.appendChild(jl);
+    if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
+    head.appendChild(chips);
+
+    var detail = mk("div", "detail");
+    var done = {};
+    ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
+      if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
+    });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    head.addEventListener("click", function () {
+      var open = li.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    li.appendChild(head); li.appendChild(links); li.appendChild(classActions(rec)); li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function classActions(rec) {
+    var wrap = document.createElement("div"); wrap.className = "tilebtns";
+    var row = mk("div", "actions-row");
+    var ed = mk("button", "", "Edit"); ed.type = "button";
+    var cn = mk("button", "", "Cancel class"); cn.type = "button";
+    var del = mk("button", "danger", "Delete"); del.type = "button";
+    row.appendChild(ed);
+    var hc = historyBtn(rec.id, rec.title || rec.short_name); if (hc) row.appendChild(hc);
+    if (rec.status !== "cancelled" && rec.status !== "completed") row.appendChild(cn);
+    row.appendChild(del);
+    var box = mk("div", "confirm"); box.hidden = true;
+    var what = mk("div", ""), why = mk("input"); why.type = "text"; why.maxLength = 200; why.setAttribute("aria-label", "Why is it cancelled?"); why.placeholder = "Why? (optional)";
+    var btns = mk("div", "btns");
+    var yes = mk("button", "danger", ""); yes.type = "button";
+    var no = mk("button", "quiet", "Never mind"); no.type = "button";
+    var err = mk("div", "msg"); err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no);
+    box.appendChild(what); box.appendChild(why); box.appendChild(btns); box.appendChild(err);
+    var mode = "";
+    function show(m) {
+      if (!box.hidden && mode === m) { box.hidden = true; return; }
+      mode = m; box.hidden = false; err.textContent = ""; why.hidden = m !== "cancel";
+      what.textContent = m === "cancel"
+        ? "Cancel this class? It stays in the list marked cancelled. Everyone in it, students and instructors, is cancelled and their requests go back to waiting to be placed. Each of them is also emailed that it is cancelled, with a calendar file that removes it. Use this when a real class does not happen."
+        : "Delete this class? Use this for a class built by mistake or a duplicate. It disappears from the lists, everyone in it is cancelled, and their requests go back to waiting to be placed. Each of them is also emailed that it is cancelled. The record is kept.";
+      yes.textContent = m === "cancel" ? "Cancel class" : "Delete class";
+    }
+    function problem(res) {
+      var e = res.body && res.body.error;
+      var code = e && (e.code || (e.problems && e.problems[0] && (e.problems[0].field + " " + e.problems[0].issue)));
+      return adminProblem(res.status) + (code ? " (" + res.status + ": " + code + ")" : " (" + res.status + ")");
+    }
+    ed.addEventListener("click", function () { openClassEdit(rec); });
+    cn.addEventListener("click", function () { show("cancel"); });
+    del.addEventListener("click", function () { show("delete"); });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      var p = mode === "cancel"
+        ? admin("update", { id: rec.id, changes: Object.assign({ status: "cancelled" }, why.value.trim() ? { cancelled_reason: why.value.trim() } : {}), expected_updated_at: rec.updated_at }, "scheduled_classes")
+        : admin("soft_delete", { id: rec.id }, "scheduled_classes");
+      p.then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled and emailed. Messages shows any email that could not be sent.";
+          loadPlaced(); loadClasses();
+        }
+        else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
+        else if (res.status === 409 && mode === "cancel") err.textContent = "This class changed since the list loaded. Refresh and try again.";
+        else if (res.status === 409) err.textContent = "This class still holds old seat decisions from before attendance existed, so it cannot be deleted. Cancel it instead.";
+        else err.textContent = problem(res);
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(box);
+    return wrap;
+  }
+
+  // ---- filters: tick boxes. Everything ticked shows everything; unticking narrows. The page holds the whole list and filters it here.
+  var CSTAT = ["identified", "scheduled", "enrolling", "completed", "cancelled"], CKIND = ["workshop", "group", "private"];
+  var CF_STORE = "console_class_filters";
+  var cAll = [], cSeq = 0;
+  function cChecks() { return document.querySelectorAll("#cFilters input[type=checkbox]"); }
+  function cSelected() {
+    var o = { status: {}, class_type: {} };
+    Array.prototype.forEach.call(cChecks(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
+    return o;
+  }
+  function cSaveFilters() {
+    try {
+      var off = [];
+      Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) off.push(c.getAttribute("data-f") + ":" + c.value); });
+      if (off.length) sessionStorage.setItem(CF_STORE, JSON.stringify(off)); else sessionStorage.removeItem(CF_STORE);
+    } catch (e) {}
+  }
+  function cRestoreFilters() {
+    try {
+      var off = JSON.parse(sessionStorage.getItem(CF_STORE) || "[]");
+      Array.prototype.forEach.call(cChecks(), function (c) { c.checked = off.indexOf(c.getAttribute("data-f") + ":" + c.value) < 0; });
+    } catch (e) {}
+    cFilterSummary();
+  }
+  function cShowEverything() {
+    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
+    cSaveFilters(); cFilterSummary(); renderClasses();
+  }
+  function cFilterSummary() {
+    var all = true;
+    Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) all = false; });
+    $("cFilterSummary").textContent = all ? "Filters: all classes shown" : "Filters: some classes are hidden";
+    $("cFilterSummary").className = all ? "" : "some";
+  }
+  function cPass(sel, field, v) { var known = (field === "status" ? CSTAT : CKIND).indexOf(v) >= 0; return known ? !!sel[field][v] : true; }
+  function cTick(rec) {
+    Array.prototype.forEach.call(cChecks(), function (c) {
+      var f = c.getAttribute("data-f");
+      if (rec[f] === c.value) c.checked = true;
+    });
+    cSaveFilters(); cFilterSummary();
+  }
+
+  function renderClasses() {
+    var sel = cSelected();
+    function shownList() { return cAll.filter(function (r) { return cPass(sel, "status", r.status) && cPass(sel, "class_type", r.class_type); }); }
+    var shown = shownList();
+    if (cNewId) {   // a class you just added or saved is never hidden by the filters
+      var nr = cAll.filter(function (r) { return r.id === cNewId; })[0];
+      if (nr && shown.indexOf(nr) < 0) { cTick(nr); sel = cSelected(); shown = shownList(); }
+    }
+    shown.sort(function (a, b) {
+      if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
+      if (a.starts_at) return -1;
+      if (b.starts_at) return 1;
+      return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1;
+    });
+    var ul = $("cList"); ul.textContent = "";
+    var focus = null;
+    shown.forEach(function (r) { var li = classRow(r, r.id === cNewId); ul.appendChild(li); if (r.id === cNewId) focus = li; });
+    var n = shown.length, t = cAll.length;
+    $("cCount").textContent = (n === t ? t + (t === 1 ? " class" : " classes") : "Showing " + n + " of " + t + " classes") + (t >= 200 ? " (the first 200)" : "");
+    $("cEmpty").hidden = t > 0;
+    $("cNoMatch").hidden = !(t > 0 && n === 0);
+    cFilterSummary();
+    if (focus) { try { focus.scrollIntoView({ block: "center" }); } catch (e) {} }
+    cNewId = "";
+  }
+
+  function loadClasses() {
+    var my = ++cSeq;   // only the newest load may change the page, so a slow older answer can never overwrite a newer one
+    $("cMsg").textContent = ""; $("cRetry").hidden = true;
+    return Promise.all([loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
+      if (my !== cSeq) return;
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) {
+        $("cMsg").textContent = "Could not load the classes. " + adminProblem(res.status); $("cRetry").hidden = false; return;
+      }
+      cAll = res.body.data.records || [];
+      cLoaded = true;
+      renderClasses();
+      $("cChecked").textContent = "Last checked " + fmtClock.format(new Date());
+    });
+  }
+
+  // ---- add
+  function cClearErrs() { ["eCTitle", "eCSlug", "eCType", "eCPublic", "eCMin", "eCTarget", "eCMax", "cFMsg"].forEach(function (id) { $(id).textContent = ""; }); }
+  function openClassForm() {
+    $("cAddForm").reset(); cSlugTouched = false; cClearErrs(); $("cNotice").textContent = "";
+    $("cMin").value = "6"; $("cTarget").value = "10"; $("cMax").value = "15";
+    $("cAddForm").hidden = false; $("cAddBtn").hidden = true; $("cTitle").focus();
+  }
+  function closeClassForm() { $("cAddForm").hidden = true; $("cAddBtn").hidden = false; }
+  var CADD_ERR = { title: "eCTitle", slug: "eCSlug", class_type: "eCType", is_public: "eCPublic", capacity_minimum: "eCMin", capacity_target: "eCTarget", capacity_max: "eCMax" };
+
+  // ---- edit
+  function classNeeds(schema, status) {
+    var need = [];
+    (schema.allOf || []).forEach(function (b) {
+      var c = b["if"] && b["if"].properties && b["if"].properties.status;
+      if (c && c["enum"] && c["enum"].indexOf(status) >= 0 && b.then) (b.then.required || []).forEach(function (f) { if (need.indexOf(f) < 0) need.push(f); });
+    });
+    return need;
+  }
+  function cField(name) { return cCtx.fields[name]; }
+  function cValue(name) {
+    var f = cField(name); if (!f) return cRec && cRec[name] !== undefined ? cRec[name] : null;
+    if (f.kind === "when") return f.date.value && f.time.value ? "set" : null;
+    return readValue(f);
+  }
+  function cTz() { var f = cField("time_zone"); return f ? readValue(f) : null; }
+  function cStartsUtc() {
+    var f = cField("starts_at"); if (!f.date.value && !f.time.value) return { value: null };
+    if (!f.date.value || !f.time.value) return { bad: "Give both a date and a time." };
+    var tz = cTz(); if (!tz) return { bad: "Choose the time zone first." };
+    var u = zonedToUtc(f.date.value, f.time.value, tz);
+    return u ? { value: u } : { bad: "That date or time is not valid." };
+  }
+
+  // ---- what a class teaches, and which series it is in (piece 3)
+  var cCurricula = [];
+  function loadCurriculumChoices() {
+    return admin("list", { filters: { status: "active" }, limit: 200 }, "curriculums").then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return false; }
+      if (res.status !== 200 || !res.body.ok) return false;
+      cCurricula = (res.body.data.records || []).slice().sort(function (a, b) { return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1; });
+      return true;
+    });
+  }
+  function curriculumLabel(c) { return (c.title || "(no title)") + " (" + c.session_count + (c.session_count === 1 ? " session" : " sessions") + " of " + c.minutes_per_session + " min)"; }
+  function newUuid() {
+    try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return "xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx".replace(/x/g, function () { return Math.floor(Math.random() * 16).toString(16); });
+  }
+  function buildCurriculumField(rec) {
+    var wrap = mk("div"), id = "ef_c_curriculum_id";
+    var l = mk("label", "f", "Curriculum (what is taught)"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
+    cCurricula.forEach(function (c) { var o = mk("option", "", curriculumLabel(c)); o.value = c.id; sel.appendChild(o); });
+    if (rec.curriculum_id && !cCurricula.some(function (c) { return c.id === rec.curriculum_id; })) { var ox = mk("option", "", "(inactive or removed curriculum)"); ox.value = rec.curriculum_id; sel.appendChild(ox); }
+    sel.value = rec.curriculum_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_curriculum_id"; wrap.appendChild(er);
+    cCtx.fields.curriculum_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.curriculum_id, sec: null, summary: null };
+    return wrap;
+  }
+  function buildSeriesField(rec) {
+    var wrap = mk("div"), id = "ef_c_series_id";
+    var l = mk("label", "f", "Series (a curriculum taught over several sessions)"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    function opt(v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    opt("", "Not part of a series");
+    var fresh = newUuid(); opt(fresh, "A new series (this class is its first session)");
+    var groups = {};
+    cAll.forEach(function (c) { if (c.series_id) (groups[c.series_id] = groups[c.series_id] || []).push(c); });
+    Object.keys(groups).forEach(function (sid) {
+      var list = groups[sid].slice().sort(function (a, b) { return (a.session_number || 99) - (b.session_number || 99); });
+      opt(sid, "Series of " + (list[0].title || "class") + " (" + list.length + (list.length === 1 ? " class" : " classes") + ")");
+    });
+    if (rec.series_id && !groups[rec.series_id]) opt(rec.series_id, "This class's series");
+    sel.value = rec.series_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    wrap.appendChild(mk("div", "hint", "Each session is its own class. Give each one its session number below."));
+    var er = mk("div", "ferr"); er.id = "ee_c_series_id"; wrap.appendChild(er);
+    cCtx.fields.series_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.series_id, sec: null, summary: null };
+    sel.addEventListener("change", function () {
+      var sn = cCtx.fields.session_number;
+      if (sel.value === fresh && sn && !sn.el.value) sn.el.value = "1";
+    });
+    return wrap;
+  }
+
+  function buildVenueField(rec) {
+    var wrap = mk("div"), id = "ef_c_venue_id";
+    var l = mk("label", "f", "Venue"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
+    cVenues.forEach(function (v) { var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o); });
+    if (rec.venue_id && !cVenueById[rec.venue_id]) { var ox = mk("option", "", "(venue not found)"); ox.value = rec.venue_id; sel.appendChild(ox); }
+    sel.value = rec.venue_id || "";
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_venue_id"; wrap.appendChild(er);
+    cCtx.fields.venue_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.venue_id, sec: null, summary: null };
+    return wrap;
+  }
+  function buildRoomPick(rec) {
+    var wrap = mk("div"), id = "ef_c_venue_room_label";
+    var l = mk("label", "f", "Room"); l.htmlFor = id;
+    var sel = mk("select"); sel.id = id;
+    wrap.appendChild(l); wrap.appendChild(sel);
+    var er = mk("div", "ferr"); er.id = "ee_c_venue_room_label"; wrap.appendChild(er);
+    cCtx.fields.venue_room_label = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.venue_room_label, sec: null, summary: null };
+    fillRooms(rec.venue_room_label || "");
+    return wrap;
+  }
+  function fillRooms(keep) {
+    var sel = cField("venue_room_label").el, vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+    sel.textContent = "";
+    var o0 = mk("option", "", vid ? "Not chosen yet" : "Choose a venue first"); o0.value = ""; sel.appendChild(o0);
+    var found = false;
+    ((v && v.rooms) || []).forEach(function (r) {
+      var o = mk("option", "", r.label + (r.max_occupancy != null ? " (up to " + r.max_occupancy + ")" : "")); o.value = r.label; sel.appendChild(o);
+      if (r.label === keep) found = true;
+    });
+    if (keep && !found) { var ox = mk("option", "", keep + " (not in this venue)"); ox.value = keep; sel.appendChild(ox); }
+    sel.value = keep || "";
+    sel.disabled = !vid;
+  }
+  function buildStartsField(rec) {
+    var wrap = mk("div");
+    var l = mk("label", "f", "Starts (in the time zone below)"); l.htmlFor = "ef_c_starts_date"; wrap.appendChild(l);
+    var two = mk("div", "two");
+    var d = mk("input"); d.type = "date"; d.id = "ef_c_starts_date";
+    var t = mk("input"); t.type = "time"; t.id = "ef_c_starts_time"; t.setAttribute("aria-label", "Start time");
+    two.appendChild(d); two.appendChild(t); wrap.appendChild(two);
+    var er = mk("div", "ferr"); er.id = "ee_c_starts_at"; wrap.appendChild(er);
+    var z = rec.starts_at ? utcToZoned(rec.starts_at, rec.time_zone) : null;
+    if (z) { d.value = z.date; t.value = z.time; }
+    cCtx.fields.starts_at = { el: d, other: null, kind: "when", date: d, time: t, def: cCtx.schema.properties.starts_at, sec: null, summary: null,
+                              initial: { date: d.value, time: t.value, tz: rec.time_zone || "" } };
+    return wrap;
+  }
+
+  function cBuildSections(rec) {
+    var host = $("cEditSections"); host.textContent = "";
+    cCtx.fields = {};
+    var props = cCtx.schema.properties, used = {};
+    function section(title, open, parent) {
+      var d = document.createElement("details"); d.className = "sec"; if (open) d.open = true;
+      var sm = document.createElement("summary"); sm.textContent = title; d.appendChild(sm);
+      var body = document.createElement("div"); body.className = "body"; d.appendChild(body);
+      (parent || host).appendChild(d);
+      return { d: d, sm: sm, body: body };
+    }
+    function put(sec, n) {
+      used[n] = 1; var node;
+      if (n === "venue_id") node = buildVenueField(rec);
+      else if (n === "curriculum_id") node = buildCurriculumField(rec);
+      else if (n === "series_id") node = buildSeriesField(rec);
+      else if (n === "venue_room_label") node = buildRoomPick(rec);
+      else if (n === "starts_at") node = buildStartsField(rec);
+      else { var df = props[n]; if (!df || df.readOnly || df.type === "array") return; node = buildField(n, df, rec, cCtx); }
+      node.id = "cw_" + n;
+      sec.body.appendChild(node);
+      var f = cCtx.fields[n]; if (f) { f.sec = sec.d; f.summary = sec.sm; f.wrap = node; }
+    }
+    CLAYOUT.forEach(function (l) {
+      if (CPRIMARY.indexOf(l[0]) < 0) return;
+      var s2 = section(l[0], true);
+      l[1].forEach(function (n) { put(s2, n); });
+      if (l[0] === "Capacity and price") {
+        var btn = mk("button", "linkbtn", "What’s needed to schedule or open enrolment?"); btn.type = "button"; btn.id = "cReadyBtn";
+        var box = mk("div", "ready"); box.id = "cReadyBox"; box.hidden = true;
+        btn.addEventListener("click", function () { box.hidden = !box.hidden; if (!box.hidden) renderClassReady(); });
+        s2.body.appendChild(btn); s2.body.appendChild(box);
+      }
+    });
+    var sIns = section("Instructors", true); sIns.d.id = "cInsSection";
+    sIns.body.appendChild(classInstructors(rec));
+    var more = mk("details", "more");
+    more.appendChild(mk("summary", "", "More (program, organizer, accessibility)"));
+    var mbody = mk("div", "mbody"); more.appendChild(mbody); host.appendChild(more);
+    CLAYOUT.forEach(function (l) {
+      if (CPRIMARY.indexOf(l[0]) >= 0) return;
+      var s3 = section(l[0], false, mbody);
+      l[1].forEach(function (n) { put(s3, n); });
+    });
+
+    // behaviour: venue changes the room list and (if blank) the time zone; status shows the cancelled reason
+    cField("venue_id").el.addEventListener("change", function () {
+      fillRooms("");
+      var v = cVenueById[this.value], tzf = cField("time_zone"), vtz = v && v.place && v.place.time_zone;
+      if (vtz && tzf && !readValue(tzf)) {
+        var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === vtz; });
+        if (has) tzf.el.value = vtz;
+      }
+    });
+    function syncReason() {
+      var show = cField("status").el.value === "cancelled", w = cField("cancelled_reason").wrap;
+      w.hidden = !show;
+    }
+    cField("status").el.addEventListener("change", syncReason); syncReason();
+  }
+
+  // Instructors of a class, on the Edit class screen. Instructors are placements (Attendance records), not class fields, so these buttons
+  // save at once (the Save changes button below saves only the class details) and email the people in the class: a new lead tells everyone
+  // the lead changed, and the instructor who is placed or removed is told too. The new lead is promoted first and the old lead demoted
+  // second, so the class sees ONE lead change, not two.
+  function classInstructors(rec) {
+    var box = mk("div", "insbox"), list = mk("div"), say = mk("div", "msg"), st = { lead: null, others: [], all: [] };
+    say.setAttribute("role", "status"); say.id = "cInsMsg"; box.id = "cInstructors";
+    function nameOf(r) { return attName(r); }
+    function fail(res) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [];
+      if (ps.some(function (p) { return p.issue === "address_required"; })) return "That instructor has no address on file. Open the Instructors station, open them and tap Add address, then try again.";
+      return attFail(res);
+    }
+    function nextOrder() { var m = 0; st.all.forEach(function (r) { if ((r.order || 0) > m) m = r.order; }); return Math.min(m + 1, 50); }
+    function load() {
+      list.textContent = "Loading instructors…";
+      return admin("list", { filters: { scheduled_class_id: rec.id }, limit: 200, expand: true }, ATT).then(function (res) {
+        list.textContent = "";
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body || !res.body.ok) { list.appendChild(mk("div", "hint", "Could not load the instructors. " + adminProblem(res.status))); return; }
+        var ins = (res.body.data.records || []).filter(function (r) {
+          return (r.role === "primary_instructor" || r.role === "instructor") && r.status !== "declined" && r.status !== "withdrawn" && r.status !== "cancelled";
+        });
+        ins.sort(function (a, b) { return (a.order || 999) - (b.order || 999) || String(a.created_at).localeCompare(String(b.created_at)); });
+        st.all = ins;
+        st.lead = ins.filter(function (r) { return r.role === "primary_instructor" && (r.status === "assigned" || r.status === "confirmed"); })[0] || null;
+        st.others = ins.filter(function (r) { return r !== st.lead; });
+        list.appendChild(mk("div", "note", st.lead ? "Lead instructor: " + nameOf(st.lead) : "No lead instructor yet."));
+        st.others.forEach(function (r) {
+          var row = mk("div", "arow"), top = mk("div", "atop"), rm = mk("button", "quiet", "Remove"), armed = false;
+          rm.type = "button";
+          top.appendChild(mk("span", "aname", nameOf(r) + (r.role === "primary_instructor" ? " (lead role, not seated)" : " · also teaching")));
+          top.appendChild(rm); row.appendChild(top); list.appendChild(row);
+          rm.addEventListener("click", function () {
+            if (!armed) { armed = true; rm.textContent = "Really remove? They are emailed."; rm.className = "danger"; return; }
+            rm.disabled = true;
+            admin("soft_delete", { id: r.id }, ATT).then(function (res2) {
+              if (res2.status === 200 && res2.body && res2.body.ok) { say.textContent = nameOf(r) + " was removed from this class and emailed that they are no longer assigned. Messages shows the result."; load(); return; }
+              rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say.textContent = fail(res2);
+            });
+          });
+        });
+      });
+    }
+    function chooser(label, buttonText, go) {
+      var wrap = mk("div", "addbox"), finder = instructorFinder(""), b = mk("button", "", buttonText);
+      b.type = "button"; wrap.appendChild(mk("div", "rhead", label)); wrap.appendChild(finder.el); wrap.appendChild(b);
+      b.addEventListener("click", function () {
+        var id = finder.id(); if (!id) { say.textContent = "Search for an instructor and tap their name first."; return; }
+        say.textContent = ""; b.disabled = true;
+        go(id).then(function (said) { b.disabled = false; if (said) { finder.reset(); say.textContent = said; } return load(); });
+      });
+      return wrap;
+    }
+    function personOf(id) { return st.all.filter(function (r) { return r.individual_id === id; })[0] || null; }
+    function makeLead(id) {
+      var cur = st.lead, mine = personOf(id), order = cur ? (cur.order || 1) : 1;
+      if (cur && cur.individual_id === id) return Promise.resolve("That person is already the lead.");
+      var first = mine
+        ? admin("update", { id: mine.id, changes: { role: "primary_instructor", order: order }, expected_updated_at: mine.updated_at }, ATT)
+        : admin("assign", { data: { scheduled_class_id: rec.id, role: "primary_instructor", individual_id: id, order: order } }, ATT);
+      return first.then(function (res) {
+        if (!(res.status === 200 && res.body && res.body.ok)) { say.textContent = fail(res); return null; }
+        var done = function () {
+          return "The lead instructor is now " + (mine ? nameOf(mine) : "the person you chose") + ". Everyone in the class was emailed the change" + (mine ? "." : ", and the new lead was emailed that they are assigned to teach.") + (cur ? " " + nameOf(cur) + " stays on as an instructor." : "") + " Messages shows the results.";
+        };
+        if (!cur) return done();
+        return admin("update", { id: cur.id, changes: { role: "instructor", order: Math.min(nextOrder(), 50) }, expected_updated_at: cur.updated_at }, ATT).then(function (res2) {
+          if (res2.status === 200 && res2.body && res2.body.ok) return done();
+          say.textContent = "The new lead was saved, but the old lead could not be moved to instructor: " + fail(res2); return null;
+        });
+      });
+    }
+    function addOne(id) {
+      if (personOf(id)) return Promise.resolve("That person is already an instructor of this class.");
+      return admin("assign", { data: { scheduled_class_id: rec.id, role: "instructor", individual_id: id, order: nextOrder() } }, ATT).then(function (res) {
+        if (res.status === 200 && res.body && res.body.ok) return "Added. They were emailed that they are assigned to teach.";
+        say.textContent = fail(res); return null;
+      });
+    }
+    box.appendChild(mk("div", "hint", "These buttons save at once and email the people in the class. The details above are saved with Save changes."));
+    box.appendChild(list);
+    box.appendChild(chooser("Change the lead instructor", "Make lead", makeLead));
+    box.appendChild(chooser("Add another instructor", "Add instructor", addOne));
+    box.appendChild(say);
+    load();
+    return box;
+  }
+
+  function renderClassReady() {
+    var box = $("cReadyBox"); if (!box) return;
+    box.textContent = "";
+    var sch = cCtx.schema;
+    function group(title, status) {
+      box.appendChild(mk("div", "sum", title));
+      var miss = 0;
+      classNeeds(sch, status).forEach(function (f) {
+        var ok;
+        if (f === "starts_at") ok = !!cField("starts_at").date.value && !!cField("starts_at").time.value;
+        else { var v = cValue(f); ok = v !== null && v !== undefined; }
+        if (!ok) miss++;
+        box.appendChild(mk("div", ok ? "ok" : "todo", (ok ? "✓ " : "○ ") + humanize(f)));
+      });
+      var vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+      var vok = !!v && v.status === "active"; if (!vok) miss++;
+      box.appendChild(mk("div", vok ? "ok" : "todo", (vok ? "✓ " : "○ ") + "An active venue"));
+      return miss;
+    }
+    group("To schedule it:", "scheduled");
+    group("To open enrolment:", "enrolling");
+  }
+
+  function cClearEditErrs() {
+    $("cEditMsg").textContent = ""; $("cEditReload").hidden = true;
+    Object.keys(cCtx.fields).forEach(function (n) {
+      var e = $("ee_c_" + n); if (e) e.textContent = "";
+      if (cCtx.fields[n].summary) cCtx.fields[n].summary.className = "";
+    });
+    document.querySelectorAll("#cEditSections details.more > summary").forEach(function (sm) { sm.className = ""; });
+  }
+  function cOpenSec(f) {
+    if (!f.sec) return;
+    f.sec.open = true;
+    var m = f.sec.closest("details.more");
+    if (m) { m.open = true; m.firstChild.className = "haserr"; }
+  }
+
+  // Collect what changed. Returns {changes, bad:{field:message}}
+  function collectClassChanges() {
+    var changes = {}, bad = {};
+    Object.keys(cCtx.fields).forEach(function (n) {
+      var f = cCtx.fields[n];
+      if (n === "starts_at") {
+        var ini = f.initial, tz = cTz() || "";
+        if (f.date.value === ini.date && f.time.value === ini.time && tz === ini.tz) return;   // untouched: leave it as stored
+        var r = cStartsUtc();
+        if (r.bad) { bad.starts_at = r.bad; return; }
+        var orig = cRec.starts_at === undefined ? null : cRec.starts_at;
+        if (r.value !== orig) changes.starts_at = r.value;
+        return;
+      }
+      var v = readValue(f);
+      if (v === undefined) { bad[n] = "Enter a number."; return; }
+      if (n === "cancelled_reason" && cField("status").el.value !== "cancelled") v = null;
+      var o = cRec[n] === undefined ? null : cRec[n];
+      if (v !== o) changes[n] = v;
+    });
+    return { changes: changes, bad: bad };
+  }
+  function classDirty() {
+    if (!cRec) return false;
+    var c = collectClassChanges();
+    return Object.keys(c.bad).length > 0 || Object.keys(c.changes).length > 0;
+  }
+  function closeClassEdit() {
+    cRec = null; cCtx.fields = {};
+    $("cEditPanel").hidden = true; $("cMain").hidden = false;
+  }
+  function openClassEdit(rec) {
+    $("cMsg").textContent = "";
+    Promise.all([getClassSchema(), loadVenueChoices(), loadCurriculumChoices()]).then(function (both) {
+      var schema = both[0];
+      if (!schema) { $("cMsg").textContent = "Could not load the class form. Try again."; return; }
+      cCtx.schema = schema; cRec = rec;
+      $("cEditTitle").textContent = "Edit " + (rec.title || "class");
+      $("cEditSub").textContent = "Slug: " + rec.slug + " (cannot be changed)";
+      cBuildSections(rec);
+      cClearEditErrs();
+      $("cEditPanel").classList.remove("showhelp"); $("cHelpBtn").textContent = "Show field help";
+      $("cMain").hidden = true; $("cEditPanel").hidden = false;
+      window.scrollTo(0, 0);
+    });
+  }
+  function cIssueText(p, f) {
+    var m = CISSUE[p.field] && CISSUE[p.field][p.issue];
+    if (m) return m;
+    if (p.issue === "required") return "Required.";
+    if (p.issue === "invalid_format") return f && f.def && f.def.format === "email" ? "That email address does not look right." : "That value is not valid.";
+    if (p.issue === "out_of_range") return "That number is outside the allowed range.";
+    return ISSUE[p.issue] || "That value is not valid.";
+  }
+
+  $("cEditForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!cRec) return;
+    cClearEditErrs();
+    var c = collectClassChanges(), badKeys = Object.keys(c.bad);
+    if (badKeys.length) {
+      badKeys.forEach(function (n) { $("ee_c_" + n).textContent = c.bad[n]; cOpenSec(cCtx.fields[n]); });
+      $("cEditMsg").textContent = "Not saved. Fix the marked fields.";
+      return;
+    }
+    if (!Object.keys(c.changes).length) { $("cEditMsg").textContent = "Nothing changed."; return; }
+    $("cEditSave").disabled = true;
+    admin("update", { id: cRec.id, changes: c.changes, expected_updated_at: cRec.updated_at }, "scheduled_classes").then(function (res) {
+      $("cEditSave").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        cNewId = cRec.id;
+        var told = ["starts_at", "time_zone", "duration_minutes", "venue_id", "venue_room_label", "venue_notes"].some(function (k) { return k in c.changes; });
+        $("cNotice").textContent = "Saved " + (c.changes.title || cRec.title) + "." + (told ? " Everyone placed in it is being emailed what changed. Messages shows the result." : "");
+        closeClassEdit(); loadClasses();
+        return;
+      }
+      var err = res.body && res.body.error;
+      if (res.status === 409) { $("cEditMsg").textContent = "This class changed since you opened it. Nothing was saved."; $("cEditReload").hidden = false; return; }
+      if (res.status === 404) { $("cEditMsg").textContent = "This class no longer exists."; $("cEditReload").hidden = false; return; }
+      if (res.status === 400 && err && err.problems && err.problems.length) {
+        var other = [], first = null, n = 0;
+        err.problems.forEach(function (p) {
+          var f = cCtx.fields[p.field];
+          if (f) {
+            $("ee_c_" + p.field).textContent = cIssueText(p, f);
+            cOpenSec(f); if (f.summary) f.summary.className = "haserr"; n++;
+            if (!first) first = f.el;
+          } else other.push(humanize(p.field) + (p.issue === "required" ? " (required)" : ""));
+        });
+        $("cEditMsg").textContent = "Not saved. " + (n ? n + " field" + (n === 1 ? "" : "s") + " need attention, marked below." : "")
+          + (other.length ? " Also needed: " + other.join(", ") + "." : "");
+        if (first) first.scrollIntoView({ block: "center" });
+        return;
+      }
+      $("cEditMsg").textContent = adminProblem(res.status);
+    });
+  });
+  function liveClassReady() { var b = $("cReadyBox"); if (b && !b.hidden) renderClassReady(); }
+  $("cEditSections").addEventListener("input", liveClassReady);
+  $("cEditSections").addEventListener("change", liveClassReady);
+  $("cHelpBtn").addEventListener("click", function () {
+    var on = $("cEditPanel").classList.toggle("showhelp");
+    $("cHelpBtn").textContent = on ? "Hide field help" : "Show field help";
+  });
+  $("cEditCancel").addEventListener("click", function () {
+    if (classDirty() && !window.confirm("Discard your changes?")) return;
+    closeClassEdit();
+  });
+  $("cEditReload").addEventListener("click", function () { closeClassEdit(); loadClasses(); });
+
+  function resetClasses() {
+    cLoaded = false; cNewId = ""; cAll = []; cSeq++;
+    $("cList").textContent = ""; $("cCount").textContent = ""; $("cChecked").textContent = "";
+    $("cMsg").textContent = ""; $("cNotice").textContent = ""; $("cEmpty").hidden = true; $("cNoMatch").hidden = true; $("cRetry").hidden = true;
+    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
+    try { sessionStorage.removeItem(CF_STORE); } catch (e) {}
+    cFilterSummary(); closeClassForm(); closeClassEdit();
+  }
+  $("cTitle").addEventListener("input", function () { if (!cSlugTouched) $("cSlug").value = slugify($("cTitle").value); });
+  $("cSlug").addEventListener("input", function () { cSlugTouched = true; });
+  $("cAddBtn").addEventListener("click", openClassForm);
+  $("cCancelBtn").addEventListener("click", closeClassForm);
+  $("cRefresh").addEventListener("click", function () { $("cNotice").textContent = ""; loadClasses(); });
+  $("cFilters").addEventListener("change", function () { cSaveFilters(); cFilterSummary(); renderClasses(); });
+  $("cShowAll").addEventListener("click", cShowEverything);
+  $("cNoMatchAll").addEventListener("click", cShowEverything);
+  $("cRetry").addEventListener("click", function () { loadClasses(); });
+  cRestoreFilters();
+  $("cAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); cClearErrs();
+    var ty = $("cType").value, pub = $("cPublic").value, bad = false;
+    if (!ty) { $("eCType").textContent = "Choose one."; bad = true; }
+    if (!pub) { $("eCPublic").textContent = "Choose one."; bad = true; }
+    var nums = { capacity_minimum: $("cMin").value, capacity_target: $("cTarget").value, capacity_max: $("cMax").value };
+    Object.keys(nums).forEach(function (k) {
+      var n = wholeNum(nums[k]);
+      if (n === null || isNaN(n)) { $(CADD_ERR[k]).textContent = "Enter a whole number."; bad = true; } else nums[k] = n;
+    });
+    if (bad) return;
+    var data = { title: $("cTitle").value, slug: $("cSlug").value, class_type: ty, program_slug: "launch", status: "identified", is_public: pub === "yes" };
+    Object.keys(nums).forEach(function (k) { data[k] = nums[k]; });
+    $("cSaveBtn").disabled = true;
+    admin("create", { data: data }, "scheduled_classes").then(function (res) {
+      $("cSaveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        cNewId = res.body.data.id;
+        $("cNotice").textContent = "Added " + res.body.data.title + " (an idea, no date yet).";
+        closeClassForm(); loadClasses();
+        return;
+      }
+      var probs = res.status === 400 && res.body && res.body.error && res.body.error.problems;
+      if (probs && probs.length) {
+        var other = [];
+        probs.forEach(function (p) {
+          var target = CADD_ERR[p.field];
+          var text = (p.field === "slug" && p.issue === "invalid_format") ? "Use lowercase letters, numbers and underscores only."
+                   : (CISSUE[p.field] && CISSUE[p.field][p.issue]) || (ISSUE[p.issue] || "That value is not valid.");
+          if (target) $(target).textContent = text; else other.push(p.field + " (" + p.issue + ")");
+        });
+        if (other.length) $("cFMsg").textContent = "Could not save: " + other.join(", ");
+        return;
+      }
+      $("cFMsg").textContent = adminProblem(res.status);
+    });
+  });
+
+  function resetVenues() {
+    vLoaded = false; vBusy = false; vNewId = "";
+    $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
+    $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
+    $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; vRecs = []; vAreas = null; closeForm(); closeEdit();
+  }
+
+  function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
+  function clearErrs() { ["eName", "eSlug", "ePublic", "fMsg"].forEach(function (id) { $(id).textContent = ""; }); }
+  function openForm() {
+    $("addForm").reset(); slugTouched = false; clearErrs(); $("vNotice").textContent = "";
+    addPlace = placeInput(true); $("fPlaceHost").textContent = ""; $("fPlaceHost").appendChild(addPlace);
+    $("addForm").hidden = false; $("addBtn").hidden = true; $("fName").focus();
+  }
+  function closeForm() { $("addForm").hidden = true; $("addBtn").hidden = false; }
+
+  $("fName").addEventListener("input", function () { if (!slugTouched) $("fSlug").value = slugify($("fName").value); });
+  $("fSlug").addEventListener("input", function () { slugTouched = true; });
+  $("addBtn").addEventListener("click", openForm);
+  $("cancelBtn").addEventListener("click", closeForm);
+  $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; vAreas = null; loadVenues(); });
+  $("vState").addEventListener("change", function () { drawVenueFilters(); renderVenues(); });
+  $("vRegion").addEventListener("change", renderVenues);
+  $("vGps").addEventListener("click", function () {   // look up GPS for every public venue that has an address but no point
+    var b = $("vGps"); b.disabled = true; $("vNotice").textContent = "Looking for venues without GPS…";
+    admin("list", { limit: 200, expand: true }).then(function (res) {
+      if (res.status === 401) { b.disabled = false; lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { b.disabled = false; $("vNotice").textContent = adminProblem(res.status); return; }
+      var todo = (res.body.data.records || []).filter(function (v) { return v.is_public_venue && v.place && !v.place.has_gps; });
+      if (!todo.length) { b.disabled = false; $("vNotice").textContent = "Every public venue already has GPS."; return; }
+      var tally = {}, i = 0;
+      (function next() {
+        if (i >= todo.length) {
+          b.disabled = false;
+          $("vNotice").textContent = "Checked " + todo.length + (todo.length === 1 ? " venue" : " venues") + ": " + (tally.found || 0) + " found, " + (tally.no_match || 0) + " not found by the lookup, " + ((todo.length - (tally.found || 0) - (tally.no_match || 0))) + " skipped.";
+          loadVenues(); return;
+        }
+        $("vNotice").textContent = "Looking up " + (i + 1) + " of " + todo.length + "…";
+        admin("find_gps", { id: todo[i++].id }).then(function (r) { var k = (r.status === 200 && r.body.ok) ? r.body.data.gps : "skipped_off"; tally[k] = (tally[k] || 0) + 1; next(); });
+      })();
+    });
+  });
+  $("vFilter").addEventListener("change", function () { $("vNotice").textContent = ""; loadVenues(); });
+
+  $("addForm").addEventListener("submit", function (e) {
+    e.preventDefault(); clearErrs();
+    var kind = $("fPublic").value;
+    if (!kind) { $("ePublic").textContent = "Choose one."; return; }
+    var data = { name: $("fName").value, slug: $("fSlug").value, status: "inactive", is_public_venue: kind === "public" };
+    $("saveBtn").disabled = true;
+    (addPlace ? addPlace.next() : Promise.resolve({ done: true, args: {} })).then(function (pl) {
+      if (!pl.done) { $("saveBtn").disabled = false; return null; }   // address needs fixing, or a saved place is being offered
+      var withPlace = pl.args && (pl.args.address || pl.args.location_id);
+      return admin(withPlace ? "create_with_place" : "create", withPlace ? Object.assign({ data: data }, pl.args) : { data: data });
+    }).then(function (res) {
+      if (!res) return;
+      $("saveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        vNewId = res.body.data.id;
+        $("vNotice").textContent = "Added " + res.body.data.name + " (inactive)" + (res.body.data.place ? ", with its place." : ".");
+        closeForm(); loadVenues();
+        return;
+      }
+      var probs = res.status === 400 && res.body && res.body.error && res.body.error.problems;
+      if (probs && probs.length) {
+        var other = [];
+        if (probs.some(function (p) { return p.field === "address" || p.field === "location_id"; })) {
+          $("fMsg").textContent = "Nothing was saved. " + lProblems(res);
+          return;
+        }
+        probs.forEach(function (p) {
+          var target = FIELD_ERR[p.field];
+          var text = (p.field === "slug" && p.issue === "invalid_format") ? "Use lowercase letters, numbers and underscores only."
+                   : (ISSUE[p.issue] || "That value is not valid.");
+          if (target) $(target).textContent = text; else other.push(p.field + " (" + p.issue + ")");
+        });
+        if (other.length) $("fMsg").textContent = "Could not save: " + other.join(", ");
+        return;
+      }
+      $("fMsg").textContent = adminProblem(res.status);
+    });
+  });
+
+  $("lockForm").addEventListener("submit", function (e) {
+    e.preventDefault(); if (launching) return;
+    var k = $("keyInput").value.trim();
+    if (!k) { $("lockMsg").textContent = "That key did not work."; return; }
+    unlock(k, $("rememberBox").checked);
+  });
+  $("keyShow").addEventListener("click", function () {      // see what you typed or pasted; starts hidden again after every lock
+    var i = $("keyInput"), reveal = i.type === "password";
+    i.type = reveal ? "text" : "password"; this.textContent = reveal ? "Hide" : "Show"; this.setAttribute("aria-pressed", reveal ? "true" : "false"); i.focus();
+  });
+  $("lockBtn").addEventListener("click", function () { lock(""); });
+  $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
+  window.addEventListener("hashchange", route);
+  function markPick() { var o = $("collPick").selectedOptions[0]; $("collPick").classList.toggle("adm", !!(o && o.className === "adminstn")); }
+  $("collPick").addEventListener("change", function () { markPick(); goTo($("collPick").value); });
+  $("brand").addEventListener("click", function (e) { e.preventDefault(); goTo("home"); });
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-go],[data-m]") : null;
+    if (!t) return;
+    if (t.dataset.go) { goTo(t.dataset.go); return; }
+    if (t.dataset.m) openManual(t.dataset.m, t);
+  });
+  $("manualClose").addEventListener("click", closeManual);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mOpen && !document.querySelector("dialog[open]")) closeManual(); });
+  window.addEventListener("resize", function () { if (mOpen) $("manual").style.setProperty("--hh", $("topbar").offsetHeight + "px"); });
+  buildHome();
+
+
+  // ======== Placed requests: a request is placed once attendance exists for it (old seat decisions are retired) ========
+  var P = { loaded: false, ids: {}, cls: {}, num: {}, reqs: [], error: "" };
+  var qSeq = 0;
+  var aClasses = [], aClassById = {};
+  function personOf(it) { return [it.first_name, it.last_name].filter(Boolean).join(" ") || "(no name)"; }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+
+  function loadPlaced() {
+    if (!canPlaced()) return Promise.resolve();
+    var my = ++qSeq;
+    return Promise.all([admin("list", { limit: 200, expand: true }, "attendances"), firstLoadDone ? Promise.resolve(null) : fetchRecords("")]).then(function (both) {
+      if (my !== qSeq || !key) return;
+      var res = both[0];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { P.error = adminProblem(res.status); P.loaded = P.loaded && true; }
+      else {
+        P.error = ""; P.loaded = true; P.ids = {}; P.cls = {}; P.num = {};
+        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) { P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; P.cls[r.request_id] = (r["class"] && r["class"].title) || P.cls[r.request_id] || "a class"; } });
+      }
+      if (both[1] && both[1].status === "ok") P.reqs = both[1].records || [];
+      else if (firstLoadDone) P.reqs = Object.keys(known).map(function (id) { return known[id]; });
+      decorateCards(); renderAttention();
+    });
+  }
+  function decorateCards() { Object.keys(rows).forEach(function (id) { if (rows[id]._q) fillQRow(rows[id]._q, known[id]); }); applyReqFilter(); }
+  function fillQRow(box, rec) {
+    box.textContent = "";
+    if (!P.loaded) { box.hidden = true; return; }
+    box.hidden = false;
+    var n = P.ids[rec.id];
+    box.appendChild(n ? mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")) : mk("span", "qchip warn", "Open · not placed yet"));
+  }
+  // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
+  function applyReqFilter() {
+    var mode = $("reqShow").value, shown = 0, open = 0;
+    Object.keys(rows).forEach(function (id) {
+      var closed = P.loaded && !!P.ids[id];
+      if (!closed) open++;
+      var show = mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed);
+      rows[id].style.display = show ? "" : "none";
+      if (show) shown++;
+    });
+    var n = Object.keys(known).length;
+    var wait = Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length, cb = $("covBanner");
+    cb.textContent = "";
+    if (wait) {
+      cb.appendChild(document.createTextNode(wait + (wait === 1 ? " request is" : " requests are") + " waiting for a trainer"));
+      if (mode !== "notrainer") { var sb = mk("button", "", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
+      if (ME && !ME.inspector && (ME.is_super_admin || ME.role_key === "admin")) {   // Send reminders now: the daily reminder, by hand (the server checks too)
+        var rb = mk("button", "quiet", "Send reminders now"); rb.type = "button";
+        rb.addEventListener("click", function () {
+          rb.disabled = true;
+          admin("send_coverage_reminders", {}, "attendances").then(function (res) {
+            rb.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            var d = res.status === 200 && res.body && res.body.ok ? res.body.data : null;
+            $("reqDone").textContent = d ? (d.sent ? "Reminders sent to " + plural(d.sent, "person", "people") + " about " + plural(d.waiting, "request", "requests") + " waiting for a trainer."
+              + (d.not_sent ? " " + plural(d.not_sent, "message was", "messages were") + " not sent: see Messages." : "") : "No reminders went out. " + (d.waiting ? "See Messages for why." : "Nothing is waiting for a trainer."))
+              : res.status === 403 ? "Only a super admin or an admin may send reminders." : adminProblem(res.status);
+            $("reqDone").hidden = false;
+          });
+        });
+        cb.appendChild(rb);
+      }
+    }
+    cb.hidden = !wait;
+    $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")
+      : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
+      : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
+    $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer." : mode === "open" ? "No open requests. Every request is in a class." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
+    $("empty").hidden = shown > 0;
+  }
+  $("reqShow").addEventListener("change", applyReqFilter);
+
+  // Home: the "Waiting to be placed" panel.
+  function renderAttention() {
+    var box = $("attnBox"), body = $("attnBody"), badge = $("attnBadge");
+    body.textContent = "";
+    if (!P.loaded && P.error) {
+      body.appendChild(document.createTextNode("Could not check the requests. " + P.error + " "));
+      var rb = mk("button", "", "Try again"); rb.type = "button"; rb.addEventListener("click", function () { loadPlaced(); }); body.appendChild(rb);
+      badge.hidden = true; box.className = "attn"; return;
+    }
+    if (!P.loaded) { body.textContent = "Checking the requests…"; badge.hidden = true; box.className = "attn"; return; }
+    var noTrainer = P.reqs.filter(function (r) { return r.coverage_waiting; }).length;
+    if (noTrainer) {
+      var cov = mk("div", "aitem"); cov.appendChild(mk("b", "", noTrainer + (noTrainer === 1 ? " request is" : " requests are") + " waiting for a trainer"));
+      var crow = mk("div", "arow"); var cg = mk("button", "", "Show them"); cg.type = "button"; cg.addEventListener("click", function () { $("reqShow").value = "notrainer"; goTo("requests"); applyReqFilter(); });
+      crow.appendChild(cg); cov.appendChild(crow); body.appendChild(cov);
+    }
+    var waiting = P.reqs.filter(function (r) { return !P.ids[r.id]; }).sort(function (a, b) { return (a.created_at || "") < (b.created_at || "") ? 1 : -1; });
+    badge.hidden = !waiting.length; badge.textContent = waiting.length;
+    box.className = "attn" + (waiting.length ? " hot" : "");
+    if (!waiting.length) body.appendChild(mk("div", "", "All clear. Every request is closed: its student is in a class."));
+    waiting.slice(0, 8).forEach(function (it) {
+      var d = mk("div", "aitem");
+      var t = mk("div", ""); t.appendChild(mk("b", "", personOf(it)));
+      t.appendChild(document.createTextNode(" · " + (TYPES[it.registration_type] || it.registration_type || "") + " · " + plural(it.attendee_count || 1, "person", "people") + " · " + (it.confirmation_number || "")));
+      d.appendChild(t);
+      var row = mk("div", "arow");
+      var g = mk("button", "", "Open requests"); g.type = "button"; g.addEventListener("click", function () { goTo("requests"); });
+      row.appendChild(g); d.appendChild(row); body.appendChild(d);
+    });
+    if (waiting.length > 8) body.appendChild(mk("div", "quietline", "and " + (waiting.length - 8) + " more. Open Requests to see them all."));
+  }
+
+  function loadClassChoices() {
+    return admin("list", { limit: 200 }, "scheduled_classes").then(function (res) {
+      if (res.status === 200 && res.body.ok) { aClasses = res.body.data.records || []; aClassById = {}; aClasses.forEach(function (c) { aClassById[c.id] = c; }); }
+    });
+  }
+
+  // ================= Attendance: who is in which class =================
+  var ATT = "attendances";
+  var ROLE_WORD = { student: "Student", primary_instructor: "Lead instructor", instructor: "Instructor" };
+  var ATT_STATUSES = ["assigned", "waitlisted", "confirmed", "attended", "late", "no_show", "declined", "withdrawn", "cancelled"];
+  var ATT_WORD = { assigned: "Assigned", confirmed: "Confirmed", waitlisted: "On the waiting list", declined: "Declined", withdrawn: "Withdrawn", cancelled: "Cancelled", attended: "Attended", late: "Late", no_show: "Did not show" };
+  var ATT_GONE = { declined: 1, withdrawn: 1, cancelled: 1 };   // a request with only these is back to waiting
+  var ATT_OPEN = { assigned: 1, waitlisted: 1, confirmed: 1 };   // a placement still open: ending it sends emails
+  function leftOpen(from, to) { return !!ATT_OPEN[from] && !!ATT_GONE[to]; }
+  var ATT_OFF = { waitlisted: 1, declined: 1, withdrawn: 1, cancelled: 1 };   // statuses that do not hold a seat
+  var afSeq = 0;
+
+  function attFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (res.status === 409 && !ps.length) return "Someone changed this a moment ago. Close this window and open it again.";
+    if (!ps.length) return adminProblem(res.status);
+    return ps.map(function (p) {
+      if (p.issue === "duplicate") return "They are already in this class in that role.";
+      if (p.issue === "choose_one") return "Choose someone we know or add someone new, not both.";
+      if (/^person\./.test(p.field)) return (PLABEL[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (PISSUE[p.issue] || "That value is not valid."));
+      if (p.field === "scheduled_class_id") return "Choose a class.";
+      if (p.field === "role") return "Choose a role.";
+      if (p.field === "individual_id" && p.issue === "address_required") return "An instructor needs an address first. Add the person in the Instructors station with their address, then add them here.";
+      if (p.field === "individual_id") return p.issue === "required" ? "Choose someone." : "We could not find them.";
+      if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
+      return p.field + ": " + (PISSUE[p.issue] || p.issue);
+    }).join(" ");
+  }
+  function attName(r) { return (r.person && r.person.display_name) || "(person not found)"; }
+
+  // People that fit what was typed. Every word must appear somewhere in the name, email or phone (any order), so "Todd Beecher" finds a Todd Beecher.
+  // If nobody fits every word, people who fit ANY word are offered as "close" matches, so a record with only a first name is not missed and then duplicated.
+  function peopleMatches(list, q) {
+    var words = q.toLowerCase().split(/\s+/).filter(Boolean), live = list.filter(function (p) { return p.status !== "erased"; });
+    var text = function (p) { return [pName(p), p.given_name, p.name_to_use, p.family_name, p.email, p.phone].join(" ").toLowerCase(); };
+    var all = live.filter(function (p) { var t = text(p); return words.every(function (w) { return t.indexOf(w) >= 0; }); });
+    if (all.length || words.length < 2) return { exact: all, near: [] };
+    var any = live.filter(function (p) { var t = text(p); return words.some(function (w) { return w.length >= 2 && t.indexOf(w) >= 0; }); });
+    return { exact: [], near: any };
+  }
+
+  // A small person finder: type part of a name, pick one.
+  function personFinder() {
+    var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
+    var chosen = { id: "", name: "" };
+    search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search by name");
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase(); results.textContent = "";
+      if (!q) return;
+      peopleList().then(function (list) {
+        results.textContent = "";
+        var m = peopleMatches(list, q), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) results.appendChild(mk("div", "hint", "No one matches every word. Closest matches:"));
+        shown.slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pFull(p)); b.type = "button";
+          b.addEventListener("click", function () { chosen.id = p.id; chosen.name = pFull(p); cur.textContent = "Chosen: " + chosen.name; results.textContent = ""; search.value = chosen.name; });
+          results.appendChild(b);
+        });
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name. Choose “Someone new” to add them."));
+      });
+    });
+    wrap.appendChild(cur); wrap.appendChild(search); wrap.appendChild(results);
+    return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; results.textContent = ""; } };
+  }
+
+  // The lead-instructor picker: only people on the instructor roster with an active entry. When the request has a Colorado ZIP only
+  // instructors who live in that ZIP's state show (the server derives residence_state from the person's address; only the state comes
+  // here). Without a ZIP all active instructors show, and one with no address on file says so. Nothing here creates anyone.
+  function stateOfZip(zip) { return /^8[01][0-9]{3}$/.test(zip || "") ? "CO" : ""; }   // Colorado only for now; another state adds its rule here
+  function instructorFinder(state) {
+    var wrap = mk("div"), cur = mk("div", "note", "Nobody chosen."), search = mk("input"), results = mk("div");
+    var chosen = { id: "", name: "" }, roster = null;
+    search.type = "text"; search.placeholder = "Search instructors by name"; search.autocomplete = "off"; search.setAttribute("aria-label", "Search instructors by name");
+    function nameOf(r) { var p = r.person || {}; return p.display_name || [p.given_name, p.family_name].filter(Boolean).join(" ") || "(no name)"; }
+    function draw() {
+      results.textContent = "";
+      if (roster === null) { results.appendChild(mk("div", "hint", "Loading instructors…")); return; }
+      var q = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      var eligible = roster.filter(function (r) { return !(r.person && r.person.unavailable) && (!state || r.residence_state === state); });
+      var shown = eligible.filter(function (r) { var n = nameOf(r).toLowerCase(); return q.every(function (w) { return n.indexOf(w) >= 0; }); });
+      shown.slice(0, 12).forEach(function (r) {
+        var b = mk("button", "quiet", nameOf(r) + (!state && !r.residence_state ? " (no address on file)" : "")); b.type = "button";
+        b.addEventListener("click", function () { chosen.id = r.individual_id; chosen.name = nameOf(r); cur.textContent = "Chosen: " + chosen.name; search.value = chosen.name; results.textContent = ""; });
+        results.appendChild(b);
+      });
+      if (!shown.length) results.appendChild(mk("div", "hint", eligible.length ? "No instructor matches that name." :
+        (state ? "No active instructor lives in " + state + ". Open an instructor in the Instructors station and tap Add address."
+               : "No active instructors yet. Add them in the Instructors station.")));
+    }
+    search.addEventListener("input", draw);
+    admin("list", { filters: { status: "active" }, limit: 200, expand: true }, "instructor_rosters").then(function (r) {
+      roster = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      draw();
+    });
+    wrap.appendChild(cur); wrap.appendChild(search); wrap.appendChild(results); draw();
+    return { el: wrap, id: function () { return chosen.id; }, reset: function () { chosen.id = ""; chosen.name = ""; cur.textContent = "Nobody chosen."; search.value = ""; draw(); } };
+  }
+
+  function classFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (!ps.length) return adminProblem(res.status);
+    return ps.map(function (p) { return "Could not build the class: " + (LABELS[p.field] || p.field) + ": " + cIssueText(p, null); }).join(" ");
+  }
+
+  // The "build a class" part of Put in a class: curriculum, venue and room, date and time, and a lead instructor.
+  function buildClassBox(uid, req) {
+    var el = mk("div", "addbox"), titleTouched = false;
+    function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    function lab(text, node, key, hint) {
+      var l = mk("label", "f", text); node.id = uid + "n_" + key; l.htmlFor = node.id; el.appendChild(l); el.appendChild(node);
+      if (hint) el.appendChild(mk("div", "hint", hint));
+    }
+    el.appendChild(mk("div", "rhead", "Build the class"));
+    var TOD = { morning: "Morning", afternoon: "Afternoon", evening: "Evening" };
+    if (req) {   // what the requester said about timing: shown so the operator sees it; only the first choice date is filled in
+      var asks = [];
+      if (req.requested_date) asks.push("First choice date: " + req.requested_date);
+      if (req.alternate_requested_date) asks.push("Second choice date: " + req.alternate_requested_date);
+      if (TOD[req.requested_time_of_day]) asks.push("Best time of day: " + TOD[req.requested_time_of_day]);
+      if (req.preferred_times) asks.push("Other timing notes: " + req.preferred_times);
+      if (asks.length) {
+        var wish = mk("div", "wishbox"); wish.setAttribute("data-wishes", "1");
+        wish.appendChild(mk("div", "wishhead", "They asked for"));
+        asks.forEach(function (t) { wish.appendChild(mk("div", "wishline", t)); });
+        el.appendChild(wish);
+      }
+    }
+    var cur = mk("select"); opt(cur, "", "No curriculum chosen");
+    cCurricula.forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
+    lab("Curriculum", cur, "cur");
+    if (req && req.curriculum_id) {   // the requester picked a topic on the form: offer it, the operator may keep it or change it
+      var askedC = curriculumAsked(req.curriculum_id);
+      if (askedC) { cur.value = req.curriculum_id; el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + askedC + ". It is filled in; change it if it does not suit.")); }
+      else el.appendChild(mk("div", "hint", "The requester picked a curriculum that is no longer active. Choose another, or none."));
+    }
+    var who = req ? [req.first_name, req.last_name].filter(Boolean).join(" ") : "";
+    var title = mk("input"); title.type = "text"; title.maxLength = 200; lab("Title of the class", title, "title");
+    title.addEventListener("input", function () { titleTouched = true; });
+    function curById() { var r = null; cCurricula.forEach(function (c) { if (c.id === cur.value) r = c; }); return r; }
+    function fillTitle() { if (!titleTouched) title.value = ((curById() || {}).title || "Private session") + (who ? " for " + who : ""); }
+    cur.addEventListener("change", fillTitle); fillTitle();
+    var kind = mk("select"); opt(kind, "private", "One on one"); opt(kind, "group", "Group"); opt(kind, "workshop", "Workshop"); lab("Kind of class", kind, "kind");
+    var ven = mk("select"); opt(ven, "", "Not chosen yet");
+    cVenues.forEach(function (v) { if (v.status === "active") opt(ven, v.id, v.name || "(no name)"); });
+    lab("Venue", ven, "ven");
+    if (req && req.preferred_venue_id) {   // the requester picked a venue on the form: offer it, the operator may keep it or change it
+      var asked = venueAsked(req.preferred_venue_id), askedV = cVenueById[req.preferred_venue_id];
+      if (askedV && askedV.status === "active") {
+        ven.value = askedV.id;
+        el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + asked + ". It is filled in; change it if it does not suit."));
+      } else {
+        el.appendChild(mk("div", "hint", "The requester asked for a venue that is no longer active" + (asked ? " (" + asked + ")" : "") + ". Choose another."));
+      }
+    }
+    var zipHint = mk("div", "hint"); el.appendChild(zipHint);   // says when the list is nearest-first or a nearest place was filled in
+    var room = mk("select"); lab("Room", room, "room");
+    var date = mk("input"); date.type = "date"; lab("Date", date, "date");
+    if (req && req.requested_date) date.value = req.requested_date;
+    var time = mk("input"); time.type = "time"; lab("Start time", time, "time");
+    if (req && TOD[req.requested_time_of_day]) {   // display only: shows which part of the day they asked for, never fills the start time
+      var pills = mk("div", "todpills"); pills.setAttribute("data-tod", req.requested_time_of_day);
+      Object.keys(TOD).forEach(function (k) {
+        var pl = mk("span", "todpill" + (k === req.requested_time_of_day ? " on" : ""), TOD[k]); pl.setAttribute("data-k", k);
+        if (k === req.requested_time_of_day) pl.setAttribute("aria-label", TOD[k] + ", asked for by the requester");
+        pills.appendChild(pl);
+      });
+      el.appendChild(pills);
+      el.appendChild(mk("div", "hint", "They asked for: " + TOD[req.requested_time_of_day] + ". Pick the actual start time yourself."));
+    }
+    var tzNote = mk("div", "hint"); el.appendChild(tzNote);
+    function tz() { var v = cVenueById[ven.value]; return (v && v.place && v.place.time_zone) || "America/Denver"; }
+    function syncVenue() {
+      room.textContent = ""; opt(room, "", "No room chosen");
+      var v = cVenueById[ven.value]; ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
+      tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (cVenueById[ven.value] && cVenueById[ven.value].place && cVenueById[ven.value].place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
+    }
+    var venTouched = false;
+    ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
+    // The request has a ZIP: ask the server for the venues nearest first, show the distances, and (unless the requester
+    // picked a venue, or chose a home) fill in the nearest public place. The operator may change it. Without a ZIP nothing changes.
+    if (req && /^[0-9]{5}$/.test(req.postal_code || "")) {
+      admin("list", { filters: { status: "active" }, limit: 200, expand: true, near_zip: req.postal_code }, "venues").then(function (res) {
+        if (res.status !== 200 || !res.body.ok) return;
+        var recs = res.body.data.records || [], keep = ven.value, pickedByRequester = !!(req.preferred_venue_id && keep === req.preferred_venue_id);
+        if (!recs.some(function (v) { return typeof v.miles === "number"; })) return;
+        while (ven.options.length > 1) ven.remove(1);
+        recs.forEach(function (v) {
+          if (v.status !== "active") return;
+          var m = typeof v.miles === "number" ? (v.miles < 1 ? " (under 1 mile)" : " (" + Math.round(v.miles) + (Math.round(v.miles) === 1 ? " mile)" : " miles)")) : "";
+          opt(ven, v.id, (v.name || "(no name)") + m);
+        });
+        ven.value = keep;
+        if (!ven.value) ven.value = "";
+        if (pickedByRequester) { zipHint.textContent = "Places are listed nearest first to ZIP " + req.postal_code + "."; return; }
+        var near = null;
+        recs.forEach(function (v) { if (!near && v.status === "active" && v.is_public_venue === true && typeof v.miles === "number") near = v; });
+        if (!venTouched && !ven.value && near && req.location_type !== "home") {
+          ven.value = near.id; syncVenue();
+          zipHint.textContent = "Nearest public place to ZIP " + req.postal_code + " is filled in. Change it if it does not suit.";
+        } else zipHint.textContent = "Places are listed nearest first to ZIP " + req.postal_code + ".";
+      });
+    }
+    el.appendChild(mk("div", "hint", "With a venue, a date and a time it is saved as scheduled. Without them it is saved as an idea you can finish later in Classes."));
+    var finder = instructorFinder(req ? stateOfZip(req.postal_code) : ""); el.appendChild(mk("div", "f", "Lead instructor (optional)")); el.appendChild(finder.el);
+    var CAP = { "private": [1, 2, 4], group: [2, 8, 15], workshop: [6, 10, 15] };
+    function collect() {
+      var t = title.value.trim();
+      if (!t) return { error: "Give the new class a title." };
+      var data = { title: t, slug: (slugify(t) || "class").slice(0, 80) + "_" + Math.random().toString(36).slice(2, 6), class_type: kind.value, program_slug: "launch", status: "identified", is_public: false,
+                   capacity_minimum: CAP[kind.value][0], capacity_target: CAP[kind.value][1], capacity_max: CAP[kind.value][2] };
+      var c = curById();
+      if (c) {
+        data.curriculum_id = c.id;
+        if (c.session_count > 1) { data.series_id = newUuid(); data.session_number = 1; }
+      }
+      if (date.value || time.value) {
+        if (!date.value || !time.value) return { error: "Give both a date and a time, or neither." };
+        if (!ven.value) return { error: "Choose a venue for a class with a date." };
+        var u = zonedToUtc(date.value, time.value, tz());
+        if (!u) return { error: "That date or time is not valid." };
+        data.starts_at = u; data.time_zone = tz();
+      }
+      if (ven.value) { data.venue_id = ven.value; if (room.value) data.venue_room_label = room.value; }
+      if (data.venue_id && data.starts_at) {
+        data.status = "scheduled"; data.is_venue_confirmed = false;
+        data.duration_minutes = Math.max(15, Math.min(600, c ? c.minutes_per_session : 60));
+      }
+      return { data: data, instructor: finder.id(), series: !!data.series_id && c.session_count > 1 ? c.session_count : 0 };
+    }
+    return { el: el, collect: collect };
+  }
+
+  // The one way to put a person in a class. opts: cls (fixed class) or classes (list to choose from), req (a request record, optional),
+  // role (starting role), canBuild (offer "a new class"), onAdded(data, said).
+  function assignForm(opts) {
+    var uid = "af" + (++afSeq) + "_", req = opts.req || null, BUILD = "__new__";
+    // A request that names other people (participants) puts them ALL in the class, together; the requester too unless they are not attending.
+    var folks = req && Array.isArray(req.participants) ? req.participants : [], attending = !req || req.is_requester_attending !== false;
+    function folkName(x) { return [x.first_name, x.last_name].filter(Boolean).join(" ").trim() || "Guest"; }
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    function field(text, el, key, hint) {
+      var l = mk("label", "f", text); el.id = uid + key; l.htmlFor = el.id; form.appendChild(l); form.appendChild(el);
+      if (hint) form.appendChild(mk("div", "hint", hint));
+    }
+    function opt(sel, v, t) { var o = mk("option", "", t); o.value = v; sel.appendChild(o); }
+    var clsSel = null, bx = null;
+    if (!opts.cls) {
+      clsSel = mk("select"); opt(clsSel, "", "Choose a class");
+      if (opts.canBuild) { opt(clsSel, BUILD, "+ A new class (build it now)"); var nb = clsSel.lastChild; nb.style.color = "#17692f"; nb.style.fontWeight = "700"; }
+      (opts.classes || []).slice().sort(function (a, b) { return (a.starts_at || "9") < (b.starts_at || "9") ? -1 : 1; }).forEach(function (c) { opt(clsSel, c.id, (c.title || "(no title)") + " · " + classWhen(c) + " (" + c.status + ")"); });
+      field("Class", clsSel, "cls");
+      if (opts.canBuild) {
+        bx = buildClassBox(uid, req); bx.el.hidden = true; form.appendChild(bx.el);
+        clsSel.addEventListener("change", function () { bx.el.hidden = clsSel.value !== BUILD; clsSel.classList.toggle("buildnew", clsSel.value === BUILD); });
+      }
+    }
+    var role = mk("select"); ["student", "primary_instructor", "instructor"].forEach(function (r) { opt(role, r, ROLE_WORD[r]); });
+    role.value = opts.role || "student";
+    var who = mk("select");
+    if (req) role.value = "student";            // from a request the person can only be a student; the lead instructor is chosen with the class
+    else field("Role in this class", role, "role");
+    if (req && req.individual_id) opt(who, "request", "The requester");
+    opt(who, "existing", req ? "Someone we already know" : "Someone we already know"); opt(who, "new", "Someone new");
+    who.value = (req && req.individual_id) ? "request" : (req ? "new" : "existing");
+    if (!req) field("Who", who, "who");
+    var sumBox = null;
+    if (req) { sumBox = mk("div", "note"); sumBox.setAttribute("role", "status"); form.appendChild(sumBox); }
+    var finder = personFinder(); var exBox = mk("div"); if (!req) { exBox.appendChild(finder.el); form.appendChild(exBox); }
+    var nb = mk("div"), nw = {};
+    [["given_name", "Given name", req && req.first_name], ["family_name", "Family name", req && req.last_name], ["email", "Email", req && req.email], ["phone", "Phone", req && req.phone]].forEach(function (f) {
+      var l = mk("label", "f", f[1]), el = mk("input"); el.type = "text"; el.maxLength = 200; el.id = uid + f[0]; l.htmlFor = el.id; el.value = f[2] || "";
+      nb.appendChild(l); nb.appendChild(el); nw[f[0]] = el;
+    });
+    nb.appendChild(mk("div", "hint", req ? "These details are saved with the student." : "A new one is added to the student list (or the instructor list) as part of this step."));
+    if (req) {
+      var dt = mk("details", "addbox"); dt.appendChild(mk("summary", "", "Change the name or contact details")); dt.appendChild(nb); form.appendChild(dt);
+      var upd = function () {
+        var nm = [nw.given_name.value, nw.family_name.value].map(function (x) { return x.trim(); }).filter(Boolean).join(" ") || "This person", em = nw.email.value.trim();
+        if (folks.length) {
+          var all = (attending ? [nm] : []).concat(folks.map(folkName));
+          sumBox.textContent = "Everyone on this request will be placed in this class as students: " + all.join(", ") + " (" + all.length + "). Each person with an email is sent the confirmation; anyone without one is placed and not told.";
+          return;
+        }
+        sumBox.textContent = req.individual_id ? nm + " will be placed in this class as a student." : nm + (em ? " (" + em + ")" : "") + " will be added to the student roster and placed in this class as a student.";
+      };
+      Object.keys(nw).forEach(function (k) { nw[k].addEventListener("input", upd); }); upd();
+    } else form.appendChild(nb);
+    var status = mk("select"); opt(status, "", "Automatic (assigned, or the waiting list if the class is full)");
+    ATT_STATUSES.forEach(function (s) { opt(status, s, ATT_WORD[s]); }); field("Status", status, "status");
+    var ord = mk("input"); ord.type = "number"; ord.min = "1"; ord.max = "50"; ord.step = "1";
+    var ordL = mk("label", "f", "Place among the instructors (optional)"); ord.id = uid + "order"; ordL.htmlFor = ord.id; form.appendChild(ordL); form.appendChild(ord);
+    function sync() {
+      exBox.hidden = who.value !== "existing"; nb.hidden = req ? false : who.value !== "new";
+      var ins = role.value !== "student"; ord.hidden = !ins; ordL.hidden = !ins;
+    }
+    who.addEventListener("change", sync); role.addEventListener("change", sync); sync();
+    var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add);
+    if (opts.onCancel) {
+      var back = mk("button", "quiet", "Cancel"); back.type = "button";
+      back.addEventListener("click", function () { opts.onCancel(); });
+      btns.appendChild(back);
+    }
+    form.appendChild(btns);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+    var dupBox = mk("div", "confirm"); dupBox.hidden = true; form.appendChild(dupBox);
+    var checked = false, forcedId = "";
+    function resubmit() { setTimeout(function () { if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event("submit", { cancelable: true })); }, 0); }   // after the first submit has finished, or the browser ignores it
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); msg.textContent = ""; dupBox.hidden = true;
+      var building = !opts.cls && clsSel.value === BUILD, cid = opts.cls ? opts.cls.id : clsSel.value, made = null;
+      if (!cid) { msg.textContent = "Choose a class."; return; }
+      var data = { scheduled_class_id: cid, role: role.value }, person = null;
+      var many = folks.length > 0 && role.value === "student";
+      if (many && !attending) { /* only the other people on the request are placed */ }
+      else if (forcedId) data.individual_id = forcedId;
+      else if (who.value === "request") data.individual_id = req.individual_id;
+      else if (who.value === "existing") { if (!finder.id()) { msg.textContent = "Choose someone, or choose “Someone new”."; return; } data.individual_id = finder.id(); }
+      else {
+        person = {};
+        Object.keys(nw).forEach(function (k) { var v = nw[k].value.trim(); if (v) person[k] = v; });
+        if (!person.given_name) { msg.textContent = "A new student or instructor needs at least a given name."; if (req) dt.open = true; return; }
+        if (!checked) {   // before adding someone new, look for the same email or name on file and let the operator decide
+          add.disabled = true;
+          peopleList().then(function (list) {
+            add.disabled = false;
+            var em = (person.email || "").toLowerCase(), full = [person.given_name, person.family_name].filter(Boolean).join(" ").toLowerCase();
+            var hit = list.filter(function (x) { return x.status !== "erased" && ((em && (x.email || "").toLowerCase() === em) || (person.family_name && pFull(x).toLowerCase() === full)); })[0];
+            if (!hit) { checked = true; resubmit(); return; }
+            dupBox.textContent = ""; dupBox.hidden = false;
+            dupBox.appendChild(mk("div", "", "We already have " + pFull(hit) + (hit.email ? " (" + hit.email + ")" : "") + " on file. Use that one so they are not added twice?"));
+            var bs = mk("div", "btns"), yes = mk("button", "", "Use " + pFull(hit)), no = mk("button", "quiet", "No, add as someone new"); yes.type = "button"; no.type = "button";
+            yes.addEventListener("click", function () { forcedId = hit.id; checked = true; resubmit(); });
+            no.addEventListener("click", function () { checked = true; resubmit(); });
+            bs.appendChild(yes); bs.appendChild(no); dupBox.appendChild(bs);
+          });
+          return;
+        }
+      }
+      if (status.value) data.status = status.value;
+      if (role.value !== "student" && ord.value.trim()) data.order = Number(ord.value);
+      if (req) data.request_id = req.id;
+      if (building) { made = bx.collect(); if (made.error) { msg.textContent = made.error; return; } }
+      add.disabled = true;
+      function place(classId, prefix) {
+        data.scheduled_class_id = classId;
+        var args = { data: data }; if (person) args.person = person;
+        // A new class with a lead instructor: the instructor goes in FIRST, so the student's confirmation email can name them.
+        function placeStudent(instructorSaid) {
+          return admin("assign", args, ATT).then(function (res) {
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body && res.body.ok) {
+              var d = res.body.data;
+              if (d.created_person) peopleForPick = null;
+              var told = function (last) {
+                var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
+                  + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "")
+                  + (instructorSaid || "")
+                  + (!last || last.status === "skipped" ? "" : last.status === "sent" ? " A confirmation email with the calendar file went to " + last.to + "."
+                    : last.status === "not_sent" ? " No confirmation email went out (" + (REASON_WORD[last.reason] || String(last.reason).replace(/_/g, " ")) + ")."
+                    : " The confirmation email did not go (see the log on their row); you can send it again there.");
+                finish(d, said);
+              };
+              // The CMS wrote the message log; ask it what happened to the confirmation (students only).
+              if (d.role !== "student") { told(null); return; }
+              return admin("list", { filters: { attendance_id: d.id } }, "communication_logs").then(function (lr) {
+                var recs = (lr.body && lr.body.data && lr.body.data.records) || [];
+                told(recs.length ? recs[0] : null);
+              });
+            }
+            add.disabled = false;
+            msg.textContent = (prefix ? prefix : "") + attFail(res);
+          });
+        }
+        if (made && made.instructor) {
+          return admin("assign", { data: { scheduled_class_id: classId, role: "primary_instructor", individual_id: made.instructor }, via_request_id: req ? req.id : undefined }, ATT).then(function (r2) {
+            (many ? placeMany : placeStudent)(r2.status === 200 && r2.body && r2.body.ok ? " Lead instructor: " + attName(r2.body.data) + "." : " The lead instructor could not be added (" + attFail(r2) + "); add them from the class Attendance.");
+          });
+        }
+        function placeMany(instructorSaid) {
+          var a = { data: { request_id: req.id, scheduled_class_id: classId } };
+          if (data.status) a.data.status = data.status;
+          if (attending) a.requester = data.individual_id ? { individual_id: data.individual_id } : { person: person };
+          return admin("assign_request", a, ATT).then(function (res) {
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body && res.body.ok) {
+              var recs = res.body.data.records || [];
+              if (res.body.data.created_people) peopleForPick = null;
+              return Promise.all(recs.map(function (r) { return admin("list", { filters: { attendance_id: r.id } }, "communication_logs"); })).then(function (lrs) {
+                var parts = recs.map(function (r, i) {
+                  var l = ((lrs[i].body && lrs[i].body.data && lrs[i].body.data.records) || [])[0];
+                  var how = !l || l.status === "skipped" ? "" : l.status === "sent" ? "emailed" : l.status === "not_sent" ? "not told (" + (REASON_WORD[l.reason] || String(l.reason).replace(/_/g, " ")) + ")" : "email did not go";
+                  return attName(r) + " (" + ATT_WORD[r.status].toLowerCase() + (how ? ", " + how : "") + ")";
+                });
+                var d = recs[0]; d.everyone = recs.map(attName); d.created_roster_entry = true;
+                finish(d, (prefix || "") + "Placed " + recs.length + " students: " + parts.join("; ") + "." + (instructorSaid || ""));
+              });
+            }
+            add.disabled = false;
+            var probs = (res.body && res.body.error && res.body.error.problems) || [];
+            msg.textContent = (prefix || "") + (probs.some(function (p) { return p.issue === "already_in_class"; })
+              ? "Someone from this request is already in that class, so nobody was added. Add the others from the class Attendance."
+              : probs.length ? "Nobody was added. Check the details: " + probs.map(function (p) { return String(p.field).replace(/_/g, " ").replace(/\./g, " ") + " (" + String(p.issue).replace(/_/g, " ") + ")"; }).join(", ") + "."
+              : attFail(res));
+          });
+        }
+        return many ? placeMany("") : placeStudent("");
+      }
+      function finish(d, said) {
+        add.disabled = false;
+        finder.reset(); Object.keys(nw).forEach(function (k) { nw[k].value = ""; }); ord.value = ""; checked = false; forcedId = "";
+        if (opts.onAdded) opts.onAdded(d, said);
+      }
+      if (!building) { place(cid); return; }
+      admin("create", { data: made.data }, "scheduled_classes").then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          aClasses = []; cLoaded = false;
+          var nm = res.body.data.title;
+          place(res.body.data.id, "Built the class " + nm + (made.series ? " (session 1 of " + made.series + "; add the other sessions in Classes)" : "") + ". ");
+          return;
+        }
+        add.disabled = false; msg.textContent = classFail(res);
+      });
+    });
+    return form;
+  }
+
+  function attLine(r, withClass) {
+    var row = mk("div", "rrow");
+    row.appendChild(mk("span", "", withClass ? ((r.class && r.class.title) || "(class not found)") + (r.class && r.class.starts_at ? " · " + classWhen(r.class) : "") : attName(r)));
+    row.appendChild(mk("span", "", ROLE_WORD[r.role] + " · " + (ATT_WORD[r.status] || r.status) + (r.reference_number ? " · " + r.reference_number : "") + (r.confirmation_number ? " · request " + r.confirmation_number : "")));
+    return row;
+  }
+
+  var SEND_WHY = { not_a_student: "Only students get this email.", not_placed: "They are not placed right now (waiting, or no longer in the class).",
+                   class_not_scheduled: "The class has no date and start time yet. Finish it in Classes first.", no_venue: "The class has no venue yet.",
+                   no_email: "This person has no email address on file.", class_not_found: "The class could not be found.", not_found: "That record could not be found." };
+  function sendFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (ps.length && ps[0].field === "email" && ps[0].issue === "not_enabled") return "Email is turned off on the server, so nothing was sent.";
+    if (ps.length && ps[0].field === "id") return SEND_WHY[ps[0].issue] || "That email cannot be sent.";
+    return attFail(res);
+  }
+  var CORR_KIND = { placement_confirmation: "Placement confirmation", request_received: "Request received" };
+  // Why the CMS did not send, in plain words (the closed reason list of the message log).
+  var REASON_WORD = { no_contact: "no email or phone on file", channel_unavailable: "they prefer a text, so contact them by hand", no_template: "no message is set up for this",
+                      incomplete: "a detail the message needs is missing", invalid_context: "the details were not valid", unknown_kind: "unknown kind of message",
+                      time_budget: "ran out of time", internal_error: "a problem on our side", cms_off: "messaging is off", log_only: "test mode, nothing is really sent",
+                      duplicate: "already sent", excluded: "left out on purpose", muted: "they asked not to be contacted" };
+  // One display shape for a message-log entry (communication_logs) and for an older line from the retired correspondence list.
+  function corrNorm(e) {
+    if (e.status) return { when: e.created_at, kind: e.kind, channel: e.channel, to: e.to, status: e.status, reason: e.reason, code: e.error_code, manual: e.trigger === "manual" };
+    return { when: e.at, kind: e.kind, channel: e.channel, to: e.to, status: e.result, code: e.error_code, manual: e.trigger === "manual", older: true };
+  }
+  function corrLine(raw) {
+    var e = corrNorm(raw);
+    var when = e.when ? new Date(e.when).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "";
+    var code = e.code ? " (" + e.code.replace(/_/g, " ") + ")" : "";
+    var res = e.status === "sent" ? "Sent" : e.status === "failed" ? "Failed" + code : e.status === "unknown" ? "Unknown, may not have been sent" + code
+            : (e.status === "not_sent" ? "Not sent: " : "Skipped: ") + (REASON_WORD[e.reason] || String(e.reason || "").replace(/_/g, " "));
+    var bad = e.status === "failed" || e.status === "unknown" || e.status === "not_sent";
+    return mk("div", "alogline" + (bad ? " bad" : ""), [when, CORR_KIND[e.kind] || e.kind, e.to ? (e.channel === "email" ? "Email to " : "") + e.to : "", res,
+      e.manual ? "sent by hand" : "automatic", e.older ? "earlier record" : ""].filter(Boolean).join(" · "));
+  }
+  // Students only: the message log for this placement (newest first, plus older lines kept from before the CMS) and a button to send the confirmation now.
+  function attCorrespondence(r, row, say, redraw) {
+    var box = mk("div", "alog"); box.setAttribute("data-corr", r.id);
+    box.appendChild(mk("div", "alogh", "Messages sent"));
+    var body = mk("div", ""); body.appendChild(mk("div", "alogline none", "Loading…")); box.appendChild(body);
+    row.appendChild(box);
+    admin("list", { filters: { attendance_id: r.id } }, "communication_logs").then(function (lr) {
+      body.textContent = "";
+      var fresh = (lr.body && lr.body.data && lr.body.data.records) || [];
+      var all = fresh.concat((r.correspondence || []).slice().reverse());
+      all.sort(function (x, y) { return String(corrNorm(y).when || "").localeCompare(String(corrNorm(x).when || "")); });
+      if (lr.status !== 200 && !all.length) { body.appendChild(mk("div", "alogline none", "Could not load the messages.")); return; }
+      if (!all.length) body.appendChild(mk("div", "alogline none", "None yet."));
+      all.forEach(function (e) { body.appendChild(corrLine(e)); });
+    });
+    var b = mk("button", "quiet asend", "Send confirmation email"); b.type = "button";
+    b.addEventListener("click", function () {
+      b.disabled = true; b.textContent = "Sending…";
+      admin("send_confirmation", { id: r.id }, ATT).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var out = res.body.data;
+          say(out.status === "sent" ? "Confirmation email sent to " + attName(r) + "."
+            : "The email was not sent (" + (out.status === "failed" || out.status === "unknown" ? out.status : (REASON_WORD[out.reason] || String(out.reason).replace(/_/g, " "))) + "). It is noted in the log.");
+          redraw(); return;
+        }
+        b.disabled = false; b.textContent = "Send confirmation email"; say(sendFail(res));
+      });
+    });
+    row.appendChild(b);
+  }
+
+  function attRow(r, say, redraw) {
+    var row = mk("div", "arow");
+    var top = mk("div", "atop");
+    var nm = mk("span", "aname", attName(r) + (r.role === "primary_instructor" ? " (lead)" : "") + (r.order ? " · place " + r.order : ""));
+    var refs = [r.reference_number ? "ref " + r.reference_number : "", r.confirmation_number ? "request " + r.confirmation_number : ""].filter(Boolean).join(" · ");
+    if (refs) nm.appendChild(mk("span", "aref", refs));
+    top.appendChild(nm);
+    var sel = mk("select"); sel.setAttribute("aria-label", "Status for " + attName(r));
+    ATT_STATUSES.forEach(function (s) { var o = mk("option", "", ATT_WORD[s]); o.value = s; sel.appendChild(o); });
+    sel.value = r.status;
+    var rm = mk("button", "quiet", "Remove"); rm.type = "button";
+    top.appendChild(sel); top.appendChild(rm);
+    row.appendChild(top);
+    if (r.role === "student") attCorrespondence(r, row, say, redraw);
+    sel.addEventListener("change", function () {
+      if (leftOpen(r.status, sel.value) && !window.confirm(attName(r) + " will be set to " + ATT_WORD[sel.value].toLowerCase() + " and emailed" + (r.role === "student" ? ", and the instructors too" : "") + ". Go ahead?")) { sel.value = r.status; return; }
+      sel.disabled = true;
+      admin("update", { id: r.id, changes: { status: sel.value }, expected_updated_at: r.updated_at }, ATT).then(function (res) {
+        sel.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + ": " + ATT_WORD[sel.value].toLowerCase() + "." + (leftOpen(r.status, sel.value) ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); redraw(); return; }
+        sel.value = r.status; say(attFail(res));
+      });
+    });
+    var armed = false;
+    rm.addEventListener("click", function () {
+      if (!armed) { armed = true; rm.textContent = "Really remove?"; rm.className = "danger"; return; }
+      rm.disabled = true;
+      admin("soft_delete", { id: r.id }, ATT).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept." + (ATT_OPEN[r.status] ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); loadPlaced(); redraw(); return; }
+        rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.className = "quiet"; say(attFail(res));
+      });
+    });
+    return row;
+  }
+
+  function openAttendance(cls) {
+    var dlg = $("atDlg"), body = $("atBody"), msg = $("atMsg");
+    $("atTitle").textContent = "Attendance: " + (cls.title || "class");
+    msg.textContent = ""; body.textContent = "Loading…";
+    if (!dlg.open) dlg.showModal();
+    function say(t) { msg.textContent = t; }
+    var only = "";
+    function draw() {
+      var args = { filters: { scheduled_class_id: cls.id }, limit: 200, expand: true, order: "created_at" };
+      if (only) args.filters.status = only;
+      admin("list", args, ATT).then(function (res) {
+        body.textContent = "";
+        var bShow = mk("section", "atband show"), bInst = mk("section", "atband inst"), bStu = mk("section", "atband stu");
+        bShow.appendChild(mk("div", "bandname", "Show"));
+        var fl = mk("label", "f", "Who to show"), fs = mk("select"); fs.id = "atOnly"; fl.htmlFor = "atOnly"; fl.className = "sr";
+        var o0 = mk("option", "", "Everyone"); o0.value = ""; fs.appendChild(o0);
+        ATT_STATUSES.forEach(function (st) { var o = mk("option", "", ATT_WORD[st] + " only"); o.value = st; fs.appendChild(o); });
+        fs.value = only; fs.addEventListener("change", function () { only = fs.value; draw(); });
+        bShow.appendChild(fl); bShow.appendChild(fs);
+        body.appendChild(bShow); body.appendChild(bInst); body.appendChild(bStu);
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { say("Could not load the attendance. " + adminProblem(res.status)); return; }
+        var recs = res.body.data.records || [];
+        var inst = recs.filter(function (r) { return r.role !== "student"; }).sort(function (a, b) {
+          function k(r) { return (r.role === "primary_instructor" ? 0 : 1) * 1000 + (r.order || 999); }
+          return k(a) - k(b);
+        });
+        var stu = recs.filter(function (r) { return r.role === "student"; });
+        bInst.appendChild(mk("div", "bandname", "Instructors (" + inst.length + ")"));
+        inst.forEach(function (r) { bInst.appendChild(attRow(r, say, draw)); });
+        if (!inst.length) bInst.appendChild(mk("div", "empty", "No instructor yet."));
+        bStu.appendChild(mk("div", "bandname", "Students (" + stu.length + ")"));
+        stu.forEach(function (r) { bStu.appendChild(attRow(r, say, draw)); });
+        if (!stu.length) bStu.appendChild(mk("div", "empty", "No students yet."));
+        var seats = stu.filter(function (r) { return !ATT_OFF[r.status]; }).length, wait = stu.filter(function (r) { return r.status === "waitlisted"; }).length;
+        bStu.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
+        var det = mk("details", "addbox"); det.id = "atAddBox";
+        det.appendChild(mk("summary", "", "Add a student or instructor"));
+        det.appendChild(assignForm({ cls: cls, onCancel: function () { det.open = false; }, onAdded: function (d, said) { say(said); draw(); } }));
+        bStu.appendChild(det);
+      });
+    }
+    draw();
+  }
+
+  // ---- Attendance station: every record, with tick-box filters that apply on Refresh
+  var AS = { recs: [], capped: false, loaded: false, seq: 0 };
+  function asBoxes() { return document.querySelectorAll("#aFilters input[type=checkbox]"); }
+  function asBuildStatusBoxes() {
+    var host = $("aStatusBoxes"); if (host.firstChild) return;
+    ATT_STATUSES.forEach(function (s) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + ATT_WORD[s])); host.appendChild(l);
+    });
+  }
+  function asSelected() {
+    var o = { status: {}, role: {}, source: {} };
+    Array.prototype.forEach.call(asBoxes(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
+    return o;
+  }
+  function asSummary(sel, q) {
+    var all = true; Array.prototype.forEach.call(asBoxes(), function (c) { if (!c.checked) all = false; });
+    $("aFilterSummary").textContent = all && !q ? "Filters: all records shown" : "Filters: " + (q ? "searching for “" + q + "”" : "some records are hidden");
+    $("aFilterSummary").className = all && !q ? "" : "some";
+  }
+  function asMatches(r, sel, q) {
+    if (!sel.status[r.status] || !sel.role[r.role] || !sel.source[r.request_id ? "request" : "direct"]) return false;
+    if (!q) return true;
+    var hay = [attName(r), r["class"] && r["class"].title, r.reference_number, r.confirmation_number, ROLE_WORD[r.role], ATT_WORD[r.status]].filter(Boolean).join(" ").toLowerCase();
+    return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+  // The tick boxes and search are read when the list is drawn (on load and on Refresh), not as they are ticked.
+  function asRender() {
+    var sel = asSelected(), q = $("aSearch").value.trim(), list = $("aList");
+    list.textContent = "";
+    var shown = AS.recs.filter(function (r) { return asMatches(r, sel, q); });
+    shown.forEach(function (r) {
+      var li = mk("li", "attrec");
+      var top = mk("div", "lchips");
+      var cl = mk("button", "chiplink", ((r["class"] && r["class"].title) || "(class not found)") + (r["class"] && r["class"].starts_at ? " · " + classWhen(r["class"]) : ""));
+      cl.type = "button";
+      cl.addEventListener("click", function () { var c = aClassById[r.scheduled_class_id]; if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
+      top.appendChild(cl); top.appendChild(mk("span", "", ROLE_WORD[r.role] || r.role));
+      li.appendChild(top);
+      var holder = mk("div", ""); holder.style.padding = "0 14px 8px";
+      holder.appendChild(attRow(r, function (m) { $("aNotice").textContent = m; }, loadAttendanceStation));
+      li.appendChild(holder);
+      list.appendChild(li);
+    });
+    $("aCount").textContent = shown.length + (shown.length === 1 ? " record" : " records") + (shown.length !== AS.recs.length ? " of " + AS.recs.length : "");
+    $("aEmpty").hidden = shown.length > 0 || !AS.loaded;
+    asSummary(sel, q);
+  }
+  function loadAttendanceStation() {
+    asBuildStatusBoxes();
+    var my = ++AS.seq;
+    $("aMsg").textContent = "";
+    Promise.all([loadClassChoices(), admin("list", { limit: 200, expand: true, order: "-created_at" }, ATT)]).then(function (both) {
+      if (my !== AS.seq || !key) return;
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body || !res.body.ok) { $("aMsg").textContent = "Could not load the attendance. " + adminProblem(res.status); return; }
+      AS.recs = res.body.data.records || []; AS.loaded = true; AS.capped = AS.recs.length >= 200;
+      $("aChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (AS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      asRender();
+    });
+  }
+  $("aRefresh").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
+  $("aApply").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
+  $("aShowAll").addEventListener("click", function () { Array.prototype.forEach.call(asBoxes(), function (c) { c.checked = true; }); $("aSearch").value = ""; loadAttendanceStation(); });
+  $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
+
+  // ---- Messages station: the whole message log (communication_logs), tick-box filters, notes (add only), copy
+  var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {} };
+  function mConf(e) { return MS.conf[e.id] || ""; }   // the request's confirmation number, worked out when the log loads
+  var M_STATUS = ["sent", "failed", "unknown", "not_sent", "skipped"];
+  var M_STATUS_WORD = { sent: "Sent", failed: "Failed", unknown: "Unknown", not_sent: "Not sent", skipped: "Skipped" };
+  function mKindWord(k) { return CORR_KIND[k] || String(k || "").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }); }
+  function mReasonWord(r) { return REASON_WORD[r] || String(r || "").replace(/_/g, " "); }
+  function mNeedsAttention(e) { return e.status === "failed" || e.status === "unknown" || (e.status === "not_sent" && !e.handled_at); }
+  function mWhen(e) { return e.created_at ? fmtTime.format(new Date(e.created_at)) : ""; }
+  function mBoxes() { return document.querySelectorAll("#mFilters input[type=checkbox]"); }
+  function mBuildBoxes() {
+    var host = $("mStatusBoxes");
+    if (!host.firstChild) M_STATUS.forEach(function (s) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + M_STATUS_WORD[s])); host.appendChild(l);
+    });
+    // The kinds come from the log itself, so a new kind of message appears here without changing this page. A kind the user has unticked stays unticked.
+    var kh = $("mKindBoxes"), off = {};
+    Array.prototype.forEach.call(kh.querySelectorAll("input"), function (c) { if (!c.checked) off[c.value] = 1; });
+    var kinds = {}; MS.recs.forEach(function (e) { if (e.kind) kinds[e.kind] = 1; });
+    kh.textContent = "";
+    Object.keys(kinds).sort().forEach(function (k) {
+      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = !off[k]; c.value = k; c.setAttribute("data-f", "kind");
+      l.appendChild(c); l.appendChild(document.createTextNode(" " + mKindWord(k))); kh.appendChild(l);
+    });
+  }
+  function mSelected() {
+    var o = { status: {}, kind: {}, how: {} };
+    Array.prototype.forEach.call(mBoxes(), function (c) { var f = c.getAttribute("data-f"); if (f && c.checked) o[f][c.value] = 1; });
+    return o;
+  }
+  function mText(e) {
+    return [e.to, e.subject, e.kind, mKindWord(e.kind), e.status, M_STATUS_WORD[e.status], e.reason, mReasonWord(e.reason), e.error_code, e.message_ref, e.id, e.request_id,
+      e.attendance_id, e.scheduled_class_id, e.individual_id, mConf(e)].concat((e.notes || []).map(function (n) { return n.text; })).filter(Boolean).join(" ").toLowerCase();
+  }
+  function mMatches(e, sel, q) {
+    if (q) {
+      var hay = mText(e);
+      return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+    }
+    if (!sel.status[e.status] || !sel.kind[e.kind] || !sel.how[e.trigger === "manual" ? "manual" : "automatic"]) return false;
+    if ($("mAttn").checked && !mNeedsAttention(e)) return false;
+    if ($("mNotes").checked && !(e.notes && e.notes.length)) return false;
+    if ($("mRedir").checked && !e.is_redirected) return false;
+    return true;
+  }
+  // Names for the ids in a log entry, worked out when the log loads (the log itself keeps ids, never names).
+  function mWho(e) {
+    var rows = [], me = MS.person[e.individual_id], a = e.attendance_id ? MS.att[e.attendance_id] : null;
+    if (me) rows.push(["Sent to", me + (e.audience ? " (" + e.audience + ")" : "")]);
+    if (a && a.name && (a.name !== me || e.kind === "participant_left")) rows.push([e.kind === "participant_left" ? (a.role === "student" ? "Student who left" : "Left") : a.role === "student" ? "Student" : "Instructor", a.name]);
+    var c = e.scheduled_class_id && aClassById && aClassById[e.scheduled_class_id];
+    if (c) rows.push(["Class", (c.title || "(no title)") + (c.starts_at ? " · " + fmtTime.format(new Date(c.starts_at)) : "")]);
+    if (mConf(e)) rows.push(["Confirmation number", mConf(e)]);
+    return rows;
+  }
+  function mFactsText(e) {
+    var L = mWho(e).concat([["When", e.created_at], ["Message", mKindWord(e.kind) + " (" + e.kind + ")"], ["For", e.audience], ["Channel", e.channel],
+      ["To", e.to ? e.to + (e.is_redirected ? " (test address, not the real recipient)" : "") : ""], ["Subject", e.subject],
+      ["Status", (M_STATUS_WORD[e.status] || e.status) + " (" + e.status + ")"], ["Why", e.reason + (mReasonWord(e.reason) !== e.reason ? ": " + mReasonWord(e.reason) : "")],
+      ["Error code", e.error_code], ["Template version", e.template_version], ["Message-ID", e.message_ref], ["How", e.trigger === "manual" ? "By hand" : "Automatic"],
+      ["Caused by", e.created_by], ["Class id", e.scheduled_class_id], ["Attendance id", e.attendance_id], ["Request id", e.request_id], ["Person id", e.individual_id],
+      ["Log id", e.id]]);
+    if (e.handled_at) L.push(["Handled", e.handled_at + " by " + (e.handled_by || "")]);
+    return L.filter(function (x) { return x[1] !== undefined && x[1] !== null && x[1] !== ""; });
+  }
+  function mCopy(text, what, btn) {
+    var done = function () {
+      $("mNotice").textContent = what + " copied.";
+      if (btn) { var was = btn.getAttribute("data-was") || btn.textContent; btn.setAttribute("data-was", was); btn.textContent = "Copied ✓"; btn.classList.add("copied");
+        clearTimeout(btn._t); btn._t = setTimeout(function () { btn.textContent = was; btn.classList.remove("copied"); btn.removeAttribute("data-was"); }, 2000); }
+    };
+    var fallback = function () {
+      var t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (x) { ok = false; }
+      document.body.removeChild(t);
+      if (ok) done(); else $("mMsg").textContent = "Could not copy. Select the text and copy it yourself.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
+  }
+  function mEntryText(e) {
+    var t = mFactsText(e).map(function (x) { return x[0] + ": " + x[1]; });
+    (e.notes || []).forEach(function (n) { t.push("Note (" + n.at + ", " + n.by + "): " + n.text); });
+    return t.join("\n");
+  }
+  function mDetail(e) {
+    var box = mk("div", "mdetail");
+    var dl = mk("dl", ""); mFactsText(e).forEach(function (x) { dl.appendChild(mk("dt", "", x[0])); dl.appendChild(mk("dd", "", String(x[1]))); });
+    box.appendChild(dl);
+    var nb = mk("div", "mnotes"); nb.appendChild(mk("b", "", "Notes (" + (e.notes ? e.notes.length : 0) + ")"));
+    (e.notes || []).forEach(function (n) {
+      var d = mk("div", "mnote"); d.appendChild(mk("div", "", n.text));
+      d.appendChild(mk("div", "who", (n.at ? fmtTime.format(new Date(n.at)) : "") + " · " + (n.by || ""))); nb.appendChild(d);
+    });
+    if (!(e.notes && e.notes.length)) nb.appendChild(mk("div", "empty2", "No notes yet."));
+    box.appendChild(nb);
+    var lab = mk("label", "f", "Add a note"); var ta = document.createElement("textarea"); ta.maxLength = 1000; ta.id = "mNote-" + e.id; lab.htmlFor = ta.id;
+    ta.placeholder = "What did you find out? The next person will read this.";
+    box.appendChild(lab); box.appendChild(ta);
+    var err = mk("div", "msg", ""); err.setAttribute("role", "alert");
+    var btns = mk("div", "btns");
+    var add = mk("button", "", "Add note"); add.type = "button";
+    add.addEventListener("click", function () {
+      var text = ta.value.trim(); err.textContent = "";
+      if (!text) { err.textContent = "Write the note first."; return; }
+      add.disabled = true;
+      admin("add_note", { id: e.id, text: text }, "communication_logs").then(function (res) {
+        add.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body || !res.body.ok) { err.textContent = res.status === 409 ? "Someone else changed this message. Refresh and try again." : "The note was not saved. " + adminProblem(res.status); return; }
+        e.notes = res.body.data.notes; $("mNotice").textContent = "Note added."; mRender();
+      });
+    });
+    btns.appendChild(add);
+    if (e.status === "not_sent" && !e.handled_at) {
+      var h = mk("button", "quiet", "Mark handled"); h.type = "button";
+      h.title = "Say what you did about it, for example phoned her. The note box above is used as the comment.";
+      h.addEventListener("click", function () {
+        err.textContent = ""; h.disabled = true;
+        var args = { id: e.id }; if (ta.value.trim()) args.note = ta.value.trim().slice(0, 500);
+        admin("mark_handled", args, "communication_logs").then(function (res) {
+          h.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status !== 200 || !res.body || !res.body.ok) { err.textContent = "Could not mark it handled. " + adminProblem(res.status); return; }
+          $("mNotice").textContent = "Marked handled."; loadMessagesStation();
+        });
+      });
+      btns.appendChild(h);
+    }
+    var c1 = mk("button", "quiet", "Copy entry"); c1.type = "button"; c1.addEventListener("click", function () { mCopy(mEntryText(e), "Entry", c1); });
+    var c2 = mk("button", "quiet", "Copy as JSON"); c2.type = "button"; c2.addEventListener("click", function () { mCopy(JSON.stringify(e, null, 2), "JSON", c2); });
+    btns.appendChild(c1); btns.appendChild(c2);
+    if (e.scheduled_class_id) {
+      var j = mk("button", "quiet", "Open the class attendance"); j.type = "button";
+      j.addEventListener("click", function () { var c = aClassById[e.scheduled_class_id]; if (c) openAttendance(c); else $("mMsg").textContent = "That class could not be found."; });
+      btns.appendChild(j);
+    }
+    box.appendChild(btns); box.appendChild(err);
+    return box;
+  }
+  function mRender() {
+    var sel = mSelected(), q = $("mSearch").value.trim(), list = $("mList");
+    list.textContent = "";
+    var shown = MS.recs.filter(function (e) { return mMatches(e, sel, q); });
+    shown.forEach(function (e) {
+      var tone = mNeedsAttention(e) ? "bad" : e.status === "sent" ? "ok" : "mid";
+      var li = mk("li", "mrec " + tone); li.setAttribute("data-log", e.id);
+      var head = mk("button", "mhead"); head.type = "button"; head.setAttribute("aria-expanded", MS.open[e.id] ? "true" : "false");
+      var l1 = mk("div", "mline1");
+      l1.appendChild(mk("span", "", mWhen(e)));
+      l1.appendChild(mk("span", "", mKindWord(e.kind)));
+      l1.appendChild(mk("span", "mchip " + e.status, M_STATUS_WORD[e.status] || e.status));
+      if (e.trigger === "manual") l1.appendChild(mk("span", "mtag", "by hand"));
+      if (e.is_redirected) l1.appendChild(mk("span", "mtag", "test address"));
+      if (e.handled_at) l1.appendChild(mk("span", "mtag", "handled"));
+      if (e.notes && e.notes.length) l1.appendChild(mk("span", "mtag", "📝 " + e.notes.length + (e.notes.length === 1 ? " note" : " notes")));
+      l1.appendChild(mConf(e) ? mk("span", "mconf", mConf(e)) : mk("span", "mconf none", "—"));
+      head.appendChild(l1);
+      var why = e.status === "sent" ? "" : (e.status === "failed" || e.status === "unknown" ? M_STATUS_WORD[e.status] + (e.error_code ? " (" + e.error_code.replace(/_/g, " ") + ")" : "") : mReasonWord(e.reason));
+      head.appendChild(mk("div", "mline2", [e.to ? "To " + e.to : "", e.subject || "", why].filter(Boolean).join(" · ")));
+      head.addEventListener("click", function () {
+        MS.open[e.id] = !MS.open[e.id]; mRender();
+        var again = $("mList").querySelector('[data-log="' + e.id + '"] .mhead'); if (again) again.focus();
+      });
+      li.appendChild(head);
+      if (MS.open[e.id]) li.appendChild(mDetail(e));
+      list.appendChild(li);
+    });
+    $("mCount").textContent = shown.length + (shown.length === 1 ? " message" : " messages") + (shown.length !== MS.recs.length ? " of " + MS.recs.length : "");
+    $("mEmpty").hidden = shown.length > 0 || !MS.loaded;
+    var n = {}; MS.recs.forEach(function (e) { n[e.status] = (n[e.status] || 0) + 1; });
+    var attn = MS.recs.filter(mNeedsAttention).length;
+    $("mSummary").textContent = MS.recs.length ? M_STATUS.filter(function (s) { return n[s]; }).map(function (s) { return n[s] + " " + M_STATUS_WORD[s].toLowerCase(); }).join(" · ") + (attn ? " · " + attn + " need" + (attn === 1 ? "s" : "") + " attention" : " · nothing needs attention") : "";
+    var all = true; Array.prototype.forEach.call(mBoxes(), function (c) { if (c.getAttribute("data-f") && !c.checked) all = false; });
+    var some = !all || q || $("mAttn").checked || $("mNotes").checked || $("mRedir").checked;
+    $("mFilterSummary").textContent = some ? (q ? "Searching the whole log for “" + q + "” (tick boxes ignored)" : "Filters: some messages are hidden") : "Filters: all messages shown";
+    $("mFilterSummary").className = some ? "some" : "";
+  }
+  function loadMessagesStation() {
+    var my = ++MS.seq;
+    $("mMsg").textContent = "";
+    mBuildBoxes();
+    Promise.all([loadClassChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
+                 (Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; })), admin("list", { limit: 200, order: "-created_at", expand: true }, "attendances"), admin("list", { limit: 200 }, "individuals")]).then(function (both) {
+      if (my !== MS.seq || !key) return;
+      var res = both[1];
+      // Confirmation numbers: a log entry names its request directly, or (older entries) through its attendance.
+      var rq = {}, at = {}, got = function (r) { return r.status === 200 && r.body && r.body.ok ? r.body.data.records || [] : []; };
+      (both[2] || []).forEach(function (r) { rq[r.id] = r.confirmation_number; });
+      MS.person = {}; MS.att = {};
+      got(both[4]).forEach(function (p) { MS.person[p.id] = p.display_name || [p.given_name, p.family_name].filter(Boolean).join(" "); });
+      got(both[3]).forEach(function (a) { at[a.id] = a.request_id; var nm = attName(a); if (a.person) { MS.att[a.id] = { name: nm, role: a.role }; MS.person[a.individual_id] = MS.person[a.individual_id] || nm; } });
+      MS.conf = {};
+      (res.body && res.body.data && res.body.data.records || []).forEach(function (e) {
+        var c = rq[e.request_id] || rq[at[e.attendance_id]]; if (c) MS.conf[e.id] = c;
+      });
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body || !res.body.ok) { $("mMsg").textContent = "Could not load the messages. " + adminProblem(res.status); return; }
+      MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;
+      $("mChecked").textContent = "Last checked " + fmtClock.format(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      mBuildBoxes(); mRender();
+      // A student who left (or was removed) is no longer in the live list, so ask for those placements by id and fill in the names.
+      var gone = []; MS.recs.forEach(function (e) { if (e.attendance_id && !MS.att[e.attendance_id] && gone.indexOf(e.attendance_id) < 0 && gone.length < 60) gone.push(e.attendance_id); });
+      if (!gone.length) return;
+      Promise.all(gone.map(function (id) { return admin("get", { id: id, include_deleted: true, expand: true }, "attendances"); })).then(function (rs) {
+        if (my !== MS.seq) return;
+        rs.forEach(function (r) { var a = r.status === 200 && r.body && r.body.ok ? r.body.data : null; if (a && a.person) { MS.att[a.id] = { name: attName(a), role: a.role }; MS.person[a.individual_id] = MS.person[a.individual_id] || attName(a); } });
+        mRender();
+      });
+    });
+  }
+  $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });
+  $("mFilters").addEventListener("change", function () { mRender(); });
+  $("mSearch").addEventListener("input", function () { mRender(); });
+  $("mShowAll").addEventListener("click", function () {
+    Array.prototype.forEach.call(mBoxes(), function (c) { c.checked = !(c.id === "mAttn" || c.id === "mNotes" || c.id === "mRedir"); });
+    $("mSearch").value = ""; mRender();
+  });
+
+  // On a person's card: every class they are in, in any role.
+  function personHistory(rec, host) {
+    host.textContent = "Loading…";
+    admin("list", { filters: { individual_id: rec.id }, limit: 200, expand: true }, ATT).then(function (res) {
+      host.textContent = "";
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { host.appendChild(mk("div", "msg", "Could not load the history. " + adminProblem(res.status))); return; }
+      var recs = (res.body.data.records || []).sort(function (a, b) { return ((b.class && b.class.starts_at) || "") < ((a.class && a.class.starts_at) || "") ? -1 : 1; });
+      host.appendChild(mk("div", "rhead", "Classes (" + recs.length + ")"));
+      recs.forEach(function (r) { host.appendChild(attLine(r, true)); });
+      if (!recs.length) host.appendChild(mk("div", "empty", "Not in any class yet."));
+    });
+  }
+
+  // On a registration request: put the requester (or anyone) into a class.
+  function putInClass(rec, host, said) {
+    host.textContent = "Loading…";
+    Promise.all([loadClassChoices(), loadVenueChoices(), loadCurriculumChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (all4) {
+      var both = [null, all4[3]];
+      host.textContent = "";
+      var res = both[1];
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (said) { var n = mk("div", "note", said); n.setAttribute("role", "status"); host.appendChild(n); }
+      var already = (res.status === 200 && res.body.ok) ? (res.body.data.records || []) : [];
+      if (already.length) {
+        host.appendChild(mk("div", "rhead", "Placed from this request"));
+        already.forEach(function (r) { var row = attLine(r, true); row.insertBefore(mk("span", "", attName(r)), row.firstChild); host.appendChild(row); });
+      }
+      var live = aClasses.filter(function (c) { return c.status !== "cancelled" && c.status !== "completed"; });
+      var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
+      hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
+      var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
+      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose + A new class (build it now) to start from that venue."));
+      host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onCancel: function () { host.hidden = true; host.textContent = ""; }, onAdded: function (d, s) {
+        host.hidden = true; host.textContent = "";
+        var num = d.confirmation_number || rec.confirmation_number;
+        var bn = $("reqDone");
+        bn.textContent = "Request " + (num ? num + " " : "") + "is closed. " + (d.everyone ? d.everyone.join(", ") + " are in " : attName(d) + " is in ") + ((d["class"] && d["class"].title) || "the class") + ". You will find it in Classes."
+          + (d.created_roster_entry ? " Added to the student list." : "");
+        bn.hidden = false; $("reqShow").value = "open";
+        loadPlaced().then(function () { bn.scrollIntoView({ block: "nearest" }); });
+      } }));
+    });
+  }
+
+  // ---- Journal: the append-only log of placing, status changes and cancellations
+  var JR_WORD = { placed: "Placed in a class", status_changed: "Status changed", removed: "Removed from a class", class_cancelled: "Class cancelled", class_removed: "Class deleted", request_unassigned: "Request back to waiting to be placed" };
+  function openJournal(filter, title) {
+    var dlg = $("jrDlg"), body = $("jrBody"), msg = $("jrMsg");
+    $("jrTitle").textContent = title || "Journal"; msg.textContent = ""; body.textContent = "Loading…";
+    if (!dlg.open) dlg.showModal();
+    admin("list", { filters: filter, limit: 200, expand: true, order: "-created_at" }, "journal_events").then(function (res) {
+      body.textContent = "";
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { msg.textContent = "Could not load the journal. " + adminProblem(res.status); return; }
+      var recs = res.body.data.records || [];
+      if (!recs.length) { body.appendChild(mk("div", "empty", "Nothing has happened here yet.")); return; }
+      recs.forEach(function (e) {
+        var d = mk("div", "jline");
+        d.appendChild(mk("div", "jwhen", when(e.created_at) + (e.created_by ? " · " + e.created_by : "")));
+        d.appendChild(mk("div", "jwhat", JR_WORD[e.event_type] || e.event_type));
+        var bits = [];
+        if (e.person && e.person.display_name) bits.push(e.person.display_name);
+        if (e.role) bits.push((ROLE_WORD[e.role] || e.role).toLowerCase());
+        if (e["class"] && e["class"].title) bits.push(e["class"].title);
+        if (e.from_status || e.to_status) bits.push((e.from_status ? ATT_WORD[e.from_status] || e.from_status : "new") + " → " + (ATT_WORD[e.to_status] || e.to_status || ""));
+        if (bits.length) d.appendChild(mk("div", "", bits.join(" · ")));
+        if (e.note) d.appendChild(mk("div", "note", e.note));
+        body.appendChild(d);
+      });
+    });
+  }
+  $("jrClose").addEventListener("click", function () { $("jrDlg").close(); });
+
+  // ---- Workflows: step cards with a jump button to the right station
+  var WORKFLOWS = [
+    { id: "setup", title: "Set up before your first request", steps: [
+      { t: "Add a venue and make it active (a place with an address).", go: "venues", b: "Open Venues" },
+      { t: "Add a curriculum: what will be taught.", go: "curriculums", b: "Open Curriculum" },
+      { t: "Add the instructor to the Instructors list.", go: "instructors", b: "Open Instructors" },
+      { t: "Then wait for a request, or register on the website yourself.", go: "requests", b: "Open Requests" } ] },
+    { id: "place_existing", title: "Place a request in an existing class", steps: [
+      { t: "Open the request and tap Put in a class…", go: "requests", b: "Open Requests" },
+      { t: "Choose the class and the role, then Add to class. The request leaves Waiting to be placed.", go: "requests", b: "Open Requests" },
+      { t: "Check the result: Attendance on the class card shows the person and their status.", go: "classes", b: "Open Classes" } ] },
+    { id: "build_class", title: "Build a class for a request", steps: [
+      { t: "Make sure the venue (active) and curriculum exist, and the instructor is on the Instructors list.", go: "venues", b: "Open Venues" },
+      { t: "On the request, tap Put in a class… and choose + A new class (build it now).", go: "requests", b: "Open Requests" },
+      { t: "Pick the curriculum, venue, date and time, and the lead instructor, then build. The requester is placed in it.", go: "requests", b: "Open Requests" },
+      { t: "Open the class to confirm the details; change the status to confirmed when the person agrees.", go: "classes", b: "Open Classes" } ] },
+    { id: "class_cancelled", title: "When a class is cancelled", steps: [
+      { t: "Open the class, Edit, set its status to cancelled and add the reason.", go: "classes", b: "Open Classes" },
+      { t: "Everyone in it, students and instructors, is cancelled automatically and each request returns to Waiting to be placed.", go: "requests", b: "Open Requests" },
+      { t: "Read the Journal on the class or the request to see exactly what changed, then place the request again.", go: "requests", b: "Open Requests" } ] }
+  ];
+  function wfCard(wf, host, open) {
+    var det = mk("details", "wfcard"); det.dataset.wf = wf.id; if (open) det.open = true;
+    det.appendChild(mk("summary", "", wf.title));
+    var ol = mk("ol");
+    wf.steps.forEach(function (st) {
+      var li = mk("li", "", st.t);
+      var b = mk("button", "quiet wfgo", st.b); b.type = "button";
+      b.addEventListener("click", function () { var dl = $("wfDlg"); if (dl.open) dl.close(); goTo(st.go); });
+      li.appendChild(b); ol.appendChild(li);
+    });
+    det.appendChild(ol); host.appendChild(det);
+  }
+  function openWorkflows(ids) {
+    var body = $("wfBody"); body.textContent = "";
+    $("wfTitle").textContent = "How to do this";
+    WORKFLOWS.forEach(function (wf) { if (!ids || ids.indexOf(wf.id) >= 0) wfCard(wf, body, ids && ids[0] === wf.id); });
+    if (!$("wfDlg").open) $("wfDlg").showModal();
+  }
+  function buildWorkflows() { var h = $("wfHomeList"); h.textContent = ""; WORKFLOWS.forEach(function (wf) { wfCard(wf, h, false); }); }
+  buildWorkflows();
+  $("wfClose").addEventListener("click", function () { $("wfDlg").close(); });
+  $("reqInfo").addEventListener("click", function () { openWorkflows(["place_existing", "build_class", "class_cancelled", "setup"]); });
+
+  function resetPlaced() {
+    P = { loaded: false, ids: {}, reqs: [], error: "" }; qSeq++;
+    aClasses = []; aClassById = {};
+    try { $("atDlg").close(); } catch (e) {} try { $("jrDlg").close(); $("wfDlg").close(); } catch (e) {}
+    $("attnBody").textContent = "Checking the requests…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";
+  }
+  $("atClose").addEventListener("click", function () { $("atDlg").close(); });
+
+  // ---- People station: the individuals, through the same admin door. Restricted details are not reachable from here (the server refuses them).
+  var COLL_P = "individuals", COLL_MERGE = "merge_events";
+  var pAll = [], pLoaded = false, pSeq = 0, pNewId = "";
+  var PLABEL = { given_name: "Given name", middle_names: "Middle names", family_name: "Family name", name_to_use: "Name to use", pronouns: "Pronouns",
+                 birth_date: "Birth date", birth_date_certainty: "Birth date certainty", preferred_language: "Preferred language", time_zone: "Time zone",
+                 requires_interpreter: "Interpreter", email: "Email", phone: "Phone", backup_email: "Backup email", backup_phone: "Backup phone", prefers_email: "Preferred way to reach", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
+  var PISSUE = { required: "Required.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.", invalid_value: "That value is not valid.",
+                 invalid_type: "That value is not valid.", not_found: "That person was not found.", same_as_survivor: "Pick a different person.",
+                 conflict_restricted_detail: "Both people hold protected details. That needs a person to sort out first.",
+                 too_many_links: "Too many records point at this person to merge in one go.", snapshots_erased: "One of the people has been erased, so this cannot be undone.",
+                 not_merged: "This merge was already undone.", already_erased: "Already erased.", in_use: "Protected details exist for this person.", immutable: "That cannot be changed.",
+                 inconsistent: "That does not fit with the other answers." };
+  var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth", email: "epaEmail", phone: "epaPhone" };
+  var P_FIELDS = [
+    { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },
+    { k: "family_name", label: "Family name", t: "text" }, { k: "name_to_use", label: "Name to use", t: "text", hint: "What the person asks to be called. It shows instead of the given name." },
+    { k: "pronouns", label: "Pronouns", t: "text", hint: "As the person says them, for example she/her." },
+    { k: "birth_date", label: "Birth date", t: "text", hint: "Month first: 04-17-1961, 04-1961 or just 1961. A year alone is fine." },
+    { k: "birth_date_certainty", label: "How sure is the birth date?", t: "select", opts: [["", "Not stated (treated as exact)"], ["exact", "Exact"], ["approximate", "Approximate"], ["estimated", "Estimated"]] },
+    { k: "preferred_language", label: "Preferred language", t: "text", hint: "A language tag such as en or es-MX." },
+    { k: "time_zone", label: "Time zone", t: "text", hint: "For example America/Denver." },
+    { k: "requires_interpreter", label: "Needs an interpreter?", t: "bool" },
+    { k: "email", label: "Email", t: "text", hint: "The email address they asked us to use. Couples may share one." },
+    { k: "phone", label: "Phone (text messages)", t: "text", hint: "We send text messages only and never call." },
+    { k: "backup_email", label: "Backup email", t: "text", hint: "Used when the first one is missing or fails." },
+    { k: "backup_phone", label: "Backup phone", t: "text", hint: "Used when the first one is missing or fails." },
+    { k: "prefers_email", label: "How do they want to hear from us?", t: "prefer", opts: [["", "Not said (the one they gave, or email if both)"], ["email", "Email"], ["text", "Text message"]] },
+    { k: "status", label: "Status", t: "select", opts: [["active", "Active"], ["inactive", "Inactive (kept, not offered in pickers)"]] },
+    { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." }
+  ];
+  // Dates: people type and read them the American way, month first (04-17-1961, 04-1961 or just 1961). The record stores YYYY, YYYY-MM or YYYY-MM-DD.
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var DATE_HELP = "Use 1961, 04-1961 or 04-17-1961 (month first).";
+  function pDateIn(s) {   // text typed by a person -> {iso} or {bad:true}; blank -> {iso:""}
+    var t = String(s || "").trim().replace(/[\/.\s]+/g, "-"), m;
+    if (t === "") return { iso: "" };
+    if (/^\d{4}$/.test(t)) return { iso: t };
+    if ((m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(t))) return pDateParts(m[1], m[2], m[3]);   // already stored style
+    if ((m = /^(\d{1,2})-(\d{4})$/.exec(t))) return pDateParts(m[2], m[1]);
+    if ((m = /^(\d{1,2})-(\d{1,2})-(\d{4})$/.exec(t))) return pDateParts(m[3], m[1], m[2]);
+    return { bad: true };
+  }
+  function pDateParts(y, mo, d) {
+    var M = parseInt(mo, 10), D = d === undefined ? 0 : parseInt(d, 10), Y = parseInt(y, 10);
+    if (M < 1 || M > 12 || Y < 1) return { bad: true };
+    if (D) { var dt = new Date(Date.UTC(Y, M - 1, D)); if (dt.getUTCFullYear() !== Y || dt.getUTCMonth() !== M - 1 || dt.getUTCDate() !== D) return { bad: true }; }
+    var z = function (n) { return (n < 10 ? "0" : "") + n; };
+    return { iso: y + "-" + z(M) + (D ? "-" + z(D) : "") };
+  }
+  function pDateOut(iso) {   // stored value -> "Apr 17, 1961", "Apr 1961" or "1961"
+    var m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(iso || ""));
+    if (!m) return String(iso || "");
+    return (m[2] ? MON[parseInt(m[2], 10) - 1] + " " : "") + (m[3] ? parseInt(m[3], 10) + ", " : "") + m[1];
+  }
+  function pDateField(iso) {   // stored value -> what the box shows: 04-17-1961, 04-1961 or 1961
+    var m = /^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(iso || ""));
+    if (!m) return String(iso || "");
+    return m[3] ? m[2] + "-" + m[3] + "-" + m[1] : m[2] ? m[2] + "-" + m[1] : m[1];
+  }
+  function pName(rec) { return rec.display_name || rec.given_name || "(no name)"; }
+  // The whole name for pickers: the display name, plus the family name when the display name leaves it out.
+  function pFull(rec) {
+    var d = pName(rec), fam = rec.family_name;
+    if (fam && d.toLowerCase().indexOf(fam.toLowerCase()) < 0) return (rec.name_to_use || rec.given_name || d) + " " + fam;
+    return d;
+  }
+  function pById(id) { for (var i = 0; i < pAll.length; i++) if (pAll[i].id === id) return pAll[i]; return null; }
+  function pProblems(res, map) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+    ps.forEach(function (p) {
+      var text = (p.field === "birth_date" && p.issue === "invalid_format") ? DATE_HELP + " It has to be a real date."
+               : (/email$/.test(p.field) && p.issue === "invalid_format") ? "That email address does not look right."
+               : (/phone$/.test(p.field) && p.issue === "invalid_format") ? "That phone number does not look right. Use digits, for example 303-555-0142."
+               : (PISSUE[p.issue] || "That value is not valid.");
+      if (map && map[p.field]) mine[p.field] = text; else out.push((PLABEL[p.field] || p.field) + ": " + text);
+    });
+    if (!ps.length) out.push(adminProblem(res.status));
+    return { fields: mine, other: out };
+  }
+
+  function loadPeople() {
+    var my = ++pSeq;
+    $("pMsg").textContent = ""; $("pRetry").hidden = true;
+    var f = $("pFilter").value;
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_P).then(function (res) {
+      if (my !== pSeq) return;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("pMsg").textContent = "Could not load the people. " + adminProblem(res.status); $("pRetry").hidden = false; return; }
+      pAll = res.body.data.records || []; pLoaded = true;
+      renderPeople();
+      $("pChecked").textContent = "Last checked " + fmtClock.format(new Date());
+      if ($("pHist").open) loadMerges();
+    });
+  }
+  function renderPeople() {
+    var q = $("pSearch").value.trim().toLowerCase(), list = $("pList");
+    var shown = pAll.filter(function (r) { return !q || [r.display_name, r.given_name, r.family_name, r.name_to_use].join(" ").toLowerCase().indexOf(q) >= 0; });
+    list.textContent = "";
+    shown.forEach(function (r) { list.appendChild(personRow(r, r.id === pNewId)); });
+    pNewId = "";
+    $("pCount").textContent = pAll.length + (pAll.length === 1 ? " person" : " people");
+    $("pEmpty").hidden = pAll.length > 0;
+    $("pNoMatch").hidden = !(pAll.length > 0 && shown.length === 0);
+  }
+
+  function personRow(rec, isNew) {
+    var li = mk("li", isNew ? "isnew" : "");
+    var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", pName(rec)));
+    var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: COLL_P, on: "active", off: "inactive", label: "Person", problem: function (res) { return pProblems(res).other.join(" "); } }) : null;
+    if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+    head.appendChild(top);
+    var bits = [];
+    if (rec.birth_date) bits.push("Born " + pDateOut(rec.birth_date));
+    if (rec.is_minor) bits.push("Under 18");
+    if (rec.life_status && rec.life_status !== "alive") bits.push(rec.life_status.replace(/_/g, " "));
+    if (rec.record_privacy && rec.record_privacy !== "normal") bits.push(rec.record_privacy);
+    if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
+    var detail = mk("div", "detail");
+    detail.appendChild(personActions(rec));
+    var done = {};
+    ["display_name", "given_name", "family_name", "status", "birth_date", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+    li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+
+  function personActions(rec) {
+    var wrap = mk("div"), row = mk("div", "actions-row");
+    var ed = mk("button", "", "Edit"); ed.type = "button";
+    var ad = mk("button", "quiet", "Addresses"); ad.type = "button";
+    var mg = mk("button", "quiet", "Merge into another person"); mg.type = "button";
+    var del = mk("button", "danger", "Delete"); del.type = "button";
+    row.appendChild(ed); var hp = historyBtn(rec.id, "this person"); if (hp) row.appendChild(hp); row.appendChild(ad); row.appendChild(mg); row.appendChild(del);
+    var hi = mk("button", "quiet", "History"); hi.type = "button"; row.appendChild(hi);
+    var histHost = mk("div");
+    hi.addEventListener("click", function () { if (histHost.firstChild) histHost.textContent = ""; else personHistory(rec, histHost); });
+    var editHost = mk("div"), mergeHost = mk("div"), addrHost = mk("div");
+    var box = mk("div", "confirm"); box.hidden = true;
+    box.appendChild(mk("div", "", "Delete " + pName(rec) + "? They are hidden from the lists but the record is kept."));
+    var btns = mk("div", "btns"), yes = mk("button", "danger", "Delete person"), no = mk("button", "quiet", "Cancel");
+    yes.type = "button"; no.type = "button";
+    var err = mk("div", "msg"); err.setAttribute("role", "alert");
+    btns.appendChild(yes); btns.appendChild(no); box.appendChild(btns); box.appendChild(err);
+    ed.addEventListener("click", function () { mergeHost.textContent = ""; addrHost.textContent = ""; box.hidden = true; if (editHost.firstChild) editHost.textContent = ""; else editHost.appendChild(personEditForm(rec, editHost)); });
+    mg.addEventListener("click", function () { editHost.textContent = ""; addrHost.textContent = ""; box.hidden = true; if (mergeHost.firstChild) mergeHost.textContent = ""; else mergeHost.appendChild(mergeForm(rec, mergeHost)); });
+    del.addEventListener("click", function () { editHost.textContent = ""; mergeHost.textContent = ""; addrHost.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+    ad.addEventListener("click", function () { editHost.textContent = ""; mergeHost.textContent = ""; box.hidden = true; if (addrHost.firstChild) addrHost.textContent = ""; else addrHost.appendChild(personAddresses(rec, addrHost)); });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true; err.textContent = "";
+      admin("soft_delete", { id: rec.id }, COLL_P).then(function (res) {
+        yes.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { $("pNotice").textContent = "Deleted " + pName(rec) + "."; loadPeople(); }
+        else if (res.status === 404) { $("pNotice").textContent = "That person was already gone."; loadPeople(); }
+        else if (res.status === 409) err.textContent = "This person has protected details on file. Those have to be dealt with first.";
+        else err.textContent = pProblems(res).other.join(" ");
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(histHost); wrap.appendChild(editHost); wrap.appendChild(mergeHost); wrap.appendChild(addrHost); wrap.appendChild(box);
+    return wrap;
+  }
+
+  function personEditForm(rec, host) {
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    var els = {};
+    P_FIELDS.forEach(function (f) {
+      var id = "pe_" + rec.id + "_" + f.k, cur = rec[f.k];
+      var l = mk("label", "f", f.label); l.htmlFor = id; form.appendChild(l);
+      var el;
+      if (f.t === "select" || f.t === "bool" || f.t === "prefer") {
+        el = mk("select");
+        var opts = f.t === "bool" ? [["", "Not stated"], ["yes", "Yes"], ["no", "No"]] : f.opts;
+        opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
+        el.value = f.t === "prefer" ? (cur === true ? "email" : cur === false ? "text" : "") : f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
+      } else if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur === undefined ? "" : cur; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : (f.k === "birth_date" ? pDateField(cur) : cur); }
+      el.id = id; form.appendChild(el);
+      if (f.hint) form.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); form.appendChild(er);
+      els[f.k] = { el: el, err: er, t: f.t };
+    });
+    var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+    save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+    cancel.addEventListener("click", function () { host.textContent = ""; });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); msg.textContent = "";
+      Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+      var changes = {}, badDate = false;
+      P_FIELDS.forEach(function (f) {
+        var x = els[f.k], v = x.el.value.trim(), cur = rec[f.k];
+        if (f.k === "birth_date" && v !== "") { var pd = pDateIn(v); if (pd.bad) { x.err.textContent = DATE_HELP + " It has to be a real date."; badDate = true; return; } v = pd.iso; }
+        var val = f.t === "prefer" ? (v === "email" ? true : v === "text" ? false : null) : f.t === "bool" ? (v === "yes" ? true : v === "no" ? false : null) : (v === "" ? null : v);
+        if (f.k === "status" && val === null) val = "active";
+        if (val === null) { if (cur !== undefined) changes[f.k] = null; }
+        else if (val !== cur) changes[f.k] = val;
+      });
+      if (badDate) return;
+      if (!Object.keys(changes).length) { host.textContent = ""; $("pNotice").textContent = "Nothing changed."; return; }
+      save.disabled = true;
+      admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_P).then(function (res) {
+        save.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) { pNewId = rec.id; $("pNotice").textContent = "Saved changes to " + pName(rec) + "."; loadPeople(); return; }
+        if (res.status === 409) { msg.textContent = "Someone changed this person while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+        if (res.status === 404) { msg.textContent = "That person is gone or merged. Tap Refresh."; return; }
+        var pr = pProblems(res, els);
+        Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    return form;
+  }
+
+  function mergeForm(rec, host) {
+    var box = mk("div", "mergebox");
+    box.appendChild(mk("div", "", pName(rec) + " is the same person as someone already listed. Pick who to keep. Anything missing on that person is filled in from this record, links to this person move over, and this record is marked merged. It can be undone in Merge history."));
+    var l1 = mk("label", "f", "Person to keep"); var sel = mk("select"); sel.id = "pm_" + rec.id; l1.htmlFor = sel.id;
+    var o0 = mk("option", "", "Choose one"); o0.value = ""; sel.appendChild(o0);
+    pAll.filter(function (p) { return p.id !== rec.id && p.status === "active"; }).forEach(function (p) {
+      var o = mk("option", "", pName(p) + (p.birth_date ? " (born " + pDateOut(p.birth_date) + ")" : "")); o.value = p.id; sel.appendChild(o);
+    });
+    var e1 = mk("div", "ferr");
+    var l2 = mk("label", "f", "Reason"); var why = mk("input"); why.type = "text"; why.maxLength = 500; why.id = "pr_" + rec.id; l2.htmlFor = why.id; why.placeholder = "For example: same phone and birth date, confirmed by phone";
+    var e2 = mk("div", "ferr");
+    var btns = mk("div", "btns"), go = mk("button", "", "Merge"), no = mk("button", "quiet", "Cancel"); go.type = "button"; no.type = "button";
+    btns.appendChild(go); btns.appendChild(no);
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+    [l1, sel, e1, l2, why, e2, btns, msg].forEach(function (n) { box.appendChild(n); });
+    no.addEventListener("click", function () { host.textContent = ""; });
+    go.addEventListener("click", function () {
+      e1.textContent = ""; e2.textContent = ""; msg.textContent = "";
+      var bad = false;
+      if (!sel.value) { e1.textContent = "Choose one."; bad = true; }
+      if (!why.value.trim()) { e2.textContent = "Say why they are the same person."; bad = true; }
+      if (bad) return;
+      go.disabled = true;
+      admin("merge", { survivor_id: sel.value, duplicate_id: rec.id, reason: why.value.trim() }, COLL_P).then(function (res) {
+        go.disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          var d = res.body.data, keep = pById(sel.value);
+          $("pNotice").textContent = "Merged " + pName(rec) + " into " + (keep ? pName(keep) : "the other person") + ": " + d.changed_fields.length + " values filled in, " + d.moved_links + " records moved. Undo it in Merge history.";
+          if ($("pHist").open) loadMerges();
+          loadPeople(); return;
+        }
+        if (res.status === 409) { msg.textContent = "Someone changed one of them while you were working. Tap Refresh and try again."; return; }
+        msg.textContent = "Could not merge: " + pProblems(res).other.join(" ");
+      });
+    });
+    return box;
+  }
+
+  function loadMerges() {
+    $("pHMsg").textContent = "";
+    return admin("list", { limit: 50 }, COLL_MERGE).then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("pHMsg").textContent = "Could not load the merge history. " + adminProblem(res.status); return; }
+      var evs = res.body.data.records || [], ul = $("pHList");
+      ul.textContent = "";
+      evs.forEach(function (ev) {
+        var li = mk("li"), body = mk("div", "detail"); body.style.display = "block";
+        var a = pById(ev.duplicate_id) || ev.duplicate_before, b = pById(ev.survivor_id) || ev.survivor_before;
+        body.appendChild(mk("div", "", when(ev.created_at) + ": " + (a && (a.display_name || a.given_name) ? pName(a) : "a person") + " merged into " + (b && (b.display_name || b.given_name) ? pName(b) : "another person") + " (" + ev.status + ")"));
+        body.appendChild(line("reason", ev.reason || ""));
+        if (ev.status === "unmerged" && ev.unmerge_skipped && ev.unmerge_skipped.length) body.appendChild(line("left as they were after the undo", String(ev.unmerge_skipped.length) + " values changed since the merge"));
+        if (ev.status === "merged") {
+          var row = mk("div", "actions-row"), undo = mk("button", "quiet", "Undo this merge"); undo.type = "button"; row.appendChild(undo);
+          var err = mk("div", "msg"); err.setAttribute("role", "alert");
+          undo.addEventListener("click", function () {
+            undo.disabled = true; err.textContent = "";
+            admin("unmerge", { id: ev.id }, COLL_P).then(function (r2) {
+              undo.disabled = false;
+              if (r2.status === 401) { lock("That key did not work."); return; }
+              if (r2.status === 200 && r2.body && r2.body.ok) {
+                var sk = (r2.body.data.skipped || []).length;
+                $("pNotice").textContent = "Undone: " + r2.body.data.restored_links + " records pointed back." + (sk ? " " + sk + " values were left alone because they changed after the merge." : "");
+                loadPeople(); return;
+              }
+              err.textContent = "Could not undo: " + pProblems(r2).other.join(" ");
+            });
+          });
+          body.appendChild(row); body.appendChild(err);
+        }
+        li.appendChild(body); ul.appendChild(li);
+      });
+      $("pHEmpty").hidden = evs.length > 0;
+    });
+  }
+
+  function resetPeople() {
+    pLoaded = false; pAll = []; pNewId = "";
+    $("pList").textContent = ""; $("pCount").textContent = ""; $("pChecked").textContent = ""; $("pMsg").textContent = ""; $("pNotice").textContent = "";
+    $("pEmpty").hidden = true; $("pNoMatch").hidden = true; $("pSearch").value = ""; $("pFilter").value = "active";
+    $("pAddForm").hidden = true; $("pAddBtn").hidden = false; $("pHist").open = false; $("pHList").textContent = "";
+  }
+  function pClearErrs() { Object.keys(PADD_ERR).forEach(function (k) { $(PADD_ERR[k]).textContent = ""; }); $("pFMsg").textContent = ""; }
+  $("pAddBtn").addEventListener("click", function () { $("pAddForm").reset(); pClearErrs(); $("pNotice").textContent = ""; $("pAddForm").hidden = false; $("pAddBtn").hidden = true; $("paGiven").focus(); });
+  $("pCancelBtn").addEventListener("click", function () { $("pAddForm").hidden = true; $("pAddBtn").hidden = false; });
+  $("pAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); pClearErrs();
+    var data = {}, map = { given_name: "paGiven", family_name: "paFamily", name_to_use: "paUse", birth_date: "paBirth", email: "paEmail", phone: "paPhone" };
+    Object.keys(map).forEach(function (k) { var v = $(map[k]).value.trim(); if (v) data[k] = v; });
+    if (!data.given_name) { $("epaGiven").textContent = "Required."; return; }
+    if (data.birth_date) { var pd = pDateIn(data.birth_date); if (pd.bad) { $("epaBirth").textContent = DATE_HELP + " It has to be a real date."; return; } data.birth_date = pd.iso; }
+    $("pSaveBtn").disabled = true;
+    admin("create", { data: data }, COLL_P).then(function (res) {
+      $("pSaveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body && res.body.ok) {
+        pNewId = res.body.data.id; $("pNotice").textContent = "Added " + pName(res.body.data) + ".";
+        $("pAddForm").hidden = true; $("pAddBtn").hidden = false;
+        if ($("pFilter").value === "inactive") $("pFilter").value = "active";
+        loadPeople(); return;
+      }
+      var pr = pProblems(res, PADD_ERR);
+      Object.keys(pr.fields).forEach(function (k) { $(PADD_ERR[k]).textContent = pr.fields[k]; });
+      if (pr.other.length) $("pFMsg").textContent = "Could not save: " + pr.other.join(" ");
+    });
+  });
+  $("pFilter").addEventListener("change", function () { $("pNotice").textContent = ""; loadPeople(); });
+  $("pRefresh").addEventListener("click", function () { $("pNotice").textContent = ""; loadPeople(); });
+  $("pRetry").addEventListener("click", loadPeople);
+  $("pSearch").addEventListener("input", renderPeople);
+  $("pHist").addEventListener("toggle", function () { if ($("pHist").open) loadMerges(); });
+
+  // ---- Places station and the Addresses panel on a person's card: locations and the links to them, through the same admin door.
+  // A place is saved once and knows nothing about who is there. A person (or venue) is linked to it with dates.
+  var COLL_L = "locations", COLL_LK = "location_links";
+  var lAll = [], lLoaded = false, lSeq = 0, lNewId = "", afSeq = 0;
+  var REL = { resides_at: "Lives here", mailing_address_for: "Mailing address", billing_address_for: "Billing address", works_at: "Works here",
+              owns: "Owns", manages: "Manages", operates_at: "Operates here", delivers_to: "Delivers here", other: "Other" };
+  var PERSON_RELS = ["resides_at", "mailing_address_for", "billing_address_for", "works_at", "owns", "other"];
+  var LLABEL = { name: "Name", description: "Description", time_zone: "Time zone", kind: "Kind", addresses: "Address", geometries: "GPS point", status: "Status",
+                 location_id: "Place", subject_id: "Person", relationship: "Kind of address", valid_from: "From", valid_to: "Until", id: "Place", address: "Address" };
+  var LISSUE = { "addresses:required": "A street address needs a country (two letters, such as US).", "addresses:duplicate": "Only one address can be the main one.",
+                 "addresses:out_of_range": "An address ends before it starts.", "geometries:invalid_value": "GPS needs latitude from -90 to 90 and longitude from -180 to 180.",
+                 "time_zone:invalid_value": "Use a time zone name such as America/Denver.", "location_id:duplicate": "This person is already linked to that place for those dates.",
+                 "status:place_required": "A venue needs a place (an address or a GPS point) to be active.", "address:choose_one": "Give an address or choose a saved place, not both.",
+                 "address:required": "Type an address or choose a saved place.", "address:invalid_format": "Check the address.",
+                 "location_id:not_found": "That place was not found.", "location_id:retired": "That place is retired.", "subject_id:not_found": "That person was not found.",
+                 "valid_to:out_of_range": "The last day is before the first day.", "id:in_use": "People or venues are still linked to this place. End those links first.",
+                 "part_of_location_id:invalid_value": "That would make a place part of itself.", "relationship:invalid_value": "That kind of address does not fit.",
+                 required: "Required.", invalid_format: "That value is not valid.", invalid_value: "That value is not valid.", out_of_range: "Too long or too short.",
+                 invalid_type: "That value is not valid.", not_allowed: "That cannot be set here.", immutable: "That cannot be changed.", not_found: "That was not found." };
+  function lProblems(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [];
+    ps.forEach(function (p) { out.push((LLABEL[p.field] || p.field) + ": " + (LISSUE[p.field + ":" + p.issue] || LISSUE[p.issue] || "That value is not valid.")); });
+    if (!ps.length) out.push(adminProblem(res.status));
+    return out.join(" ");
+  }
+  function locAddr(a) {
+    if (!a) return "";
+    var parts = [], st = [a.street_number, a.street].filter(Boolean).join(" ");
+    if (a.po_box) parts.push("PO Box " + a.po_box);
+    if (st) parts.push(a.unit ? st + " " + a.unit : st);
+    if (!parts.length && a.lines && a.lines.length) parts.push(a.lines.join(", "));
+    var city = [a.locality, [a.region, a.postal_code].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+    if (city) parts.push(city);
+    return parts.join(", ");
+  }
+  function locSummary(loc) {
+    var pick = null;
+    (loc.addresses || []).forEach(function (a) { if (!pick || (a.is_primary && !pick.is_primary)) pick = a; });
+    var t = locAddr(pick);
+    if (loc.name && t) return loc.name + " · " + t;
+    return t || loc.name || "(details removed)";
+  }
+
+  // Recently used city / state / ZIP, newest first, kept in this browser only (never the street, never sent anywhere).
+  var CSZ_KEY = "launch_console_recent_csz";
+  function cszRead() { try { var a = JSON.parse(localStorage.getItem(CSZ_KEY) || "[]"); return Array.isArray(a) ? a.filter(function (x) { return x && (x.c || x.s); }) : []; } catch (e) { return []; } }
+  function cszRemember(c, st, z) {
+    if (!c && !st) return;
+    try {
+      var key = function (x) { return [x.c, x.s, x.z].join("|").toLowerCase(); }, cur = { c: c || "", s: st || "", z: z || "" };
+      var all = [cur].concat(cszRead().filter(function (x) { return key(x) !== key(cur); })).slice(0, 20);
+      localStorage.setItem(CSZ_KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function cszLabel(x) { return [x.c, [x.s, x.z].filter(Boolean).join(" ")].filter(Boolean).join(", "); }
+
+  // A reusable block of address boxes. opts: name, description, tz, gps, usageChoice. block.read() -> {ok, data}.
+  function addrForm(opts) {
+    var box = mk("div"), f = {};
+    function add(key, label, hint, max, ph) {
+      var l = mk("label", "f", label), el = mk("input"); el.type = "text"; el.maxLength = max || 120; el.autocomplete = "off"; if (ph) el.placeholder = ph;
+      el.id = "af" + (++afSeq) + "_" + key; l.htmlFor = el.id;
+      box.appendChild(l); box.appendChild(el); if (hint) box.appendChild(mk("div", "hint", hint));
+      var er = mk("div", "ferr"); box.appendChild(er); f[key] = { el: el, err: er };
+    }
+    if (opts.name) add("name", "Name of the place (optional)", "For example: Boulder Public Library, or Home.", 200);
+    if (opts.usageChoice) {
+      var ul = mk("label", "f", "What kind of address"), us = mk("select"); us.id = "af" + (++afSeq) + "_usage"; ul.htmlFor = us.id;
+      [["civic", "Street address"], ["mailing", "Mailing address"], ["po_box", "PO box"], ["former", "Former address"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; us.appendChild(op); });
+      box.appendChild(ul); box.appendChild(us); f.usage = { el: us, err: mk("div", "ferr") };
+    }
+    add("street_line", "Street address", "For example: 123 Walnut St. Type it on one line.", 140); add("unit", "Apartment or suite (optional)", "", 60);
+    if (opts.usageChoice) add("po_box", "PO box number (if it is a PO box)", "", 20);
+    add("locality", "City", "", 120); add("region", "State", "Two letters, for example CO.", 60); add("postal_code", "ZIP code", "", 20);
+    add("country", "Country", "Two letters. US for the United States.", 2);
+    f.country.el.value = "US";
+    // Recent city / state / ZIP: the newest fills the boxes; a list lets you pick another. Every box stays free to overwrite.
+    var recent = cszRead(), auto = null;   // auto: the values we filled in, so an untouched fill never counts as an address
+    if (recent.length) {
+      var rl = mk("label", "f", "Recent city, state and ZIP"), rs = mk("select"); rs.id = "af" + (++afSeq) + "_recent"; rl.htmlFor = rs.id;
+      recent.forEach(function (x, i) { var o = mk("option", "", cszLabel(x)); o.value = String(i); rs.appendChild(o); });
+      var oo = mk("option", "", "Type a different one"); oo.value = ""; rs.appendChild(oo);
+      function fillRecent() {
+        var x = rs.value === "" ? null : recent[Number(rs.value)];
+        if (!x) return;
+        f.locality.el.value = x.c || ""; f.region.el.value = x.s || ""; f.postal_code.el.value = x.z || ""; auto = { c: x.c || "", s: x.s || "", z: x.z || "" };
+      }
+      rs.addEventListener("change", fillRecent);
+      var anchor = f.locality.el.previousSibling;
+      box.insertBefore(rl, anchor); box.insertBefore(rs, anchor);
+      box.insertBefore(mk("div", "hint", "From your recent entries. Change any box to overwrite."), anchor);
+      rs.value = "0"; fillRecent();
+    }
+    if (opts.gps) { add("lat", "GPS latitude (optional)", "A number from -90 to 90, for example 40.0150.", 20); add("lon", "GPS longitude (optional)", "A number from -180 to 180, for example -105.2705.", 20); }
+    if (opts.description) { var dl = mk("label", "f", "Description (optional)"), dt = mk("textarea"); dt.maxLength = 2000; dt.id = "af" + (++afSeq) + "_desc"; dl.htmlFor = dt.id; box.appendChild(dl); box.appendChild(dt); f.description = { el: dt, err: mk("div", "ferr") }; box.appendChild(mk("div", "hint", "About the place itself, for example: brick building, parking behind. Never who lives there.")); }
+    if (opts.tz) add("time_zone", "Time zone (optional)", "For example America/Denver.", 64);
+    box.read = function () {
+      Object.keys(f).forEach(function (k) { f[k].err.textContent = ""; });
+      var v = function (k) { return f[k] ? f[k].el.value.trim() : ""; }, ok = true, data = {}, a = {};
+      var usage = f.usage ? f.usage.el.value : "civic";
+      ["unit", "po_box", "locality", "region", "postal_code"].forEach(function (k) { if (v(k)) a[k] = v(k); });
+      var line = v("street_line");
+      if (auto && !line && !v("po_box") && !v("unit") && v("locality") === auto.c && v("region") === auto.s && v("postal_code") === auto.z) { delete a.locality; delete a.region; delete a.postal_code; }
+      var sm = /^(\d+[A-Za-z]?(?:-\d+)?)\s+(\S.*)$/.exec(line);
+      if (sm) { a.street_number = sm[1]; a.street = sm[2]; } else if (line) a.street = line;
+      if (a.street || a.po_box) {
+        a.usage = usage; a.country = v("country").toUpperCase();
+        if (usage === "civic" && !/^[A-Z]{2}$/.test(a.country)) { f.country.err.textContent = "Two capital letters, such as US."; ok = false; }
+        else if (!/^[A-Z]{2}$/.test(a.country)) delete a.country;
+        if (opts.primary) a.is_primary = true;
+        data.addresses = [a];
+      } else if (a.unit || a.locality || a.region || a.postal_code) { f.street_line.err.textContent = "Add the street address (or a PO box) to save an address."; ok = false; }
+      if (opts.gps && (v("lat") || v("lon"))) {
+        var la = Number(v("lat")), lo = Number(v("lon"));
+        if (!v("lat") || isNaN(la) || la < -90 || la > 90) { f.lat.err.textContent = "A number from -90 to 90."; ok = false; }
+        if (!v("lon") || isNaN(lo) || lo < -180 || lo > 180) { f.lon.err.textContent = "A number from -180 to 180."; ok = false; }
+        if (ok) data.geometries = [{ role: "center", geometry: { type: "Point", coordinates: [lo, la] } }];
+      }
+      if (ok && (a.street || a.po_box)) cszRemember(a.locality, a.region, a.postal_code);
+      if (f.name && v("name")) data.name = v("name");
+      if (f.description && v("description")) data.description = v("description");
+      if (f.time_zone && v("time_zone")) data.time_zone = v("time_zone");
+      if (ok && !opts.optional && !data.name && !data.addresses && !data.geometries) { f.street_line.err.textContent = "Enter a street address, a name or GPS."; ok = false; }
+      return { ok: ok, data: data };
+    };
+    return box;
+  }
+
+  // ---- Venues and their places and contacts (the venue stores pointers; these read the records they point at)
+  function placeText(pl) {
+    if (!pl) return "";
+    var t = locAddr(pl.address);
+    if (t) return (pl.name && pl.name !== t ? pl.name + " · " : "") + t;
+    return (pl.name || "(unnamed place)") + (pl.has_gps ? " (GPS point only)" : "");
+  }
+  function venuePlaceLine(rec) {
+    var pl = rec.place, parts = [];
+    if (!pl) parts.push("No place yet");
+    else if (pl.address && (pl.address.locality || pl.address.region)) parts.push([pl.address.locality, pl.address.region].filter(Boolean).join(", "));
+    else parts.push(pl.name || "Place saved");
+    if (pl) parts.push(pl.has_gps ? "GPS: " + (pl.gps_source === "entered" ? "entered" : "looked up") : "No GPS");
+    if (rec.main_contact) parts.push("Contact: " + (rec.main_contact.display_name || "(unavailable)"));
+    return parts.join(" · ");
+  }
+
+  var pickSeq = 0, savedPlaces = null;
+  function savedPlacesList() {
+    if (savedPlaces) return Promise.resolve(savedPlaces);
+    return admin("list", { filters: { status: "active" }, limit: 200 }, COLL_L).then(function (r) {
+      if (r.status === 401) { lock("That key did not work."); return []; }
+      savedPlaces = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      return savedPlaces;
+    });
+  }
+  // An address to type, or a saved place to use. next() -> Promise of {done, args}. args is {address}, {location_id} or {}.
+  // If the typed address is already saved it offers that place first and waits for a second click.
+  function placeInput(withSaved) {
+    var box = mk("div"), block = addrForm({ optional: true }), chooser = mk("div", "confirm"), step = "start", addr = null, savedId = "";
+    var seq = ++pickSeq;
+    chooser.hidden = true;
+    var picked = mk("div", "note"); picked.hidden = true;
+    if (withSaved) {
+      var sl = mk("label", "f", "Or use a place that is already saved"), si = mk("input"), res = mk("div");
+      si.type = "text"; si.id = "pi_" + seq; si.placeholder = "Search by name or address"; si.autocomplete = "off"; sl.htmlFor = si.id;
+      box.appendChild(sl); box.appendChild(si); box.appendChild(res);
+      var clear = mk("button", "quiet", "Clear"); clear.type = "button";
+      clear.addEventListener("click", function () { savedId = ""; picked.hidden = true; });
+      picked.appendChild(document.createTextNode("")); picked.appendChild(clear);
+      si.addEventListener("input", function () {
+        var q = si.value.trim().toLowerCase(); res.textContent = "";
+        if (!q) return;
+        savedPlacesList().then(function (list) {
+          list.filter(function (l) { return locSummary(l).toLowerCase().indexOf(q) >= 0; }).slice(0, 6).forEach(function (l) {
+            var b = mk("button", "quiet", locSummary(l)); b.type = "button";
+            b.addEventListener("click", function () {
+              savedId = l.id; res.textContent = ""; si.value = "";
+              picked.textContent = "Using the saved place: " + locSummary(l) + " "; picked.appendChild(clear); picked.hidden = false;
+            });
+            res.appendChild(b);
+          });
+          if (!res.firstChild) res.appendChild(mk("div", "hint", "No saved place matches."));
+        });
+      });
+    }
+    box.appendChild(block); if (withSaved) box.appendChild(picked); box.appendChild(chooser);
+    box.next = function () {
+      if (step === "choose") {
+        var pick = chooser.querySelector("input[name=pk" + seq + "]:checked");
+        return Promise.resolve({ done: true, args: pick && pick.value ? { location_id: pick.value } : { address: addr } });
+      }
+      if (savedId) return Promise.resolve({ done: true, args: { location_id: savedId } });
+      var rd = block.read();
+      if (!rd.ok) return Promise.resolve({ done: false });
+      if (!rd.data.addresses) return Promise.resolve({ done: true, args: {} });
+      addr = rd.data.addresses[0];
+      return admin("find_by_address", { address: addr }, COLL_L).then(function (r) {
+        if (r.status === 401) { lock("That key did not work."); return { done: false }; }
+        var found = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+        if (!found.length) return { done: true, args: { address: addr } };
+        step = "choose"; chooser.hidden = false; chooser.textContent = "";
+        chooser.appendChild(mk("div", "", "This address is already saved. Use the saved place, so everything there shares one record? Then press Save again."));
+        found.forEach(function (m, i) {
+          var lb = mk("label", "f"), rd2 = mk("input"); rd2.type = "radio"; rd2.name = "pk" + seq; rd2.value = m.id; if (i === 0) rd2.checked = true;
+          lb.style.display = "flex"; lb.style.gap = "8px"; lb.style.alignItems = "center"; lb.appendChild(rd2); lb.appendChild(document.createTextNode(" Use: " + locSummary(m))); chooser.appendChild(lb);
+        });
+        var lb2 = mk("label", "f"), rd3 = mk("input"); rd3.type = "radio"; rd3.name = "pk" + seq; rd3.value = "";
+        lb2.style.display = "flex"; lb2.style.gap = "8px"; lb2.style.alignItems = "center"; lb2.appendChild(rd3); lb2.appendChild(document.createTextNode(" No, this is a different place")); chooser.appendChild(lb2);
+        return { done: false };
+      });
+    };
+    return box;
+  }
+
+  // The Place section of the venue form: where the venue is, and a way to move it.
+  function placePanel(rec) {
+    var wrap = mk("div"), now = mk("div", "note"), host = mk("div"), msg = mk("div", "msg");
+    msg.setAttribute("role", "alert");
+    var btn = mk("button", "quiet"); btn.type = "button";
+    function show() {
+      var pl = editRec && editRec.place;
+      now.textContent = pl ? "Where: " + placeText(pl) : "No place yet. A venue needs a place (an address or a GPS point) to be active.";
+      btn.textContent = pl ? "Change place" : "Add place";
+    }
+    show();
+    btn.addEventListener("click", function () {
+      msg.textContent = "";
+      if (host.firstChild) { host.textContent = ""; return; }
+      var pin = placeInput(true), row = mk("div", "btns"), save = mk("button", "", "Save place"), cancel = mk("button", "quiet", "Cancel");
+      save.type = "button"; cancel.type = "button"; row.appendChild(save); row.appendChild(cancel);
+      host.appendChild(mk("div", "hint", "This saves right away. When a venue moves, the old place is kept and only the link changes."));
+      host.appendChild(pin); host.appendChild(row);
+      cancel.addEventListener("click", function () { host.textContent = ""; msg.textContent = ""; });
+      save.addEventListener("click", function () {
+        msg.textContent = ""; save.disabled = true;
+        pin.next().then(function (pl) {
+          if (!pl.done) { save.disabled = false; return null; }
+          if (!pl.args.address && !pl.args.location_id) { save.disabled = false; msg.textContent = "Type an address or choose a saved place."; return null; }
+          return admin("set_place", Object.assign({ id: rec.id }, pl.args));
+        }).then(function (r) {
+          if (!r) return;
+          save.disabled = false;
+          if (r.status === 401) { lock("That key did not work."); return; }
+          if (r.status === 200 && r.body.ok) {
+            editRec.place = r.body.data.place; host.textContent = ""; show(); savedPlaces = null;
+            $("vNotice").textContent = r.body.data.changed === false ? "That is already the venue's place." : "Moved " + (rec.name || "venue") + " to its new place. People in upcoming classes here are emailed the new address. Messages shows the result.";
+            loadVenues(); liveReady();
+            return;
+          }
+          msg.textContent = r.status === 404 ? "This venue no longer exists." : lProblems(r);
+        });
+      });
+    });
+    wrap.appendChild(now); wrap.appendChild(btn); wrap.appendChild(host); wrap.appendChild(msg);
+    return wrap;
+  }
+
+  // A person pointer on the venue form. The venue stores only the person's id; the name is read from their record.
+  var peopleForPick = null;
+  function peopleList() {
+    if (peopleForPick) return Promise.resolve(peopleForPick);
+    return admin("list", { order: "display_name", limit: 200 }, "individuals").then(function (r) {
+      if (r.status === 401) { lock("That key did not work."); return []; }
+      peopleForPick = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+      return peopleForPick;
+    });
+  }
+  function contactPicker(field, label, current, sec, summary) {
+    var wrap = mk("div"), l = mk("div", "f", label), idEl = mk("input"), cur = mk("div", "note"), results = mk("div");
+    idEl.type = "hidden"; idEl.id = "ef_" + field; idEl.value = (editRec && editRec[field]) || "";
+    var er = mk("div", "ferr"); er.id = "ee_" + field;
+    var pick = mk("button", "quiet", "Choose contact"), clear = mk("button", "quiet", "Clear"); pick.type = "button"; clear.type = "button";
+    var search = mk("input"); search.type = "text"; search.placeholder = "Search by name"; search.autocomplete = "off"; search.hidden = true; search.id = "ef_" + field + "_q";
+    function show(name) {
+      cur.textContent = idEl.value ? (name || "(unavailable)") : "Nobody chosen.";
+      clear.hidden = !idEl.value;
+    }
+    show(current && !current.unavailable ? current.display_name : (current ? "(unavailable)" : ""));
+    pick.addEventListener("click", function () { search.hidden = !search.hidden; results.textContent = ""; if (!search.hidden) search.focus(); });
+    clear.addEventListener("click", function () { idEl.value = ""; show(""); liveReady(); });
+    search.addEventListener("input", function () {
+      var q = search.value.trim().toLowerCase(); results.textContent = "";
+      if (!q) return;
+      peopleList().then(function (list) {
+        var m = peopleMatches(list, search.value.trim()), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) results.appendChild(mk("div", "hint", "No one matches every word. Closest matches:"));
+        shown.slice(0, 8).forEach(function (p) {
+          var b = mk("button", "quiet", pFull(p)); b.type = "button";
+          b.addEventListener("click", function () { idEl.value = p.id; show(pFull(p)); results.textContent = ""; search.value = ""; search.hidden = true; liveReady(); });
+          results.appendChild(b);
+        });
+        if (!results.firstChild) results.appendChild(mk("div", "hint", "No one by that name."));
+      });
+    });
+    wrap.appendChild(l); wrap.appendChild(cur); wrap.appendChild(pick); wrap.appendChild(clear); wrap.appendChild(search); wrap.appendChild(results);
+    wrap.appendChild(idEl); wrap.appendChild(er);
+    editFields[field] = { el: idEl, other: null, kind: "text", def: { type: "string", format: "uuid" }, sec: sec, summary: summary };
+    return wrap;
+  }
+
+  function refreshPlaces() { lLoaded = false; if (currentRoute() === "places") loadPlaces(); }
+
+  // ---- Addresses on a person's card
+  function personAddresses(rec, host) {
+    var wrap = mk("div", "eform"), listHost = mk("div"), formHost = mk("div"), btnRow = mk("div", "actions-row");
+    var msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+    wrap.appendChild(mk("div", "", "Addresses for " + pName(rec) + ". A place is saved once; the person is linked to it with dates. When someone moves, end the old address and add the new one."));
+    var addBtn = mk("button", "", "Add an address"); addBtn.type = "button"; btnRow.appendChild(addBtn);
+    var closeBtn = mk("button", "quiet", "Close"); closeBtn.type = "button"; btnRow.appendChild(closeBtn);
+    wrap.appendChild(listHost); wrap.appendChild(btnRow); wrap.appendChild(formHost); wrap.appendChild(msg);
+    closeBtn.addEventListener("click", function () { host.textContent = ""; });
+    addBtn.addEventListener("click", function () { msg.textContent = ""; if (formHost.firstChild) formHost.textContent = ""; else formHost.appendChild(addressForm()); });
+
+    function refresh() {
+      listHost.textContent = ""; listHost.appendChild(mk("div", "hint", "Loading addresses..."));
+      admin("list", { filters: { subject_id: rec.id }, limit: 50 }, COLL_LK).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        listHost.textContent = "";
+        if (res.status !== 200 || !res.body.ok) { listHost.appendChild(mk("div", "msg", "Could not load addresses. " + adminProblem(res.status))); return; }
+        var links = res.body.data.records || [];
+        if (!links.length) { listHost.appendChild(mk("div", "hint", "No addresses yet.")); return; }
+        Promise.all(links.map(function (l) { return admin("get", { id: l.location_id }, COLL_L); })).then(function (locs) {
+          links.forEach(function (l, i) { listHost.appendChild(linkRow(l, locs[i].status === 200 && locs[i].body.ok ? locs[i].body.data : null)); });
+        });
+      });
+    }
+    function linkRow(l, loc) {
+      var row = mk("div", "mergebox"), ended = l.status === "ended";
+      var h = mk("div", "", (REL[l.relationship] || l.relationship) + (l.is_primary ? " (main)" : "") + (ended ? " (ended)" : "")); h.style.fontWeight = "700"; row.appendChild(h);
+      row.appendChild(mk("div", "", loc ? locSummary(loc) : "(place not available)"));
+      var span = (l.valid_from ? "From " + pDateOut(l.valid_from) : "") + (l.valid_to ? (l.valid_from ? " " : "") + "until " + pDateOut(l.valid_to) : "");
+      if (span) row.appendChild(mk("div", "hint", span));
+      var acts = mk("div", "actions-row"), box = mk("div"), err = mk("div", "msg"); err.setAttribute("role", "alert");
+      if (!ended) {
+        var en = mk("button", "quiet", "End"); en.type = "button"; acts.appendChild(en);
+        en.addEventListener("click", function () { box.textContent = ""; err.textContent = ""; box.appendChild(endBox(l, err)); });
+        if (!l.is_primary) {
+          var mm = mk("button", "quiet", "Make main"); mm.type = "button"; acts.appendChild(mm);
+          mm.addEventListener("click", function () {
+            mm.disabled = true; err.textContent = "";
+            admin("update", { id: l.id, changes: { is_primary: true }, expected_updated_at: l.updated_at }, COLL_LK).then(function (r) {
+              mm.disabled = false; if (r.status === 401) { lock("That key did not work."); return; }
+              if (r.status === 200 && r.body.ok) { refresh(); return; }
+              err.textContent = r.status === 409 ? "This changed while you were looking. Close and reopen." : lProblems(r);
+            });
+          });
+        }
+      }
+      var rm = mk("button", "danger", "Remove"); rm.type = "button"; acts.appendChild(rm);
+      rm.addEventListener("click", function () {
+        box.textContent = ""; err.textContent = "";
+        var c = mk("div", "confirm"); c.appendChild(mk("div", "", "Remove this address? Use this for a mistake. To record a move, use End instead."));
+        var b = mk("div", "btns"), y = mk("button", "danger", "Remove"), n = mk("button", "quiet", "Cancel"); y.type = "button"; n.type = "button";
+        b.appendChild(y); b.appendChild(n); c.appendChild(b); box.appendChild(c);
+        n.addEventListener("click", function () { box.textContent = ""; });
+        y.addEventListener("click", function () {
+          y.disabled = true;
+          admin("soft_delete", { id: l.id }, COLL_LK).then(function (r) {
+            y.disabled = false; if (r.status === 401) { lock("That key did not work."); return; }
+            if (r.status === 200 || r.status === 404) { refreshPlaces(); refresh(); return; }
+            err.textContent = lProblems(r);
+          });
+        });
+      });
+      row.appendChild(acts); row.appendChild(box); row.appendChild(err);
+      return row;
+    }
+    function endBox(l, err) {
+      var b = mk("div", "confirm"), lab = mk("label", "f", "Last day at this address (blank means today)"), inp = mk("input");
+      inp.type = "text"; inp.maxLength = 10; inp.id = "ed_" + l.id; lab.htmlFor = inp.id; inp.placeholder = "MM-DD-YYYY";
+      var btns = mk("div", "btns"), go = mk("button", "", "End this address"), no = mk("button", "quiet", "Cancel"); go.type = "button"; no.type = "button";
+      btns.appendChild(go); btns.appendChild(no);
+      [lab, inp, mk("div", "hint", DATE_HELP), btns].forEach(function (n) { b.appendChild(n); });
+      no.addEventListener("click", function () { b.remove(); });
+      go.addEventListener("click", function () {
+        err.textContent = ""; var args = { id: l.id, expected_updated_at: l.updated_at };
+        if (inp.value.trim()) { var pd = pDateIn(inp.value); if (pd.bad) { err.textContent = DATE_HELP + " It has to be a real date."; return; } args.valid_to = pd.iso; }
+        go.disabled = true;
+        admin("end", args, COLL_LK).then(function (r) {
+          go.disabled = false; if (r.status === 401) { lock("That key did not work."); return; }
+          if (r.status === 200 && r.body.ok) { refreshPlaces(); refresh(); return; }
+          err.textContent = r.status === 409 ? "That address already ended, or it changed while you were looking. Close and reopen." : lProblems(r);
+        });
+      });
+      return b;
+    }
+    function addressForm() {
+      var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+      var rl = mk("label", "f", "What is this address?"), rs = mk("select"); rs.id = "ar_" + rec.id; rl.htmlFor = rs.id;
+      PERSON_RELS.forEach(function (k) { var o = mk("option", "", REL[k]); o.value = k; rs.appendChild(o); });
+      form.appendChild(rl); form.appendChild(rs);
+      var block = addrForm({ name: true }); form.appendChild(block);
+      var sl = mk("label", "f", "Since (optional)"), si = mk("input"); si.type = "text"; si.maxLength = 10; si.id = "as_" + rec.id; sl.htmlFor = si.id; si.placeholder = "MM-DD-YYYY, MM-YYYY or YYYY";
+      var se = mk("div", "ferr"); form.appendChild(sl); form.appendChild(si); form.appendChild(mk("div", "hint", DATE_HELP)); form.appendChild(se);
+      var pl = mk("label", "f"), pc = mk("input"); pc.type = "checkbox"; pc.id = "ap_" + rec.id; pl.htmlFor = pc.id; pl.appendChild(pc); pl.appendChild(document.createTextNode(" This is the main one"));
+      pl.style.display = "flex"; pl.style.gap = "8px"; pl.style.alignItems = "center"; form.appendChild(pl);
+      var chooser = mk("div", "confirm"); chooser.hidden = true; form.appendChild(chooser);
+      var btns = mk("div", "btns"), save = mk("button", "", "Save address"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button";
+      btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+      var step = "start", locData = null, linkBase = null;
+      cancel.addEventListener("click", function () { formHost.textContent = ""; });
+      function link(locationId) {
+        var data = {}; Object.keys(linkBase).forEach(function (k) { data[k] = linkBase[k]; }); data.location_id = locationId;
+        return admin("create", { data: data }, COLL_LK).then(function (r) {
+          save.disabled = false;
+          if (r.status === 401) { lock("That key did not work."); return; }
+          if (r.status === 200 && r.body.ok) { formHost.textContent = ""; msg.textContent = ""; refreshPlaces(); refresh(); return; }
+          fm.textContent = "The place was saved but the link was not: " + lProblems(r);
+        });
+      }
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); fm.textContent = ""; se.textContent = "";
+        if (step === "choose") {
+          var pick = form.querySelector("input[name=usep]:checked"); save.disabled = true;
+          if (pick && pick.value) return link(pick.value);
+          return admin("create", { data: locData }, COLL_L).then(function (r) {
+            if (r.status === 401) { lock("That key did not work."); return; }
+            if (r.status === 200 && r.body.ok) return link(r.body.data.id);
+            save.disabled = false; fm.textContent = "Could not save the place: " + lProblems(r);
+          });
+        }
+        var rd = block.read(), ok = rd.ok, since = "";
+        if (ok && !(rd.data.addresses)) { ok = false; fm.textContent = "A person's address needs a street or a PO box."; }
+        if (si.value.trim()) { var pd = pDateIn(si.value); if (pd.bad) { se.textContent = DATE_HELP + " It has to be a real date."; ok = false; } else since = pd.iso; }
+        if (!ok) return;
+        locData = rd.data; linkBase = { subject_type: "individual", subject_id: rec.id, relationship: rs.value };
+        if (since) linkBase.valid_from = since;
+        if (pc.checked) linkBase.is_primary = true;
+        save.disabled = true;
+        admin("find_by_address", { address: locData.addresses[0] }, COLL_L).then(function (r) {
+          if (r.status === 401) { lock("That key did not work."); return; }
+          var found = (r.status === 200 && r.body.ok) ? (r.body.data.records || []) : [];
+          if (!found.length) {
+            admin("create", { data: locData }, COLL_L).then(function (c) {
+              if (c.status === 401) { lock("That key did not work."); return; }
+              if (c.status === 200 && c.body.ok) return link(c.body.data.id);
+              save.disabled = false; fm.textContent = "Could not save the place: " + lProblems(c);
+            });
+            return;
+          }
+          step = "choose"; save.disabled = false; save.textContent = "Continue"; chooser.hidden = false; chooser.textContent = "";
+          chooser.appendChild(mk("div", "", "This address is already saved. Use the saved place, so everyone at it shares one record?"));
+          found.forEach(function (m, i) {
+            var lb = mk("label", "f"), rd2 = mk("input"); rd2.type = "radio"; rd2.name = "usep"; rd2.value = m.id; if (i === 0) rd2.checked = true;
+            lb.style.display = "flex"; lb.style.gap = "8px"; lb.style.alignItems = "center"; lb.appendChild(rd2); lb.appendChild(document.createTextNode(" Use: " + locSummary(m))); chooser.appendChild(lb);
+          });
+          var lb2 = mk("label", "f"), rd3 = mk("input"); rd3.type = "radio"; rd3.name = "usep"; rd3.value = "";
+          lb2.style.display = "flex"; lb2.style.gap = "8px"; lb2.style.alignItems = "center"; lb2.appendChild(rd3); lb2.appendChild(document.createTextNode(" No, this is a different place")); chooser.appendChild(lb2);
+        });
+      });
+      return form;
+    }
+    refresh();
+    return wrap;
+  }
+
+  // ---- Places station
+  function loadPlaces() {
+    var my = ++lSeq;
+    $("lMsg").textContent = ""; $("lRetry").hidden = true;
+    var f = $("lFilter").value;
+    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_L).then(function (res) {
+      if (my !== lSeq) return;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status !== 200 || !res.body.ok) { $("lMsg").textContent = "Could not load the places. " + adminProblem(res.status); $("lRetry").hidden = false; return; }
+      lAll = res.body.data.records || []; lLoaded = true;
+      renderPlaces();
+      $("lChecked").textContent = "Last checked " + fmtClock.format(new Date());
+    });
+  }
+  function renderPlaces() {
+    var q = $("lSearch").value.trim().toLowerCase(), list = $("lList");
+    var shown = lAll.filter(function (r) { return !q || (locSummary(r) + " " + (r.aliases || []).join(" ")).toLowerCase().indexOf(q) >= 0; });
+    list.textContent = "";
+    shown.forEach(function (r) { list.appendChild(placeRow(r, r.id === lNewId)); });
+    lNewId = "";
+    $("lCount").textContent = lAll.length + (lAll.length === 1 ? " place" : " places");
+    $("lEmpty").hidden = lAll.length > 0;
+    $("lNoMatch").hidden = !(lAll.length > 0 && shown.length === 0);
+  }
+  function placeRow(rec, isNew) {
+    var li = mk("li", isNew ? "isnew" : "");
+    var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+    var top = mk("div", "top");
+    top.appendChild(mk("span", "vname", locSummary(rec)));
+    var tgl = (rec.status === "active" || rec.status === "retired") ? statusToggle(rec, li, { coll: COLL_L, on: "active", off: "retired", offWord: "Retired", label: "Place", problem: function (res) { return lProblems(res); } }) : null;
+    if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+    head.appendChild(top);
+    var bits = [];
+    if (rec.kind) bits.push(rec.kind);
+    if ((rec.geometries || []).length) bits.push(rec.geometries.length + (rec.geometries.length === 1 ? " GPS point" : " GPS shapes"));
+    if ((rec.addresses || []).length > 1) bits.push(rec.addresses.length + " addresses");
+    if (rec.is_residential) bits.push("someone lives here");
+    if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
+    var detail = mk("div", "detail");
+    detail.appendChild(placeActions(rec));
+    (rec.addresses || []).forEach(function (a, i) { detail.appendChild(line("Address " + (i + 1) + " (" + a.usage + (a.is_primary ? ", main" : "") + ")", locAddr(a) || "(no text)")); });
+    (rec.geometries || []).forEach(function (g, i) {
+      var c = g.geometry.coordinates, t = g.geometry.type === "Point" ? c[1] + ", " + c[0] : g.geometry.type;
+      detail.appendChild(line("GPS " + (i + 1) + " (" + g.role + (g.label ? ", " + g.label : "") + ")", t));
+    });
+    ["name", "aliases", "description", "time_zone", "kind", "part_of_location_id", "id"].forEach(function (k) { if (rec[k] !== undefined) detail.appendChild(line(k, str(rec[k]))); });
+    var who = mk("div"), wb = mk("button", "quiet", "Show who is linked here"); wb.type = "button"; who.appendChild(wb);
+    wb.addEventListener("click", function () { wb.disabled = true; showLinked(rec, who, wb); });
+    detail.appendChild(who);
+    head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+    li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+    return li;
+  }
+  function showLinked(rec, host, btn) {
+    admin("list", { filters: { location_id: rec.id }, limit: 100 }, COLL_LK).then(function (res) {
+      if (res.status === 401) { lock("That key did not work."); return; }
+      btn.remove();
+      if (res.status !== 200 || !res.body.ok) { host.appendChild(mk("div", "msg", "Could not load. " + adminProblem(res.status))); return; }
+      var links = res.body.data.records || [];
+      if (!links.length) { host.appendChild(mk("div", "hint", "Nobody is linked to this place.")); return; }
+      links.forEach(function (l) {
+        var coll = l.subject_type === "venue" ? "venues" : l.subject_type === "organization" ? "organizations" : COLL_P, d = mk("div");
+        d.textContent = "Loading...";
+        host.appendChild(d);
+        admin("get", { id: l.subject_id }, coll).then(function (r) {
+          var nm = r.status === 200 && r.body.ok ? (r.body.data.display_name || r.body.data.name || r.body.data.given_name) : "(not available)";
+          d.textContent = nm + " · " + (REL[l.relationship] || l.relationship) + (l.valid_from ? " from " + pDateOut(l.valid_from) : "") + (l.valid_to ? " until " + pDateOut(l.valid_to) : "") + (l.status === "ended" ? " (ended)" : "");
+        });
+      });
+    });
+  }
+  function placeActions(rec) {
+    var wrap = mk("div"), row = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+    var err = mk("div", "msg"); err.setAttribute("role", "alert");
+    function btn(label, cls) { var b = mk("button", cls || "", label); b.type = "button"; row.appendChild(b); return b; }
+    var ed = btn("Edit"), aa = btn("Add address", "quiet"), ag = btn("Add GPS point", "quiet"), ra = btn("Remove an address or GPS point", "quiet");
+    var hl = historyBtn(rec.id, rec.name || rec.label || "this place"); if (hl) row.insertBefore(hl, aa);
+    var rt = btn(rec.status === "retired" ? "Restore" : "Retire", "quiet"), del = btn("Delete", "danger");
+    function open(builder) { box.hidden = true; err.textContent = ""; if (host.firstChild) { host.textContent = ""; return; } host.appendChild(builder()); }
+    function save(changes, done) {
+      admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_L).then(function (r) {
+        if (r.status === 401) { lock("That key did not work."); return; }
+        if (r.status === 200 && r.body.ok) { lNewId = rec.id; $("lNotice").textContent = "Saved changes. If an address changed, people in upcoming classes at venues here are emailed the new address. Messages shows the result."; loadPlaces(); return; }
+        if (r.status === 409 && r.body.error && r.body.error.code === "conflict" && lProblems(r).indexOf("still linked") >= 0) { err.textContent = lProblems(r); return; }
+        err.textContent = r.status === 409 ? "Someone changed this place while you were editing. Tap Refresh and try again." : lProblems(r);
+        if (done) done();
+      });
+    }
+    ed.addEventListener("click", function () { open(function () {
+      var form = mk("form", "eform"); form.noValidate = true;
+      var defs = [["name", "Name", "text"], ["description", "Description", "area"], ["time_zone", "Time zone", "text"], ["kind", "Kind", "kind"]], els = {};
+      defs.forEach(function (d) {
+        var id = "pl_" + rec.id + "_" + d[0], l = mk("label", "f", d[1]); l.htmlFor = id; form.appendChild(l); var el;
+        if (d[2] === "kind") { el = mk("select"); [["point", "Point (a doorway or a spot)"], ["site", "Site (a building, campus or property)"], ["parcel", "Parcel (a legal lot)"], ["route", "Route (a street or trail)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); }); el.value = rec.kind || "site"; }
+        else if (d[2] === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = rec[d[0]] || ""; }
+        else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = rec[d[0]] || ""; }
+        el.id = id; form.appendChild(el); els[d[0]] = el;
+      });
+      var btns = mk("div", "btns"), s = mk("button", "", "Save changes"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+      c.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); err.textContent = ""; var ch = {};
+        defs.forEach(function (d) { var v = els[d[0]].value.trim(), cur = rec[d[0]]; if (v === "") { if (cur !== undefined && d[0] !== "kind") ch[d[0]] = null; } else if (v !== cur) ch[d[0]] = v; });
+        if (!Object.keys(ch).length) { host.textContent = ""; $("lNotice").textContent = "Nothing changed."; return; }
+        save(ch);
+      });
+      return form;
+    }); });
+    aa.addEventListener("click", function () { open(function () {
+      var form = mk("form", "eform"); form.noValidate = true; var block = addrForm({ usageChoice: true }); form.appendChild(block);
+      var pl = mk("label", "f"), pc = mk("input"); pc.type = "checkbox"; pc.id = "pa_" + rec.id; pl.htmlFor = pc.id; pl.appendChild(pc); pl.appendChild(document.createTextNode(" This is the main address")); pl.style.display = "flex"; pl.style.gap = "8px"; pl.style.alignItems = "center"; form.appendChild(pl);
+      var btns = mk("div", "btns"), s = mk("button", "", "Add address"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+      c.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); err.textContent = ""; var rd = block.read();
+        if (rd.ok && !rd.data.addresses) { err.textContent = "Enter a street or a PO box."; return; }
+        if (!rd.ok) return;
+        var a = rd.data.addresses[0], cur = (rec.addresses || []).map(function (x) { var y = JSON.parse(JSON.stringify(x)); if (pc.checked) delete y.is_primary; return y; });
+        if (pc.checked) a.is_primary = true; else delete a.is_primary;
+        save({ addresses: cur.concat([a]) });
+      });
+      return form;
+    }); });
+    ag.addEventListener("click", function () { open(function () {
+      var form = mk("form", "eform"); form.noValidate = true;
+      var rl = mk("label", "f", "What does this point mark?"), rs = mk("select"); rs.id = "gr_" + rec.id; rl.htmlFor = rs.id;
+      [["center", "Center of the place"], ["entrance", "An entrance"], ["other", "Something else"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; rs.appendChild(op); });
+      var ll = mk("label", "f", "Label (optional)"), li2 = mk("input"); li2.type = "text"; li2.maxLength = 100; li2.id = "gl_" + rec.id; ll.htmlFor = li2.id; li2.placeholder = "for example: north gate";
+      var a1 = mk("label", "f", "Latitude"), i1 = mk("input"); i1.type = "text"; i1.id = "ga_" + rec.id; a1.htmlFor = i1.id;
+      var a2 = mk("label", "f", "Longitude"), i2 = mk("input"); i2.type = "text"; i2.id = "go_" + rec.id; a2.htmlFor = i2.id;
+      [rl, rs, ll, li2, a1, i1, a2, i2].forEach(function (n) { form.appendChild(n); });
+      var btns = mk("div", "btns"), s = mk("button", "", "Add GPS point"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+      c.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); err.textContent = "";
+        var la = Number(i1.value.trim()), lo = Number(i2.value.trim());
+        if (!i1.value.trim() || !i2.value.trim() || isNaN(la) || isNaN(lo) || la < -90 || la > 90 || lo < -180 || lo > 180) { err.textContent = "Latitude is -90 to 90 and longitude is -180 to 180."; return; }
+        var g = { role: rs.value, geometry: { type: "Point", coordinates: [lo, la] } }; if (li2.value.trim()) g.label = li2.value.trim();
+        save({ geometries: (rec.geometries || []).concat([g]) });
+      });
+      return form;
+    }); });
+    ra.addEventListener("click", function () { open(function () {
+      var f = mk("div", "eform"), items = [];
+      (rec.addresses || []).forEach(function (a, i) { items.push({ label: "Address: " + (locAddr(a) || a.usage), key: "addresses", idx: i }); });
+      (rec.geometries || []).forEach(function (g, i) { items.push({ label: "GPS " + g.role + (g.label ? " (" + g.label + ")" : "") + ": " + (g.geometry.type === "Point" ? g.geometry.coordinates[1] + ", " + g.geometry.coordinates[0] : g.geometry.type), key: "geometries", idx: i }); });
+      if (!items.length) f.appendChild(mk("div", "hint", "Nothing to remove."));
+      items.forEach(function (it) {
+        var r = mk("div", "actions-row"); r.appendChild(mk("span", "", it.label));
+        var b = mk("button", "danger", "Remove"); b.type = "button"; r.appendChild(b); f.appendChild(r);
+        b.addEventListener("click", function () {
+          if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Tap again to remove"; setTimeout(function () { b.dataset.sure = ""; b.textContent = "Remove"; }, 4000); return; }
+          var list = (rec[it.key] || []).slice(); list.splice(it.idx, 1);
+          var ch = {}; ch[it.key] = list.length ? list : null; save(ch);
+        });
+      });
+      var c = mk("button", "quiet", "Close"); c.type = "button"; c.addEventListener("click", function () { host.textContent = ""; }); f.appendChild(c);
+      return f;
+    }); });
+    rt.addEventListener("click", function () { host.textContent = ""; box.hidden = true; err.textContent = ""; save({ status: rec.status === "retired" ? "active" : "retired" }); });
+    box.appendChild(mk("div", "", "Delete this place? It is hidden from the lists but the record is kept. A place with a live link cannot be deleted."));
+    var bb = mk("div", "btns"), yes = mk("button", "danger", "Delete place"), no = mk("button", "quiet", "Cancel"); yes.type = "button"; no.type = "button"; bb.appendChild(yes); bb.appendChild(no); box.appendChild(bb);
+    del.addEventListener("click", function () { host.textContent = ""; err.textContent = ""; box.hidden = !box.hidden; });
+    no.addEventListener("click", function () { box.hidden = true; });
+    yes.addEventListener("click", function () {
+      yes.disabled = true;
+      admin("soft_delete", { id: rec.id }, COLL_L).then(function (r) {
+        yes.disabled = false; if (r.status === 401) { lock("That key did not work."); return; }
+        if (r.status === 200 || r.status === 404) { $("lNotice").textContent = "Deleted the place."; loadPlaces(); return; }
+        err.textContent = r.status === 409 ? "People or venues are still linked to this place. End those links first." : lProblems(r);
+      });
+    });
+    wrap.appendChild(row); wrap.appendChild(host); wrap.appendChild(box); wrap.appendChild(err);
+    return wrap;
+  }
+  function resetPlaces() {
+    lLoaded = false; lAll = []; lNewId = "";
+    $("lList").textContent = ""; $("lCount").textContent = ""; $("lChecked").textContent = ""; $("lMsg").textContent = ""; $("lNotice").textContent = "";
+    $("lEmpty").hidden = true; $("lNoMatch").hidden = true; $("lSearch").value = ""; $("lFilter").value = "active";
+    $("lAddForm").hidden = true; $("lAddBtn").hidden = false; $("lAddFields").textContent = "";
+  }
+  var lBlock = null;
+  $("lAddBtn").addEventListener("click", function () {
+    $("lAddFields").textContent = ""; lBlock = addrForm({ name: true, description: true, tz: true, gps: true, usageChoice: false }); $("lAddFields").appendChild(lBlock);
+    $("lFMsg").textContent = ""; $("lNotice").textContent = ""; $("lAddForm").hidden = false; $("lAddBtn").hidden = true;
+  });
+  $("lCancelBtn").addEventListener("click", function () { $("lAddForm").hidden = true; $("lAddBtn").hidden = false; });
+  $("lAddForm").addEventListener("submit", function (e) {
+    e.preventDefault(); $("lFMsg").textContent = "";
+    var rd = lBlock.read(); if (!rd.ok) return;
+    $("lSaveBtn").disabled = true;
+    admin("create", { data: rd.data }, COLL_L).then(function (res) {
+      $("lSaveBtn").disabled = false;
+      if (res.status === 401) { lock("That key did not work."); return; }
+      if (res.status === 200 && res.body.ok) {
+        var d = res.body.data, same = d.address_matches || [];
+        lNewId = d.id; $("lNotice").textContent = "Saved " + locSummary(d) + "." + (same.length ? " Heads up: " + same.length + " other saved " + (same.length === 1 ? "place has" : "places have") + " this same address. Nothing was merged." : "");
+        $("lAddForm").hidden = true; $("lAddBtn").hidden = false;
+        if ($("lFilter").value === "retired") $("lFilter").value = "active";
+        loadPlaces(); return;
+      }
+      $("lFMsg").textContent = "Could not save: " + lProblems(res);
+    });
+  });
+  $("lFilter").addEventListener("change", function () { $("lNotice").textContent = ""; loadPlaces(); });
+  $("lRefresh").addEventListener("click", function () { $("lNotice").textContent = ""; loadPlaces(); });
+  $("lRetry").addEventListener("click", loadPlaces);
+  $("lSearch").addEventListener("input", renderPlaces);
+
+  // ---- Instructors and Students stations. One builder, two configs. A roster entry points at a person: name and contact stay in
+  // People and are read in. Adding is one window (pick an existing person or make a new one); nothing is matched for you.
+  var RISSUE = { "capabilities:out_of_range": "Use up to 30 tags, each up to 60 characters, separated by commas.", "capabilities:invalid_value": "Each tag needs a few characters, separated by commas.",
+                 "bio:out_of_range": "The bio can be up to 2000 characters.", "service_area:out_of_range": "Up to 300 characters.", "notes:out_of_range": "Up to 2000 characters.",
+                 required: "Required.", duplicate: "Already on this roster.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
+                 invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_found: "That person was not found.",
+                 immutable: "That cannot be changed.", choose_one: "Choose one.", not_allowed: "Not allowed.",
+                 address_required: "An instructor needs an address first. Use Add address on their card, or enter it in the form." };
+  var RLABEL = { individual_id: "Person", status: "Status", bio: "Bio", capabilities: "What they can teach or do", service_area: "Where they will travel",
+                 availability: "Weekly hours", availability_notes: "Availability notes", notes: "Notes", person: "Person", region_ids: "Regions they work in",
+                 "person.given_name": "Given name", "person.family_name": "Family name", "person.email": "Email", "person.phone": "Phone" };
+  var RDAYS = [["monday", "Mon"], ["tuesday", "Tue"], ["wednesday", "Wed"], ["thursday", "Thu"], ["friday", "Fri"], ["saturday", "Sat"], ["sunday", "Sun"]];
+  var RPERSON = [["given_name", "Given name"], ["family_name", "Family name"], ["email", "Email"], ["phone", "Phone (text messages)"]];
+  var ROSTER_CFG = [
+    { id: "instructors", coll: "instructor_rosters", pre: "ri", one: "instructor", Many: "Instructors", hours: true, curricula: true,
+      fields: [
+        { k: "bio", label: "Bio", t: "area", hint: "A short paragraph written for people choosing a class." },
+        { k: "capabilities", label: "What they can teach or do", t: "tags", hint: "Separate tags with commas or put each on its own line. Each tag is a few words (up to 60 characters); up to 30 tags. For example: prompting basics, large rooms, voice and images." },
+        { k: "service_area", label: "Where they will travel", t: "text", hint: "For example Denver metro, or online only." },
+        { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." } ] },
+    { id: "students", coll: "student_rosters", pre: "rs", one: "student", Many: "Students", hours: false,
+      fields: [ { k: "notes", label: "Notes", t: "area", hint: "Visible to operators only." } ] }
+  ];
+  var ROSTER = {};
+
+  function rosterProblems(res, map) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {}, existing = "";
+    ps.forEach(function (p) {
+      var text = (/email$/.test(p.field) && p.issue === "invalid_format") ? "That email address does not look right."
+               : (/phone$/.test(p.field) && p.issue === "invalid_format") ? "That phone number does not look right. Use digits, for example 303-555-0142."
+               : (RISSUE[p.field + ":" + p.issue] || RISSUE[p.issue] || "That value is not valid.");
+      if (p.existing_id) existing = p.existing_id;
+      if (map && map[p.field]) mine[p.field] = text; else out.push((RLABEL[p.field] || p.field) + ": " + text);
+    });
+    if (!ps.length) out.push(adminProblem(res.status));
+    return { fields: mine, other: out, existing: existing };
+  }
+  function rName(rec) { var p = rec.person; return p && !p.unavailable ? (p.display_name || p.given_name || "(no name)") : "(not available)"; }
+  function rContact(rec) { var p = rec.person; if (!p || p.unavailable) return ""; return [p.email, p.phone].filter(Boolean).join(" · "); }
+  function rField(f, idp, cur) {
+    var wrap = mk("div"), l = mk("label", "f", f.label), el;
+    if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
+    else if (f.t === "tags") { el = mk("textarea"); el.rows = 3; el.maxLength = 1800; el.value = (cur || []).join(", "); el.style.minHeight = "72px"; }
+    else { el = mk("input"); el.type = "text"; el.maxLength = 300; el.value = (cur == null ? "" : cur); }
+    el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+    if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+    var er = mk("div", "ferr"); wrap.appendChild(er);
+    return { wrap: wrap, el: el, err: er, t: f.t };
+  }
+  function rRead(x) {
+    var v = x.el.value.trim();
+    if (x.t === "tags") return v ? v.split(/[,;\n]+/).map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    return v;
+  }
+  function rHoursText(av) {
+    var by = {}; (av || []).forEach(function (h) { by[h.day_of_week] = h; });
+    return RDAYS.filter(function (d) { return by[d[0]]; }).map(function (d) { return d[1] + " " + by[d[0]].opens_at + "–" + by[d[0]].closes_at; }).join(", ");
+  }
+
+  function currTitle(S, id) { var l = S.curr || []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i].title; return "(removed curriculum)"; }
+  // Write-only address for an instructor, for operators who may not open People. It never lists or shows existing places or addresses.
+  // saveResidence saves a Lives-here link (reusing the place if the address is already saved, silently) and then ends older live Lives-here links,
+  // so the person is never left without an address. Resolves {ok, text}.
+  function saveResidence(individualId, addr) {
+    return admin("list", { filters: { subject_id: individualId }, limit: 50 }, COLL_LK).then(function (old) {
+      if (old.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+      var olds = (old.status === 200 && old.body.ok ? old.body.data.records || [] : []).filter(function (l) { return l.relationship === "resides_at" && l.status === "active"; });
+      return admin("find_by_address", { address: addr.addresses[0] }, COLL_L).then(function (f) {
+        if (f.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+        var found = (f.status === 200 && f.body.ok) ? (f.body.data.records || []) : [];
+        var place = found.length ? Promise.resolve({ status: 200, body: { ok: true, data: found[0] } }) : admin("create", { data: addr }, COLL_L);
+        return place.then(function (c) {
+          if (c.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+          if (!(c.status === 200 && c.body.ok)) return { ok: false, text: "Could not save the address: " + lProblems(c) };
+          return admin("create", { data: { subject_type: "individual", subject_id: individualId, relationship: "resides_at", location_id: c.body.data.id, is_primary: true } }, COLL_LK).then(function (k) {
+            if (k.status === 401) { lock("That key did not work."); return { ok: false, text: "" }; }
+            if (!(k.status === 200 && k.body.ok)) return { ok: false, text: "Could not save the address: " + lProblems(k) };
+            return Promise.all(olds.filter(function (l) { return l.location_id !== c.body.data.id; }).map(function (l) {
+              return admin("end", { id: l.id }, COLL_LK);   // no stale-check: saving the new main link may just have touched this one
+            })).then(function () { refreshPlaces(); return { ok: true, text: "" }; });
+          });
+        });
+      });
+    });
+  }
+  function instructorAddressBox(rec, done) {
+    var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+    form.appendChild(mk("div", "hint", "Where " + rName(rec) + " lives. Saved privately: after you save, only the state is shown here. A new address replaces the old one."));
+    var block = addrForm({}); form.appendChild(block);
+    var btns = mk("div", "btns"), save = mk("button", "", "Save address"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button";
+    btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+    var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+    cancel.addEventListener("click", function () { form.remove(); });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); fm.textContent = "";
+      var rd = block.read();
+      if (!rd.ok) return;
+      if (!rd.data.addresses) { fm.textContent = "A person's address needs a street or a PO box."; return; }
+      save.disabled = true;
+      saveResidence(rec.individual_id, rd.data).then(function (r) {
+        save.disabled = false;
+        if (!r.ok) { if (r.text) fm.textContent = r.text; return; }
+        form.remove(); if (done) done();
+      });
+    });
+    return form;
+  }
+
+  function buildRoster(cfg) {
+    var P = cfg.pre, S = { cfg: cfg, all: [], loaded: false, seq: 0, newId: "", openId: "", choice: null };
+    ROSTER[cfg.id] = S;
+    var g = function (s) { return $(P + s); };
+    var root = $(cfg.id + "View");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="' + P + 'Count"></div><div class="meta" id="' + P + 'Checked"></div></div>' +
+      '<div class="actions"><select id="' + P + 'Filter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
+      '<button type="button" class="quiet manualBtn" data-m="' + cfg.id + '">Manual</button><button id="' + P + 'Refresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="' + P + 'AddBtn" type="button">Add ' + cfg.one + '</button></div></div>' +
+      '<form class="panel" id="' + P + 'AddForm" hidden autocomplete="off" novalidate><h2>Add ' + (cfg.one === "instructor" ? "an" : "a") + ' ' + cfg.one + '</h2>' +
+      '<div class="hint">Type a name. Pick them from the list, or choose "Someone new". Nothing is matched for you.</div>' +
+      '<label class="f" for="' + P + 'Q">Name</label><input type="text" id="' + P + 'Q" maxlength="100" autocomplete="off">' +
+      '<div id="' + P + 'Opts" class="ropts"></div><div class="note" id="' + P + 'Chosen"></div><div class="ferr" id="' + P + 'EPick"></div>' +
+      '<div id="' + P + 'New" class="eform" hidden><div class="hint">Their name, email and phone are saved with them.</div></div>' +
+      '<div id="' + P + 'AddFields"></div>' +
+      '<div class="btns"><button type="submit" id="' + P + 'SaveBtn">Add to ' + cfg.Many.toLowerCase() + '</button><button type="button" class="quiet" id="' + P + 'CancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="' + P + 'FMsg" role="alert"></div></form>' +
+      '<input type="search" id="' + P + 'Search" class="psearch" placeholder="Find by name" aria-label="Find by name" autocomplete="off">' +
+      '<div class="notice" id="' + P + 'Notice" role="status"></div><div class="msg" id="' + P + 'Msg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="' + P + 'Retry" hidden>Retry</button><ul id="' + P + 'List"></ul>' +
+      '<div class="empty" id="' + P + 'Empty" hidden>Nobody on this roster yet.</div><div class="empty" id="' + P + 'NoMatch" hidden>Nobody matches that name.</div>';
+
+    // new-person boxes and roster fields of the add window
+    var newEls = {}, addEls = {};
+    RPERSON.forEach(function (pf) {
+      var l = mk("label", "f", pf[1] + (pf[0] === "given_name" ? "" : " (optional)")), el = mk("input"); el.type = "text"; el.maxLength = 200; el.autocomplete = "off";
+      el.id = P + "N_" + pf[0]; l.htmlFor = el.id; var er = mk("div", "ferr");
+      g("New").appendChild(l); g("New").appendChild(el); g("New").appendChild(er); newEls["person." + pf[0]] = { el: el, err: er, k: pf[0] };
+    });
+    cfg.fields.forEach(function (f) { var x = rField(f, P + "A_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+    var addrBlock = null;
+    if (cfg.curricula) {   // an instructor needs an address (slice B); saved privately, only the state is shown afterwards
+      var ah = mk("div", "eform"); ah.appendChild(mk("div", "f", "Where they live"));
+      ah.appendChild(mk("div", "hint", "Required for someone new. Saved privately: only the state is shown afterwards. Leave it blank only if this person already has an address on file."));
+      addrBlock = addrForm({ optional: true }); ah.appendChild(addrBlock); g("AddFields").parentNode.insertBefore(ah, g("AddFields"));
+    }
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { order: "name", expand: true, limit: 200 }, cfg.coll).then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true;
+        var done = function () { render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
+        if (!cfg.curricula) { done(); return; }
+        return Promise.all([admin("list", { limit: 200 }, "curriculums"), admin("list", { limit: 200 }, "discovery_areas")]).then(function (all) {
+          var cr = all[0], ar = all[1];
+          S.curr = (cr.status === 200 && cr.body.ok) ? (cr.body.data.records || []) : [];
+          S.regions = ((ar.status === 200 && ar.body && ar.body.ok) ? (ar.body.data.records || []) : []).filter(function (a) { return a.kind === "region"; });
+          done();
+        });
+      });
+    }
+    S.load = load;
+    function onRoster(personId) { for (var i = 0; i < S.all.length; i++) if (S.all[i].individual_id === personId) return S.all[i]; return null; }
+    function render() {
+      var q = g("Search").value.trim().toLowerCase(), f = g("Filter").value, list = g("List");
+      var shown = S.all.filter(function (r) {
+        return (!f || r.status === f) && (!q || [rName(r), rContact(r)].join(" ").toLowerCase().indexOf(q) >= 0);
+      });
+      list.textContent = "";
+      shown.forEach(function (r) { list.appendChild(row(r)); });
+      S.newId = ""; S.openId = "";
+      var act = S.all.filter(function (r) { return r.status === "active"; }).length;
+      g("Count").textContent = S.all.length + (S.all.length === 1 ? " entry" : " entries") + (S.all.length ? " (" + act + " active)" : "");
+      g("Empty").hidden = S.all.length > 0;
+      g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
+    }
+
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : "");
+      var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top");
+      top.appendChild(mk("span", "vname", rName(rec)));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: cfg.coll, on: "active", off: "inactive", label: cfg.one, problem: function (res) { return rosterProblems(res).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+      head.appendChild(top);
+      if (rContact(rec)) head.appendChild(mk("div", "sub", rContact(rec)));
+      var more = [];
+      if (rec.capabilities && rec.capabilities.length) more.push(rec.capabilities.join(", "));
+      if (rec.service_area) more.push(rec.service_area);
+      if (more.length) head.appendChild(mk("div", "sub", more.join(" · ")));
+      var teach = cfg.curricula ? (rec.curriculum_ids || []).map(function (id) { return currTitle(S, id); }) : [];
+      if (teach.length) head.appendChild(mk("div", "sub", "Can teach: " + teach.join(", ")));
+      var detail = mk("div", "detail");
+      detail.appendChild(actions(rec));
+      cfg.fields.forEach(function (f) {
+        if (rec[f.k] === undefined) return;
+        detail.appendChild(line(f.label, f.t === "tags" ? rec[f.k].join(", ") : String(rec[f.k])));
+      });
+      if (cfg.curricula) {
+        var lv = line("Lives in", rec.residence_state || "No address on file"); lv.id = "live_" + rec.id; detail.appendChild(lv);
+        var ab = mk("button", "quiet", rec.residence_state ? "Replace address" : "Add address"); ab.type = "button"; ab.id = "addaddr_" + rec.id;
+        var ah = mk("div"); detail.appendChild(ab); detail.appendChild(ah);
+        ab.addEventListener("click", function () { if (ah.firstChild) ah.textContent = ""; else ah.appendChild(instructorAddressBox(rec, function () { g("Notice").textContent = "Saved the address for " + rName(rec) + "."; S.openId = rec.id; load(); })); });
+      }
+      if (cfg.hours && rec.availability && rec.availability.length) detail.appendChild(line("Weekly hours", rHoursText(rec.availability)));
+      if (cfg.hours && rec.availability_notes) detail.appendChild(line("Availability notes", rec.availability_notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+      if (rec.id === S.openId) { li.classList.add("open"); head.setAttribute("aria-expanded", "true"); setTimeout(function () { try { li.scrollIntoView({ block: "center" }); } catch (e) {} }, 0); }
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+
+    function actions(rec) {
+      var wrap = mk("div"), r = mk("div", "actions-row");
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Remove from " + cfg.Many.toLowerCase());
+      ed.type = "button"; del.type = "button"; r.appendChild(ed); var hr = historyBtn(rec.individual_id || rec.id, rName(rec)); if (hr) r.appendChild(hr); r.appendChild(del);
+      var host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? Their history is kept. You can add them again later."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Remove"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg");
+      yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert"); b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true; err.textContent = "";
+        admin("soft_delete", { id: rec.id }, cfg.coll).then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Removed " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That entry was already gone."; load(); }
+          else err.textContent = rosterProblems(res).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box);
+      return wrap;
+    }
+
+    function editForm(rec, host) {
+      var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
+      var els = {}, pEls = {}, hEls = {}, havePerson = rec.person && !rec.person.unavailable;
+      if (havePerson) {
+        form.appendChild(mk("div", "hint", "Name and contact are saved with them and shared across LAUNCH."));
+        RPERSON.forEach(function (pf) {
+          var x = rField({ k: pf[0], label: pf[1], t: "text" }, "rp_" + rec.id + "_", rec.person[pf[0]]); form.appendChild(x.wrap); pEls["person." + pf[0]] = x; x.k = pf[0];
+        });
+      }
+      cfg.fields.forEach(function (f) { var x = rField(f, "re_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
+      var cEls = {};
+      if (cfg.curricula) {
+        form.appendChild(mk("div", "f", "Curricula they can teach")); form.appendChild(mk("div", "hint", "A guide for choosing an instructor. Nothing is refused if you pick someone who is not ticked."));
+        var chosen = rec.curriculum_ids || [], box2 = mk("div"); form.appendChild(box2);
+        (S.curr || []).filter(function (c) { return c.status === "active" || chosen.indexOf(c.id) >= 0; }).forEach(function (c) {
+          var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = chosen.indexOf(c.id) >= 0; cb.value = c.id;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode(c.title)); box2.appendChild(lab); cEls[c.id] = cb;
+        });
+        chosen.forEach(function (id) { if (!cEls[id]) { var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = true; cb.value = id; lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode("(removed curriculum)")); box2.appendChild(lab); cEls[id] = cb; } });
+        if (!Object.keys(cEls).length) box2.appendChild(mk("div", "hint", "No curricula yet. Add some in the Curriculum station."));
+      }
+      var gEls = {};
+      if (cfg.curricula) {
+        form.appendChild(mk("div", "f", "Regions they work in")); form.appendChild(mk("div", "hint", "Place them in regions of their own, wherever they live. People who look after a region see them there. You can only pick regions you manage."));
+        var inRegs = rec.region_ids || [], box3 = mk("div", "rgbox"); form.appendChild(box3);
+        (S.regions || []).forEach(function (a) {
+          var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = inRegs.indexOf(a.id) >= 0; cb.value = a.id;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode((a.name || "(region)") + (a.state_code ? ", " + a.state_code : ""))); box3.appendChild(lab); gEls[a.id] = cb;
+        });
+        inRegs.forEach(function (id) { if (!gEls[id]) { var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = true; cb.value = id; lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.appendChild(cb); lab.appendChild(document.createTextNode("(a region not shown to you)")); box3.appendChild(lab); gEls[id] = cb; } });
+        if (!Object.keys(gEls).length) box3.appendChild(mk("div", "hint", "No regions yet. Add some in the Access or Discovery station."));
+      }
+      if (cfg.hours) {
+        form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
+        var by = {}; (rec.availability || []).forEach(function (h) { by[h.day_of_week] = h; });
+        RDAYS.forEach(function (d) {
+          var rw = mk("div", "hrow"), a = mk("input"), z = mk("input"); a.type = "time"; z.type = "time";
+          a.value = by[d[0]] ? by[d[0]].opens_at : ""; z.value = by[d[0]] ? by[d[0]].closes_at : "";
+          a.setAttribute("aria-label", d[1] + " from"); z.setAttribute("aria-label", d[1] + " until");
+          rw.appendChild(mk("span", "", d[1])); rw.appendChild(a); rw.appendChild(z); form.appendChild(rw); hEls[d[0]] = { a: a, z: z, label: d[1] };
+        });
+        var he = mk("div", "ferr"); form.appendChild(he); hEls._err = he;
+        var an = rField({ k: "availability_notes", label: "Availability notes", t: "area", hint: "Anything the weekly hours cannot say." }, "re_" + rec.id + "_", rec.availability_notes);
+        form.appendChild(an.wrap); els.availability_notes = an;
+      }
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rst_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
+      var se = mk("div", "ferr"); form.appendChild(se); els.status = { el: ss, err: se, t: "select" };
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+      save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = "";
+        [els, pEls].forEach(function (m) { Object.keys(m).forEach(function (k) { m[k].err.textContent = ""; }); });
+        if (cfg.hours) hEls._err.textContent = "";
+        var changes = {}, person = {}, bad = false;
+        cfg.fields.concat(cfg.hours ? [{ k: "availability_notes", t: "area" }] : []).forEach(function (f) {
+          var x = els[f.k], v = rRead(x), cur = rec[f.k];
+          if (f.t === "tags") { if (!v.length) { if (cur !== undefined) changes[f.k] = null; } else if (JSON.stringify(v) !== JSON.stringify(cur || [])) changes[f.k] = v; }
+          else if (v === "") { if (cur !== undefined) changes[f.k] = null; }
+          else if (v !== cur) changes[f.k] = v;
+        });
+        if (ss.value !== (rec.status || "active")) changes.status = ss.value;
+        if (cfg.curricula) {
+          var picked = Object.keys(cEls).filter(function (id) { return cEls[id].checked; }).sort(), was = (rec.curriculum_ids || []).slice().sort();
+          if (JSON.stringify(picked) !== JSON.stringify(was)) changes.curriculum_ids = picked.length ? picked : null;
+        }
+        if (cfg.curricula) {
+          var pickedR = Object.keys(gEls).filter(function (id) { return gEls[id].checked; }).sort(), wasR = (rec.region_ids || []).slice().sort();
+          if (JSON.stringify(pickedR) !== JSON.stringify(wasR)) changes.region_ids = pickedR.length ? pickedR : null;
+        }
+        if (havePerson) Object.keys(pEls).forEach(function (k) {
+          var v = pEls[k].el.value.trim(), cur = rec.person[pEls[k].k];
+          if (v === "") { if (cur !== undefined) person[pEls[k].k] = null; } else if (v !== cur) person[pEls[k].k] = v;
+        });
+        if (cfg.hours) {
+          var list = [];
+          RDAYS.forEach(function (d) {
+            var h = hEls[d[0]], a = h.a.value, z = h.z.value;
+            if (!a && !z) return;
+            if (!a || !z) { hEls._err.textContent = "Give both a start and an end time for " + h.label + ", or clear both."; bad = true; return; }
+            if (a >= z) { hEls._err.textContent = h.label + ": the start has to be before the end."; bad = true; return; }
+            list.push({ day_of_week: d[0], opens_at: a, closes_at: z });
+          });
+          if (!bad && JSON.stringify(list) !== JSON.stringify((rec.availability || []).slice().sort(function (p, q) {
+            return RDAYS.map(function (d) { return d[0]; }).indexOf(p.day_of_week) - RDAYS.map(function (d) { return d[0]; }).indexOf(q.day_of_week); }).map(function (h) {
+            return { day_of_week: h.day_of_week, opens_at: h.opens_at, closes_at: h.closes_at }; }))) changes.availability = list.length ? list : null;
+        }
+        if (bad) return;
+        if (!Object.keys(changes).length && !Object.keys(person).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        var args = { id: rec.id, expected_updated_at: rec.updated_at };
+        if (Object.keys(changes).length) args.changes = changes;
+        if (Object.keys(person).length) args.person = person;
+        save.disabled = true;
+        admin("update_with_person", args, cfg.coll).then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + rName(rec) + "."; if (Object.keys(person).length) { pLoaded = false; peopleForPick = null; } load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this entry while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That entry is gone. Tap Refresh."; return; }
+          var map = {}; Object.keys(els).forEach(function (k) { map[k] = els[k]; }); Object.keys(pEls).forEach(function (k) { map[k] = pEls[k]; });
+          var pr = rosterProblems(res, map);
+          Object.keys(pr.fields).forEach(function (k) { map[k].err.textContent = pr.fields[k]; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+
+    // ---- the one add window
+    function clearAdd() {
+      g("AddForm").reset(); S.choice = null; g("Opts").textContent = ""; g("Chosen").textContent = ""; g("EPick").textContent = ""; g("FMsg").textContent = ""; g("New").hidden = true;
+      Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      if (addrBlock) { var ci = addrBlock.querySelector("input[id$='_country']"); if (ci) ci.value = "US"; }   // reset() blanks the default country
+    }
+    function choose(c) {
+      S.choice = c; g("EPick").textContent = ""; g("Opts").textContent = "";
+      g("New").hidden = !c.isNew;
+      g("Chosen").textContent = c.isNew ? "Adding someone new." : "Adding " + c.name + (c.contact ? " (" + c.contact + ")" : "") + "." + (c.noFamily ? " They have no family name on file. A super admin can add it so they are not added twice." : "");
+      if (c.isNew) {
+        var parts = c.typed.split(/\s+/).filter(Boolean);
+        newEls["person.given_name"].el.value = parts.length > 1 ? parts.slice(0, -1).join(" ") : (parts[0] || "");
+        newEls["person.family_name"].el.value = parts.length > 1 ? parts[parts.length - 1] : "";
+        newEls["person.given_name"].el.focus();
+      }
+    }
+    function showOpts() {
+      var q = g("Q").value.trim().toLowerCase(), box = g("Opts"); box.textContent = ""; S.choice = null; g("Chosen").textContent = ""; g("New").hidden = true;
+      if (!q) return;
+      peopleList().then(function (people) {
+        if (g("Q").value.trim().toLowerCase() !== q) return;
+        box.textContent = "";
+        var m = peopleMatches(people, g("Q").value.trim()), shown = m.exact.length ? m.exact : m.near;
+        if (!m.exact.length && m.near.length) box.appendChild(mk("div", "hint", "No one matches every word you typed. Closest matches, so you do not add the same person twice:"));
+        shown.slice(0, 8).forEach(function (p) {
+          var on = onRoster(p.id), rw = mk("div", "pickrow"), contact = [p.email, p.phone].filter(Boolean).join(" · ");
+          var b = mk("button", "quiet", pFull(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
+          if (on) {
+            b.textContent = pFull(p) + (contact ? " — " + contact : "") + " (already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ")";
+            b.addEventListener("click", function () { openCard(on.id); });
+          } else b.addEventListener("click", function () { g("Q").value = pFull(p); choose({ id: p.id, name: pFull(p), contact: contact, noFamily: !p.family_name }); });
+          rw.appendChild(b); box.appendChild(rw);
+        });
+        var nb = mk("button", "", "Someone new: " + g("Q").value.trim()); nb.type = "button";
+        nb.addEventListener("click", function () { choose({ isNew: true, typed: g("Q").value.trim() }); });
+        var nr = mk("div", "pickrow"); nr.appendChild(nb); box.appendChild(nr);
+      });
+    }
+    function openCard(id) {
+      g("AddForm").hidden = true; g("AddBtn").hidden = false; g("Filter").value = ""; g("Search").value = ""; S.openId = id; render();
+    }
+    g("AddBtn").addEventListener("click", function () { clearAdd(); g("Notice").textContent = ""; peopleForPick = null; g("AddForm").hidden = false; g("AddBtn").hidden = true; g("Q").focus(); });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("Q").addEventListener("input", showOpts);
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; g("EPick").textContent = "";
+      Object.keys(newEls).forEach(function (k) { newEls[k].err.textContent = ""; });
+      if (!S.choice) { g("EPick").textContent = 'Pick someone from the list, or choose "Someone new".'; return; }
+      var data = {}, person = null;
+      cfg.fields.forEach(function (f) { var v = rRead(addEls[f.k]); if (f.t === "tags" ? v.length : v) data[f.k] = v; });
+      if (S.choice.isNew) {
+        person = {};
+        RPERSON.forEach(function (pf) { var v = newEls["person." + pf[0]].el.value.trim(); if (v) person[pf[0]] = v; });
+        if (!person.given_name) { newEls["person.given_name"].err.textContent = "Required."; return; }
+      } else data.individual_id = S.choice.id;
+      var args = { data: data }; if (person) args.person = person;
+      if (addrBlock) { prepareInstructor(args, person, S.choice); return; }
+      sendAdd(args);
+    });
+    // Instructors: a new person is made first (People), then the address, then the roster entry, so the server rule is met without ever showing an address.
+    function prepareInstructor(args, person, choice) {
+      var rd = addrBlock.read(); if (!rd.ok) return;
+      var addr = rd.data.addresses ? rd.data : null;
+      if (choice.isNew && !addr) { g("FMsg").textContent = "An instructor needs an address. Enter where they live."; return; }
+      g("SaveBtn").disabled = true;
+      function afterPerson(pid) {
+        function next() { sendAdd({ data: Object.assign({}, args.data, { individual_id: pid }) }); }
+        if (!addr) { next(); return; }
+        saveResidence(pid, addr).then(function (r) { if (!r.ok) { g("SaveBtn").disabled = false; if (r.text) g("FMsg").textContent = r.text; return; } next(); });
+      }
+      if (!choice.isNew) { afterPerson(choice.id); return; }
+      admin("create", { data: person }, COLL_P).then(function (res) {
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (!(res.status === 200 && res.body && res.body.ok)) { g("SaveBtn").disabled = false; g("FMsg").textContent = "Could not save the person: " + pProblems(res).other.join(" "); return; }
+        pLoaded = false; peopleForPick = null;
+        S.choice = { id: res.body.data.id, name: person.given_name, contact: "" };   // a retry now uses the person just made, not a second copy
+        afterPerson(res.body.data.id);
+      });
+    }
+    function sendAdd(args) {
+      g("SaveBtn").disabled = true;
+      admin("create_with_person", args, cfg.coll).then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + rName(res.body.data) + " to the " + cfg.Many.toLowerCase() + ".";
+          g("AddForm").hidden = true; g("AddBtn").hidden = false; if (g("Filter").value === "inactive") g("Filter").value = "active";
+          if (res.body.data.created_person) { pLoaded = false; peopleForPick = null; }
+          load(); return;
+        }
+        var map = {}; Object.keys(newEls).forEach(function (k) { map[k] = newEls[k]; }); Object.keys(addEls).forEach(function (k) { map[k] = addEls[k]; });
+        var pr = rosterProblems(res, map);
+        Object.keys(pr.fields).forEach(function (k) { map[k].err.textContent = pr.fields[k]; });
+        if (pr.existing) {
+          g("FMsg").textContent = "That person is already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ". ";
+          var ob = mk("button", "quiet", "Open their card"); ob.type = "button"; ob.addEventListener("click", function () { openCard(pr.existing); load(); });
+          g("FMsg").appendChild(ob);
+        } else if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    }
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    g("Search").addEventListener("input", render);
+    S.reset = function () {
+      S.loaded = false; S.all = []; S.newId = ""; S.openId = "";
+      g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = "";
+      g("Empty").hidden = true; g("NoMatch").hidden = true; g("Search").value = ""; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+    };
+  }
+  ROSTER_CFG.forEach(buildRoster);
+
+  // ---- Curriculum station: what is taught. A class points at one curriculum; each session of a series is its own class.
+  var RCISSUE = { required: "Required.", duplicate: "That identifier is already used.", invalid_format: "Use lowercase letters, digits and underscores.",
+                 out_of_range: "That number is out of range.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
+                 immutable: "That cannot be changed.", not_allowed: "Not allowed." };
+  var CLABEL = { slug: "Identifier", title: "Title", tagline: "Tagline", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
+  function currLine(rec) {
+    var bits = [rec.slug];
+    var n = rec.session_count || 1;
+    bits.push(n + (n === 1 ? " session" : " sessions") + (rec.minutes_per_session ? " of " + rec.minutes_per_session + " min" : ""));
+    return bits.join(" · ");
+  }
+  function buildCurriculum() {
+    var P = "rc", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
+    ROSTER.curriculums = S;
+    var root = $("curriculumsView");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="rcCount"></div><div class="meta" id="rcChecked"></div></div>' +
+      '<div class="actions"><select id="rcFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
+      '<button type="button" class="quiet manualBtn" data-m="curriculums">Manual</button><button id="rcRefresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="rcAddBtn" type="button">Add curriculum</button></div></div>' +
+      '<form class="panel" id="rcAddForm" hidden autocomplete="off" novalidate><h2>Add a curriculum</h2>' +
+      '<div class="hint">A title and a short identifier are needed. Sessions and length can be added now or later.</div>' +
+      '<div id="rcAddFields"></div>' +
+      '<div class="btns"><button type="submit" id="rcSaveBtn">Save curriculum</button><button type="button" class="quiet" id="rcCancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="rcFMsg" role="alert"></div></form>' +
+      '<div class="notice" id="rcNotice" role="status"></div><div class="msg" id="rcMsg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="rcRetry" hidden>Retry</button><ul id="rcList"></ul><div class="empty" id="rcEmpty" hidden>No curricula yet.</div>';
+    var FIELDS = [
+      { k: "title", label: "Title", t: "text", add: true, hint: "What people see, for example Introduction to AI Use." },
+      { k: "slug", label: "Short identifier", t: "text", add: true, addOnly: true, hint: "Lowercase letters, digits and underscores. It cannot be changed later." },
+      { k: "tagline", label: "Tagline (optional)", t: "text", add: true, max: 120, hint: "One short marketing line shown with the title." },
+      { k: "description", label: "Description (optional)", t: "area", add: true },
+      { k: "session_count", label: "Number of sessions (optional)", t: "num", add: true, hint: "1 for a single session. Each session becomes its own class." },
+      { k: "minutes_per_session", label: "Minutes per session (optional)", t: "num", add: true },
+      { k: "notes", label: "Notes (optional)", t: "area", add: false, hint: "Visible to operators only." }
+    ];
+    function mkF(f, idp, cur) {
+      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
+      else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "num" ? 4 : (f.max || 200); el.value = cur == null ? "" : String(cur); if (f.t === "num") el.inputMode = "numeric"; }
+      el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+      if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); wrap.appendChild(er);
+      return { wrap: wrap, el: el, err: er, f: f };
+    }
+    function val(x) {   // -> {v} or {bad}
+      var s = x.el.value.trim();
+      if (x.f.t !== "num") return { v: s };
+      if (s === "") return { v: "" };
+      if (!/^\d+$/.test(s)) return { bad: "Use a whole number." };
+      return { v: parseInt(s, 10) };
+    }
+    function problems(res, els) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+      ps.forEach(function (p) { var t = RCISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((CLABEL[p.field] || p.field) + ": " + t); });
+      if (!ps.length) out.push(adminProblem(res.status));
+      return { fields: mine, other: out };
+    }
+    var addEls = {}, slugTouched = false;
+    FIELDS.forEach(function (f) { if (!f.add) return; var x = mkF(f, "rcA_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+    addEls.title.el.addEventListener("input", function () { if (!slugTouched) addEls.slug.el.value = slugify(addEls.title.el.value); });
+    addEls.slug.el.addEventListener("input", function () { slugTouched = true; });
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { limit: 200 }, "curriculums").then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the curricula. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    }
+    S.load = load;
+    function render() {
+      var f = g("Filter").value, list = g("List"); list.textContent = "";
+      S.all.filter(function (r) { return !f || r.status === f; }).forEach(function (r) { list.appendChild(row(r)); });
+      S.newId = "";
+      g("Count").textContent = S.all.length + (S.all.length === 1 ? " curriculum" : " curricula");
+      g("Empty").hidden = S.all.length > 0;
+    }
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.title || "(no title)"));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: "curriculums", on: "active", off: "inactive", label: "Curriculum", problem: function (res) { return problems(res, {}).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+      head.appendChild(top);
+      if (rec.tagline) head.appendChild(mk("div", "sub", rec.tagline));
+      head.appendChild(mk("div", "sub", currLine(rec)));
+      var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      box.appendChild(mk("div", "", "Delete " + (rec.title || "this curriculum") + "? It disappears from the list but the record is kept. To stop offering it without deleting, set it to inactive."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete curriculum"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true;
+        admin("soft_delete", { id: rec.id }, "curriculums").then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Deleted " + rec.title + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That curriculum was already gone."; load(); }
+          else err.textContent = problems(res, {}).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box); detail.appendChild(wrap);
+      if (rec.description) detail.appendChild(line("Description", rec.description));
+      if (rec.notes) detail.appendChild(line("Notes", rec.notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+    function editForm(rec, host) {
+      var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
+      FIELDS.forEach(function (f) { if (f.addOnly) return; var x = mkF(f, "rce_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rcst_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = ""; var changes = {}, bad = false;
+        Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+        Object.keys(els).forEach(function (k) {
+          var x = els[k], v = val(x), cur = rec[k];
+          if (v.bad) { x.err.textContent = v.bad; bad = true; return; }
+          if (v.v === "") { if (cur !== undefined) { if (k === "title") { x.err.textContent = "Required."; bad = true; } else changes[k] = null; } }
+          else if (v.v !== cur) changes[k] = v.v;
+        });
+        if (ss.value !== (rec.status || "active")) changes.status = ss.value;
+        if (bad) return;
+        if (!Object.keys(changes).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        save.disabled = true;
+        admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, "curriculums").then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + (changes.title || rec.title) + "."; load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this curriculum while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That curriculum is gone. Tap Refresh."; return; }
+          var pr = problems(res, els); Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+    g("AddBtn").addEventListener("click", function () { g("AddForm").reset(); slugTouched = false; Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; }); g("FMsg").textContent = ""; g("Notice").textContent = ""; g("AddForm").hidden = false; g("AddBtn").hidden = true; addEls.title.el.focus(); });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; var data = {}, bad = false;
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) {
+        var x = addEls[k], v = val(x);
+        if (v.bad) { x.err.textContent = v.bad; bad = true; return; }
+        if (v.v !== "") data[k] = v.v;
+      });
+      if (!data.title) { addEls.title.err.textContent = "Required."; bad = true; }
+      if (!data.slug) { addEls.slug.err.textContent = "Required."; bad = true; }
+      if (bad) return;
+      g("SaveBtn").disabled = true;
+      admin("create", { data: data }, "curriculums").then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.title + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+          if (g("Filter").value === "inactive") g("Filter").value = "active"; load(); return;
+        }
+        var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+  }
+  buildCurriculum();
+
+  var OISSUE = { required: "Required.", invalid_format: "Check the format.", out_of_range: "That is too long, too short or out of range.", invalid_type: "That value is not valid.",
+                 invalid_value: "That value is not valid.", not_allowed: "Not allowed.", immutable: "That cannot be changed.", duplicate: "Already used." };
+  var OKINDS = [["business", "Business"], ["nonprofit", "Nonprofit"], ["school", "School"], ["school_district", "School district"], ["college_university", "College or university"],
+                ["government", "Government"], ["governing_body", "Governing body (a board)"], ["association", "Association"], ["club", "Club"],
+                ["training_provider", "Training provider"], ["community_group", "Community group"], ["other", "Other"]];
+  var OKIND_LABEL = {}; OKINDS.forEach(function (k) { OKIND_LABEL[k[0]] = k[1]; });
+  function buildOrganization() {
+    var P = "ro", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
+    ROSTER.organizations = S;
+    var root = $("organizationsView");
+    root.innerHTML =
+      '<div class="bar"><div><div class="count" id="roCount"></div><div class="meta" id="roChecked"></div></div>' +
+      '<div class="actions"><select id="roFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="closed">Closed</option><option value="">All</option></select>' +
+      '<input type="search" id="roSearch" placeholder="Search by name" aria-label="Search by name" autocomplete="off">' +
+      '<button type="button" class="quiet manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="quiet" type="button">Refresh</button>' +
+      '<button id="roAddBtn" type="button">Add organization</button></div></div>' +
+      '<form class="panel" id="roAddForm" hidden autocomplete="off" novalidate><h2>Add an organization</h2>' +
+      '<div class="hint">Only the name is needed. Everything else can be added later.</div>' +
+      '<div id="roAddFields"></div>' +
+      '<div class="btns"><button type="submit" id="roSaveBtn">Save organization</button><button type="button" class="quiet" id="roCancelBtn">Cancel</button></div>' +
+      '<div class="msg" id="roFMsg" role="alert"></div></form>' +
+      '<div class="notice" id="roNotice" role="status"></div><div class="msg" id="roMsg" role="alert"></div>' +
+      '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
+    // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
+    var FIELDS = [
+      { k: "name", label: "Name", t: "text", add: true, max: 200, hint: "What people call it, for example Ozo Coffee." },
+      { k: "kinds", label: "Kind (tick all that fit)", t: "kinds", add: true },
+      { k: "short_name", label: "Short name (optional)", t: "text", add: true, max: 60, hint: "For example BVSD." },
+      { k: "website_url", label: "Web address (optional)", t: "text", add: true, max: 300, hint: "Starts with http:// or https://" },
+      { k: "email", label: "Email (optional)", t: "text", add: true, max: 200 },
+      { k: "phone", label: "Phone (optional)", t: "text", add: true, max: 40 },
+      { k: "legal_name", label: "Legal name (optional)", t: "text", add: false, max: 200, more: true },
+      { k: "aliases", label: "Other names (optional)", t: "lines", add: false, more: true, hint: "One per line: former names, trade names, abbreviations." },
+      { k: "description", label: "Description (optional)", t: "area", add: false, more: true, max: 2000 },
+      { k: "identifiers", label: "Outside identifiers (optional)", t: "ids", add: false, more: true, hint: "One per line as type: value, for example ein: 00-0000000." },
+      { k: "founded_date", label: "Founded (optional)", t: "date", add: false, more: true, hint: "YYYY, YYYY-MM or YYYY-MM-DD." },
+      { k: "closed_date", label: "Closed (optional)", t: "date", add: false, more: true, hint: "YYYY, YYYY-MM or YYYY-MM-DD." },
+      { k: "notes", label: "Notes (optional)", t: "area", add: false, more: true, max: 2000, hint: "Visible to operators only." }
+    ];
+    var LAB = { name: "Name", kinds: "Kind", short_name: "Short name", website_url: "Web address", email: "Email", phone: "Phone", legal_name: "Legal name", aliases: "Other names",
+                description: "Description", identifiers: "Identifiers", founded_date: "Founded", closed_date: "Closed", notes: "Notes", status: "Status" };
+    function idsText(list) { return (list || []).map(function (i) { return i.type + ": " + i.value; }).join("\n"); }
+    function mkF(f, idp, cur) {
+      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      if (f.t === "kinds") {
+        el = mk("div"); el.id = idp + f.k; el.setAttribute("role", "group"); el.setAttribute("aria-label", f.label); l.removeAttribute("for");
+        OKINDS.forEach(function (kk) {
+          var lab = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = kk[0]; cb.checked = (cur || []).indexOf(kk[0]) >= 0;
+          lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.style.padding = "2px 0";
+          lab.appendChild(cb); lab.appendChild(document.createTextNode(kk[1])); el.appendChild(lab);
+        });
+      } else if (f.t === "area" || f.t === "lines" || f.t === "ids") {
+        el = mk("textarea"); el.maxLength = f.max || 2000; el.value = f.t === "lines" ? (cur || []).join("\n") : f.t === "ids" ? idsText(cur) : (cur == null ? "" : cur);
+        if (f.t !== "area") el.rows = 3;
+      } else {
+        el = mk("input"); el.type = "text"; el.maxLength = f.t === "date" ? 10 : (f.max || 200); el.value = cur == null ? "" : String(cur);
+        if (f.k === "email") el.inputMode = "email"; if (f.k === "website_url") el.inputMode = "url";
+      }
+      el.id = idp + f.k; if (f.t !== "kinds") l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+      if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
+      var er = mk("div", "ferr"); wrap.appendChild(er);
+      return { wrap: wrap, el: el, err: er, f: f };
+    }
+    function val(x, rec) {   // -> {v} (v = "" means empty) or {bad}
+      var f = x.f, el = x.el;
+      if (f.t === "kinds") { var ks = []; Array.prototype.forEach.call(el.querySelectorAll("input"), function (cb) { if (cb.checked) ks.push(cb.value); }); return ks.length ? { v: ks } : { v: "" }; }
+      if (f.t === "lines") { var ls = el.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean); return ls.length ? { v: ls } : { v: "" }; }
+      if (f.t === "ids") {
+        var out = [], bad = false;
+        el.value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean).forEach(function (s) {
+          var m = /^([A-Za-z][A-Za-z0-9_ ]*?)\s*:\s*(.+)$/.exec(s);
+          if (!m) { bad = true; return; }
+          var type = m[1].trim().toLowerCase().replace(/\s+/g, "_"), value = m[2].trim(), o = { type: type, value: value };
+          ((rec && rec.identifiers) || []).forEach(function (old) { if (old.type === type && old.value === value && old.description) o.description = old.description; });
+          out.push(o);
+        });
+        if (bad) return { bad: "Use type: value on each line, for example ein: 00-0000000." };
+        return out.length ? { v: out } : { v: "" };
+      }
+      return { v: el.value.trim() };
+    }
+    function problems(res, els) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [], out = [], mine = {};
+      ps.forEach(function (p) { var t = OISSUE[p.issue] || "That value is not valid."; if (els[p.field]) mine[p.field] = t; else out.push((LAB[p.field] || p.field) + ": " + t); });
+      if (!ps.length) out.push(adminProblem(res.status));
+      return { fields: mine, other: out };
+    }
+    var addEls = {};
+    FIELDS.forEach(function (f) { if (!f.add) return; var x = mkF(f, "roA_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
+
+    function load() {
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      return admin("list", { limit: 200 }, "organizations").then(function (res) {
+        if (my !== S.seq) return;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the organizations. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+      });
+    }
+    S.load = load;
+    function matches(r, q) {
+      if (!q) return true;
+      var hay = [r.name, r.short_name, r.legal_name].concat(r.aliases || []).join(" ").toLowerCase();
+      return hay.indexOf(q) >= 0;
+    }
+    function render() {
+      var f = g("Filter").value, q = g("Search").value.trim().toLowerCase(), list = g("List"), n = 0; list.textContent = "";
+      S.all.filter(function (r) { return (!f || r.status === f) && matches(r, q); }).forEach(function (r) { list.appendChild(row(r)); n++; });
+      S.newId = "";
+      g("Count").textContent = n + (n === 1 ? " organization" : " organizations") + (n !== S.all.length ? " shown of " + S.all.length : "");
+      g("Empty").hidden = S.all.length > 0;
+    }
+    function kindsLine(rec) { return (rec.kinds || []).map(function (k) { return OKIND_LABEL[k] || k; }).join(", "); }
+    function row(rec) {
+      var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
+      var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.name || "(no name)"));
+      var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: "organizations", on: "active", off: "inactive", label: "Organization", problem: function (res) { return problems(res, {}).other.join(" "); } }) : null;
+      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+      head.appendChild(top);
+      var sub = [kindsLine(rec), rec.short_name].filter(Boolean).join(" · ");
+      if (sub) head.appendChild(mk("div", "sub", sub));
+      var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
+      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      box.appendChild(mk("div", "", "Delete " + (rec.name || "this organization") + "? It disappears from the list but the record is kept. To stop using it without deleting, set it to inactive or closed."));
+      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete organization"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
+      ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
+      del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
+      no.addEventListener("click", function () { box.hidden = true; });
+      yes.addEventListener("click", function () {
+        yes.disabled = true;
+        admin("soft_delete", { id: rec.id }, "organizations").then(function (res) {
+          yes.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { g("Notice").textContent = "Deleted " + rec.name + "."; load(); }
+          else if (res.status === 404) { g("Notice").textContent = "That organization was already gone."; load(); }
+          else err.textContent = problems(res, {}).other.join(" ");
+        });
+      });
+      wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box); detail.appendChild(wrap);
+      if (rec.legal_name) detail.appendChild(line("Legal name", rec.legal_name));
+      if (rec.aliases && rec.aliases.length) detail.appendChild(line("Also known as", rec.aliases.join(", ")));
+      if (rec.description) detail.appendChild(line("Description", rec.description));
+      if (rec.website_url) detail.appendChild(line("Web", rec.website_url));
+      if (rec.email) detail.appendChild(line("Email", rec.email));
+      if (rec.phone) detail.appendChild(line("Phone", rec.phone));
+      (rec.identifiers || []).forEach(function (i) { detail.appendChild(line(i.type, i.value)); });
+      if (rec.founded_date) detail.appendChild(line("Founded", rec.founded_date));
+      if (rec.closed_date) detail.appendChild(line("Closed", rec.closed_date));
+      if (rec.status === "active" || rec.status === "inactive") { /* shown by the switch */ }
+      if (rec.notes) detail.appendChild(line("Notes", rec.notes));
+      detail.appendChild(line("Added", when(rec.created_at)));
+      detail.appendChild(linksPanel(rec));
+      head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
+      li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
+      if (rec.id === S.newId) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
+      return li;
+    }
+    // ---- Links on the card: people, venues and other organizations (organization_links), and places (location_links) ----
+    var COLL_OL = "organization_links";
+    var OREL = [["leads", "Leads"], ["works_for", "Works for"], ["member_of", "Member of"], ["volunteers_for", "Volunteers for"], ["teaches_for", "Teaches for"],
+                ["contact_for", "Contact for"], ["part_of", "Part of"], ["affiliated_with", "Affiliated with"], ["sponsored_by", "Sponsored by"],
+                ["operated_by", "Operated by"], ["succeeded_by", "Succeeded by"], ["other", "Other"]];
+    var OREL_LABEL = {}; OREL.forEach(function (r) { OREL_LABEL[r[0]] = r[1]; });
+    var OSUBJ = { individual: ["Person", "individuals"], venue: ["Venue", "venues"], organization: ["Organization", "organizations"] };
+    var PLACE_RELS = ["operates_at", "owns", "manages", "works_at", "mailing_address_for", "billing_address_for", "delivers_to", "other"];
+    var LINK_ISSUE = { required: "Required.", not_found: "That one was not found.", invalid_format: "Check the format (YYYY, YYYY-MM or YYYY-MM-DD).", invalid_value: "That value is not allowed.",
+                       out_of_range: "That is too long or out of order.", duplicate: "That link already exists for these dates.", retired: "That place is retired.", not_allowed: "Not allowed.", immutable: "That cannot be changed." };
+    var nameCache = {};
+    function subjName(type, id) {
+      var key = type + ":" + id;
+      if (nameCache[key]) return Promise.resolve(nameCache[key]);
+      return admin("get", { id: id }, type === "location" ? "locations" : OSUBJ[type][1]).then(function (r) {
+        var d = r.status === 200 && r.body && r.body.ok ? r.body.data : null;
+        var nm = d ? (d.display_name || d.name || d.given_name || (type === "location" && d.addresses && d.addresses[0] ? locAddr(d.addresses[0]) : "") || "(no name)") : "(not available)";
+        if (d) nameCache[key] = nm;
+        return nm;
+      });
+    }
+    function todayStr() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+    function span(l) { return (l.valid_from ? " from " + pDateOut(l.valid_from) : "") + (l.valid_to ? " until " + pDateOut(l.valid_to) : ""); }
+    function linkProblems(res) {
+      var ps = (res.body && res.body.error && res.body.error.problems) || [];
+      if (!ps.length) return adminProblem(res.status);
+      return ps.map(function (p) { return ((LAB[p.field] || { subject_id: "Who", organization_id: "Organization", relationship: "Kind of link", valid_from: "From", valid_to: "Until", title: "Title", location_id: "Place" }[p.field] || p.field)) + ": " + (LINK_ISSUE[p.issue] || "not valid."); }).join(" ");
+    }
+    function labeled(parent, text, el, idv) { var l = mk("label", "f", text); if (idv) { el.id = idv; l.htmlFor = idv; } parent.appendChild(l); parent.appendChild(el); return el; }
+    function selectOf(opts) { var s = mk("select"); opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; s.appendChild(op); }); return s; }
+    function textIn(max, ph) { var i = mk("input"); i.type = "text"; i.maxLength = max; if (ph) i.placeholder = ph; i.autocomplete = "off"; return i; }
+
+    function linksPanel(rec) {
+      var wrap = mk("div", "olinks"), row2 = mk("div", "actions-row"), host = mk("div"), msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+      function btn(label, cls) { var b = mk("button", cls || "quiet", label); b.type = "button"; row2.appendChild(b); return b; }
+      var bShow = btn("Show links"), bAdd = btn("Add link"), bPl = btn("Show places"), bAddPl = btn("Add place");
+      wrap.appendChild(mk("div", "hint", "Links: who and what belongs to this organization, and where it is.")); wrap.appendChild(row2); wrap.appendChild(host); wrap.appendChild(msg);
+      function open(builder) { msg.textContent = ""; if (host.firstChild && host.dataset.k === builder.k) { host.textContent = ""; host.dataset.k = ""; return; } host.textContent = ""; host.dataset.k = builder.k; builder(); }
+      function actions(l, coll, li, reload) {
+        var r = mk("span", "olact");
+        if (!l.valid_to) {
+          var e = mk("button", "quiet", "End"); e.type = "button"; r.appendChild(e);
+          e.addEventListener("click", function () {
+            e.disabled = true;
+            var p = coll === COLL_LK ? admin("end", { id: l.id }, coll) : admin("update", { id: l.id, changes: { valid_to: todayStr() }, expected_updated_at: l.updated_at }, coll);
+            p.then(function (res) { if (res.status === 401) { lock("That key did not work."); return; } if (res.status === 200 && res.body.ok) { reload(); } else { e.disabled = false; msg.textContent = res.status === 409 ? "This changed somewhere else. Show the list again." : linkProblems(res); } });
+          });
+        }
+        var d = mk("button", "danger", "Delete"); d.type = "button"; r.appendChild(d);
+        d.addEventListener("click", function () {
+          if (d.dataset.sure !== "1") { d.dataset.sure = "1"; d.textContent = "Tap again to delete"; setTimeout(function () { d.dataset.sure = ""; d.textContent = "Delete"; }, 4000); return; }
+          d.disabled = true;
+          admin("soft_delete", { id: l.id }, coll).then(function (res) { if (res.status === 401) { lock("That key did not work."); return; } if (res.status === 200 || res.status === 404) reload(); else { d.disabled = false; msg.textContent = linkProblems(res); } });
+        });
+        li.appendChild(r);
+      }
+      function showLinks() {
+        host.textContent = ""; host.dataset.k = "show"; host.appendChild(mk("div", "hint", "Loading..."));
+        Promise.all([admin("list", { filters: { organization_id: rec.id }, limit: 100 }, COLL_OL), admin("list", { filters: { subject_id: rec.id }, limit: 100 }, COLL_OL)]).then(function (rs) {
+          if (rs[0].status === 401 || rs[1].status === 401) { lock("That key did not work."); return; }
+          host.textContent = ""; host.dataset.k = "show";
+          if (rs.some(function (r) { return r.status !== 200 || !r.body.ok; })) { host.appendChild(mk("div", "msg", "Could not load. " + adminProblem(rs[0].status !== 200 ? rs[0].status : rs[1].status))); return; }
+          var into = (rs[0].body.data.records || []).filter(function (l) { return !(l.subject_type === "organization" && l.subject_id === rec.id); }), outof = rs[1].body.data.records || [];
+          host.appendChild(mk("div", "hint", "Linked to " + rec.name + ":"));
+          if (!into.length) host.appendChild(mk("div", "empty2", "Nobody and nothing yet."));
+          into.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName(l.subject_type, l.subject_id).then(function (nm) { t.textContent = nm + " (" + OSUBJ[l.subject_type][0].toLowerCase() + ") · " + (OREL_LABEL[l.relationship] || l.relationship) + (l.title ? " · " + l.title : "") + span(l); });
+            actions(l, COLL_OL, li, showLinks);
+          });
+          host.appendChild(mk("div", "hint", rec.name + " is linked to:"));
+          if (!outof.length) host.appendChild(mk("div", "empty2", "No other organization yet."));
+          outof.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName("organization", l.organization_id).then(function (nm) { t.textContent = (OREL_LABEL[l.relationship] || l.relationship) + ": " + nm + (l.title ? " · " + l.title : "") + span(l); });
+            actions(l, COLL_OL, li, showLinks);
+          });
+        });
+      }
+      showLinks.k = "show";
+      function showPlaces() {
+        host.textContent = ""; host.dataset.k = "places"; host.appendChild(mk("div", "hint", "Loading..."));
+        admin("list", { filters: { subject_id: rec.id }, limit: 100 }, COLL_LK).then(function (res) {
+          if (res.status === 401) { lock("That key did not work."); return; }
+          host.textContent = ""; host.dataset.k = "places";
+          if (res.status !== 200 || !res.body.ok) { host.appendChild(mk("div", "msg", "Could not load. " + adminProblem(res.status))); return; }
+          var links = res.body.data.records || [];
+          if (!links.length) { host.appendChild(mk("div", "empty2", "No place is linked to " + rec.name + ".")); return; }
+          links.forEach(function (l) {
+            var li = mk("div", "olrow"), t = mk("span", "", "Loading..."); li.appendChild(t); host.appendChild(li);
+            subjName("location", l.location_id).then(function (nm) { t.textContent = nm + " · " + (REL[l.relationship] || l.relationship) + (l.is_primary ? " (main)" : "") + (l.description ? " · " + l.description : "") + span(l); });
+            actions(l, COLL_LK, li, showPlaces);
+          });
+        });
+      }
+      showPlaces.k = "places";
+      function addLink() {
+        var form = mk("form", "eform"), pid = rec.id + "_al_"; form.noValidate = true; form.autocomplete = "off";
+        var type = labeled(form, "What is being linked to " + rec.name + "?", selectOf([["individual", "A person"], ["venue", "A venue"], ["organization", "Another organization"]]), pid + "t");
+        var q = labeled(form, "Find it by name", textIn(100, "type to search"), pid + "q"), opts = mk("div"), chosen = mk("div", "note", "Nothing chosen."), cid = "";
+        form.appendChild(opts); form.appendChild(chosen);
+        var rel = labeled(form, "How is it linked?", selectOf(OREL), pid + "r");
+        var title = labeled(form, "Role or title (optional)", textIn(100, "for example Superintendent"), pid + "ti");
+        var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
+        var to = labeled(form, "Until (optional, leave empty if it still applies)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
+        var btns = mk("div", "btns"), s = mk("button", "", "Save link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+        function source() {
+          if (type.value === "individual") return peopleList().then(function (l) { return l.map(function (p) { return { id: p.id, name: p.display_name || p.given_name || "(no name)" }; }); });
+          if (type.value === "venue") return admin("list", { limit: 200 }, "venues").then(function (r) { return (r.status === 200 && r.body.ok ? r.body.data.records : []).map(function (v) { return { id: v.id, name: v.name }; }); });
+          return Promise.resolve(S.all.filter(function (o) { return o.id !== rec.id; }).map(function (o) { return { id: o.id, name: o.name }; }));
+        }
+        function find() {
+          var term = q.value.trim().toLowerCase(), kind = type.value; opts.textContent = "";
+          source().then(function (list) {
+            if (type.value !== kind || q.value.trim().toLowerCase() !== term) return;
+            var m = list.filter(function (x) { return !term || (x.name || "").toLowerCase().indexOf(term) >= 0; }).slice(0, 8);
+            if (!m.length) opts.appendChild(mk("div", "hint", "Nothing found."));
+            m.forEach(function (x) { var b = mk("button", "quiet", x.name); b.type = "button"; b.addEventListener("click", function () { cid = x.id; chosen.textContent = "Chosen: " + x.name; opts.textContent = ""; }); opts.appendChild(b); });
+          });
+        }
+        q.addEventListener("input", find); type.addEventListener("change", function () { cid = ""; chosen.textContent = "Nothing chosen."; q.value = ""; opts.textContent = ""; find(); });
+        c.addEventListener("click", function () { host.textContent = ""; host.dataset.k = ""; });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); fm.textContent = "";
+          if (!cid) { fm.textContent = "Choose who or what to link first."; return; }
+          var data = { subject_type: type.value, subject_id: cid, organization_id: rec.id, relationship: rel.value };
+          if (title.value.trim()) data.title = title.value.trim(); if (from.value.trim()) data.valid_from = from.value.trim(); if (to.value.trim()) data.valid_to = to.value.trim();
+          s.disabled = true;
+          admin("create", { data: data }, COLL_OL).then(function (res) {
+            s.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body.ok) { g("Notice").textContent = "Link saved."; showLinks(); return; }
+            fm.textContent = "Could not save: " + linkProblems(res);
+          });
+        });
+        host.appendChild(form); find();
+      }
+      addLink.k = "add";
+      function addPlace() {
+        var form = mk("form", "eform"), pid = rec.id + "_ap_"; form.noValidate = true; form.autocomplete = "off";
+        var sel = labeled(form, "Which place?", selectOf([["", "Loading places..."]]), pid + "p"), places = [];
+        admin("list", { limit: 200 }, "locations").then(function (r) {
+          places = (r.status === 200 && r.body.ok ? r.body.data.records : []).filter(function (p) { return p.status !== "retired"; });
+          sel.textContent = "";
+          var first = mk("option", "", places.length ? "Choose a place" : "No places yet. Add one in Places."); first.value = ""; sel.appendChild(first);
+          places.forEach(function (p) { var op = mk("option", "", p.name || (p.addresses && p.addresses[0] ? locAddr(p.addresses[0]) : "(no name)")); op.value = p.id; sel.appendChild(op); });
+        });
+        var rel = labeled(form, "How is it linked?", selectOf(PLACE_RELS.map(function (k) { return [k, REL[k] || k]; })), pid + "r");
+        var prim = mk("input"); prim.type = "checkbox"; var pl = mk("label", "f"); pl.style.display = "flex"; pl.style.gap = "8px"; pl.style.alignItems = "center"; pl.appendChild(prim); pl.appendChild(document.createTextNode("This is the main place (for example headquarters)")); form.appendChild(pl);
+        var desc = labeled(form, "A few words (optional)", textIn(300, "for example headquarters, factory"), pid + "d");
+        var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
+        var to = labeled(form, "Until (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
+        var btns = mk("div", "btns"), s = mk("button", "", "Save place link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
+        c.addEventListener("click", function () { host.textContent = ""; host.dataset.k = ""; });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault(); fm.textContent = "";
+          if (!sel.value) { fm.textContent = "Choose a place first."; return; }
+          var data = { subject_type: "organization", subject_id: rec.id, location_id: sel.value, relationship: rel.value };
+          if (prim.checked) data.is_primary = true; if (desc.value.trim()) data.description = desc.value.trim(); if (from.value.trim()) data.valid_from = from.value.trim(); if (to.value.trim()) data.valid_to = to.value.trim();
+          s.disabled = true;
+          admin("create", { data: data }, COLL_LK).then(function (res) {
+            s.disabled = false;
+            if (res.status === 401) { lock("That key did not work."); return; }
+            if (res.status === 200 && res.body.ok) { g("Notice").textContent = "Place linked."; refreshPlaces(); showPlaces(); return; }
+            fm.textContent = "Could not save: " + linkProblems(res);
+          });
+        });
+        host.appendChild(form);
+      }
+      addPlace.k = "addplace";
+      bShow.addEventListener("click", function () { open(showLinks); });
+      bAdd.addEventListener("click", function () { open(addLink); });
+      bPl.addEventListener("click", function () { open(showPlaces); });
+      bAddPl.addEventListener("click", function () { open(addPlace); });
+      return wrap;
+    }
+    function editForm(rec, host) {
+      var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
+      var more = mk("details"); more.appendChild(mk("summary", "", "More details"));
+      FIELDS.forEach(function (f) { var x = mkF(f, "roe_" + rec.id + "_", rec[f.k]); (f.more ? more : form).appendChild(x.wrap); els[f.k] = x; });
+      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rost_" + rec.id; sl.htmlFor = ss.id;
+      [["active", "Active"], ["inactive", "Inactive (kept, not used)"], ["closed", "Closed (no longer exists)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
+      ss.value = rec.status === "merged" ? "active" : (rec.status || "active");
+      var sw = mk("div"); sw.appendChild(sl); sw.appendChild(ss); form.appendChild(sw);
+      form.appendChild(more);
+      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
+      cancel.addEventListener("click", function () { host.textContent = ""; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); msg.textContent = ""; var changes = {}, bad = false;
+        Object.keys(els).forEach(function (k) { els[k].err.textContent = ""; });
+        Object.keys(els).forEach(function (k) {
+          var x = els[k], v = val(x, rec), cur = rec[k];
+          if (v.bad) { x.err.textContent = v.bad; bad = true; more.open = true; return; }
+          if (v.v === "") { if (cur !== undefined) { if (k === "name") { x.err.textContent = "Required."; bad = true; } else changes[k] = null; } }
+          else if (JSON.stringify(v.v) !== JSON.stringify(cur)) changes[k] = v.v;
+        });
+        if (ss.value !== (rec.status === "merged" ? "merged" : (rec.status || "active"))) changes.status = ss.value;
+        if (bad) return;
+        if (!Object.keys(changes).length) { host.textContent = ""; g("Notice").textContent = "Nothing changed."; return; }
+        save.disabled = true;
+        admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, "organizations").then(function (res) {
+          save.disabled = false;
+          if (res.status === 401) { lock("That key did not work."); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + (changes.name || rec.name) + "."; load(); return; }
+          if (res.status === 409) { msg.textContent = "Someone changed this organization while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
+          if (res.status === 404) { msg.textContent = "That organization is gone. Tap Refresh."; return; }
+          var pr = problems(res, els); Object.keys(pr.fields).forEach(function (k) { els[k].err.textContent = pr.fields[k]; if (FIELDS.filter(function (f) { return f.k === k && f.more; }).length) more.open = true; });
+          if (pr.other.length) msg.textContent = "Could not save: " + pr.other.join(" ");
+        });
+      });
+      return form;
+    }
+    g("AddBtn").addEventListener("click", function () {
+      g("AddForm").reset(); Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; }); g("FMsg").textContent = ""; g("Notice").textContent = "";
+      g("AddForm").hidden = false; g("AddBtn").hidden = true; addEls.name.el.focus();
+    });
+    g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
+    g("AddForm").addEventListener("submit", function (e) {
+      e.preventDefault(); g("FMsg").textContent = ""; var data = {}, bad = false;
+      Object.keys(addEls).forEach(function (k) { addEls[k].err.textContent = ""; });
+      Object.keys(addEls).forEach(function (k) {
+        var v = val(addEls[k], null);
+        if (v.bad) { addEls[k].err.textContent = v.bad; bad = true; return; }
+        if (v.v !== "") data[k] = v.v;
+      });
+      if (!data.name) { addEls.name.err.textContent = "Required."; bad = true; }
+      if (bad) return;
+      g("SaveBtn").disabled = true;
+      admin("create", { data: data }, "organizations").then(function (res) {
+        g("SaveBtn").disabled = false;
+        if (res.status === 401) { lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.name + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+          g("Filter").value = "active"; g("Search").value = ""; load(); return;
+        }
+        var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
+        if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
+      });
+    });
+    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Search").addEventListener("input", render);
+    g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
+    g("Retry").addEventListener("click", load);
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+  }
+  buildOrganization();
+
+  function resetRosters() { Object.keys(ROSTER).forEach(function (k) { ROSTER[k].reset(); }); }
+
+  // ---- Google sign-in. Only switched on when console/firebase-config.js holds the project's public web key; until then the page is key-only.
+  function loadScript(src) { return new Promise(function (ok, no) { var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+  function onToken(user) {
+    if (!user) { if (method === "google" && key) lock("You have been signed out."); return; }
+    user.getIdToken().then(function (t) {
+      if (method === "google" && key) { key = t; return; }   // a refreshed token for the session already open
+      if (key) return;                                       // already in with the admin key
+      if (idleStaleAtLoad) { idleStaleAtLoad = false; idleDrop(IDLE_AT); try { auth.signOut(); } catch (e) {} $("lockMsg").textContent = idleStaleMessage(); show(true); return; }   // a restored session that sat idle too long
+      method = "google"; unlock(t, false);
+    }).catch(function () {});
+  }
+  function refreshToken() {
+    if (method === "google" && auth && auth.currentUser) auth.currentUser.getIdToken().then(function (t) { if (method === "google") key = t; }).catch(function () {});
+  }
+  function showGoogle(on) {
+    $("googleBox").hidden = !on; $("keyBox").hidden = on; $("swapLink").textContent = on ? "Use admin key" : "Use Google sign-in"; $("swapLink").hidden = false;
+  }
+  function initGoogle() {
+    var cfg = window.CONSOLE_FIREBASE;
+    if (!cfg || !cfg.apiKey) return;
+    var ready = window.firebase ? Promise.resolve() : loadScript(SDK + "firebase-app-compat.js").then(function () { return loadScript(SDK + "firebase-auth-compat.js"); });
+    ready.then(function () {
+      var fb = window.firebase;
+      if (!fb.apps || !fb.apps.length) fb.initializeApp(cfg);
+      auth = fb.auth();
+      showGoogle(true);
+      auth.onIdTokenChanged(onToken);
+    }).catch(function () { /* stays key-only */ });
+  }
+  $("googleBtn").addEventListener("click", function () {
+    if (!auth || launching) return;
+    $("lockMsg").textContent = ""; idleStaleAtLoad = false;       // a deliberate sign-in is never dropped as stale
+    var p = new window.firebase.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    auth.signInWithPopup(p).catch(function (e) {
+      $("lockMsg").textContent = e && e.code === "auth/popup-closed-by-user" ? "" : "Google sign-in did not complete. Try again.";
+    });
+  });
+  $("swapLink").addEventListener("click", function (e) { e.preventDefault(); showGoogle($("googleBox").hidden); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshToken(); });
+  setInterval(refreshToken, 20 * 60 * 1000);
+  initGoogle();
+
+  // ---- Automatic sign-out after inactivity (console_setting.session_timeout_minutes, set by a super admin in Access > Sign-in).
+  // This locks the page in this browser; it is not a server session (the admin key itself stays valid until it is changed). The clock
+  // is shared by every Console tab in this browser (localStorage); a Discovery run in progress counts as activity (it is driven from this
+  // page); a remembered key or Google session that has sat idle past the limit is dropped when the page loads instead of signing in.
+  // If the number cannot be read, the last known one is used, and 10 minutes if none was ever known: it fails closed, never open.
+  var IDLE_AT = "console_last_active", IDLE_MIN = "console_timeout_minutes", IDLE_DEFAULT = 10, IDLE_WARN_MS = 60000;
+  var idleMinutes = IDLE_DEFAULT, idleLast = Date.now(), idleWrote = 0, idleTimer = null, idleShown = false, idleStaleAtLoad = false;
+  function idleGet(k) { try { return parseInt(localStorage.getItem(k) || "", 10) || 0; } catch (e) { return 0; } }
+  function idleSet(k, v) { try { localStorage.setItem(k, String(v)); } catch (e) {} }
+  function idleDrop(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  function idleClamp(n) { n = Math.round(Number(n)); return n >= 1 && n <= 480 ? n : IDLE_DEFAULT; }
+  idleMinutes = idleClamp(idleGet(IDLE_MIN) || IDLE_DEFAULT);
+  function idleTouch() { var t = Date.now(); idleLast = t; if (t - idleWrote > 5000) { idleWrote = t; idleSet(IDLE_AT, t); } }
+  function idleLastActive() { return Math.max(idleLast, idleGet(IDLE_AT)); }
+  function idleBusy() { return !!(window.DiscoveryStation && window.DiscoveryStation.busy && window.DiscoveryStation.busy()); }
+  function idleWarn(ms) {
+    var w = $("idleWarn"); if (!w) return;
+    if (!ms) { if (idleShown) { w.hidden = true; idleShown = false; } return; }
+    var sec = Math.max(1, Math.ceil(ms / 1000)); $("idleCount").textContent = (sec >= 60 ? Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2) : sec + " second" + (sec === 1 ? "" : "s"));
+    if (!idleShown) { w.hidden = false; idleShown = true; }
+  }
+  function idleTick() {
+    if (!key) { idleWarn(0); return; }
+    if (idleBusy()) idleTouch();
+    var left = idleMinutes * 60000 - (Date.now() - idleLastActive());
+    if (left <= 0) { idleWarn(0); lock("You were signed out after " + idleMinutes + " minute" + (idleMinutes === 1 ? "" : "s") + " without activity. Sign in again."); return; }
+    idleWarn(left <= IDLE_WARN_MS ? left : 0);
+  }
+  function idleStart() {   // a person is signed in: start the clock and read the super admin's number
+    idleTouch();
+    if (!idleTimer) idleTimer = setInterval(idleTick, 1000);
+    if (!can("view_console")) return;                                  // this person may not read the setting: keep the last known number (no refused call)
+    adminCall("list", { limit: 1 }, "console_settings").then(function (r) {
+      var recs = r.status === 200 && r.body && r.body.ok && r.body.data && r.body.data.records;
+      if (!recs) return;                                              // could not read: keep the last known number
+      idleMinutes = idleClamp(recs.length ? recs[0].session_timeout_minutes : IDLE_DEFAULT); idleSet(IDLE_MIN, idleMinutes);
+    });
+  }
+  function idleEnd() { idleWarn(0); idleDrop(IDLE_AT); idleLast = Date.now(); }   // locked: forget the old activity time too (a later sign-in must not inherit it)
+  ["pointerdown", "keydown", "wheel", "touchstart", "scroll"].forEach(function (ev) {
+    document.addEventListener(ev, function () { if (!key) return; idleTouch(); if (idleShown) idleWarn(0); }, { capture: true, passive: true });
+  });
+  $("idleStay").addEventListener("click", function () { idleTouch(); idleWarn(0); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) idleTick(); });
+  idleStaleAtLoad = idleGet(IDLE_AT) > 0 && Date.now() - idleGet(IDLE_AT) > idleMinutes * 60000;   // a saved session that sat idle past the limit
+  function idleStaleMessage() { return "You were signed out after " + idleMinutes + " minute" + (idleMinutes === 1 ? "" : "s") + " without activity. Sign in again."; }
+
+  var saved = getKey();
+  if (saved.key && idleStaleAtLoad) { idleStaleAtLoad = false; setKey('', false); idleDrop(IDLE_AT); $("lockMsg").textContent = idleStaleMessage(); show(true); }
+  else if (saved.key) { $("rememberBox").checked = saved.remember; unlock(saved.key, saved.remember); } else show(true);
+})();

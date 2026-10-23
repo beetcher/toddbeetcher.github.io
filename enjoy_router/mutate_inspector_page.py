@@ -3,7 +3,7 @@
 run_inspector_browser_test.py must fail. Restores every file afterwards. Run from enjoy_router/:  python3 mutate_inspector_page.py"""
 import os, subprocess, sys, pathlib
 HERE = pathlib.Path(__file__).resolve().parent; C = HERE.parent / "console"
-IDX = C / "index.html"; ACC = C / "access.js"
+IDX = C / "console.js"; ACC = C / "access.js"
 M = [
  ("an inspector is not allowed every station by can()", IDX, "ME.is_super_admin === true || ME.inspector === true || (ME.capabilities", "ME.is_super_admin === true || (ME.capabilities"),
  ("an inspector cannot open the admin stations", IDX, "!!(ME && (ME.is_super_admin || ME.inspector))", "!!(ME && ME.is_super_admin)"),

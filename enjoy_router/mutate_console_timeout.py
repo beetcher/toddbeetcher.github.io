@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Mutation check for the Console inactivity sign-out: break each rule in console/index.html and console/access.js on purpose and
+"""Mutation check for the Console inactivity sign-out: break each rule in console/console.js and console/access.js on purpose and
 run_console_timeout_browser_test.py must fail. Restores both files afterwards. Run from enjoy_router/:  python3 mutate_console_timeout.py"""
 import subprocess, sys, pathlib
 HERE = pathlib.Path(__file__).resolve().parent
-IDX = HERE.parent / "console" / "index.html"; ACC = HERE.parent / "console" / "access.js"
+IDX = HERE.parent / "console" / "console.js"; ACC = HERE.parent / "console" / "access.js"
 GOOD = {IDX: IDX.read_text(encoding="utf-8"), ACC: ACC.read_text(encoding="utf-8")}
 M = [
  (IDX, "default is not 10", 'IDLE_DEFAULT = 10,', 'IDLE_DEFAULT = 99,'),
