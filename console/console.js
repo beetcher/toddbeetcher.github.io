@@ -385,7 +385,47 @@
     SURFACES.forEach(function (sf) {
       var pg = document.createElement("div"); pg.className = "mpage"; pg.hidden = true; pg.innerHTML = sf.manual; sc.appendChild(pg); mPages[sf.id] = pg;
     });
+    buildNav();
   }
+
+  // ---- Sidebar (1.2a): the same stations as the drop-down, in five groups. A station not listed in a group lands under "More".
+  var NAV_GROUPS = [
+    { name: "Today", ids: ["requests", "messages"] },
+    { name: "Classes", ids: ["classes", "attendance", "venues", "curriculums", "instructors"] },
+    { name: "People", ids: ["people", "students", "organizations", "places"] },
+    { name: "Growth and admin", ids: ["discovery", "access", "activity", "performance"] }
+  ];
+  function navLink(id, label, adm) {
+    var li = document.createElement("li"), a = document.createElement("a");
+    a.href = "#/" + id; a.dataset.nav = id; a.textContent = label;
+    if (adm) { var t = document.createElement("span"); t.className = "nadm"; t.textContent = "admin"; a.appendChild(t); }
+    li.appendChild(a); return li;
+  }
+  function buildNav() {
+    var nav = $("sideNav"); nav.innerHTML = "";
+    var home = document.createElement("ul"); home.className = "nlist"; home.appendChild(navLink("home", "Home", false)); nav.appendChild(home);
+    var used = {}, groups = NAV_GROUPS.map(function (g) { g.ids.forEach(function (i) { used[i] = true; }); return { name: g.name, ids: g.ids }; });
+    var rest = SURFACES.filter(function (s) { return !used[s.id]; }).map(function (s) { return s.id; });
+    if (rest.length) groups.push({ name: "More", ids: rest });
+    groups.forEach(function (g, gi) {
+      var sec = document.createElement("div"); sec.className = "ngroup";
+      var h = document.createElement("h2"); h.className = "nhead"; h.id = "navg" + gi; h.textContent = g.name; sec.appendChild(h);
+      var ul = document.createElement("ul"); ul.className = "nlist"; ul.setAttribute("aria-labelledby", h.id);
+      g.ids.forEach(function (id) { var sf = surfaceById(id); if (sf) ul.appendChild(navLink(id, sf.short || sf.name, !!sf.admin)); });
+      sec.appendChild(ul); nav.appendChild(sec);
+    });
+  }
+  function navAccess() {   // hide what this person's role can never open, and any group left empty
+    Array.prototype.forEach.call(document.querySelectorAll("#sideNav a[data-nav]"), function (a) { a.parentNode.style.display = (a.dataset.nav === "home" || stationAllowed(a.dataset.nav)) ? "" : "none"; });
+    Array.prototype.forEach.call(document.querySelectorAll("#sideNav .ngroup"), function (g) {
+      var any = false; Array.prototype.forEach.call(g.querySelectorAll("li"), function (li) { if (li.style.display !== "none") any = true; });
+      g.style.display = any ? "" : "none";
+    });
+  }
+  function markNav(r) {
+    Array.prototype.forEach.call(document.querySelectorAll("#sideNav a[data-nav]"), function (a) { if (a.dataset.nav === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  }
+  function setTopH() { document.documentElement.style.setProperty("--topbar-h", $("topbar").offsetHeight + "px"); }
   var ALL_OPTS = null;
   function applyAccess() {
     var pick = $("collPick");
@@ -396,6 +436,7 @@
     pick.value = cur;
     Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = stationAllowed(b.dataset.go) ? "" : "none"; });
     Array.prototype.forEach.call(document.querySelectorAll(".mbtns button[data-m]"), function (b) { b.style.display = stationAllowed(b.dataset.m) ? "" : "none"; });
+    navAccess();
     $("attnBox").hidden = !canPlaced();
     var who = $("who");
     who.textContent = ""; who.title = "";
@@ -462,6 +503,7 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
+    document.body.classList.toggle("withnav", !locked); setTopH();
     if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
@@ -476,7 +518,7 @@
     if (r !== "venues") closeEdit();
     if (r !== "classes") closeClassEdit();
     $("collPick").value = r;
-    markPick();
+    markPick(); markNav(r); setTopH();
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
     $("classesView").hidden = r !== "classes";
@@ -2845,6 +2887,12 @@
   function markPick() { var o = $("collPick").selectedOptions[0]; $("collPick").classList.toggle("adm", !!(o && o.className === "adminstn")); }
   $("collPick").addEventListener("change", function () { markPick(); goTo($("collPick").value); });
   $("brand").addEventListener("click", function (e) { e.preventDefault(); goTo("home"); });
+  $("sideNav").addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[data-nav]") : null;
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;   // modified clicks keep their normal meaning (new tab)
+    e.preventDefault(); goTo(a.dataset.nav);
+  });
+  window.addEventListener("resize", setTopH);
   document.addEventListener("click", function (e) {
     var t = e.target.closest ? e.target.closest("[data-go],[data-m]") : null;
     if (!t) return;

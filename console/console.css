@@ -484,3 +484,22 @@
   .rostview .pickrow button { width: 100%; text-align: left; min-height: 48px; }
   .rostview .hrow { display: grid; grid-template-columns: 44px 1fr 1fr; gap: var(--space-4); align-items: center; margin-top: var(--space-3); }
   .rostview .note { margin-top: var(--space-4); font-weight: 600; }
+
+  /* ---- Sidebar shell (step 1.2a). At 1180px and wider the station drop-down gives way to a left sidebar and the content column widens;
+     narrower screens keep the drop-down exactly as before. */
+  .shell { display: block; }
+  #sideNav { display: none; }
+  .nlist { list-style: none; margin: 0; padding: 0; }
+  .ngroup { margin-top: var(--space-8); }
+  .nhead { margin: 0 0 var(--space-2); padding: 0 var(--space-6); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  #sideNav a { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 40px; padding: 0 var(--space-6); border-radius: 10px; color: var(--ink); font-size: var(--text-m); font-weight: 600; text-decoration: none; }
+  #sideNav a:hover { background: var(--line); }
+  #sideNav a[aria-current="page"] { background: var(--black); color: var(--white); }
+  #sideNav .nadm { font-size: var(--text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--err); }
+  #sideNav a[aria-current="page"] .nadm { color: var(--err-on-dark); }
+  @media (min-width: 1180px) {
+    body.withnav .shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); align-items: start; max-width: 1440px; margin: 0 auto; }
+    body.withnav header select#collPick { display: none; }
+    body.withnav #sideNav { display: block; position: sticky; top: var(--topbar-h, 70px); max-height: calc(100vh - var(--topbar-h, 70px)); overflow-y: auto; box-sizing: border-box; padding: var(--space-8) var(--space-6) var(--space-9) var(--space-8); }
+    body.withnav main { max-width: 1120px; width: 100%; margin: 0; box-sizing: border-box; }
+  }
