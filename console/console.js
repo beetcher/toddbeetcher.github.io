@@ -3106,7 +3106,7 @@
     cb.textContent = "";
     if (wait) {
       cb.appendChild(document.createTextNode(wait + (wait === 1 ? " request is" : " requests are") + " waiting for a trainer"));
-      if (mode !== "notrainer") { var sb = mk("button", "btn-primary", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
+      if (mode !== "notrainer") { var sb = mk("button", "btn-secondary", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
       if (ME && !ME.inspector && (ME.is_super_admin || ME.role_key === "admin")) {   // Send reminders now: the daily reminder, by hand (the server checks too)
         var rb = mk("button", "btn-secondary", "Send reminders now"); rb.type = "button";
         rb.addEventListener("click", function () {
