@@ -546,7 +546,7 @@
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
   function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
-  var SELF_TITLED = { requests: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
+  var SELF_TITLED = { requests: 1, messages: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
   function stationHead(r) {
     var v = $((r === "requests" ? "list" : r) + "View"), sf = surfaceById(r);
     if (!v || !sf || SELF_TITLED[r] || v.querySelector(":scope > .stnh")) return;
@@ -3956,6 +3956,7 @@
     var some = !all || q || $("mAttn").checked || $("mNotes").checked || $("mRedir").checked;
     $("mFilterSummary").textContent = some ? (q ? "Searching the whole log for “" + q + "” (tick boxes ignored)" : "Filters: some messages are hidden") : "Filters: all messages shown";
     $("mFilterSummary").className = some ? "some" : "";
+    $("mAttnBtn").setAttribute("aria-pressed", $("mAttn").checked ? "true" : "false");
   }
   function loadMessagesStation() {
     var my = ++MS.seq;
@@ -3993,6 +3994,7 @@
   $("mRefresh").addEventListener("click", function () { $("mNotice").textContent = ""; loadMessagesStation(); });
   $("mFilters").addEventListener("change", function () { mRender(); });
   $("mSearch").addEventListener("input", function () { mRender(); });
+  $("mAttnBtn").addEventListener("click", function () { $("mAttn").checked = !$("mAttn").checked; mRender(); });   // the quick toggle and the box inside Filters are one setting
   $("mShowAll").addEventListener("click", function () {
     Array.prototype.forEach.call(mBoxes(), function (c) { c.checked = !(c.id === "mAttn" || c.id === "mNotes" || c.id === "mRedir"); });
     $("mSearch").value = ""; mRender();

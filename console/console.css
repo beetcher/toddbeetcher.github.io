@@ -332,6 +332,11 @@
   .ready .ok { color: var(--ok-ink); }
   .ready .todo { color: var(--muted); }
   details.more { margin-bottom: var(--space-5); }
+  .mquick { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; margin: 0 0 var(--space-5); }
+  .mquick input[type=search] { flex: 1 1 280px; min-width: 0; min-height: 44px; }
+  .tog { min-height: 44px; padding: 0 var(--space-6); border-radius: 999px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+  .tog[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+  .tog:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
   .msumm { margin: 0 0 var(--space-5); color: var(--muted); font-size: var(--text-m); }
   .mrec { list-style: none; border: 1px solid var(--line); border-left-width: 6px; border-radius: 12px; margin: 0 0 var(--space-5); padding: 0; background: var(--card); }
   .mrec.bad { border-left-color: var(--err); }
