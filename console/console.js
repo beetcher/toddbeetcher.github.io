@@ -707,7 +707,7 @@
     });
 
     var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
-    var putrow = document.createElement("div"); putrow.className = "qrow";
+    var putrow = document.createElement("div"); putrow.className = "qrow qacts";
     var pb = document.createElement("button"); pb.type = "button"; pb.className = "btn-primary"; pb.textContent = "Put in a class…";
     var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
     pb.addEventListener("click", function () {
