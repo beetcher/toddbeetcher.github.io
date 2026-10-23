@@ -97,7 +97,8 @@ def admin_route(route):
 def records_route(route):
     q = route.request
     if q.method == "OPTIONS": route.fulfill(status=204, headers={**CORS, "Access-Control-Allow-Methods": "*"}); return
-    r = handle_console("GET", q.headers.get("authorization", ""), {}, KEY, "v", RegView(), climiter, datetime.now(timezone.utc), verifier=V, access_store=store)
+    from urllib.parse import urlparse, parse_qs
+    r = handle_console("GET", q.headers.get("authorization", ""), {k: v[0] for k, v in parse_qs(urlparse(q.url).query).items()}, KEY, "v", RegView(), climiter, datetime.now(timezone.utc), verifier=V, access_store=store)
     route.fulfill(status=r.status, headers=CORS, body=json.dumps(r.body))
 def disc_route(route):
     q = route.request
@@ -156,7 +157,7 @@ with sync_playwright() as p:
     check("the count and last-checked sit under the title", pg.evaluate("(function(){var t=document.getElementById('reqTitle').getBoundingClientRect(),c=document.getElementById('countText').getBoundingClientRect(),m=document.getElementById('checkedText').getBoundingClientRect(); return t.bottom<=c.top+1 && c.bottom<=m.top+1})()"))
     check("the tab title names the station", pg.title().startswith("Requests"), pg.title())
     segs = pg.locator("#reqSeg button")
-    check("the Show filter is a radio group of four", pg.get_attribute("#reqSeg", "role") == "radiogroup" and segs.count() == 4 and [__import__("re").sub(r"\s*\d+\s*$", "", x) for x in segs.all_inner_texts()] == ["Open", "Closed", "All", "No active trainer"], segs.all_inner_texts())
+    check("the Show filter is a radio group of five", pg.get_attribute("#reqSeg", "role") == "radiogroup" and segs.count() == 5 and [__import__("re").sub(r"\s*\d+\s*$", "", x) for x in segs.all_inner_texts()] == ["Open", "Closed", "All", "No active trainer", "Deleted"], segs.all_inner_texts())
     check("Open is chosen at first, the others are out of the tab order", pg.get_attribute('#reqSeg [data-v="open"]', "aria-checked") == "true" and pg.evaluate("Array.from(document.querySelectorAll('#reqSeg button')).filter(b => b.tabIndex === 0).length") == 1)
     check("no drop-down for it on the page (the stored select is hidden)", pg.locator("#reqShow").is_hidden())
     cols = pg.evaluate("getComputedStyle(document.getElementById('list')).gridTemplateColumns.split(' ').length")
@@ -173,11 +174,13 @@ with sync_playwright() as p:
     pg.focus('#reqSeg [data-v="open"]'); pg.keyboard.press("ArrowRight"); pg.wait_for_timeout(100)
     check("the right arrow chooses Closed and moves focus", pg.get_attribute('#reqSeg [data-v="closed"]', "aria-checked") == "true" and pg.evaluate("document.activeElement.dataset.v") == "closed")
     pg.keyboard.press("End"); pg.wait_for_timeout(100)
-    check("End chooses the last one, No active trainer, and shows exactly those", pg.get_attribute('#reqSeg [data-v="notrainer"]', "aria-checked") == "true" and pg.locator("#list > li:visible").count() == 2 and "2 requests with no active trainer" in pg.locator("#countText").inner_text(), pg.locator("#countText").inner_text())
+    check("End chooses the last one, Deleted, and shows no normal cards", pg.get_attribute('#reqSeg [data-v="deleted"]', "aria-checked") == "true" and pg.locator("#list > li:visible").count() == 0)
+    pg.keyboard.press("ArrowLeft"); pg.wait_for_timeout(300)
+    check("the left arrow moves to No active trainer and shows exactly those", pg.get_attribute('#reqSeg [data-v="notrainer"]', "aria-checked") == "true" and pg.locator("#list > li:visible").count() == 2 and "2 requests with no active trainer" in pg.locator("#countText").inner_text(), pg.locator("#countText").inner_text())
     pg.keyboard.press("Home"); pg.wait_for_timeout(100)
     check("Home goes back to Open", pg.get_attribute('#reqSeg [data-v="open"]', "aria-checked") == "true" and pg.locator("#list > li:visible").count() == 3)
     pg.keyboard.press("ArrowLeft"); pg.wait_for_timeout(100)
-    check("the left arrow from the first wraps to the last", pg.get_attribute('#reqSeg [data-v="notrainer"]', "aria-checked") == "true")
+    check("the left arrow from the first wraps to the last, Deleted", pg.get_attribute('#reqSeg [data-v="deleted"]', "aria-checked") == "true")
     pg.click('#reqSeg [data-v="open"]')
     # the banner's Show them still drives the control
     pg.click("#covBanner button:has-text('Show them')"); pg.wait_for_timeout(150)
@@ -196,6 +199,17 @@ with sync_playwright() as p:
     check("deleting hides the card and offers Undo", pg.locator("#list > li:visible").count() == n0 - 1 and pg.locator("#reqDone button", has_text="Undo").is_visible(), pg.locator("#reqDone").inner_text())
     pg.locator("#reqDone button", has_text="Undo").click(); pg.wait_for_timeout(900)
     check("Undo brings the card back", pg.locator("#list > li:visible").count() == n0 and "is back in the list" in pg.locator("#reqDone").inner_text(), pg.locator("#reqDone").inner_text())
+    # ---- Deleted filter and Restore: the deleted request can be found again after the Undo bar is gone
+    pg.locator("#list > li:visible").first.get_by_role("button", name="Delete (").click(); pg.locator("#list > li:visible").first.get_by_role("button", name="Really delete").click(); pg.wait_for_timeout(600)
+    pg.click('#reqSeg [data-v="deleted"]'); pg.wait_for_selector("#delList li")
+    check("Deleted filter lists the deleted request with a Restore button, and no normal cards", pg.locator("#delList li button", has_text="Restore").count() >= 1 and pg.locator("#list > li:visible").count() == 0, pg.locator("#delList").inner_text())
+    check("a deleted card says Deleted and offers no Delete or Put in a class", "Deleted" in pg.locator("#delList li").first.inner_text() and pg.locator("#delList li button", has_text="Delete").count() == 0 and pg.locator("#delList li button", has_text="Put in").count() == 0)
+    n_del = pg.locator("#delList li").count()
+    pg.locator("#delList li").first.get_by_role("button", name="Restore").click()
+    pg.wait_for_function("document.getElementById('reqDone').textContent.indexOf('is back in the list') >= 0")
+    check("Restore takes it off the Deleted list and says so", pg.locator("#delList li").count() == n_del - 1)
+    pg.click('#reqSeg [data-v="open"]'); pg.wait_for_timeout(500)
+    check("the restored card is back in Open", pg.locator("#list > li:visible").count() == n0, pg.locator("#list > li:visible").count())
     # phone
     pg.set_viewport_size({"width": 390, "height": 900}); pg.wait_for_timeout(250)
     check("no sideways scroll on a phone", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))

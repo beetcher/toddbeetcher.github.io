@@ -34,9 +34,13 @@ def make_failure_limiter() -> RateLimiter:
     return RateLimiter(rules=FAILURE_RULES)
 
 
-def list_registration_requests(store, limit: int = DEFAULT_LIMIT, since: Optional[str] = None) -> list:
-    """Newest first. since (an ISO string) keeps only records created at or after it."""
+def list_registration_requests(store, limit: int = DEFAULT_LIMIT, since: Optional[str] = None, deleted: bool = False) -> list:
+    """Newest first. since (an ISO string) keeps only records created at or after it. deleted=True returns ONLY the deleted ones (for Restore);
+    otherwise a deleted request is kept but never shown."""
     limit = max(1, min(int(limit), MAX_LIMIT))
+    if deleted:
+        return [{k: v for k, v in d.items() if k != "completion_token"}
+                for d in store.list_requests(MAX_LIMIT, since) if d.get("deleted_at")][:limit]
     # completion_token is the secret in the receipt-email link: it never goes to the Console
     # coverage_waiting is worked out here on every read (not stored): the request is urgent, nobody handled it, and no active region holds its ZIP yet
     # a request marked deleted is kept but never shown
@@ -79,16 +83,17 @@ def handle_console(
     except (TypeError, ValueError):
         return _error(400, "validation_failed", "limit must be a whole number.")
     since = params.get("since")
+    only_deleted = params.get("deleted") == "1"
     if since is not None and not SINCE_PATTERN.match(since):
         return _error(400, "validation_failed", "since must look like 2026-10-09T04:26:57Z.")
 
     try:
         scope = None if access.is_super_admin or access.inspector else Scope(access, Territory(access_store))
         if scope is not None and not scope.unlimited:   # a person with limited territory sees only the requests whose ZIP is theirs (P-65)
-            wide = list_registration_requests(store, MAX_LIMIT, since)
+            wide = list_registration_requests(store, MAX_LIMIT, since, only_deleted)
             records = [r for r in wide if scope.can_read(_policy.RECORDS, _places.zip_of_request(access_store, r))][:max(1, min(limit, MAX_LIMIT))]
         else:
-            records = list_registration_requests(store, limit, since)
+            records = list_registration_requests(store, limit, since, only_deleted)
     except Exception as exc:  # say nothing about the cause
         log.error("console_records code=server_error exception=%s", type(exc).__name__)
         return _error(500, "server_error", "Could not complete the request.")

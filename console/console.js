@@ -3106,11 +3106,11 @@
   function pickReq(v, focus) { $("reqShow").value = v; applyReqFilter(); if (focus) { var t = $("reqSeg").querySelector('[data-v="' + v + '"]'); if (t) t.focus(); } }
   function applyReqFilter() {
     syncReqSeg();
-    var mode = $("reqShow").value, shown = 0, open = 0;
+    var mode = $("reqShow").value, shown = 0, open = 0, isDel = mode === "deleted";
     Object.keys(rows).forEach(function (id) {
       var closed = P.loaded && !!P.ids[id];
       if (!closed) open++;
-      var show = mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed);
+      var show = !isDel && (mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed));
       rows[id].style.display = show ? "" : "none";
       if (show) shown++;
     });
@@ -3138,12 +3138,52 @@
         cb.appendChild(rb);
       }
     }
-    cb.hidden = !wait;
+    cb.hidden = !wait || isDel;
     $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")
       : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
       : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
     $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer. Nothing to do here." : mode === "open" ? "No open requests. Every request is in a class. New sign-ups from the website show up here by themselves." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
-    $("empty").hidden = shown > 0;
+    $("empty").hidden = shown > 0 || isDel;
+    if (isDel) { $("countText").textContent = "Deleted requests"; loadDeleted(); } else { $("delList").hidden = true; $("delEmpty").hidden = true; }
+  }
+  // Deleted requests (for Restore): fetched on their own, because the normal list never carries them. Each card has a Restore button.
+  var delSeq = 0;
+  function loadDeleted() {
+    var my = ++delSeq, ul = $("delList");
+    ul.textContent = ""; $("delEmpty").hidden = true; ul.hidden = false;
+    var url = CFG.endpoints.records + "?limit=" + MAX + "&deleted=1";
+    fetchT(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" }, READ_MS).then(function (r) {
+      if (r.status === 401) { lock("That key did not work."); return null; }
+      if (!r.ok) { $("listMsg").textContent = "Could not load the deleted requests. Try Refresh."; return null; }
+      return r.json();
+    }).catch(function (e) { netShow(!!(e && e.timedOut)); return null; }).then(function (j) {
+      if (my !== delSeq || !j) return;
+      $("listMsg").textContent = "";
+      var recs = (j.data && j.data.records) || [];
+      $("countText").textContent = recs.length + (recs.length === 1 ? " deleted request" : " deleted requests");
+      $("delEmpty").hidden = recs.length > 0;
+      recs.forEach(function (rec) {
+        var li = mk("li", ""); li.setAttribute("data-tone", "done"); li.setAttribute("data-deleted", rec.id);
+        var who = personOf(rec), box = mk("div", "qrow");
+        box.appendChild(mk("b", "", rec.confirmation_number || ""));
+        box.appendChild(mk("span", "qchip", "Deleted"));
+        var meta = [who, rec.email, rec.zip_code ? "ZIP: " + rec.zip_code : "", rec.deleted_at ? "deleted " + fmtTime.format(new Date(rec.deleted_at)) : ""].filter(Boolean).join(" · ");
+        box.appendChild(mk("span", "qnext", meta));
+        if (can("manage_requests") && !(ME && ME.inspector)) {
+          var rb = mk("button", "btn-primary", "Restore"); rb.type = "button"; rb.setAttribute("aria-label", "Restore (" + who + ")");
+          rb.addEventListener("click", function () {
+            rb.disabled = true;
+            admin("restore_request", { id: rec.id }, "attendances").then(function (r2) {
+              if (r2.status === 401) { lock("That key did not work."); return; }
+              if (r2.status === 200 && r2.body && r2.body.ok) { if (li.parentNode) li.parentNode.removeChild(li); $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " is back in the list."; $("reqDone").hidden = false; $("delEmpty").hidden = $("delList").children.length > 0; check(true); return; }
+              rb.disabled = false; $("reqDone").textContent = "Could not restore it. " + adminProblem(r2.status); $("reqDone").hidden = false;
+            });
+          });
+          box.appendChild(rb);
+        }
+        li.appendChild(box); ul.appendChild(li);
+      });
+    });
   }
   $("reqShow").addEventListener("change", applyReqFilter);
   buildReqSeg(); syncReqSeg();

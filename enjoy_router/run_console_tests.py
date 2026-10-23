@@ -97,6 +97,15 @@ class Boom(MemoryStore):
         raise RuntimeError("secret detail jane@example.com")
 
 
+# Deleted requests (for Restore): hidden from the normal list, returned alone with ?deleted=1, secret still stripped
+ds = store_with(3)
+ds.requests[1]["deleted_at"] = "2026-10-09T05:00:00Z"; ds.requests[1]["deleted_by"] = "user:admin"; ds.requests[1]["completion_token"] = "secret-token"
+check("a deleted request is not in the normal list", [d["id"] for d in call(store=ds).body["data"]["records"]] == ["id2", "id0"])
+rd = call(store=ds, params={"deleted": "1"})
+check("deleted=1 returns only the deleted ones, with who and when", rd.status == 200 and [d["id"] for d in rd.body["data"]["records"]] == ["id1"] and rd.body["data"]["records"][0]["deleted_by"] == "user:admin")
+check("deleted=1 never carries the receipt-link secret", "secret-token" not in json.dumps(rd.body))
+check("deleted=1 still needs the key", call(store=ds, params={"deleted": "1"}, auth="").status == 401)
+check("deleted=0 or anything else is the normal list", [d["id"] for d in call(store=ds, params={"deleted": "0"}).body["data"]["records"]] == ["id2", "id0"])
 r = call(store=Boom([]))
 check("a crash gives a plain server_error that reveals nothing", r.status == 500 and "secret" not in json.dumps(r.body))
 
