@@ -2,7 +2,7 @@
 """Browser test: the Messages station shows the whole message log, filters it with the filter chips (UI.chipFilters) and search, opens an entry, copies it, and
 lets an operator add notes (add only) and mark a not-sent message handled. In-memory store, headless Chromium.
 Run from enjoy_router/:  python3 run_messages_browser_test.py"""
-import sys, json, os, pathlib
+import sys, json, os, pathlib, re
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from datetime import datetime, timezone, timedelta
@@ -182,6 +182,17 @@ with sync_playwright() as p:
     chip("Needs attention").click()
     check("a handled message no longer needs attention", rows() == 2)
     chip("Needs attention").click()
+    # the station lives in its own file (M-2), and signing out takes the log off the page (M-2, D-2)
+    CON = HERE.parent / "console"
+    big = (CON / "console.js").read_text(); own = (CON / "messages.js").read_text()
+    check("Messages is its own file, loaded after console.js and exposing MessagesStation", "window.MessagesStation" in own and (CON / "index.html").read_text().index('src="console.js"') < (CON / "index.html").read_text().index('src="messages.js"') and pg.evaluate("typeof window.MessagesStation.show === 'function' && typeof window.MessagesStation.reset === 'function'"))
+    check("nothing of the Messages station is left in console.js", not re.search(r"loadMessagesStation|\\bmRender\\b|var MS =|\\bmChips\\b", big))
+    check("the station reaches the big file only through ConsoleKit", "window.ConsoleKit" in own and not any(w in own for w in ["aClassById", "fetchRecords", "fmtTime", "loadClassChoices"]))
+    pg.fill("#mSearch", "ann@example.com"); pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    check("signing out empties the list, the summary and the search box", pg.evaluate("document.getElementById('mList').children.length === 0 && document.getElementById('mSummary').textContent === '' && document.getElementById('mSearch').value === ''") and "example.com" not in pg.evaluate("document.getElementById('messagesView').textContent") and pg.evaluate("document.querySelector('#mChips .cf-badge').textContent") == "" and pg.locator("#mChips .cf-n:visible").count() == 0)
+    pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#lockView", state="hidden")
+    pg.wait_for_selector("#mList li")   # signing in lands back on the page that was open
+    check("signing back in loads the log again", rows() == 7 and pg.locator("#mChips .cf-chip").count() == 5, rows())
     # a server that cannot be reached is said plainly
     pg.unroute("**/enjoy_admin"); pg.route("**/enjoy_admin", lambda r: r.abort())
     pg.click("#mRefresh"); pg.wait_for_function("document.getElementById('mMsg').textContent.indexOf('Could not') >= 0")

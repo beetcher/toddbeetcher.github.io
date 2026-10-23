@@ -240,6 +240,7 @@
       ["mList", "mSummary", "mMsg", "mNotice", "mChecked", "mCount"].forEach(function (id) { var n = $(id); if (n) n.textContent = ""; });
       var s = $("mSearch"); if (s) s.value = "";
       if ($("mEmpty")) $("mEmpty").hidden = true;
+      if (MS.cf) { MS.cf.setCounts({}); MS.cf.setBadge("attention", ""); MS.cf.setResult(""); MS.cf.setNote(""); }   // the numbers beside the chips came from the log too
     }
   };
 })();
