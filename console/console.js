@@ -27,6 +27,21 @@
 
   $("appName").textContent = CFG.brandName;
 
+  // Look of this Console (logo, sign-in picture, tab icons) comes from the settings file, so a licensee changes it there and nowhere else.
+  (function applyBranding() {
+    var hero = CFG.hero || {}, logo = CFG.logo || "assets/launch-tile.webp", small = CFG.logoSmall || logo, icons = CFG.icons || {};
+    $("brand").setAttribute("aria-label", CFG.brandName + " Console: go to Home");
+    var bi = $("brand").querySelector("img"); if (bi) bi.src = small;
+    $("lockLogo").src = logo; $("lockLogo").alt = CFG.brandName;
+    $("lockTitle").textContent = CFG.brandName + " Console";
+    if (hero.image) {
+      $("heroImg").src = hero.image; $("heroImg").alt = hero.alt || "";
+      if (hero.caption) { $("heroCap").textContent = hero.caption; $("heroCap").hidden = false; }
+      $("lockHero").hidden = false;
+    }
+    [["icon16", "16"], ["icon32", "32"], ["icon48", "48"], ["iconTouch", "touch"]].forEach(function (p) { if (icons[p[1]]) $(p[0]).href = icons[p[1]]; });
+  })();
+
   // Remember off: the key lives in sessionStorage (gone when the tab closes). On: localStorage (stays until Lock).
   function getKey() {
     try {

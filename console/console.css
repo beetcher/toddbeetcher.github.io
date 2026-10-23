@@ -101,7 +101,20 @@
   .mdetail button.quiet.copied { background: var(--ok); color: var(--white); border-color: var(--ok); }
   header button.quiet { color: var(--white); border-color: var(--muted); min-height: 40px; }
   input[type=password], #keyInput { font: inherit; width: 100%; min-height: 48px; padding: 0 var(--space-6); border: 1px solid var(--muted); border-radius: 10px; background: var(--card); }
-  .lock { max-width: 420px; margin: 8vh auto 0; }
+  body:not(.withnav) main { max-width: 1120px; }
+  .lock { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(300px, 420px); gap: 48px; align-items: center; max-width: 1040px; margin: 8vh auto 0; }
+  .lock:has(.lockhero[hidden]) { grid-template-columns: minmax(0, 420px); justify-content: center; margin-top: 8vh; }
+  .lockhero { margin: 0; border-radius: 16px; overflow: hidden; background: var(--night); border: 1px solid var(--night-edge); box-shadow: 0 6px 22px rgba(5, 8, 20, .35); }
+  .lockhero img { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: cover; }
+  .lockhero figcaption { color: var(--night-text); background: var(--night); font-size: var(--text-s); letter-spacing: .12em; text-transform: uppercase; padding: var(--space-4) var(--space-7); font-weight: 700; }
+  .lockpanel { min-width: 0; }
+  .locklogo { display: block; width: 96px; height: 96px; border-radius: 20px; margin: 0 0 var(--space-6); }
+  .locktitle { margin: 0 0 var(--space-7); font-size: var(--text-3xl); line-height: 1.15; }
+  @media (max-width: 860px) {
+    .lock, .lock:has(.lockhero[hidden]) { grid-template-columns: minmax(0, 1fr); max-width: 460px; gap: var(--space-7); margin-top: var(--space-4); }
+    .lockhero img { max-height: 190px; object-position: center 30%; }
+    .locklogo { width: 64px; height: 64px; border-radius: 14px; }
+  }
   .lock p { color: var(--muted); margin: 0 0 var(--space-6); }
   .lock .row { display: flex; gap: var(--space-4); }
   .lock .row button { flex: none; }
@@ -384,11 +397,7 @@
   header .brand .bname { display: block; font-size: var(--text-2xl); font-weight: 700; letter-spacing: .02em; line-height: 1.1; }
   header .brand .bapp { display: block; color: var(--orange); font-size: var(--text-xs); font-weight: 700; letter-spacing: .14em; margin-top: var(--space-1); }
   #homeView { max-width: 760px; margin: 0 auto; }
-  .hero { margin: 0 0 var(--space-7); border-radius: 16px; overflow: hidden; background: var(--night); border: 1px solid var(--night-edge); box-shadow: 0 6px 22px rgba(5, 8, 20, .35); }
-  .hero img { display: block; width: 100%; height: auto; }
-  .hero figcaption { background: linear-gradient(90deg, var(--night), var(--night)); color: var(--night-text); font-size: var(--text-s); letter-spacing: .12em; text-transform: uppercase; padding: var(--space-4) var(--space-7); font-weight: 700; }
-  .welcome { display: flex; gap: var(--space-7); align-items: flex-start; margin-bottom: var(--space-4); }
-  .welcome img { width: 84px; height: 84px; border-radius: 16px; flex: none; }
+  .welcome { margin-bottom: var(--space-4); }
   .welcome h2 { margin: 0 0 var(--space-2); font-size: var(--text-3xl); line-height: 1.15; }
   .welcome p { margin: 0; color: var(--muted); }
   .howto { background: var(--night); color: var(--night-text); border: 1px solid var(--night-edge); border-radius: 14px; padding: var(--space-7) var(--space-8); margin: var(--space-6) 0; }

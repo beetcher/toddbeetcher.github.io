@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/console-favicon-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/console-favicon-32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="assets/console-favicon-48.png">
-<link rel="apple-touch-icon" href="assets/console-touch-180.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/console-favicon-16.png" id="icon16">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/console-favicon-32.png" id="icon32">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/console-favicon-48.png" id="icon48">
+<link rel="apple-touch-icon" href="assets/console-touch-180.png" id="iconTouch">
 <title>Console</title>
 <link rel="stylesheet" href="console.css">
 </head>
@@ -34,16 +34,9 @@
 <main id="main" tabindex="-1">
 <div id="netBanner" class="banner banner-err" role="alert" hidden><span id="netText"></span> <button type="button" class="quiet" id="netRetry">Try again</button></div>
   <section id="homeView" hidden>
-    <figure class="hero">
-      <img src="assets/bridge.webp" width="1200" height="800" alt="Two crew members in starship uniforms grin over a glowing warp engine, then high-five inside the starship BFN-1 as it flies into a galaxy.">
-      <figcaption>The bridge</figcaption>
-    </figure>
     <div class="welcome">
-      <img src="assets/launch-tile.webp" width="84" height="84" alt="LAUNCH">
-      <div>
-        <h2>Welcome aboard the bridge</h2>
-        <p>This is the LAUNCH Console: the control room for the I Can Do That workshops. It is a fun first surface, built to learn on. The production console will look different; the lists, forms and ship's rules carry over.</p>
-      </div>
+      <h2>Welcome</h2>
+      <p>Pick a station from the menu, or start with what is waiting below.</p>
     </div>
     <div class="attn" id="attnBox" aria-live="polite"><h3>Waiting to be placed <span class="badge" id="attnBadge" hidden></span></h3><div id="attnBody">Checking the requests…</div></div>
     <div class="howto">
@@ -52,7 +45,7 @@
         <li><b>Pick a station.</b> The menu at the top of every screen jumps to any station. The tiles below do the same.</li>
         <li><b>Each station is a list.</b> Tap a card to open it. Use Add and Edit to change things.</li>
         <li><b>The ship protects its records.</b> If something is refused, the message names the field and says why. Nothing is half-saved.</li>
-        <li><b>Back to the bridge any time:</b> tap the LAUNCH tile in the top left.</li>
+        <li><b>Back to Home any time:</b> tap the logo in the top left.</li>
         <li><b>Lost?</b> Open the ship's manual below, or tap Manual on any station.</li>
       </ol>
     </div>
@@ -68,6 +61,13 @@
   </section>
 
   <section class="lock" id="lockView">
+    <figure class="lockhero" id="lockHero" hidden>
+      <img id="heroImg" width="1200" height="800" alt="" fetchpriority="high">
+      <figcaption id="heroCap" hidden></figcaption>
+    </figure>
+    <div class="lockpanel">
+    <img class="locklogo" id="lockLogo" width="84" height="84" alt="">
+    <h2 class="locktitle" id="lockTitle">Console</h2>
     <div id="googleBox" hidden>
       <p>Sign in to open the Console.</p>
       <button type="button" id="googleBtn" class="gbtn">Sign in with Google</button>
@@ -84,6 +84,7 @@
     <p class="swap"><a href="#" id="swapLink" hidden>Use admin key</a></p>
     <div id="launching" role="status" aria-live="polite" hidden><img src="assets/console-spinner-round.png" width="84" height="84" alt=""><div class="lline" id="launchLine"></div></div>
     <div class="msg" id="lockMsg" role="alert"></div>
+    </div>
   </section>
 
   <section id="listView" hidden>
