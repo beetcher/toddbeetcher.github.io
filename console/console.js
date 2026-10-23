@@ -768,8 +768,8 @@
     var lab = mk("label", "f", "What was done about this request? (required)"); var id = "cov" + rec.id.slice(0, 8); lab.setAttribute("for", id);
     var ta = document.createElement("textarea"); ta.id = id; ta.maxLength = 2000;
     var err = mk("div", "ferr", ""); err.setAttribute("role", "alert");
-    var btns = mk("div", "btns"); var go = mk("button", "", "Mark handled"); go.type = "button";
-    var no = mk("button", "quiet", "Cancel"); no.type = "button";
+    var btns = mk("div", "btns"); var go = mk("button", "btn-primary", "Mark handled"); go.type = "button";
+    var no = mk("button", "btn-secondary", "Cancel"); no.type = "button";
     no.addEventListener("click", function () { box.hidden = true; box.textContent = ""; });
     go.addEventListener("click", function () {
       var note = ta.value.trim(); err.textContent = "";
@@ -3466,7 +3466,7 @@
       var ins = role.value !== "student"; ord.hidden = !ins; ordL.hidden = !ins;
     }
     who.addEventListener("change", sync); role.addEventListener("change", sync); sync();
-    var btns = mk("div", "btns"), add = mk("button", "", "Add to class"); add.type = "submit"; btns.appendChild(add);
+    var btns = mk("div", "btns"), add = mk("button", "btn-primary", "Add to class"); add.type = "submit"; btns.appendChild(add);
     if (opts.onCancel) {
       var back = mk("button", "quiet", "Cancel"); back.type = "button";
       back.addEventListener("click", function () { opts.onCancel(); });
@@ -3500,7 +3500,7 @@
             if (!hit) { checked = true; resubmit(); return; }
             dupBox.textContent = ""; dupBox.hidden = false;
             dupBox.appendChild(mk("div", "", "We already have " + pFull(hit) + (hit.email ? " (" + hit.email + ")" : "") + " on file. Use that one so they are not added twice?"));
-            var bs = mk("div", "btns"), yes = mk("button", "", "Use " + pFull(hit)), no = mk("button", "quiet", "No, add as someone new"); yes.type = "button"; no.type = "button";
+            var bs = mk("div", "btns"), yes = mk("button", "btn-primary", "Use " + pFull(hit)), no = mk("button", "btn-secondary", "No, add as someone new"); yes.type = "button"; no.type = "button";
             yes.addEventListener("click", function () { forcedId = hit.id; checked = true; resubmit(); });
             no.addEventListener("click", function () { checked = true; resubmit(); });
             bs.appendChild(yes); bs.appendChild(no); dupBox.appendChild(bs);
