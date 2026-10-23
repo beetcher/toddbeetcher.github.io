@@ -13,7 +13,7 @@ import os, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 CON = pathlib.Path(os.environ.get("CONSOLE_DIR") or (HERE.parent / "console"))
-CAP = 6216          # lines in console.js after the Messages extraction (2026-10-23). LOWER this after each extraction; never raise it.
+CAP = 6214          # lines in console.js after the Attendance chip filters (2026-10-23; Messages extraction left it at 6,216). LOWER this after each extraction; never raise it.
 SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js"]   # load before console.js
 LEGACY = "console.js"
 fails = []

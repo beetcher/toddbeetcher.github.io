@@ -354,24 +354,8 @@
     </div>
     <div class="mquick">
       <input type="search" id="aSearch" maxlength="100" placeholder="Search: name, class, ICDT-A-… or ICDT-… number" aria-label="Search attendance" autocomplete="off">
-      <button type="button" id="aGo" class="btn-primary">Search</button>
     </div>
-    <details class="more filters" id="aFilters">
-      <summary id="aFilterSummary">Filters: all records shown</summary>
-      <div class="mbody">
-        <fieldset class="fs"><legend>Status</legend><div id="aStatusBoxes"></div></fieldset>
-        <fieldset class="fs"><legend>Role</legend>
-          <label class="chk"><input type="checkbox" data-f="role" value="student" checked> Student</label>
-          <label class="chk"><input type="checkbox" data-f="role" value="primary_instructor" checked> Lead instructor</label>
-          <label class="chk"><input type="checkbox" data-f="role" value="instructor" checked> Instructor</label>
-        </fieldset>
-        <fieldset class="fs"><legend>Came from</legend>
-          <label class="chk"><input type="checkbox" data-f="source" value="request" checked> A registration request</label>
-          <label class="chk"><input type="checkbox" data-f="source" value="direct" checked> Added by us</label>
-        </fieldset>
-        <div class="btns"><button type="button" id="aApply" class="btn-secondary">Refresh with these filters</button> <button type="button" class="btn-link" id="aShowAll">Show all</button></div>
-      </div>
-    </details>
+    <div id="aChips"></div>
     <div class="notice" id="aNotice" role="status"></div>
     <div class="msg" id="aMsg" role="alert"></div>
     <ul id="aList"></ul>

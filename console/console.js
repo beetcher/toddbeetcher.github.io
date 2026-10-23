@@ -244,8 +244,8 @@
         '<div class="kicker">Station 9</div><h2>Attendance</h2>' +
         '<h3>Mission</h3><p>One list of every student and instructor in every class. Use it to answer questions like who is waiting, who has not confirmed, or where a reference number went.</p>' +
         '<h3>Controls</h3><ul>' +
-        '<li><b>Filters</b> are tick boxes for status, role and where the record came from. Tick what you want to see, then tap <b>Refresh</b>. Nothing changes until you do.</li>' +
-        '<li><b>Search</b> looks at the name, the class title, and the reference or request number.</li>' +
+        '<li><b>Filter chips</b> sit under the search box: <b>Status</b>, <b>Role</b> and <b>Came from</b>. Tap one and tick what you want to see. A dark chip means that filter is narrowing the list, and <b>Clear all</b> puts every chip back. They apply as you tick them, and the line at the bottom of each list says how many records are showing. <b>Refresh</b> loads the records again from the server.</li>' +
+        '<li><b>Search</b> looks at the name, the class title, and the reference or request number. It narrows the list as you type, together with the chips.</li>' +
         '<li>Each row shows the class (tap it to open that class\'s attendance), the person, their reference and request numbers, and a status menu you can change right there.</li>' +
         '<li><b>Remove</b> asks twice. The record is kept.</li>' +
         '</ul>' +
@@ -3850,29 +3850,29 @@
     draw();
   }
 
-  // ---- Attendance station: every record, with tick-box filters that apply on Refresh
-  var AS = { recs: [], capped: false, loaded: false, seq: 0 };
-  function asBoxes() { return document.querySelectorAll("#aFilters input[type=checkbox]"); }
-  function asBuildStatusBoxes() {
-    var host = $("aStatusBoxes"); if (host.firstChild) return;
-    ATT_STATUSES.forEach(function (s) {
-      var l = mk("label", "chk"), c = document.createElement("input"); c.type = "checkbox"; c.checked = true; c.value = s; c.setAttribute("data-f", "status");
-      l.appendChild(c); l.appendChild(document.createTextNode(" " + ATT_WORD[s])); var n = mk("span", "segn"); n.setAttribute("data-n", s); l.appendChild(n); host.appendChild(l);
+  // ---- Attendance station: every record, with chip filters (UI.chipFilters, filters.js) that apply at once. Refresh asks the server again.
+  var AS = { recs: [], capped: false, loaded: false, seq: 0, cf: null };
+  function asChips() {
+    if (AS.cf) return AS.cf;
+    AS.cf = UI.chipFilters({
+      mount: $("aChips"), label: "Attendance filters",
+      filters: [
+        { id: "status", label: "Status", kind: "multi", options: ATT_STATUSES.map(function (s) { return { value: s, label: ATT_WORD[s] }; }) },
+        { id: "role", label: "Role", kind: "multi", options: Object.keys(ROLE_WORD).map(function (r) { return { value: r, label: ROLE_WORD[r] }; }) },
+        { id: "source", label: "Came from", kind: "multi", options: [{ value: "request", label: "A registration request" }, { value: "direct", label: "Added by us" }] }
+      ],
+      onChange: function () { asRender(); }
     });
+    return AS.cf;
   }
   function asCounts() {
     var by = {}; AS.recs.forEach(function (r) { by[r.status] = (by[r.status] || 0) + 1; });
-    Array.prototype.forEach.call(document.querySelectorAll("#aStatusBoxes .segn"), function (n) { var k = n.getAttribute("data-n"); n.textContent = AS.loaded ? String(by[k] || 0) : ""; });
+    var cnt = {}; ATT_STATUSES.forEach(function (s) { cnt[s] = by[s] || 0; });
+    asChips().setCounts(AS.loaded ? { status: cnt } : {});
   }
   function asSelected() {
-    var o = { status: {}, role: {}, source: {} };
-    Array.prototype.forEach.call(asBoxes(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
-    return o;
-  }
-  function asSummary(sel, q) {
-    var all = true; Array.prototype.forEach.call(asBoxes(), function (c) { if (!c.checked) all = false; });
-    $("aFilterSummary").textContent = all && !q ? "Filters: all records shown" : "Filters: " + (q ? "searching for “" + q + "”" : "some records are hidden");
-    $("aFilterSummary").className = all && !q ? "" : "some";
+    var g = asChips().getSelection(), set = function (a) { var o = {}; a.forEach(function (v) { o[v] = 1; }); return o; };
+    return { status: set(g.status), role: set(g.role), source: set(g.source) };
   }
   function asMatches(r, sel, q) {
     if (!sel.status[r.status] || !sel.role[r.role] || !sel.source[r.request_id ? "request" : "direct"]) return false;
@@ -3880,7 +3880,7 @@
     var hay = [attName(r), r["class"] && r["class"].title, r.reference_number, r.confirmation_number, ROLE_WORD[r.role], ATT_WORD[r.status]].filter(Boolean).join(" ").toLowerCase();
     return q.toLowerCase().split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
   }
-  // The tick boxes and search are read when the list is drawn (on load and on Refresh), not as they are ticked.
+  // The chips and the search box are read every time the list is drawn: on load, on Refresh, and as each one changes.
   function asRender() {
     var sel = asSelected(), q = $("aSearch").value.trim(), list = $("aList");
     list.textContent = "";
@@ -3904,10 +3904,10 @@
     });
     $("aCount").textContent = shown.length + (shown.length === 1 ? " record" : " records") + (shown.length !== AS.recs.length ? " of " + AS.recs.length : "");
     $("aEmpty").hidden = shown.length > 0 || !AS.loaded;
-    asCounts(); asSummary(sel, q);
+    asCounts(); asChips().setResult(AS.loaded ? $("aCount").textContent : "");   // the same line as the head, repeated inside each list so a tick can be watched
   }
   function loadAttendanceStation() {
-    asBuildStatusBoxes();
+    asChips();
     var my = ++AS.seq;
     $("aMsg").textContent = "";
     Promise.all([loadClassChoices(), admin("list", { limit: 200, expand: true, order: "-created_at" }, ATT)]).then(function (both) {
@@ -3921,10 +3921,8 @@
     });
   }
   $("aRefresh").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
-  $("aApply").addEventListener("click", function () { $("aNotice").textContent = ""; loadAttendanceStation(); });
-  $("aShowAll").addEventListener("click", function () { Array.prototype.forEach.call(asBoxes(), function (c) { c.checked = true; }); $("aSearch").value = ""; loadAttendanceStation(); });
-  $("aGo").addEventListener("click", function () { loadAttendanceStation(); });
-  $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadAttendanceStation(); } });
+  $("aSearch").addEventListener("input", function () { asRender(); });
+  $("aSearch").addEventListener("keydown", function (e) { if (e.key === "Enter") e.preventDefault(); });
 
   // On a person's card: every class they are in, in any role.
   function personHistory(rec, host) {
