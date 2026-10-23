@@ -696,7 +696,7 @@
 
     var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
     var putrow = document.createElement("div"); putrow.className = "qrow";
-    var pb = document.createElement("button"); pb.type = "button"; pb.className = "quiet"; pb.textContent = "Put in a class…";
+    var pb = document.createElement("button"); pb.type = "button"; pb.className = "btn-primary"; pb.textContent = "Put in a class…";
     var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
     pb.addEventListener("click", function () {
       $("reqDone").hidden = true;
@@ -704,27 +704,27 @@
       phost.hidden = false; putInClass(rec, phost);
     });
     putrow.appendChild(pb);
-    var hq = historyBtn(rec.id, "this request"); if (hq) putrow.appendChild(hq);
-    var jb = document.createElement("button"); jb.type = "button"; jb.className = "quiet"; jb.textContent = "Journal";
+    var hq = historyBtn(rec.id, "this request"); if (hq) { hq.className = "btn-link"; putrow.appendChild(hq); }
+    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "Journal";
     jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "Journal: " + personOf(rec)); });
     putrow.appendChild(jb);
-    var ib = document.createElement("button"); ib.type = "button"; ib.className = "quiet infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
+    var ib = document.createElement("button"); ib.type = "button"; ib.className = "btn-link infoBtn"; ib.textContent = "ⓘ"; ib.setAttribute("aria-label", "Help: place this request");
     ib.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
     putrow.appendChild(ib);
     // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
     var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
     if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
-      var mh = document.createElement("button"); mh.type = "button"; mh.className = "quiet"; mh.textContent = "Mark handled…";
+      var mh = document.createElement("button"); mh.type = "button"; mh.className = "btn-secondary"; mh.textContent = "Mark handled…";
       mh.addEventListener("click", function () { covbox.hidden = !covbox.hidden; if (!covbox.hidden) { covbox.textContent = ""; fillCovBox(covbox, rec, li); } });
       putrow.appendChild(mh);
     }
     // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
-    var db = document.createElement("button"); db.type = "button"; db.className = "quiet"; db.textContent = "Delete"; db.style.marginLeft = "auto";
+    var db = document.createElement("button"); db.type = "button"; db.className = "btn-danger"; db.textContent = "Delete"; db.style.marginLeft = "auto";
     var armedT = null;
-    function disarm() { clearTimeout(armedT); db.className = "quiet"; db.textContent = "Delete"; db.removeAttribute("data-armed"); }
+    function disarm() { clearTimeout(armedT); db.className = "btn-danger"; db.textContent = "Delete"; db.removeAttribute("data-armed"); }
     db.addEventListener("click", function () {
       if (!db.getAttribute("data-armed")) {
-        db.setAttribute("data-armed", "1"); db.className = "danger"; db.textContent = "Really delete?";
+        db.setAttribute("data-armed", "1"); db.className = "btn-danger"; db.textContent = "Really delete?";
         armedT = setTimeout(disarm, 6000); return;
       }
       clearTimeout(armedT);

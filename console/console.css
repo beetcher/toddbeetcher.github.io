@@ -488,7 +488,7 @@
   .covbox textarea { display: block; width: 100%; box-sizing: border-box; min-height: 96px; padding: var(--space-4) var(--space-6); font: inherit; border: 1px solid var(--muted); border-radius: 10px; background: var(--card); color: var(--ink); }
   .covbox .btns { margin-top: var(--space-6); display: flex; gap: var(--space-5); flex-wrap: wrap; }
   .covbox .ferr { margin-top: var(--space-3); color: var(--err); font-weight: 600; font-size: var(--text-m); }
-  .qrow .go { min-height: 44px; background: var(--orange); border-color: var(--orange); color: var(--on-orange); }
+  .qrow .go { min-height: 40px; background: var(--orange); border-color: var(--ink); color: var(--on-orange); }
   .qrow .go:disabled { opacity: .6; }
   .qrow .qmsg { flex: 1 1 100%; color: var(--err); font-weight: 600; font-size: var(--text-m); }
   .jline { padding: var(--space-4) 0; border-bottom: 1px solid var(--line); }
