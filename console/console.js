@@ -503,12 +503,13 @@
     $("lockView").hidden = !locked;
     $("lockBtn").hidden = locked;
     $("collPick").hidden = locked;
-    document.body.classList.toggle("withnav", !locked); setTopH();
+    document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; }
     if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
+  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
+  var lastRoute = null;
   function route() {
     if (!key) return;
     var r = currentRoute();
@@ -519,6 +520,10 @@
     if (r !== "classes") closeClassEdit();
     $("collPick").value = r;
     markPick(); markNav(r); setTopH();
+    var sfr = surfaceById(r);
+    document.title = (r === "home" ? "Home" : sfr ? (sfr.short || sfr.name) : r) + " \u00b7 " + CFG.brandName + " Console";
+    if (lastRoute !== null && lastRoute !== r) $("main").focus({ preventScroll: true });
+    lastRoute = r;
     $("listView").hidden = r !== "requests";
     $("venuesView").hidden = r !== "venues";
     $("classesView").hidden = r !== "classes";
@@ -2884,6 +2889,10 @@
   $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
   window.addEventListener("hashchange", route);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.skip"); if (!a) return;
+    e.preventDefault(); $("main").focus();
+  });
   function markPick() { var o = $("collPick").selectedOptions[0]; $("collPick").classList.toggle("adm", !!(o && o.className === "adminstn")); }
   $("collPick").addEventListener("change", function () { markPick(); goTo($("collPick").value); });
   $("brand").addEventListener("click", function (e) { e.preventDefault(); goTo("home"); });

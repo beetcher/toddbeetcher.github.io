@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="console.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <div id="idleWarn" role="alert" hidden><span>You will be signed out in <b id="idleCount"></b> because there has been no activity.</span><button type="button" id="idleStay">Stay signed in</button></div>
 <div id="workToast" role="status" aria-live="polite"><span class="dot"></span><span id="workText"></span></div>
 <header id="topbar">
@@ -29,7 +30,7 @@
 
 <div class="shell">
 <nav id="sideNav" aria-label="Stations"></nav>
-<main>
+<main id="main" tabindex="-1">
   <section id="homeView" hidden>
     <figure class="hero">
       <img src="assets/bridge.webp" width="1200" height="800" alt="Two crew members in starship uniforms grin over a glowing warp engine, then high-five inside the starship BFN-1 as it flies into a galaxy.">

@@ -503,3 +503,8 @@
     body.withnav #sideNav { display: block; position: sticky; top: var(--topbar-h, 70px); max-height: calc(100vh - var(--topbar-h, 70px)); overflow-y: auto; box-sizing: border-box; padding: var(--space-8) var(--space-6) var(--space-9) var(--space-8); }
     body.withnav main { max-width: 1120px; width: 100%; margin: 0; box-sizing: border-box; }
   }
+
+  /* ---- Skip link and content focus (step 1.2b) */
+  .skip { position: absolute; left: var(--sp-3, 12px); top: -100px; z-index: 100; background: var(--ink, #111); color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 700; text-decoration: none; }
+  .skip:focus { top: var(--sp-3, 12px); }
+  main:focus { outline: none; }

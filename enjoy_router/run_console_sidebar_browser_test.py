@@ -195,6 +195,27 @@ with sync_playwright() as p:
     go(pg4, 1440, T_SPEND)
     check("a Discovery-only role sees Home and Discovery only", pg4.evaluate(IDS) == ["home", "discovery"], pg4.evaluate(IDS))
     check("...under one heading, Growth and admin", pg4.evaluate(HEADS) == ["Growth and admin"], pg4.evaluate(HEADS))
+    # ---------- 1.2b: skip link, titles, focus, #/station/<id>
+    pg5, e5 = new_page(b, w=1440)
+    go(pg5, 1440, T_TODD)
+    check("title on Home", pg5.title() == "Home \u00b7 LAUNCH Console", pg5.title())
+    pg5.click('#sideNav a[data-nav="venues"]'); pg5.wait_for_timeout(450)
+    pg5.screenshot(path="/tmp/claude-0/sidebar_venues_1440.png")
+    check("title names the station", pg5.title() == "Venues \u00b7 LAUNCH Console", pg5.title())
+    check("focus moves to the content on a station change", pg5.evaluate("document.activeElement.id") == "main")
+    pg5.goto(PAGE + "#/station/classes"); pg5.wait_for_timeout(600)
+    if not pg5.locator("#classesView").is_visible():
+        sign_in(pg5, T_TODD); pg5.wait_for_timeout(600)
+    pg5.evaluate("location.hash = '#/station/classes'"); pg5.wait_for_timeout(500)
+    check("#/station/classes opens Classes", pg5.locator("#classesView").is_visible() and pg5.title().startswith("Classes"), pg5.title())
+    pg5.focus("#brand")
+    pg5.keyboard.press("Shift+Tab")
+    check("the skip link comes just before the top bar in Tab order, and shows", pg5.evaluate("document.activeElement.className") == "skip" and pg5.evaluate("document.querySelector('.skip').getBoundingClientRect().top") >= 0)
+    pg5.keyboard.press("Enter"); pg5.wait_for_timeout(200)
+    check("Enter on it moves focus to the content and keeps the address", pg5.evaluate("document.activeElement.id") == "main" and "classes" in pg5.evaluate("location.hash"))
+    pg5.click("#lockBtn"); pg5.wait_for_selector("#lockView:not([hidden])")
+    check("Lock resets the title", pg5.title() == "Console", pg5.title())
+    check("no script errors in 1.2b checks", not e5, e5)
     b.close()
 
 if fails:

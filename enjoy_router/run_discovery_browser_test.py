@@ -86,7 +86,7 @@ with sync_playwright() as p:
     pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": []}})))
     pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
     check("Discovery is a station on the home page", pg.locator("#stationTiles .tile", has_text="Discovery").count() == 1)
-    pg.select_option("#collPick", "discovery"); pg.wait_for_selector("#dModel")
+    pg.click("#sideNav a[data-nav=discovery]"); pg.wait_for_selector("#dModel")
     ban = pg.locator("#dBanner").inner_text()
     check("the banner says the mode and the ZIP table", "LIVE" in ban and "ZIP table: 14 ZIPs" in ban, ban)
     check("only models switched on are offered", pg.locator("#dModel option").all_inner_texts() == ["Gemini 3.5 Flash-Lite (Google search)", "Gemini 3.8 Flash (Google search)"]
