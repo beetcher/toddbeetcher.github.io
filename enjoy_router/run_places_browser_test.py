@@ -1,6 +1,6 @@
 """Browser test for places and addresses: drives the real Console page in headless Chromium against the real admin endpoint
 code with an in-memory store (People > Addresses, and the Places station). Needs playwright and a Chromium (skips when they
-are not there). Nothing touches Firebase. Run from enjoy_router/:  python3 run_location_browser_test.py"""
+are not there). Nothing touches Firebase. Run from enjoy_router/:  python3 run_places_browser_test.py"""
 import sys, json, os, pathlib
 HERE = pathlib.Path(__file__).resolve().parent
 PAGE = (HERE.parent / "console" / "index.html").as_uri()
@@ -190,9 +190,21 @@ with sync_playwright() as p:
     pg.click("#lSaveBtn")
     pg.wait_for_function("document.getElementById('lNotice').textContent.indexOf('Heads up') >= 0")
     check("same address reported, nothing merged", len([x for x in places() if x.get("addresses") and x["addresses"][0].get("street") == "Arapahoe Ave"]) == 2)
+    # the station is its own file (the People and Places extraction, PP-2)
+    import re
+    big = (HERE.parent / "console" / "console.js").read_text(); mine = (HERE.parent / "console" / "places.js").read_text() + (HERE.parent / "console" / "addresses.js").read_text()
+    check("places.js and addresses.js are their own files; PlacesStation and ConsoleAddresses have every hook", pg.evaluate("typeof window.PlacesStation === 'object' && ['show','reset','forget','refresh'].every(k => typeof window.PlacesStation[k] === 'function') && ['addrForm','lProblems','locAddr','locSummary','placeInput','placeText','forgetSaved'].every(k => typeof window.ConsoleAddresses[k] === 'function')"))
+    check("nothing of the Places station is left in console.js", not re.search(r"function (loadPlaces|renderPlaces|placeRow|placeActions|showLinked|resetPlaces|cszRead|cszRemember|savedPlacesList|venuePlaceLine|locSummary\(loc\))|lAddBtn|lList|LISSUE|LLABEL", big))
+    check("places.js and addresses.js reach the big file only through the kit", "window.ConsoleKit" in mine and "ROSTER" not in mine)
+    check("the kit forwards the address form to the station", pg.evaluate("typeof window.ConsoleKit.placeInput === 'function' && typeof window.ConsoleKit.lProblems === 'function'"))
+    pg.select_option("#collPick", "places"); pg.wait_for_selector("#lList li")
+    pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    check("sign-out empties the Places page", pg.evaluate("document.querySelectorAll('#lList li').length === 0 && document.getElementById('lCount').textContent === '' && document.getElementById('lChecked').textContent === '' && document.getElementById('lAddForm').hidden"))
+    pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#lList li")
+    check("signing back in loads the Places page again", pg.locator("#lCount").inner_text() != "")
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()
 
-print("\nFAILED: " + ", ".join(fails) if fails else "\nOK: all location browser checks passed")
+print("\nFAILED: " + ", ".join(fails) if fails else "\nOK: all places browser checks passed")
 sys.exit(1 if fails else 0)

@@ -20,9 +20,11 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `venues.js` | The Venues station (`window.VenuesStation`: show, stop, reset, dirty, forget): list, filters, Details, Add, Edit form, Rooms and Open days popups, the venue's Place panel and Contact picker; loads after `attendance.js` |
 | `classes.js` | The Classes station (`window.ClassesStation`: show, stop, reset, dirty, forget, and putInClass, assignForm, classWhen, choices, byId for the kit): list and filters, Add, the class page (tabs Overview, People, Attendance, Edit: the Edit form, the Instructors box and the add form live there), time-zone helpers, and the placing machinery (Put in a class, add a person, the class builder); loads after `venues.js` |
 | `curriculum.js` | The Curriculum station (`window.CurriculumStation`: show, reset, forget): the list with its status filter, Add, Edit, the active/inactive switch and Delete; builds its own page into `#curriculumsView` at load; loads after `classes.js`. Needs nothing new from the kit |
+| `addresses.js` | Shared address machinery (`window.ConsoleAddresses`: addrForm, lProblems, locAddr, locSummary, placeInput, placeText, forgetSaved): the address form, recent city/state/ZIP memory, the place words, the saved-places pick; loads after `dialogs.js`, before `roster-engine.js` and the stations |
 | `roster-engine.js` | Shared builder (`window.ConsoleRoster.build(cfg)`): the one engine behind the Instructors and Students pages (list, filter, search, Add window, Edit form, remove, instructor hours, curricula, regions and private address); loads after `dialogs.js`, before the stations |
 | `instructors.js` | The Instructors station (`window.InstructorsStation`: show, reset, forget): only its settings; the engine builds its page into `#instructorsView` at load |
 | `students.js` | The Students station (`window.StudentsStation`: show, reset, forget): only its settings; the engine builds its page into `#studentsView` at load |
+| `places.js` | The Places station (`window.PlacesStation`: show, reset, forget, refresh): the list, filter, search, Add, GPS and address editing, retire and delete, who is linked here; loads after `students.js` |
 | `organizations.js` | The Organizations station (`window.OrganizationsStation`: show, reset, forget): the list with filter and search, Add, Edit, the active/inactive switch, Delete, and the links panel (people, venues, organizations and places linked to an organization); builds its own page into `#organizationsView` at load; loads after `students.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
@@ -134,14 +136,15 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `attConsts` | Core: shared vocabulary (DT-8) | The attendance word tables; read by Attendance, Requests, Messages, People, Classes |
 | `attFail` | Core: placing machinery | The failed-write sentence (moves with the placing machinery, DT-18) |
 | `refreshPlaced` | Core: a forwarder to Requests | Calls `RequestsStation.loadPlaced` |
-| `lProblems` | Places (still in `console.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
-| `placeInput`, `placeText` | Places (still in `console.js`) | The address form with saved-place offer, and the one-line address text |
-| `forgetSavedPlaces` | Places (still in `console.js`) | Forget the cached saved places after a place changed |
+| `lProblems` | **Shared addresses** (`addresses.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
+| `placeInput`, `placeText` | **Shared addresses** (`addresses.js`) | The address form with saved-place offer, and the one-line address text |
+| `forgetSavedPlaces` | **Shared addresses** (`addresses.js`) | Forget the cached saved places after a place changed |
 | `peopleList`, `peopleMatches`, `pFull` | People (still in `console.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
 | `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
 | `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
 | `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / Places-People shared (still in `console.js`) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
-| `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Places / People (still in `console.js`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
+| `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People, still in `console.js` (`pProblems`, `colls`, `peopleStale`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
+| `skelOn`, `skelOff`, `currentRoute` | Core: shared list helpers and routing (still in `console.js`) | The loading skeleton on/off for a list; the page the Console is on (read by Places) |
 | `pDateOut`, `locAddr`, `rel` | People / Places (still in `console.js`) | A stored date as words; a place's address on one line; the Places relation words table (read by the Organizations station) |
 | `putInClass`, `assignForm`, `classWhen`, `classChoices`, `classById` | **Classes station** (`classes.js`, `ClassesStation`) | The kit only forwards to it, so Requests and Attendance still ask the kit and never another station |
 
