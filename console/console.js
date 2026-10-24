@@ -601,8 +601,8 @@
   }
 
   // Returns {status, records} ; status: ok | unauthorized | limited | network | error
-  function fetchRecords(since) {
-    var url = CFG.endpoints.records + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "");
+  function fetchRecords(since, opt) {
+    var url = CFG.endpoints.records + "?limit=" + MAX + (since ? "&since=" + encodeURIComponent(since) : "") + (opt && opt.q ? "&q=" + encodeURIComponent(opt.q) : "") + (opt && opt.region ? "&region=" + encodeURIComponent(opt.region) : "");
     return fetchT(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" }, READ_MS)
       .then(function (r) {
         if (r.ok) netOk();
@@ -610,7 +610,7 @@
         if (r.status === 429) return { status: "limited" };
         if (!r.ok) return { status: "error" };
         return r.json().then(function (j) {
-          return { status: "ok", records: (j && j.data && j.data.records) || [] };
+          return { status: "ok", records: (j && j.data && j.data.records) || [], total: j && j.data && j.data.total };
         });
       })
       .catch(function (e) { netShow(!!(e && e.timedOut)); return { status: "network" }; });
@@ -1361,7 +1361,7 @@
                         classById: function (id) { return aClassById ? aClassById[id] : undefined; },
                         openAttendance: function (cls) { openAttendance(cls); },
                         requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
-                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since) { return fetchRecords(since); }, putInClass: function (rec, host, said) { putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return attFail(res); }, classWhen: function (c) { return classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return assignForm(opts); } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only. A-1 (Attendance): attConsts to assignForm.
+                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return attFail(res); }, classWhen: function (c) { return classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return assignForm(opts); } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only. A-1 (Attendance): attConsts to assignForm.
   function canon(v) {
     if (v === null || v === undefined) return "null";
     if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";

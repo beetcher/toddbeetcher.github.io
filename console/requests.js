@@ -55,6 +55,7 @@
     var chips = document.createElement("div"); chips.className = "chips";
     if (rec.attendee_count != null && rec.attendee_count > 1) { var ppl = document.createElement("span"); ppl.textContent = rec.attendee_count + " people"; chips.appendChild(ppl); }
     if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
+    if (rec.regions) { var rg = document.createElement("span"); rg.className = "rtag"; rg.textContent = "Region: " + (rec.regions.length ? rec.regions.map(function (x) { return x.name; }).join(", ") : "none yet"); chips.appendChild(rg); }
     if (rec.coverage_waiting) { var nc = document.createElement("span"); nc.className = "nochip"; nc.textContent = "No active trainer"; chips.appendChild(nc); }
     else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
     if (rec.preferred_venue_id) {
@@ -198,24 +199,25 @@
   }
 
   // Add records we have not seen. Existing rows are never rebuilt, so nothing moves while reading.
-  function merge(records) {
+  function merge(records, quiet) {
     var list = $("list");
     var fresh = records.filter(function (r) { return r && r.id && !known[r.id]; });
     fresh.sort(function (a, b) { return a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0; }); // oldest first, then each goes on top
     fresh.forEach(function (r) {
       known[r.id] = r;
-      var li = buildRow(r, firstLoadDone);
+      var li = buildRow(r, firstLoadDone && !quiet);
       rows[r.id] = li;
       list.insertBefore(li, list.firstChild);
     });
     // First load arrives newest first from the server; sort the whole list once to be safe.
-    if (!firstLoadDone) {
+    if (!firstLoadDone || quiet) {
       Object.keys(rows).sort(function (a, b) {
         var x = known[a].created_at, y = known[b].created_at;
         return x < y ? 1 : x > y ? -1 : 0;
       }).forEach(function (id) { list.appendChild(rows[id]); });
     }
-    if (fresh.length && firstLoadDone) loadPlaced();
+    if (fresh.length && firstLoadDone && !quiet) loadPlaced();
+    if (fresh.length) regionOptions();
     applyReqFilter();
   }
 
@@ -253,6 +255,8 @@
     $("list").textContent = "";
     $("countText").textContent = ""; $("checkedText").textContent = ""; $("listMsg").textContent = "";
     $("empty").hidden = true;
+    RS.seq++; clearTimeout(RS.timer); RS.total = null; RS.regions = {}; $("rSearch").value = "";
+    if (RS.cf) { RS.cf.destroy(); RS.cf = null; $("rChips").textContent = ""; }
   }
 
   // ======== Placed requests: a request is placed once attendance exists for it (old seat decisions are retired) ========
@@ -331,7 +335,7 @@
     Object.keys(rows).forEach(function (id) {
       var closed = P.loaded && !!P.ids[id];
       if (!closed) open++;
-      var show = !isDel && (mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed));
+      var show = !isDel && srMatch(known[id]) && (mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed));
       rows[id].style.display = show ? "" : "none";
       if (show) shown++;
     });
@@ -364,9 +368,68 @@
       : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
       : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
     $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer. Nothing to do here." : mode === "open" ? "No open requests. Every request is in a class. New sign-ups from the website show up here by themselves." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
+    var sr = srActive();
+    if (sr && !isDel) $("countText").textContent = shown + (shown === 1 ? " request matches" : " requests match") + (RS.total != null && RS.total > shown ? " (" + RS.total.toLocaleString() + " in all, counting every Show choice)" : "");
+    if (sr && shown === 0 && !isDel) $("empty").textContent = "No request matches. Clear the search or the region to see them all.";
+    $("rQuick").hidden = isDel; $("rChips").hidden = isDel;
     $("empty").hidden = shown > 0 || isDel;
     if (isDel) { $("countText").textContent = "Deleted requests"; loadDeleted(); } else { $("delList").hidden = true; $("delEmpty").hidden = true; }
   }
+  // ---- Search and Region: the box and the Region chip narrow what is loaded at once; after a short pause the server is asked to look through the older requests too.
+  var RS = { cf: null, total: null, seq: 0, timer: null, regions: {} };
+  function srChips() {
+    if (RS.cf) return RS.cf;
+    RS.cf = UI.chipFilters({
+      mount: $("rChips"), label: "Request filters",
+      filters: [{ id: "region", label: "Region", kind: "search-multi", options: [{ value: "none", label: "No region yet" }] }],
+      onChange: function () { srChanged(); }
+    });
+    return RS.cf;
+  }
+  function regionOptions() {   // the regions seen on the loaded requests, plus No region yet
+    var seen = false;
+    Object.keys(known).forEach(function (id) { (known[id].regions || []).forEach(function (r) { if (r.id && !RS.regions[r.id]) { RS.regions[r.id] = r.name || r.id; seen = true; } }); });
+    var opts = Object.keys(RS.regions).sort(function (a, b) { return RS.regions[a].toLowerCase() < RS.regions[b].toLowerCase() ? -1 : 1; }).map(function (id) { return { value: id, label: RS.regions[id] }; });
+    if (seen || !RS.cf) srChips().setOptions("region", opts.concat([{ value: "none", label: "No region yet" }]));
+  }
+  function srSel() {   // null when every region is ticked
+    var g = srChips().getSelection().region, all = Object.keys(RS.regions).length + 1;
+    if (g.length >= all) return null;
+    var o = {}; g.forEach(function (v) { o[v] = 1; }); return o;
+  }
+  function srText(rec) {
+    return [rec.first_name, rec.last_name, rec.email, rec.phone, rec.postal_code, rec.confirmation_number, rec.preferred_location, rec.organization_name].concat((rec.regions || []).map(function (r) { return r.name; })).filter(Boolean).join(" ").toLowerCase();
+  }
+  function srActive() { return !!($("rSearch").value.trim() || srSel()); }
+  function srMatch(rec) {
+    if (!rec) return true;
+    var sel = srSel(), q = $("rSearch").value.trim().toLowerCase();
+    if (sel && rec.regions) {
+      var ids = rec.regions.length ? rec.regions.map(function (r) { return r.id; }) : ["none"];
+      if (!ids.some(function (i) { return sel[i]; })) return false;
+    }
+    if (!q) return true;
+    var hay = srText(rec);
+    return q.split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+  function srChanged() {
+    applyReqFilter();
+    clearTimeout(RS.timer);
+    var q = $("rSearch").value.trim(), sel = srSel(), pick = sel ? Object.keys(sel) : [];
+    RS.total = null;
+    if (!q && pick.length !== 1) return;
+    var mySeq = ++RS.seq;
+    RS.timer = setTimeout(function () {
+      fetchRecords("", { q: q, region: pick.length === 1 ? pick[0] : "" }).then(function (res) {
+        if (mySeq !== RS.seq || res.status !== "ok") return;
+        RS.total = typeof res.total === "number" ? res.total : null;
+        merge(res.records, true);
+        applyReqFilter();
+      });
+    }, 400);
+  }
+  $("rSearch").addEventListener("input", srChanged);
+
   // Deleted requests (for Restore): fetched on their own, because the normal list never carries them. Each card has a Restore button.
   var delSeq = 0;
   function loadDeleted() {

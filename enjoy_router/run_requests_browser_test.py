@@ -262,6 +262,43 @@ with sync_playwright() as p:
     check("and the 20 second check runs again", len(gets) > n4, (n4, len(gets)))
     pg2.select_option("#collPick", "home"); pg2.wait_for_timeout(300); n5 = len(gets); pg2.clock.fast_forward(45000); pg2.wait_for_timeout(600)
     check("leaving Requests stops the check", len(gets) == n5, (n5, len(gets)))
+    # ---- Search and Region (S build): tags, instant narrowing, the Region chip, and a server search that reaches past the newest 200
+    pg3, errs3 = new_page(b, 1100); pg3.goto(PAGE); pg3.wait_for_selector("#googleBox:not([hidden])")
+    sign_in(pg3, T_TODD); pg3.wait_for_selector("#homeView:not([hidden])"); pg3.wait_for_timeout(500)
+    pg3.select_option("#collPick", "requests"); pg3.wait_for_selector("#list li", state="attached"); pg3.wait_for_timeout(500)
+    check("every card names its region, or says none yet", pg3.evaluate("Array.from(document.querySelectorAll('#list > li .rtag')).map(e => e.textContent).sort().join('|')") == "Region: Boulder|Region: none yet|Region: none yet")
+    check("the Search box and the Region chip sit above the list", pg3.locator("#rSearch").is_visible() and pg3.locator("#rChips .cf-chip").count() == 1)
+    pg3.fill("#rSearch", "dana"); pg3.wait_for_timeout(150)
+    check("typing in Search narrows the list at once", pg3.locator("#list > li:visible").count() == 1 and "Dana" in pg3.locator("#list > li:visible").inner_text())
+    check("the count line says how many match", "1 request matches" in pg3.locator("#countText").inner_text(), pg3.locator("#countText").inner_text())
+    pg3.fill("#rSearch", "zzzz"); pg3.wait_for_timeout(700)
+    check("no match says so and offers the way back", pg3.locator("#list > li:visible").count() == 0 and "No request matches" in pg3.locator("#empty").inner_text())
+    pg3.fill("#rSearch", ""); pg3.wait_for_timeout(700)
+    pg3.click("#rChips .cf-chip"); pg3.wait_for_selector("#rChips .cf-pop:not([hidden])")
+    opts = pg3.eval_on_selector_all("#rChips .cf-pop:not([hidden]) label.cf-opt", "els => els.map(e => e.textContent.trim().replace(/\\s*\\d*$/, ''))")
+    check("the Region chip lists the region and No region yet", any("Boulder" in o for o in opts) and any("No region yet" in o for o in opts), opts)
+    pg3.locator("#rChips .cf-pop:not([hidden]) label.cf-opt", has_text="Boulder").click(); pg3.keyboard.press("Escape"); pg3.wait_for_timeout(700)
+    shown = pg3.eval_on_selector_all("#list > li:visible", "els => els.map(e => e.innerText)")
+    check("unticking Boulder hides Dana and keeps the others", len(shown) == 2 and not any("Dana" in t for t in shown), shown)
+    pg3.click("#rChips .cf-clearall"); pg3.wait_for_timeout(700)
+    check("Clear all brings every request back", pg3.locator("#list > li:visible").count() == 3)
+    # the server reaches past the newest 200: 200 newer requests push an old one out of the first page
+    for i in range(200):
+        fid = "f%07d-0000-4000-8000-000000000000" % i
+        store.create("registration_requests", fid, {"id": fid, "schema_version": 1, "created_at": "2026-10-23T12:%02d:%02dZ" % (i // 60, i % 60), "updated_at": "2026-10-23T12:00:00Z", "registration_type": "private",
+                     "first_name": "Fill%03d" % i, "last_name": "Filler", "email": "fill%d@home.example" % i, "postal_code": "80301", "attendee_count": 1, "confirmation_number": "ICDT-FILL%03d" % i})
+    OLD = "e0000000-0000-4000-8000-000000000001"
+    store.create("registration_requests", OLD, {"id": OLD, "schema_version": 1, "created_at": "2020-01-01T00:00:00Z", "updated_at": "2020-01-01T00:00:00Z", "registration_type": "private",
+                 "first_name": "Olive", "last_name": "Ancient", "email": "olive@home.example", "postal_code": "99999", "attendee_count": 1, "confirmation_number": "ICDT-OLD001"})
+    pg3.click("#refreshBtn"); pg3.wait_for_timeout(1200)
+    check("the newest page is listed and the old request is not", pg3.locator("#list > li").count() >= 100 and "Olive" not in pg3.locator("#list").inner_text())
+    pg3.fill("#rSearch", "olive"); pg3.wait_for_function("document.getElementById('list').innerText.indexOf('Olive') >= 0", timeout=5000)
+    check("Search asks the server and finds the request older than the first page", pg3.locator("#list > li:visible").count() == 1 and "Region: none yet" in pg3.locator("#list > li:visible").inner_text())
+    check("the old request sits at the bottom, in date order, and is not marked new", pg3.evaluate("(() => { var l = Array.from(document.querySelectorAll('#list > li')); return l[l.length - 1].innerText.indexOf('Olive') >= 0 && !l[l.length - 1].classList.contains('isnew'); })()"))
+    pg3.fill("#rSearch", ""); pg3.wait_for_timeout(400)
+    pg3.click("#lockBtn"); pg3.wait_for_selector("#lockView:not([hidden])")
+    check("sign-out empties the search box and the Region chip", pg3.evaluate("document.getElementById('rSearch').value === '' && document.getElementById('rChips').children.length === 0"))
+    errs += errs3
     check("no script errors", not errs and not errs2, errs + errs2)
     b.close()
 

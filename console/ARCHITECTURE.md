@@ -14,7 +14,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `console.js` | The legacy script, and the owner of `window.ConsoleKit` |
 | `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
 | `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
-| `requests.js` | The Requests station (`window.RequestsStation`) and the placed-requests data; loads after `dialogs.js` |
+| `requests.js` | The Requests station (`window.RequestsStation`), its Search box and Region chip, and the placed-requests data; loads after `dialogs.js` |
 | `attendance.js` | The Attendance station (`window.AttendanceStation`: show, reset, `openAttendance`, `personHistory`, `attLine`); loads after `requests.js`. The placing machinery (about 400 lines) still lives in `console.js` (DT-18) |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
@@ -60,7 +60,7 @@ A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after*
 | `words()` | The shared word tables (`corrKind`, `reasonWord`, `attWord`, `roleWord`) |
 | `historyBtn(id, label)` | The "Change history" button for a record (null when not allowed) |
 | `fetchT(url, opts, ms)`, `netShow(timedOut)` | The timed read and the "could not reach the server" banner |
-| `fetchRecords(since)` | The plain read of registration requests (sign-in uses it as its key check) |
+| `fetchRecords(since, opt)` | The read of registration requests (sign-in uses it as its key check); `opt` = `{q, region}` asks the server to search |
 | `canPlaced()` | May this person see placing (manage requests or classes) |
 | `putInClass(rec, host, said)` | The Put in a class form on a request card |
 | `line(label, value)`, `str(v)` | The detail-row helpers every list card uses |
