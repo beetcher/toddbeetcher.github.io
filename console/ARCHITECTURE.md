@@ -74,6 +74,34 @@ Every list station has the same shape, top to bottom: page head (title, Manual, 
 7. **One stylesheet, `console.css`**, with the tokens in `DESIGN-RULES.md`; no inline `<style>`.
 8. **The server decides.** A page never enforces a rule the server also needs; it only explains it.
 
+## Who owns what
+The cure for tangling is one owner per shared thing. A station never reaches into another station; it asks the owner. **Before you borrow or add anything, find its row here. If it has no row, add one in the same commit** (the architecture test fails if a `ConsoleKit` item has no row).
+
+Layers, from the bottom. A layer depends only on the layers below it.
+1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
+2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Added in the Requests run (R-1).
+3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): Put in a class, the Journal. One owner. Added in the Requests run (R-2).
+4. **Shared UI**: `ui.js`, `filters.js`. Used directly.
+5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
+
+Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the stations. They are not stations: no `show`, but they empty their data on sign-out. A shared file never names a station (checked).
+
+| Kit item | Owner today | Meaning |
+|---|---|---|
+| `mk` | Core (`console.js`) | Build an element |
+| `admin`, `adminProblem` | Core: transport | The one door to the server; the plain sentence for a failed call |
+| `toast` | Core: notices | The small notice |
+| `lock`, `key`, `can`, `me` | Core: session | Lock the Console; the current key; what this person may do; who they are |
+| `sessionMinutes`, `lastButton` | Core: session | Idle limit; the button just pressed |
+| `when`, `time`, `clock` | Core: date words | Date and time words |
+| `go` | Core: routing | Go to another page |
+| `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
+| `classChoices`, `classById`, `openAttendance` | Attendance and Classes (still in `console.js`) | The class list; look a class up; open its attendance |
+| `requests` | Requests (still in `console.js` until R-4) | The loaded registration requests |
+| `words` | Core: shared word tables | `corrKind`, `reasonWord` |
+
+Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
+
 ## How to add a station
 1. Add the markup section to `index.html` and one entry in the stations list (name, blurb, manual) in `console.js`.
 2. Create `console/<name>.js` from the pattern above; add its `<script>` after `console.js`.
@@ -84,7 +112,7 @@ Every list station has the same shape, top to bottom: page head (title, Manual, 
 
 ## How to extract a station from `console.js` (the Messages method)
 Write a run sheet and get a GO first, then four steps, one commit each:
-1. **Kit additions** only (no behaviour change); take the BEFORE pictures.
+1. **Kit additions** only (no behaviour change; add each item's row to "Who owns what"); take the BEFORE pictures.
 2. **The move**: new file holds the block verbatim, every borrowed name read from the kit; delete the block; two hook lines; pictures AFTER, compared pixel for pixel; the station's test and the neighbours (sidebar, Help, timeout, net).
 3. **The test follows the code**: add checks that the file loaded, that nothing of the station is left in `console.js`, that sign-out empties the page; break something on purpose once to prove the test guards it.
 4. **Records**: run log, bookmark, parking lot. Lower the cap in the architecture test to the new `console.js` size.
