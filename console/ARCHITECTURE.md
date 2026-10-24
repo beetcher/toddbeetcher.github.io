@@ -25,6 +25,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `instructors.js` | The Instructors station (`window.InstructorsStation`: show, reset, forget): only its settings; the engine builds its page into `#instructorsView` at load |
 | `students.js` | The Students station (`window.StudentsStation`: show, reset, forget): only its settings; the engine builds its page into `#studentsView` at load |
 | `places.js` | The Places station (`window.PlacesStation`: show, reset, forget, refresh): the list, filter, search, Add, GPS and address editing, retire and delete, who is linked here; loads after `students.js` |
+| `people.js` | The People station (`window.PeopleStation`: show, reset, forget, and list, matches, full, problems, dateOut, forgetPick, stale, words for the kit): the list, filter, search, Add, Edit, Merge and undo, Delete, change history, and the Addresses panel on a person's card; the cached pick list and name matching other pages borrow; loads after `places.js` |
 | `organizations.js` | The Organizations station (`window.OrganizationsStation`: show, reset, forget): the list with filter and search, Add, Edit, the active/inactive switch, Delete, and the links panel (people, venues, organizations and places linked to an organization); builds its own page into `#organizationsView` at load; loads after `students.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
@@ -139,13 +140,14 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `lProblems` | **Shared addresses** (`addresses.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
 | `placeInput`, `placeText` | **Shared addresses** (`addresses.js`) | The address form with saved-place offer, and the one-line address text |
 | `forgetSavedPlaces` | **Shared addresses** (`addresses.js`) | Forget the cached saved places after a place changed |
-| `peopleList`, `peopleMatches`, `pFull` | People (still in `console.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
+| `peopleList`, `peopleMatches`, `pFull` | **People station** (`people.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
 | `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
 | `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
-| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / Places-People shared (still in `console.js`) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
-| `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People, still in `console.js` (`pProblems`, `colls`, `peopleStale`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
+| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / People (`forgetPeople` forwards to the People station) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
+| `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People station (`pProblems`, `peopleStale`) / `console.js` data (`colls`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
+| `personHistory`, `personRels` | Core: a forwarder to Attendance / People relation list (data, still in `console.js`) | One person's attendance history; the relation words offered on a person's address (read by People) |
 | `skelOn`, `skelOff`, `currentRoute` | Core: shared list helpers and routing (still in `console.js`) | The loading skeleton on/off for a list; the page the Console is on (read by Places) |
-| `pDateOut`, `locAddr`, `rel` | People / Places (still in `console.js`) | A stored date as words; a place's address on one line; the Places relation words table (read by the Organizations station) |
+| `pDateOut`, `locAddr`, `rel` | People station (`pDateOut`) / Shared addresses (`locAddr`) / `console.js` data (`rel`) | A stored date as words; a place's address on one line; the Places relation words table (read by the Organizations station) |
 | `putInClass`, `assignForm`, `classWhen`, `classChoices`, `classById` | **Classes station** (`classes.js`, `ClassesStation`) | The kit only forwards to it, so Requests and Attendance still ask the kit and never another station |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
