@@ -1,6 +1,6 @@
 """Browser test for the Organizations station: drives the real Console page in headless Chromium against the real
 admin endpoint code with an in-memory store. Needs playwright and a Chromium (skips when not there). Nothing touches Firebase.
-Run from enjoy_router/:  python3 run_organization_browser_test.py"""
+Run from enjoy_router/:  python3 run_organizations_browser_test.py"""
 import sys, json, os, pathlib
 HERE = pathlib.Path(__file__).resolve().parent
 PAGE = (HERE.parent / "console" / "index.html").as_uri()
@@ -196,6 +196,17 @@ with sync_playwright() as p:
     pg.click("#organizationsView .manualBtn")
     check("Organizations manual opens", pg.locator("#manual h2", has_text="Organizations").is_visible())
     check("no sideways scroll after use", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth"))
+    # the station is its own file (the Organizations extraction, OR-2)
+    import re
+    big = (HERE.parent / "console" / "console.js").read_text(); mine = (HERE.parent / "console" / "organizations.js").read_text()
+    check("organizations.js is its own file and OrganizationsStation has every hook", pg.evaluate("typeof window.OrganizationsStation === 'object' && ['show','reset','forget'].every(k => typeof window.OrganizationsStation[k] === 'function')"))
+    check("nothing of the Organizations station is left in console.js", not re.search(r"buildOrganization|OISSUE|OKINDS|OREL|roAddBtn|roList|ROSTER|resetRosters", big))
+    check("organizations.js reaches the big file only through the kit", "window.ConsoleKit" in mine and "ROSTER" not in mine)
+    pg.select_option("#collPick", "organizations"); pg.wait_for_selector("#organizationsView:not([hidden])")
+    pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    check("sign-out empties the Organizations page", pg.evaluate("document.querySelectorAll('#roList li').length === 0 && document.getElementById('roCount').textContent === '' && document.getElementById('roChecked').textContent === '' && document.getElementById('roAddForm').hidden"))
+    pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_function("document.getElementById('roChecked').textContent.length > 0")
+    check("signing back in loads the Organizations page again", pg.locator("#roCount").inner_text() != "")
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()

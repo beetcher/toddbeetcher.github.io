@@ -23,6 +23,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `roster-engine.js` | Shared builder (`window.ConsoleRoster.build(cfg)`): the one engine behind the Instructors and Students pages (list, filter, search, Add window, Edit form, remove, instructor hours, curricula, regions and private address); loads after `dialogs.js`, before the stations |
 | `instructors.js` | The Instructors station (`window.InstructorsStation`: show, reset, forget): only its settings; the engine builds its page into `#instructorsView` at load |
 | `students.js` | The Students station (`window.StudentsStation`: show, reset, forget): only its settings; the engine builds its page into `#studentsView` at load |
+| `organizations.js` | The Organizations station (`window.OrganizationsStation`: show, reset, forget): the list with filter and search, Add, Edit, the active/inactive switch, Delete, and the links panel (people, venues, organizations and places linked to an organization); builds its own page into `#organizationsView` at load; loads after `students.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -141,6 +142,7 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
 | `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / Places-People shared (still in `console.js`) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
 | `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Places / People (still in `console.js`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
+| `pDateOut`, `locAddr`, `rel` | People / Places (still in `console.js`) | A stored date as words; a place's address on one line; the Places relation words table (read by the Organizations station) |
 | `putInClass`, `assignForm`, `classWhen`, `classChoices`, `classById` | **Classes station** (`classes.js`, `ClassesStation`) | The kit only forwards to it, so Requests and Attendance still ask the kit and never another station |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
