@@ -329,6 +329,16 @@ with sync_playwright() as p:
     pg.wait_for_selector("#atDlg[open]")
     check("class name opens that class's attendance", "Attendance:" in pg.locator("#atTitle").inner_text())
     pg.click("#atClose")
+    # ---- the Attendance station (A-2): its own file, nothing left behind, hooks work, sign-out empties it, signing back in loads it again
+    import re as _re
+    big = (HERE.parent / "console" / "console.js").read_text()
+    check("attendance.js is its own file and AttendanceStation has every hook", pg.evaluate("typeof window.AttendanceStation === 'object' && ['show','reset','openAttendance','personHistory','attLine'].every(k => typeof AttendanceStation[k] === 'function')"))
+    check("nothing of the Attendance station is left in console.js", not _re.search(r"function (attRow|attRowDlg|asRender|asChips|asCounts|asMatches|asSelected|loadAttendanceStation|attCorrespondence|corrLine|corrNorm|sendFail)\b|\bvar AS = \{|var SEND_WHY", big))
+    check("attendance.js reaches the big file only through the kit", "window.ConsoleKit" in (HERE.parent / "console" / "attendance.js").read_text())
+    pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    check("sign-out empties the Attendance page", pg.evaluate("document.querySelectorAll('#aList li').length === 0 && document.getElementById('aSearch').value === '' && document.getElementById('aCount').textContent === ''"))
+    pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#aList li")
+    check("signing back in loads the Attendance page again", pg.locator("#aList li").count() == n_all, pg.locator("#aList li").count())
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()
