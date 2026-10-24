@@ -710,3 +710,11 @@
     label.cf-opt { min-height: 48px; }
     .cf-open .cf-back { display: block; position: fixed; inset: 0; z-index: 89; background: rgba(0,0,0,.4); }
   }
+
+/* the class page: tabs (Overview, People, Attendance, Edit) */
+.tabs { display: flex; gap: var(--space-3); overflow-x: auto; border-bottom: 1px solid var(--line); margin: var(--space-4) 0; }
+.tabs [role="tab"] { all: unset; box-sizing: border-box; min-height: 44px; padding: 0 var(--space-6); display: inline-flex; align-items: center; cursor: pointer; font-weight: 600; font-size: var(--text-m); color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+.tabs [role="tab"][aria-selected="true"] { color: var(--ink); border-bottom-color: var(--orange); }
+.tabs [role="tab"]:focus-visible { outline: 3px solid var(--orange); }
+.tabpane[hidden] { display: none; }
+#cHub .detail { display: block; }

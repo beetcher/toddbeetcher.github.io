@@ -884,7 +884,7 @@
                         attName: function (r) { return attName(r); },
                         classChoices: function () { return window.ClassesStation.choices(); },
                         classById: function (id) { return window.ClassesStation ? window.ClassesStation.byId(id) : undefined; },
-                        openAttendance: function (cls) { openAttendance(cls); },
+                        openAttendance: function (cls, host) { openAttendance(cls, host); },
                         requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
                         words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return attFail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
@@ -991,7 +991,7 @@
 
 
   // Attendance lives in attendance.js. These forwarders keep the callers that are still here (Classes, People, Put in a class) unchanged; they go when the placing machinery moves (DT-18).
-  function openAttendance(cls) { if (window.AttendanceStation) window.AttendanceStation.openAttendance(cls); }
+  function openAttendance(cls, host) { if (window.AttendanceStation) window.AttendanceStation.openAttendance(cls, host); }
   function personHistory(rec, host) { if (window.AttendanceStation) window.AttendanceStation.personHistory(rec, host); }
   var CORR_KIND = { placement_confirmation: "Placement confirmation", request_received: "Request received" };
   var REASON_WORD = { no_contact: "no email or phone on file", channel_unavailable: "they prefer a text, so contact them by hand", no_template: "no message is set up for this",

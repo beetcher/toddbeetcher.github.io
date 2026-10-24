@@ -105,7 +105,7 @@
     var li = document.createElement("li");
     if (isNew) li.className = "isnew";
     var head = document.createElement("button");
-    head.className = "head"; head.type = "button"; head.setAttribute("aria-expanded", "false");
+    head.className = "head"; head.type = "button";
     var top = mk("div", "top");
     top.appendChild(mk("span", "vname", rec.title || "(no title)"));
     top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), rec.status || ""));
@@ -128,17 +128,8 @@
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
 
-    var detail = mk("div", "detail");
-    var done = {};
-    ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
-      if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
-    });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
-    head.addEventListener("click", function () {
-      var open = li.classList.toggle("open");
-      head.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-    li.appendChild(head); li.appendChild(links); li.appendChild(classActions(rec)); li.appendChild(detail);
+    head.addEventListener("click", function () { openHub(rec, "Overview"); });
+    li.appendChild(head); li.appendChild(links); li.appendChild(classActions(rec));
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -175,7 +166,7 @@
       var code = e && (e.code || (e.problems && e.problems[0] && (e.problems[0].field + " " + e.problems[0].issue)));
       return adminProblem(res.status) + (code ? " (" + res.status + ": " + code + ")" : " (" + res.status + ")");
     }
-    ed.addEventListener("click", function () { openClassEdit(rec); });
+    ed.addEventListener("click", function () { openHub(rec, "Edit"); });
     cn.addEventListener("click", function () { show("cancel"); });
     del.addEventListener("click", function () { show("delete"); });
     no.addEventListener("click", function () { box.hidden = true; });
@@ -189,9 +180,9 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled and emailed. Messages shows any email that could not be sent.";
-          refreshPlaced(); loadClasses();
+          refreshPlaced(); closeHub(); loadClasses();
         }
-        else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
+        else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; closeHub(); loadClasses(); }
         else if (res.status === 409 && mode === "cancel") err.textContent = "This class changed since the list loaded. Refresh and try again.";
         else if (res.status === 409) err.textContent = "This class still holds old seat decisions from before attendance existed, so it cannot be deleted. Cancel it instead.";
         else err.textContent = problem(res);
@@ -453,8 +444,6 @@
         s2.body.appendChild(btn); s2.body.appendChild(box);
       }
     });
-    var sIns = section("Instructors", true); sIns.d.id = "cInsSection";
-    sIns.body.appendChild(classInstructors(rec));
     var more = mk("details", "more");
     more.appendChild(mk("summary", "", "More (program, organizer, accessibility)"));
     var mbody = mk("div", "mbody"); more.appendChild(mbody); host.appendChild(more);
@@ -560,7 +549,7 @@
         say.textContent = fail(res); return null;
       });
     }
-    box.appendChild(mk("div", "hint", "These buttons save at once and email the people in the class. The details above are saved with Save changes."));
+    box.appendChild(mk("div", "hint", "These buttons save at once and email the people in the class. The class details on the Edit tab are saved with Save changes."));
     box.appendChild(list);
     box.appendChild(chooser("Change the lead instructor", "Make lead", makeLead));
     box.appendChild(chooser("Add another instructor", "Add instructor", addOne));
@@ -634,10 +623,8 @@
     var c = collectClassChanges();
     return Object.keys(c.bad).length > 0 || Object.keys(c.changes).length > 0;
   }
-  function closeClassEdit() {
-    cRec = null; cCtx.fields = {};
-    $("cEditPanel").hidden = true; $("cMain").hidden = false;
-  }
+  function dropClassEdit() { cRec = null; cCtx.fields = {}; $("cEditPanel").hidden = true; }
+  function closeClassEdit() { dropClassEdit(); closeHub(); }
   function openClassEdit(rec) {
     $("cMsg").textContent = "";
     Promise.all([getClassSchema(), ConsoleNames.loadVenueChoices(), ConsoleNames.loadCurriculumChoices()]).then(function (both) {
@@ -649,10 +636,74 @@
       cBuildSections(rec);
       cClearEditErrs();
       $("cEditPanel").classList.remove("showhelp"); $("cHelpBtn").textContent = "Show field help";
-      $("cMain").hidden = true; $("cEditPanel").hidden = false;
-      window.scrollTo(0, 0);
+      $("cEditPanel").hidden = false;
     });
   }
+  // ---- the class page: tabs Overview, People, Attendance, Edit. The list is unchanged; tapping a class opens this.
+  var HUB_TABS = ["Overview", "People", "Attendance", "Edit"], hub = { rec: null, tab: "" };
+  function hubPane(t) { return $("cTab" + t); }
+  function closeHub() {
+    hub.rec = null; hub.tab = "";
+    ["Overview", "People", "Attendance"].forEach(function (t) { hubPane(t).textContent = ""; });
+    $("cHub").hidden = true; $("cMain").hidden = false;
+  }
+  function openHub(rec, tab) {
+    $("cMsg").textContent = "";
+    hub.rec = rec; hub.tab = "";
+    $("cHubTitle").textContent = rec.title || "(no title)";
+    $("cHubSub").textContent = classWhen(rec);
+    $("cMain").hidden = true; $("cHub").hidden = false;
+    showTab(tab || "Overview");
+    window.scrollTo(0, 0);
+  }
+  function showTab(t) {
+    if (t === hub.tab) return;
+    if (hub.tab === "Edit") { askDiscard(classDirty(), function () { dropClassEdit(); activateTab(t); }); return; }
+    activateTab(t);
+  }
+  function drawOverview(rec, host) {
+    host.textContent = "";
+    var detail = mk("div", "detail");
+    var done = {};
+    ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
+      if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
+    });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
+    jl.addEventListener("click", function () { ConsoleDialogs.openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
+    host.appendChild(classActions(rec)); host.appendChild(jl); host.appendChild(detail);
+  }
+  function drawPeople(rec, host) {
+    host.textContent = "";
+    host.appendChild(classInstructors(rec));
+    var say = mk("div", "msg"); say.setAttribute("role", "status");
+    var det = mk("details", "addbox"); det.id = "cPeopleAdd";
+    det.appendChild(mk("summary", "", "Add a student or instructor"));
+    det.appendChild(assignForm({ cls: rec, onCancel: function () { det.open = false; }, onAdded: function (d, said) { say.textContent = said; det.open = false; } }));
+    host.appendChild(det); host.appendChild(say);
+    host.appendChild(mk("div", "hint", "Students and each person’s attendance are on the Attendance tab."));
+  }
+  function activateTab(t) {
+    hub.tab = t;
+    HUB_TABS.forEach(function (n) {
+      var on = n === t, b = $("cTabBtn" + n);
+      b.setAttribute("aria-selected", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; hubPane(n).hidden = !on;
+    });
+    var rec = hub.rec, p = hubPane(t);
+    if (t === "Overview") drawOverview(rec, p);
+    else if (t === "People") drawPeople(rec, p);
+    else if (t === "Attendance") openAttendance(rec, p);
+    else openClassEdit(rec);
+  }
+  $("cTabs").addEventListener("click", function (e) { var b = e.target.closest("[data-t]"); if (b) showTab(b.getAttribute("data-t")); });
+  $("cTabs").addEventListener("keydown", function (e) {
+    var i = HUB_TABS.indexOf(hub.tab), n = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : -1;
+    if (n < 0) return;
+    e.preventDefault(); n = (n + HUB_TABS.length) % HUB_TABS.length;
+    $("cTabBtn" + HUB_TABS[n]).focus(); showTab(HUB_TABS[n]);
+  });
+  $("cHubBack").addEventListener("click", function () { askDiscard(classDirty(), closeClassEdit); });
+
   function cIssueText(p, f) {
     var m = CISSUE[p.field] && CISSUE[p.field][p.issue];
     if (m) return m;

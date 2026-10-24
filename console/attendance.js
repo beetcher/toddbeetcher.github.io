@@ -134,11 +134,19 @@
     if (nm) nm.insertBefore(mk("span", "qchip" + (tn.tone === "wait" ? " warn" : tn.tone === "ok" ? " ok" : ""), ATT_WORD[r.status] || r.status), nm.querySelector(".aref"));
     return row;
   }
-  function openAttendance(cls) {
-    var dlg = $("atDlg"), body = $("atBody"), msg = $("atMsg");
-    $("atTitle").textContent = "Attendance: " + (cls.title || "class");
+  // With no host this opens the Attendance dialog. With a host (the class page's Attendance tab) the same roster is drawn there instead.
+  function openAttendance(cls, host) {
+    var inline = !!host, dlg = $("atDlg"), body, msg;
+    if (inline) {
+      host.textContent = "";
+      msg = mk("div", "msg"); msg.setAttribute("role", "status"); body = mk("div", "atinline");
+      host.appendChild(msg); host.appendChild(body);
+    } else {
+      body = $("atBody"); msg = $("atMsg");
+      $("atTitle").textContent = "Attendance: " + (cls.title || "class");
+    }
     msg.textContent = ""; body.textContent = "Loading…";
-    if (!dlg.open) dlg.showModal();
+    if (!inline && !dlg.open) dlg.showModal();
     function say(t) { msg.textContent = t; }
     var only = "";
     function draw() {
@@ -148,7 +156,7 @@
         body.textContent = "";
         var bShow = mk("section", "atband show"), bInst = mk("section", "atband inst"), bStu = mk("section", "atband stu");
         bShow.appendChild(mk("div", "bandname", "Show"));
-        var fl = mk("label", "f", "Who to show"), fs = mk("select"); fs.id = "atOnly"; fl.htmlFor = "atOnly"; fl.className = "sr";
+        var fl = mk("label", "f", "Who to show"), fs = mk("select"); fs.id = inline ? "atOnlyTab" : "atOnly"; fl.htmlFor = fs.id; fl.className = "sr";
         var o0 = mk("option", "", "Everyone"); o0.value = ""; fs.appendChild(o0);
         ATT_STATUSES.forEach(function (st) { var o = mk("option", "", ATT_WORD[st] + " only"); o.value = st; fs.appendChild(o); });
         fs.value = only; fs.addEventListener("change", function () { only = fs.value; draw(); });
@@ -170,10 +178,12 @@
         if (!stu.length) bStu.appendChild(mk("div", "empty", "No students yet."));
         var seats = stu.filter(function (r) { return !ATT_OFF[r.status]; }).length, wait = stu.filter(function (r) { return r.status === "waitlisted"; }).length;
         bStu.appendChild(mk("div", "rsum", seats + " of up to " + cls.capacity_max + " seats taken" + (wait ? ", " + wait + " waiting" : "") + ". Target " + cls.capacity_target + "."));
-        var det = mk("details", "addbox"); det.id = "atAddBox";
-        det.appendChild(mk("summary", "", "Add a student or instructor"));
-        det.appendChild(assignForm({ cls: cls, onCancel: function () { det.open = false; }, onAdded: function (d, said) { say(said); draw(); } }));
-        bStu.appendChild(det);
+        if (!inline) {   // the class page keeps its add form on the People tab
+          var det = mk("details", "addbox"); det.id = "atAddBox";
+          det.appendChild(mk("summary", "", "Add a student or instructor"));
+          det.appendChild(assignForm({ cls: cls, onCancel: function () { det.open = false; }, onAdded: function (d, said) { say(said); draw(); } }));
+          bStu.appendChild(det);
+        }
       });
     }
     draw();

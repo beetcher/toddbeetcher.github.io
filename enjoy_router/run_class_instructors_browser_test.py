@@ -79,11 +79,11 @@ with sync_playwright() as p:
     pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
     pg.select_option("#collPick", "classes"); pg.wait_for_selector("#cList li")
     li = pg.locator("#cList li", has_text="Evening Basics"); li.locator("button.head").click()
-    li.get_by_role("button", name="Edit", exact=True).click()
-    pg.wait_for_selector("#cInsSection")
+    pg.click("#cTabBtnPeople")
+    pg.wait_for_selector("#cInstructors")
     box = pg.locator("#cInstructors")
     box.get_by_text("Lead instructor: Ina Teach").wait_for()
-    check("the Edit class screen shows who is the lead instructor", box.get_by_text("Lead instructor: Ina Teach").count() == 1)
+    check("the class page People tab shows who is the lead instructor", box.get_by_text("Lead instructor: Ina Teach").count() == 1)
     # change the lead to someone not yet in the class
     lead_box = box.locator(".addbox").nth(0)
     lead_box.locator("input").fill("zed"); lead_box.get_by_role("button", name="Zed Newbie").click()
@@ -127,6 +127,7 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('cInsMsg').textContent.indexOf('already the lead') >= 0")
     check("choosing the current lead changes nothing", not sent)
     # the class details Save button still works and does not touch instructors
+    pg.click("#cTabBtnEdit"); pg.wait_for_selector("#ef_c_venue_notes")
     pg.fill("#ef_c_venue_notes", "Side door"); pg.click("#cEditSave")
     pg.wait_for_function("document.getElementById('cNotice').textContent.indexOf('Saved') === 0")
     check("saving the class details still works", store.get("scheduled_classes", sc["id"]).get("venue_notes") == "Side door" and roles()["Ina"][0] == "primary_instructor")

@@ -259,19 +259,34 @@
     <div class="empty" id="cNoMatch" hidden>No classes match the filters. <button type="button" class="linkbtn" id="cNoMatchAll">Show all</button></div>
     </div>
 
-    <section id="cEditPanel" hidden>
-      <div class="headrow"><h2 id="cEditTitle"></h2><button type="button" class="quiet" id="cHelpBtn">Show field help</button></div>
-      <div class="hint" id="cEditSub"></div>
-      <div class="msg" id="cEditMsg" role="alert"></div>
-      <button type="button" class="quiet" id="cEditReload" hidden>Close and reload the latest</button>
-      <form id="cEditForm" novalidate autocomplete="off">
-        <div class="hint reqnote">* means required</div>
-        <div id="cEditSections"></div>
-        <div class="stickybar">
-          <button type="submit" id="cEditSave">Save changes</button>
-          <button type="button" class="quiet" id="cEditCancel">Cancel</button>
-        </div>
-      </form>
+    <section id="cHub" hidden>
+      <div class="headrow"><h2 id="cHubTitle"></h2><button type="button" class="quiet" id="cHubBack">Back to classes</button></div>
+      <div class="hint" id="cHubSub"></div>
+      <div class="tabs" id="cTabs" role="tablist" aria-label="This class">
+        <button type="button" role="tab" id="cTabBtnOverview" data-t="Overview" aria-controls="cTabOverview">Overview</button>
+        <button type="button" role="tab" id="cTabBtnPeople" data-t="People" aria-controls="cTabPeople">People</button>
+        <button type="button" role="tab" id="cTabBtnAttendance" data-t="Attendance" aria-controls="cTabAttendance">Attendance</button>
+        <button type="button" role="tab" id="cTabBtnEdit" data-t="Edit" aria-controls="cTabEdit">Edit</button>
+      </div>
+      <div class="tabpane" id="cTabOverview" role="tabpanel" aria-labelledby="cTabBtnOverview" hidden></div>
+      <div class="tabpane" id="cTabPeople" role="tabpanel" aria-labelledby="cTabBtnPeople" hidden></div>
+      <div class="tabpane" id="cTabAttendance" role="tabpanel" aria-labelledby="cTabBtnAttendance" hidden></div>
+      <div class="tabpane" id="cTabEdit" role="tabpanel" aria-labelledby="cTabBtnEdit" hidden>
+      <section id="cEditPanel" hidden>
+        <div class="headrow"><h2 id="cEditTitle"></h2><button type="button" class="quiet" id="cHelpBtn">Show field help</button></div>
+        <div class="hint" id="cEditSub"></div>
+        <div class="msg" id="cEditMsg" role="alert"></div>
+        <button type="button" class="quiet" id="cEditReload" hidden>Close and reload the latest</button>
+        <form id="cEditForm" novalidate autocomplete="off">
+          <div class="hint reqnote">* means required</div>
+          <div id="cEditSections"></div>
+          <div class="stickybar">
+            <button type="submit" id="cEditSave">Save changes</button>
+            <button type="button" class="quiet" id="cEditCancel">Cancel</button>
+          </div>
+        </form>
+      </section>
+      </div>
     </section>
   </section>
   <section id="peopleView" hidden>
