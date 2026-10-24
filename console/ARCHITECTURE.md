@@ -54,7 +54,8 @@ A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after*
 | `classChoices()`, `classById(id)` | Load the class list; look one up |
 | `openAttendance(class)` | Open a class's attendance dialog |
 | `requests()` | The loaded registration requests (fetched if none are loaded yet) |
-| `words()` | The shared word tables (`corrKind`, `reasonWord`) |
+| `words()` | The shared word tables (`corrKind`, `reasonWord`, `attWord`, `roleWord`) |
+| `historyBtn(id, label)` | The "Change history" button for a record (null when not allowed) |
 
 Rules for the kit:
 1. **Functions, not values.** What they read is filled in later or replaced on reset, so a value copied at load time would go stale.
@@ -99,7 +100,8 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
 | `classChoices`, `classById`, `openAttendance` | Attendance and Classes (still in `console.js`) | The class list; look a class up; open its attendance |
 | `requests` | Requests (still in `console.js` until R-4) | The loaded registration requests |
-| `words` | Core: shared word tables | `corrKind`, `reasonWord` |
+| `words` | Core: shared word tables | `corrKind`, `reasonWord`, `attWord`, `roleWord` |
+| `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 
