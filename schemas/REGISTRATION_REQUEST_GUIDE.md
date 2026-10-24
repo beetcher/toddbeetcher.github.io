@@ -236,3 +236,9 @@ The receipt email for a private request carries a link back to the SAME request,
 - Once the request has an active placement in a class the link stops accepting changes (`already_scheduled`, 409). If the placement is withdrawn or cancelled the link works again.
 - The link does not expire. Whoever holds it can read and complete that one request; that is the intended trade for a link with nothing to type. Only private requests have a link in M1.
 - `updated_by` is `web:completion` after a change made through the link.
+
+## Console list: read-time `regions`, search and region options (2026-10-23)
+No stored field changes. The Console records endpoint (`enjoy_console_records`) adds, on every read:
+- `regions`: `[{id, name}]` of the live regions that hold the request's ZIP (else the region picked on the form, else empty). Worked out from the regions at read time; never stored.
+- Options `q` (words, all must match, at most 80 characters: name, email, phone, ZIP, reference number, town, organization, region name) and `region` (a region id, or `none`). They look through the newest 2,000 requests, not the newest 200.
+- With either option the reply also carries `total` (matches found), `scanned` and `truncated` (true when the scan hit 2,000). A view-only sign-in cannot search email, phone or place, because those are masked for it.

@@ -106,6 +106,40 @@ check("deleted=1 returns only the deleted ones, with who and when", rd.status ==
 check("deleted=1 never carries the receipt-link secret", "secret-token" not in json.dumps(rd.body))
 check("deleted=1 still needs the key", call(store=ds, params={"deleted": "1"}, auth="").status == 401)
 check("deleted=0 or anything else is the normal list", [d["id"] for d in call(store=ds, params={"deleted": "0"}).body["data"]["records"]] == ["id2", "id0"])
+# Search + Region (Requests Search/Region build): regions are worked out on read; q and region search the newest SCAN_MAX; reply carries total
+ss = MemoryStore([])
+ss.areas["r-front"] = {"id": "r-front", "kind": "region", "name": "Front Range", "state_code": "CO", "is_active": True, "zip_codes": ["80301", "80302"]}
+ss.areas["r-west"] = {"id": "r-west", "kind": "region", "name": "Western Slope", "state_code": "CO", "is_active": False, "zip_codes": ["81501"]}
+ss.areas["r-gone"] = {"id": "r-gone", "kind": "region", "name": "Gone", "state_code": "CO", "is_active": True, "zip_codes": ["80301"], "deleted_at": "2026-01-01T00:00:00Z"}
+def req(i, first, last, zip_=None, region_id=None, **kw):
+    d = {"id": "s%d" % i, "confirmation_number": "ICDT-%06d" % (100 + i), "email": "%s@example.com" % first.lower(), "first_name": first, "last_name": last,
+         "created_at": "2026-10-09T04:00:%02dZ" % i, "registration_type": "private", "completion_token": "tok"}
+    if zip_: d["postal_code"] = zip_
+    if region_id: d["region_id"] = region_id
+    d.update(kw); return d
+ss.requests.extend([req(1, "Ann", "Boulder", "80301"), req(2, "Bob", "Slope", "81501"), req(3, "Cy", "Nowhere", "99999"), req(4, "Di", "Picked", None, "r-front", phone="(303) 555-0142"), req(5, "Ed", "Gone", "80302", deleted_at="2026-10-09T05:00:00Z")])
+rs = call(store=ss).body["data"]
+byid = {d["id"]: d for d in rs["records"]}
+check("each request carries its regions, by ZIP", [r["id"] for r in byid["s1"]["regions"]] == ["r-front"] and [r["name"] for r in byid["s2"]["regions"]] == ["Western Slope"])
+check("a deleted region is never a tag; a ZIP nobody holds has no region", all(r["id"] != "r-gone" for r in byid["s1"]["regions"]) and byid["s3"]["regions"] == [])
+check("with no ZIP, the region picked on the form is the tag", [r["id"] for r in byid["s4"]["regions"]] == ["r-front"])
+check("a plain list has no total (nothing was searched)", "total" not in rs and "completion_token" not in json.dumps(rs))
+rq = call(store=ss, params={"q": "ann"}).body["data"]
+check("q finds by name and reports total, scanned", [d["id"] for d in rq["records"]] == ["s1"] and rq["total"] == 1 and rq["scanned"] == 5 and rq["truncated"] is False)
+check("q finds by email, reference number, ZIP, phone digits, region name", all([d["id"] for d in call(store=ss, params={"q": q}).body["data"]["records"]] == [i] for q, i in
+      [("bob@example", "s2"), ("icdt-000103", "s3"), ("99999", "s3"), ("3035550142", "s4"), ("western", "s2")]))
+check("every word must match", call(store=ss, params={"q": "ann slope"}).body["data"]["total"] == 0 and call(store=ss, params={"q": "front di"}).body["data"]["total"] == 1)
+check("region filter by id", [d["id"] for d in call(store=ss, params={"region": "r-front"}).body["data"]["records"]] == ["s4", "s1"])
+check("region=none lists those with no region", [d["id"] for d in call(store=ss, params={"region": "none"}).body["data"]["records"]] == ["s3"])
+check("region and q work together", [d["id"] for d in call(store=ss, params={"region": "r-front", "q": "di"}).body["data"]["records"]] == ["s4"])
+check("search never shows a deleted request, deleted=1 searches only deleted", call(store=ss, params={"q": "gone"}).body["data"]["total"] == 0 and [d["id"] for d in call(store=ss, params={"q": "gone", "deleted": "1"}).body["data"]["records"]] == ["s5"])
+check("search still needs the key; q longer than 80 is a 400", call(store=ss, params={"q": "a"}, auth="").status == 401 and call(store=ss, params={"q": "a" * 81}).status == 400)
+import console as _c  # noqa: E402
+old = _c.SCAN_MAX; _c.SCAN_MAX = 3
+rt = call(store=ss, params={"q": "example"}).body["data"]
+_c.SCAN_MAX = old
+check("a scan that hits the cap says so", rt["scanned"] == 3 and rt["truncated"] is True)
+
 r = call(store=Boom([]))
 check("a crash gives a plain server_error that reveals nothing", r.status == 500 and "secret" not in json.dumps(r.body))
 
