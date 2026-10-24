@@ -63,7 +63,7 @@ A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after*
 | `putInClass(rec, host, said)` | The Put in a class form on a request card |
 | `line(label, value)`, `str(v)` | The detail-row helpers every list card uses |
 | `problem(status)` | The plain sentence for a failed sign-in read |
-| `consts()` | True constants only: `MAX`, `ATT_RANK`, `ATT_GONE`, `RECORDS_URL` |
+| `consts()` | True constants only: `MAX`, `READ_MS`, `ATT_RANK`, `ATT_GONE`, `RECORDS_URL` |
 
 Rules for the kit:
 1. **Functions, not values.** What they read is filled in later or replaced on reset, so a value copied at load time would go stale.
