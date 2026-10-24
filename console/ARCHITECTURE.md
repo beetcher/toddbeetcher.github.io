@@ -18,6 +18,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `requests.js` | The Requests station (`window.RequestsStation`), its Search box and Region chip, and the placed-requests data; loads after `dialogs.js` |
 | `attendance.js` | The Attendance station (`window.AttendanceStation`: show, reset, `openAttendance`, `personHistory`, `attLine`); loads after `requests.js`. The placing machinery (about 400 lines) still lives in `console.js` (DT-18) |
 | `venues.js` | The Venues station (`window.VenuesStation`: show, stop, reset, dirty, forget): list, filters, Details, Add, Edit form, Rooms and Open days popups, the venue's Place panel and Contact picker; loads after `attendance.js` |
+| `classes.js` | The Classes station (`window.ClassesStation`: show, stop, reset, dirty, forget, and putInClass, assignForm, classWhen, choices, byId for the kit): list and filters, Add, Edit form, the Instructors box, time-zone helpers, and the placing machinery (Put in a class, add a person, the class builder); loads after `venues.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -115,28 +116,27 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `when`, `time`, `clock` | Core: date words | Date and time words |
 | `go` | Core: routing | Go to another page |
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
-| `classChoices`, `classById`, `openAttendance` | Attendance and Classes (still in `console.js`) | The class list; look a class up; open its attendance |
+| `openAttendance` | Attendance (`attendance.js`, through a forwarder in `console.js`, DT-23) | Open a class's attendance |
 | `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
 | `words` | Core: shared word tables | `corrKind`, `reasonWord`, `attWord`, `roleWord` |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
 | `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
 | `fetchRecords` | Core: transport and sign-in | The read of requests that doubles as the key check (DT-2) |
 | `canPlaced` | Core: session | Placing permission |
-| `putInClass` | Attendance (still in `console.js`) | The Put in a class form; moves with Attendance (DT-18) |
 | `line`, `str` | Core: detail-row helpers | Used by many cards; to become shared UI (DT-19) |
 | `problem` | Core: sign-in | The failed sign-in sentence (DT-1) |
 | `consts` | Core: constants | Constants only, never a value that changes |
 | `attConsts` | Core: shared vocabulary (DT-8) | The attendance word tables; read by Attendance, Requests, Messages, People, Classes |
 | `attFail` | Core: placing machinery | The failed-write sentence (moves with the placing machinery, DT-18) |
-| `classWhen` | Classes (still in `console.js`) | Class date words |
 | `refreshPlaced` | Core: a forwarder to Requests | Calls `RequestsStation.loadPlaced` |
-| `assignForm` | Placing machinery (still in `console.js`, DT-18) | The add-a-person form |
 | `lProblems` | Places (still in `console.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
 | `placeInput`, `placeText` | Places (still in `console.js`) | The address form with saved-place offer, and the one-line address text |
 | `forgetSavedPlaces` | Places (still in `console.js`) | Forget the cached saved places after a place changed |
 | `peopleList`, `peopleMatches`, `pFull` | People (still in `console.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
 | `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
 | `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
+| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / Places-People shared (still in `console.js`) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
+| `putInClass`, `assignForm`, `classWhen`, `classChoices`, `classById` | **Classes station** (`classes.js`, `ClassesStation`) | The kit only forwards to it, so Requests and Attendance still ask the kit and never another station |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 
@@ -160,4 +160,4 @@ Write a run sheet and get a GO first, then four steps, one commit each:
 - **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly", ConsoleNames: "readonly", ConsoleDialogs: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked).
 
 ## Still inside `console.js` (to be extracted, each with its own sheet and GO)
-Classes, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
+People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.

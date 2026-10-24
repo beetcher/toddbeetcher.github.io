@@ -16,7 +16,7 @@ import os, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 CON = pathlib.Path(os.environ.get("CONSOLE_DIR") or (HERE.parent / "console"))
-CAP = 4314          # lines in console.js after V-4 (the Venues station left it, venues.js). LOWER this after each extraction; never raise.
+CAP = 3138          # lines in console.js after C-2 (the Classes station left it, classes.js). LOWER this after each extraction; never raise.
 SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js", "forms.js"]   # load before console.js
 SHARED_AFTER = ["names.js", "dialogs.js"]   # shared data / dialogs: load AFTER console.js (they use the kit) and BEFORE the stations; not stations
 LEGACY = "console.js"
