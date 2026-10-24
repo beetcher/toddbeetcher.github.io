@@ -259,6 +259,23 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
         log.info("%s op=send_coverage_reminders code=ok", tag)
         return HttpResult(200, {"ok": True, "data": summary}, {"Cache-Control": "no-store"})
 
+    if body.get("op") == "fix_place_zones":   # places with no time zone: fill Colorado ones, list the rest (super admin only; a dry run unless apply is true)
+        if not allow_me:
+            return _error(400, "validation_failed", "This op is not enabled here.")
+        if not access.is_super_admin or access.inspector:
+            return _door.forbidden(tag)
+        args = body.get("args", {})
+        if not isinstance(args, dict) or set(args) - {"apply"} or not isinstance(args.get("apply", False), bool):
+            return _error(400, "validation_failed", "Send args with just apply (true or false).")
+        try:
+            import place_zones
+            summary = place_zones.run(store, who, apply=args.get("apply", False), now=now)
+        except Exception as exc:  # say nothing about the cause
+            log.error("%s code=server_error op=fix_place_zones exception=%s", tag, type(exc).__name__)
+            return _error(500, "server_error", "Could not complete the request.")
+        log.info("%s op=fix_place_zones code=ok apply=%s filled=%s", tag, summary["applied"], summary["filled"])
+        return HttpResult(200, {"ok": True, "data": summary}, {"Cache-Control": "no-store"})
+
     if body.get("op") in ("set_review_code", "review_code_status"):   # the 24-hour view-only review code (Console door only; super admin or the admin key only)
         if not allow_me:
             return _error(400, "validation_failed", "This op is not enabled here.")

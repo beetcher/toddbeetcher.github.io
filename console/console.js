@@ -66,9 +66,9 @@
   function canPlaced() { return canAny(["manage_requests", "manage_classes"]); }
   function keyMe() { return { name: "Admin key", role_key: "super_admin", method: "key", is_super_admin: true, capabilities: [], email: "", scope_region_id: "" }; }
 
-  var fmtTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/Denver", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+  var fmtTime = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });   // the viewer's own zone, named (a class shows its own zone: classWhen)
   var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
-  function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d) + " Mountain"; }
+  function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d); }
 
 
   // ---- Stations and manuals. To add a station: one SURFACES entry (name, blurb, manual), one view section, one line in route().
@@ -1954,7 +1954,7 @@
     if (!rec.starts_at) return "No date yet";
     try {
       var d = new Date(rec.starts_at);
-      return new Intl.DateTimeFormat("en-US", { timeZone: rec.time_zone || "America/Denver", weekday: "short", month: "short", day: "numeric",
+      return new Intl.DateTimeFormat("en-US", { timeZone: rec.time_zone, weekday: "short", month: "short", day: "numeric",
                                                  hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(d);
     } catch (e) { return String(rec.starts_at); }
   }
@@ -2951,11 +2951,11 @@
       el.appendChild(mk("div", "hint", "They asked for: " + TOD[req.requested_time_of_day] + ". Pick the actual start time yourself."));
     }
     var tzNote = mk("div", "hint"); el.appendChild(tzNote);
-    function tz() { var v = ConsoleNames.venueById(ven.value); return (v && v.place && v.place.time_zone) || "America/Denver"; }
+    function tz() { var v = ConsoleNames.venueById(ven.value); return (v && v.place && v.place.time_zone) || ""; }
     function syncVenue() {
       room.textContent = ""; opt(room, "", "No room chosen");
       var v = ConsoleNames.venueById(ven.value); ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
-      tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (ConsoleNames.venueById(ven.value) && ConsoleNames.venueById(ven.value).place && ConsoleNames.venueById(ven.value).place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
+      tzNote.textContent = tz() ? "The time is in " + tz().replace(/_/g, " ") + " (the venue's time zone)." : ven.value ? "This venue has no time zone yet. Add it to the venue's place before giving the class a time." : "Choose a venue to use its time zone.";
     }
     var venTouched = false;
     ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
@@ -2998,7 +2998,7 @@
       }
       if (date.value || time.value) {
         if (!date.value || !time.value) return { error: "Give both a date and a time, or neither." };
-        if (!ven.value) return { error: "Choose a venue for a class with a date." };
+        if (!ven.value) return { error: "Choose a venue for a class with a date." }; if (!tz()) return { error: "This venue has no time zone, so the class time cannot be set. Add the time zone to the venue's place first (Places)." };
         var u = zonedToUtc(date.value, time.value, tz());
         if (!u) return { error: "That date or time is not valid." };
         data.starts_at = u; data.time_zone = tz();

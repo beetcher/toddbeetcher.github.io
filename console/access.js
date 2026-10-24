@@ -325,7 +325,7 @@
     wrap.appendChild(mk("p", "acm", "Who may sign in with Google, and what each role may do. The admin key still works as a back door."));
     var msg = mk("div", "acerr" + (/^Added\. An invitation email went/.test(S.msg) ? " acok" : ""), S.msg); msg.setAttribute("role", "status"); wrap.appendChild(msg);
 
-    if (!isDelegate()) { wrap.appendChild(signInBox()); var rb = reviewBox(); if (rb) wrap.appendChild(rb); }
+    if (!isDelegate()) { wrap.appendChild(signInBox()); var rb = reviewBox(); if (rb) wrap.appendChild(rb); var zb = zoneBox(); if (zb) wrap.appendChild(zb); }
     var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
     S.persons.slice().sort(sortBy("email")).forEach(function (p) {
@@ -422,16 +422,45 @@
   // The server keeps only a hash, so the code is shown once, in the message after it is set. The box appears only when the server lets this person read the status (super admin).
   var REVIEW_WHY = { too_short: "Use at least 8 characters.", too_long: "Use 64 characters at most.", bad_characters: "Use letters, numbers, spaces and punctuation only.",
     looks_like_a_token: "That looks like a sign-in token. Use a plain phrase.", same_as_the_admin_key: "That is the admin key. Use a different phrase." };
-  function mountain(stamp) {
+  function localTime(stamp) {
     var d = new Date(stamp); if (isNaN(d.getTime())) return String(stamp || "");
-    try { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Denver" }) + " Mountain"; } catch (e) { return d.toString(); }
+    try { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" }); } catch (e) { return d.toString(); }
+  }
+  // Places with no time zone (super admin): check, then fill the Colorado ones with Mountain time. Everything else is listed for a person (Arizona and Indiana split inside a state).
+  var Z = { res: null, msg: "", busy: false };
+  function zoneBox() {
+    if (me().is_super_admin !== true || me().inspector === true) return null;
+    var box = mk("div", "acform"); box.id = "acZones";
+    box.appendChild(mk("h2", "", "Places with no time zone"));
+    box.appendChild(mk("p", "acm", "Every class, email and notice takes its time zone from its place, and nothing guesses one. Older places were saved without a zone. Check them here; Colorado places can be filled with Mountain time (America/Denver) in one click. Places elsewhere are listed so you can set each one in Places."));
+    var r = Z.res;
+    if (r) {
+      box.appendChild(mk("p", "acm", r.without_zone === 0 ? "Every place has a time zone." : r.without_zone + (r.without_zone === 1 ? " place has" : " places have") + " no time zone: " + r.colorado + " in Colorado" + (r.applied ? " (" + r.filled + " filled just now)" : "") + ", " + r.needs_count + " elsewhere."));
+      if (!r.applied && r.colorado > 0) { var fb = btn("Fill " + r.colorado + (r.colorado === 1 ? " Colorado place" : " Colorado places") + " with Mountain time", "", function () { runZones(true); }); fb.id = "acZoneFill"; box.appendChild(fb); }
+      if (r.needs_a_person && r.needs_a_person.length) {
+        var ul = mk("ul", "acm"); ul.id = "acZoneList";
+        r.needs_a_person.forEach(function (p) { ul.appendChild(mk("li", "", (p.name || "(no name)") + (p.state ? " (" + p.state + ")" : " (no state)"))); });
+        box.appendChild(ul);
+      }
+    }
+    var cb = btn(r ? "Check again" : "Check places", "", function () { runZones(false); }); cb.id = "acZoneCheck"; cb.disabled = Z.busy; box.appendChild(cb);
+    var m = mk("div", "acerr", Z.msg); m.id = "acZoneMsg"; m.setAttribute("role", "status"); box.appendChild(m);
+    return box;
+  }
+  function runZones(apply) {
+    Z.busy = true; Z.msg = ""; draw();
+    return adm("fix_place_zones", { apply: apply }, "console_settings").then(function (res) {
+      Z.busy = false;
+      if (!ok(res)) { Z.msg = res.status === 403 ? "Only a super admin may do this." : "Could not check the places. Try again."; draw(); return; }
+      Z.res = res.body.data; draw();
+    });
   }
   function reviewBox() {
     var st = S.rv.st; if (!st) return null;
     var box = mk("div", "acform"); box.id = "acReview";
     box.appendChild(mk("h2", "", "Review access code"));
     box.appendChild(mk("p", "acm", "Lets one reviewer look at everything for 24 hours. It is view only: they can open every screen but change nothing, and private contact details stay hidden. They type the code into the Key box on the sign-in screen. A new code replaces the old one and starts the 24 hours again. Only one code works at a time."));
-    var line = mk("p", "acm", st.active ? "A code is active until " + mountain(st.expires_at) + "." : "No code is active."); line.id = "acReviewStatus"; box.appendChild(line);
+    var line = mk("p", "acm", st.active ? "A code is active until " + localTime(st.expires_at) + "." : "No code is active."); line.id = "acReviewStatus"; box.appendChild(line);
     var f = mk("div", "acf"); var l = mk("label", "", "New code (8 to 64 characters; spaces are fine)"); l.htmlFor = "acReviewCode";
     var i = mk("input"); i.type = "text"; i.id = "acReviewCode"; i.maxLength = 64; i.autocomplete = "off"; i.autocapitalize = "off"; i.spellcheck = false;
     f.appendChild(l); f.appendChild(i); box.appendChild(f);
@@ -452,7 +481,7 @@
         S.rv.good = false; S.rv.code = ""; draw(); return;
       }
       return loadReviewStatus().then(function () {
-        S.rv.msg = "Code set. It lasts until " + mountain(res.body.data.expires_at) + " and cannot be shown again. Any earlier code no longer works.";
+        S.rv.msg = "Code set. It lasts until " + localTime(res.body.data.expires_at) + " and cannot be shown again. Any earlier code no longer works.";
         S.rv.code = code; S.rv.good = true; draw();
       });
     });
@@ -475,6 +504,6 @@
 
   window.AccessStation = {
     show: function () { style(); root = $("accessView"); draw(); load(); },
-    reset: function () { S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { Z = { res: null, msg: "", busy: false }; S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, editP: null, editR: null, addP: false, addR: false, seq: S.seq + 1, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } }; var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();

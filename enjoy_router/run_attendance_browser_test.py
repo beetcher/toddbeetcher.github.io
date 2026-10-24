@@ -13,7 +13,7 @@ from crud import attendances_service as AT
 from crud import curriculums_crud as CU
 from crud import venues_crud as VS
 from crud_endpoint import handle_admin, make_failure_limiter
-from test_helpers import give_address
+from test_helpers import give_address, give_venue_zone
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
@@ -50,6 +50,9 @@ give_address(store, ina["id"])   # an instructor needs an address (slice B)
 cu = CU.create(store, {"title": "Intro to AI", "slug": "intro_ai", "session_count": 3, "minutes_per_session": 90}, A).data
 ven = VS.create(store, {"name": "Library", "slug": "library", "status": "active", "is_public_venue": True, "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f", "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": [{"label": "Room A", "max_occupancy": 10}]}, A)
 assert ven.ok, ven.problems
+give_venue_zone(store, ven.data["id"])
+bare = VS.create(store, {"name": "Zoneless Hall", "slug": "zoneless", "status": "active", "is_public_venue": True, "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f", "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": []}, A)
+assert bare.ok, bare.problems
 REQ = {"id": "11111111-1111-4111-8111-111111111111", "confirmation_number": "LCH-0001", "registration_type": "private", "attendee_count": 1, "created_at": "2026-10-10T12:00:00Z",
        "first_name": "Chuck", "last_name": "Norris", "email": "chuck@example.com", "processing_status": "received"}
 REQ2 = {**REQ, "id": "22222222-2222-4222-8222-222222222222", "confirmation_number": "LCH-0002", "first_name": "Dana", "last_name": "Fox", "email": "dana@example.com", "created_at": "2026-10-10T13:00:00Z"}
@@ -190,6 +193,11 @@ with sync_playwright() as p:
     check("build box appears", f.locator(".addbox").first.is_visible())
     f.locator("select[id$='_n_cur']").select_option(index=1)
     check("title fills from curriculum and requester", f.locator("input[id$='_n_title']").input_value() == "Intro to AI for Dana Fox", f.locator("input[id$='_n_title']").input_value())
+    f.locator("select[id$='_n_ven']").select_option(label="Zoneless Hall")
+    check("a venue with no time zone says so, and offers no Denver guess", "no time zone" in f.locator(".addbox").first.inner_text())
+    f.locator("input[id$='_n_date']").fill("2026-11-12"); f.locator("input[id$='_n_time']").fill("18:00")
+    f.get_by_role("button", name="Add to class").click(); pg.wait_for_timeout(400)
+    check("a class with a date at a venue with no zone is refused in plain words", "has no time zone" in f.locator(".addbox").first.inner_text() and pg.locator("#reqDone").inner_text().find("LCH-0002 is closed") < 0)
     f.locator("select[id$='_n_ven']").select_option(label="Library")
     f.locator("select[id$='_n_room']").select_option("Room A")
     f.locator("input[id$='_n_date']").fill("2026-11-12"); f.locator("input[id$='_n_time']").fill("18:00")

@@ -254,7 +254,7 @@ def create(store, data, actor, source="dashboard", tx=None, now=None):
 
 
 _SEND_REASONS = {"not_found": "not_found", "not_a_student": "not_a_student", "not_placed": "not_placed", "class_not_found": "class_not_found",
-                 "class_not_scheduled": "class_not_scheduled", "no_venue": "no_venue", "person_not_found": "not_found"}
+                 "class_not_scheduled": "class_not_scheduled", "no_venue": "no_venue", "no_time_zone": "no_time_zone", "person_not_found": "not_found"}
 
 
 def send_confirmation(store, id, actor, now=None):  # noqa: A002

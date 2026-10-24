@@ -114,6 +114,14 @@ r2 = AT.assign(s, {"scheduled_class_id": idea["id"], "role": "student", "individ
 check("an idea class (no date) sends nothing and logs nothing", r2.ok and len(sent) == n and LG.list(s, {}).data["count"] == nlog, r2.data if r2.ok else r2.problems)
 x = AT.send_confirmation(s, r2.data["id"], A, now=tick())
 check("manual send on an idea class says why", not x.ok and ("id", "class_not_scheduled") in sorted((p["field"], p["issue"]) for p in x.problems))
+# no time zone (Todd 2026-10-23: no silent Denver): a class with no zone, in a place with none, tells nobody a time
+from launch_comms import placement_context as PC, change_context as CC  # noqa: E402
+check("zone_name: the class's own zone wins, then the place's, a made-up name or nothing is None",
+      PC.zone_name({"time_zone": "America/Phoenix"}, {"time_zone": "America/Denver"}) == "America/Phoenix" and PC.zone_name({}, {"time_zone": "America/Indiana/Indianapolis"}) == "America/Indiana/Indianapolis"
+      and PC.zone_name({"time_zone": "Mars/Base"}, {"time_zone": "America/Denver"}) is None and PC.zone_name({}, {}) is None and PC.zone_name(None, None) is None)
+nozone_cls = {"id": "x", "title": "T", "starts_at": "2026-11-04T01:00:00Z", "duration_minutes": 60, "venue_id": ven["id"]}
+check("a change notice is not built for a class with no zone and a place with none", CC.class_view(s, nozone_cls) is None)
+check("...but is built when the class has its zone", (CC.class_view(s, {**nozone_cls, "time_zone": "America/Denver"}) or {}).get("time_zone") == "America/Denver")
 r3 = AT.assign(s, {"scheduled_class_id": sched["id"], "role": "student", "individual_id": nomail["id"]}, A, now=tick())
 l3 = log_for(r3.data["id"])
 check("a person with no email: placed, nothing sent, and the log says not_sent / no_contact", r3.ok and len([m for m in sent if m['to'] != 'ingrid@example.com']) == len([m for m in sent[:n] if m['to'] != 'ingrid@example.com']) and [(x["status"], x["reason"], x["channel"]) for x in l3] == [("not_sent", "no_contact", "none")], l3)

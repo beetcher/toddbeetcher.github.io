@@ -15,7 +15,7 @@ from crud import individuals_service as IS
 from crud import scheduled_classes_crud as CL
 from crud import venues_service as VS
 
-from .placement_context import ATT_NAME, OFF, _addr_line, _parse_utc, _stamp, _when_text
+from .placement_context import ATT_NAME, OFF, _addr_line, _parse_utc, _stamp, _when_text, zone_name
 
 INSTRUCTOR_ROLES = ("primary_instructor", "instructor")
 SEATED = ("assigned", "confirmed")            # holds a seat: its leaving matters to the instructors
@@ -42,7 +42,7 @@ def _first_name(person):
 
 
 def class_view(store, cls):
-    """The class facts every change notice shares, or None when the class has no usable start time (nothing sensible to say).
+    """The class facts every change notice shares, or None when the class has no usable start time or no time zone (nothing sensible to say).
     The class may be cancelled or deleted: that is the point."""
     start = _parse_utc((cls or {}).get("starts_at"))
     if start is None:
@@ -52,7 +52,9 @@ def class_view(store, cls):
     place = v.get("place") or {}
     address = _addr_line(place.get("address"))
     end = start + timedelta(minutes=int(cls.get("duration_minutes") or 60))
-    tzname = cls.get("time_zone") or place.get("time_zone") or "America/Denver"
+    tzname = zone_name(cls, place)
+    if tzname is None:   # no zone: no time can be told truthfully, so no notice is built (never a guessed Denver time)
+        return None
     day, span, short = _when_text(start, end, tzname)
     venue_name, room = v.get("name") or "", cls.get("venue_room_label") or ""
     where = " · ".join(x for x in (venue_name, room) if x)

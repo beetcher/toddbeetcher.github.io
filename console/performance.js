@@ -93,7 +93,7 @@
     ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"].forEach(function (t) { hd.appendChild(mk("th", "", t)); }); tb.appendChild(hd);
     rows.slice(0, 30).forEach(function (r) {
       var tr = mk("tr", ""), cold = r.cold === true ? "yes" : r.cold === false ? "no" : "n/a";
-      [K.when(r.created_at).replace(/ Mountain$/, ""), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
+      [K.when(r.created_at), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
        fmt(r.total_ms), fmt(num(r, "check_ms")), fmt(num(r, "server_ms")), fmt(num(r, "load_ms")), cold].forEach(function (t, i) {
         var td = mk("td", i === 8 && cold === "yes" ? "pfcold" : "", t); tr.appendChild(td);
       }); tb.appendChild(tr);

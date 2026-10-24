@@ -62,9 +62,22 @@ def _stamp(dt):
     return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def zone_name(cls, place):
+    """The class's own zone, else its place's zone, if it is a real IANA name; otherwise None. There is no silent Denver fallback (Todd, 2026-10-23):
+    a class with no zone says so and no time is told to anybody."""
+    for name in ((cls or {}).get("time_zone"), (place or {}).get("time_zone")):
+        if isinstance(name, str) and name:
+            try:
+                ZoneInfo(name)
+                return name
+            except Exception:  # noqa: BLE001
+                return None
+    return None
+
+
 def build(store, att):
     """(facts, individual_id, None) when a confirmation can go, or (None, None, reason). Reasons: not_found, not_a_student, not_placed,
-    class_not_found, class_not_scheduled, no_venue, person_not_found. A missing email is NOT a reason here: the CMS decides (no_contact)."""
+    class_not_found, class_not_scheduled, no_venue, no_time_zone, person_not_found. A missing email is NOT a reason here: the CMS decides (no_contact)."""
     if att is None or _deleted(att):
         return None, None, "not_found"
     if att.get("role") != "student":
@@ -100,7 +113,9 @@ def build(store, att):
         else:
             others.append(name)
     end = start + timedelta(minutes=int(cls.get("duration_minutes") or 60))
-    tzname = cls.get("time_zone") or place.get("time_zone") or "America/Denver"
+    tzname = zone_name(cls, place)
+    if tzname is None:
+        return None, None, "no_time_zone"
     day, span, short = _when_text(start, end, tzname)
     venue_name, room = v.get("name") or "", cls.get("venue_room_label") or ""
     where = " · ".join(x for x in (venue_name, room) if x)

@@ -24,7 +24,7 @@
   }
 
   var SEND_WHY = { not_a_student: "Only students get this email.", not_placed: "They are not placed right now (waiting, or no longer in the class).",
-                   class_not_scheduled: "The class has no date and start time yet. Finish it in Classes first.", no_venue: "The class has no venue yet.",
+                   class_not_scheduled: "The class has no date and start time yet. Finish it in Classes first.", no_venue: "The class has no venue yet.", no_time_zone: "The class has no time zone, and neither has its place. Set the place's time zone first.",
                    no_email: "This person has no email address on file.", class_not_found: "The class could not be found.", not_found: "That record could not be found." };
   function sendFail(res) {
     var ps = (res.body && res.body.error && res.body.error.problems) || [];
