@@ -761,10 +761,7 @@
 
   // ---- Venues view: list and add, through the admin endpoint (the CRUD handler file does the checking).
   var ADMIN_URL = CFG.endpoints.admin;
-  var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
-                out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
-                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That contact was not found.",
-                choose_one: "Choose one." };
+  var ISSUE = window.ConsoleForms.issue, wholeNum = window.ConsoleForms.wholeNum, slugify = window.ConsoleForms.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;   // shared pieces (forms.js, ui.js)
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
   var slugTouched = false, addPlace = null;
 
@@ -802,8 +799,6 @@
     $("netText").textContent = (timedOut ? "The server did not answer in time." : "Could not reach the server.") + " What is on screen may be out of date.";
     $("netBanner").hidden = false;
   }
-  function skelOn(host) { if (host && !host.querySelector(".skel")) { host.textContent = ""; host.appendChild(UI.skeleton(4)); } }
-  function skelOff(host) { var s = host && host.querySelector(".skel"); if (s) s.parentNode.removeChild(s); }
   function netOk() { $("netBanner").hidden = true; }
   function netRetry() {   // load the current station again, from scratch
     netOk(); vLoaded = false; cLoaded = false; pLoaded = false; lLoaded = false;
@@ -1253,7 +1248,6 @@
     if (typeof v === "object") return "{" + Object.keys(v).sort().map(function (k) { return JSON.stringify(k) + ":" + canon(v[k]); }).join(",") + "}";
     return JSON.stringify(v);
   }
-  function wholeNum(txt) { var t = String(txt).trim(); if (t === "") return null; var n = Number(t); return (isFinite(n) && Math.floor(n) === n) ? n : NaN; }
   function dayIndex(e) { return DAYS.indexOf(e.day_of_week); }
   function sortDays(a) {
     return a.map(function (e, i) { return [e, i]; }).sort(function (x, y) { return (dayIndex(x[0]) - dayIndex(y[0])) || (x[1] - y[1]); }).map(function (x) { return x[0]; });
@@ -2515,7 +2509,6 @@
     $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; if (vBar) vBar.refresh(); vRecs = []; vAreas = null; closeForm(); closeEdit();
   }
 
-  function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
   function clearErrs() { ["eName", "eSlug", "ePublic", "fMsg"].forEach(function (id) { $(id).textContent = ""; }); }
   function openForm() {
     $("addForm").reset(); slugTouched = false; clearErrs(); $("vNotice").textContent = "";

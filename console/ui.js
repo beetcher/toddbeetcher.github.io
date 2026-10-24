@@ -133,5 +133,7 @@
     return { refresh: refresh, open: function () { setOpen(true); }, close: function () { setOpen(false); } };
   }
 
-  window.UI = { filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+  function skelOn(host) { if (host && !host.querySelector(".skel")) { host.textContent = ""; host.appendChild(UI.skeleton(4)); } }
+  function skelOff(host) { var s = host && host.querySelector(".skel"); if (s) s.parentNode.removeChild(s); }
+  window.UI = { skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();

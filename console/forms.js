@@ -1,4 +1,5 @@
 /* Console form engine (step F). Loaded before console.js. One place that builds a labelled form field from a schema property and reads it back.
+   window.ConsoleForms.issue / wholeNum / slugify -> the plain-words table for server problems, a whole-number reader (null empty, NaN bad), the slug maker.
    window.ConsoleForms.labels            -> the shared { field name: label } object. A page adds its own labels to it (the Classes screen does).
    window.ConsoleForms.humanize(name)    -> the label for a field name.
    window.ConsoleForms.firstSentence(t)  -> the first sentence of a schema description (the small hint under a field).
@@ -9,6 +10,12 @@
    window.ConsoleForms.openSec(f)        -> opens the section a field sits in (and its "more" group) so an error can be seen. */
 (function () {
   "use strict";
+  var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.",
+                out_of_range: "Too long or too short.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
+                not_allowed: "Not allowed.", place_required: "Give the venue a place first (see Place above).", not_found: "That contact was not found.",
+                choose_one: "Choose one." };
+  function wholeNum(txt) { var t = String(txt).trim(); if (t === "") return null; var n = Number(t); return (isFinite(n) && Math.floor(n) === n) ? n : NaN; }
+  function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 100); }
   var US_STATES = [["AL","Alabama"],["AK","Alaska"],["AZ","Arizona"],["AR","Arkansas"],["CA","California"],["CO","Colorado"],["CT","Connecticut"],
     ["DE","Delaware"],["DC","District of Columbia"],["FL","Florida"],["GA","Georgia"],["HI","Hawaii"],["ID","Idaho"],["IL","Illinois"],["IN","Indiana"],
     ["IA","Iowa"],["KS","Kansas"],["KY","Kentucky"],["LA","Louisiana"],["ME","Maine"],["MD","Maryland"],["MA","Massachusetts"],["MI","Michigan"],
@@ -142,5 +149,5 @@
     return f.kind === "money" ? Math.round(n * 100) : n;
   }
 
-  window.ConsoleForms = { labels: LABELS, humanize: humanize, firstSentence: firstSentence, choicesFor: choicesFor, buildField: buildField, readValue: readValue, openSec: openSec };
+  window.ConsoleForms = { issue: ISSUE, wholeNum: wholeNum, slugify: slugify, labels: LABELS, humanize: humanize, firstSentence: firstSentence, choicesFor: choicesFor, buildField: buildField, readValue: readValue, openSec: openSec };
 })();
