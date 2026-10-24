@@ -17,6 +17,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
 | `requests.js` | The Requests station (`window.RequestsStation`), its Search box and Region chip, and the placed-requests data; loads after `dialogs.js` |
 | `attendance.js` | The Attendance station (`window.AttendanceStation`: show, reset, `openAttendance`, `personHistory`, `attLine`); loads after `requests.js`. The placing machinery (about 400 lines) still lives in `console.js` (DT-18) |
+| `venues.js` | The Venues station (`window.VenuesStation`: show, stop, reset, dirty, forget): list, filters, Details, Add, Edit form, Rooms and Open days popups, the venue's Place panel and Contact picker; loads after `attendance.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -130,6 +131,12 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `classWhen` | Classes (still in `console.js`) | Class date words |
 | `refreshPlaced` | Core: a forwarder to Requests | Calls `RequestsStation.loadPlaced` |
 | `assignForm` | Placing machinery (still in `console.js`, DT-18) | The add-a-person form |
+| `lProblems` | Places (still in `console.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
+| `placeInput`, `placeText` | Places (still in `console.js`) | The address form with saved-place offer, and the one-line address text |
+| `forgetSavedPlaces` | Places (still in `console.js`) | Forget the cached saved places after a place changed |
+| `peopleList`, `peopleMatches`, `pFull` | People (still in `console.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
+| `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
+| `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 
@@ -153,4 +160,4 @@ Write a run sheet and get a GO first, then four steps, one commit each:
 - **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly", ConsoleNames: "readonly", ConsoleDialogs: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked).
 
 ## Still inside `console.js` (to be extracted, each with its own sheet and GO)
-Attendance, Classes, Venues, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
+Classes, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
