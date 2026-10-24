@@ -238,8 +238,31 @@ with sync_playwright() as p:
     check("nothing of the Journal is left in console.js", not __import__("re").search(r"\bJR_WORD\b|function openJournal\b|\$\(\"jrClose\"\)", src_big))
     # inspector keeps the view
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    # ---- the Requests station (R-4): its own file, nothing left behind, hooks work, sign-out empties it, the 20 second check starts and stops with the sign-in
+    check("requests.js is its own file and RequestsStation has every hook", pg.evaluate("typeof window.RequestsStation === 'object' && ['show','start','stop','check','loadPlaced','reset','clearList','adopt','records'].every(k => typeof RequestsStation[k] === 'function')"))
+    check("nothing of the Requests station is left in console.js", not __import__("re").search(r"function (buildRow|fillCovBox|merge|check|startTimer|stopTimer|loadPlaced|decorateCards|fillQRow|applyReqFilter|pickReq|loadDeleted|renderAttention|newest)\b|\bvar (known = \{\}|rows = \{\}|firstLoadDone = false|timer = null;)|var P = \{ loaded", src_big))
+    check("requests.js reaches the big file only through the kit and the shared files (no station, no borrowed name)", "window.ConsoleKit" in (HERE.parent / "console" / "requests.js").read_text())
+    check("sign-out empties the Requests page and its data", pg.evaluate("document.querySelectorAll('#list li').length === 0 && RequestsStation.records().length === 0 && document.getElementById('countText').textContent === ''"))
     check("sign-out empties the name caches", pg.evaluate("ConsoleNames.venues().length === 0 && ConsoleNames.curricula().length === 0 && ConsoleNames.venueAsked('%s') === ''" % VENUE))
-    check("no script errors", not errs, errs)
+    # the 20 second check, on a fake clock in its own page: runs while signed in on Requests, stops when the Console locks
+    pg2, errs2 = new_page(b, 1100); gets = []
+    pg2.on("request", lambda r: gets.append(r.url) if "enjoy_console_records" in r.url and r.method == "GET" else None)
+    pg2.clock.install()
+    pg2.goto(PAGE); pg2.wait_for_selector("#googleBox:not([hidden])")
+    sign_in(pg2, T_TODD); pg2.wait_for_selector("#homeView:not([hidden])"); pg2.wait_for_timeout(500)
+    pg2.select_option("#collPick", "requests"); pg2.wait_for_selector("#list li", state="attached"); pg2.wait_for_timeout(500)
+    n1 = len(gets); pg2.clock.fast_forward(21000); pg2.wait_for_timeout(600); n2 = len(gets)
+    check("on Requests the 20 second check runs", n2 > n1, (n1, n2))
+    pg2.click("#lockBtn"); pg2.wait_for_selector("#lockView:not([hidden])"); n3 = len(gets); pg2.clock.fast_forward(45000); pg2.wait_for_timeout(600)
+    check("after the Console locks the check stops", len(gets) == n3, (n3, len(gets)))
+    pg2.wait_for_selector("#googleBox:not([hidden])"); pg2.wait_for_timeout(800)
+    sign_in(pg2, T_TODD); pg2.wait_for_selector("#list li", state="attached"); pg2.wait_for_timeout(800)   # the page comes back on Requests (the address still says so)
+    check("signing back in loads the list again", pg2.locator("#list > li:visible").count() == 3, pg2.locator("#list > li:visible").count())
+    n4 = len(gets); pg2.clock.fast_forward(21000); pg2.wait_for_timeout(600)
+    check("and the 20 second check runs again", len(gets) > n4, (n4, len(gets)))
+    pg2.select_option("#collPick", "home"); pg2.wait_for_timeout(300); n5 = len(gets); pg2.clock.fast_forward(45000); pg2.wait_for_timeout(600)
+    check("leaving Requests stops the check", len(gets) == n5, (n5, len(gets)))
+    check("no script errors", not errs and not errs2, errs + errs2)
     b.close()
 
 if fails:
