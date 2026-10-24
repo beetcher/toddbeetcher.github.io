@@ -65,6 +65,11 @@ A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after*
 | `line(label, value)`, `str(v)` | The detail-row helpers every list card uses |
 | `problem(status)` | The plain sentence for a failed sign-in read |
 | `consts()` | True constants only: `MAX`, `READ_MS`, `ATT_RANK`, `ATT_GONE`, `RECORDS_URL` |
+| `attConsts()` | The shared attendance tables (`ATT`, `ATT_STATUSES`, `ATT_WORD`, `ROLE_WORD`, `ATT_TONE`, `ATT_OPEN`, `ATT_OFF`, `CORR_KIND`, `REASON_WORD`) and `leftOpen(from, to)`; constants and one pure function |
+| `attFail(res)` | The plain sentence for a failed attendance write |
+| `classWhen(class)` | A class's date and time as words |
+| `refreshPlaced()` | Reload the placed requests after placing or removing someone |
+| `assignForm(opts)` | The add-a-person-to-a-class form (the placing machinery) |
 
 Rules for the kit:
 1. **Functions, not values.** What they read is filled in later or replaced on reset, so a value copied at load time would go stale.
@@ -118,6 +123,11 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `line`, `str` | Core: detail-row helpers | Used by many cards; to become shared UI (DT-19) |
 | `problem` | Core: sign-in | The failed sign-in sentence (DT-1) |
 | `consts` | Core: constants | Constants only, never a value that changes |
+| `attConsts` | Core: shared vocabulary (DT-8) | The attendance word tables; read by Attendance, Requests, Messages, People, Classes |
+| `attFail` | Core: placing machinery | The failed-write sentence (moves with the placing machinery, DT-18) |
+| `classWhen` | Classes (still in `console.js`) | Class date words |
+| `refreshPlaced` | Core: a forwarder to Requests | Calls `RequestsStation.loadPlaced` |
+| `assignForm` | Placing machinery (still in `console.js`, DT-18) | The add-a-person form |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 
