@@ -661,17 +661,47 @@
     if (hub.tab === "Edit") { askDiscard(classDirty(), function () { dropClassEdit(); activateTab(t); }); return; }
     activateTab(t);
   }
+  // The Overview in plain words (DT-30): when, where, how many people, price, status. The full field list stays one tap away under "All fields".
+  var STATUS_WORD = { identified: "An idea (no date yet)", scheduled: "Scheduled", enrolling: "Open for sign-ups", completed: "Finished", cancelled: "Cancelled" };
+  function overviewRows(rec) {
+    var rows = [];
+    function add(label, value) { if (value !== undefined && value !== null && value !== "") rows.push([label, String(value)]); }
+    add("Status", STATUS_WORD[rec.status] || rec.status);
+    if (rec.status === "cancelled") add("Why it was cancelled", rec.cancelled_reason);
+    add("Kind", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", shown in the public list" : ", not in the public list"));
+    add("When", classWhen(rec) + (rec.starts_at && rec.duration_minutes ? " (" + rec.duration_minutes + " minutes)" : ""));
+    var v = rec.venue_id ? ConsoleNames.venueById(rec.venue_id) : null;
+    add("Where", rec.venue_id
+      ? (v ? v.name : "(venue not found)") + (rec.venue_room_label ? ", " + rec.venue_room_label : "") + (rec.is_venue_confirmed ? "" : " (not confirmed with the venue yet)")
+      : "No venue yet");
+    if (rec.capacity_minimum != null && rec.capacity_target != null && rec.capacity_max != null) {
+      add("People", "at least " + rec.capacity_minimum + " to run, aiming for " + rec.capacity_target + ", up to " + rec.capacity_max);
+    }
+    if (rec.registered_count != null) {
+      add("Signed up", rec.registered_count + (rec.waitlist_count ? ", plus " + rec.waitlist_count + " on the waiting list" : "") + (rec.attended_count ? "; " + rec.attended_count + " came" : ""));
+    }
+    if (rec.price_cents != null) add("Price", rec.price_cents === 0 ? "Free" : money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session"));
+    if (rec.session_number) add("Series", "Session " + rec.session_number);
+    add("Venue notes", rec.venue_notes);
+    add("Accessibility", rec.accessibility_notes);
+    if (rec.organizer_name) add("Organizer", [rec.organizer_name, rec.organizer_email, rec.organizer_phone].filter(Boolean).join(", "));
+    add("About", rec.description);
+    return rows;
+  }
   function drawOverview(rec, host) {
     host.textContent = "";
     var detail = mk("div", "detail");
-    var done = {};
+    overviewRows(rec).forEach(function (r) { detail.appendChild(line(r[0], r[1])); });
+    var all = mk("details", "allfields"); all.appendChild(mk("summary", "", "All fields"));
+    var raw = mk("div", "rawfields"), done = {};
     ["title", "slug", "status", "class_type", "starts_at", "time_zone", "venue_id", "venue_room_label", "id"].forEach(function (f) {
-      if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; }
+      if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; }
     });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
+    all.appendChild(raw);
     var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
     jl.addEventListener("click", function () { ConsoleDialogs.openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
-    host.appendChild(classActions(rec)); host.appendChild(jl); host.appendChild(detail);
+    host.appendChild(classActions(rec)); host.appendChild(jl); host.appendChild(detail); host.appendChild(all);
   }
   function drawPeople(rec, host) {
     host.textContent = "";

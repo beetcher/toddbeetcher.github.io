@@ -79,6 +79,11 @@ with sync_playwright() as p:
     pg.wait_for_selector("#cHub:not([hidden])")
     check("tapping a class opens its page with four tabs", pg.locator("#cTabs [role=tab]").count() == 4 and pg.locator("#cMain").is_hidden() and pg.inner_text("#cHubTitle") == "Evening Basics 2")
     check("Overview is selected first and shows the class details", pg.get_attribute("#cTabBtnOverview", "aria-selected") == "true" and pg.locator("#cTabOverview .detail").count() == 1)
+    ov = pg.inner_text("#cTabOverview .detail")
+    check("Overview reads in plain words (status, when, where, people, price) with no raw field names",
+          all(w in ov for w in ("Status:", "Kind:", "When:", "Where:", "People:")) and not any(r in ov for r in ("starts_at", "venue_id", "class_type", "capacity_max")), ov[:300])
+    check("the full field list is still there, folded under All fields",
+          pg.locator("#cTabOverview details.allfields").count() == 1 and pg.locator("#cTabOverview details.allfields[open]").count() == 0 and "starts_at" in (pg.text_content("#cTabOverview .rawfields") or ""))
     pg.click("#cTabBtnPeople"); pg.wait_for_selector("#cInstructors")
     check("People tab shows instructors and the add form", pg.locator("#cTabPeople #cPeopleAdd").count() == 1 and pg.locator("#cTabOverview").is_hidden())
     pg.click("#cTabBtnAttendance"); pg.wait_for_selector("#cTabAttendance #atOnlyTab")

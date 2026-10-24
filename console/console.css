@@ -718,3 +718,8 @@
 .tabs [role="tab"]:focus-visible { outline: 3px solid var(--orange); }
 .tabpane[hidden] { display: none; }
 #cHub .detail { display: block; }
+.allfields { margin-top: var(--space-6); border: 1px solid var(--line); border-radius: 10px; padding: var(--space-4) var(--space-6); }
+.allfields summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+.rawfields { font-size: var(--text-m); }
+.rawfields div { padding: 3px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.rawfields b { color: var(--muted); font-weight: 600; }
