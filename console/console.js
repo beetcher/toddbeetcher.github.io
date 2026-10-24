@@ -9,20 +9,11 @@
     return;
   }
 
-  var REFRESH_MS = 20000;
   var MAX = 100;
   var KEY_STORE = "console_key_" + CFG.appId;
-  var TYPES = { private: "One on one", group: "Small group", "class": "Workshop" };
-  var FIRST_FIELDS = ["confirmation_number", "registration_type", "created_at", "processing_status", "first_name", "last_name",
-                      "email", "phone", "attendee_count", "program_slug", "source", "id"];
 
   var $ = function (id) { return document.getElementById(id); };
-  var known = {};        // id -> record
-  var rows = {};         // id -> <li>
   var key = "";
-  var timer = null;
-  var busy = false;
-  var firstLoadDone = false;
   var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
 
   $("appName").textContent = CFG.brandName;
@@ -603,8 +594,9 @@
     if (r === "performance" && window.PerformanceStation) window.PerformanceStation.show();
     if (r === "messages" && window.MessagesStation) window.MessagesStation.show();
     if (r === "attendance") loadAttendanceStation();
-    if (r === "home" || r === "requests") loadPlaced();
-    if (r === "requests") startTimer(); else { stopTimer(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
+    if (r === "home" && window.RequestsStation) window.RequestsStation.loadPlaced();
+    if (r === "requests" && window.RequestsStation) window.RequestsStation.show();
+    if (r !== "requests") { if (window.RequestsStation) window.RequestsStation.stop(); if (r === "venues" && !vLoaded) loadVenues(); if (r === "classes" && !cLoaded) loadClasses(); if (r === "people" && !pLoaded) loadPeople(); if (r === "places" && !lLoaded) loadPlaces(); if (ROSTER[r] && !ROSTER[r].loaded) ROSTER[r].load(); }
     stationHead(r);   // after the stations that redraw their own page (Discovery) have drawn it
   }
 
@@ -624,12 +616,6 @@
       .catch(function (e) { netShow(!!(e && e.timedOut)); return { status: "network" }; });
   }
 
-  function newest() {
-    var best = "";
-    Object.keys(known).forEach(function (id) { if (known[id].created_at > best) best = known[id].created_at; });
-    return best;
-  }
-
   function line(label, value) {
     var d = document.createElement("div");
     var b = document.createElement("b");
@@ -639,235 +625,12 @@
     return d;
   }
   function str(v) { return (v !== null && typeof v === "object") ? JSON.stringify(v) : String(v); }
-
-  function buildRow(rec, isNew) {
-    var li = document.createElement("li");
-    if (isNew) li.className = "isnew";
-    li.setAttribute("data-tone", rec.coverage_waiting ? "wait" : rec.coverage_handled_at ? "done" : "none");
-
-    var head = document.createElement("button");
-    head.className = "head";
-    head.type = "button";
-    head.setAttribute("aria-expanded", "false");
-
-    var top = document.createElement("div"); top.className = "top";
-    var conf = document.createElement("span"); conf.className = "conf"; conf.textContent = rec.confirmation_number || rec.id || "";
-    var type = document.createElement("span"); type.className = "type"; type.textContent = TYPES[rec.registration_type] || rec.registration_type || "";
-    top.appendChild(conf); top.appendChild(type);
-
-    var w = document.createElement("div"); w.className = "when"; w.textContent = when(rec.created_at);
-    var who = document.createElement("div"); who.className = "who";
-    who.textContent = [rec.first_name, rec.last_name].filter(Boolean).join(" ") || "(no name)";
-    var email = document.createElement("div"); email.className = "sub"; email.textContent = rec.email || "";
-
-    var chips = document.createElement("div"); chips.className = "chips";
-    if (rec.attendee_count != null && rec.attendee_count > 1) { var ppl = document.createElement("span"); ppl.textContent = rec.attendee_count + " people"; chips.appendChild(ppl); }
-    if (rec.postal_code) { var zc = document.createElement("span"); zc.textContent = "ZIP: " + rec.postal_code; chips.appendChild(zc); }
-    if (rec.coverage_waiting) { var nc = document.createElement("span"); nc.className = "nochip"; nc.textContent = "No active trainer"; chips.appendChild(nc); }
-    else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
-    if (rec.preferred_venue_id) {
-      var vc = document.createElement("span"); vc.className = "venuechip";
-      vc.textContent = "Venue asked for: " + (ConsoleNames.venueAsked(rec.preferred_venue_id) || "picked on the form");
-      vc.setAttribute("data-vid", rec.preferred_venue_id);
-      chips.appendChild(vc);
-      ConsoleNames.ensureVenueChips();
-    }
-
-    if (rec.curriculum_id) {   // the topic the requester picked on the form
-      var cc = document.createElement("span"); cc.className = "curchip";
-      cc.textContent = "Interested in: " + (ConsoleNames.curriculumAsked(rec.curriculum_id) || "picked on the form");
-      cc.setAttribute("data-cid", rec.curriculum_id);
-      chips.appendChild(cc);
-      ConsoleNames.ensureCurriculumChips();
-    }
-
-    [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
-
-    var detail = document.createElement("div"); detail.className = "detail";
-    // A short plain summary first; every stored field stays available under "All details".
-    var sum = document.createElement("div"); sum.className = "dsum";
-    function srow(k, v) { if (v === undefined || v === null || v === "") return; sum.appendChild(line(k, String(v))); }
-    srow("Name", [rec.first_name, rec.last_name].filter(Boolean).join(" "));
-    srow("Email", rec.email); srow("Phone", rec.phone);
-    srow("Kind", TYPES[rec.registration_type] || rec.registration_type);
-    srow("People", rec.attendee_count);
-    srow("ZIP", rec.postal_code);
-    srow("Sent", rec.created_at ? when(rec.created_at) : "");
-    srow("Notes", rec.notes || rec.message || rec.comments);
-    detail.appendChild(sum);
-    var raw = document.createElement("details"); raw.className = "rawd";
-    var rsum = document.createElement("summary"); rsum.textContent = "All details"; raw.appendChild(rsum);
-    var done = {};
-    FIRST_FIELDS.forEach(function (f) { if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
-    detail.appendChild(raw);
-
-    head.addEventListener("click", function () {
-      var open = li.classList.toggle("open");
-      head.setAttribute("aria-expanded", open ? "true" : "false");
-    });
-
-    var qrow = document.createElement("div"); qrow.className = "qrow"; qrow.hidden = true;
-    var putrow = document.createElement("div"); putrow.className = "qrow qacts";
-    var who2 = personOf(rec);   // every button names the request it acts on, for a screen reader
-    var pb = document.createElement("button"); pb.type = "button"; pb.className = "btn-primary"; pb.textContent = "Put in a class…"; pb.setAttribute("aria-label", "Put in a class… (" + who2 + ")");
-    var phost = document.createElement("div"); phost.className = "putbox"; phost.hidden = true;
-    pb.addEventListener("click", function () {
-      $("reqDone").hidden = true;
-      if (!phost.hidden) { phost.hidden = true; phost.textContent = ""; return; }
-      phost.hidden = false; putInClass(rec, phost);
-    });
-    var ob = document.createElement("button"); ob.type = "button"; ob.className = "btn-primary"; ob.textContent = "Open class"; ob.hidden = true; ob.setAttribute("aria-label", "Open class (" + who2 + ")");
-    ob.addEventListener("click", function () { location.hash = "#/classes"; });
-    putrow.appendChild(ob); putrow.appendChild(pb); li._pb = pb; li._ob = ob;
-    // One History link: the journal of what happened to this request; people allowed to see it also get a link inside to every recorded change.
-    var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "History"; jb.setAttribute("aria-label", "History (" + who2 + ")");
-    jb.addEventListener("click", function () { ConsoleDialogs.openJournal({ request_id: rec.id }, "History: " + personOf(rec), { id: rec.id, label: "this request" }); });
-    putrow.appendChild(jb);
-    // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
-    var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
-    if (rec.coverage_waiting && can("manage_requests") && !(ME && ME.inspector)) {
-      var mh = document.createElement("button"); mh.type = "button"; mh.className = "btn-secondary"; mh.textContent = "Mark handled…"; mh.setAttribute("aria-label", "Mark handled… (" + who2 + ")");
-      mh.addEventListener("click", function () { covbox.hidden = !covbox.hidden; if (!covbox.hidden) { covbox.textContent = ""; fillCovBox(covbox, rec, li); } });
-      putrow.appendChild(mh);
-    }
-    // Delete: two presses (the second says "Really delete?"). The request is marked deleted and disappears; the record is kept.
-    var db = document.createElement("button"); db.type = "button"; db.className = "btn-danger"; db.textContent = "Delete"; db.style.marginLeft = "auto"; db.setAttribute("aria-label", "Delete (" + who2 + ")");
-    var armedT = null;
-    function disarm() { clearTimeout(armedT); db.className = "btn-danger"; db.textContent = "Delete"; db.setAttribute("aria-label", "Delete (" + who2 + ")"); db.removeAttribute("data-armed"); }
-    db.addEventListener("click", function () {
-      if (!db.getAttribute("data-armed")) {
-        db.setAttribute("data-armed", "1"); db.className = "btn-danger"; db.textContent = "Really delete?"; db.setAttribute("aria-label", "Really delete the request from " + who2 + "?");
-        armedT = setTimeout(disarm, 6000); return;
-      }
-      clearTimeout(armedT);
-      admin("delete_request", { id: rec.id }, "attendances").then(function (res) {
-        if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) {
-          delete known[rec.id]; delete rows[rec.id]; if (li.parentNode) li.parentNode.removeChild(li);
-          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " deleted. It is hidden from this list; the record is kept for now. ";
-          var ub = document.createElement("button"); ub.type = "button"; ub.className = "btn-secondary"; ub.textContent = "Undo"; ub.setAttribute("aria-label", "Undo the delete of " + personOf(rec));
-          ub.addEventListener("click", function () {
-            ub.disabled = true;
-            admin("restore_request", { id: rec.id }, "attendances").then(function (r2) {
-              if (r2.status === 401) { lock("That key did not work."); return; }
-              if (r2.status === 200 && r2.body && r2.body.ok) { $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " is back in the list."; check(true); return; }
-              ub.disabled = false; $("reqDone").appendChild(document.createTextNode(" Could not undo. " + adminProblem(r2.status)));
-            });
-          });
-          $("reqDone").appendChild(ub);
-          $("reqDone").hidden = false; applyReqFilter();
-          return;
-        }
-        disarm();
-        var probs = (res.body && res.body.error && res.body.error.problems) || [];
-        $("reqDone").textContent = probs.some(function (x) { return x.issue === "has_placements"; })
-          ? "Not deleted: someone from this request is still in a class. Cancel or remove them in the class Attendance first, then delete the request."
-          : res.status === 404 ? "That request is already gone. Refresh the list." : adminProblem(res.status);
-        $("reqDone").hidden = false;
-      });
-    });
-    putrow.appendChild(db);
-    li.appendChild(head); li.appendChild(qrow); li.appendChild(putrow); li.appendChild(phost); li.appendChild(covbox); li.appendChild(detail);
-    li._q = qrow; li._rec = rec;
-    fillQRow(qrow, rec);
-    if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
-    return li;
-  }
-
-  // The Mark handled form on a request with no active trainer: what was done (required), then the server stamps who and when.
-  function fillCovBox(box, rec, li) {
-    var lab = mk("label", "f", "What was done about this request? (required)"); var id = "cov" + rec.id.slice(0, 8); lab.setAttribute("for", id);
-    var ta = document.createElement("textarea"); ta.id = id; ta.maxLength = 2000;
-    var err = mk("div", "ferr", ""); err.setAttribute("role", "alert");
-    var btns = mk("div", "btns"); var go = mk("button", "btn-primary", "Mark handled"); go.type = "button";
-    var no = mk("button", "btn-secondary", "Cancel"); no.type = "button";
-    no.addEventListener("click", function () { box.hidden = true; box.textContent = ""; });
-    go.addEventListener("click", function () {
-      var note = ta.value.trim(); err.textContent = "";
-      if (!note) { err.textContent = "Say what was done, so the next person knows."; ta.focus(); return; }
-      go.disabled = true;
-      admin("mark_request_handled", { id: rec.id, note: note }, "attendances").then(function (res) {
-        go.disabled = false;
-        if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) {
-          var d = res.body.data || {}; delete rec.coverage_waiting; rec.coverage_handled_at = d.coverage_handled_at || new Date().toISOString(); rec.coverage_handled_note = note;
-          var fresh = buildRow(rec, false); if (li.parentNode) li.parentNode.replaceChild(fresh, li); rows[rec.id] = fresh;
-          $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " marked handled."; $("reqDone").hidden = false; applyReqFilter();
-          return;
-        }
-        var probs = (res.body && res.body.error && res.body.error.problems) || [];
-        err.textContent = probs.some(function (x) { return x.issue === "not_waiting"; }) ? "This request is no longer waiting for a trainer. Refresh the list."
-          : res.status === 403 ? "You may not mark this request handled." : res.status === 404 ? "That request is gone. Refresh the list." : adminProblem(res.status);
-      });
-    });
-    btns.appendChild(go); btns.appendChild(no);
-    box.appendChild(lab); box.appendChild(ta); box.appendChild(err); box.appendChild(btns);
-  }
-
-  // Add records we have not seen. Existing rows are never rebuilt, so nothing moves while reading.
-  function merge(records) {
-    var list = $("list");
-    var fresh = records.filter(function (r) { return r && r.id && !known[r.id]; });
-    fresh.sort(function (a, b) { return a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0; }); // oldest first, then each goes on top
-    fresh.forEach(function (r) {
-      known[r.id] = r;
-      var li = buildRow(r, firstLoadDone);
-      rows[r.id] = li;
-      list.insertBefore(li, list.firstChild);
-    });
-    // First load arrives newest first from the server; sort the whole list once to be safe.
-    if (!firstLoadDone) {
-      Object.keys(rows).sort(function (a, b) {
-        var x = known[a].created_at, y = known[b].created_at;
-        return x < y ? 1 : x > y ? -1 : 0;
-      }).forEach(function (id) { list.appendChild(rows[id]); });
-    }
-    if (fresh.length && firstLoadDone) loadPlaced();
-    applyReqFilter();
-  }
-
   function problem(status) {
     if (status === "unauthorized") return method === "google" ? "Google sign-in did not work. Try again." : "That key did not work.";
     if (status === "forbidden") return "This Google account has not been invited. Ask the owner.";
     if (status === "limited") return "Too many tries. Wait a few minutes.";
     if (status === "network") return "Could not reach the server.";
     return "Something went wrong. Try again.";
-  }
-
-  function check(manual) {
-    if (busy) return Promise.resolve();
-    busy = true;
-    return fetchRecords(firstLoadDone ? newest() : "").then(function (res) {
-      busy = false;
-      if (res.status === "ok") {
-        $("listMsg").textContent = "";
-        merge(res.records);
-        if (!firstLoadDone) UI.limitNote($("list"), res.records.length, MAX, "Showing the newest " + MAX + " requests. Older ones are not listed here.");
-        firstLoadDone = true;
-        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
-      } else if (res.status === "unauthorized") {
-        lock("That key did not work.");
-      } else if (manual || !firstLoadDone || res.status !== "network") {
-        $("listMsg").textContent = problem(res.status);
-      } else {
-        $("listMsg").textContent = "Could not reach the server. Will try again.";
-      }
-      return res;
-    });
-  }
-
-  function startTimer() {
-    stopTimer();
-    timer = setInterval(function () { if (!document.hidden) check(false); }, REFRESH_MS);
-  }
-  function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
-
-  function reset() {
-    known = {}; rows = {}; firstLoadDone = false;
-    $("list").textContent = "";
-    $("countText").textContent = ""; $("checkedText").textContent = ""; $("listMsg").textContent = "";
-    $("empty").hidden = true;
   }
 
   function lock(message) {
@@ -877,7 +640,7 @@
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
     ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.ConsoleNames) window.ConsoleNames.reset(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset(); if (window.MessagesStation) window.MessagesStation.reset();
+    setKey("", false); key = ""; if (window.RequestsStation) window.RequestsStation.reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.ConsoleNames) window.ConsoleNames.reset(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset(); if (window.MessagesStation) window.MessagesStation.reset();
     $("keyInput").value = ""; $("keyInput").type = "password"; $("keyShow").textContent = "Show"; $("keyShow").setAttribute("aria-pressed", "false");
     $("lockMsg").textContent = message || "";
     show(true);
@@ -967,7 +730,7 @@
     timing = { t0: tnow(), method: method === "google" ? "google" : "key" };
     launchStart();
     idleTouch();                                       // a sign-in starts a fresh clock: after a timeout the old "last active" time must not sign this person straight out again
-    key = k; reset();
+    key = k; if (window.RequestsStation) window.RequestsStation.clearList();
     $("lockMsg").textContent = "";
     $("unlockBtn").disabled = true;
     return accessProbe().then(function (res) {
@@ -989,9 +752,7 @@
         if (mine !== unlockSeq || !key) return;
         show(false);
         applyAccess();
-        merge(res.records);
-        firstLoadDone = true;
-        $("checkedText").textContent = "Last checked " + fmtClock.format(new Date());
+        if (window.RequestsStation) window.RequestsStation.adopt(res.records);
         route();
         sendTiming(tm);
       });
@@ -1599,7 +1360,7 @@
                         classChoices: function () { return loadClassChoices(); },
                         classById: function (id) { return aClassById ? aClassById[id] : undefined; },
                         openAttendance: function (cls) { openAttendance(cls); },
-                        requests: function () { return Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
+                        requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
                         words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since) { return fetchRecords(since); }, putInClass: function (rec, host, said) { putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only.
   function canon(v) {
     if (v === null || v === undefined) return "null";
@@ -2288,7 +2049,7 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           $("cNotice").textContent = (mode === "cancel" ? "Cancelled " : "Deleted ") + (rec.title || "class") + ". Everyone in it was cancelled and emailed. Messages shows any email that could not be sent.";
-          loadPlaced(); loadClasses();
+          refreshPlaced(); loadClasses();
         }
         else if (res.status === 404) { $("cNotice").textContent = "That class was already gone."; loadClasses(); }
         else if (res.status === 409 && mode === "cancel") err.textContent = "This class changed since the list loaded. Refresh and try again.";
@@ -2970,8 +2731,8 @@
     i.type = reveal ? "text" : "password"; this.textContent = reveal ? "Hide" : "Show"; this.setAttribute("aria-pressed", reveal ? "true" : "false"); i.focus();
   });
   $("lockBtn").addEventListener("click", function () { lock(""); });
-  $("refreshBtn").addEventListener("click", function () { check(true); loadPlaced(); });
-  document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests") check(false); });
+  $("refreshBtn").addEventListener("click", function () { if (window.RequestsStation) { window.RequestsStation.check(true); window.RequestsStation.loadPlaced(); } });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && key && currentRoute() === "requests" && window.RequestsStation) window.RequestsStation.check(false); });
   window.addEventListener("hashchange", route);
   $("netRetry").addEventListener("click", netRetry);
   document.addEventListener("click", function (e) {
@@ -2999,200 +2760,8 @@
   buildHome();
 
 
-  // ======== Placed requests: a request is placed once attendance exists for it (old seat decisions are retired) ========
-  var P = { loaded: false, ids: {}, cls: {}, num: {}, st: {}, reqs: [], error: "" };
-  var qSeq = 0;
   var aClasses = [], aClassById = {};
-  function personOf(it) { return [it.first_name, it.last_name].filter(Boolean).join(" ") || "(no name)"; }
-  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
-
-  function loadPlaced() {
-    if (!canPlaced()) return Promise.resolve();
-    var my = ++qSeq;
-    return Promise.all([admin("list", { limit: 200, expand: true }, "attendances"), firstLoadDone ? Promise.resolve(null) : fetchRecords("")]).then(function (both) {
-      if (my !== qSeq || !key) return;
-      var res = both[0];
-      if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { P.error = adminProblem(res.status); P.loaded = P.loaded && true; }
-      else {
-        P.error = ""; P.loaded = true; P.ids = {}; P.cls = {}; P.num = {}; P.st = {};
-        (res.body.data.records || []).forEach(function (r) { if (r.request_id && !ATT_GONE[r.status]) { var rk = ATT_RANK[r.status] || 1; if (rk > (P.st[r.request_id] || 0)) P.st[r.request_id] = rk; P.ids[r.request_id] = (P.ids[r.request_id] || 0) + 1; P.cls[r.request_id] = (r["class"] && r["class"].title) || P.cls[r.request_id] || "a class"; } });
-      }
-      if (both[1] && both[1].status === "ok") P.reqs = both[1].records || [];
-      else if (firstLoadDone) P.reqs = Object.keys(known).map(function (id) { return known[id]; });
-      decorateCards(); renderAttention();
-    });
-  }
-  function decorateCards() { Object.keys(rows).forEach(function (id) { if (rows[id]._q) fillQRow(rows[id]._q, known[id]); }); applyReqFilter(); }
-  function fillQRow(box, rec) {
-    box.textContent = "";
-    if (!P.loaded) { box.hidden = true; return; }
-    box.hidden = false;
-    var n = P.ids[rec.id];
-    var rli = box.parentNode;
-    if (rli) rli.setAttribute("data-tone", n ? "ok" : rec.coverage_waiting ? "wait" : rec.coverage_handled_at ? "done" : "none");   // a quiet edge and tint; the chip carries the words   // the card: once placed, "Open class" is the main button and "Put in a class" steps back
-    if (rli && rli._pb) { rli._ob.hidden = !n; rli._pb.className = n ? "btn-secondary" : "btn-primary"; }
-    if (n) box.appendChild(mk("span", "qchip ok", "Closed · placed in " + (P.cls[rec.id] || "a class")));
-    else if (!rec.coverage_waiting && !rec.coverage_handled_at) box.appendChild(mk("span", "qchip warn", "Open · not placed yet"));   // a handled request already shows "Handled: …" above, so no second status chip   // a request with no trainer already shows its own chip above
-    // One plain line saying what to do next, from fields the card already has.
-    var next = n ? "Next: nothing. Open the class to see attendance."
-      : rec.coverage_waiting ? "Next: find a trainer for this ZIP, then Mark handled."
-      : rec.coverage_handled_at ? "Next: put this request in a class when a trainer is found."
-      : "Next: put this request in a class.";
-    box.appendChild(mk("span", "qnext", next));
-    // Where the request is on its way: New, Placed, Confirmed, Attended (the furthest placement counts).
-    var at = n ? (P.st[rec.id] || 1) : 0, strip = mk("div", "qstrip");
-    strip.setAttribute("role", "group"); strip.setAttribute("aria-label", "Progress of this request");
-    ["New", "Placed", "Confirmed", "Attended"].forEach(function (w, i) {
-      var li2 = mk("span", i < at ? "done" : i === at ? "now" : "", w); if (i === at) li2.setAttribute("aria-current", "step"); strip.appendChild(li2);
-    });
-    box.appendChild(strip);
-  }
-  // Which requests the list shows: open ones (not yet in a class) by default. Closed means a class holds the student.
-  // The Show filter is a segmented control (a radio group). The hidden #reqShow select stays as the one place the choice is kept, so code elsewhere can set it and call applyReqFilter().
-  function buildReqSeg() {
-    var host = $("reqSeg"); host.textContent = "";
-    Array.prototype.forEach.call($("reqShow").options, function (o) {
-      var b = mk("button", "", o.textContent.replace(/ requests$/, "").replace(/^No active trainer$/, "No active trainer")); b.type = "button"; b.dataset.v = o.value;
-      b.setAttribute("role", "radio"); b.setAttribute("aria-checked", "false"); b.tabIndex = -1;
-      host.appendChild(b);
-    });
-  }
-  function syncReqSeg() {
-    var v = $("reqShow").value;
-    Array.prototype.forEach.call($("reqSeg").children, function (b) { var on = b.dataset.v === v; b.setAttribute("aria-checked", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
-  }
-  // How many each choice would show, written on the choice itself ("Open 3"). A count we cannot know yet is left off.
-  function setSegCounts(c) {
-    Array.prototype.forEach.call($("reqSeg").children, function (b) {
-      var sp = b.querySelector(".segn"); if (!sp) { sp = mk("span", "segn", ""); b.appendChild(sp); }
-      var v = c[b.dataset.v]; sp.textContent = (v === null || v === undefined) ? "" : String(v);
-    });
-  }
-  function pickReq(v, focus) { $("reqShow").value = v; applyReqFilter(); if (focus) { var t = $("reqSeg").querySelector('[data-v="' + v + '"]'); if (t) t.focus(); } }
-  function applyReqFilter() {
-    syncReqSeg();
-    var mode = $("reqShow").value, shown = 0, open = 0, isDel = mode === "deleted";
-    Object.keys(rows).forEach(function (id) {
-      var closed = P.loaded && !!P.ids[id];
-      if (!closed) open++;
-      var show = !isDel && (mode === "all" || (mode === "notrainer" ? !!(known[id] && known[id].coverage_waiting) : mode === "closed" ? closed : !closed));
-      rows[id].style.display = show ? "" : "none";
-      if (show) shown++;
-    });
-    var n = Object.keys(known).length;
-    setSegCounts({ open: open, closed: P.loaded ? Object.keys(rows).length - open : null, all: Object.keys(rows).length, notrainer: Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length });
-    var wait = Object.keys(known).filter(function (id) { return known[id].coverage_waiting; }).length, cb = $("covBanner");
-    cb.textContent = "";
-    if (wait) {
-      cb.appendChild(document.createTextNode(wait + (wait === 1 ? " request is" : " requests are") + " waiting for a trainer"));
-      if (mode !== "notrainer") { var sb = mk("button", "btn-secondary", "Show them"); sb.type = "button"; sb.addEventListener("click", function () { $("reqShow").value = "notrainer"; applyReqFilter(); }); cb.appendChild(sb); }
-      if (ME && !ME.inspector && (ME.is_super_admin || ME.role_key === "admin")) {   // Send reminders now: the daily reminder, by hand (the server checks too)
-        var rb = mk("button", "btn-secondary", "Send reminders now"); rb.type = "button";
-        rb.addEventListener("click", function () {
-          rb.disabled = true;
-          admin("send_coverage_reminders", {}, "attendances").then(function (res) {
-            rb.disabled = false;
-            if (res.status === 401) { lock("That key did not work."); return; }
-            var d = res.status === 200 && res.body && res.body.ok ? res.body.data : null;
-            $("reqDone").textContent = d ? (d.sent ? "Reminders sent to " + plural(d.sent, "person", "people") + " about " + plural(d.waiting, "request", "requests") + " waiting for a trainer."
-              + (d.not_sent ? " " + plural(d.not_sent, "message was", "messages were") + " not sent: see Messages." : "") : "No reminders went out. " + (d.waiting ? "See Messages for why." : "Nothing is waiting for a trainer."))
-              : res.status === 403 ? "Only a super admin or an admin may send reminders." : adminProblem(res.status);
-            $("reqDone").hidden = false;
-          });
-        });
-        cb.appendChild(rb);
-      }
-    }
-    cb.hidden = !wait || isDel;
-    $("countText").textContent = mode === "notrainer" ? wait + (wait === 1 ? " request with no active trainer" : " requests with no active trainer") : !P.loaded ? n + (n === 1 ? " request" : " requests")
-      : mode === "open" ? open + (open === 1 ? " open request" : " open requests") + (n > open ? " (" + (n - open) + " closed)" : "")
-      : mode === "closed" ? shown + (shown === 1 ? " closed request" : " closed requests") : n + (n === 1 ? " request" : " requests");
-    $("empty").textContent = mode === "notrainer" ? "No request is waiting for a trainer. Nothing to do here." : mode === "open" ? "No open requests. Every request is in a class. New sign-ups from the website show up here by themselves." : mode === "closed" ? "No closed requests yet." : "No requests yet.";
-    $("empty").hidden = shown > 0 || isDel;
-    if (isDel) { $("countText").textContent = "Deleted requests"; loadDeleted(); } else { $("delList").hidden = true; $("delEmpty").hidden = true; }
-  }
-  // Deleted requests (for Restore): fetched on their own, because the normal list never carries them. Each card has a Restore button.
-  var delSeq = 0;
-  function loadDeleted() {
-    var my = ++delSeq, ul = $("delList");
-    ul.textContent = ""; $("delEmpty").hidden = true; ul.hidden = false;
-    var url = CFG.endpoints.records + "?limit=" + MAX + "&deleted=1";
-    fetchT(url, { method: "GET", headers: { "Authorization": "Bearer " + key }, cache: "no-store" }, READ_MS).then(function (r) {
-      if (r.status === 401) { lock("That key did not work."); return null; }
-      if (!r.ok) { $("listMsg").textContent = "Could not load the deleted requests. Try Refresh."; return null; }
-      return r.json();
-    }).catch(function (e) { netShow(!!(e && e.timedOut)); return null; }).then(function (j) {
-      if (my !== delSeq || !j) return;
-      $("listMsg").textContent = "";
-      var recs = (j.data && j.data.records) || [];
-      $("countText").textContent = recs.length + (recs.length === 1 ? " deleted request" : " deleted requests");
-      $("delEmpty").hidden = recs.length > 0;
-      recs.forEach(function (rec) {
-        var li = mk("li", ""); li.setAttribute("data-tone", "done"); li.setAttribute("data-deleted", rec.id);
-        var who = personOf(rec), box = mk("div", "qrow");
-        box.appendChild(mk("b", "", rec.confirmation_number || ""));
-        box.appendChild(mk("span", "qchip", "Deleted"));
-        var meta = [who, rec.email, rec.zip_code ? "ZIP: " + rec.zip_code : "", rec.deleted_at ? "deleted " + fmtTime.format(new Date(rec.deleted_at)) : ""].filter(Boolean).join(" · ");
-        box.appendChild(mk("span", "qnext", meta));
-        if (can("manage_requests") && !(ME && ME.inspector)) {
-          var rb = mk("button", "btn-primary", "Restore"); rb.type = "button"; rb.setAttribute("aria-label", "Restore (" + who + ")");
-          rb.addEventListener("click", function () {
-            rb.disabled = true;
-            admin("restore_request", { id: rec.id }, "attendances").then(function (r2) {
-              if (r2.status === 401) { lock("That key did not work."); return; }
-              if (r2.status === 200 && r2.body && r2.body.ok) { if (li.parentNode) li.parentNode.removeChild(li); $("reqDone").textContent = "Request " + (rec.confirmation_number || "") + " is back in the list."; $("reqDone").hidden = false; $("delEmpty").hidden = $("delList").children.length > 0; check(true); return; }
-              rb.disabled = false; $("reqDone").textContent = "Could not restore it. " + adminProblem(r2.status); $("reqDone").hidden = false;
-            });
-          });
-          box.appendChild(rb);
-        }
-        li.appendChild(box); ul.appendChild(li);
-      });
-    });
-  }
-  $("reqShow").addEventListener("change", applyReqFilter);
-  buildReqSeg(); syncReqSeg();
-  $("reqSeg").addEventListener("click", function (e) { var b = e.target.closest ? e.target.closest("button[data-v]") : null; if (b) pickReq(b.dataset.v, false); });
-  $("reqSeg").addEventListener("keydown", function (e) {   // radio-group keys: arrows move and choose, Home and End jump
-    var k = e.key, bs = Array.prototype.slice.call($("reqSeg").children), i = bs.indexOf(document.activeElement);
-    if (i < 0 || ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].indexOf(k) < 0) return;
-    e.preventDefault();
-    var j = k === "Home" ? 0 : k === "End" ? bs.length - 1 : (i + (k === "ArrowRight" || k === "ArrowDown" ? 1 : -1) + bs.length) % bs.length;
-    pickReq(bs[j].dataset.v, true);
-  });
-
-  // Home: the "Waiting to be placed" panel.
-  function renderAttention() {
-    var box = $("attnBox"), body = $("attnBody"), badge = $("attnBadge");
-    body.textContent = "";
-    if (!P.loaded && P.error) {
-      body.appendChild(document.createTextNode("Could not check the requests. " + P.error + " "));
-      var rb = mk("button", "", "Try again"); rb.type = "button"; rb.addEventListener("click", function () { loadPlaced(); }); body.appendChild(rb);
-      badge.hidden = true; box.className = "attn"; return;
-    }
-    if (!P.loaded) { body.textContent = "Checking the requests…"; badge.hidden = true; box.className = "attn"; return; }
-    var noTrainer = P.reqs.filter(function (r) { return r.coverage_waiting; }).length;
-    if (noTrainer) {
-      var cov = mk("div", "aitem"); cov.appendChild(mk("b", "", noTrainer + (noTrainer === 1 ? " request is" : " requests are") + " waiting for a trainer"));
-      var crow = mk("div", "arow"); var cg = mk("button", "", "Show them"); cg.type = "button"; cg.addEventListener("click", function () { $("reqShow").value = "notrainer"; goTo("requests"); applyReqFilter(); });
-      crow.appendChild(cg); cov.appendChild(crow); body.appendChild(cov);
-    }
-    var waiting = P.reqs.filter(function (r) { return !P.ids[r.id]; }).sort(function (a, b) { return (a.created_at || "") < (b.created_at || "") ? 1 : -1; });
-    badge.hidden = !waiting.length; badge.textContent = waiting.length;
-    box.className = "attn" + (waiting.length ? " hot" : "");
-    if (!waiting.length) body.appendChild(mk("div", "", "All clear. Every request is closed: its student is in a class."));
-    waiting.slice(0, 8).forEach(function (it) {
-      var d = mk("div", "aitem");
-      var t = mk("div", ""); t.appendChild(mk("b", "", personOf(it)));
-      t.appendChild(document.createTextNode(" · " + (TYPES[it.registration_type] || it.registration_type || "") + " · " + plural(it.attendee_count || 1, "person", "people") + " · " + (it.confirmation_number || "")));
-      d.appendChild(t);
-      var row = mk("div", "arow");
-      var g = mk("button", "", "Open requests"); g.type = "button"; g.addEventListener("click", function () { goTo("requests"); });
-      row.appendChild(g); d.appendChild(row); body.appendChild(d);
-    });
-    if (waiting.length > 8) body.appendChild(mk("div", "quietline", "and " + (waiting.length - 8) + " more. Open Requests to see them all."));
-  }
+  function refreshPlaced() { return window.RequestsStation ? window.RequestsStation.loadPlaced() : Promise.resolve(); }   // Classes and Attendance call this after they place or remove someone
 
   function loadClassChoices() {
     return admin("list", { limit: 200 }, "scheduled_classes").then(function (res) {
@@ -3747,7 +3316,7 @@
       rm.disabled = true;
       admin("soft_delete", { id: r.id }, ATT).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept." + (ATT_OPEN[r.status] ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); loadPlaced(); redraw(); return; }
+        if (res.status === 200 && res.body && res.body.ok) { say(attName(r) + " was removed from this class. Their record is kept." + (ATT_OPEN[r.status] ? " They were emailed" + (r.role === "student" ? ", and so were the instructors" : "") + ". Messages shows the result." : "")); refreshPlaced(); redraw(); return; }
         rm.disabled = false; armed = false; rm.textContent = "Remove"; rm.setAttribute("aria-label", "Remove (" + who + ")"); rm.className = "btn-secondary"; say(attFail(res));
       });
     });
@@ -3921,7 +3490,7 @@
         bn.textContent = "Request " + (num ? num + " " : "") + "is closed. " + (d.everyone ? d.everyone.join(", ") + " are in " : attName(d) + " is in ") + ((d["class"] && d["class"].title) || "the class") + ". You will find it in Classes."
           + (d.created_roster_entry ? " Added to the student list." : "");
         bn.hidden = false; $("reqShow").value = "open";
-        loadPlaced().then(function () { bn.scrollIntoView({ block: "nearest" }); });
+        refreshPlaced().then(function () { bn.scrollIntoView({ block: "nearest" }); });
       } }));
     });
   }
@@ -3979,7 +3548,6 @@
   $("reqInfo").addEventListener("click", function () { openWorkflows(["place_existing", "build_class", "class_cancelled", "setup"]); });
 
   function resetPlaced() {
-    P = { loaded: false, ids: {}, reqs: [], error: "" }; qSeq++;
     aClasses = []; aClassById = {};
     try { $("atDlg").close(); } catch (e) {} try { $("jrDlg").close(); $("wfDlg").close(); } catch (e) {}
     $("attnBody").textContent = "Checking the requests…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";

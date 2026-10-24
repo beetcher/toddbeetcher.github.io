@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser test (Console 2.1): the Requests station on the List page template - visible title, count and last-checked under it, the Show filter as a segmented control with radio-group keys, a two-column card grid at desktop width that opens an expanded card across both columns, and the phone layout. Same fixture as the coverage test. Run from enjoy_router/:  python3 run_console_requests_browser_test.py"""
+"""Browser test (Console 2.1): the Requests station on the List page template - visible title, count and last-checked under it, the Show filter as a segmented control with radio-group keys, a two-column card grid at desktop width that opens an expanded card across both columns, and the phone layout. Same fixture as the coverage test. Run from enjoy_router/:  python3 run_requests_browser_test.py"""
 import sys, json, os, pathlib
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))

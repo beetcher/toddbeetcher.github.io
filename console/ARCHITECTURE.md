@@ -3,7 +3,7 @@
 Read this before touching anything in `console/`. Written 2026-10-23 from the Messages extraction (the first station to leave `console.js`), so every rule below was needed by a real move, not guessed. Look and feel is in `DESIGN-RULES.md` (read it too); this file is about where code lives.
 
 ## Where we are
-`console.js` is the legacy script: one very large file that still holds most stations (Requests, Attendance, Classes, Venues, People, Places, the rosters, and the rest). It only gets smaller from here. Stations that have left it live in their own files, and every new station starts in its own file. The end state is no `console.js` at all, only the small shared files and one file per station.
+`console.js` is the legacy script: one very large file that still holds most stations (Attendance, Classes, Venues, People, Places, the rosters, and the rest). It only gets smaller from here. Stations that have left it live in their own files, and every new station starts in its own file. The end state is no `console.js` at all, only the small shared files and one file per station.
 
 ## The files and the order they load (see the bottom of `index.html`)
 | File | What it is |
@@ -14,6 +14,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `console.js` | The legacy script, and the owner of `window.ConsoleKit` |
 | `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
 | `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
+| `requests.js` | The Requests station (`window.RequestsStation`) and the placed-requests data; loads after `dialogs.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -107,7 +108,7 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `go` | Core: routing | Go to another page |
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
 | `classChoices`, `classById`, `openAttendance` | Attendance and Classes (still in `console.js`) | The class list; look a class up; open its attendance |
-| `requests` | Requests (still in `console.js` until R-4) | The loaded registration requests |
+| `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
 | `words` | Core: shared word tables | `corrKind`, `reasonWord`, `attWord`, `roleWord` |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
 | `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
@@ -140,4 +141,4 @@ Write a run sheet and get a GO first, then four steps, one commit each:
 - **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly", ConsoleNames: "readonly", ConsoleDialogs: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked).
 
 ## Still inside `console.js` (to be extracted, each with its own sheet and GO)
-Requests (next), Attendance, Classes, Venues, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, Journal, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
+Attendance, Classes, Venues, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
