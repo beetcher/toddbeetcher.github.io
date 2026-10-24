@@ -227,6 +227,15 @@ with sync_playwright() as p:
     check("the curriculum titles load through names.js", ok_c)
     src_big = (HERE.parent / "console" / "console.js").read_text()
     check("nothing of the name caches is left in console.js", not __import__("re").search(r"\b(cVenues|cVenueById|cCurricula|venueChipFetch|curChipFetch|refreshVenueChips|refreshCurriculumChips)\b|function (loadVenueChoices|loadCurriculumChoices|venueAsked|curriculumAsked)\b", src_big))
+    # ---- shared dialogs (R-2): the Journal has one owner, console/dialogs.js (window.ConsoleDialogs); Put in a class stays with Attendance for now
+    check("dialogs.js is its own file and ConsoleDialogs.openJournal is there", pg.evaluate("typeof window.ConsoleDialogs === 'object' && typeof ConsoleDialogs.openJournal === 'function'"))
+    pg.set_viewport_size({"width": 1100, "height": 900}); pg.wait_for_timeout(150)
+    pg.locator("#list > li:visible").first.get_by_role("button", name="History").click(); pg.wait_for_selector("#jrDlg[open]")
+    pg.wait_for_function("document.getElementById('jrBody').textContent.indexOf('Nothing has happened here yet') >= 0")
+    check("History on a request card opens the Journal (through dialogs.js) and says so when nothing has happened", pg.locator("#jrTitle").inner_text().startswith("History: ") and pg.locator("#jrDlg").is_visible())
+    pg.click("#jrClose"); pg.wait_for_timeout(150)
+    check("Close shuts the Journal", not pg.evaluate("document.getElementById('jrDlg').open"))
+    check("nothing of the Journal is left in console.js", not __import__("re").search(r"\bJR_WORD\b|function openJournal\b|\$\(\"jrClose\"\)", src_big))
     # inspector keeps the view
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
     check("sign-out empties the name caches", pg.evaluate("ConsoleNames.venues().length === 0 && ConsoleNames.curricula().length === 0 && ConsoleNames.venueAsked('%s') === ''" % VENUE))

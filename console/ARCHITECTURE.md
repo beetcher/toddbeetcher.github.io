@@ -13,6 +13,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `filters.js` | `UI.chipFilters`, the one filter control (chips with popovers, and the switch chip) |
 | `console.js` | The legacy script, and the owner of `window.ConsoleKit` |
 | `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
+| `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -82,7 +83,7 @@ The cure for tangling is one owner per shared thing. A station never reaches int
 Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
 2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
-3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): Put in a class, the Journal. One owner. Added in the Requests run (R-2).
+3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
 4. **Shared UI**: `ui.js`, `filters.js`. Used directly.
 5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
 

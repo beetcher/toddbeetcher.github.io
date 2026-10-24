@@ -722,7 +722,7 @@
     putrow.appendChild(ob); putrow.appendChild(pb); li._pb = pb; li._ob = ob;
     // One History link: the journal of what happened to this request; people allowed to see it also get a link inside to every recorded change.
     var jb = document.createElement("button"); jb.type = "button"; jb.className = "btn-link"; jb.textContent = "History"; jb.setAttribute("aria-label", "History (" + who2 + ")");
-    jb.addEventListener("click", function () { openJournal({ request_id: rec.id }, "History: " + personOf(rec), { id: rec.id, label: "this request" }); });
+    jb.addEventListener("click", function () { ConsoleDialogs.openJournal({ request_id: rec.id }, "History: " + personOf(rec), { id: rec.id, label: "this request" }); });
     putrow.appendChild(jb);
     // Mark handled (P-83): a request no active region could take. A note saying what was done is required. Not for a view-only account.
     var covbox = document.createElement("div"); covbox.className = "covbox"; covbox.hidden = true;
@@ -2222,7 +2222,7 @@
     at.addEventListener("click", function () { openAttendance(rec); });
     links.appendChild(at);
     var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
-    jl.addEventListener("click", function () { openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
+    jl.addEventListener("click", function () { ConsoleDialogs.openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
     links.appendChild(jl);
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
@@ -3925,37 +3925,6 @@
       } }));
     });
   }
-
-  // ---- Journal: the append-only log of placing, status changes and cancellations
-  var JR_WORD = { placed: "Placed in a class", status_changed: "Status changed", removed: "Removed from a class", class_cancelled: "Class cancelled", class_removed: "Class deleted", request_unassigned: "Request back to waiting to be placed" };
-  function openJournal(filter, title, hist) {
-    var dlg = $("jrDlg"), body = $("jrBody"), msg = $("jrMsg");
-    $("jrTitle").textContent = title || "Journal"; msg.textContent = ""; body.textContent = "Loading…";
-    if (!dlg.open) dlg.showModal();
-    admin("list", { filters: filter, limit: 200, expand: true, order: "-created_at" }, "journal_events").then(function (res) {
-      body.textContent = "";
-      if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { msg.textContent = "Could not load the journal. " + adminProblem(res.status); return; }
-      var hb = hist && historyBtn(hist.id, hist.label);
-      if (hb) { hb.className = "btn-link"; hb.textContent = "See every recorded change"; hb.addEventListener("click", function () { dlg.close(); }); body.appendChild(hb); }
-      var recs = res.body.data.records || [];
-      if (!recs.length) { body.appendChild(mk("div", "empty", "Nothing has happened here yet.")); return; }
-      recs.forEach(function (e) {
-        var d = mk("div", "jline");
-        d.appendChild(mk("div", "jwhen", when(e.created_at) + (e.created_by ? " · " + e.created_by : "")));
-        d.appendChild(mk("div", "jwhat", JR_WORD[e.event_type] || e.event_type));
-        var bits = [];
-        if (e.person && e.person.display_name) bits.push(e.person.display_name);
-        if (e.role) bits.push((ROLE_WORD[e.role] || e.role).toLowerCase());
-        if (e["class"] && e["class"].title) bits.push(e["class"].title);
-        if (e.from_status || e.to_status) bits.push((e.from_status ? ATT_WORD[e.from_status] || e.from_status : "new") + " → " + (ATT_WORD[e.to_status] || e.to_status || ""));
-        if (bits.length) d.appendChild(mk("div", "", bits.join(" · ")));
-        if (e.note) d.appendChild(mk("div", "note", e.note));
-        body.appendChild(d);
-      });
-    });
-  }
-  $("jrClose").addEventListener("click", function () { $("jrDlg").close(); });
 
   // ---- Workflows: step cards with a jump button to the right station
   var WORKFLOWS = [
