@@ -3,7 +3,7 @@
 Read this before touching anything in `console/`. Written 2026-10-23 from the Messages extraction (the first station to leave `console.js`), so every rule below was needed by a real move, not guessed. Look and feel is in `DESIGN-RULES.md` (read it too); this file is about where code lives.
 
 ## Where we are
-`console.js` is the legacy script: one very large file that still holds most stations (Attendance, Classes, Venues, People, Places, the rosters, and the rest). It only gets smaller from here. Stations that have left it live in their own files, and every new station starts in its own file. The end state is no `console.js` at all, only the small shared files and one file per station.
+`console.js` is the legacy script: one very large file that still holds most stations (Classes, Venues, People, Places, the rosters, and the rest). It only gets smaller from here. Stations that have left it live in their own files, and every new station starts in its own file. The end state is no `console.js` at all, only the small shared files and one file per station.
 
 ## The files and the order they load (see the bottom of `index.html`)
 | File | What it is |
@@ -15,6 +15,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
 | `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
 | `requests.js` | The Requests station (`window.RequestsStation`) and the placed-requests data; loads after `dialogs.js` |
+| `attendance.js` | The Attendance station (`window.AttendanceStation`: show, reset, `openAttendance`, `personHistory`, `attLine`); loads after `requests.js`. The placing machinery (about 400 lines) still lives in `console.js` (DT-18) |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
