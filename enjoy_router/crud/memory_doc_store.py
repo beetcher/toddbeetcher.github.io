@@ -97,7 +97,8 @@ class MemoryDocStore:
         self.reads.append(("query", base))
         docs = [d for d in self._c(base).values() if all(_matches(d, f, op, v) for f, op, v in filters)]
         if order_by:
-            docs.sort(key=lambda d: (d.get(order_by) is None, d.get(order_by)), reverse=descending)
+            # equal values come back in a fixed order, by id in the same direction (what Firestore does), so tests see the same order every run (DT-24)
+            docs.sort(key=lambda d: (d.get(order_by) is None, d.get(order_by), str(d.get("id", ""))), reverse=descending)
         return [_decode(copy.deepcopy(d)) for d in docs[:limit]]
 
     @contextmanager
