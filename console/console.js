@@ -667,18 +667,18 @@
     else if (rec.coverage_handled_at) { var hc = document.createElement("span"); hc.className = "donechip"; hc.textContent = "Handled: no trainer"; chips.appendChild(hc); }
     if (rec.preferred_venue_id) {
       var vc = document.createElement("span"); vc.className = "venuechip";
-      vc.textContent = "Venue asked for: " + (venueAsked(rec.preferred_venue_id) || "picked on the form");
+      vc.textContent = "Venue asked for: " + (ConsoleNames.venueAsked(rec.preferred_venue_id) || "picked on the form");
       vc.setAttribute("data-vid", rec.preferred_venue_id);
       chips.appendChild(vc);
-      if (!cVenues.length && !venueChipFetch) venueChipFetch = loadVenueChoices().then(refreshVenueChips);
+      ConsoleNames.ensureVenueChips();
     }
 
     if (rec.curriculum_id) {   // the topic the requester picked on the form
       var cc = document.createElement("span"); cc.className = "curchip";
-      cc.textContent = "Interested in: " + (curriculumAsked(rec.curriculum_id) || "picked on the form");
+      cc.textContent = "Interested in: " + (ConsoleNames.curriculumAsked(rec.curriculum_id) || "picked on the form");
       cc.setAttribute("data-cid", rec.curriculum_id);
       chips.appendChild(cc);
-      if (!cCurricula.length && !curChipFetch) curChipFetch = loadCurriculumChoices().then(refreshCurriculumChips);
+      ConsoleNames.ensureCurriculumChips();
     }
 
     [top, w, who, email, chips].forEach(function (n) { head.appendChild(n); });
@@ -877,7 +877,7 @@
       method = "key"; try { if (auth) auth.signOut(); } catch (e) {}
     }
     ME = null; $("who").hidden = true; viewOnlyMode(false); idleEnd();
-    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset(); if (window.MessagesStation) window.MessagesStation.reset();
+    stopTimer(); setKey("", false); key = ""; reset(); resetVenues(); resetClasses(); resetPlaced(); resetPeople(); resetPlaces(); resetRosters(); if (window.ConsoleNames) window.ConsoleNames.reset(); if (window.DiscoveryStation) window.DiscoveryStation.reset(); if (window.AccessStation) window.AccessStation.reset(); if (window.ActivityStation) window.ActivityStation.reset(); if (window.PerformanceStation) window.PerformanceStation.reset(); if (window.MessagesStation) window.MessagesStation.reset();
     $("keyInput").value = ""; $("keyInput").type = "password"; $("keyShow").textContent = "Show"; $("keyShow").setAttribute("aria-pressed", "false");
     $("lockMsg").textContent = message || "";
     show(true);
@@ -2151,7 +2151,7 @@
   };
 
   var cCtx = { prefix: "c_", schema: null, fields: {} };
-  var cSchemaP = null, cRec = null, cVenues = [], cVenueById = {}, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
+  var cSchemaP = null, cRec = null, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
 
   function getClassSchema() {
     if (!cSchemaP) {
@@ -2161,40 +2161,6 @@
     }
     return cSchemaP;
   }
-  function loadVenueChoices() {
-    return admin("list", { limit: 200, expand: true }, "venues").then(function (res) {
-      if (res.status === 401) { lock("That key did not work."); return false; }
-      if (res.status !== 200 || !res.body.ok) return false;
-      cVenues = (res.body.data.records || []).slice().sort(function (a, b) { return (a.name || "").toLowerCase() < (b.name || "").toLowerCase() ? -1 : 1; });
-      cVenueById = {}; cVenues.forEach(function (v) { cVenueById[v.id] = v; });
-      return true;
-    });
-  }
-
-  var venueChipFetch = null, curChipFetch = null;
-  function refreshCurriculumChips() {   // the curriculum titles arrive after the request cards are drawn
-    Array.prototype.forEach.call(document.querySelectorAll(".curchip[data-cid]"), function (c) {
-      var n = curriculumAsked(c.getAttribute("data-cid")); if (n) c.textContent = "Interested in: " + n;
-    });
-  }
-  function curriculumAsked(id) {
-    var r = "";
-    cCurricula.forEach(function (c) { if (c.id === id) r = c.title || "(no title)"; });
-    return r;
-  }
-  function refreshVenueChips() {   // the venue names arrive after the request cards are drawn
-    Array.prototype.forEach.call(document.querySelectorAll(".venuechip[data-vid]"), function (c) {
-      var n = venueAsked(c.getAttribute("data-vid")); if (n) c.textContent = "Venue asked for: " + n;
-    });
-  }
-  // "Name, Town" for a venue the requester picked on the form. Empty until the venues are loaded or when it is gone.
-  function venueAsked(id) {
-    var v = id ? cVenueById[id] : null;
-    if (!v) return "";
-    var town = v.place && v.place.address && v.place.address.locality;
-    return (v.name || "(no name)") + (town ? ", " + town : "");
-  }
-
   // ---- time zone helpers: the time is typed in the class's time zone and saved as UTC
   function zoneParts(ms, tz) {
     var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
@@ -2244,7 +2210,7 @@
     top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), rec.status || ""));
     head.appendChild(top);
     head.appendChild(mk("div", "who", classWhen(rec)));
-    var v = rec.venue_id ? cVenueById[rec.venue_id] : null;
+    var v = rec.venue_id ? ConsoleNames.venueById(rec.venue_id) : null;
     var where = rec.venue_id ? ((v ? v.name : "(venue not found)") + (rec.venue_room_label ? " · " + rec.venue_room_label : "")) : "No venue yet";
     head.appendChild(mk("div", "sub", where));
     var chips = mk("div", "chips");
@@ -2407,7 +2373,7 @@
     var my = ++cSeq;   // only the newest load may change the page, so a slow older answer can never overwrite a newer one
     $("cMsg").textContent = ""; $("cRetry").hidden = true;
     if (!cLoaded) skelOn($("cList"));
-    return Promise.all([loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
+    return Promise.all([ConsoleNames.loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
       if (my !== cSeq) return;
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
@@ -2457,15 +2423,6 @@
   }
 
   // ---- what a class teaches, and which series it is in (piece 3)
-  var cCurricula = [];
-  function loadCurriculumChoices() {
-    return admin("list", { filters: { status: "active" }, limit: 200 }, "curriculums").then(function (res) {
-      if (res.status === 401) { lock("That key did not work."); return false; }
-      if (res.status !== 200 || !res.body.ok) return false;
-      cCurricula = (res.body.data.records || []).slice().sort(function (a, b) { return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1; });
-      return true;
-    });
-  }
   function curriculumLabel(c) { return (c.title || "(no title)") + " (" + c.session_count + (c.session_count === 1 ? " session" : " sessions") + " of " + c.minutes_per_session + " min)"; }
   function newUuid() {
     try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
@@ -2476,8 +2433,8 @@
     var l = mk("label", "f", "Curriculum (what is taught)"); l.htmlFor = id;
     var sel = mk("select"); sel.id = id;
     var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
-    cCurricula.forEach(function (c) { var o = mk("option", "", curriculumLabel(c)); o.value = c.id; sel.appendChild(o); });
-    if (rec.curriculum_id && !cCurricula.some(function (c) { return c.id === rec.curriculum_id; })) { var ox = mk("option", "", "(inactive or removed curriculum)"); ox.value = rec.curriculum_id; sel.appendChild(ox); }
+    ConsoleNames.curricula().forEach(function (c) { var o = mk("option", "", curriculumLabel(c)); o.value = c.id; sel.appendChild(o); });
+    if (rec.curriculum_id && !ConsoleNames.curricula().some(function (c) { return c.id === rec.curriculum_id; })) { var ox = mk("option", "", "(inactive or removed curriculum)"); ox.value = rec.curriculum_id; sel.appendChild(ox); }
     sel.value = rec.curriculum_id || "";
     wrap.appendChild(l); wrap.appendChild(sel);
     var er = mk("div", "ferr"); er.id = "ee_c_curriculum_id"; wrap.appendChild(er);
@@ -2515,8 +2472,8 @@
     var l = mk("label", "f", "Venue"); l.htmlFor = id;
     var sel = mk("select"); sel.id = id;
     var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
-    cVenues.forEach(function (v) { var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o); });
-    if (rec.venue_id && !cVenueById[rec.venue_id]) { var ox = mk("option", "", "(venue not found)"); ox.value = rec.venue_id; sel.appendChild(ox); }
+    ConsoleNames.venues().forEach(function (v) { var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o); });
+    if (rec.venue_id && !ConsoleNames.venueById(rec.venue_id)) { var ox = mk("option", "", "(venue not found)"); ox.value = rec.venue_id; sel.appendChild(ox); }
     sel.value = rec.venue_id || "";
     wrap.appendChild(l); wrap.appendChild(sel);
     var er = mk("div", "ferr"); er.id = "ee_c_venue_id"; wrap.appendChild(er);
@@ -2534,7 +2491,7 @@
     return wrap;
   }
   function fillRooms(keep) {
-    var sel = cField("venue_room_label").el, vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+    var sel = cField("venue_room_label").el, vid = cField("venue_id").el.value, v = vid ? ConsoleNames.venueById(vid) : null;
     sel.textContent = "";
     var o0 = mk("option", "", vid ? "Not chosen yet" : "Choose a venue first"); o0.value = ""; sel.appendChild(o0);
     var found = false;
@@ -2609,7 +2566,7 @@
     // behaviour: venue changes the room list and (if blank) the time zone; status shows the cancelled reason
     cField("venue_id").el.addEventListener("change", function () {
       fillRooms("");
-      var v = cVenueById[this.value], tzf = cField("time_zone"), vtz = v && v.place && v.place.time_zone;
+      var v = ConsoleNames.venueById(this.value), tzf = cField("time_zone"), vtz = v && v.place && v.place.time_zone;
       if (vtz && tzf && !readValue(tzf)) {
         var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === vtz; });
         if (has) tzf.el.value = vtz;
@@ -2725,7 +2682,7 @@
         if (!ok) miss++;
         box.appendChild(mk("div", ok ? "ok" : "todo", (ok ? "✓ " : "○ ") + humanize(f)));
       });
-      var vid = cField("venue_id").el.value, v = vid ? cVenueById[vid] : null;
+      var vid = cField("venue_id").el.value, v = vid ? ConsoleNames.venueById(vid) : null;
       var vok = !!v && v.status === "active"; if (!vok) miss++;
       box.appendChild(mk("div", vok ? "ok" : "todo", (vok ? "✓ " : "○ ") + "An active venue"));
       return miss;
@@ -2782,7 +2739,7 @@
   }
   function openClassEdit(rec) {
     $("cMsg").textContent = "";
-    Promise.all([getClassSchema(), loadVenueChoices(), loadCurriculumChoices()]).then(function (both) {
+    Promise.all([getClassSchema(), ConsoleNames.loadVenueChoices(), ConsoleNames.loadCurriculumChoices()]).then(function (both) {
       var schema = both[0];
       if (!schema) { $("cMsg").textContent = "Could not load the class form. Try again."; return; }
       cCtx.schema = schema; cRec = rec;
@@ -3383,25 +3340,25 @@
       }
     }
     var cur = mk("select"); opt(cur, "", "No curriculum chosen");
-    cCurricula.forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
+    ConsoleNames.curricula().forEach(function (c) { opt(cur, c.id, curriculumLabel(c)); });
     lab("Curriculum", cur, "cur");
     if (req && req.curriculum_id) {   // the requester picked a topic on the form: offer it, the operator may keep it or change it
-      var askedC = curriculumAsked(req.curriculum_id);
+      var askedC = ConsoleNames.curriculumAsked(req.curriculum_id);
       if (askedC) { cur.value = req.curriculum_id; el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + askedC + ". It is filled in; change it if it does not suit.")); }
       else el.appendChild(mk("div", "hint", "The requester picked a curriculum that is no longer active. Choose another, or none."));
     }
     var who = req ? [req.first_name, req.last_name].filter(Boolean).join(" ") : "";
     var title = mk("input"); title.type = "text"; title.maxLength = 200; lab("Title of the class", title, "title");
     title.addEventListener("input", function () { titleTouched = true; });
-    function curById() { var r = null; cCurricula.forEach(function (c) { if (c.id === cur.value) r = c; }); return r; }
+    function curById() { var r = null; ConsoleNames.curricula().forEach(function (c) { if (c.id === cur.value) r = c; }); return r; }
     function fillTitle() { if (!titleTouched) title.value = ((curById() || {}).title || "Private session") + (who ? " for " + who : ""); }
     cur.addEventListener("change", fillTitle); fillTitle();
     var kind = mk("select"); opt(kind, "private", "One on one"); opt(kind, "group", "Group"); opt(kind, "workshop", "Workshop"); lab("Kind of class", kind, "kind");
     var ven = mk("select"); opt(ven, "", "Not chosen yet");
-    cVenues.forEach(function (v) { if (v.status === "active") opt(ven, v.id, v.name || "(no name)"); });
+    ConsoleNames.venues().forEach(function (v) { if (v.status === "active") opt(ven, v.id, v.name || "(no name)"); });
     lab("Venue", ven, "ven");
     if (req && req.preferred_venue_id) {   // the requester picked a venue on the form: offer it, the operator may keep it or change it
-      var asked = venueAsked(req.preferred_venue_id), askedV = cVenueById[req.preferred_venue_id];
+      var asked = ConsoleNames.venueAsked(req.preferred_venue_id), askedV = ConsoleNames.venueById(req.preferred_venue_id);
       if (askedV && askedV.status === "active") {
         ven.value = askedV.id;
         el.appendChild(mk("div", "hint", "Chosen by the requester on the form: " + asked + ". It is filled in; change it if it does not suit."));
@@ -3425,11 +3382,11 @@
       el.appendChild(mk("div", "hint", "They asked for: " + TOD[req.requested_time_of_day] + ". Pick the actual start time yourself."));
     }
     var tzNote = mk("div", "hint"); el.appendChild(tzNote);
-    function tz() { var v = cVenueById[ven.value]; return (v && v.place && v.place.time_zone) || "America/Denver"; }
+    function tz() { var v = ConsoleNames.venueById(ven.value); return (v && v.place && v.place.time_zone) || "America/Denver"; }
     function syncVenue() {
       room.textContent = ""; opt(room, "", "No room chosen");
-      var v = cVenueById[ven.value]; ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
-      tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (cVenueById[ven.value] && cVenueById[ven.value].place && cVenueById[ven.value].place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
+      var v = ConsoleNames.venueById(ven.value); ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
+      tzNote.textContent = "The time is in " + tz().replace(/_/g, " ") + (ConsoleNames.venueById(ven.value) && ConsoleNames.venueById(ven.value).place && ConsoleNames.venueById(ven.value).place.time_zone ? " (the venue's time zone)." : ". Choose a venue to use its time zone.");
     }
     var venTouched = false;
     ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
@@ -3941,7 +3898,7 @@
   // On a registration request: put the requester (or anyone) into a class.
   function putInClass(rec, host, said) {
     host.textContent = "Loading…";
-    Promise.all([loadClassChoices(), loadVenueChoices(), loadCurriculumChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (all4) {
+    Promise.all([loadClassChoices(), ConsoleNames.loadVenueChoices(), ConsoleNames.loadCurriculumChoices(), admin("list", { filters: { request_id: rec.id }, limit: 50, expand: true }, ATT)]).then(function (all4) {
       var both = [null, all4[3]];
       host.textContent = "";
       var res = both[1];
@@ -3956,7 +3913,7 @@
       var hb = mk("button", "quiet infoBtn", "ⓘ"); hb.type = "button"; hb.setAttribute("aria-label", "Help: put this request in a class");
       hb.addEventListener("click", function () { openWorkflows(["place_existing", "build_class"]); });
       var hr = mk("div", "rhead"); hr.appendChild(mk("span", "", "Put in a class")); hr.appendChild(hb); host.appendChild(hr);
-      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose + A new class (build it now) to start from that venue."));
+      if (rec.preferred_venue_id) host.appendChild(mk("div", "hint", "This person asked for: " + (ConsoleNames.venueAsked(rec.preferred_venue_id) || "a venue that can no longer be found") + ". Choose + A new class (build it now) to start from that venue."));
       host.appendChild(assignForm({ classes: live, req: rec, role: "student", canBuild: true, onCancel: function () { host.hidden = true; host.textContent = ""; }, onAdded: function (d, s) {
         host.hidden = true; host.textContent = "";
         var num = d.confirmation_number || rec.confirmation_number;

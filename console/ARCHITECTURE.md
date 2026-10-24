@@ -12,6 +12,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `ui.js` | Shared parts: confirm dialog, status chip, banner, empty state, skeleton rows, the old filter bar |
 | `filters.js` | `UI.chipFilters`, the one filter control (chips with popovers, and the switch chip) |
 | `console.js` | The legacy script, and the owner of `window.ConsoleKit` |
+| `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
@@ -79,7 +80,7 @@ The cure for tangling is one owner per shared thing. A station never reaches int
 
 Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
-2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Added in the Requests run (R-1).
+2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): Put in a class, the Journal. One owner. Added in the Requests run (R-2).
 4. **Shared UI**: `ui.js`, `filters.js`. Used directly.
 5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
@@ -119,7 +120,7 @@ Write a run sheet and get a GO first, then four steps, one commit each:
 
 ## Checks you can run
 - `python3 enjoy_router/run_console_architecture_test.py` : the size cap on `console.js`, every station file has its browser test, every script in `console/` is loaded in `index.html` in a legal order, station files use `ConsoleKit`.
-- **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked).
+- **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly", ConsoleNames: "readonly", ConsoleDialogs: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked).
 
 ## Still inside `console.js` (to be extracted, each with its own sheet and GO)
 Requests (next), Attendance, Classes, Venues, People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, Journal, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.

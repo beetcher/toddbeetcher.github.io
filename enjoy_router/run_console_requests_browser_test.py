@@ -61,6 +61,9 @@ def req(n, first, zip_code, **kw):
          "last_name": "Test", "email": first.lower() + ".private@home.example", "phone": "303-555-01%02d" % n, "postal_code": zip_code, "attendee_count": 1,
          "confirmation_number": "ICDT-TEST0%d" % n, **kw}
     store.create("registration_requests", rid, d); return rid
+VENUE = "b0000000-0000-4000-8000-000000000001"; CURR = "c0000000-0000-4000-8000-000000000001"
+store.create("venues", VENUE, {"id": VENUE, "name": "Test Hall", "status": "active", "place": {"address": {"locality": "Boulder"}, "time_zone": "America/Denver"}, "schema_version": 1})
+store.create("curriculums", CURR, {"id": CURR, "title": "Test Basics", "status": "active", "session_count": 1, "minutes_per_session": 60, "schema_version": 1})
 R1 = req(1, "Barty", "80202", coverage="no_active_region", coverage_state_code="CO")
 R2 = req(2, "Cora", "80202", coverage="no_active_region", coverage_state_code="CO")
 R3 = req(3, "Dana", "80301", coverage="covered", coverage_state_code="CO")
@@ -216,8 +219,17 @@ with sync_playwright() as p:
     check("every segment is at least 44px tall and wide enough to tap on a phone", pg.evaluate("Array.from(document.querySelectorAll('#reqSeg button')).every(b => b.getBoundingClientRect().height >= 44 && b.getBoundingClientRect().width >= 80)"))
     check("on a phone the station picker is wide enough to read and the name is not cut off", pg.evaluate("(function(){var s=document.getElementById('collPick').getBoundingClientRect(), w=document.getElementById('who'); return s.width >= 100 && w.scrollWidth <= w.clientWidth + 1})()"))
     pg.screenshot(path="/tmp/claude-0/requests_390.png")
+    # ---- shared names (R-1): the venue and curriculum names have one owner, console/names.js (window.ConsoleNames), and leave the page on sign-out
+    check("names.js is its own file loaded after console.js and ConsoleNames is there", pg.evaluate("typeof window.ConsoleNames === 'object' && ['loadVenueChoices','loadCurriculumChoices','venues','venueById','curricula','venueAsked','curriculumAsked','reset'].every(k => typeof ConsoleNames[k] === 'function')"))
+    ok_v = pg.evaluate("ConsoleNames.loadVenueChoices().then(ok => ok === true && ConsoleNames.venues().length === 1 && ConsoleNames.venueAsked('%s') === 'Test Hall, Boulder' && ConsoleNames.venueById('%s').name === 'Test Hall')" % (VENUE, VENUE))
+    check("the venue names load through names.js and say 'Name, Town'", ok_v)
+    ok_c = pg.evaluate("ConsoleNames.loadCurriculumChoices().then(ok => ok === true && ConsoleNames.curricula().length === 1 && ConsoleNames.curriculumAsked('%s') === 'Test Basics')" % CURR)
+    check("the curriculum titles load through names.js", ok_c)
+    src_big = (HERE.parent / "console" / "console.js").read_text()
+    check("nothing of the name caches is left in console.js", not __import__("re").search(r"\b(cVenues|cVenueById|cCurricula|venueChipFetch|curChipFetch|refreshVenueChips|refreshCurriculumChips)\b|function (loadVenueChoices|loadCurriculumChoices|venueAsked|curriculumAsked)\b", src_big))
     # inspector keeps the view
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
+    check("sign-out empties the name caches", pg.evaluate("ConsoleNames.venues().length === 0 && ConsoleNames.curricula().length === 0 && ConsoleNames.venueAsked('%s') === ''" % VENUE))
     check("no script errors", not errs, errs)
     b.close()
 
