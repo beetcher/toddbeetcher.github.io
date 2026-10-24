@@ -16,8 +16,8 @@ import os, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 CON = pathlib.Path(os.environ.get("CONSOLE_DIR") or (HERE.parent / "console"))
-CAP = 5462          # lines in console.js after A-2 (attendance.js left it). LOWER this after each extraction; never raise it.
-SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js"]   # load before console.js
+CAP = 5336          # lines in console.js after F-1 (the form engine left it, forms.js). LOWER this after each extraction; never raise it.
+SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js", "forms.js"]   # load before console.js
 SHARED_AFTER = ["names.js", "dialogs.js"]   # shared data / dialogs: load AFTER console.js (they use the kit) and BEFORE the stations; not stations
 LEGACY = "console.js"
 fails = []
@@ -43,6 +43,7 @@ order_ok = all(f in loaded for f in SHARED + [LEGACY]) and all(loaded.index(f) <
     and all(loaded.index(a) < loaded.index(s) for a in shared_after for s in stations)
 check("load order: shared files, then console.js, then names/dialogs, then the station files", order_ok, loaded)
 check("filters.js loads after ui.js", loaded.index("filters.js") > loaded.index("ui.js"))
+check("forms.js (the form engine) loads before console.js", loaded.index("forms.js") < loaded.index(LEGACY))
 
 for f in stations:
     name = f[:-3]; src = (CON / f).read_text()

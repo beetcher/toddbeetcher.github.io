@@ -11,6 +11,7 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `firebase-config.js`, `console-config.js` | Settings (the swap point for another licensee's name, logo, endpoints) |
 | `ui.js` | Shared parts: confirm dialog, status chip, banner, empty state, skeleton rows, the old filter bar |
 | `filters.js` | `UI.chipFilters`, the one filter control (chips with popovers, and the switch chip) |
+| `forms.js` | The form engine (`window.ConsoleForms`): `buildField`, `readValue`, `humanize`, `choicesFor`, the shared `labels`. Venues and Classes both build their forms with it; it needs nothing from `console.js` |
 | `console.js` | The legacy script, and the owner of `window.ConsoleKit` |
 | `names.js` | Shared data (`window.ConsoleNames`): the venue and curriculum names; loads after `console.js`, before the stations |
 | `dialogs.js` | Shared dialogs (`window.ConsoleDialogs`): the Journal (`openJournal`); loads after `names.js` |
@@ -76,7 +77,7 @@ Rules for the kit:
 1. **Functions, not values.** What they read is filled in later or replaced on reset, so a value copied at load time would go stale.
 2. **Add an item only when a second place needs it**, and add it in its **own commit with no behaviour change** (the M-1 pattern), before the move that uses it.
 3. **Never copy a helper into a station file.** If two stations need a word table or a formatter, it goes in the kit (or in `ui.js` if it draws something).
-4. A station may use `UI` (`ui.js`, `filters.js`) directly. That is shared by design.
+4. A station may use `UI` (`ui.js`, `filters.js`, `forms.js`) directly. That is shared by design.
 
 ## The list page template
 Every list station has the same shape, top to bottom: page head (title, Manual, Refresh), summary line, **Search on its own full-width row**, the **chip row** (`UI.chipFilters`, quick yes/no filters first as switch chips), notice, message, the list, the empty message. Filters use `UI.chipFilters` and nothing else; the rules (switch chip, live result line, focus, phone sheet) are in `DESIGN-RULES.md`. A station never draws its own tick-box list.
@@ -98,7 +99,7 @@ Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
 2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
-4. **Shared UI**: `ui.js`, `filters.js`. Used directly.
+4. **Shared UI**: `ui.js`, `filters.js`, `forms.js`. Used directly.
 5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
 
 Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the stations. They are not stations: no `show`, but they empty their data on sign-out. A shared file never names a station (checked).
