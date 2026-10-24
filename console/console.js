@@ -1600,7 +1600,7 @@
                         classById: function (id) { return aClassById ? aClassById[id] : undefined; },
                         openAttendance: function (cls) { openAttendance(cls); },
                         requests: function () { return Object.keys(known).length ? Promise.resolve(Object.keys(known).map(function (k) { return known[k]; })) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
-                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); } };   // R-2: attWord, roleWord, historyBtn (for the Journal)
+                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since) { return fetchRecords(since); }, putInClass: function (rec, host, said) { putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only.
   function canon(v) {
     if (v === null || v === undefined) return "null";
     if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";

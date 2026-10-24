@@ -57,6 +57,13 @@ A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after*
 | `requests()` | The loaded registration requests (fetched if none are loaded yet) |
 | `words()` | The shared word tables (`corrKind`, `reasonWord`, `attWord`, `roleWord`) |
 | `historyBtn(id, label)` | The "Change history" button for a record (null when not allowed) |
+| `fetchT(url, opts, ms)`, `netShow(timedOut)` | The timed read and the "could not reach the server" banner |
+| `fetchRecords(since)` | The plain read of registration requests (sign-in uses it as its key check) |
+| `canPlaced()` | May this person see placing (manage requests or classes) |
+| `putInClass(rec, host, said)` | The Put in a class form on a request card |
+| `line(label, value)`, `str(v)` | The detail-row helpers every list card uses |
+| `problem(status)` | The plain sentence for a failed sign-in read |
+| `consts()` | True constants only: `MAX`, `ATT_RANK`, `ATT_GONE`, `RECORDS_URL` |
 
 Rules for the kit:
 1. **Functions, not values.** What they read is filled in later or replaced on reset, so a value copied at load time would go stale.
@@ -103,6 +110,13 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `requests` | Requests (still in `console.js` until R-4) | The loaded registration requests |
 | `words` | Core: shared word tables | `corrKind`, `reasonWord`, `attWord`, `roleWord` |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
+| `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
+| `fetchRecords` | Core: transport and sign-in | The read of requests that doubles as the key check (DT-2) |
+| `canPlaced` | Core: session | Placing permission |
+| `putInClass` | Attendance (still in `console.js`) | The Put in a class form; moves with Attendance (DT-18) |
+| `line`, `str` | Core: detail-row helpers | Used by many cards; to become shared UI (DT-19) |
+| `problem` | Core: sign-in | The failed sign-in sentence (DT-1) |
+| `consts` | Core: constants | Constants only, never a value that changes |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 
