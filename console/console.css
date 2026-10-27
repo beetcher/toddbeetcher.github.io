@@ -812,3 +812,20 @@
   .acs .acrow .acm { font-size: 14px; margin: 1px 0; line-height: 1.35; }
   .acs .acrow { margin: 8px 0; }
 }
+
+/* ---- Look build for Places, Organizations and People (S-1): a flat status switch, the required star, the "Load more" bar, a one-row phone header */
+#lList .stoggle, #pList .stoggle, #roList .stoggle { min-width: 0; min-height: 36px; padding: 0 var(--space-5); background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; gap: var(--space-3); top: 12px; }
+#lList .stoggle .knob, #pList .stoggle .knob, #roList .stoggle .knob { width: 10px; height: 10px; }
+#lList .stoggle.on, #pList .stoggle.on, #roList .stoggle.on { background: transparent; border-color: var(--line); color: var(--ink-soft); }
+#lList .stoggle:not(.on), #pList .stoggle:not(.on), #roList .stoggle:not(.on) { border-color: var(--warn, var(--muted)); color: var(--ink); }
+#lList li.hasToggle .top, #pList li.hasToggle .top, #roList li.hasToggle .top { padding-right: 104px; }
+.req { color: var(--err); font-weight: 700; }
+.morebar { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; margin: var(--space-6) 0; color: var(--ink-soft); }
+@media (max-width: 520px) {
+  #lList .stoggle, #pList .stoggle, #roList .stoggle { min-height: 44px; }
+  header#topbar { padding: var(--space-4) var(--space-6); flex-wrap: nowrap; gap: var(--space-4); }
+  header#topbar .brand .bname, header#topbar .brand .bapp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  header#topbar .hright { flex-wrap: wrap; row-gap: 0; }
+  header#topbar #who { font-size: var(--text-xs); line-height: 1.2; }
+  header#topbar select { flex: 1 1 0; min-width: 0; }
+}

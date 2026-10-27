@@ -135,5 +135,23 @@
 
   function skelOn(host) { if (host && !host.querySelector(".skel")) { host.textContent = ""; host.appendChild(UI.skeleton(4)); } }
   function skelOff(host) { var s = host && host.querySelector(".skel"); if (s) s.parentNode.removeChild(s); }
-  window.UI = { skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+  // ---- Look helpers shared by Places, Organizations and People (combo look build, S-1)
+  // Plain names for the U.S. time zones the Console uses (the raw IANA name is never shown on its own).
+  var ZONE_NAMES = { "America/New_York": "Eastern", "America/Chicago": "Central", "America/Denver": "Mountain", "America/Phoenix": "Arizona (no daylight saving)",
+                     "America/Los_Angeles": "Pacific", "America/Anchorage": "Alaska", "America/Adak": "Aleutian (Alaska islands)", "Pacific/Honolulu": "Hawaii" };
+  function zoneName(tz) { return tz ? (ZONE_NAMES[tz] || String(tz).replace(/_/g, " ")) : ""; }
+  // A label with a red "required" star (hidden from screen readers; the field itself carries aria-required).
+  function requiredLabel(text, forId) {
+    var l = el("label", "f", text); if (forId) l.htmlFor = forId;
+    var st = el("span", "req", " *"); st.setAttribute("aria-hidden", "true"); l.appendChild(st); return l;
+  }
+  // "Showing 50 of 83" and a "Load 50 more" button. onMore() is called when it is pressed. Returns the element (empty when everything is shown).
+  function moreBar(host, shown, total, step, onMore, noun) {
+    var old = host.querySelector(".morebar"); if (old) old.parentNode.removeChild(old);
+    if (shown >= total) return null;
+    var d = el("div", "morebar"), t = el("span", "", "Showing " + shown + " of " + total + (noun ? " " + noun : "") + "."), b = el("button", "btn-secondary", "Load " + Math.min(step, total - shown) + " more");
+    b.type = "button"; b.addEventListener("click", onMore); d.appendChild(t); d.appendChild(b); host.appendChild(d); return d;
+  }
+
+  window.UI = { zoneName: zoneName, requiredLabel: requiredLabel, moreBar: moreBar, skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();
