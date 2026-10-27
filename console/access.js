@@ -400,19 +400,40 @@
     try { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" }); } catch (e) { return d.toString(); }
   }
   // Places with no time zone (super admin): check, then fill every one the ZIP table can place. The rest are listed for a person.
-  var Z = { res: null, msg: "", busy: false };
+  var Z = { res: null, msg: "", busy: false, done: null };
+  var ZNAME = { "America/New_York": "Eastern (New York)", "America/Chicago": "Central (Chicago)", "America/Denver": "Mountain (Denver)", "America/Phoenix": "Arizona (Phoenix)", "America/Los_Angeles": "Pacific (Los Angeles)", "America/Anchorage": "Alaska", "America/Adak": "Aleutian (Adak)", "Pacific/Honolulu": "Hawaii" };
   function zoneBox() {
     if (me().is_super_admin !== true || me().inspector === true) return null;
     var box = mk("div", "acform"); box.id = "acZones";
     box.appendChild(mk("h2", "", "Places with no time zone"));
     box.appendChild(mk("p", "acm", "Every class, email and notice takes its time zone from its place, and nothing guesses one. Older places were saved without a zone. Check them here: the system works the zone out from each place's ZIP code and fills it in with one click. Any place it cannot work out is listed so you can set it in Places."));
     var r = Z.res;
+    if (Z.done) {      // what the last Fill did, in plain words (and how it will read in Activity)
+      var dn = mk("div", "acok acdone"); dn.id = "acZoneDone";
+      dn.appendChild(mk("p", "", Z.done.filled + (Z.done.filled === 1 ? " place" : " places") + " filled just now" + (Z.done.left ? ", " + Z.done.left + " left: press Fill again." : ".")));
+      var ap = mk("p", "acm", "Activity shows this as one group of " + Z.done.filled + " Place entries, edited by you, Time zone changed. Nothing was undone or sent: no class time moved and no message went out. To change one place, open it in Places and edit its Time zone. ");
+      var al = mk("a", "", "See it in Activity"); al.href = "#/activity"; ap.appendChild(al); dn.appendChild(ap); box.appendChild(dn);
+    }
     if (r) {
-      box.appendChild(mk("p", "acm", r.without_zone === 0 ? "Every place has a time zone." : r.without_zone + (r.without_zone === 1 ? " place has" : " places have") + " no time zone: " + r.fillable + " can be filled from their ZIP" + (r.applied ? " (" + r.filled + " filled just now)" : "") + ", " + r.needs_count + " need a person."));
-      if (!r.applied && r.fillable > 0) { var fb = btn("Fill " + r.fillable + (r.fillable === 1 ? " place" : " places") + " from their ZIP", "", function () { runZones(true); }); fb.id = "acZoneFill"; box.appendChild(fb); }
+      box.appendChild(mk("p", "acm", r.without_zone === 0 ? "Every place has a time zone." : r.without_zone + (r.without_zone === 1 ? " place has" : " places have") + " no time zone: " + r.fillable + " can be filled" + (Z.done ? "" : " from their ZIP") + ", " + r.needs_count + " need a person."));
+      if (r.fillable > 0) {
+        var bz = Object.keys(r.by_zone || {}).map(function (k) { return r.by_zone[k] + " " + (ZNAME[k] || k); }).join(", ");
+        var wy = mk("p", "acm", "By zone: " + bz + ". " + (r.from_zip || 0) + " from their ZIP" + (r.from_colorado ? ", " + r.from_colorado + " because the place is in Colorado (all of Colorado is Mountain time)" : "") + ".");
+        wy.id = "acZoneWhy"; box.appendChild(wy);
+        if (r.samples && r.samples.length) {
+          var sl = mk("ul", "acm"); sl.id = "acZoneSamples";
+          r.samples.forEach(function (x) { sl.appendChild(mk("li", "", (x.name || "(no name)") + " (" + (x.state || "no state") + (x.zip ? " " + x.zip : "") + ") will be " + (ZNAME[x.zone] || x.zone))); });
+          if (r.fillable > r.samples.length) sl.appendChild(mk("li", "", "and " + (r.fillable - r.samples.length) + " more"));
+          box.appendChild(sl);
+        }
+        box.appendChild(mk("p", "acm", (r.upcoming_classes ? r.upcoming_classes + (r.upcoming_classes === 1 ? " upcoming class is" : " upcoming classes are") + " held at these places" : "No upcoming class is held at these places") + ". Filling a zone moves no class time and sends no message."));
+        var fb = btn(r.fillable > r.cap ? "Fill " + r.cap + " of " + r.fillable + " places" : "Fill " + r.fillable + (r.fillable === 1 ? " place" : " places") + " from their ZIP", "", function () { runZones(true); }); fb.id = "acZoneFill"; box.appendChild(fb);
+        if (r.fillable > r.cap) box.appendChild(mk("p", "acm", "One press fills up to " + r.cap + " places (the server stops a request after a minute). Press again for the rest."));
+      }
       if (r.needs_a_person && r.needs_a_person.length) {
         var ul = mk("ul", "acm"); ul.id = "acZoneList";
-        r.needs_a_person.forEach(function (p) { ul.appendChild(mk("li", "", (p.name || "(no name)") + (p.state ? " (" + p.state + ")" : " (no state)"))); });
+        r.needs_a_person.forEach(function (p) { var li = mk("li", ""); var a = mk("a", "", (p.name || "(no name)") + (p.state ? " (" + p.state + ")" : " (no state)")); a.href = "#/places"; li.appendChild(a); ul.appendChild(li); });
+        if (r.needs_count > r.needs_a_person.length) ul.appendChild(mk("li", "", "and " + (r.needs_count - r.needs_a_person.length) + " more"));
         box.appendChild(ul);
       }
     }
@@ -425,7 +446,11 @@
     return adm("fix_place_zones", { apply: apply }, "console_settings").then(function (res) {
       Z.busy = false;
       if (!ok(res)) { Z.msg = res.status === 403 ? "Only a super admin may do this." : "Could not check the places. Try again."; draw(); return; }
-      Z.res = res.body.data; draw();
+      if (!apply) { Z.done = null; Z.res = res.body.data; draw(); return; }
+      Z.done = { filled: res.body.data.filled, left: res.body.data.left };
+      return adm("fix_place_zones", { apply: false }, "console_settings").then(function (r2) {   // look again, so the box shows what is true now
+        Z.res = ok(r2) ? r2.body.data : res.body.data; draw();
+      });
     });
   }
   function timeLeft(stamp) {      // "9 h 12 min", "42 min", "less than a minute"
@@ -498,6 +523,6 @@
     show: function () {
       root = $("accessView"); var sub = K.hash().sub[0]; S.tab = TABS.some(function (t) { return t[0] === sub; }) ? sub : "people"; draw(); load();
     },
-    reset: function () { Z = { res: null, msg: "", busy: false }; var seq = S.seq + 1; Object.keys(S).forEach(function (k) { delete S[k]; }); Object.assign(S, freshState(seq)); var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { Z = { res: null, msg: "", busy: false, done: null }; var seq = S.seq + 1; Object.keys(S).forEach(function (k) { delete S[k]; }); Object.assign(S, freshState(seq)); var v = $("accessView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();
