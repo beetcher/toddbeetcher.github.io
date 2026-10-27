@@ -30,6 +30,7 @@ def admin_route(route):
 A = "user:admin"
 sup = AR_.create(store, {"key": "super_admin", "label": "Super admin", "is_super_admin": True, "is_active": True}, A).data
 head = AR_.create(store, {"key": "region_head", "label": "Region head", "is_super_admin": False, "is_active": True, "capabilities": ["view_console", "edit_venues"]}, A).data
+big = AR_.create(store, {"key": "ops_lead", "label": "Ops lead", "description": "Runs the day to day.", "is_super_admin": False, "is_active": True, "capabilities": ["view_console", "manage_requests", "manage_classes", "edit_venues", "edit_people", "edit_places", "view_messages", "manage_messages", "run_discovery", "view_performance"]}, A).data
 PE.create(store, {"email": "todd@example.com", "display_name": "Todd Beetcher", "role_id": sup["id"]}, A)
 PE.create(store, {"email": "hana@example.com", "display_name": "Hana Head", "role_id": head["id"]}, A)
 with sync_playwright() as p:
@@ -52,9 +53,28 @@ with sync_playwright() as p:
     check("L-1 the time zone box sits under a Data checks heading", pg.locator("#accessView h2", has_text="Data checks").count() == 1)
     check("L-1 the address follows the tab and keeps the page", pg.evaluate("location.hash") == "#/access/signin" and pg.locator("#accessView").is_visible())
     pg.click("#acTab-territory"); pg.wait_for_selector("#acTerr")
-    check("L-1 Territory holds the two views", pg.evaluate("location.hash") == "#/access/territory" and pg.locator("#accessView").get_by_role("button", name="By capability").count() == 1)
+    check("L-1 Territory holds the two views", pg.evaluate("location.hash") == "#/access/territory" and pg.locator("#accessView").get_by_role("button", name="By permission").count() == 1)
     pg.click("#acTab-roles"); pg.wait_for_selector("#accessView table")
     check("L-1 Roles holds the role cards and the permission list", pg.locator("#accessView .acrow").count() >= 2 and pg.locator("#accessView table").count() == 1)
+    # ===== L-2 plain words
+    import re
+    def raw_keys(sel):
+        txt = pg.evaluate("(s) => { const r = document.querySelector(s); const c = r.cloneNode(true); c.querySelectorAll('code,[title]').forEach(e => { e.removeAttribute('title'); if (e.tagName === 'CODE') e.remove(); }); return c.innerText; }", sel)
+        return re.findall(r"\b[a-z]+(?:_[a-z]+)+\b", txt)
+    check("L-2 the Roles tab shows no technical permission names (they are small grey text under the plain name)", raw_keys("#acPanel") == [], raw_keys("#acPanel"))
+    ops = pg.locator("#accessView .acrow", has_text="Ops lead")
+    check("L-2 a role card says what it can do in plain words, first four, then 'and 6 more'", "Can: Open the Console, Manage registration requests, Manage classes and attendance, Edit venues and 6 more" in ops.inner_text(), ops.inner_text())
+    ops.locator("summary").click()
+    check("L-2 See all lists every permission by plain name", "Run Discovery" in ops.inner_text() and "See Performance" in ops.inner_text())
+    check("L-2 the role's technical name is not on the card, only in its hover text", "ops_lead" not in ops.inner_text() and ops.locator(".acn").get_attribute("title") == "Technical name: ops_lead")
+    check("L-2 the permission list shows plain name with the technical name under it", pg.locator("#accessView table tr").nth(1).locator("code.ackey").inner_text() == "view_console" and "Open the Console" in pg.locator("#accessView table tr").nth(1).inner_text())
+    check("L-2 the list is headed 'What each permission allows'", pg.locator("#accessView h2", has_text="What each permission allows").count() == 1)
+    pg.click("#acTab-people"); pg.wait_for_selector("#accessView .acrow")
+    check("L-2 a person says 'Works in:' not 'Title (from their territory)'", "Works in:" in pg.inner_text("#acPanel") and "Title (from" not in pg.inner_text("#acPanel"))
+    pg.click("#acTab-territory"); pg.wait_for_selector("#acTerr")
+    pg.get_by_role("button", name="By permission", exact=True).click(); pg.wait_for_selector("#acTerr details")
+    check("L-2 by permission, the list reads in plain names", "Manage registration requests" in pg.inner_text("#acTerr") and raw_keys("#acTerr") == [], raw_keys("#acTerr"))
+    pg.click("#acTab-roles"); pg.wait_for_selector("#accessView table")
     pg.focus("#acTab-roles"); pg.keyboard.press("ArrowRight"); pg.wait_for_selector("#acTab-signin[aria-selected=true]")
     check("L-1 arrow keys move between tabs and focus follows", pg.evaluate("document.activeElement.id") == "acTab-signin")
     pg.keyboard.press("Home"); pg.wait_for_selector("#acTab-people[aria-selected=true]")

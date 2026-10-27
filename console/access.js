@@ -13,7 +13,7 @@
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
     invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_allowed: "Not allowed.", immutable: "That cannot be changed once it is saved.",
     not_found: "Not found (is it switched on?).", conflict: "Someone changed this while you were editing. Reload and try again.",
-    last_super_admin: "That would leave no active super admin.", in_use: "People still hold this role.", not_territorial: "That capability is not one a territory can hold.", wrong_state: "A region must belong to the state of its grant.", duplicate_region: "A region can be in only one grant of the same person.",
+    last_super_admin: "That would leave no active super admin.", in_use: "People still hold this role.", not_territorial: "That permission is not one a territory can hold.", wrong_state: "A region must belong to the state of its grant.", duplicate_region: "A region can be in only one grant of the same person.",
     not_enabled: "Email sending is not switched on here.", switched_off: "That person is switched off. Switch them on first." };
   // Why an invitation email did not go, in words (the codes are the CMS's reasons; see CMS_GUIDE.md).
   var MAIL_WHY = { cms_off: "email sending is switched off on the server", log_only: "email is in test mode, so it was only logged", no_template: "the invitation wording has not been added yet",
@@ -25,7 +25,7 @@
     if (added) return sent ? "Added. An invitation email went to " + email + "." : "Added. They can sign in with that Google account, but the invitation email did not go (" + mailWords(inv) + "). Use Resend invite email on their row.";
     return sent ? "Invitation email sent to " + email + "." : "The invitation email did not go (" + mailWords(inv) + ").";
   }
-  var FIELD = { email: "Email", display_name: "Name", role_id: "Role", scope_region_id: "Region", grants: "Territory", key: "Key", label: "Name", capabilities: "Capabilities", description: "Description", id: "Record" };
+  var FIELD = { email: "Email", display_name: "Name", role_id: "Role", scope_region_id: "Region", grants: "Territory", key: "Key", label: "Name", capabilities: "Permissions", description: "Description", id: "Record" };
 
   function $(id) { return document.getElementById(id); }
   function ok(res) { return res.status === 200 && res.body && res.body.ok; }
@@ -111,12 +111,12 @@
       box.appendChild(mk("label", "", "Territory"));
       var picked = roleSel && (function () { var r = null; S.roles.forEach(function (x) { if (x.id === roleSel.value) r = x; }); return r; })();
       var sup = picked && picked.is_super_admin;
-      if (sup) { box.appendChild(mk("p", "acm", "A super admin works everywhere with every capability. Territory is not needed.")); return; }
+      if (sup) { box.appendChild(mk("p", "acm", "A super admin works everywhere with every permission. Territory is not needed.")); return; }
       if (viewOnlyRole(picked)) { box.appendChild(mk("p", "acm", "Territory: not needed. A view-only role sees everywhere and changes nothing.")); return; }
       if (!S.draft.grants.length) box.appendChild(mk("p", "acm", "No territory yet: this person can sign in but sees nothing in any region."));
       S.draft.grants.forEach(function (g, i) {
         var row = mk("div", "acgrant"); row.appendChild(mk("b", "", grantText(g) + (g.group ? "  [" + g.group + "]" : "")));
-        row.appendChild(mk("div", "acm", g.kind === "regions" ? (g.capabilities || []).join(", ") : "Every capability in " + (g.kind === "all" ? "the whole US" : stateName(g.state_code)) + (g.kind === "state" ? ", including ZIPs no region has claimed (state administrator)." : ".")));
+        row.appendChild(mk("div", "acm", g.kind === "regions" ? AR.capNames(g.capabilities).join(", ") : "Every permission in " + (g.kind === "all" ? "the whole US" : stateName(g.state_code)) + (g.kind === "state" ? ", including ZIPs no region has claimed (state administrator)." : ".")));
         row.appendChild(btn(S.draft.editing === i ? "Editing below" : "Edit", "quiet", function () { S.draft.editing = i; render(); }));
         row.appendChild(btn("Remove", "quiet", function () { S.draft.grants.splice(i, 1); S.draft.editing = null; render(); }));
         box.appendChild(row);
@@ -143,14 +143,14 @@
       function fillCaps() {
         var have = fresh && eg.capabilities ? eg.capabilities : copy.value !== "" ? (S.draft.grants[+copy.value].capabilities || []) : roleCaps();
         capBox.innerHTML = "";
-        (DEL ? delCaps() : TERR).forEach(function (c) { var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = c; cb.checked = have.indexOf(c) >= 0; l.appendChild(cb); l.appendChild(mk("span", "", " " + c)); capBox.appendChild(l); });
+        (DEL ? delCaps() : TERR).forEach(function (c) { var l = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = c; cb.checked = have.indexOf(c) >= 0; l.appendChild(cb); l.appendChild(mk("span", "", " " + AR.capName(c))); l.title = "Technical name: " + c; capBox.appendChild(l); });
       }
       function show() {
         var k = kind.value; st.parentNode.hidden = k === "all"; regionBox.parentNode.hidden = k !== "regions"; capBox.parentNode.hidden = k !== "regions"; copy.parentNode.hidden = k !== "regions";
       }
       kind.addEventListener("change", show); st.addEventListener("change", function () { fresh = false; fillRegions(); }); copy.addEventListener("change", function () { fresh = false; fillCaps(); });
       add.appendChild(field("What kind", kind, "agKind")); add.appendChild(field("State", st, "agState"));
-      add.appendChild(field("Regions", regionBox)); add.appendChild(field("Capabilities in these regions (to give two regions different capabilities, add them one grant at a time)", copy, "agCopy"));
+      add.appendChild(field("Regions", regionBox)); add.appendChild(field("Permissions in these regions (to give two regions different permissions, add them one grant at a time)", copy, "agCopy"));
       add.lastChild.appendChild(capBox);
       add.appendChild(field("Label", group, "agGroup")); add.appendChild(err);
       add.appendChild(btn(eg ? "Save this territory" : "Add this territory", "quiet", function () {
@@ -160,7 +160,7 @@
           g.region_ids = Array.prototype.map.call(regionBox.querySelectorAll("input:checked"), function (c) { return c.value; });
           g.capabilities = Array.prototype.map.call(capBox.querySelectorAll("input:checked"), function (c) { return c.value; });
           if (!g.region_ids.length) { err.textContent = "Pick at least one region."; return; }
-          if (!g.capabilities.length) { err.textContent = "Pick at least one capability."; return; }
+          if (!g.capabilities.length) { err.textContent = "Pick at least one permission."; return; }
         } else if (k === "state" && S.draft.grants.some(function (x) { return x.kind === "state" && x.state_code === g.state_code && S.draft.grants.indexOf(x) !== ed; })) { err.textContent = "That state is already added."; return; }
         else if (k === "all" && S.draft.grants.some(function (x) { return x.kind === "all" && S.draft.grants.indexOf(x) !== ed; })) { err.textContent = "The whole US is already added."; return; }
         if (group.value.trim()) g.group = group.value.trim();
@@ -251,7 +251,7 @@
       var bits = [];
       bits.push(p.last_sign_in_at ? "Last signed in " + K.when(p.last_sign_in_at) : "Has not signed in yet");
       r.appendChild(mk("div", "acm", bits.join(" · ")));
-      r.appendChild(mk("div", "acm actitle", "Title (from their territory): " + titleOf(p, role)));
+      r.appendChild(mk("div", "acm actitle", "Works in: " + titleOf(p, role)));
       var gl = grantsOf(p);
       if (role && role.is_super_admin) r.appendChild(mk("div", "acm", "Territory: everywhere."));
       else if (viewOnlyRole(role)) r.appendChild(mk("div", "acm", "Territory: not needed. A view-only role sees everywhere and changes nothing."));

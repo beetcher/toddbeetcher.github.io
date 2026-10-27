@@ -745,7 +745,9 @@
 .acs .acerr{color:var(--err);font-weight:600;min-height:1.4em}
 .acs table{border-collapse:collapse;width:100%;font-size:14px}
 .acs td,.acs th{border-bottom:1px solid #e4dfd2;text-align:left;padding:5px 6px;vertical-align:top}
-.acs td:first-child{white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace}
+.acs td:first-child{min-width:190px}
+.acs .ackey{display:block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--muted);font-weight:400}
+.acs .acmore{display:inline}.acs .acmore summary{display:inline;cursor:pointer;text-decoration:underline}
 .acs .acchip{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;border:1px solid #bbb;background:#f2efe6}
 .acs .acchip.on{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}
 .acs .acchip.sup{background:#ffe9b3;border-color:#c98a00;color:#6a4500}
