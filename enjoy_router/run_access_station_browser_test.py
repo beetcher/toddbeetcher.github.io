@@ -58,7 +58,7 @@ with sync_playwright() as p:
     txt = pg.inner_text("#accessView")
     check("a person who never signed in says so", "Has not signed in yet" in txt)
     tab(pg, "roles"); rtxt = pg.inner_text("#accessView")
-    check("the capability table lists all 19, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 20 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
+    check("the capability table lists all 19, and says which apply inside a territory", pg.locator("#accessView table code.ackey").count() == 19 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
     check("the super admin role says it does everything", "everything, including managing access" in rtxt)
     tab(pg, "people")
 

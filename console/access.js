@@ -215,6 +215,7 @@
   function nameOf(rec) { return rec.display_name || rec.label || rec.email || "this one"; }
   // Switching someone off who holds a lot (a super admin, an admin) or who is you asks first. Everything else is one click, and a switch-on never asks.
   function riskNote(coll, rec) {
+    if (coll === "access_roles" && rec.is_active) { var n = AR.holders(rec).length; return n ? AR.peopleWord(n) + (n === 1 ? " holds the " : " hold the ") + rec.label + " role. While it is switched off they cannot sign in. You can switch it on again at any time." : ""; }
     if (coll !== "access_persons" || !rec.is_active) return "";
     var role = roleOf(rec);
     if (isSelf(rec)) return "This is you. You would be signed out at your next page load and could not come back in until another super admin switches you on.";
@@ -230,7 +231,7 @@
     return btn(rec.is_active ? "Switch off" : "Switch on", rec.is_active ? "btn-link" : "btn-secondary", function () {
       var note = riskNote(coll, rec);
       if (!note || !window.UI || !UI.confirm) { go(); return; }
-      UI.confirm({ title: "Switch off " + nameOf(rec) + "?", message: note, yes: "Switch off", no: "Keep on", danger: true }).then(function (yes) { if (yes) go(); });
+      UI.confirm({ title: "Switch off " + (coll === "access_roles" ? "the " + nameOf(rec) + " role" : nameOf(rec)) + "?", message: note, yes: "Switch off", no: "Keep on", danger: true }).then(function (yes) { if (yes) go(); });
     });
   }
 

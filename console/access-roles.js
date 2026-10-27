@@ -46,6 +46,7 @@
     f.appendChild(field("Name shown in lists", input("text", "arLabel", r ? r.label : ""), "arLabel"));
     var ta = mk("textarea"); ta.id = "arDesc"; ta.rows = 2; ta.value = (r && r.description) || "";
     f.appendChild(field("What this role is for (optional)", ta, "arDesc"));
+    if (editing && holders(r).length) f.appendChild(mk("p", "acm acdup", "Changing this role affects " + peopleWord(holders(r).length) + ": " + holders(r).map(function (p) { return p.display_name || p.email; }).join(", ") + "."));
     if (sup) f.appendChild(mk("p", "acm", "A super admin role holds every permission, now and for any added later. It lists none."));
     else {
       var box = mk("div", "accaps"); var have = (r && r.capabilities) || ["view_console"];
@@ -70,6 +71,16 @@
   }
 
 
+  // Who holds a role (switched-on people), so an edit or a switch-off shows how far it reaches.
+  function holders(ro) { return S.persons.filter(function (p) { return p.role_id === ro.id && p.is_active; }); }
+  function peopleWord(n) { return n + (n === 1 ? " person" : " people"); }
+  function holdLine(ro) {
+    var h = holders(ro), d = mk("div", "acm acholders");
+    if (!h.length) { d.textContent = "No one holds this role."; return d; }
+    d.appendChild(document.createTextNode(peopleWord(h.length) + (h.length === 1 ? " holds" : " hold") + " this role "));
+    var more = mk("details", "acmore"); more.appendChild(mk("summary", "", "Who")); more.appendChild(mk("div", "", h.map(function (p) { return p.display_name || p.email; }).join(", "))); d.appendChild(more); return d;
+  }
+
   // "Can: A, B, C, D and 9 more" with the full list one click away.
   var SHOW = 4;
   function canLine(ro) {
@@ -91,17 +102,32 @@
       var who = mk("div"); who.appendChild(mk("div", "acn", ro.label)); var nm = mk("div", "acn", ro.label); nm.title = "Technical name: " + ro.key; who.removeChild(who.firstChild); who.appendChild(nm); if (ro.description) who.appendChild(mk("div", "acm", ro.description)); top.appendChild(who);
       var chips = mk("div"); if (ro.is_super_admin) chips.appendChild(mk("span", "acchip sup", "Super admin")); chips.appendChild(document.createTextNode(" "));
       chips.appendChild(mk("span", "acchip" + (ro.is_active ? " on" : ""), ro.is_active ? "On" : "Off")); top.appendChild(chips); r.appendChild(top);
-      r.appendChild(canLine(ro));
+      r.appendChild(canLine(ro)); r.appendChild(holdLine(ro));
       var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editR = ro.id; S.addR = false; S.msg = ""; S.rowMsg = null; draw(); })); b.appendChild(toggle("access_roles", ro, "Role")); r.appendChild(b);
       wrap.appendChild(r);
     });
   }
+  // The permission list, grouped by the part of the Console it touches, each row saying which roles hold it.
+  var CAP_GROUPS = [["Registration requests", ["manage_requests"]], ["Classes and teaching", ["manage_classes", "manage_curriculums", "manage_instructors"]],
+    ["Venues, places and regions", ["edit_venues", "activate_venues", "edit_places", "edit_regions"]], ["People", ["edit_people", "invite_people"]],
+    ["Messages", ["view_messages", "manage_messages"]], ["Discovery", ["run_discovery", "edit_discovery_settings", "view_spend"]],
+    ["The Console itself", ["view_console", "view_performance", "inspect_everything"]], ["Access", ["manage_access"]]];
   function drawCaps(wrap, c) {
     bind(c);
     wrap.appendChild(mk("h2", "", "What each permission allows"));
-    var t = mk("table"); var hd = mk("tr"); hd.appendChild(mk("th", "", "Permission")); hd.appendChild(mk("th", "", "Allows")); hd.appendChild(mk("th", "", "Applies")); t.appendChild(hd);
-    CAPS.concat([["manage_access", "Invite people, change roles, switch access on and off. Super admin only.", false]]).forEach(function (c) { var tr = mk("tr"); var td0 = mk("td"); td0.appendChild(mk("div", "acn", capName(c[0]))); td0.appendChild(mk("code", "ackey", c[0])); tr.appendChild(td0); tr.appendChild(mk("td", "", c[1])); tr.appendChild(mk("td", "", c[2] ? "Inside a person's territory" : "Everywhere (from the role)")); t.appendChild(tr); });
+    var all = CAPS.concat([["manage_access", "Invite people, change roles, switch access on and off. Super admin only.", false]]), by = {}; all.forEach(function (x) { by[x[0]] = x; });
+    var t = mk("table"); var hd = mk("tr"); ["Permission", "Allows", "Applies", "Roles with this"].forEach(function (h) { hd.appendChild(mk("th", "", h)); }); t.appendChild(hd);
+    CAP_GROUPS.forEach(function (g) {
+      var gr = mk("tr", "acgrp"), th = mk("th", "", g[0]); th.colSpan = 4; gr.appendChild(th); t.appendChild(gr);
+      g[1].forEach(function (k) {
+        var cx = by[k]; if (!cx) return; var tr = mk("tr"); var td0 = mk("td"); td0.appendChild(mk("div", "acn", capName(k))); td0.appendChild(mk("code", "ackey", k)); tr.appendChild(td0);
+        tr.appendChild(mk("td", "", cx[1])); tr.appendChild(mk("td", "", cx[2] ? "Inside a person's territory" : "Everywhere (from the role)"));
+        var holders = S.roles.filter(function (ro) { return ro.is_active && (ro.is_super_admin || (ro.capabilities || []).indexOf(k) >= 0); }), td = mk("td");
+        if (!holders.length) td.appendChild(mk("span", "acm", "No role")); holders.forEach(function (ro) { td.appendChild(mk("span", "acchip" + (ro.is_super_admin ? " sup" : ""), ro.label)); td.appendChild(document.createTextNode(" ")); });
+        tr.appendChild(td); t.appendChild(tr);
+      });
+    });
     wrap.appendChild(t);
   }
-  window.ConsoleAccessRoles = { CAPS: CAPS, TERR: TERR, capName: capName, capNames: capNames, drawRoles: drawRoles, drawCaps: drawCaps, roleForm: roleForm };
+  window.ConsoleAccessRoles = { holders: holders, peopleWord: peopleWord, CAPS: CAPS, TERR: TERR, capName: capName, capNames: capNames, drawRoles: drawRoles, drawCaps: drawCaps, roleForm: roleForm };
 })();
