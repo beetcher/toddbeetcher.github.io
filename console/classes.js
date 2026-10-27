@@ -927,6 +927,15 @@
     return ps.map(function (p) { return "Could not build the class: " + (LABELS[p.field] || p.field) + ": " + cIssueText(p, null); }).join(" ");
   }
 
+  // The ZIPs of the region a request belongs to, as a lookup; null when it has none (then nothing is filtered).
+  function venueZip(v) { var a = (v.place && v.place.address) || {}; return String(a.postal_code || v.postal_code || "").slice(0, 5); }
+  function regionZipsFor(areas, req) {
+    var live = areas.filter(function (a) { return a.kind === "region" && a.is_active && !a.deleted_at; }), hit = null;
+    live.forEach(function (a) { if (!hit && req.region_id && a.id === req.region_id) hit = a; });
+    live.forEach(function (a) { if (!hit && (a.zip_codes || []).some(function (z) { return String(z).slice(0, 5) === req.postal_code; })) hit = a; });
+    if (!hit) return null;
+    var m = {}; (hit.zip_codes || []).forEach(function (z) { m[String(z).slice(0, 5)] = 1; }); return m;
+  }
   // The "build a class" part of Put in a class: curriculum, venue and room, date and time, and a lead instructor.
   function buildClassBox(uid, req) {
     var el = mk("div", "addbox"), titleTouched = false;
@@ -1004,10 +1013,15 @@
     // The request has a ZIP: ask the server for the venues nearest first, show the distances, and (unless the requester
     // picked a venue, or chose a home) fill in the nearest public place. The operator may change it. Without a ZIP nothing changes.
     if (req && /^[0-9]{5}$/.test(req.postal_code || "")) {
-      admin("list", { filters: { status: "active" }, limit: 200, expand: true, near_zip: req.postal_code }, "venues").then(function (res) {
+      // Only venues in the request's region are offered (a venue is in a region when its ZIP is on the region's list). The region is
+      // the one the requester picked, else the live region holding their ZIP. No region found (not served yet): the list is not limited.
+      var areasP = admin("list", { limit: 200 }, "discovery_areas").then(function (r) { return r.status === 200 && r.body && r.body.ok ? (r.body.data.records || []) : []; }, function () { return []; });
+      Promise.all([admin("list", { filters: { status: "active" }, limit: 200, expand: true, near_zip: req.postal_code }, "venues"), areasP]).then(function (pair) {
+        var res = pair[0], areas = pair[1];
         if (res.status !== 200 || !res.body.ok) return;
-        var recs = res.body.data.records || [], keep = ven.value, pickedByRequester = !!(req.preferred_venue_id && keep === req.preferred_venue_id);
-        if (!recs.some(function (v) { return typeof v.miles === "number"; })) return;
+        var regionZips = regionZipsFor(areas, req);
+        var recs = (res.body.data.records || []).filter(function (v) { return !regionZips || regionZips[venueZip(v)] || v.id === ven.value; }), keep = ven.value, pickedByRequester = !!(req.preferred_venue_id && keep === req.preferred_venue_id);
+        if (!regionZips && !recs.some(function (v) { return typeof v.miles === "number"; })) return;   // no ranking and no region: leave the plain list
         while (ven.options.length > 1) ven.remove(1);
         recs.forEach(function (v) {
           if (v.status !== "active") return;

@@ -35,6 +35,8 @@ aa = venue("Aardvark Den", "aard", "80202", public=False)     # Denver, private:
 bou = venue("Boulder Hall", "bou", "80301")
 lou = venue("Louisville Library", "lou", "80027")
 dur = venue("Durango Hall", "dur", "81301")
+store.create("discovery_areas", "r-front", {"id": "r-front", "kind": "region", "name": "Front Range", "state_code": "CO", "is_active": True, "schema_version": 1,
+                                          "zip_codes": ["80202", "80301", "80027"]})   # Durango (81301) is outside this region
 NOW = "2026-10-14T12:00:00Z"
 def req(i, conf, first, **kw):
     r = {"id": f"{i}{i}{i}{i}{i}{i}{i}{i}-1111-4111-8111-111111111111", "confirmation_number": conf, "registration_type": "private", "created_at": NOW,
@@ -43,6 +45,7 @@ def req(i, conf, first, **kw):
 R1 = req(1, "ICDT-ZIP001", "Zipper", postal_code="80027", location_type="off_site")     # ZIP, no venue picked
 R2 = req(2, "ICDT-HOME02", "Homer", postal_code="80027", location_type="home")          # chose home
 R3 = req(3, "ICDT-PICK03", "Picker", postal_code="80027", location_type="off_site", preferred_venue_id=dur["id"])
+R5 = req(5, "ICDT-OUT005", "Outsider", postal_code="81301", location_type="off_site")      # ZIP in no served region
 R4 = req(4, "ICDT-NOZIP4", "Nozip")                                                     # no ZIP
 CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
 def admin_route(route):
@@ -84,7 +87,7 @@ with sync_playwright() as p:
     c = b.new_page(viewport={"width": 420, "height": 900}); cerr = []
     c.on("pageerror", lambda e: cerr.append(str(e)))
     c.route("**/enjoy_admin", admin_route)
-    c.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": [R1, R2, R3, R4]}})))
+    c.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": [R1, R2, R3, R4, R5]}})))
     SCHEMA = (HERE.parent / "schemas" / "scheduled_class.schema.json").read_text()
     c.route("**/schemas/scheduled_class.schema.json", lambda r: r.fulfill(status=200, headers={"Content-Type": "application/json"}, body=SCHEMA))
     c.goto(CONSOLE); c.fill("#keyInput", KEY); c.click("#unlockBtn"); c.wait_for_selector("#homeView:not([hidden])")
@@ -106,6 +109,7 @@ with sync_playwright() as p:
     wait(lambda: ven_of(li).input_value() != "")
     labels = ven_of(li).locator("option").all_inner_texts()
     check("with a ZIP the venue list is nearest first, with distances", labels[0] == "Not chosen yet" and labels[1].startswith("Louisville Library") and labels[2].startswith("Boulder Hall") and "mile" in labels[1], labels)
+    check("P-92: only venues in the request's region are offered (Durango is outside it)", not any(l.startswith("Durango") for l in labels) and len(labels) == 4, labels)
     check("a private venue is still in the operator list", any(l.startswith("Aardvark Den") for l in labels), labels)
     check("the nearest PUBLIC place is filled in (not the nearer private one)", ven_of(li).input_value() == lou["id"], ven_of(li).input_value())
     check("a hint says it was chosen by distance", "Nearest public place to ZIP 80027" in li.locator(".putbox").inner_text())
@@ -117,6 +121,10 @@ with sync_playwright() as p:
     wait(lambda: "mile" in " ".join(ven_of(li).locator("option").all_inner_texts()))
     c.wait_for_timeout(300)
     check("a requester's own venue pick is kept", ven_of(li).input_value() == dur["id"], ven_of(li).input_value())
+    li = build("Outsider")
+    wait(lambda: "mile" in " ".join(ven_of(li).locator("option").all_inner_texts()))
+    labels = ven_of(li).locator("option").all_inner_texts()
+    check("P-92: a ZIP in no served region is not limited (all venues, nearest first)", len(labels) == 5 and labels[1].startswith("Durango"), labels)
     li = build("Nozip"); c.wait_for_timeout(800)
     labels = ven_of(li).locator("option").all_inner_texts()
     check("no ZIP: alphabetical, no distances, nothing filled in", labels[1].startswith("Aardvark") and not any("mile" in l for l in labels) and ven_of(li).input_value() == "", labels)
