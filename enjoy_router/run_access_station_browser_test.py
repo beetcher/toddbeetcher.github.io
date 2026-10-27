@@ -95,7 +95,9 @@ with sync_playwright() as p:
     check("Switch on restores it", PE.find_live_by_email(store, "nora@example.com")["is_active"] is True)
 
     # ---- the last super admin
-    row("Todd Beetcher").get_by_role("button", name="Switch off", exact=True).click(); pg.wait_for_function("document.getElementById('accessView').innerText.includes('no active super admin')")
+    row("Todd Beetcher").get_by_role("button", name="Switch off", exact=True).click(); pg.wait_for_selector("#uiDialog[open]")
+    check("switching off a super admin asks first, in plain words", "Super admin role" in pg.inner_text("#uiDialog") and "signed out" in pg.inner_text("#uiDialog"), pg.inner_text("#uiDialog"))
+    pg.click("#uiYes"); pg.wait_for_function("document.getElementById('accessView').innerText.includes('no active super admin')")
     check("the last super admin cannot be switched off, and the page says why", PE.find_live_by_email(store, "todd@example.com")["is_active"] is True)
 
     # ---- roles

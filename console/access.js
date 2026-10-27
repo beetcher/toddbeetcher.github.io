@@ -8,7 +8,7 @@
   if (!K) return;
   var mk = K.mk, root = null;
   var AR = window.ConsoleAccessRoles, AT = window.ConsoleAccessTerritory, TERR = AR.TERR;
-  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, tab: "people", editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } };
+  var S = { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, tab: "people", pq: "", psel: null, editP: null, editR: null, addP: false, addR: false, seq: 0, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } };
 
   var ISSUE = { required: "Required.", duplicate: "That one is already used.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.",
     invalid_type: "That value is not valid.", invalid_value: "That value is not valid.", not_allowed: "Not allowed.", immutable: "That cannot be changed once it is saved.",
@@ -181,7 +181,16 @@
     f.appendChild(mk("h3", "", editing ? "Edit " + (p.display_name || p.email) : "Invite someone"));
     var email = input("email", "apEmail", p ? p.email : ""); if (editing && p.google_uid) { email.disabled = true; }
     f.appendChild(field("Google email (the account they sign in with)", email, "apEmail"));
-    f.appendChild(field("Name (optional)", input("text", "apName", p ? p.display_name : ""), "apName"));
+    var nameBox = input("text", "apName", p ? p.display_name : ""), dup = mk("div", "acm acdup"); dup.id = "apDup"; dup.setAttribute("role", "status");
+    f.appendChild(field("Name (optional)", nameBox, "apName")); f.appendChild(dup);
+    // A soft warning only: two people can share a name, but two records for one person is how an old invitation gets forgotten.
+    function warnDup() {
+      var t = nameBox.value.trim().toLowerCase(); dup.textContent = "";
+      if (!t) return;
+      var hits = S.persons.filter(function (x) { return (!p || x.id !== p.id) && String(x.display_name || "").trim().toLowerCase() === t; });
+      if (hits.length) dup.textContent = "A person named " + nameBox.value.trim() + " is already listed (" + hits.map(function (x) { return roleName(x.role_id) + ", " + (x.is_active ? "on" : "off") + ", " + x.email; }).join("; ") + "). Check before adding another.";
+    }
+    nameBox.addEventListener("input", warnDup);
     var roles = S.roles.filter(function (r) { return r.is_active || (p && p.role_id === r.id); }).sort(sortBy("label")).map(function (r) { return [r.id, r.label + (r.is_super_admin ? " (super admin)" : "")]; });
     var lost = p && !roles.some(function (r) { return r[0] === p.role_id; });     // never fall back silently to the first role in the list
     if (lost) roles.unshift(["", "(role not found: choose one)"]);
@@ -202,11 +211,26 @@
     f.appendChild(row); return f;
   }
 
+  function isSelf(p) { var m = me(); return !!((m.email && String(m.email).toLowerCase() === String(p.email || "").toLowerCase()) || (m.name && p.display_name && m.name === p.display_name)); }
+  function nameOf(rec) { return rec.display_name || rec.label || rec.email || "this one"; }
+  // Switching someone off who holds a lot (a super admin, an admin) or who is you asks first. Everything else is one click, and a switch-on never asks.
+  function riskNote(coll, rec) {
+    if (coll !== "access_persons" || !rec.is_active) return "";
+    var role = roleOf(rec);
+    if (isSelf(rec)) return "This is you. You would be signed out at your next page load and could not come back in until another super admin switches you on.";
+    if (role && (role.is_super_admin || role.key === "admin")) return nameOf(rec) + " holds the " + role.label + " role. They would be signed out at their next page load and could not sign in again until you switch them on.";
+    return "";
+  }
   function toggle(coll, rec, label) {
-    return btn(rec.is_active ? "Switch off" : "Switch on", rec.is_active ? "btn-link" : "btn-secondary", function () {
-      adm("update", { id: rec.id, changes: { is_active: !rec.is_active }, expected_updated_at: rec.updated_at }, coll).then(function (res) {
+    function go() {
+      return adm("update", { id: rec.id, changes: { is_active: !rec.is_active }, expected_updated_at: rec.updated_at }, coll).then(function (res) {
         S.rowMsg = null; S.msg = ok(res) ? label + (rec.is_active ? " switched off." : " switched on.") : why(res); load();
       });
+    }
+    return btn(rec.is_active ? "Switch off" : "Switch on", rec.is_active ? "btn-link" : "btn-secondary", function () {
+      var note = riskNote(coll, rec);
+      if (!note || !window.UI || !UI.confirm) { go(); return; }
+      UI.confirm({ title: "Switch off " + nameOf(rec) + "?", message: note, yes: "Switch off", no: "Keep on", danger: true }).then(function (yes) { if (yes) go(); });
     });
   }
 
@@ -237,10 +261,35 @@
     return row;
   }
 
+  // With a real staff list (eight or more) the People tab gets a search box and Show chips; with a handful they would only be clutter.
+  var FIND_AT = 8;
+  function findBar(wrap, all) {
+    var sb = mk("div", "acf"); var l = mk("label", "", "Search people"); l.htmlFor = "acSearch";
+    var q = input("search", "acSearch", S.pq || ""); q.placeholder = "Name or email"; sb.appendChild(l); sb.appendChild(q); wrap.appendChild(sb);
+    var mount = mk("div", "acchips"); mount.id = "acChips"; wrap.appendChild(mount);
+    var cnt = mk("div", "acm"); cnt.id = "acCount"; cnt.setAttribute("role", "status"); wrap.appendChild(cnt);
+    var cf = UI.chipFilters({ mount: mount, label: "People filters", filters: [
+        { id: "show", label: "Show", kind: "multi", options: [{ value: "on", label: "On" }, { value: "off", label: "Off" }] },
+        { id: "fresh", label: "Not signed in yet", kind: "toggle", noun: "people" }],
+      onChange: function () { S.psel = cf.getSelection(); draw(); } });
+    if (S.psel) cf.setSelection(S.psel);
+    var sel = cf.getSelection(), shows = sel.show || [], fresh = !!(sel.fresh && sel.fresh.length), t = String(q.value || "").trim().toLowerCase();
+    var out = all.filter(function (p) {
+      if (shows.indexOf(p.is_active ? "on" : "off") < 0) return false;
+      if (fresh && !(p.is_active && !p.last_sign_in_at)) return false;
+      return !t || (String(p.display_name || "") + " " + String(p.email || "")).toLowerCase().indexOf(t) >= 0;
+    });
+    cnt.textContent = out.length === all.length ? all.length + " people" : out.length + " of " + all.length + " people";
+    q.addEventListener("input", function () { S.pq = q.value; draw(); var n = $("acSearch"); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } });
+    return out;
+  }
+
   function drawPeople(wrap) {
     var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", S.addP || S.editP ? "btn-secondary" : "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
-    S.persons.slice().sort(sortBy("email")).forEach(function (p) {
+    var shownP = S.persons.slice().sort(sortBy("email"));
+    if (S.persons.length >= FIND_AT) shownP = findBar(wrap, shownP);
+    shownP.forEach(function (p) {
       if (S.editP === p.id) { wrap.appendChild(personForm(p)); return; }
       var r = mk("div", "acrow" + (p.is_active ? "" : " off")); var top = mk("div", "ac1");
       var who = mk("div"); who.appendChild(mk("div", "acn", p.display_name || p.email)); who.appendChild(mk("div", "acm", p.display_name ? p.email : ""));
@@ -250,7 +299,7 @@
       chips.appendChild(document.createTextNode(" ")); chips.appendChild(mk("span", "acchip" + (p.is_active ? " on" : ""), p.is_active ? "On" : "Off"));
       top.appendChild(chips); r.appendChild(top);
       var bits = [];
-      bits.push(p.last_sign_in_at ? "Last signed in " + K.when(p.last_sign_in_at) : "Has not signed in yet");
+      bits.push(p.last_sign_in_at ? "Last signed in " + K.when(p.last_sign_in_at) : "Invited" + (p.created_at ? " " + K.when(p.created_at) : "") + ". Has not signed in yet.");
       r.appendChild(mk("div", "acm", bits.join(" · ")));
       r.appendChild(mk("div", "acm actitle", "Works in: " + titleOf(p, role)));
       var gl = grantsOf(p);
@@ -259,7 +308,8 @@
       else if (!gl.length) r.appendChild(mk("div", "acm", "Territory: none yet (signs in, sees nothing in any region)."));
       else gl.forEach(function (g) { r.appendChild(mk("div", "acm acg", "Territory: " + grantText(g) + (g.group ? "  [" + g.group + "]" : "") + (!(p.grants && p.grants.length) ? "  (from the old single-region setting; Edit then Save to convert)" : ""))); });
       var b = mk("div", "acbtns"); b.appendChild(btn("Edit", "quiet", function () { S.editP = p.id; S.addP = false; S.msg = ""; S.rowMsg = null; draw(); })); b.appendChild(toggle("access_persons", p, "Access"));
-      if (p.is_active) b.appendChild(btn("Resend invite email", "quiet", function () {
+      var hist = K.historyBtn ? K.historyBtn(p.id, p.display_name || p.email) : null; if (hist) { hist.className = "btn-link"; hist.textContent = "History"; hist.setAttribute("aria-label", "History of " + (p.display_name || p.email)); b.appendChild(hist); }
+      if (p.is_active && !p.last_sign_in_at) b.appendChild(btn("Resend invite email", "quiet", function () {
         adm("send_invite", { id: p.id }, "access_persons").then(function (res) {   // the answer shows on THIS person's row, where the button was pressed
           S.msg = ""; S.rowMsg = { id: p.id, good: ok(res) && res.body.data && res.body.data.status === "sent", text: ok(res) ? inviteNote(res.body.data, p.email, false) : why(res) }; draw();
         });
@@ -416,7 +466,7 @@
   }
 
 
-  function freshState(seq) { return { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, tab: "people", editP: null, editR: null, addP: false, addR: false, seq: seq, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } }; }
+  function freshState(seq) { return { loaded: false, roles: [], persons: [], areas: [], msg: "", rowMsg: null, tab: "people", pq: "", psel: null, editP: null, editR: null, addP: false, addR: false, seq: seq, view: "region", draft: null, cs: { rec: null, msg: "", ok: false }, rv: { st: null, msg: "", good: false } }; }
   window.AccessStation = {
     show: function () {
       root = $("accessView"); var sub = K.hash().sub[0]; S.tab = TABS.some(function (t) { return t[0] === sub; }) ? sub : "people"; draw(); load();
