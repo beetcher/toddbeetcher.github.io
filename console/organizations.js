@@ -20,8 +20,7 @@
     var root = $("organizationsView");
     root.innerHTML =
       '<div class="bar phead"><div class="ptext"><h2 class="ptitle" id="roTitle">Organizations</h2><div class="count" id="roCount"></div><div class="meta" id="roChecked"></div></div>' +
-      '<div class="actions"><select id="roFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="closed">Closed</option><option value="">All</option></select>' +
-      '<button type="button" class="btn-link manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="btn-link" type="button">Refresh</button>' +
+      '<div class="actions"><button type="button" class="btn-link manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="btn-link" type="button">Refresh</button>' +
       '<button id="roAddBtn" type="button" class="btn-primary">Add organization</button></div></div>' +
       '<form class="panel" id="roAddForm" hidden autocomplete="off" novalidate><h2>Add an organization</h2>' +
       '<div class="hint">Only the name is needed. Everything else can be added later.</div>' +
@@ -29,8 +28,9 @@
       '<div class="btns"><button type="submit" id="roSaveBtn">Save organization</button><button type="button" class="quiet" id="roCancelBtn">Cancel</button></div>' +
       '<div class="msg" id="roFMsg" role="alert"></div></form>' +
       '<input type="search" id="roSearch" class="psearch" placeholder="Find by name" aria-label="Find an organization by name" autocomplete="off">' +
+      '<div id="roChips"></div>' +
       '<div class="notice" id="roNotice" role="status"></div><div class="msg" id="roMsg" role="alert"></div>' +
-      '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
+      '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div id="roMore"></div><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
     // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
     var FIELDS = [
       { k: "name", label: "Name", t: "text", add: true, max: 200, hint: "What people call it, for example Ozo Coffee." },
@@ -104,7 +104,7 @@
         if (my !== S.seq) return;
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the organizations. " + adminProblem(res.status); g("Retry").hidden = false; return; }
-        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+        S.all = res.body.data.records || []; S.loaded = true; UI.limitNote(g("List"), S.all.length, 200); fillChips(); render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
       });
     }
     S.load = load;
@@ -113,11 +113,39 @@
       var hay = [r.name, r.short_name, r.legal_name].concat(r.aliases || []).join(" ").toLowerCase();
       return hay.indexOf(q) >= 0;
     }
+    var cf = null, show = 50, STEP = 50;
+    function chips() {
+      if (cf) return cf;
+      cf = UI.chipFilters({
+        mount: g("Chips"), label: "Organization filters",
+        filters: [
+          { id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }, { value: "closed", label: "Closed" }] },
+          { id: "kind", label: "Kind", kind: "multi", options: OKINDS.map(function (k) { return { value: k[0], label: k[1] }; }).concat([{ value: "none", label: "No kind yet" }]) }],
+        onChange: function () { show = STEP; g("Notice").textContent = ""; render(); }
+      });
+      cf.setSelection({ status: ["active"] });
+      cf.setNote("An organization counts under each of its kinds.");
+      return cf;
+    }
+    function fillChips() {
+      var c = chips(), st = { active: 0, inactive: 0, closed: 0 }, kd = { none: 0 };
+      S.all.forEach(function (r) { if (st[r.status] !== undefined) st[r.status]++; var ks = r.kinds || []; if (!ks.length) kd.none++; ks.forEach(function (k) { kd[k] = (kd[k] || 0) + 1; }); });
+      c.setCounts({ status: st, kind: kd });
+    }
+    S.fillChips = fillChips;
     function render() {
-      var f = g("Filter").value, q = g("Search").value.trim().toLowerCase(), list = g("List"), n = 0; list.textContent = "";
-      S.all.filter(function (r) { return (!f || r.status === f) && matches(r, q); }).forEach(function (r) { list.appendChild(row(r)); n++; });
+      var q = g("Search").value.trim().toLowerCase(), list = g("List"), sel = chips().getSelection(), sts = sel.status || [], kds = sel.kind || [];
+      var shown = S.all.filter(function (r) {
+        if (sts.indexOf(r.status) < 0) return false;
+        var ks = r.kinds || []; if (!(ks.length ? ks.some(function (k) { return kds.indexOf(k) >= 0; }) : kds.indexOf("none") >= 0)) return false;
+        return matches(r, q);
+      }).sort(function (a, b) { var x = (a.name || "").toLowerCase(), y = (b.name || "").toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
+      var vis = shown.slice(0, show), had = list.children.length; list.textContent = "";
+      vis.forEach(function (r) { list.appendChild(row(r)); });
       S.newId = "";
-      g("Count").textContent = n + (n === 1 ? " organization" : " organizations") + (n !== S.all.length ? " shown of " + S.all.length : "");
+      UI.moreBar(g("More"), vis.length, shown.length, STEP, function () { show += STEP; render(); var f = g("List").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, "organizations");
+      g("Count").textContent = shown.length + (shown.length === 1 ? " organization" : " organizations") + (shown.length !== S.all.length ? " shown of " + S.all.length : "");
+      chips().setCount("");
       g("Empty").hidden = S.all.length > 0;
     }
     function kindsLine(rec) { return (rec.kinds || []).map(function (k) { return OKIND_LABEL[k] || k; }).join(", "); }
@@ -402,17 +430,16 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.name + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
-          g("Filter").value = "active"; g("Search").value = ""; load(); return;
+          chips().setSelection({ status: ["active"] }); g("Search").value = ""; show = STEP; load(); return;
         }
         var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
         if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
       });
     });
-    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
-    g("Search").addEventListener("input", render);
+    g("Search").addEventListener("input", function () { show = STEP; render(); });
     g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
     g("Retry").addEventListener("click", load);
-    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("More").textContent = ""; show = STEP; if (cf) cf.setSelection({ status: ["active"] }); g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
     return S;
   }
 

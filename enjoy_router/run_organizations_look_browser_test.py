@@ -46,6 +46,30 @@ with sync_playwright() as p:
     # ===== L-1 head
     check("L-1 page title, orange Add organization, Manual and Refresh as links", pg.locator("#roTitle").inner_text() == "Organizations" and "btn-primary" in pg.get_attribute("#roAddBtn", "class") and "btn-link" in pg.get_attribute("#roRefresh", "class") and pg.locator("#organizationsView .manualBtn.btn-link").count() == 1)
     check("L-1 the search box sits full width under the head, like the other stations", pg.locator("#roSearch.psearch").count() == 1 and pg.locator("#roSearch").bounding_box()["width"] > 800)
+
+    # ===== L-5 filters and paging
+    check("L-5 the old drop-down is gone; chips Status and Kind are there", pg.locator("#roFilter").count() == 0 and all(w in pg.locator("#roChips .cf-row").inner_text() for w in ["Status", "Kind"]))
+    check("L-5 Active only, 50 rows, 'shown of' count", pg.locator("#roList li").count() == 50 and pg.locator("#roCount").inner_text() == "%d organizations shown of 115" % N_ACTIVE, pg.locator("#roCount").inner_text())
+    check("L-5 'Showing 50 of N' and Load more", ("Showing 50 of %d" % N_ACTIVE) in pg.locator("#roMore").inner_text() and pg.locator("#roMore button").count() == 1, pg.locator("#roMore").inner_text())
+    while pg.locator("#roMore button").count():
+        pg.locator("#roMore button").click(); pg.wait_for_timeout(200)
+    check("L-5 Load more brings the rest", pg.locator("#roList li").count() == N_ACTIVE and pg.locator("#roMore .morebar").count() == 0)
+    check("L-5 the Kind chip says a record counts under each of its kinds", "counts under each of its kinds" in pg.locator("#roChips").inner_text())
+    pg.locator("#roChips .cf-chip", has_text="Kind").click()
+    for v in ["school_district", "governing_body", "nonprofit", "business", "government", "association", "club", "training_provider", "community_group", "other", "college_university", "none"]:
+        bx = pg.locator("#roChips .cf-pop input[type=checkbox][value=%s]" % v)
+        if bx.count() and bx.is_checked(): bx.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+    n_school = len([r for r in store.data["organizations"].values() if r.get("status") == "active" and "school" in (r.get("kinds") or [])])
+    check("L-5 only School (including those that are also something else)", pg.locator("#roCount").inner_text().startswith("%d organization" % n_school) and n_school > 0, pg.locator("#roCount").inner_text())
+    pg.locator("#roChips .cf-chip", has_text="Kind").click()
+    for v in ["school_district", "governing_body", "nonprofit", "business", "government", "association", "club", "training_provider", "community_group", "other", "college_university", "none"]:
+        bx = pg.locator("#roChips .cf-pop input[type=checkbox][value=%s]" % v)
+        if bx.count() and not bx.is_checked(): bx.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+    pg.fill("#roSearch", "Organization 01"); pg.wait_for_timeout(250)
+    check("L-5 search still narrows (Organization 010 to 019 that are active)", pg.locator("#roList li").count() > 0 and pg.locator("#roList li").count() <= 10, pg.locator("#roList li").count())
+    pg.fill("#roSearch", ""); pg.wait_for_timeout(250)
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

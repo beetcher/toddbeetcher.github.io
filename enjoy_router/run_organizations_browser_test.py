@@ -37,6 +37,14 @@ def cors(route):
         admin_route(route)
 
 
+def status_is(pg, *vals):
+    """Tick exactly these statuses in the Status chip (the old drop-down is gone)."""
+    pg.locator("#roChips .cf-chip", has_text="Status").click()
+    for v in ("active", "inactive", "closed"):
+        box = pg.locator("#roChips .cf-pop input[type=checkbox][value=%s]" % v)
+        if box.is_checked() != (v in vals): box.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -99,10 +107,10 @@ with sync_playwright() as p:
     li.locator("form.eform select").select_option("closed"); li.locator("form.eform").get_by_role("button", name="Save changes").click()
     pg.wait_for_function("document.querySelectorAll('#roList li').length == 1")
     check("closed leaves the Active list", "Boulder" not in pg.locator("#roList").inner_text())
-    pg.select_option("#roFilter", "closed")
+    status_is(pg, "closed")
     check("closed shows under Closed", pg.locator("#roList li", has_text="Boulder Valley").count() == 1)
     # one-tap switch
-    pg.select_option("#roFilter", "")
+    status_is(pg, "active", "inactive", "closed")
     pg.wait_for_selector("#roList li button.stoggle")
     li = pg.locator("#roList li", has_text="Ozo Coffee"); sw = li.locator("button.stoggle")
     sw.click(); pg.wait_for_timeout(2400)
@@ -112,7 +120,7 @@ with sync_playwright() as p:
     VC.create(store, dict(VENUE), "user:admin")
     LC.create(store, {"name": "Ozo roastery"}, "user:admin")
     li = pg.locator("#roList li", has_text="Ozo Coffee")
-    pg.select_option("#roFilter", ""); li = pg.locator("#roList li", has_text="Ozo Coffee")
+    status_is(pg, "active", "inactive", "closed"); li = pg.locator("#roList li", has_text="Ozo Coffee")
     li.locator("button.head").click()
     li.get_by_role("button", name="Show links").click()
     pg.wait_for_function("[...document.querySelectorAll('#roList > li')].find(function(x){return x.querySelector('.vname').textContent==='Ozo Coffee'}).querySelector('.olinks').textContent.indexOf('Nobody and nothing yet') >= 0")
