@@ -119,6 +119,9 @@ from launch_comms import placement_context as PC, change_context as CC  # noqa: 
 check("zone_name: the class's own zone wins, then the place's, a made-up name or nothing is None",
       PC.zone_name({"time_zone": "America/Phoenix"}, {"time_zone": "America/Denver"}) == "America/Phoenix" and PC.zone_name({}, {"time_zone": "America/Indiana/Indianapolis"}) == "America/Indiana/Indianapolis"
       and PC.zone_name({"time_zone": "Mars/Base"}, {"time_zone": "America/Denver"}) is None and PC.zone_name({}, {}) is None and PC.zone_name(None, None) is None)
+from crud import locations_crud as _LOCS  # noqa: E402
+for _p in s.query("locations", [], limit=100):   # places now get a zone from their ZIP when saved; this check needs an older place with none
+    if _p.get("time_zone"): _LOCS.update(s, _p["id"], {"time_zone": None}, A)
 nozone_cls = {"id": "x", "title": "T", "starts_at": "2026-11-04T01:00:00Z", "duration_minutes": 60, "venue_id": ven["id"]}
 check("a change notice is not built for a class with no zone and a place with none", CC.class_view(s, nozone_cls) is None)
 check("...but is built when the class has its zone", (CC.class_view(s, {**nozone_cls, "time_zone": "America/Denver"}) or {}).get("time_zone") == "America/Denver")

@@ -18,6 +18,7 @@ from .schema_kit import (
     load_collection, stamp_create, stamp_update, success, utc_stamp,
 )
 from .store_errors import DocExists, DocMissing, StaleUpdate
+from launch_discovery import zip_zones   # P-94: a place with a ZIP and no time zone gets its zone from the ZIP
 
 LOCATIONS = load_collection("location")
 
@@ -251,6 +252,10 @@ def create(store, data, actor, source="dashboard", tx=None, now=None):
         return _bad(read_only)
 
     doc = drop_empty({k: _normalize_value(k, v) for k, v in data.items()})
+    if not doc.get("time_zone"):   # P-94: the system assigns the zone from the ZIP; a person only edits it when it is wrong
+        auto = zip_zones.zone_of_addresses(doc.get("addresses"))
+        if auto:
+            doc["time_zone"] = auto
     problems = check_document(LOCATIONS, doc)
     if not problems:
         problems = _run_rules(doc)
@@ -359,6 +364,13 @@ def update(store, id, changes, actor, expected_updated_at=None, tx=None, now=Non
         problems.append({"field": "changes", "issue": "required"})
     if problems:
         return _bad(problems)
+
+    if isinstance(changes.get("addresses"), builtins.list) and "time_zone" not in changes:   # P-94: a place with no zone that gets an address gets its zone from the ZIP
+        cur0 = store.get(LOCATIONS.name, id)
+        if isinstance(cur0, dict) and not cur0.get("time_zone") and not cur0.get("deleted_at"):
+            auto = zip_zones.zone_of_addresses(changes["addresses"])
+            if auto:
+                changes = {**changes, "time_zone": auto}
 
     set_fields: dict = {}
     removals: list = []

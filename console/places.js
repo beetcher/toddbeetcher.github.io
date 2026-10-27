@@ -107,10 +107,17 @@
     }
     ed.addEventListener("click", function () { open(function () {
       var form = mk("form", "eform"); form.noValidate = true;
-      var defs = [["name", "Name", "text"], ["description", "Description", "area"], ["time_zone", "Time zone", "text"], ["kind", "Kind", "kind"]], els = {};
+      var isSuper = K.me().is_super_admin === true;
+      var defs = [["name", "Name", "text"], ["description", "Description", "area"]].concat(isSuper ? [["time_zone", "Time zone", "zone"]] : []).concat([["kind", "Kind", "kind"]]), els = {};
       defs.forEach(function (d) {
         var id = "pl_" + rec.id + "_" + d[0], l = mk("label", "f", d[1]); l.htmlFor = id; form.appendChild(l); var el;
         if (d[2] === "kind") { el = mk("select"); [["point", "Point (a doorway or a spot)"], ["site", "Site (a building, campus or property)"], ["parcel", "Parcel (a legal lot)"], ["route", "Route (a street or trail)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); }); el.value = rec.kind || "site"; }
+        else if (d[2] === "zone") {
+          el = mk("select");
+          [["", "(none)"], ["America/New_York", "Eastern"], ["America/Chicago", "Central"], ["America/Denver", "Mountain"], ["America/Phoenix", "Arizona (no daylight saving)"], ["America/Los_Angeles", "Pacific"], ["America/Anchorage", "Alaska"], ["America/Adak", "Aleutian (Alaska islands)"], ["Pacific/Honolulu", "Hawaii"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
+          if (rec.time_zone && !Array.prototype.some.call(el.options, function (o) { return o.value === rec.time_zone; })) { var oo = mk("option", "", rec.time_zone); oo.value = rec.time_zone; el.appendChild(oo); }
+          el.value = rec.time_zone || "";
+        }
         else if (d[2] === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = rec[d[0]] || ""; }
         else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = rec[d[0]] || ""; }
         el.id = id; form.appendChild(el); els[d[0]] = el;
@@ -200,7 +207,7 @@
   }
   var lBlock = null;
   $("lAddBtn").addEventListener("click", function () {
-    $("lAddFields").textContent = ""; lBlock = addrForm({ name: true, description: true, tz: true, gps: true, usageChoice: false }); $("lAddFields").appendChild(lBlock);
+    $("lAddFields").textContent = ""; lBlock = addrForm({ name: true, description: true, tz: K.me().is_super_admin === true, gps: true, usageChoice: false }); $("lAddFields").appendChild(lBlock);
     $("lFMsg").textContent = ""; $("lNotice").textContent = ""; $("lAddForm").hidden = false; $("lAddBtn").hidden = true;
   });
   $("lCancelBtn").addEventListener("click", function () { $("lAddForm").hidden = true; $("lAddBtn").hidden = false; });

@@ -426,17 +426,17 @@
     var d = new Date(stamp); if (isNaN(d.getTime())) return String(stamp || "");
     try { return d.toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" }); } catch (e) { return d.toString(); }
   }
-  // Places with no time zone (super admin): check, then fill the Colorado ones with Mountain time. Everything else is listed for a person (Arizona and Indiana split inside a state).
+  // Places with no time zone (super admin): check, then fill every one the ZIP table can place. The rest are listed for a person.
   var Z = { res: null, msg: "", busy: false };
   function zoneBox() {
     if (me().is_super_admin !== true || me().inspector === true) return null;
     var box = mk("div", "acform"); box.id = "acZones";
     box.appendChild(mk("h2", "", "Places with no time zone"));
-    box.appendChild(mk("p", "acm", "Every class, email and notice takes its time zone from its place, and nothing guesses one. Older places were saved without a zone. Check them here; Colorado places can be filled with Mountain time (America/Denver) in one click. Places elsewhere are listed so you can set each one in Places."));
+    box.appendChild(mk("p", "acm", "Every class, email and notice takes its time zone from its place, and nothing guesses one. Older places were saved without a zone. Check them here: the system works the zone out from each place's ZIP code and fills it in with one click. Any place it cannot work out is listed so you can set it in Places."));
     var r = Z.res;
     if (r) {
-      box.appendChild(mk("p", "acm", r.without_zone === 0 ? "Every place has a time zone." : r.without_zone + (r.without_zone === 1 ? " place has" : " places have") + " no time zone: " + r.colorado + " in Colorado" + (r.applied ? " (" + r.filled + " filled just now)" : "") + ", " + r.needs_count + " elsewhere."));
-      if (!r.applied && r.colorado > 0) { var fb = btn("Fill " + r.colorado + (r.colorado === 1 ? " Colorado place" : " Colorado places") + " with Mountain time", "", function () { runZones(true); }); fb.id = "acZoneFill"; box.appendChild(fb); }
+      box.appendChild(mk("p", "acm", r.without_zone === 0 ? "Every place has a time zone." : r.without_zone + (r.without_zone === 1 ? " place has" : " places have") + " no time zone: " + r.fillable + " can be filled from their ZIP" + (r.applied ? " (" + r.filled + " filled just now)" : "") + ", " + r.needs_count + " need a person."));
+      if (!r.applied && r.fillable > 0) { var fb = btn("Fill " + r.fillable + (r.fillable === 1 ? " place" : " places") + " from their ZIP", "", function () { runZones(true); }); fb.id = "acZoneFill"; box.appendChild(fb); }
       if (r.needs_a_person && r.needs_a_person.length) {
         var ul = mk("ul", "acm"); ul.id = "acZoneList";
         r.needs_a_person.forEach(function (p) { ul.appendChild(mk("li", "", (p.name || "(no name)") + (p.state ? " (" + p.state + ")" : " (no state)"))); });

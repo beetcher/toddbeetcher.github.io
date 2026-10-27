@@ -53,6 +53,11 @@ assert ven.ok, ven.problems
 give_venue_zone(store, ven.data["id"])
 bare = VS.create(store, {"name": "Zoneless Hall", "slug": "zoneless", "status": "active", "is_public_venue": True, "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f", "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": []}, A)
 assert bare.ok, bare.problems
+annex = VS.create(store, {"name": "Annex Hall", "slug": "annex", "status": "active", "is_public_venue": True, "email": "pat@example.com", "contact_individual_id": "5b1f0c2e-7a4d-4c3b-9e6f-1a2b3c4d5e6f", "is_accessible": True, "allows_minors": True, "allows_animals": False, "rooms": []}, A)
+assert annex.ok, annex.problems
+annex_place = give_venue_zone(store, annex.data["id"])["location_id"]
+from crud import locations_crud as _LOCS
+assert _LOCS.update(store, annex_place, {"time_zone": None}, A).ok and not store.get("locations", annex_place).get("time_zone")   # an older place saved without a zone
 REQ = {"id": "11111111-1111-4111-8111-111111111111", "confirmation_number": "LCH-0001", "registration_type": "private", "attendee_count": 1, "created_at": "2026-10-10T12:00:00Z",
        "first_name": "Chuck", "last_name": "Norris", "email": "chuck@example.com", "processing_status": "received"}
 REQ2 = {**REQ, "id": "22222222-2222-4222-8222-222222222222", "confirmation_number": "LCH-0002", "first_name": "Dana", "last_name": "Fox", "email": "dana@example.com", "created_at": "2026-10-10T13:00:00Z"}
@@ -194,10 +199,15 @@ with sync_playwright() as p:
     f.locator("select[id$='_n_cur']").select_option(index=1)
     check("title fills from curriculum and requester", f.locator("input[id$='_n_title']").input_value() == "Intro to AI for Dana Fox", f.locator("input[id$='_n_title']").input_value())
     f.locator("select[id$='_n_ven']").select_option(label="Zoneless Hall")
+    pg.wait_for_function("el => el.innerText.indexOf('could not give one') >= 0", arg=f.locator(".addbox").first.element_handle())   # the system tried the ZIP first
     check("a venue with no time zone says so, and offers no Denver guess", "no time zone" in f.locator(".addbox").first.inner_text())
     f.locator("input[id$='_n_date']").fill("2026-11-12"); f.locator("input[id$='_n_time']").fill("18:00")
     f.get_by_role("button", name="Add to class").click(); pg.wait_for_timeout(400)
-    check("a class with a date at a venue with no zone is refused in plain words", "has no time zone" in f.locator(".addbox").first.inner_text() and pg.locator("#reqDone").inner_text().find("LCH-0002 is closed") < 0)
+    check("a class with a date at a venue with no zone is refused in plain words", "still has no time zone" in f.inner_text() and pg.locator("#reqDone").inner_text().find("LCH-0002 is closed") < 0)
+    f.locator("select[id$='_n_ven']").select_option(label="Annex Hall")   # safety net: its place has a ZIP but no zone, so the system fills it in quietly
+    pg.wait_for_function("el => el.innerText.indexOf('America/Denver') >= 0", arg=f.locator(".addbox").first.element_handle())
+    check("P-94 a venue whose place has a ZIP but no zone gets one filled in quietly, with no red message", "no time zone" not in f.locator(".addbox").first.inner_text())
+    check("P-94 the zone is now saved on the place, from its ZIP", store.get("locations", annex_place).get("time_zone") == "America/Denver")
     f.locator("select[id$='_n_ven']").select_option(label="Library")
     f.locator("select[id$='_n_room']").select_option("Room A")
     f.locator("input[id$='_n_date']").fill("2026-11-12"); f.locator("input[id$='_n_time']").fill("18:00")

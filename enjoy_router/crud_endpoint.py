@@ -26,6 +26,7 @@ ops and their args:
     create_with_place  data, address or location_id (optional), source (optional)   (venues only: venue, place and link saved together)
     set_place          id, address or location_id   (venues only: moves the venue to another place, old link ends today)
     find_gps           id                           (venues only: looks up GPS from the place's street address; best effort, says what happened in `gps`)
+    ensure_zone        id                           (venues only: if the venue's place has no time zone, work it out from its ZIP and save it on the place; says `time_zone`)
     create_with_person data, person (optional), source (optional)   (the rosters only: data.individual_id for an existing person, or person for a new one; saved together)
     assign             data, person (optional), source (optional)   (attendances only: put a person in a class: person, roster entry and record together)
     send_confirmation  id                     (attendances only: send the placement confirmation email now)
@@ -101,6 +102,7 @@ OPS = {
     "create_with_person": ({"data"}, {"person", "source"}),                  # only the rosters
     "set_place": ({"id"}, {"address", "location_id"}),                       # only venues
     "find_gps": ({"id"}, set()),                                             # only venues: look up GPS from the place's address
+    "ensure_zone": ({"id"}, set()),                                          # only venues: give the venue's place a time zone from its ZIP if it has none
     "assign": ({"data"}, {"person", "source", "via_request_id"}),                              # only attendances: person + roster entry + attendance together
     "send_confirmation": ({"id"}, set()),                                    # only attendances: send the placement confirmation email now
     "delete_request": ({"id"}, set()),                                       # only attendances: a registration request is marked deleted and hidden
@@ -117,7 +119,7 @@ OPS = {
 # Ops the Console may use. set_review_summary is for the reviews service only, never the Console.
 # erase is deliberately missing: it is irreversible and waits for sign-in roles.
 ADMIN_OPS = frozenset({"list", "get", "create", "update", "soft_delete", "suggest", "queue", "get_for_individual",
-                       "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps",
+                       "merge", "unmerge", "end", "find_by_address", "create_with_place", "set_place", "find_gps", "ensure_zone",
                        "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "restore_request", "mark_request_handled", "send_confirmation", "publish", "draft_from", "mark_handled", "add_note", "send_invite"})
 STATUS = {"validation_failed": 400, "not_found": 404, "conflict": 409, "server_error": 500}
 
@@ -126,7 +128,7 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
     if op in ("get", "list") and a.get("expand") and not getattr(module, "EXPANDABLE", False):
         return failure("validation_failed", [{"field": "expand", "issue": "not_supported"}])
     if op in ("suggest", "queue", "set_review_summary", "get_for_individual", "merge", "unmerge", "erase", "end", "find_by_address",
-              "create_with_place", "set_place", "find_gps", "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "restore_request", "mark_request_handled", "send_confirmation",
+              "create_with_place", "set_place", "find_gps", "ensure_zone", "create_with_person", "update_with_person", "assign", "assign_request", "delete_request", "restore_request", "mark_request_handled", "send_confirmation",
               "publish", "draft_from", "mark_handled", "add_note", "send_invite"):
         if not hasattr(module, op):
             return failure("validation_failed", [{"field": "op", "issue": "not_supported"}])
@@ -160,6 +162,8 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
             return module.update_with_person(store, a["id"], a.get("changes"), actor, a.get("person"), a.get("expected_updated_at"), now=now)
         if op == "find_gps":
             return module.find_gps(store, a["id"], actor, now=now)
+        if op == "ensure_zone":
+            return module.ensure_zone(store, a["id"], actor, now=now)
         if op == "set_place":
             return module.set_place(store, a["id"], actor, a.get("address"), a.get("location_id"), now=now)
         if op == "end":

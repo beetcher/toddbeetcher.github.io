@@ -134,17 +134,19 @@ with sync_playwright() as p:
     check("R1 a refused code takes the shown code away", pg.locator("#acReviewShown").count() == 0)
     pg.fill("#acReviewCode", CODE2); pg.click("#acReviewSave"); pg.wait_for_selector("#acReviewShown")
     # ---------- Z1: places with no time zone (super admin): check, fill the Colorado ones, list the rest
-    from crud import locations_crud as LOCS
-    def _loc(name, region, zip_):
-        r = LOCS.create(H["store"], {"name": name, "addresses": [{"usage": "civic", "street_number": "1", "street": "Main St", "locality": "Town", "region": region, "postal_code": zip_, "country": "US"}]}, "user:admin"); assert r.ok, r.problems; return r.data["id"]
+    import uuid as _uuid
+    def _loc(name, region, zip_):   # saved straight into the store with no zone, the way older places were
+        i = str(_uuid.uuid4())
+        H["store"].create("locations", i, {"id": i, "name": name, "kind": "site", "status": "active", "schema_version": 1, "created_at": "2026-01-01T00:00:00Z", "updated_at": "2026-01-01T00:00:00Z", "addresses": [{"usage": "civic", "street_number": "1", "street": "Main St", "locality": "Town", "region": region, "postal_code": zip_, "country": "US"}]}); return i
     zco, zaz = _loc("Boulder Library", "CO", "80301"), _loc("Phoenix Hall", "AZ", "85001")
+    zno = _loc("Nowhere Hall", "ZZ", "00000")
     pg.goto(PAGE + "#/access"); pg.wait_for_selector("#acZones"); pg.wait_for_timeout(200)
     check("Z1 the super admin sees the Places with no time zone box", "Places with no time zone" in pg.inner_text("#acZones") and pg.locator("#acZoneFill").count() == 0)
     pg.click("#acZoneCheck"); pg.wait_for_selector("#acZoneList")
-    check("Z1 checking says how many, and lists the places a person must fix", "2 places have no time zone: 1 in Colorado" in pg.inner_text("#acZones") and "Phoenix Hall (AZ)" in pg.inner_text("#acZoneList") and "Boulder" not in pg.inner_text("#acZoneList"), pg.inner_text("#acZones"))
+    check("Z1 checking says how many, and lists the places a person must fix", "3 places have no time zone: 2 can be filled from their ZIP" in pg.inner_text("#acZones") and "Nowhere Hall (ZZ)" in pg.inner_text("#acZoneList") and "Boulder" not in pg.inner_text("#acZoneList") and "Phoenix" not in pg.inner_text("#acZoneList"), pg.inner_text("#acZones"))
     check("Z1 checking alone changes nothing", not H["store"].get("locations", zco).get("time_zone"))
     pg.click("#acZoneFill"); pg.wait_for_function("document.querySelector('#acZones').innerText.indexOf('filled just now') >= 0")
-    check("Z1 Fill gives the Colorado place Mountain time and never guesses Arizona", H["store"].get("locations", zco).get("time_zone") == "America/Denver" and not H["store"].get("locations", zaz).get("time_zone"))
+    check("Z1 Fill gives Colorado Mountain time and Arizona its own zone, and never guesses for a place the ZIP table does not know", H["store"].get("locations", zco).get("time_zone") == "America/Denver" and H["store"].get("locations", zaz).get("time_zone") == "America/Phoenix" and not H["store"].get("locations", zno).get("time_zone"))
     check("R1 the stored record holds no plain code", CODE not in json.dumps(H["store"].query("review_codes", [], limit=5)) and CODE2 not in json.dumps(H["store"].query("review_codes", [], limit=5)) and len(H["store"].query("review_codes", [], limit=5)) == 1)
     check("R1 the box is readable on a desktop: input at least 44 px high", pg.locator("#acReviewCode").bounding_box()["height"] >= 44 and pg.locator("#acReviewSave").bounding_box()["height"] >= 44)
     pg.screenshot(path="/tmp/review_code_box.png", full_page=True)

@@ -183,6 +183,22 @@ with sync_playwright() as p:
     pg.click("#lSaveBtn")
     pg.wait_for_function("document.getElementById('lNotice').textContent.indexOf('Saved Trail head') === 0")
     check("place with only a name and GPS saved", any(x.get("name") == "Trail head" and x["geometries"][0]["role"] == "center" for x in places()))
+    # P-94: the super admin edits a place's time zone from a short drop-down of the eight US zones
+    th = pg.locator("#lList li", has_text="Trail head"); th.locator("button.head").click()
+    th.get_by_role("button", name="Edit", exact=True).click()
+    zsel = th.get_by_label("Time zone", exact=True)
+    check("P-94 the Places edit form offers the time zone as a drop-down of the US zones", zsel.evaluate("e => e.tagName") == "SELECT" and zsel.locator("option").count() == 9 and zsel.input_value() == "America/Denver")
+    zsel.select_option("America/Phoenix"); th.get_by_role("button", name="Save changes").click()
+    pg.wait_for_function("document.getElementById('lNotice').textContent.indexOf('Saved') === 0")
+    check("P-94 the chosen zone is saved on the place", [x for x in places() if x.get("name") == "Trail head"][0].get("time_zone") == "America/Phoenix")
+    # a standard admin never finds or sets a time zone: the same form has no such field
+    pg.evaluate("window.__me = window.ConsoleKit.me; window.ConsoleKit.me = function () { return Object.assign({}, window.__me(), { is_super_admin: false }); }")
+    pg.wait_for_timeout(800); th = pg.locator("#lList li", has_text="Trail head")
+    if th.get_by_role("button", name="Edit", exact=True).count() == 0: th.locator("button.head").click()
+    th.get_by_role("button", name="Edit", exact=True).click()
+    check("P-94 a standard admin's edit form has no time zone field", th.get_by_label("Time zone", exact=True).count() == 0 and th.get_by_label("Name", exact=True).count() == 1)
+    th.get_by_role("button", name="Cancel").click()
+    pg.evaluate("window.ConsoleKit.me = window.__me")
     # same address from the station: heads up, nothing merged
     pg.click("#lAddBtn")
     f2 = pg.locator("#lAddFields")

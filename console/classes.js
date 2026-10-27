@@ -463,10 +463,21 @@
     // behaviour: venue changes the room list and (if blank) the time zone; status shows the cancelled reason
     cField("venue_id").el.addEventListener("change", function () {
       fillRooms("");
-      var v = ConsoleNames.venueById(this.value), tzf = cField("time_zone"), vtz = v && v.place && v.place.time_zone;
-      if (vtz && tzf && !readValue(tzf)) {
-        var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === vtz; });
-        if (has) tzf.el.value = vtz;
+      var v = ConsoleNames.venueById(this.value), tzf = cField("time_zone");
+      function putZone() {
+        var vtz = v && v.place && v.place.time_zone;
+        if (vtz && tzf && !readValue(tzf)) {
+          var has = Array.prototype.some.call(tzf.el.options, function (o) { return o.value === vtz; });
+          if (has) tzf.el.value = vtz;
+        }
+      }
+      putZone();
+      if (v && !(v.place && v.place.time_zone) && !v._zoneTried) {   // safety net: the place gets its zone from its ZIP
+        v._zoneTried = true;
+        admin("ensure_zone", { id: v.id }, "venues").then(function (res) {
+          var z = res && res.status === 200 && res.body && res.body.ok ? res.body.data.time_zone : "";
+          if (z) { v.place = v.place || {}; v.place.time_zone = z; putZone(); }
+        });
       }
     });
     function syncReason() {
@@ -1020,7 +1031,19 @@
     function syncVenue() {
       room.textContent = ""; opt(room, "", "No room chosen");
       var v = ConsoleNames.venueById(ven.value); ((v && v.rooms) || []).forEach(function (r) { opt(room, r.label, r.label); });
-      tzNote.textContent = tz() ? "The time is in " + tz().replace(/_/g, " ") + " (the venue's time zone)." : ven.value ? "This venue has no time zone yet. Add it to the venue's place before giving the class a time." : "Choose a venue to use its time zone.";
+      tzNote.textContent = tz() ? "The time is in " + tz().replace(/_/g, " ") + " (the venue's time zone)." : ven.value ? "Working out the time zone from the venue's ZIP…" : "Choose a venue to use its time zone.";
+      if (ven.value && !tz()) ensureZone(ven.value, function () { if (ven.value === v.id) syncVenue(); });
+    }
+    // Safety net: a venue whose place has no time zone gets one from its ZIP (saved on the place) before anyone sees a refusal.
+    function ensureZone(vid, again) {
+      var v = ConsoleNames.venueById(vid); if (!v) return;
+      if (v._zoneTried) { tzNote.textContent = "This venue's place has no time zone and its ZIP could not give one. A super admin can set it on the place (Places)."; return; }
+      v._zoneTried = true;
+      admin("ensure_zone", { id: vid }, "venues").then(function (res) {
+        var z = res && res.status === 200 && res.body && res.body.ok ? res.body.data.time_zone : "";
+        if (z) { v.place = v.place || {}; v.place.time_zone = z; }
+        again();
+      });
     }
     var venTouched = false;
     ven.addEventListener("change", function () { venTouched = true; syncVenue(); }); syncVenue();
@@ -1068,7 +1091,7 @@
       }
       if (date.value || time.value) {
         if (!date.value || !time.value) return { error: "Give both a date and a time, or neither." };
-        if (!ven.value) return { error: "Choose a venue for a class with a date." }; if (!tz()) return { error: "This venue has no time zone, so the class time cannot be set. Add the time zone to the venue's place first (Places)." };
+        if (!ven.value) return { error: "Choose a venue for a class with a date." }; if (!tz()) return { error: "This venue's place still has no time zone, and its ZIP could not give one. Ask a super admin to set it on the place (Places)." };
         var u = zonedToUtc(date.value, time.value, tz());
         if (!u) return { error: "That date or time is not valid." };
         data.starts_at = u; data.time_zone = tz();

@@ -341,6 +341,29 @@ def find_gps(store, id, actor, now=None):  # noqa: A002
     return done("found")
 
 
+def ensure_zone(store, id, actor, now=None):  # noqa: A002
+    """Safety net for building a class: if the venue's place has no time zone, work it out from the place's ZIP and save it on the place.
+    Never an error for the caller beyond a missing venue: `time_zone` in the result is the zone the place now has, or null when it cannot be told."""
+    got = V.get(store, id)
+    if not got.ok:
+        return got
+    zone = None
+    for link in _live_place_link(store, id):
+        r = LOC.get(store, link["location_id"])
+        if not r.ok:
+            continue
+        loc = r.data
+        if loc.get("time_zone"):
+            zone = loc["time_zone"]
+            break
+        import place_zones   # top-level module of enjoy_router; imported here because it imports this package
+        z = place_zones.zone_for(loc)
+        if z and LOC.update(store, loc["id"], {"time_zone": z}, actor, now=now).ok:
+            zone = z
+            break
+    return success({**expanded(store, V.get(store, id).data), "time_zone": zone})
+
+
 def _try_gps(store, venue_id, actor, now):
     """After a venue or its place is saved: look up GPS without ever failing the save."""
     try:
