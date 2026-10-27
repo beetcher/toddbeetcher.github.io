@@ -106,6 +106,23 @@ with sync_playwright() as p:
     check("L-6 the card has Addresses, Details and Linked to groups", heads[0] == "addresses" and "details" in heads and heads[-1] == "linked to", heads)
     check("L-6 time zone sits under Details, who is linked under Linked to", first.locator(".dgroup", has_text="Time zone").locator(".dgh").inner_text().lower() == "details" and first.locator(".dgroup", has_text="Show who is linked here").locator(".dgh").inner_text().lower() == "linked to")
     first.locator("button.head").click()
+
+    # ===== L-7 empty, loading, error states
+    pg.fill("#lSearch", "zzzzzz"); pg.wait_for_timeout(200)
+    check("L-7 no match says what to do and offers to clear", pg.locator("#lNoMatch").is_visible() and "No place matches that." in pg.locator("#lNoMatch").inner_text() and pg.locator("#lClear").is_visible())
+    pg.click("#lClear"); pg.wait_for_timeout(300)
+    check("L-7 clearing brings the list back (Active, no search)", pg.locator("#lNoMatch").is_hidden() and pg.locator("#lSearch").input_value() == "" and pg.locator("#lList li").count() > 0)
+    flaky = {"on": True}
+    def drop(route):
+        q = route.request
+        if q.method != "OPTIONS" and flaky["on"] and '"op":"list"' in (q.post_data or "").replace(" ", "") and "locations" in (q.post_data or ""):
+            route.fulfill(status=500, headers=CORS, body=json.dumps({"ok": False})); return
+        admin_route(route)
+    pg.unroute("**/enjoy_admin"); pg.route("**/enjoy_admin", drop)
+    pg.click("#lRefresh"); pg.wait_for_selector("#lRetry:not([hidden])")
+    check("L-7 a failed load says so and offers Try again", "Could not load the places" in pg.locator("#lMsg").inner_text() and pg.locator("#lRetry").inner_text() == "Try again")
+    flaky["on"] = False; pg.click("#lRetry"); pg.wait_for_function("document.getElementById('lRetry').hidden && document.querySelectorAll('#lList li').length > 0")
+    check("L-7 Try again loads the list", pg.locator("#lList li").count() > 0)
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

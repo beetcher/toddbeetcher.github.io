@@ -288,6 +288,7 @@
   });
   $("lRefresh").addEventListener("click", function () { $("lNotice").textContent = ""; loadPlaces(); });
   $("lRetry").addEventListener("click", loadPlaces);
+  $("lClear").addEventListener("click", function () { $("lSearch").value = ""; lShow = STEP; chips().clearAll(); chips().setSelection({ status: ["active"], zone: [] }); renderPlaces(); $("lSearch").focus(); });
   $("lSearch").addEventListener("input", function () { lShow = STEP; renderPlaces(); });
 
 
