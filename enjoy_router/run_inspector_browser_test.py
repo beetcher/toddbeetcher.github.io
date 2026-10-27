@@ -175,7 +175,7 @@ with sync_playwright() as p:
     check("Access: staff emails show in full", "inspector@example.com" in txt and "todd@example.com" in txt, txt[:500])
     check("Access: Invite, Edit, Switch and Resend are switched off", not enabled_write_buttons(pg), enabled_write_buttons(pg))
     check("Access: the Inspector's own row says what the role is, not that they see nothing", "Inspector: sees everything, changes nothing" in txt and "sees nothing in any region" not in txt, txt[:700])
-    check("Access: it is the full view (not the limited one a person who may invite sees)", pg.locator("#accessView h2", has_text="Roles").count() == 1 and "looked after by a super admin" not in txt, txt[:300])
+    check("Access: it is the full view (not the limited one a person who may invite sees)", pg.locator("#acTab-roles").count() == 1 and "looked after by a super admin" not in txt, txt[:300])
     pg.screenshot(path=str(SHOTS / "inspector_access.png"))
 
     # ---------- messages, activity, discovery open

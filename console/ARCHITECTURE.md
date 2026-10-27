@@ -28,6 +28,8 @@ Read this before touching anything in `console/`. Written 2026-10-23 from the Me
 | `people.js` | The People station (`window.PeopleStation`: show, reset, forget, and list, matches, full, problems, dateOut, forgetPick, stale, words for the kit): the list, filter, search, Add, Edit, Merge and undo, Delete, change history, and the Addresses panel on a person's card; the cached pick list and name matching other pages borrow; loads after `places.js` |
 | `organizations.js` | The Organizations station (`window.OrganizationsStation`: show, reset, forget): the list with filter and search, Add, Edit, the active/inactive switch, Delete, and the links panel (people, venues, organizations and places linked to an organization); builds its own page into `#organizationsView` at load; loads after `students.js` |
 | `messages.js`, `activity.js`, `performance.js`, `access.js`, `discovery.js` | One station each |
+| `access-roles.js` | Shared part of the Access page (`window.ConsoleAccessRoles`: CAPS, TERR, drawRoles, drawCaps, roleForm): the Roles tab and the permission list; loads after `roster-engine.js`, before the stations; access.js hands in what it owns |
+| `access-territory.js` | Shared part of the Access page (`window.ConsoleAccessTerritory`: draw): the Territory tab (who works where); same loading rule |
 
 A station file loads **after** `console.js` (it needs `ConsoleKit`) and **after** `filters.js`. `console.css` is the one stylesheet.
 

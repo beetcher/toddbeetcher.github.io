@@ -42,6 +42,8 @@ wi_reg = AR.create(store, {"kind": "region", "name": "Madison", "state_code": "W
 old_person = PE.create(store, {"email": "olga@example.com", "display_name": "Olga Old", "role_id": head["id"], "scope_region_id": reg2["id"]}, A).data   # the retired single region
 
 def rows(pg, sel): return pg.locator(sel).count()
+def tab(pg, n):
+    pg.click("#acTab-%s" % n); pg.wait_for_selector("#acTab-%s[aria-selected=true]" % n)
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -52,11 +54,13 @@ with sync_playwright() as p:
     pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
     check("Access is a station on the home page, marked admin", pg.locator('#stationTiles .tile[data-go="access"]').count() == 1 and "admin" in pg.locator('#stationTiles .tile[data-go="access"]').inner_text().lower())
     pg.select_option("#collPick", "access"); pg.wait_for_selector("#accessView .acrow")
-    check("both people are listed with their roles", rows(pg, "#accessView .acrow") >= 4 and "Todd Beetcher" in pg.inner_text("#accessView") and "Hana Head" in pg.inner_text("#accessView"))
+    check("both people are listed with their roles", rows(pg, "#accessView .acrow") >= 3 and "Todd Beetcher" in pg.inner_text("#accessView") and "Hana Head" in pg.inner_text("#accessView"))
     txt = pg.inner_text("#accessView")
     check("a person who never signed in says so", "Has not signed in yet" in txt)
+    tab(pg, "roles"); rtxt = pg.inner_text("#accessView")
     check("the capability table lists all 19, and says which apply inside a territory", pg.locator("#accessView table tr").count() == 20 and "Inside a person's territory" in pg.locator("#accessView table").inner_text() and "Everywhere (from the role)" in pg.locator("#accessView table").inner_text(), pg.locator("#accessView table tr").count())
-    check("the super admin role says it does everything", "Everything, including access" in txt)
+    check("the super admin role says it does everything", "Everything, including access" in rtxt)
+    tab(pg, "people")
 
     # ---- invite
     pg.get_by_role("button", name="Invite someone", exact=True).click(); pg.wait_for_selector("#apEmail")
@@ -95,6 +99,7 @@ with sync_playwright() as p:
     check("the last super admin cannot be switched off, and the page says why", PE.find_live_by_email(store, "todd@example.com")["is_active"] is True)
 
     # ---- roles
+    tab(pg, "roles")
     pg.get_by_role("button", name="Add a role", exact=True).click(); pg.wait_for_selector("#arKey")
     labels = pg.locator("#accessView .accaps input").evaluate_all("els => els.map(e => e.value)")
     check("the role form offers 18 capabilities and never manage_access", len(labels) == 18 and "inspect_everything" in labels and "manage_access" not in labels and "edit_regions" in labels, labels)
@@ -107,16 +112,16 @@ with sync_playwright() as p:
     pg.get_by_role("button", name="Save", exact=True).click(); pg.wait_for_function("document.getElementById('accessView').innerText.includes('view_console, view_messages')")
     helper = RO.list(store, {"key": "helper"}).data["records"][0]
     check("the role is saved with its capabilities", sorted(helper["capabilities"]) == ["view_console", "view_messages"] and helper["is_active"] and not helper["is_super_admin"])
-    pg.get_by_role("button", name="Invite someone", exact=True).click(); pg.wait_for_selector("#apRole")
-    check("a new role can be given to an invited person at once", "Helper" in pg.inner_text("#apRole")); pg.get_by_role("button", name="Cancel", exact=True).click()
+    tab(pg, "people"); pg.get_by_role("button", name="Invite someone", exact=True).click(); pg.wait_for_selector("#apRole")
+    check("a new role can be given to an invited person at once", "Helper" in pg.inner_text("#apRole")); pg.get_by_role("button", name="Cancel", exact=True).click(); tab(pg, "roles")
     pg.locator("#accessView .acrow", has_text="Helper").first.get_by_role("button", name="Switch off", exact=True).click(); pg.wait_for_function("document.querySelector('#accessView .acrow.off')")
-    pg.get_by_role("button", name="Invite someone", exact=True).click(); pg.wait_for_selector("#apRole")
+    tab(pg, "people"); pg.get_by_role("button", name="Invite someone", exact=True).click(); pg.wait_for_selector("#apRole")
     check("a switched-off role is not offered for new invitations", "Helper" not in pg.inner_text("#apRole"))
-    pg.get_by_role("button", name="Cancel", exact=True).click()
+    pg.get_by_role("button", name="Cancel", exact=True).click(); tab(pg, "roles")
     pg.locator("#accessView .acrow.off", has_text="Helper").first.get_by_role("button", name="Switch on", exact=True).click(); pg.wait_for_function("!document.querySelector('#accessView .acrow.off')")
     pg.select_option("#collPick", "home")
     check("leaving the station hides it", not pg.locator("#accessView").is_visible())
-    pg.select_option("#collPick", "access"); pg.wait_for_selector("#accessView .acrow")
+    pg.select_option("#collPick", "access"); pg.wait_for_selector("#accessView .acrow"); tab(pg, "roles")
     pg.locator("#accessView .acrow", has_text="Helper").first.get_by_role("button", name="Edit", exact=True).click(); pg.wait_for_selector("#arLabel")
     check("the key cannot be changed after the role is saved", pg.locator("#arKey").is_disabled())
     pg.locator('#accessView .accaps input[value="view_messages"]').uncheck(); pg.get_by_role("button", name="Save", exact=True).click(); pg.wait_for_function("!document.getElementById('accessView').innerText.includes('view_messages,')")
@@ -127,6 +132,7 @@ with sync_playwright() as p:
 
 
     # ---- territory: editing grants
+    tab(pg, "people")
     row("Nora Newman").get_by_role("button", name="Edit", exact=True).click(); pg.wait_for_selector("#agBox")
     check("editing shows the grants a person already holds", "Regions in Colorado: Boulder" in pg.inner_text("#agBox"))
     check("a region already in a grant cannot be picked again", pg.locator('#agBox .acadd label', has_text="Boulder").locator("input").is_disabled() and "already in a grant" in pg.inner_text("#agBox .acadd"))
@@ -223,7 +229,7 @@ with sync_playwright() as p:
     check("saving converts it: grants set, the retired field gone", olga["grants"] == [{"kind": "regions", "state_code": "CO", "region_ids": [reg2["id"]], "capabilities": ["edit_venues"]}] and "scope_region_id" not in olga, olga)
     # the two views
     PE.update(store, PE.find_live_by_email(store, "nora@example.com")["id"], {"grants": [{"kind": "state", "state_code": "WI"}]}, A)
-    pg.select_option("#collPick", "home"); pg.select_option("#collPick", "access"); pg.wait_for_selector("#acTerr")
+    pg.select_option("#collPick", "home"); pg.select_option("#collPick", "access"); tab(pg, "territory"); pg.wait_for_selector("#acTerr")
     t = pg.inner_text("#acTerr")
     check("by region: the whole-US line, the states folded, nothing opened yet", "Whole US: Todd Beetcher" in t and pg.locator("#acTerr details").count() == 2 and pg.locator("#acTerr details[open]").count() == 0, t)
     pg.locator("#acTerr details", has_text="Colorado").first.locator("summary").click(); pg.locator("#acTerr details", has_text="Wisconsin").first.locator("summary").click()

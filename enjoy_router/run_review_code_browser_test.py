@@ -114,7 +114,7 @@ with sync_playwright() as p:
     b = launch(p)
     # ---------- R1: the super admin sets a code, then replaces it
     H["store"], toks = new_store()
-    pg = page(b, fake_clock=False); key_in(pg); pg.goto(PAGE + "#/access"); pg.wait_for_selector("#acReview"); pg.wait_for_timeout(200)
+    pg = page(b, fake_clock=False); key_in(pg); pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#acReview"); pg.wait_for_timeout(200)
     check("R1 the super admin sees the Review access code box, with no code active", "No code is active." in read_status(pg) and "view only" in pg.inner_text("#acReview").lower())
     pg.fill("#acReviewCode", "abc"); pg.click("#acReviewSave"); pg.wait_for_function("document.querySelector('#acReviewMsg').innerText.length > 0")
     check("R1 a short code is refused in plain words, nothing is set", "at least 8" in pg.inner_text("#acReviewMsg") and "No code is active." in read_status(pg), pg.inner_text("#acReviewMsg"))
@@ -140,7 +140,7 @@ with sync_playwright() as p:
         H["store"].create("locations", i, {"id": i, "name": name, "kind": "site", "status": "active", "schema_version": 1, "created_at": "2026-01-01T00:00:00Z", "updated_at": "2026-01-01T00:00:00Z", "addresses": [{"usage": "civic", "street_number": "1", "street": "Main St", "locality": "Town", "region": region, "postal_code": zip_, "country": "US"}]}); return i
     zco, zaz = _loc("Boulder Library", "CO", "80301"), _loc("Phoenix Hall", "AZ", "85001")
     zno = _loc("Nowhere Hall", "ZZ", "00000")
-    pg.goto(PAGE + "#/access"); pg.wait_for_selector("#acZones"); pg.wait_for_timeout(200)
+    pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#acZones"); pg.wait_for_timeout(200)
     check("Z1 the super admin sees the Places with no time zone box", "Places with no time zone" in pg.inner_text("#acZones") and pg.locator("#acZoneFill").count() == 0)
     pg.click("#acZoneCheck"); pg.wait_for_selector("#acZoneList")
     check("Z1 checking says how many, and lists the places a person must fix", "3 places have no time zone: 2 can be filled from their ZIP" in pg.inner_text("#acZones") and "Nowhere Hall (ZZ)" in pg.inner_text("#acZoneList") and "Boulder" not in pg.inner_text("#acZoneList") and "Phoenix" not in pg.inner_text("#acZoneList"), pg.inner_text("#acZones"))
@@ -169,7 +169,7 @@ with sync_playwright() as p:
     check("R2 the NEW code signs in and the View only band shows", pg.locator("#viewOnly").is_visible() and "View only." in pg.inner_text("#viewOnly"))
     check("R2 the band does not promise Discovery runs to a review code", "Discovery run" not in pg.inner_text("#viewOnly") and "ends on its own" in pg.inner_text("#viewOnly"), pg.inner_text("#viewOnly"))
     check("R2 the page names the reviewer 'Review access' with the Inspector role, not 'Admin key'", "Review access" in pg.inner_text("#who") and "global inspector" in pg.inner_text("#who").lower(), pg.inner_text("#who"))
-    pg.goto(PAGE + "#/access"); pg.wait_for_timeout(600)
+    pg.goto(PAGE + "#/access/signin"); pg.wait_for_timeout(600)
     check("R2 the reviewer does NOT see the Review access code box (nor can read the status)", pg.locator("#acReview").count() == 0 and pg.locator("#acReviewCode").count() == 0)
     pg.screenshot(path="/tmp/review_code_reviewer.png")
     pg.close()
@@ -178,13 +178,13 @@ with sync_playwright() as p:
     H["store"], toks = new_store()
     pg = page(b, fake_clock=False, google=True); pg.goto(PAGE); pg.wait_for_selector("#googleBtn")
     pg.evaluate("t => { window.__NEXT = t; }", toks["lead"]); pg.click("#googleBtn"); pg.wait_for_selector("#homeView:not([hidden])"); pg.wait_for_timeout(150)
-    pg.goto(PAGE + "#/access"); pg.wait_for_selector("#accessView:not([hidden])"); pg.wait_for_timeout(400)
+    pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#accessView:not([hidden])"); pg.wait_for_timeout(400)
     check("R3 a lead does not see the Review access code box", pg.locator("#acReview").count() == 0)
     pg.close()
 
     # ---------- R4: phone width
     H["store"], toks = new_store()
-    pg = page(b, fake_clock=False, w=390); key_in(pg); pg.goto(PAGE + "#/access"); pg.wait_for_selector("#acReview"); pg.wait_for_timeout(200)
+    pg = page(b, fake_clock=False, w=390); key_in(pg); pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#acReview"); pg.wait_for_timeout(200)
     bx, bs = pg.locator("#acReviewCode").bounding_box(), pg.locator("#acReviewSave").bounding_box()
     check("R4 the box and button fit a phone screen", bx["x"] >= 0 and bx["x"] + bx["width"] <= 391 and bs["x"] + bs["width"] <= 391, (bx, bs))
     pg.screenshot(path="/tmp/review_code_phone.png", full_page=True)
