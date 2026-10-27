@@ -32,8 +32,8 @@ for i in range(83):
     c = CITY[i % 3]
     d = {"name": ("Panera Bread cafe number %d" % i) if i % 3 == 0 else "Site %d" % i, "kind": "site",
          "addresses": [{"usage": "civic", "street_number": str(100 + i), "street": "Main Street", "locality": c[0], "region": c[1], "postal_code": c[2], "country": "US"}]}
-    if i % 4: d["time_zone"] = "America/Denver"
-    LC.create(store, d, A)
+    rec = LC.create(store, d, A).data
+    if i % 4 == 0: store.data["locations"][rec["id"]].pop("time_zone", None)   # create fills the zone from the ZIP; take it off so some places need one
 retired = [r for r in store.data["locations"].values()][:5]
 for r in retired: LC.update(store, r["id"], {"status": "retired"}, A)
 NO_TZ_ACTIVE = len([r for r in store.data["locations"].values() if r.get("status") == "active" and not r.get("time_zone")])
@@ -58,14 +58,28 @@ with sync_playwright() as p:
     check("L-5 Load more shows everything left and the bar goes", pg.locator("#lList li").count() == total_active and pg.locator("#lMore .morebar").count() == 0)
     check("L-5 the count line says how many of how many once narrowed", ("%d of 83 places" % total_active) in pg.locator("#lChips").inner_text(), pg.locator("#lChips").inner_text())
     pg.locator("#lChips .cf-chip", has_text="Needs a time zone").click(); pg.wait_for_timeout(200)
+    check("L-5 the switch carries the number of places that need a zone", NO_TZ_ACTIVE > 0 and pg.locator("#lChips .cf-chip", has_text="Needs a time zone").inner_text().strip().endswith(str(len([r for r in store.data["locations"].values() if not r.get("time_zone")]))), pg.locator("#lChips .cf-chip", has_text="Needs a time zone").inner_text())
     check("L-5 'Needs a time zone' keeps only places with no zone", pg.locator("#lCount").inner_text() == "%d places" % NO_TZ_ACTIVE, pg.locator("#lCount").inner_text())
     pg.locator("#lChips .cf-chip", has_text="Needs a time zone").click(); pg.wait_for_timeout(200)
     pg.locator("#lChips .cf-chip", has_text="Status").click(); pg.wait_for_timeout(200)
-    pg.get_by_label("Retired").check(); pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    pg.locator("input[type=checkbox][value=retired]").check(); pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
     check("L-5 ticking Retired adds the 5 retired places", pg.locator("#lCount").inner_text() == "%d places" % (total_active + 5), pg.locator("#lCount").inner_text())
     pg.fill("#lSearch", "Panera"); pg.wait_for_timeout(200)
     n_pan = len([r for r in store.data["locations"].values() if "Panera" in r.get("name", "")])
     check("L-5 search still narrows the list", pg.locator("#lCount").inner_text() == "%d places" % n_pan, pg.locator("#lCount").inner_text())
+
+    # ===== L-2 row look
+    pg.fill("#lSearch", ""); pg.wait_for_timeout(200)
+    pg.locator("#lChips .cf-chip", has_text="Status").click(); pg.locator("input[type=checkbox][value=retired]").uncheck(); pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    first = pg.locator("#lList li").first
+    check("L-2 the title is the name alone", "·" not in first.locator(".vname").inner_text() and first.locator(".vname").inner_text().startswith(("Panera", "Site")), first.locator(".vname").inner_text())
+    check("L-2 the address sits on a grey line under the name", first.locator(".paddr").count() == 1 and "Main Street" in first.locator(".paddr").inner_text())
+    check("L-2 the kind is in plain words, never the raw word", "Building or campus" in first.inner_text() and "\nsite" not in first.inner_text().lower() + "")
+    xs = pg.evaluate("Array.from(document.querySelectorAll('#lList > li')).slice(0, 4).map(function (e) { return Math.round(e.getBoundingClientRect().left); })")
+    check("L-2 two rows across at 1440", len(set(xs)) == 2, xs)
+    first.locator("button.head").click()
+    check("L-2 an opened card takes the whole width", pg.evaluate("(function(){var l=document.querySelector('#lList > li.open');return l && l.getBoundingClientRect().width > document.getElementById('lList').getBoundingClientRect().width * 0.9;})()"))
+    first.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

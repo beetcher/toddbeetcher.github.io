@@ -80,16 +80,24 @@
     $("lEmpty").hidden = lAll.length > 0;
     $("lNoMatch").hidden = !(lAll.length > 0 && shown.length === 0);
   }
+  var KIND_WORDS = { site: "Building or campus", point: "Doorway or spot", parcel: "Legal lot", route: "Street or trail" };
+  function primaryAddr(rec) {
+    var pick = null;
+    (rec.addresses || []).forEach(function (a) { if (!pick || (a.is_primary && !pick.is_primary)) pick = a; });
+    return locAddr(pick);
+  }
   function placeRow(rec, isNew) {
     var li = mk("li", isNew ? "isnew" : "");
     var head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
     var top = mk("div", "top");
-    top.appendChild(mk("span", "vname", locSummary(rec)));
+    var addrText = primaryAddr(rec);
+    top.appendChild(mk("span", "vname", rec.name || addrText || "(details removed)"));
     var tgl = (rec.status === "active" || rec.status === "retired") ? statusToggle(rec, li, { coll: COLL_L, on: "active", off: "retired", offWord: "Retired", label: "Place", problem: function (res) { return lProblems(res); } }) : null;
     if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
     head.appendChild(top);
+    if (rec.name && addrText) head.appendChild(mk("div", "sub paddr", addrText));
     var bits = [];
-    if (rec.kind) bits.push(rec.kind);
+    if (rec.kind) bits.push(KIND_WORDS[rec.kind] || rec.kind);
     if ((rec.geometries || []).length) bits.push(rec.geometries.length + (rec.geometries.length === 1 ? " GPS point" : " GPS shapes"));
     if ((rec.addresses || []).length > 1) bits.push(rec.addresses.length + " addresses");
     if (rec.is_residential) bits.push("someone lives here");

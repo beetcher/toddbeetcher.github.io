@@ -829,3 +829,10 @@
   header#topbar #who { font-size: var(--text-xs); line-height: 1.2; }
   header#topbar select { flex: 1 1 0; min-width: 0; }
 }
+
+/* Places rows: name as the title, address on a grey line under it; two across on a wide screen, an opened card takes the full width */
+#lList .paddr { overflow-wrap: anywhere; }
+@media (min-width: 1100px) {
+  #lList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  #lList > li.open { grid-column: 1 / -1; }
+}
