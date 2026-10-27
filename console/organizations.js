@@ -19,16 +19,16 @@
     var P = "ro", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
     var root = $("organizationsView");
     root.innerHTML =
-      '<div class="bar"><div><div class="count" id="roCount"></div><div class="meta" id="roChecked"></div></div>' +
+      '<div class="bar phead"><div class="ptext"><h2 class="ptitle" id="roTitle">Organizations</h2><div class="count" id="roCount"></div><div class="meta" id="roChecked"></div></div>' +
       '<div class="actions"><select id="roFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="closed">Closed</option><option value="">All</option></select>' +
-      '<input type="search" id="roSearch" placeholder="Search by name" aria-label="Search by name" autocomplete="off">' +
-      '<button type="button" class="quiet manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="quiet" type="button">Refresh</button>' +
-      '<button id="roAddBtn" type="button">Add organization</button></div></div>' +
+      '<button type="button" class="btn-link manualBtn" data-m="organizations">Manual</button><button id="roRefresh" class="btn-link" type="button">Refresh</button>' +
+      '<button id="roAddBtn" type="button" class="btn-primary">Add organization</button></div></div>' +
       '<form class="panel" id="roAddForm" hidden autocomplete="off" novalidate><h2>Add an organization</h2>' +
       '<div class="hint">Only the name is needed. Everything else can be added later.</div>' +
       '<div id="roAddFields"></div>' +
       '<div class="btns"><button type="submit" id="roSaveBtn">Save organization</button><button type="button" class="quiet" id="roCancelBtn">Cancel</button></div>' +
       '<div class="msg" id="roFMsg" role="alert"></div></form>' +
+      '<input type="search" id="roSearch" class="psearch" placeholder="Find by name" aria-label="Find an organization by name" autocomplete="off">' +
       '<div class="notice" id="roNotice" role="status"></div><div class="msg" id="roMsg" role="alert"></div>' +
       '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
     // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
