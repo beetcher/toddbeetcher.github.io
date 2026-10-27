@@ -52,7 +52,7 @@
   };
 
   var cCtx = { prefix: "c_", schema: null, fields: {} };
-  var cSchemaP = null, cRec = null, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null;
+  var cSchemaP = null, cRec = null, cLoaded = false, cNewId = "", cSlugTouched = false, cVenueFetch = null, cAreas = [];
 
   function getClassSchema() {
     if (!cSchemaP) {
@@ -364,10 +364,17 @@
     var l = mk("label", "f", "Venue"); l.htmlFor = id;
     var sel = mk("select"); sel.id = id;
     var o0 = mk("option", "", "Not chosen yet"); o0.value = ""; sel.appendChild(o0);
-    ConsoleNames.venues().forEach(function (v) { var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o); });
+    // A venue belongs to a region (its ZIP is on the region's list). A class that already has a venue can only move to another venue
+    // in that same region; to go outside it, cancel the class and put the request in a new one. No venue yet, or a venue in no served region: all venues.
+    var cur = rec.venue_id ? ConsoleNames.venueById(rec.venue_id) : null, inRegion = cur ? regionZipsOfZip(cAreas, venueZip(cur)) : null;
+    ConsoleNames.venues().forEach(function (v) {
+      if (inRegion && !inRegion[venueZip(v)] && v.id !== rec.venue_id) return;
+      var o = mk("option", "", (v.name || "(no name)") + (v.status === "active" ? "" : " (inactive)")); o.value = v.id; sel.appendChild(o);
+    });
     if (rec.venue_id && !ConsoleNames.venueById(rec.venue_id)) { var ox = mk("option", "", "(venue not found)"); ox.value = rec.venue_id; sel.appendChild(ox); }
     sel.value = rec.venue_id || "";
     wrap.appendChild(l); wrap.appendChild(sel);
+    if (inRegion) wrap.appendChild(mk("div", "hint", "Only venues in this class's region are listed. To use a venue in another region, cancel this class and put the request in a new one."));
     var er = mk("div", "ferr"); er.id = "ee_c_venue_id"; wrap.appendChild(er);
     cCtx.fields.venue_id = { el: sel, other: null, kind: "text", def: cCtx.schema.properties.venue_id, sec: null, summary: null };
     return wrap;
@@ -627,8 +634,9 @@
   function closeClassEdit() { dropClassEdit(); closeHub(); }
   function openClassEdit(rec) {
     $("cMsg").textContent = "";
-    Promise.all([getClassSchema(), ConsoleNames.loadVenueChoices(), ConsoleNames.loadCurriculumChoices()]).then(function (both) {
-      var schema = both[0];
+    var areasP = admin("list", { limit: 200 }, "discovery_areas").then(function (r) { return r.status === 200 && r.body && r.body.ok ? (r.body.data.records || []) : []; }, function () { return []; });
+    Promise.all([getClassSchema(), ConsoleNames.loadVenueChoices(), ConsoleNames.loadCurriculumChoices(), areasP]).then(function (both) {
+      var schema = both[0]; cAreas = both[3];
       if (!schema) { $("cMsg").textContent = "Could not load the class form. Try again."; return; }
       cCtx.schema = schema; cRec = rec;
       $("cEditTitle").textContent = "Edit " + (rec.title || "class");
@@ -929,6 +937,12 @@
 
   // The ZIPs of the region a request belongs to, as a lookup; null when it has none (then nothing is filtered).
   function venueZip(v) { var a = (v.place && v.place.address) || {}; return String(a.postal_code || v.postal_code || "").slice(0, 5); }
+  function regionZipsOfZip(areas, zip) {   // the ZIP lookup of the live region holding this ZIP, or null
+    var hit = null;
+    areas.forEach(function (a) { if (!hit && a.kind === "region" && a.is_active && !a.deleted_at && (a.zip_codes || []).some(function (z) { return String(z).slice(0, 5) === zip; })) hit = a; });
+    if (!hit) return null;
+    var m = {}; (hit.zip_codes || []).forEach(function (z) { m[String(z).slice(0, 5)] = 1; }); return m;
+  }
   function regionZipsFor(areas, req) {
     var live = areas.filter(function (a) { return a.kind === "region" && a.is_active && !a.deleted_at; }), hit = null;
     live.forEach(function (a) { if (!hit && req.region_id && a.id === req.region_id) hit = a; });
