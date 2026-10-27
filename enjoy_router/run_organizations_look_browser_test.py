@@ -95,6 +95,23 @@ with sync_playwright() as p:
     ptxt = pw.inner_text()
     check("L-4 identifier and dates in plain words", "EIN (tax number): 00-0000000" in ptxt and "Founded: Apr 17, 1999" in ptxt and "Closed: 2005" in ptxt and "ein:" not in ptxt and "1999-04-17" not in ptxt, ptxt)
     pw.locator("button.head").click()
+
+    # ===== L-7 empty, loading, error states
+    pg.fill("#roSearch", "zzzzzz"); pg.wait_for_timeout(250)
+    check("L-7 no match says what to do and offers to clear", pg.locator("#roNoMatch").is_visible() and "No organization matches that." in pg.locator("#roNoMatch").inner_text())
+    pg.click("#roClear"); pg.wait_for_timeout(300)
+    check("L-7 clearing brings the list back", pg.locator("#roNoMatch").is_hidden() and pg.locator("#roSearch").input_value() == "" and pg.locator("#roList li").count() > 0)
+    flaky = {"on": True}
+    def drop(route):
+        q = route.request
+        if q.method != "OPTIONS" and flaky["on"] and "organizations" in (q.post_data or "") and '"op":"list"' in (q.post_data or "").replace(" ", ""):
+            route.fulfill(status=500, headers=CORS, body=json.dumps({"ok": False})); return
+        admin_route(route)
+    pg.unroute("**/enjoy_admin"); pg.route("**/enjoy_admin", drop)
+    pg.click("#roRefresh"); pg.wait_for_selector("#roRetry:not([hidden])")
+    check("L-7 a failed load says so and offers Try again", "Could not load the organizations" in pg.locator("#roMsg").inner_text() and pg.locator("#roRetry").inner_text() == "Try again")
+    flaky["on"] = False; pg.click("#roRetry"); pg.wait_for_function("document.getElementById('roRetry').hidden && document.querySelectorAll('#roList li').length > 0")
+    check("L-7 Try again loads the list", pg.locator("#roList li").count() > 0)
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

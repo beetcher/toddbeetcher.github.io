@@ -30,7 +30,8 @@
       '<input type="search" id="roSearch" class="psearch" placeholder="Find by name" aria-label="Find an organization by name" autocomplete="off">' +
       '<div id="roChips"></div>' +
       '<div class="notice" id="roNotice" role="status"></div><div class="msg" id="roMsg" role="alert"></div>' +
-      '<button type="button" class="quiet" id="roRetry" hidden>Retry</button><ul id="roList"></ul><div id="roMore"></div><div class="empty" id="roEmpty" hidden>No organizations yet.</div>';
+      '<button type="button" class="btn-secondary" id="roRetry" hidden>Try again</button><ul id="roList"></ul><div id="roMore"></div><div class="empty" id="roEmpty" hidden><b>No organizations yet.</b><br>Add the schools, companies or groups you work with.</div>' +
+      '<div class="empty" id="roNoMatch" hidden><b>No organization matches that.</b><br>Try fewer words, or <button type="button" class="btn-link" id="roClear">clear the filters and the search</button>.</div>';
     // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
     var FIELDS = [
       { k: "name", label: "Name", t: "text", add: true, max: 200, hint: "What people call it, for example Ozo Coffee." },
@@ -99,11 +100,11 @@
     FIELDS.forEach(function (f) { if (!f.add) return; var x = mkF(f, "roA_", null); g("AddFields").appendChild(x.wrap); addEls[f.k] = x; });
 
     function load() {
-      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true; if (!S.loaded) UI.skelOn(g("List"));
       return admin("list", { limit: 200 }, "organizations").then(function (res) {
         if (my !== S.seq) return;
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the organizations. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        if (res.status !== 200 || !res.body.ok) { UI.skelOff(g("List")); g("Msg").textContent = "Could not load the organizations. " + adminProblem(res.status); g("Retry").hidden = false; return; }
         S.all = res.body.data.records || []; S.loaded = true; UI.limitNote(g("List"), S.all.length, 200); fillChips(); render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
       });
     }
@@ -147,6 +148,7 @@
       g("Count").textContent = shown.length + (shown.length === 1 ? " organization" : " organizations") + (shown.length !== S.all.length ? " shown of " + S.all.length : "");
       chips().setCount("");
       g("Empty").hidden = S.all.length > 0;
+      g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
     }
     var IDWORDS = { ein: "EIN (tax number)", duns: "D-U-N-S number", nces: "NCES school number", uei: "UEI (federal vendor number)" };
     function kindsLine(rec) { return (rec.kinds || []).map(function (k) { return OKIND_LABEL[k] || k; }).join(", "); }
@@ -438,9 +440,10 @@
       });
     });
     g("Search").addEventListener("input", function () { show = STEP; render(); });
+    g("Clear").addEventListener("click", function () { g("Search").value = ""; show = STEP; chips().clearAll(); chips().setSelection({ status: ["active"] }); render(); g("Search").focus(); });
     g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
     g("Retry").addEventListener("click", load);
-    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("More").textContent = ""; show = STEP; if (cf) cf.setSelection({ status: ["active"] }); g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("NoMatch").hidden = true; g("More").textContent = ""; show = STEP; if (cf) cf.setSelection({ status: ["active"] }); g("Search").value = ""; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
     return S;
   }
 
