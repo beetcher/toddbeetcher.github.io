@@ -801,3 +801,14 @@
   .acv .avopen, .acv .avhist { font-size: 14px; min-height: 40px; padding: 0 6px; }
   .acv .avch li { padding: 3px 0; }
 }
+.acs .acreq { color: var(--err); font-weight: 700; }
+.acs .acperms > summary { font-weight: 600; margin: 6px 0 8px; cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+@media (max-width: 520px) {
+  .acs input[type="search"], .acs input[type="text"], .acs input[type="email"], .acs input[type="number"] { width: 100%; min-height: 44px; box-sizing: border-box; font-size: 16px; }
+  .acs .acform label:has(input[type="checkbox"]), .acs .acchecks label { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+  .acs .acrow { padding: 10px 12px; }
+}
+@media (max-width: 520px) {
+  .acs .acrow .acm { font-size: 14px; margin: 1px 0; line-height: 1.35; }
+  .acs .acrow { margin: 8px 0; }
+}

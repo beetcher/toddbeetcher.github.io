@@ -43,7 +43,11 @@
   function areaName(id) { for (var i = 0; i < S.areas.length; i++) if (S.areas[i].id === id) return S.areas[i].name; return id ? "(missing region)" : ""; }
   function sortBy(f) { return function (a, b) { return String(a[f] || "").toLowerCase() < String(b[f] || "").toLowerCase() ? -1 : 1; }; }
 
-  function field(label, input, id) { var d = mk("div", "acf"); var l = mk("label", "", label); if (id) l.htmlFor = id; d.appendChild(l); d.appendChild(input); return d; }
+  function field(label, input, id, req) {
+    var d = mk("div", "acf"); var l = mk("label", "", label); if (id) l.htmlFor = id;
+    if (req) { var st = mk("span", "acreq", " *"); st.setAttribute("aria-hidden", "true"); l.appendChild(st); input.setAttribute("aria-required", "true"); }
+    d.appendChild(l); d.appendChild(input); return d;
+  }
   function input(type, id, val) { var i = mk("input"); i.type = type; i.id = id; i.value = val || ""; i.autocomplete = "off"; return i; }
   function select(id, opts, val) {
     var s = mk("select"); s.id = id;
@@ -180,7 +184,7 @@
     var f = mk("div", "acform"); var editing = !!p;
     f.appendChild(mk("h3", "", editing ? "Edit " + (p.display_name || p.email) : "Invite someone"));
     var email = input("email", "apEmail", p ? p.email : ""); if (editing && p.google_uid) { email.disabled = true; }
-    f.appendChild(field("Google email (the account they sign in with)", email, "apEmail"));
+    f.appendChild(field("Google email (the account they sign in with)", email, "apEmail", true));
     var nameBox = input("text", "apName", p ? p.display_name : ""), dup = mk("div", "acm acdup"); dup.id = "apDup"; dup.setAttribute("role", "status");
     f.appendChild(field("Name (optional)", nameBox, "apName")); f.appendChild(dup);
     // A soft warning only: two people can share a name, but two records for one person is how an old invitation gets forgotten.
@@ -194,7 +198,7 @@
     var roles = S.roles.filter(function (r) { return r.is_active || (p && p.role_id === r.id); }).sort(sortBy("label")).map(function (r) { return [r.id, r.label + (r.is_super_admin ? " (super admin)" : "")]; });
     var lost = p && !roles.some(function (r) { return r[0] === p.role_id; });     // never fall back silently to the first role in the list
     if (lost) roles.unshift(["", "(role not found: choose one)"]);
-    f.appendChild(field("Role (what they can do everywhere; their territory is set below)", select("apRole", roles, p ? (lost ? "" : p.role_id) : (roles[0] || [""])[0]), "apRole"));
+    f.appendChild(field("Role (what they can do everywhere; their territory is set below)", select("apRole", roles, p ? (lost ? "" : p.role_id) : (roles[0] || [""])[0]), "apRole", true));
     f.appendChild(grantsEditor(p, f.querySelector("#apRole")));
     var err = mk("div", "acerr"); err.id = "apErr"; err.setAttribute("role", "alert"); f.appendChild(err);
     var row = mk("div", "acbtns");
@@ -290,6 +294,7 @@
     if (S.addP) wrap.appendChild(personForm(null));
     var shownP = S.persons.slice().sort(sortBy("email"));
     if (S.persons.length >= FIND_AT) shownP = findBar(wrap, shownP);
+    if (!S.persons.length && !S.addP) wrap.appendChild(mk("p", "acm acempty", "No one has been invited yet. Use Invite someone to add the first person."));
     shownP.forEach(function (p) {
       if (S.editP === p.id) { wrap.appendChild(personForm(p)); return; }
       var r = mk("div", "acrow" + (p.is_active ? "" : " off")); var top = mk("div", "ac1");
@@ -338,7 +343,10 @@
     var tabs = tabsFor(); if (!tabs.some(function (t) { return t[0] === S.tab; })) S.tab = "people";
     if (tabs.length > 1) wrap.appendChild(tabRow(tabs));
     var panel = mk("div", "tabpane"); panel.id = "acPanel"; panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", "acTab-" + S.tab); wrap.appendChild(panel);
-    if (S.tab === "people") drawPeople(panel);
+    if (!S.loaded) {      // not here yet: a grey placeholder while it loads, or the reason and a way to try again
+      if (S.msg) { var rt = btn("Try again", "btn-secondary", function () { S.msg = ""; draw(); load(); }); rt.id = "acRetry"; panel.appendChild(rt); } else panel.appendChild(UI.skeleton(5));
+    }
+    else if (S.tab === "people") drawPeople(panel);
     else if (S.tab === "territory") AT.draw(panel, ctx());
     else if (S.tab === "roles") { AR.drawRoles(panel, ctx()); AR.drawCaps(panel, ctx()); }
     else drawSignIn(panel);

@@ -96,6 +96,7 @@
     bind(c);
     var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", S.addR || S.editR ? "btn-secondary" : "", function () { S.addR = true; S.editR = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h2);
     if (S.addR) wrap.appendChild(roleForm(null));
+    if (!S.roles.length && !S.addR) wrap.appendChild(mk("p", "acm acempty", "There are no roles yet. Add a role to decide what people can do."));
     S.roles.slice().sort(sortBy("label")).forEach(function (ro) {
       if (S.editR === ro.id) { wrap.appendChild(roleForm(ro)); return; }
       var r = mk("div", "acrow" + (ro.is_active ? "" : " off")); var top = mk("div", "ac1");
@@ -115,6 +116,8 @@
   function drawCaps(wrap, c) {
     bind(c);
     wrap.appendChild(mk("h2", "", "What each permission allows"));
+    var det = mk("details", "acperms"); det.id = "acPerms"; det.open = !(window.matchMedia && window.matchMedia("(max-width: 520px)").matches);   // closed on a phone: the table is long
+    det.appendChild(mk("summary", "", "Show the list of permissions and the roles that have each"));
     var all = CAPS.concat([["manage_access", "Invite people, change roles, switch access on and off. Super admin only.", false]]), by = {}; all.forEach(function (x) { by[x[0]] = x; });
     var t = mk("table"); var hd = mk("tr"); ["Permission", "Allows", "Applies", "Roles with this"].forEach(function (h) { hd.appendChild(mk("th", "", h)); }); t.appendChild(hd);
     CAP_GROUPS.forEach(function (g) {
@@ -127,7 +130,7 @@
         tr.appendChild(td); t.appendChild(tr);
       });
     });
-    wrap.appendChild(t);
+    det.appendChild(t); wrap.appendChild(det);
   }
   window.ConsoleAccessRoles = { holders: holders, peopleWord: peopleWord, CAPS: CAPS, TERR: TERR, capName: capName, capNames: capNames, drawRoles: drawRoles, drawCaps: drawCaps, roleForm: roleForm };
 })();
