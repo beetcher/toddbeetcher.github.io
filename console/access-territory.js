@@ -10,7 +10,7 @@
   function territoryView(wrap) {
     var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "Who works where"));
     var tabs = mk("div", "acbtns");
-    [["region", "By region"], ["capability", "By permission"]].forEach(function (t) { tabs.appendChild(btn(t[1], S.view === t[0] ? "" : "quiet", function () { S.view = t[0]; redraw(); })); });
+    [["region", "By region"], ["capability", "By permission"]].forEach(function (t) { var vb = btn(t[1], "btn-secondary", function () { S.view = t[0]; redraw(); }); vb.setAttribute("aria-pressed", S.view === t[0] ? "true" : "false"); tabs.appendChild(vb); });
     h.appendChild(tabs); wrap.appendChild(h);
     var live = S.persons.filter(function (p) { return p.is_active; });
     var holders = function (test) { var out = []; live.forEach(function (p) { var r = roleOf(p); if (r && r.is_super_admin) { out.push({ p: p, caps: TERR, why: "super admin" }); return; }

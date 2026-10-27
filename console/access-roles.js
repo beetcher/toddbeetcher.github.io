@@ -83,7 +83,7 @@
   // The Roles tab: the role cards, then the list of what each permission allows.
   function drawRoles(wrap, c) {
     bind(c);
-    var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", "", function () { S.addR = true; S.editR = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h2);
+    var h2 = mk("div", "ac1"); h2.appendChild(mk("h2", "", "Roles")); h2.appendChild(btn("Add a role", S.addR || S.editR ? "btn-secondary" : "", function () { S.addR = true; S.editR = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h2);
     if (S.addR) wrap.appendChild(roleForm(null));
     S.roles.slice().sort(sortBy("label")).forEach(function (ro) {
       if (S.editR === ro.id) { wrap.appendChild(roleForm(ro)); return; }

@@ -50,7 +50,8 @@
     opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; s.appendChild(op); });
     s.value = val || ""; return s;
   }
-  function btn(text, cls, fn) { var b = mk("button", cls || "", text); b.type = "button"; b.addEventListener("click", fn); return b; }
+  // Cues (DESIGN-RULES.md): "" is the one orange button, "quiet" the outlined one; a class that starts with btn- is used as given.
+  function btn(text, cls, fn) { var b = mk("button", !cls ? "btn-primary" : cls === "quiet" ? "btn-secondary" : cls, text); b.type = "button"; b.addEventListener("click", fn); return b; }
 
 
   // ---- territory (grants): P-60. A person holds grants: the whole US, a whole state, or some regions of one state with their own capabilities.
@@ -118,7 +119,7 @@
         var row = mk("div", "acgrant"); row.appendChild(mk("b", "", grantText(g) + (g.group ? "  [" + g.group + "]" : "")));
         row.appendChild(mk("div", "acm", g.kind === "regions" ? AR.capNames(g.capabilities).join(", ") : "Every permission in " + (g.kind === "all" ? "the whole US" : stateName(g.state_code)) + (g.kind === "state" ? ", including ZIPs no region has claimed (state administrator)." : ".")));
         row.appendChild(btn(S.draft.editing === i ? "Editing below" : "Edit", "quiet", function () { S.draft.editing = i; render(); }));
-        row.appendChild(btn("Remove", "quiet", function () { S.draft.grants.splice(i, 1); S.draft.editing = null; render(); }));
+        row.appendChild(btn("Remove", "btn-link", function () { S.draft.grants.splice(i, 1); S.draft.editing = null; render(); }));
         box.appendChild(row);
       });
       var ed = S.draft.editing, eg = ed != null ? S.draft.grants[ed] : null, fresh = !!eg;     // fresh: the form still shows the grant being edited
@@ -167,7 +168,7 @@
         if (ed != null) { S.draft.grants[ed] = g; S.draft.editing = null; } else S.draft.grants.push(g);
         render();
       }));
-      if (eg) add.appendChild(btn("Cancel editing", "quiet", function () { S.draft.editing = null; render(); }));
+      if (eg) add.appendChild(btn("Cancel editing", "btn-link", function () { S.draft.editing = null; render(); }));
       box.appendChild(add); fillRegions(); fillCaps(); show();
     }
     if (roleSel) roleSel.addEventListener("change", render);
@@ -202,7 +203,7 @@
   }
 
   function toggle(coll, rec, label) {
-    return btn(rec.is_active ? "Switch off" : "Switch on", "quiet", function () {
+    return btn(rec.is_active ? "Switch off" : "Switch on", rec.is_active ? "btn-link" : "btn-secondary", function () {
       adm("update", { id: rec.id, changes: { is_active: !rec.is_active }, expected_updated_at: rec.updated_at }, coll).then(function (res) {
         S.rowMsg = null; S.msg = ok(res) ? label + (rec.is_active ? " switched off." : " switched on.") : why(res); load();
       });
@@ -237,7 +238,7 @@
   }
 
   function drawPeople(wrap) {
-    var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
+    var h = mk("div", "ac1"); h.appendChild(mk("h2", "", "People")); h.appendChild(btn("Invite someone", S.addP || S.editP ? "btn-secondary" : "", function () { S.addP = true; S.editP = null; S.msg = ""; S.rowMsg = null; draw(); })); wrap.appendChild(h);
     if (S.addP) wrap.appendChild(personForm(null));
     S.persons.slice().sort(sortBy("email")).forEach(function (p) {
       if (S.editP === p.id) { wrap.appendChild(personForm(p)); return; }
@@ -355,7 +356,7 @@
         box.appendChild(ul);
       }
     }
-    var cb = btn(r ? "Check again" : "Check places", "", function () { runZones(false); }); cb.id = "acZoneCheck"; cb.disabled = Z.busy; box.appendChild(cb);
+    var cb = btn(r ? "Check again" : "Check places", "btn-secondary", function () { runZones(false); }); cb.id = "acZoneCheck"; cb.disabled = Z.busy; box.appendChild(cb);
     var m = mk("div", "acerr", Z.msg); m.id = "acZoneMsg"; m.setAttribute("role", "status"); box.appendChild(m);
     return box;
   }

@@ -752,3 +752,6 @@
 .acs .acchip.on{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}
 .acs .acchip.sup{background:#ffe9b3;border-color:#c98a00;color:#6a4500}
 .acs .acbtns{display:flex;gap:6px;flex-wrap:wrap}
+.acs button.btn-secondary[aria-pressed="true"]{background:var(--ink);color:var(--white)}
+.acs .acbtns button{white-space:nowrap}
+.acs .acform button.btn-primary,.acs .acform button.btn-secondary{min-height:44px}
