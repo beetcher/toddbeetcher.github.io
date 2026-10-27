@@ -23,6 +23,10 @@
   var GROUP_OF = { registration_request: "requests", registration_assignment: "requests", transaction_record: "requests", scheduled_class: "classes", attendance: "classes", curriculum: "classes",
     individual: "people", individual_restricted_detail: "people", merge_event: "people", instructor_roster: "people", student_roster: "people", organization: "people", organization_link: "people",
     venue: "places", location: "places", location_link: "places", access_person: "access", access_role: "access", console_setting: "access" };
+  // Where a kind of record is worked on, for "Open Venues". The link goes to the station; each station finds the record itself.
+  var STATION = { venue: ["venues", "Venues"], scheduled_class: ["classes", "Classes"], registration_request: ["requests", "Requests"], individual: ["people", "People"], location: ["places", "Places"],
+    instructor_roster: ["instructors", "Instructors"], student_roster: ["students", "Students"], organization: ["organizations", "Organizations"], curriculum: ["curriculums", "Curriculum"],
+    access_person: ["access", "Access"], access_role: ["access", "Access"], attendance: ["attendance", "Attendance"] };
   function groupOf(t) { return GROUP_OF[t] || "other"; }
   var WHENS = [["any", "Any time"], ["today", "Today"], ["d7", "Last 7 days"], ["d30", "Last 30 days"]];
   function freshState(seq) { return { checked: "", recId: "", recLabel: "", records: [], more: false, marker: null, paging: false, loaded: false, busy: false, msg: "", q: "", seq: seq, pending: null, openIds: {}, names: {}, tried: {}, sel: null, cf: null }; }
@@ -157,7 +161,9 @@
     var left = mk("div"); left.appendChild(mk("div", "avwho", typeName(e.record_type) + (e.record_label ? " · " + e.record_label : "")));
     var by = mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · Record without a name")); by.title = String(e.created_by || "") + (e.record_label ? "" : " · " + String(e.record_id)); left.appendChild(by); top.appendChild(left);
     var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); right.appendChild(document.createTextNode(" "));
-    right.appendChild(btn("Change history", "quiet", function () { openFor(e.record_id, e.record_label || typeName(e.record_type)); })); top.appendChild(right); r.appendChild(top);
+    var st = STATION[e.record_type];
+    if (st && !S.recId) { var open = mk("a", "btn-link avopen", "Open " + st[1]); open.href = "#/" + st[0]; open.setAttribute("aria-label", "Open " + st[1] + " (" + typeName(e.record_type) + (e.record_label ? " " + e.record_label : "") + ")"); right.appendChild(open); }
+    right.appendChild(btn("Change history", "btn-link avhist", function () { openFor(e.record_id, e.record_label || typeName(e.record_type)); })); top.appendChild(right); r.appendChild(top);
     var ch = e.changes || [], small = (e.action === "edited" || e.action === "deleted" || e.action === "restored") && ch.length <= 2;
     r.appendChild(mk("div", "avwhat", whatLine(e)));
     if (small) { var ul = mk("ul", "avch"); ch.forEach(function (c) { ul.appendChild(changeLine(e, c)); }); r.appendChild(ul); }
@@ -274,6 +280,7 @@
       var chips = mk("div", "avchips"); chips.id = "avChips"; wrap.appendChild(chips);
     }
     wrap.appendChild(mk("div", "avmsg", S.msg)); var role = wrap.lastChild; role.setAttribute("role", "alert");
+    if (S.msg) { var rt = btn("Try again", "btn-secondary", function () { load(); }); rt.id = "avRetry"; role.appendChild(rt); }
     var host = mk("div"); host.id = "avList"; wrap.appendChild(host);
     root.appendChild(wrap);
     if (!S.recId) buildChips($("avChips"));
@@ -284,7 +291,7 @@
   function list() {
     var host = $("avList"), count = $("avCount"); if (!host) return;
     host.textContent = "";
-    if (S.busy && !S.loaded) { count.textContent = "Loading…"; return; }
+    if (S.busy && !S.loaded) { count.textContent = "Loading…"; host.appendChild(UI.skeleton(5)); return; }
     if (!S.loaded) { count.textContent = ""; return; }
     var q = S.q.trim().toLowerCase(), g = S.recId ? {} : selNow(), since = sinceFor(g.when && g.when[0]);
     var narrowed = !!q || (!S.recId && S.cf && S.cf.isNarrowed());

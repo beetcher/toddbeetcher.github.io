@@ -791,3 +791,13 @@
 .avmore { display: flex; justify-content: center; margin: 14px 0 6px; }
 .avmore button { min-height: 44px; min-width: 200px; }
 #avFirstNew:focus { outline: 2px solid #1b6ec2; outline-offset: 2px; }
+.avopen { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; }
+.avmsg #avRetry { margin-left: 12px; }
+.acv .avhist { min-height: 44px; padding: 0 8px; }
+@media (max-width: 520px) {
+  .acv .avrow { padding: 8px 10px; margin: 6px 0; }
+  .acv .av1 { display: block; }
+  .acv .av1 > div:last-child { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; margin-top: 2px; }
+  .acv .avopen, .acv .avhist { font-size: 14px; min-height: 40px; padding: 0 6px; }
+  .acv .avch li { padding: 3px 0; }
+}
