@@ -231,22 +231,24 @@
     function textIn(max, ph) { var i = mk("input"); i.type = "text"; i.maxLength = max; if (ph) i.placeholder = ph; i.autocomplete = "off"; return i; }
 
     function linksPanel(rec) {
-      var wrap = mk("div", "olinks"), row2 = mk("div", "actions-row"), host = mk("div"), msg = mk("div", "msg"); msg.setAttribute("role", "alert");
-      function btn(label, cls) { var b = mk("button", cls || "quiet", label); b.type = "button"; row2.appendChild(b); return b; }
-      var bShow = btn("Show links"), bAdd = btn("Add link"), bPl = btn("Show places"), bAddPl = btn("Add place");
-      wrap.appendChild(mk("div", "hint", "Links: who and what belongs to this organization, and where it is.")); wrap.appendChild(row2); wrap.appendChild(host); wrap.appendChild(msg);
+      var wrap = mk("div", "olinks"), rowA = mk("div", "actions-row"), rowB = mk("div", "actions-row"), host = mk("div"), msg = mk("div", "msg"); msg.setAttribute("role", "alert");
+      function btn(label, row) { var b = mk("button", "btn-secondary", label); b.type = "button"; row.appendChild(b); return b; }
+      var bShow = btn("Show links", rowA), bAdd = btn("Add link", rowA), bPl = btn("Show places", rowB), bAddPl = btn("Add place", rowB);
+      wrap.appendChild(mk("h3", "dgh", "Links to people, venues and organizations")); wrap.appendChild(mk("div", "hint", "Who and what belongs to " + rec.name + ".")); wrap.appendChild(rowA);
+      wrap.appendChild(mk("h3", "dgh", "Places")); wrap.appendChild(mk("div", "hint", "Where " + rec.name + " is.")); wrap.appendChild(rowB);
+      wrap.appendChild(host); wrap.appendChild(msg);
       function open(builder) { msg.textContent = ""; if (host.firstChild && host.dataset.k === builder.k) { host.textContent = ""; host.dataset.k = ""; return; } host.textContent = ""; host.dataset.k = builder.k; builder(); }
       function actions(l, coll, li, reload) {
         var r = mk("span", "olact");
         if (!l.valid_to) {
-          var e = mk("button", "quiet", "End"); e.type = "button"; r.appendChild(e);
+          var e = mk("button", "btn-secondary", "End"); e.type = "button"; r.appendChild(e);
           e.addEventListener("click", function () {
             e.disabled = true;
             var p = coll === COLL_LK ? admin("end", { id: l.id }, coll) : admin("update", { id: l.id, changes: { valid_to: todayStr() }, expected_updated_at: l.updated_at }, coll);
             p.then(function (res) { if (res.status === 401) { lock("That key did not work."); return; } if (res.status === 200 && res.body.ok) { reload(); } else { e.disabled = false; msg.textContent = res.status === 409 ? "This changed somewhere else. Show the list again." : linkProblems(res); } });
           });
         }
-        var d = mk("button", "danger", "Delete"); d.type = "button"; r.appendChild(d);
+        var d = mk("button", "btn-danger", "Delete"); d.type = "button"; r.appendChild(d);
         d.addEventListener("click", function () {
           if (d.dataset.sure !== "1") { d.dataset.sure = "1"; d.textContent = "Tap again to delete"; setTimeout(function () { d.dataset.sure = ""; d.textContent = "Delete"; }, 4000); return; }
           d.disabled = true;
@@ -303,7 +305,7 @@
         var title = labeled(form, "Role or title (optional)", textIn(100, "for example Superintendent"), pid + "ti");
         var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
         var to = labeled(form, "Until (optional, leave empty if it still applies)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
-        var btns = mk("div", "btns"), s = mk("button", "", "Save link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var btns = mk("div", "btns"), s = mk("button", "btn-primary", "Save link"), c = mk("button", "btn-secondary", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
         var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
         function source() {
           if (type.value === "individual") return peopleList().then(function (l) { return l.map(function (p) { return { id: p.id, name: p.display_name || p.given_name || "(no name)" }; }); });
@@ -316,7 +318,7 @@
             if (type.value !== kind || q.value.trim().toLowerCase() !== term) return;
             var m = list.filter(function (x) { return !term || (x.name || "").toLowerCase().indexOf(term) >= 0; }).slice(0, 8);
             if (!m.length) opts.appendChild(mk("div", "hint", "Nothing found."));
-            m.forEach(function (x) { var b = mk("button", "quiet", x.name); b.type = "button"; b.addEventListener("click", function () { cid = x.id; chosen.textContent = "Chosen: " + x.name; opts.textContent = ""; }); opts.appendChild(b); });
+            m.forEach(function (x) { var b = mk("button", "btn-secondary", x.name); b.type = "button"; b.addEventListener("click", function () { cid = x.id; chosen.textContent = "Chosen: " + x.name; opts.textContent = ""; }); opts.appendChild(b); });
           });
         }
         q.addEventListener("input", find); type.addEventListener("change", function () { cid = ""; chosen.textContent = "Nothing chosen."; q.value = ""; opts.textContent = ""; find(); });
@@ -351,7 +353,7 @@
         var desc = labeled(form, "A few words (optional)", textIn(300, "for example headquarters, factory"), pid + "d");
         var from = labeled(form, "From (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "f");
         var to = labeled(form, "Until (optional)", textIn(10, "YYYY, YYYY-MM or YYYY-MM-DD"), pid + "u");
-        var btns = mk("div", "btns"), s = mk("button", "", "Save place link"), c = mk("button", "quiet", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
+        var btns = mk("div", "btns"), s = mk("button", "btn-primary", "Save place link"), c = mk("button", "btn-secondary", "Cancel"); s.type = "submit"; c.type = "button"; btns.appendChild(s); btns.appendChild(c); form.appendChild(btns);
         var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
         c.addEventListener("click", function () { host.textContent = ""; host.dataset.k = ""; });
         form.addEventListener("submit", function (e) {

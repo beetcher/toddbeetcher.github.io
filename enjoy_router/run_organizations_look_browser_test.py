@@ -123,6 +123,12 @@ with sync_playwright() as p:
     sb, cb = pg.locator("#roSaveBtn").bounding_box(), pg.locator("#roCancelBtn").bounding_box()
     check("L-8 Save and Cancel sit together, Save orange", abs(sb["y"] - cb["y"]) < 4 and "btn-primary" in pg.get_attribute("#roSaveBtn", "class"))
     pg.click("#roCancelBtn")
+
+    # ===== L-6 links panel
+    lp = pg.locator("#roList li").first; lp.locator("button.head").click()
+    check("L-6 the links panel has two labelled groups, outlined buttons", [h.lower() for h in lp.locator(".olinks .dgh").all_inner_texts()] == ["links to people, venues and organizations", "places"] and lp.locator(".olinks button.btn-secondary").count() == 4 and lp.locator(".olinks button.quiet").count() == 0)
+    check("L-6 the four buttons keep their words", lp.locator(".olinks button").all_inner_texts() == ["Show links", "Add link", "Show places", "Add place"], lp.locator(".olinks button").all_inner_texts())
+    lp.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)
