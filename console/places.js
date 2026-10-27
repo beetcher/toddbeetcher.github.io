@@ -80,6 +80,7 @@
     $("lEmpty").hidden = lAll.length > 0;
     $("lNoMatch").hidden = !(lAll.length > 0 && shown.length === 0);
   }
+  var USAGE_WORDS = { civic: "Street address", mailing: "Mailing address", po_box: "PO box", former: "Former address" }, ROLE_WORDS = { center: "center of the place", entrance: "an entrance", other: "something else" };
   var KIND_WORDS = { site: "Building or campus", point: "Doorway or spot", parcel: "Legal lot", route: "Street or trail" };
   function primaryAddr(rec) {
     var pick = null;
@@ -104,13 +105,15 @@
     if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
     var detail = mk("div", "detail");
     detail.appendChild(placeActions(rec));
-    (rec.addresses || []).forEach(function (a, i) { detail.appendChild(line("Address " + (i + 1) + " (" + a.usage + (a.is_primary ? ", main" : "") + ")", locAddr(a) || "(no text)")); });
-    (rec.geometries || []).forEach(function (g, i) {
-      var c = g.geometry.coordinates, t = g.geometry.type === "Point" ? c[1] + ", " + c[0] : g.geometry.type;
-      detail.appendChild(line("GPS " + (i + 1) + " (" + g.role + (g.label ? ", " + g.label : "") + ")", t));
+    (rec.addresses || []).forEach(function (a) { detail.appendChild(line((USAGE_WORDS[a.usage] || "Address") + (a.is_primary ? " (main)" : ""), locAddr(a) || "(no text)")); });
+    (rec.geometries || []).forEach(function (g) {
+      var c = g.geometry.coordinates, t = g.geometry.type === "Point" ? c[1] + ", " + c[0] : "A shape on the map";
+      detail.appendChild(line("GPS point" + (g.role ? ": " + (ROLE_WORDS[g.role] || g.role) : "") + (g.label ? " (" + g.label + ")" : ""), t));
     });
-    ["name", "aliases", "description", "time_zone", "kind", "part_of_location_id", "id"].forEach(function (k) { if (rec[k] !== undefined) detail.appendChild(line(k, str(rec[k]))); });
-    var who = mk("div"), wb = mk("button", "quiet", "Show who is linked here"); wb.type = "button"; who.appendChild(wb);
+    if (rec.aliases && rec.aliases.length) detail.appendChild(line("Also known as", rec.aliases.join(", ")));
+    if (rec.description) detail.appendChild(line("Description", rec.description));
+    detail.appendChild(line("Time zone", rec.time_zone ? UI.zoneName(rec.time_zone) : "Not set yet"));
+    var who = mk("div"), wb = mk("button", "btn-link", "Show who is linked here"); wb.type = "button"; who.appendChild(wb);
     wb.addEventListener("click", function () { wb.disabled = true; showLinked(rec, who, wb); });
     detail.appendChild(who);
     head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });

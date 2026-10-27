@@ -91,6 +91,14 @@ with sync_playwright() as p:
     hs = pg.evaluate("Array.from(document.querySelectorAll('#lList li.open .actions-row button')).map(function (b) { return Math.round(b.getBoundingClientRect().height); })")
     check("L-3 one height (40 px) across the buttons", len(set(hs)) == 1 and hs[0] == 40, hs)
     first.locator("button.head").click()
+
+    # ===== L-4 plain words in the card
+    first.locator("button.head").click()
+    txt = first.inner_text()
+    check("L-4 the card shows no raw field names or ids", not any(w in txt for w in ["time_zone", "part_of_location_id", "aliases", "kind:", "America/", "id:"]) and "loc_" not in txt, txt)
+    check("L-4 the time zone is a plain name (or says not set yet)", ("Time zone: Mountain" in txt or "Time zone: Eastern" in txt or "Time zone: Central" in txt) or "Time zone: Not set yet" in txt, txt)
+    check("L-4 an address line says what kind it is", "Street address" in txt, txt)
+    first.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)
