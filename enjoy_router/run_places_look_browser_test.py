@@ -1,0 +1,71 @@
+#!/usr/bin/env python3
+"""Browser test (Places look, combo build): filters (chips for Status, State and "Needs a time zone"), paging at 50, then (as the steps land) the row,
+button cues, plain words, detail, states, forms and phone. Run from enjoy_router/:  python3 run_places_look_browser_test.py"""
+import sys, json, os, pathlib, tempfile
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from datetime import datetime, timezone
+from crud.memory_doc_store import MemoryDocStore
+from crud import locations_crud as LC
+from crud_endpoint import handle_admin, make_failure_limiter
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    print("skip: playwright is not installed here"); sys.exit(0)
+PAGE = (HERE.parent / "console" / "index.html").as_uri()
+KEY = "k" * 16 + "Z" * 16 + "-browser-test-key"
+SHOTS = pathlib.Path(os.environ.get("SHOTS") or tempfile.mkdtemp(prefix="places_look_")); SHOTS.mkdir(parents=True, exist_ok=True)
+store = MemoryDocStore(""); limiter = make_failure_limiter(); fails = []
+def check(label, ok, detail=""):
+    print(("ok   " if ok else "FAIL ") + label + ("" if ok else " " + str(detail)))
+    if not ok: fails.append(label)
+CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "*", "Content-Type": "application/json"}
+def admin_route(route):
+    q = route.request
+    if q.method == "OPTIONS":
+        route.fulfill(status=204, headers={**CORS, "Access-Control-Allow-Methods": "*"}); return
+    r = handle_admin(q.method, q.headers.get("authorization", ""), (q.post_data or "").encode(), KEY, "v", store, limiter, datetime.now(timezone.utc))
+    route.fulfill(status=r.status, headers=CORS, body=json.dumps(r.body))
+A = "user:admin"
+CITY = [("Boulder", "CO", "80301"), ("Rochester", "MN", "55901"), ("Madison", "WI", "53703")]
+for i in range(83):
+    c = CITY[i % 3]
+    d = {"name": ("Panera Bread cafe number %d" % i) if i % 3 == 0 else "Site %d" % i, "kind": "site",
+         "addresses": [{"usage": "civic", "street_number": str(100 + i), "street": "Main Street", "locality": c[0], "region": c[1], "postal_code": c[2], "country": "US"}]}
+    if i % 4: d["time_zone"] = "America/Denver"
+    LC.create(store, d, A)
+retired = [r for r in store.data["locations"].values()][:5]
+for r in retired: LC.update(store, r["id"], {"status": "retired"}, A)
+NO_TZ_ACTIVE = len([r for r in store.data["locations"].values() if r.get("status") == "active" and not r.get("time_zone")])
+with sync_playwright() as p:
+    exe = "/opt/pw-browsers/chromium"
+    b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
+    pg = b.new_context(viewport={"width": 1440, "height": 1000}).new_page(); errs = []
+    pg.on("pageerror", lambda e: errs.append(str(e)))
+    pg.route("**/enjoy_admin", admin_route)
+    pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": []}})))
+    pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
+    pg.evaluate("location.hash='#/places'"); pg.wait_for_selector("#lList li")
+    total_active = len([r for r in store.data["locations"].values() if r.get("status") == "active"])
+
+    # ===== L-5 filters and paging
+    check("L-5 the old Active/Retired drop-down is gone and a chip row is there", pg.locator("#lFilter").count() == 0 and pg.locator("#lChips .cf-row").count() == 1)
+    chips_text = pg.locator("#lChips .cf-row").inner_text()
+    check("L-5 chips: Status, State, Needs a time zone", all(w in chips_text for w in ["Status", "State", "Needs a time zone"]), chips_text)
+    check("L-5 Active places only to begin with, 50 rows shown", pg.locator("#lList li").count() == 50 and pg.locator("#lCount").inner_text() == "%d places" % total_active, pg.locator("#lCount").inner_text())
+    check("L-5 'Showing 50 of N places' and a Load more button", pg.locator("#lMore .morebar").count() == 1 and ("Showing 50 of %d places" % total_active) in pg.locator("#lMore").inner_text() and pg.get_by_role("button", name="Load 24 more").count() == 1 if total_active - 50 == 24 else pg.locator("#lMore button").count() == 1, pg.locator("#lMore").inner_text())
+    pg.locator("#lMore button").click()
+    check("L-5 Load more shows everything left and the bar goes", pg.locator("#lList li").count() == total_active and pg.locator("#lMore .morebar").count() == 0)
+    check("L-5 the count line says how many of how many once narrowed", ("%d of 83 places" % total_active) in pg.locator("#lChips").inner_text(), pg.locator("#lChips").inner_text())
+    pg.locator("#lChips .cf-chip", has_text="Needs a time zone").click(); pg.wait_for_timeout(200)
+    check("L-5 'Needs a time zone' keeps only places with no zone", pg.locator("#lCount").inner_text() == "%d places" % NO_TZ_ACTIVE, pg.locator("#lCount").inner_text())
+    pg.locator("#lChips .cf-chip", has_text="Needs a time zone").click(); pg.wait_for_timeout(200)
+    pg.locator("#lChips .cf-chip", has_text="Status").click(); pg.wait_for_timeout(200)
+    pg.get_by_label("Retired").check(); pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    check("L-5 ticking Retired adds the 5 retired places", pg.locator("#lCount").inner_text() == "%d places" % (total_active + 5), pg.locator("#lCount").inner_text())
+    pg.fill("#lSearch", "Panera"); pg.wait_for_timeout(200)
+    n_pan = len([r for r in store.data["locations"].values() if "Panera" in r.get("name", "")])
+    check("L-5 search still narrows the list", pg.locator("#lCount").inner_text() == "%d places" % n_pan, pg.locator("#lCount").inner_text())
+    check("no page errors", not errs, errs)
+    b.close()
+print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

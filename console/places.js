@@ -19,24 +19,64 @@
     var my = ++lSeq;
     $("lMsg").textContent = ""; $("lRetry").hidden = true;
     if (!lLoaded) skelOn($("lList"));
-    var f = $("lFilter").value;
-    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_L).then(function (res) {
+    return admin("list", { filters: {}, limit: 200 }, COLL_L).then(function (res) {
       if (my !== lSeq) return;
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { skelOff($("lList")); $("lMsg").textContent = "Could not load the places. " + adminProblem(res.status); $("lRetry").hidden = false; return; }
       lAll = res.body.data.records || []; lLoaded = true;
       UI.limitNote($("lList"), lAll.length, 200);
+      fillChips();
       renderPlaces();
       $("lChecked").textContent = "Last checked " + fmtClock.format(new Date());
     });
   }
+  // ---- Filters (shared chip bar): Status (Active by default), State, and a switch for places with no time zone. Everything is filtered in the page.
+  var lCf = null, lShow = 50, STEP = 50;
+  function stateOf(r) {
+    var as = r.addresses || [], a = null; as.forEach(function (x) { if (!a && x.is_primary) a = x; }); if (!a) a = as[0];
+    return (a && a.region) ? String(a.region).toUpperCase() : "none";
+  }
+  function chips() {
+    if (lCf) return lCf;
+    lCf = UI.chipFilters({
+      mount: $("lChips"), label: "Place filters",
+      filters: [
+        { id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "retired", label: "Retired" }] },
+        { id: "state", label: "State", kind: "search-multi", options: [{ value: "none", label: "No state" }] },
+        { id: "zone", label: "Needs a time zone", kind: "toggle", noun: "places" }],
+      onChange: function () { lShow = STEP; $("lNotice").textContent = ""; renderPlaces(); }
+    });
+    lCf.setSelection({ status: ["active"] });
+    return lCf;
+  }
+  function fillChips() {
+    var cf = chips(), by = {}, cs = { active: 0, retired: 0 }, noZone = 0;
+    lAll.forEach(function (r) { var st = stateOf(r); by[st] = (by[st] || 0) + 1; if (cs[r.status] !== undefined) cs[r.status]++; if (!r.time_zone) noZone++; });
+    var opts = Object.keys(by).filter(function (k) { return k !== "none"; }).sort().map(function (k) { return { value: k, label: k }; }).concat([{ value: "none", label: "No state" }]);
+    cf.setOptions("state", opts);   // choices already made are kept; new states start ticked
+    cf.setCounts({ status: cs, state: by });
+    cf.setBadge("zone", noZone || "");
+  }
   function renderPlaces() {
-    var q = $("lSearch").value.trim().toLowerCase(), list = $("lList");
-    var shown = lAll.filter(function (r) { return !q || (locSummary(r) + " " + (r.aliases || []).join(" ")).toLowerCase().indexOf(q) >= 0; });
+    var q = $("lSearch").value.trim().toLowerCase(), list = $("lList"), sel = chips().getSelection();
+    var st = sel.status || [], sts = sel.state || [], needZone = !!(sel.zone && sel.zone.length);
+    var shown = lAll.filter(function (r) {
+      if (st.indexOf(r.status) < 0) return false;
+      if (sts.indexOf(stateOf(r)) < 0) return false;
+      if (needZone && r.time_zone) return false;
+      return !q || (locSummary(r) + " " + (r.aliases || []).join(" ")).toLowerCase().indexOf(q) >= 0;
+    }).sort(function (a, b) { var x = locSummary(a).toLowerCase(), y = locSummary(b).toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
+    var vis = shown.slice(0, lShow), had = list.children.length;
     list.textContent = "";
-    shown.forEach(function (r) { list.appendChild(placeRow(r, r.id === lNewId)); });
+    vis.forEach(function (r) { list.appendChild(placeRow(r, r.id === lNewId)); });
     lNewId = "";
-    $("lCount").textContent = lAll.length + (lAll.length === 1 ? " place" : " places");
+    UI.moreBar($("lMore"), vis.length, shown.length, STEP, function () {
+      lShow += STEP; renderPlaces();
+      var fresh = $("lList").children[had]; if (fresh && fresh.querySelector("button.head")) fresh.querySelector("button.head").focus();
+    }, "places");
+    $("lCount").textContent = shown.length + (shown.length === 1 ? " place" : " places");
+    var narrowed = shown.length !== lAll.length;
+    chips().setCount(narrowed && lAll.length ? shown.length + " of " + lAll.length + " places" : "");
     $("lEmpty").hidden = lAll.length > 0;
     $("lNoMatch").hidden = !(lAll.length > 0 && shown.length === 0);
   }
@@ -202,7 +242,8 @@
   function resetPlaces() {
     lLoaded = false; lAll = []; lNewId = "";
     $("lList").textContent = ""; $("lCount").textContent = ""; $("lChecked").textContent = ""; $("lMsg").textContent = ""; $("lNotice").textContent = "";
-    $("lEmpty").hidden = true; $("lNoMatch").hidden = true; $("lSearch").value = ""; $("lFilter").value = "active";
+    $("lEmpty").hidden = true; $("lNoMatch").hidden = true; $("lSearch").value = ""; lShow = STEP; $("lMore").textContent = "";
+    if (lCf) { lCf.setSelection({ status: ["active"], zone: [] }); }
     $("lAddForm").hidden = true; $("lAddBtn").hidden = false; $("lAddFields").textContent = "";
   }
   var lBlock = null;
@@ -222,16 +263,15 @@
         var d = res.body.data, same = d.address_matches || [];
         lNewId = d.id; $("lNotice").textContent = "Saved " + locSummary(d) + "." + (same.length ? " Heads up: " + same.length + " other saved " + (same.length === 1 ? "place has" : "places have") + " this same address. Nothing was merged." : "");
         $("lAddForm").hidden = true; $("lAddBtn").hidden = false;
-        if ($("lFilter").value === "retired") $("lFilter").value = "active";
+        lLoaded = false; chips().setSelection({ status: ["active"] });
         loadPlaces(); return;
       }
       $("lFMsg").textContent = "Could not save: " + lProblems(res);
     });
   });
-  $("lFilter").addEventListener("change", function () { $("lNotice").textContent = ""; loadPlaces(); });
   $("lRefresh").addEventListener("click", function () { $("lNotice").textContent = ""; loadPlaces(); });
   $("lRetry").addEventListener("click", loadPlaces);
-  $("lSearch").addEventListener("input", renderPlaces);
+  $("lSearch").addEventListener("input", function () { lShow = STEP; renderPlaces(); });
 
 
 

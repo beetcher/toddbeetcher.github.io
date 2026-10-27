@@ -415,11 +415,6 @@
         <div class="meta" id="lChecked"></div>
       </div>
       <div class="actions">
-        <select id="lFilter" aria-label="Filter by status">
-          <option value="active">Active</option>
-          <option value="retired">Retired</option>
-          <option value="">All</option>
-        </select>
         <button type="button" class="btn-link manualBtn" data-m="places">Manual</button>
         <button id="lRefresh" class="btn-link" type="button">Refresh</button>
         <button id="lAddBtn" type="button" class="btn-primary">Add place</button>
@@ -436,10 +431,12 @@
       <div class="msg" id="lFMsg" role="alert"></div>
     </form>
     <input type="search" id="lSearch" class="psearch" placeholder="Find by name or address" aria-label="Find a place by name or address" autocomplete="off">
+    <div id="lChips"></div>
     <div class="notice" id="lNotice" role="status"></div>
     <div class="msg" id="lMsg" role="alert"></div>
     <button type="button" class="quiet" id="lRetry" hidden>Retry</button>
     <ul id="lList"></ul>
+    <div id="lMore"></div>
     <div class="empty" id="lEmpty" hidden>No places yet.</div>
     <div class="empty" id="lNoMatch" hidden>No place matches that.</div>
   </section>
