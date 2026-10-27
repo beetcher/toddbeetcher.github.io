@@ -138,6 +138,7 @@ with sync_playwright() as p:
     check("who is linked: Bob current, Ann ended", "Bob Ray" in t and "Ann Lee" in t and "(ended)" in t)
     pg.fill("#lSearch", "lyons"); check("search by address", pg.locator("#lList li").count() == 1)
     pg.fill("#lSearch", "")
+    pg.wait_for_timeout(400)   # the list reloads after a save; let it finish before opening a card
     arap = pg.locator("#lList li", has_text="Arapahoe"); arap.locator("button.head").click()
 
     arap.get_by_role("button", name="Add GPS point").click()
@@ -148,6 +149,7 @@ with sync_playwright() as p:
     gf.get_by_label("Latitude").fill("40.015"); gf.get_by_label("Longitude").fill("-105.2705"); gf.get_by_label("Label (optional)").fill("front door")
     gf.get_by_role("button", name="Add GPS point").click()
     pg.wait_for_function("document.getElementById('lNotice').textContent.indexOf('Saved') === 0")
+    pg.wait_for_timeout(400)   # the list reloads after a save; let it finish before opening a card
     arap = pg.locator("#lList li", has_text="Arapahoe"); arap.locator("button.head").click()
     check("GPS point saved on the place", "GPS point: center of the place (front door)" in arap.inner_text() and "40.015, -105.2705" in arap.inner_text())
     check("stored as GeoJSON longitude first", [x for x in places() if x.get("addresses") and x["addresses"][0]["street"] == "Arapahoe Ave"][0]["geometries"][0]["geometry"]["coordinates"] == [-105.2705, 40.015])
@@ -157,6 +159,7 @@ with sync_playwright() as p:
     af.get_by_label("PO box number (if it is a PO box)").fill("88"); af.get_by_label("City", exact=True).fill("Boulder"); af.get_by_label("ZIP code", exact=True).fill("80302")
     af.get_by_role("button", name="Add address").click()
     pg.wait_for_function("document.querySelectorAll('#lList li')[0] && document.getElementById('lNotice').textContent.indexOf('Saved') === 0")
+    pg.wait_for_timeout(400)   # the list reloads after a save; let it finish before opening a card
     arap = pg.locator("#lList li", has_text="Arapahoe"); arap.locator("button.head").click()
     check("second address (PO box) added to the same place", "Mailing address" in arap.inner_text() and "PO Box 88" in arap.inner_text())
     arap.get_by_role("button", name="Retire").click()
@@ -175,11 +178,8 @@ with sync_playwright() as p:
     check("GPS needs both numbers", "-180 to 180" in pg.locator("#lAddFields").inner_text())
     pg.locator("#lAddFields").get_by_label("GPS longitude (optional)").fill("-105.3")
     pg.locator("#lAddFields").get_by_label("Name of the place (optional)").fill("Trail head")
-    pg.locator("#lAddFields").get_by_label("Time zone (optional)").fill("Mars/Base")
-    pg.click("#lSaveBtn")
-    pg.wait_for_function("document.getElementById('lFMsg').textContent.length > 0")
-    check("bad time zone named", "time zone" in pg.locator("#lFMsg").inner_text().lower())
-    pg.locator("#lAddFields").get_by_label("Time zone (optional)").fill("America/Denver")
+    check("the Add form's time zone is a drop-down (a made-up zone cannot be typed; the server still refuses one)", pg.locator("#lAddFields").get_by_label("Time zone (optional)").evaluate("e => e.tagName") == "SELECT")
+    pg.locator("#lAddFields").get_by_label("Time zone (optional)").select_option("America/Denver")
     pg.click("#lSaveBtn")
     pg.wait_for_function("document.getElementById('lNotice').textContent.indexOf('Saved Trail head') === 0")
     check("place with only a name and GPS saved", any(x.get("name") == "Trail head" and x["geometries"][0]["role"] == "center" for x in places()))

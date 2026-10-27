@@ -123,6 +123,18 @@ with sync_playwright() as p:
     check("L-7 a failed load says so and offers Try again", "Could not load the places" in pg.locator("#lMsg").inner_text() and pg.locator("#lRetry").inner_text() == "Try again")
     flaky["on"] = False; pg.click("#lRetry"); pg.wait_for_function("document.getElementById('lRetry').hidden && document.querySelectorAll('#lList li').length > 0")
     check("L-7 Try again loads the list", pg.locator("#lList li").count() > 0)
+
+    # ===== L-8 forms
+    pg.click("#lAddBtn"); pg.wait_for_selector("#lAddFields .fsec")
+    secs = [h.lower() for h in pg.locator("#lAddFields .fsec").all_inner_texts()]
+    check("L-8 the Add form has sections", secs == ["about the place", "address", "map point (optional)", "time zone"], secs)
+    check("L-8 it says at least one of name, street or GPS is needed", "at least one of" in pg.locator("#lAddFields").inner_text())
+    city, state, street = [pg.locator("#lAddFields").get_by_label(n, exact=True).bounding_box() for n in ("City", "State", "Street address")]
+    check("L-8 City and State sit side by side on a wide screen, street address takes the full row", abs(city["y"] - state["y"]) < 4 and street["width"] > city["width"] * 1.6, (city, state, street))
+    check("L-8 time zone is a drop-down with plain names", pg.locator("#lAddFields").get_by_label("Time zone (optional)").inner_text().count("Mountain") == 1)
+    sb, cb = pg.locator("#lSaveBtn").bounding_box(), pg.locator("#lCancelBtn").bounding_box()
+    check("L-8 Save and Cancel sit together", abs(sb["y"] - cb["y"]) < 4 and cb["x"] - (sb["x"] + sb["width"]) < 40)
+    pg.click("#lCancelBtn")
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

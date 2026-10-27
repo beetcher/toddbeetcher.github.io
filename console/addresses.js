@@ -60,21 +60,27 @@
 
   // A reusable block of address boxes. opts: name, description, tz, gps, usageChoice. block.read() -> {ok, data}.
   function addrForm(opts) {
-    var box = mk("div"), f = {};
-    function add(key, label, hint, max, ph) {
-      var l = mk("label", "f", label), el = mk("input"); el.type = "text"; el.maxLength = max || 120; el.autocomplete = "off"; if (ph) el.placeholder = ph;
+    var box = mk("div", "afbox"), f = {}, cur = box, sections = !!(opts.name || opts.gps || opts.tz || opts.description);
+    function sec(title, grid) {   // a heading (only when the form has more than one part) and, for the address boxes, a two-column grid on wide screens
+      if (sections && title) cur = box, cur.appendChild(mk("h3", "fsec", title));
+      if (grid) { cur = mk("div", "fgrid"); box.appendChild(cur); } else cur = box;
+    }
+    function add(key, label, hint, max, ph, wide) {
+      var w = mk("div", "fld" + (wide ? " fwide" : "")), l = mk("label", "f", label), el = mk("input"); el.type = "text"; el.maxLength = max || 120; el.autocomplete = "off"; if (ph) el.placeholder = ph;
       el.id = "af" + K.afNext() + "_" + key; l.htmlFor = el.id;
-      box.appendChild(l); box.appendChild(el); if (hint) box.appendChild(mk("div", "hint", hint));
-      var er = mk("div", "ferr"); box.appendChild(er); f[key] = { el: el, err: er };
+      w.appendChild(l); w.appendChild(el); if (hint) w.appendChild(mk("div", "hint", hint));
+      var er = mk("div", "ferr"); w.appendChild(er); cur.appendChild(w); f[key] = { el: el, err: er, wrap: w };
     }
-    if (opts.name) add("name", "Name of the place (optional)", "For example: Boulder Public Library, or Home.", 200);
+    if (opts.name) { sec("About the place"); if (!opts.optional) box.appendChild(mk("div", "hint", "Give the place at least one of: a name, a street address or a GPS point.")); add("name", "Name of the place (optional)", "For example: Boulder Public Library, or Home.", 200); }
+    if (opts.description) { var dl = mk("label", "f", "Description (optional)"), dt = mk("textarea"); dt.maxLength = 2000; dt.id = "af" + K.afNext() + "_desc"; dl.htmlFor = dt.id; box.appendChild(dl); box.appendChild(dt); f.description = { el: dt, err: mk("div", "ferr") }; box.appendChild(mk("div", "hint", "About the place itself, for example: brick building, parking behind. Never who lives there.")); }
+    sec(opts.name || opts.gps || opts.tz ? "Address" : "", true);
     if (opts.usageChoice) {
-      var ul = mk("label", "f", "What kind of address"), us = mk("select"); us.id = "af" + K.afNext() + "_usage"; ul.htmlFor = us.id;
+      var uw = mk("div", "fld fwide"), ul = mk("label", "f", "What kind of address"), us = mk("select"); us.id = "af" + K.afNext() + "_usage"; ul.htmlFor = us.id;
       [["civic", "Street address"], ["mailing", "Mailing address"], ["po_box", "PO box"], ["former", "Former address"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; us.appendChild(op); });
-      box.appendChild(ul); box.appendChild(us); f.usage = { el: us, err: mk("div", "ferr") };
+      uw.appendChild(ul); uw.appendChild(us); cur.appendChild(uw); f.usage = { el: us, err: mk("div", "ferr") };
     }
-    add("street_line", "Street address", "For example: 123 Walnut St. Type it on one line.", 140); add("unit", "Apartment or suite (optional)", "", 60);
-    if (opts.usageChoice) add("po_box", "PO box number (if it is a PO box)", "", 20);
+    add("street_line", "Street address", "For example: 123 Walnut St. Type it on one line.", 140, "", true); add("unit", "Apartment or suite (optional)", "", 60, "", true);
+    if (opts.usageChoice) add("po_box", "PO box number (if it is a PO box)", "", 20, "", true);
     add("locality", "City", "", 120); add("region", "State", "Two letters, for example CO.", 60); add("postal_code", "ZIP code", "", 20);
     add("country", "Country", "Two letters. US for the United States.", 2);
     f.country.el.value = "US";
@@ -90,14 +96,17 @@
         f.locality.el.value = x.c || ""; f.region.el.value = x.s || ""; f.postal_code.el.value = x.z || ""; auto = { c: x.c || "", s: x.s || "", z: x.z || "" };
       }
       rs.addEventListener("change", fillRecent);
-      var anchor = f.locality.el.previousSibling;
-      box.insertBefore(rl, anchor); box.insertBefore(rs, anchor);
-      box.insertBefore(mk("div", "hint", "From your recent entries. Change any box to overwrite."), anchor);
+      var anchor = f.locality.wrap, rw = mk("div", "fld fwide"), grid = anchor.parentNode;
+      rw.appendChild(rl); rw.appendChild(rs); rw.appendChild(mk("div", "hint", "From your recent entries. Change any box to overwrite."));
+      grid.insertBefore(rw, anchor);
       rs.value = "0"; fillRecent();
     }
-    if (opts.gps) { add("lat", "GPS latitude (optional)", "A number from -90 to 90, for example 40.0150.", 20); add("lon", "GPS longitude (optional)", "A number from -180 to 180, for example -105.2705.", 20); }
-    if (opts.description) { var dl = mk("label", "f", "Description (optional)"), dt = mk("textarea"); dt.maxLength = 2000; dt.id = "af" + K.afNext() + "_desc"; dl.htmlFor = dt.id; box.appendChild(dl); box.appendChild(dt); f.description = { el: dt, err: mk("div", "ferr") }; box.appendChild(mk("div", "hint", "About the place itself, for example: brick building, parking behind. Never who lives there.")); }
-    if (opts.tz) add("time_zone", "Time zone (optional)", "For example America/Denver.", 64);
+    if (opts.gps) { sec("Map point (optional)", true); add("lat", "GPS latitude (optional)", "A number from -90 to 90, for example 40.0150.", 20); add("lon", "GPS longitude (optional)", "A number from -180 to 180, for example -105.2705.", 20); }
+    if (opts.tz) {
+      sec("Time zone"); var zw = mk("div", "fld"), zl = mk("label", "f", "Time zone (optional)"), zs = mk("select"); zs.id = "af" + K.afNext() + "_time_zone"; zl.htmlFor = zs.id;
+      [["", "(none)"]].concat(UI.zoneOptions()).forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; zs.appendChild(op); });
+      zw.appendChild(zl); zw.appendChild(zs); zw.appendChild(mk("div", "hint", "Leave it empty to let the ZIP code decide later.")); var ze = mk("div", "ferr"); zw.appendChild(ze); box.appendChild(zw); f.time_zone = { el: zs, err: ze, wrap: zw };
+    }
     box.read = function () {
       Object.keys(f).forEach(function (k) { f[k].err.textContent = ""; });
       var v = function (k) { return f[k] ? f[k].el.value.trim() : ""; }, ok = true, data = {}, a = {};

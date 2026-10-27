@@ -843,3 +843,9 @@
 
 #lList .dgroup { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
 #lList .dgh { margin: 0 0 var(--space-2); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* Address form (shared by Places, People, Instructors and Students): sections, and two columns on a wide screen */
+.afbox .fsec { margin: var(--space-7) 0 var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.afbox .fsec:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
+.afbox .fgrid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--space-7); }
+@media (min-width: 1100px) { .afbox .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .afbox .fgrid .fwide { grid-column: 1 / -1; } }

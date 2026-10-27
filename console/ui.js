@@ -139,6 +139,7 @@
   // Plain names for the U.S. time zones the Console uses (the raw IANA name is never shown on its own).
   var ZONE_NAMES = { "America/New_York": "Eastern", "America/Chicago": "Central", "America/Denver": "Mountain", "America/Phoenix": "Arizona (no daylight saving)",
                      "America/Los_Angeles": "Pacific", "America/Anchorage": "Alaska", "America/Adak": "Aleutian (Alaska islands)", "Pacific/Honolulu": "Hawaii" };
+  function zoneOptions() { return Object.keys(ZONE_NAMES).map(function (k) { return [k, ZONE_NAMES[k]]; }); }
   function zoneName(tz) { return tz ? (ZONE_NAMES[tz] || String(tz).replace(/_/g, " ")) : ""; }
   // A label with a red "required" star (hidden from screen readers; the field itself carries aria-required).
   function requiredLabel(text, forId) {
@@ -153,5 +154,5 @@
     b.type = "button"; b.addEventListener("click", onMore); d.appendChild(t); d.appendChild(b); host.appendChild(d); return d;
   }
 
-  window.UI = { zoneName: zoneName, requiredLabel: requiredLabel, moreBar: moreBar, skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+  window.UI = { zoneName: zoneName, zoneOptions: zoneOptions, requiredLabel: requiredLabel, moreBar: moreBar, skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();
