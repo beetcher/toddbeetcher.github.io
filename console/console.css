@@ -840,3 +840,6 @@
 /* Places card actions: one orange button first, Delete last and set apart; one height (40 px, 44 px on a phone) comes from the btn- classes */
 #lList .actions-row { align-items: center; }
 #lList .actions-row .pdel { margin-left: auto; }
+
+#lList .dgroup { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+#lList .dgh { margin: 0 0 var(--space-2); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }

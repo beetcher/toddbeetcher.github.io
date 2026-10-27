@@ -99,6 +99,13 @@ with sync_playwright() as p:
     check("L-4 the time zone is a plain name (or says not set yet)", ("Time zone: Mountain" in txt or "Time zone: Eastern" in txt or "Time zone: Central" in txt) or "Time zone: Not set yet" in txt, txt)
     check("L-4 an address line says what kind it is", "Street address" in txt, txt)
     first.locator("button.head").click()
+
+    # ===== L-6 detail groups
+    first.locator("button.head").click()
+    heads = [h.lower() for h in first.locator(".dgh").all_inner_texts()]
+    check("L-6 the card has Addresses, Details and Linked to groups", heads[0] == "addresses" and "details" in heads and heads[-1] == "linked to", heads)
+    check("L-6 time zone sits under Details, who is linked under Linked to", first.locator(".dgroup", has_text="Time zone").locator(".dgh").inner_text().lower() == "details" and first.locator(".dgroup", has_text="Show who is linked here").locator(".dgh").inner_text().lower() == "linked to")
+    first.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

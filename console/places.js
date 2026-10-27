@@ -105,17 +105,21 @@
     if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
     var detail = mk("div", "detail");
     detail.appendChild(placeActions(rec));
-    (rec.addresses || []).forEach(function (a) { detail.appendChild(line((USAGE_WORDS[a.usage] || "Address") + (a.is_primary ? " (main)" : ""), locAddr(a) || "(no text)")); });
+    function group(title) { var g = mk("div", "dgroup"); g.appendChild(mk("h3", "dgh", title)); detail.appendChild(g); return g; }
+    var ag1 = rec.addresses && rec.addresses.length ? group("Addresses") : null;
+    (rec.addresses || []).forEach(function (a) { ag1.appendChild(line((USAGE_WORDS[a.usage] || "Address") + (a.is_primary ? " (main)" : ""), locAddr(a) || "(no text)")); });
+    var gg = rec.geometries && rec.geometries.length ? group("GPS points") : null;
     (rec.geometries || []).forEach(function (g) {
       var c = g.geometry.coordinates, t = g.geometry.type === "Point" ? c[1] + ", " + c[0] : "A shape on the map";
-      detail.appendChild(line("GPS point" + (g.role ? ": " + (ROLE_WORDS[g.role] || g.role) : "") + (g.label ? " (" + g.label + ")" : ""), t));
+      gg.appendChild(line("GPS point" + (g.role ? ": " + (ROLE_WORDS[g.role] || g.role) : "") + (g.label ? " (" + g.label + ")" : ""), t));
     });
-    if (rec.aliases && rec.aliases.length) detail.appendChild(line("Also known as", rec.aliases.join(", ")));
-    if (rec.description) detail.appendChild(line("Description", rec.description));
-    detail.appendChild(line("Time zone", rec.time_zone ? UI.zoneName(rec.time_zone) : "Not set yet"));
-    var who = mk("div"), wb = mk("button", "btn-link", "Show who is linked here"); wb.type = "button"; who.appendChild(wb);
+    var dd = group("Details");
+    dd.appendChild(line("Time zone", rec.time_zone ? UI.zoneName(rec.time_zone) : "Not set yet"));
+    if (rec.aliases && rec.aliases.length) dd.appendChild(line("Also known as", rec.aliases.join(", ")));
+    if (rec.description) dd.appendChild(line("Description", rec.description));
+    var lg = group("Linked to"), who = mk("div"), wb = mk("button", "btn-link", "Show who is linked here"); wb.type = "button"; who.appendChild(wb);
     wb.addEventListener("click", function () { wb.disabled = true; showLinked(rec, who, wb); });
-    detail.appendChild(who);
+    lg.appendChild(who);
     head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
     li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
