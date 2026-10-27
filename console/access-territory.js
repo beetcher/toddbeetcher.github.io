@@ -16,11 +16,23 @@
     var holders = function (test) { var out = []; live.forEach(function (p) { var r = roleOf(p); if (r && r.is_super_admin) { out.push({ p: p, caps: TERR, why: "super admin" }); return; }
       grantsOf(p).forEach(function (g) { var res = test(g); if (res) out.push({ p: p, caps: grantCaps(g), why: res }); }); }); return out; };
     var box = mk("div", "acterr"); box.id = "acTerr";
+    var anyAll = holders(function (g) { return g.kind === "all" ? "x" : null; }).some(function (h) { return h.why !== "super admin"; });
+    var stateCover = function (code) { return anyAll || holders(function (g) { return g.kind === "state" && g.state_code === code ? "x" : null; }).some(function (h) { return h.why !== "super admin"; }); };
+    var regionCover = function (rg, code) { return stateCover(code) || holders(function (g) { return g.kind === "regions" && (g.region_ids || []).indexOf(rg.id) >= 0 ? "x" : null; }).some(function (h) { return h.why !== "super admin"; }); };
+    var gaps = {}, gapTotal = 0;
+    areaByKind("state").forEach(function (stA) { var miss = regionsOf(stA.state_code).filter(function (rg) { return !regionCover(rg, stA.state_code); }); gaps[stA.state_code] = miss; gapTotal += miss.length; });
+    var nc = mk("div", "acnc"); nc.id = "acNotCovered"; nc.appendChild(mk("h3", "", "Not covered"));
+    if (!gapTotal) nc.appendChild(mk("div", "acm", "Every region has someone working it (super admins not counted)."));
+    else {
+      nc.appendChild(mk("div", "acm", gapTotal + (gapTotal === 1 ? " region has" : " regions have") + " no one but a super admin. Requests there are seen only by super admins."));
+      areaByKind("state").sort(sortBy("name")).forEach(function (stA) { var miss = gaps[stA.state_code]; if (!miss.length) return; nc.appendChild(mk("div", "acm", stA.name + ": " + miss.map(function (r) { return r.name; }).join(", "))); });
+    }
+    box.appendChild(nc);
     if (S.view === "region") {
       var allU = holders(function (g) { return g.kind === "all" ? "whole US" : null; });
       box.appendChild(mk("div", "acm", "Whole US: " + (allU.length ? allU.map(function (h) { return whoName(h.p); }).join(", ") : "nobody")));
       areaByKind("state").sort(sortBy("name")).forEach(function (stA) {
-        var d = mk("details"); d.open = false; var sm = mk("summary", "", stA.name); d.appendChild(sm);
+        var d = mk("details"); d.open = false; var gn = (gaps[stA.state_code] || []).length, nreg = regionsOf(stA.state_code).length; var sm = mk("summary", "", stA.name + " \u2014 " + nreg + (nreg === 1 ? " region" : " regions") + (gn ? ", " + gn + " not covered" : "")); d.appendChild(sm);
         var admins = holders(function (g) { return g.kind === "state" && g.state_code === stA.state_code ? "state" : null; }).filter(function (h) { return h.why !== "super admin"; });
         d.appendChild(mk("div", "acm", "State administrators (every region and every ZIP, including ZIPs in no region): " + (admins.length ? admins.map(function (h) { return whoName(h.p); }).join(", ") : "nobody")));
         regionsOf(stA.state_code).forEach(function (rg) {

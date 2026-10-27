@@ -7,7 +7,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from datetime import datetime, timezone
 from crud.memory_doc_store import MemoryDocStore
-from crud import access_roles_crud as AR_, access_persons_crud as PE
+from crud import access_roles_crud as AR_, access_persons_crud as PE, discovery_areas_crud as DA
 from crud_endpoint import handle_admin, make_failure_limiter
 try:
     from playwright.sync_api import sync_playwright
@@ -33,6 +33,11 @@ head = AR_.create(store, {"key": "region_head", "label": "Region head", "is_supe
 big = AR_.create(store, {"key": "ops_lead", "label": "Ops lead", "description": "Runs the day to day.", "is_super_admin": False, "is_active": True, "capabilities": ["view_console", "manage_requests", "manage_classes", "edit_venues", "edit_people", "edit_places", "view_messages", "manage_messages", "run_discovery", "view_performance"]}, A).data
 PE.create(store, {"email": "todd@example.com", "display_name": "Todd Beetcher", "role_id": sup["id"]}, A)
 PE.create(store, {"email": "hana@example.com", "display_name": "Hana Head", "role_id": head["id"]}, A)
+DA.create(store, {"kind": "state", "name": "Colorado", "state_code": "CO", "is_active": True}, A)
+bou = DA.create(store, {"kind": "region", "name": "Boulder", "state_code": "CO", "zip_codes": ["80301"], "is_active": True}, A).data
+DA.create(store, {"kind": "region", "name": "Longmont", "state_code": "CO", "zip_codes": ["80501"], "is_active": True}, A)
+area = AR_.create(store, {"key": "area_lead", "label": "Area lead", "is_super_admin": False, "is_active": True, "capabilities": ["view_console", "edit_venues"]}, A).data
+PE.create(store, {"email": "rae@example.com", "display_name": "Rae Region", "role_id": area["id"], "grants": [{"kind": "regions", "state_code": "CO", "region_ids": [bou["id"]], "capabilities": ["edit_venues"]}]}, A)
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -74,6 +79,14 @@ with sync_playwright() as p:
     pg.click("#acTab-territory"); pg.wait_for_selector("#acTerr")
     pg.get_by_role("button", name="By permission", exact=True).click(); pg.wait_for_selector("#acTerr details")
     check("L-2 by permission, the list reads in plain names", "Manage registration requests" in pg.inner_text("#acTerr") and raw_keys("#acTerr") == [], raw_keys("#acTerr"))
+    # ===== L-6 Territory: not covered, collapsed states with counts
+    pg.click("#acTab-territory"); pg.wait_for_selector("#acNotCovered")
+    nc = pg.inner_text("#acNotCovered")
+    check("L-6 Not covered sits at the top of Territory", pg.evaluate("document.querySelector('#acTerr').firstElementChild.id") == "acNotCovered" and "Not covered" in nc, nc)
+    pg.get_by_role("button", name="By region", exact=True).click(); pg.wait_for_selector("#acNotCovered")
+    sums = pg.locator("#acTerr details > summary").all_inner_texts()
+    check("L-6 each state shows its region count and is collapsed", sums and sums == ["Colorado \u2014 2 regions, 1 not covered"] and pg.locator("#acTerr details[open]").count() == 0, sums)
+    check("L-6 not-covered wording is plain and names regions or says all covered", "1 region has no one but a super admin" in nc and "Longmont" in nc and "Boulder" not in nc, nc)
     # ===== L-3 button cues
     pg.click("#acTab-people"); pg.wait_for_selector("#accessView .acrow")
     prim = pg.locator("#acPanel button.btn-primary").all_inner_texts()
@@ -138,7 +151,7 @@ with sync_playwright() as p:
     check("L-5 each permission shows the roles that hold it (Super admin always)", "Region head" in row.inner_text() and "Super admin" in row.inner_text() and "Ops lead" in row.inner_text(), row.inner_text())
     check("L-5 a permission no role holds says so", "No role" in pg.locator("#accessView table tr", has=pg.locator("code.ackey", has_text="view_spend")).inner_text() or "Super admin" in pg.locator("#accessView table tr", has=pg.locator("code.ackey", has_text="view_spend")).inner_text())
 
-    for i in range(8):
+    for i in range(7):
         PE.create(store, {"email": "p%d@example.com" % i, "display_name": "Person %d" % i, "role_id": head["id"], "is_active": i != 5}, "user:admin")
     pg.evaluate("location.hash='#/home'"); pg.evaluate("location.hash='#/access'"); pg.wait_for_selector("#acTab-people"); pg.click("#acTab-people"); pg.wait_for_selector("#acSearch")
     check("L-4 with ten people a search box and Show chips appear, with a count", pg.locator("#acChips .cf-chip").count() == 2 and "10 people" in pg.inner_text("#acCount"), pg.inner_text("#acCount"))
