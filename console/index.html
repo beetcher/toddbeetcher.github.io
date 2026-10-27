@@ -408,8 +408,9 @@
   <section id="performanceView" hidden></section>
 
   <section id="placesView" hidden>
-    <div class="bar">
-      <div>
+    <div class="bar phead">
+      <div class="ptext">
+        <h2 class="ptitle" id="lTitle">Places</h2>
         <div class="count" id="lCount"></div>
         <div class="meta" id="lChecked"></div>
       </div>
@@ -419,9 +420,9 @@
           <option value="retired">Retired</option>
           <option value="">All</option>
         </select>
-        <button type="button" class="quiet manualBtn" data-m="places">Manual</button>
-        <button id="lRefresh" class="quiet" type="button">Refresh</button>
-        <button id="lAddBtn" type="button">Add place</button>
+        <button type="button" class="btn-link manualBtn" data-m="places">Manual</button>
+        <button id="lRefresh" class="btn-link" type="button">Refresh</button>
+        <button id="lAddBtn" type="button" class="btn-primary">Add place</button>
       </div>
     </div>
     <form class="panel" id="lAddForm" hidden autocomplete="off" novalidate>
