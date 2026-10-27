@@ -112,6 +112,107 @@
     var e = endpoint();
     return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_regions') : REGIONS_URL;
   }
+
+  // The place lookup (private page, P-93): a typed ZIP fills in State and Region (or State and City); a region or a city offers its ZIPs.
+  // Any failure is silent: the form works exactly as before without it.
+  var ZIPLOOK_URL = 'https://us-central1-launch-ai-workshop.cloudfunctions.net/enjoy_public_zip';
+  function zipLookUrl() {
+    var e = endpoint();
+    return isLocalPage() ? e.replace('enjoy_registration_request', 'enjoy_public_zip') : ZIPLOOK_URL;
+  }
+  var ALL_STATES = [['AL', 'Alabama'], ['AK', 'Alaska'], ['AZ', 'Arizona'], ['AR', 'Arkansas'], ['CA', 'California'], ['CO', 'Colorado'], ['CT', 'Connecticut'],
+    ['DE', 'Delaware'], ['DC', 'District of Columbia'], ['FL', 'Florida'], ['GA', 'Georgia'], ['HI', 'Hawaii'], ['ID', 'Idaho'], ['IL', 'Illinois'], ['IN', 'Indiana'],
+    ['IA', 'Iowa'], ['KS', 'Kansas'], ['KY', 'Kentucky'], ['LA', 'Louisiana'], ['ME', 'Maine'], ['MD', 'Maryland'], ['MA', 'Massachusetts'], ['MI', 'Michigan'],
+    ['MN', 'Minnesota'], ['MS', 'Mississippi'], ['MO', 'Missouri'], ['MT', 'Montana'], ['NE', 'Nebraska'], ['NV', 'Nevada'], ['NH', 'New Hampshire'],
+    ['NJ', 'New Jersey'], ['NM', 'New Mexico'], ['NY', 'New York'], ['NC', 'North Carolina'], ['ND', 'North Dakota'], ['OH', 'Ohio'], ['OK', 'Oklahoma'],
+    ['OR', 'Oregon'], ['PA', 'Pennsylvania'], ['RI', 'Rhode Island'], ['SC', 'South Carolina'], ['SD', 'South Dakota'], ['TN', 'Tennessee'], ['TX', 'Texas'],
+    ['UT', 'Utah'], ['VT', 'Vermont'], ['VA', 'Virginia'], ['WA', 'Washington'], ['WV', 'West Virginia'], ['WI', 'Wisconsin'], ['WY', 'Wyoming']];
+  var doorOk = false, regionsShown = false, servedOnly = true, zipSeq = 0, citySeq = 0, lastLook = null, cityList = [], zipDatalist = null, regionZipCache = {}, stateCityCache = {};
+  function lookup(query, done) {   // one GET to the place lookup; done(data) on success, nothing at all on any failure
+    if (!window.fetch) return;
+    var ctl = ('AbortController' in window) ? new AbortController() : null;
+    var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    fetch(zipLookUrl() + '?' + query, { method: 'GET', signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { clearTimeout(to); if (j && j.ok && j.data) { doorOk = true; revealServedBox(); done(j.data); } })
+      .catch(function () { clearTimeout(to); });
+  }
+  function revealServedBox() {   // the tick box shows only once the lookup has answered, so a lookup that is down leaves the form as it always was
+    if (doorOk && regionsShown && FIELDS.only_served) FIELDS.only_served.wrap.hidden = false;
+  }
+  function setZipList(items) {   // the ZIP box offers these as you type or from its arrow; typing any other ZIP still works
+    if (!zipDatalist) return;
+    while (zipDatalist.firstChild) zipDatalist.removeChild(zipDatalist.firstChild);
+    items.forEach(function (it) { zipDatalist.appendChild(h('option', { value: it.zip, label: it.zip + (it.town ? ' ' + it.town : '') })); });
+  }
+  function loadRegionZips(rid) {   // the ZIPs of one served region
+    if (!rid) { setZipList([]); return; }
+    if (regionZipCache[rid]) { setZipList(regionZipCache[rid]); return; }
+    lookup('region=' + encodeURIComponent(rid), function (d) {
+      regionZipCache[rid] = Array.isArray(d.zips) ? d.zips : [];
+      if (servedOnly && val('region_id') === rid) setZipList(regionZipCache[rid]);
+    });
+  }
+  function zipLook(z) {   // a complete ZIP was typed: fill in the rest for the person (a stale answer is ignored)
+    var mine = ++zipSeq;
+    lookup('zip=' + encodeURIComponent(z), function (d) {
+      if (mine !== zipSeq || val('postal_code') !== z || !d.found) return;
+      lastLook = d; applyLook(d);
+    });
+  }
+  function applyLook(d) {
+    if (!FIELDS.state_code || FIELDS.state_code.wrap.hidden) return;   // the boxes never loaded: nothing to fill
+    if (servedOnly) {
+      // a served ZIP picks its State and Region; a ZIP nobody serves leaves them alone (the page line says we will find a trainer)
+      if (d.covered && d.region) { FIELDS.state_code.el.value = d.region.state_code; fillRegions(d.region.state_code, d.region.id); rememberRegion(d.region.id); loadRegionZips(d.region.id); }
+    } else {
+      FIELDS.state_code.el.value = d.state_code; fillCities(d.state_code, d.town);
+    }
+  }
+  function fillAllStates(wanted) {
+    var ss = FIELDS.state_code.el;
+    while (ss.firstChild) ss.removeChild(ss.firstChild);
+    ALL_STATES.forEach(function (c) { ss.appendChild(h('option', { value: c[0], text: c[1] })); });
+    ss.value = wanted;
+  }
+  function fillCities(sc, wantedTown) {   // the City box: the state's biggest cities, plus the town of a typed ZIP
+    var sel = FIELDS.city.el, mine = ++citySeq;
+    function paint(list) {
+      if (mine !== citySeq) return;
+      cityList = list;
+      while (sel.firstChild) sel.removeChild(sel.firstChild);
+      sel.appendChild(h('option', { value: '', text: 'City' }));
+      list.forEach(function (c) { sel.appendChild(h('option', { value: c.name, text: c.name })); });
+      if (wantedTown && !list.some(function (c) { return c.name === wantedTown; })) sel.appendChild(h('option', { value: wantedTown, text: wantedTown }));
+      sel.value = wantedTown || '';
+      if (wantedTown) { if (!ZIP_RE.test(val('postal_code'))) onCityPick(); } else onCityPick();
+    }
+    paint([]);   // the town of a typed ZIP shows at once; the full list follows
+    if (stateCityCache[sc]) { paint(stateCityCache[sc]); return; }
+    lookup('state=' + encodeURIComponent(sc), function (d) { stateCityCache[sc] = Array.isArray(d.cities) ? d.cities : []; paint(stateCityCache[sc]); });
+  }
+  function onCityPick() {   // a picked city offers its own ZIPs
+    var name = val('city'), c = cityList.filter(function (x) { return x.name === name; })[0];
+    setZipList(c ? c.zips.map(function (z) { return { zip: z, town: name }; }) : []);
+  }
+  function showServedPick() {   // served areas only: the served States, the remembered (else default) Region, and its ZIPs
+    var names = {}, codes = [];
+    regionList.forEach(function (r) { if (!names[r.state_code]) { names[r.state_code] = r.state_name || r.state_code; codes.push(r.state_code); } });
+    var ss = FIELDS.state_code.el;
+    while (ss.firstChild) ss.removeChild(ss.firstChild);
+    codes.sort(function (a, b) { return names[a].localeCompare(names[b]); }).forEach(function (c) { ss.appendChild(h('option', { value: c, text: names[c] })); });
+    var mine = rememberedRegion(), pick = regionList.filter(function (r) { return r.id === mine; })[0]
+      || regionList.filter(function (r) { return r.state_code === 'CO' && r.name.toLowerCase() === 'boulder'; })[0] || regionList[0];
+    ss.value = pick.state_code; fillRegions(pick.state_code, pick.id); loadRegionZips(pick.id);
+  }
+  function setServedOnly(on) {   // the "Only areas we serve now" box
+    servedOnly = on;
+    FIELDS.region_id.wrap.hidden = !on; FIELDS.city.wrap.hidden = on;
+    var z = val('postal_code');
+    if (on) showServedPick(); else { var sc = val('state_code') || 'CO'; fillAllStates(sc); fillCities(sc, ''); }
+    loadVenues(ZIP_RE.test(z) ? z : '');
+    if (ZIP_RE.test(z)) zipLook(z);
+  }
   var REGION_KEY = 'icdt_region', regionList = [];
   function rememberedRegion() { try { return window.localStorage.getItem(REGION_KEY) || ''; } catch (e) { return ''; } }
   function rememberRegion(id) { try { if (id) window.localStorage.setItem(REGION_KEY, id); } catch (e) { /* storage blocked: no memory, still works */ } }
@@ -133,15 +234,9 @@
         if (!(j && j.ok && j.data && Array.isArray(j.data.regions))) return;   // failed: the boxes stay hidden and the form works as before
         regionList = j.data.regions.filter(function (r) { return r && typeof r.id === 'string' && typeof r.name === 'string' && typeof r.state_code === 'string'; });
         if (!regionList.length) return;
-        var names = {}, codes = [];
-        regionList.forEach(function (r) { if (!names[r.state_code]) { names[r.state_code] = r.state_name || r.state_code; codes.push(r.state_code); } });
-        var ss = FIELDS.state_code.el;
-        while (ss.firstChild) ss.removeChild(ss.firstChild);
-        codes.sort(function (a, b) { return names[a].localeCompare(names[b]); }).forEach(function (c) { ss.appendChild(h('option', { value: c, text: names[c] })); });
-        var mine = rememberedRegion(), pick = regionList.filter(function (r) { return r.id === mine; })[0]
-          || regionList.filter(function (r) { return r.state_code === 'CO' && r.name.toLowerCase() === 'boulder'; })[0] || regionList[0];
-        ss.value = pick.state_code; fillRegions(pick.state_code, pick.id);
-        FIELDS.state_code.wrap.hidden = false; FIELDS.region_id.wrap.hidden = false;
+        showServedPick();
+        FIELDS.state_code.wrap.hidden = false; regionsShown = true; revealServedBox(); FIELDS.region_id.wrap.hidden = !servedOnly; FIELDS.city.wrap.hidden = servedOnly;
+        if (ZIP_RE.test(val('postal_code'))) zipLook(val('postal_code'));   // a ZIP this device remembers picks its own State and Region
         loadVenues(ZIP_RE.test(val('postal_code')) ? val('postal_code') : '');
       })
       .catch(function () { clearTimeout(to); });
@@ -149,6 +244,7 @@
   function onRegionPick(stateChanged) {
     if (stateChanged) fillRegions(val('state_code'), '');
     rememberRegion(val('region_id'));
+    loadRegionZips(val('region_id'));
     shownZip = null;
     loadVenues(ZIP_RE.test(val('postal_code')) ? val('postal_code') : '');
   }
@@ -261,6 +357,7 @@
     if (trainerZip && z !== trainerZip) hideTrainerNote();   // the message belongs to the ZIP it was said for
     if (z === '') target = ''; else if (ZIP_RE.test(z)) target = z; else return;   // half-typed: wait
     rememberZip(target);
+    if (target) zipLook(target); else zipSeq++;
     if (target === shownZip) return;
     clearTimeout(zipTimer); zipTimer = setTimeout(function () { loadVenues(target); }, 350);
   }
@@ -487,14 +584,24 @@
       trainerNote = h('div', { class: 'rf__note', role: 'status', 'aria-live': 'polite' });   // shown when no active region holds the ZIP (P-83)
       zipField.appendChild(trainerNote);
       if (LEAN) {
+        zipDatalist = h('datalist', { id: nextId('zip_list') });   // the ZIPs of the chosen region or city, offered as you type
+        FIELDS.postal_code.el.setAttribute('list', zipDatalist.id);
+        zipField.appendChild(zipDatalist);
+        need.push(zipField);   // the ZIP comes first: typing it fills in the State and Region (or City) for the person
+        var servedBox = checkField('only_served', 'Only show areas we serve now', { noDraft: true });
+        FIELDS.only_served.el.checked = true;
+        servedBox.appendChild(h('span', { class: 'rf__hint', text: 'Untick it to use any ZIP in the US. We will fill in the city and state.' }));
+        need.push(servedBox);
         need.push(h('div', { class: 'rf__row rf__row--2' }, [
           selectField('state_code', 'State', [], { blank: 'State' }),
           selectField('region_id', 'Region', [], { blank: 'Region' }),
+          selectField('city', 'City', [], { blank: 'City' }),
         ]));
-        ['state_code', 'region_id'].forEach(function (n) { FIELDS[n].noDraft = true; FIELDS[n].wrap.hidden = true; });   // shown once the list arrives; remembered on its own
-        FIELDS.state_code.el.addEventListener('change', function () { onRegionPick(true); });
+        ['state_code', 'region_id', 'city', 'only_served'].forEach(function (n) { FIELDS[n].noDraft = true; FIELDS[n].wrap.hidden = true; });   // shown once the list arrives; remembered on its own
+        FIELDS.only_served.el.addEventListener('change', function () { setServedOnly(FIELDS.only_served.el.checked); });
+        FIELDS.state_code.el.addEventListener('change', function () { if (servedOnly) onRegionPick(true); else { fillCities(val('state_code'), ''); loadVenues(ZIP_RE.test(val('postal_code')) ? val('postal_code') : ''); } });
         FIELDS.region_id.el.addEventListener('change', function () { onRegionPick(false); });
-        need.push(zipField);
+        FIELDS.city.el.addEventListener('change', onCityPick);
       } else whereAsk.push(zipField);
       whereAsk.push(radioField('location_type', 'Where would you like it?', [['home', 'At a home'], ['off_site', 'A public place (a library, cafe, hall or office)']], { required: !LEAN }));
       if (!LEAN) { need = need.concat(whereAsk); whereAsk = []; }
