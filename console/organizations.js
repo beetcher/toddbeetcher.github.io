@@ -158,9 +158,9 @@
       var sub = [kindsLine(rec), rec.short_name].filter(Boolean).join(" · ");
       if (sub) head.appendChild(mk("div", "sub", sub));
       var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
-      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      var ed = mk("button", "btn-primary", "Edit"), del = mk("button", "btn-danger pdel", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);   // cues: Edit orange first, Delete red, last and set apart
       box.appendChild(mk("div", "", "Delete " + (rec.name || "this organization") + "? It disappears from the list but the record is kept. To stop using it without deleting, set it to inactive or closed."));
-      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete organization"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      var b = mk("div", "btns"), yes = mk("button", "btn-danger", "Delete organization"), no = mk("button", "btn-secondary", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
       b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
       ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
       del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });

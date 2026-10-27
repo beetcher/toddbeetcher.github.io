@@ -862,3 +862,6 @@
   #roList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
   #roList > li.open { grid-column: 1 / -1; }
 }
+
+#roList .actions-row { align-items: center; }
+#roList .actions-row .pdel { margin-left: auto; }
