@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """In-memory tests for time zones on places (P-94): the ZIP-to-zone table (spot checks), a place gets its zone from its ZIP when it is saved,
 and the fix_place_zones op fills every older place it can (all states) and lists only the ones it cannot; a dry run writes nothing."""
-import pathlib, sys
+import json, pathlib, sys
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from datetime import datetime, timezone  # noqa: E402
@@ -67,6 +67,40 @@ want = {co: "America/Denver", az: "America/Phoenix", inn: "America/New_York", ev
 check("apply fills them all from their ZIP (Arizona, both Indiana zones, Navajo Nation, Colorado without a ZIP)", done["filled"] == 7 and all(s.get("locations", i)["time_zone"] == z for i, z in want.items()), done)
 check("a place that has a zone is never touched", s.get("locations", kept)["time_zone"] == "America/Denver")
 check("a second run finds only the one a person must fix", place_zones.run(s, A)["without_zone"] == 1)
+
+# ---- Z-1 preview: per zone, samples, why, upcoming classes; Z-2 civic first and the cap per press
+import uuid  # noqa: E402
+s2 = MemoryDocStore("")
+def mk2(name, region, zip_, adds=None):
+    d = {"name": name, "addresses": adds or [addr(region, zip_)]}
+    i = LOC.create(s2, d, A).data["id"]; assert LOC.update(s2, i, {"time_zone": None}, A).ok; return i
+a1, a2, a3 = mk2("Denver One", "CO", "80202"), mk2("Phoenix One", "AZ", "85001"), mk2("Colorado no ZIP", "CO", None)
+mail_first = mk2("Mail first", None, None, [dict(addr("CO", "80202"), usage="mailing"), dict(addr("AZ", "85001"), usage="civic")])
+pre = place_zones.run(s2, A)
+check("preview: counts per zone", pre["by_zone"] == {"America/Denver": 2, "America/Phoenix": 2}, pre["by_zone"])
+check("preview: says how many came from the ZIP and how many from Colorado", pre["from_zip"] == 3 and pre["from_colorado"] == 1, (pre["from_zip"], pre["from_colorado"]))
+check("preview: sample rows carry name, state, ZIP, zone and why", len(pre["samples"]) == 4 and {"name", "state", "zip", "zone", "why"} <= set(pre["samples"][0]) and any(x["name"] == "Colorado no ZIP" and x["why"] == "colorado" for x in pre["samples"]), pre["samples"])
+check("Z-2 the street address is used first (a mailing ZIP listed first does not win)", place_zones.zone_for(s2.get("locations", mail_first)) == "America/Phoenix")
+# a venue at one of these places with an upcoming class that has no zone of its own, and one that has its own zone
+def raw(coll, doc): i = str(uuid.uuid4()); s2.create(coll, i, {"id": i, **doc}); return i
+vid = str(uuid.uuid4()); raw("location_links", {"subject_type": "venue", "subject_id": vid, "location_id": a1})
+raw("scheduled_classes", {"venue_id": vid, "starts_at": "2099-01-01T17:00:00Z", "status": "scheduled"})
+raw("scheduled_classes", {"venue_id": vid, "starts_at": "2099-01-02T17:00:00Z", "status": "scheduled", "time_zone": "America/Denver"})
+raw("scheduled_classes", {"venue_id": vid, "starts_at": "2001-01-01T17:00:00Z", "status": "scheduled"})
+check("preview: counts upcoming classes with no zone of their own at the places to fill (not past, not zoned)", place_zones.run(s2, A)["upcoming_classes"] == 1)
+cls_before = json.dumps(sorted(s2.query("scheduled_classes", [], limit=50), key=lambda d: d["id"]), sort_keys=True)
+done2 = place_zones.run(s2, A, apply=True)
+check("filling changes no class and writes nothing to messages", json.dumps(sorted(s2.query("scheduled_classes", [], limit=50), key=lambda d: d["id"]), sort_keys=True) == cls_before and s2.query("communication_logs", [], limit=5) == [])
+check("apply says how many it filled and that none are left", done2["filled"] == 4 and done2["left"] == 0, done2)
+s3 = MemoryDocStore("")
+for i in range(place_zones.FILL_CAP + 40):
+    d = LOC.create(s3, {"name": "P%d" % i, "addresses": [addr("CO", "80202")]}, A).data["id"]; LOC.update(s3, d, {"time_zone": None}, A)
+r1 = place_zones.run(s3, A, apply=True)
+check("Z-2 one press fills at most the cap and says how many are left", r1["filled"] == place_zones.FILL_CAP and r1["left"] == 40, (r1["filled"], r1["left"]))
+r2 = place_zones.run(s3, A, apply=True)
+check("pressing again fills the rest, then nothing is left", r2["filled"] == 40 and r2["left"] == 0 and place_zones.run(s3, A)["without_zone"] == 0)
+many = place_zones.run(MemoryDocStore(""), A)
+check("an empty store answers zeros", many["without_zone"] == 0 and many["by_zone"] == {} and many["samples"] == [])
 
 K = "k" * 16 + "Z" * 16 + "-browser-test-key"
 def door(body): return handle_admin("POST", "Bearer " + K, body, K, "v", s, make_failure_limiter(), datetime.now(timezone.utc))

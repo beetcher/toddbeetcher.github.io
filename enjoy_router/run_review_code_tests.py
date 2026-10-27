@@ -158,6 +158,9 @@ check("a code may read Discovery (status, runs, ZIP map)", disc(CODE, "status") 
 check("BREAK-IT: a code may not plan, step, stop or withdraw a run (403), and the engine was never called", all(disc(CODE, op, a) == 403 for op, a in (("plan", RUN), ("step", {"run_id": "r"}), ("stop", {"run_id": "r"}), ("withdraw", {"run_id": "r"}))) and not [c for c in eng.calls if c[0] != "quote"], str(eng.calls))
 check("an Inspector who signed in with Google still may plan a run (unchanged)", disc(tok(4), "plan", RUN) == 200)
 
+check("BREAK-IT: the time-zone Fill is refused (403) for an admin, a viewer, an Inspector, a manager and a code sign-in; the super admin may (dry run)",
+      all(call(tok(n), "fix_place_zones", {"apply": True}, "locations")[0] == 403 for n in (2, 3, 4, 5)) and call(CODE, "fix_place_zones", {"apply": True}, "locations")[0] == 403 and call(tok(1), "fix_place_zones", {"apply": False}, "locations")[0] == 200)
+
 # ================================================================ turning it off now
 def clear(bearer): return call(bearer, "clear_review_code")
 check("BREAK-IT: only a super admin or the admin key may turn the code off (403 for the rest, and the code still works)", all(clear(tok(n))[0] == 403 for n in (2, 3, 4, 5)) and clear(CODE)[0] == 403 and me(CODE)[0] == 200)
