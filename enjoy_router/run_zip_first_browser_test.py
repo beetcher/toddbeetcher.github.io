@@ -79,7 +79,7 @@ with sync_playwright() as p:
     stop = pg.eval_on_selector("select[name=state_code]", "e => e.getBoundingClientRect().top")
     check("the ZIP box sits ABOVE State and Region", ztop < stop, (ztop, stop))
     check("State and Region show, City is hidden", shown(pg, "state_code") and shown(pg, "region_id") and not shown(pg, "city"))
-    check("served States only", options(pg, "state_code") == ["CO", "MN", "UT"], options(pg, "state_code"))
+    check("served States only (plus the State prompt)", options(pg, "state_code") == ["", "CO", "MN", "UT"], options(pg, "state_code"))
     pg.wait_for_function("document.querySelectorAll('datalist option').length > 0")
     check("the ZIP box offers the default region's ZIPs", ziplist(pg) == ["80027", "80301"], ziplist(pg))
     check("the ZIP box is wired to its list", pg.eval_on_selector("input[name=postal_code]", "e => !!e.list && e.list.options.length") == 2)
@@ -90,10 +90,35 @@ with sync_playwright() as p:
     pg.fill("input[name=postal_code]", "84101"); pg.wait_for_function("document.querySelector('select[name=state_code]').value === 'UT'")
     check("typing a Utah ZIP flips State to Utah and Region to Salt Lake", pg.input_value("select[name=region_id]") == "r-slc")
     pg.fill("input[name=postal_code]", "10001"); pg.wait_for_function("document.querySelector('.rf__note[data-show=\"1\"]')")
-    check("an unserved ZIP leaves State and Region alone and says we will find a trainer", pg.input_value("select[name=state_code]") == "UT" and pg.input_value("select[name=region_id]") == "r-slc"
+    check("an unserved ZIP clears State and Region (nothing matches it) and says we will find a trainer", pg.input_value("select[name=state_code]") == "" and pg.input_value("select[name=region_id]") == ""
           and "securing the best trainer" in pg.inner_text(".rf__note[data-show='1']"))
     submit(pg)
     check("it is still sent with the ZIP (the server judges coverage)", sent and sent[0].get("postal_code") == "10001", sent)
+
+    # P-93 A: changing State, Region or City by hand clears what no longer matches; one arrow
+    pg3, e5 = page(b); pg3.goto(FORM); pg3.wait_for_selector("input[name=only_served]", state="visible")
+    pg3.wait_for_function("document.querySelectorAll('datalist option').length > 0")
+    pg3.fill("input[name=postal_code]", "80202"); pg3.wait_for_function("document.querySelector('select[name=region_id]').value === 'r-den'")
+    pg3.select_option("select[name=region_id]", "r-bou")
+    check("picking another Region clears the ZIP and offers that region's ZIPs", pg3.input_value("input[name=postal_code]") == "" and ziplist(pg3) == ["80027", "80301"], (pg3.input_value("input[name=postal_code]"), ziplist(pg3)))
+    pg3.fill("input[name=postal_code]", "80202"); pg3.wait_for_function("document.querySelector('select[name=region_id]').value === 'r-den'")
+    pg3.select_option("select[name=state_code]", "UT")
+    check("picking a State clears the ZIP and the one-region State picks its Region", pg3.input_value("input[name=postal_code]") == "" and pg3.input_value("select[name=region_id]") == "r-slc", pg3.input_value("select[name=region_id]"))
+    pg3.select_option("select[name=state_code]", "CO")
+    check("a State with several Regions shows the Region prompt, no ZIP list", pg3.input_value("select[name=region_id]") == "" and ziplist(pg3) == [], (pg3.input_value("select[name=region_id]"), ziplist(pg3)))
+    check("with no list the ZIP box has no arrow", "rf__pick" not in (pg3.get_attribute("input[name=postal_code]", "class") or ""))
+    pg3.select_option("select[name=region_id]", "r-den")
+    check("with a list the ZIP box has the one arrow", "rf__pick" in (pg3.get_attribute("input[name=postal_code]", "class") or ""))
+    pg3.uncheck("input[name=only_served]", force=True); pg3.wait_for_function("document.querySelector('select[name=city]').closest('.rf__field').hidden === false")
+    pg3.fill("input[name=postal_code]", "10001"); pg3.wait_for_function("document.querySelector('select[name=state_code]').value === 'NY'")
+    pg3.wait_for_function("document.querySelector('select[name=city]').value === 'New York'")
+    pg3.select_option("select[name=state_code]", "MN")
+    check("unticked: picking a State clears the City and the ZIP", pg3.input_value("input[name=postal_code]") == "" and pg3.input_value("select[name=city]") == "", (pg3.input_value("input[name=postal_code]"), pg3.input_value("select[name=city]")))
+    pg3.wait_for_function("[...document.querySelectorAll('select[name=city] option')].some(o => o.value === 'Minneapolis')")
+    pg3.fill("input[name=postal_code]", "55401"); pg3.wait_for_timeout(300)
+    pg3.select_option("select[name=city]", "Rochester")
+    check("unticked: picking a City clears the ZIP", pg3.input_value("input[name=postal_code]") == "", pg3.input_value("input[name=postal_code]"))
+    check("no script errors (clearing rules)", not e5, e5)
 
     # unticked: any ZIP in the US
     pg2, errs2 = page(b); pg2.goto(FORM); pg2.wait_for_selector("input[name=only_served]", state="visible")
@@ -118,7 +143,7 @@ with sync_playwright() as p:
     # tick it again
     pg2.goto(FORM); pg2.wait_for_selector("input[name=only_served]", state="visible"); pg2.uncheck("input[name=only_served]", force=True); pg2.check("input[name=only_served]", force=True)
     pg2.wait_for_function("document.querySelector('select[name=region_id]').closest('.rf__field').hidden === false")
-    check("ticking it again brings Region back, hides City, and limits States to served ones", shown(pg2, "region_id") and not shown(pg2, "city") and options(pg2, "state_code") == ["CO", "MN", "UT"])
+    check("ticking it again brings Region back, hides City, and limits States to served ones", shown(pg2, "region_id") and not shown(pg2, "city") and options(pg2, "state_code") == ["", "CO", "MN", "UT"])
     check("no script errors", not errs and not errs2, (errs, errs2))
 
     # the lookup is down: the form is exactly as before (no tick box), and still works
