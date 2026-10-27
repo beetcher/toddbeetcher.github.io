@@ -140,9 +140,11 @@
     var wrap = mk("div"), row = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
     var err = mk("div", "msg"); err.setAttribute("role", "alert");
     function btn(label, cls) { var b = mk("button", cls || "", label); b.type = "button"; row.appendChild(b); return b; }
-    var ed = btn("Edit"), aa = btn("Add address", "quiet"), ag = btn("Add GPS point", "quiet"), ra = btn("Remove an address or GPS point", "quiet");
-    var hl = historyBtn(rec.id, rec.name || rec.label || "this place"); if (hl) row.insertBefore(hl, aa);
-    var rt = btn(rec.status === "retired" ? "Restore" : "Retire", "quiet"), del = btn("Delete", "danger");
+    // Cues (DESIGN-RULES.md): Edit is the one orange button, three outlined actions, the two links, then Delete red, last and set apart.
+    var ed = btn("Edit", "btn-primary"), aa = btn("Add address", "btn-secondary"), ag = btn("Add GPS point", "btn-secondary");
+    var rt = btn(rec.status === "retired" ? "Restore" : "Retire", "btn-secondary");
+    var hl = historyBtn(rec.id, rec.name || rec.label || "this place"); if (hl) { hl.className = "btn-link"; row.appendChild(hl); }
+    var ra = btn("Remove an address or GPS point", "btn-link"), del = btn("Delete", "btn-danger pdel");
     function open(builder) { box.hidden = true; err.textContent = ""; if (host.firstChild) { host.textContent = ""; return; } host.appendChild(builder()); }
     function save(changes, done) {
       admin("update", { id: rec.id, changes: changes, expected_updated_at: rec.updated_at }, COLL_L).then(function (r) {
@@ -233,7 +235,7 @@
     }); });
     rt.addEventListener("click", function () { host.textContent = ""; box.hidden = true; err.textContent = ""; save({ status: rec.status === "retired" ? "active" : "retired" }); });
     box.appendChild(mk("div", "", "Delete this place? It is hidden from the lists but the record is kept. A place with a live link cannot be deleted."));
-    var bb = mk("div", "btns"), yes = mk("button", "danger", "Delete place"), no = mk("button", "quiet", "Cancel"); yes.type = "button"; no.type = "button"; bb.appendChild(yes); bb.appendChild(no); box.appendChild(bb);
+    var bb = mk("div", "btns"), yes = mk("button", "btn-danger", "Delete place"), no = mk("button", "btn-secondary", "Cancel"); yes.type = "button"; no.type = "button"; bb.appendChild(yes); bb.appendChild(no); box.appendChild(bb);
     del.addEventListener("click", function () { host.textContent = ""; err.textContent = ""; box.hidden = !box.hidden; });
     no.addEventListener("click", function () { box.hidden = true; });
     yes.addEventListener("click", function () {

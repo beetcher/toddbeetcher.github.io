@@ -836,3 +836,7 @@
   #lList { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
   #lList > li.open { grid-column: 1 / -1; }
 }
+
+/* Places card actions: one orange button first, Delete last and set apart; one height (40 px, 44 px on a phone) comes from the btn- classes */
+#lList .actions-row { align-items: center; }
+#lList .actions-row .pdel { margin-left: auto; }

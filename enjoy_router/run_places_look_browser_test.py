@@ -80,6 +80,17 @@ with sync_playwright() as p:
     first.locator("button.head").click()
     check("L-2 an opened card takes the whole width", pg.evaluate("(function(){var l=document.querySelector('#lList > li.open');return l && l.getBoundingClientRect().width > document.getElementById('lList').getBoundingClientRect().width * 0.9;})()"))
     first.locator("button.head").click()
+
+    # ===== L-3 button cues
+    first.locator("button.head").click()
+    row = first.locator(".actions-row").first
+    check("L-3 one orange button (Edit), first", row.locator("button.btn-primary").count() == 1 and row.locator("button").first.inner_text() == "Edit")
+    check("L-3 no more than three outlined buttons", row.locator("button.btn-secondary").count() == 3, row.locator("button.btn-secondary").all_inner_texts())
+    check("L-3 Delete is red and the last button", row.locator("button").last.inner_text() == "Delete" and "btn-danger" in (row.locator("button").last.get_attribute("class") or ""))
+    check("L-3 History is a plain link", row.locator("button.btn-link", has_text="Change history").count() == 1)
+    hs = pg.evaluate("Array.from(document.querySelectorAll('#lList li.open .actions-row button')).map(function (b) { return Math.round(b.getBoundingClientRect().height); })")
+    check("L-3 one height (40 px) across the buttons", len(set(hs)) == 1 and hs[0] == 40, hs)
+    first.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)
