@@ -220,6 +220,31 @@
     if (keep) { var set = { kind: keep.kind, change: keep.change, when: keep.when }; if (keep.who) set.who = keep.who; S.cf.setSelection(set); }
   }
 
+  // ---- bursts: one source making the same kind of change over and over (a Discovery run, the time zone fix-up) folds into one line.
+  var BURST_MIN = 3, BURST_GAP = 60000;
+  function sameRun(a, b) { return a.created_by === b.created_by && a.action === b.action && a.record_type === b.record_type && Math.abs(new Date(a.created_at) - new Date(b.created_at)) <= BURST_GAP; }
+  function foldBursts(entries) {
+    var out = [], i = 0;
+    while (i < entries.length) {
+      var j = i + 1; while (j < entries.length && sameRun(entries[j - 1], entries[j])) j++;
+      if (j - i >= BURST_MIN) out.push({ burst: entries.slice(i, j) }); else for (var k = i; k < j; k++) out.push(entries[k]);
+      i = j;
+    }
+    return out;
+  }
+  function span(ms) { var s = Math.round(ms / 1000); return s < 60 ? s + " second" + (s === 1 ? "" : "s") : Math.floor(s / 60) + " min " + (s % 60) + " s"; }
+  function burstCard(list) {
+    var e = list[0], last = list[list.length - 1], r = mk("div", "avrow avburst"), top = mk("div", "av1"), left = mk("div");
+    left.appendChild(mk("div", "avwho", list.length + " " + typeName(e.record_type) + " entries"));
+    left.appendChild(mk("div", "avm", K.when(last.created_at) + " to " + K.when(e.created_at) + " · " + actorName(e.created_by)));
+    top.appendChild(left); var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); top.appendChild(right); r.appendChild(top);
+    r.appendChild(mk("div", "avwhat", list.length + " " + String(VERB[e.action] || e.action).toLowerCase() + " within " + span(new Date(e.created_at) - new Date(last.created_at)) + ", one after another."));
+    var d = mk("details"); d.appendChild(mk("summary", "avm", "Show all " + list.length + " entries")); var built = false, key = "burst:" + e.id;
+    if (S.openIds[key]) d.open = true;
+    function build() { if (built || !d.open) return; built = true; var wrap = mk("div", "avburstlist"); list.forEach(function (x) { wrap.appendChild(entryCard(x)); }); d.appendChild(wrap); }
+    d.addEventListener("toggle", function () { S.openIds[key] = d.open; build(); }); build(); r.appendChild(d); return r;
+  }
+
   function dayLabel(d) {
     var t = dayStart(new Date()), y = new Date(t.getTime() - 864e5), x = dayStart(d);
     if (x.getTime() === t.getTime()) return "Today";
@@ -270,10 +295,10 @@
     count.textContent = shown.length + (narrowed ? " of " + S.records.length + " entries" : " entr" + (shown.length === 1 ? "y" : "ies")) + (S.records.length >= MAXN ? " (the newest " + MAXN + " are loaded)" : "");
     if (!shown.length) { host.appendChild(mk("div", "avm", narrowed ? "No entries match these filters." : "Nothing has been recorded here yet.")); return; }
     var lastDay = "";
-    shown.forEach(function (e) {
-      var d = new Date(e.created_at), key = isNaN(d) ? "" : d.toDateString();
+    foldBursts(shown).forEach(function (item) {
+      var first = item.burst ? item.burst[0] : item, d = new Date(first.created_at), key = isNaN(d) ? "" : d.toDateString();
       if (key && key !== lastDay) { lastDay = key; host.appendChild(mk("h3", "avday", dayLabel(d))); }
-      host.appendChild(entryCard(e));
+      host.appendChild(item.burst ? burstCard(item.burst) : entryCard(item));
     });
   }
 
