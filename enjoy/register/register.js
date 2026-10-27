@@ -144,6 +144,11 @@
     if (!zipDatalist) return;
     while (zipDatalist.firstChild) zipDatalist.removeChild(zipDatalist.firstChild);
     items.forEach(function (it) { zipDatalist.appendChild(h('option', { value: it.zip, label: it.zip + (it.town ? ' ' + it.town : '') })); });
+    var zel = FIELDS.postal_code && FIELDS.postal_code.el;   // a visible arrow and a placeholder tell the person they can pick instead of typing
+    if (zel) {
+      if (items.length) { zel.classList.add('rf__pick'); zel.setAttribute('placeholder', 'Pick from the list or type'); }
+      else { zel.classList.remove('rf__pick'); zel.removeAttribute('placeholder'); }
+    }
   }
   function loadRegionZips(rid) {   // the ZIPs of one served region
     if (!rid) { setZipList([]); return; }
