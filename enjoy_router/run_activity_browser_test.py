@@ -74,7 +74,7 @@ with sync_playwright() as p:
     pg.select_option("#avMode", "action"); pg.select_option("#avValue", "deleted"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
     check("filter: only deletes", "Deleted" in pg.inner_text("#activityView .avrow") and "Pearl Street Library" in pg.inner_text("#activityView .avrow"))
     pg.select_option("#avMode", "record_type"); pg.select_option("#avValue", "venue"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 4")
-    check("filter: one kind of record", "Person" not in pg.inner_text("#avList"))
+    check("filter: one kind of record", "Person ·" not in pg.inner_text("#avList"))
     pg.select_option("#avMode", "all"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length >= 6")
     pg.fill("#avSearch", "pearl"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 2")
     check("search narrows what is on the screen", "Pearl Street Library" in pg.inner_text("#avList") and "Trident" not in pg.inner_text("#avList") and "of" in pg.inner_text("#avCount"))

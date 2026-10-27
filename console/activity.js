@@ -25,6 +25,15 @@
   function ok(res) { return res.status === 200 && res.body && res.body.ok; }
   function typeName(t) { for (var i = 0; i < TYPES.length; i++) if (TYPES[i][0] === t) return TYPES[i][1]; return String(t || "").replace(/_/g, " "); }
   function human(f) { var s = String(f || "").replace(/_/g, " "); return s.charAt(0).toUpperCase() + s.slice(1); }
+  // Plain names for the engine's field names (anything not listed here is the name with spaces: "Home phone").
+  var LABELS = { found_at: "Found on", allows_minors: "Open to under 18", has_wifi: "Wi-Fi", is_accessible: "Accessible", is_public_venue: "Public venue",
+    postal_code: "ZIP code", website_url: "Website", model_name: "AI model", prompt_version: "Prompt version", run_id: "Run", time_zone: "Time zone", is_active: "Switched on",
+    role_id: "Role", display_name: "Name", given_name: "First name", family_name: "Last name", name_to_use: "Name to use", scope_region_id: "Region", state_code: "State",
+    region_ids: "Regions", capabilities: "Can do", is_super_admin: "Super admin", record_label: "Name", expected_updated_at: "Version", created_by: "Created by",
+    updated_by: "Updated by", deleted_by: "Deleted by", decided_by: "Decided by", handled_by: "Handled by", published_by: "Published by", unmerged_by: "Unmerged by",
+    withdrawn_by: "Withdrawn by", google_uid: "Google sign-in", last_sign_in_at: "Last sign-in", session_timeout_minutes: "Sign-out minutes", zip_codes: "ZIP codes",
+    zips: "ZIP codes", lat: "Latitude", lng: "Longitude", venue_id: "Venue", class_id: "Class", location_id: "Place", organization_id: "Organization" };
+  function fieldLabel(f) { return LABELS[f] || human(f); }
 
   // Fields that hold who did something. Their values are actors (user:<id>, user:admin, web:enjoy ...) and are shown as names.
   var ACTOR_FIELDS = { created_by: 1, updated_by: 1, deleted_by: 1, decided_by: 1, handled_by: 1, published_by: 1, unmerged_by: 1, withdrawn_by: 1 };
@@ -39,11 +48,11 @@
     if (a === "user:admin") return "Admin key";
     if (a === "web:enjoy") return "Website form";
     if (a === "web:completion") return "Completion link";
-    if (a === "system:unattributed") return "System (no name recorded)";
+    if (a === "system:unattributed") return "Automatic job";
     var i = a.indexOf(":"); if (i < 0) return a || "Unknown";
     var kind = a.slice(0, i), rest = a.slice(i + 1);
     if (kind === "user") return S.names[rest] || rest;
-    return kind === "system" ? "System (" + rest + ")" : kind === "web" ? "Website (" + rest + ")" : rest;
+    return kind === "system" ? "Automatic job (" + rest.replace(/_/g, " ") + ")" : kind === "web" ? "Website (" + rest.replace(/_/g, " ") + ")" : rest;
   }
 
   // The stored actor for a name typed in the "Person or source" box: a person's name (or part of an id), "Admin key", "Website form" ...
@@ -108,6 +117,7 @@
       ".acv .avch{margin:6px 0 0;padding:0;list-style:none}.acv .avch li{padding:4px 0;border-top:1px solid #eee;font-size:15px;overflow-wrap:anywhere}" +
       ".acv .avfield{font-weight:700}.acv .avold{text-decoration:line-through;color:#8a3b30}.acv .avnew{color:#1d4d00}.acv .avw{font-style:italic;color:var(--muted)}" +
       ".acv .avfocus{border:2px solid var(--orange);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffaf0;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}" +
+      ".acv .avwhat{margin:4px 0 0;font-size:15px}.acv .avsr{position:absolute;left:-9999px}.acv .avlink{min-height:0;padding:0 4px;border:0;background:none;text-decoration:underline;color:inherit;font:inherit;cursor:pointer}" +
       ".acv .avmsg{color:var(--err);font-weight:600;min-height:1.4em}";
     document.head.appendChild(s);
   }
@@ -133,40 +143,59 @@
     return hay.join(" \n ").toLowerCase().indexOf(q) >= 0;
   }
 
+  // A list with more than a handful of items reads "59 ZIP codes" with a Show all link; an object reads as "label: value" pairs.
+  var LONG = 6;
+  function listNoun(field, n) { var f = String(field || ""); return /zip|postal/i.test(f) ? (n === 1 ? "ZIP code" : "ZIP codes") : /region/i.test(f) ? (n === 1 ? "region" : "regions") : /capab/i.test(f) ? (n === 1 ? "permission" : "permissions") : (n === 1 ? "item" : "items"); }
+  function pairs(o) { return Object.keys(o).map(function (k) { var v = o[k]; return fieldLabel(k) + ": " + (v && typeof v === "object" ? (Array.isArray(v) ? v.join(", ") : pairs(v)) : v === true ? "Yes" : v === false ? "No" : v == null || v === "" ? "(empty)" : String(v)); }).join("; "); }
   function changeValue(c, text) {
-    if (ACTOR_FIELDS[c.field]) { var a = jsonStr(text); if (a) return actorName(a); }
-    return valueText(text);
+    if (ACTOR_FIELDS[c.field]) { var a = jsonStr(text); if (a) return document.createTextNode(actorName(a)); }
+    var v; try { v = text == null ? null : JSON.parse(text); } catch (e) { v = undefined; }
+    if (Array.isArray(v) && v.length > LONG && v.every(function (x) { return typeof x !== "object" || x === null; })) {
+      var span = mk("span"), sum = mk("span", "", v.length + " " + listNoun(c.field, v.length) + " "), full = mk("span", "avm", v.join(", ")); full.hidden = true;
+      var b = btn("Show all", "quiet avlink", function () { full.hidden = !full.hidden; b.textContent = full.hidden ? "Show all" : "Hide"; });
+      span.appendChild(sum); span.appendChild(b); span.appendChild(full); return span;
+    }
+    if (v && typeof v === "object" && !Array.isArray(v)) return document.createTextNode(pairs(v));
+    if (Array.isArray(v) && v.length && v.some(function (x) { return x && typeof x === "object"; })) return document.createTextNode(v.map(function (x) { return x && typeof x === "object" ? pairs(x) : String(x); }).join(" | "));
+    return document.createTextNode(valueText(text));
   }
 
   function changeLine(e, c) {
-    var li = mk("li"); li.appendChild(mk("span", "avfield", human(c.field) + ": "));
+    var li = mk("li"); li.appendChild(mk("span", "avfield", fieldLabel(c.field) + ": "));
     if (c.values_withheld) { li.appendChild(mk("span", "avw", "changed (personal details are not recorded)")); return li; }
     var hasOld = c.old_value != null, hasNew = c.new_value != null;
-    if (e.action === "created" || !hasOld) { li.appendChild(mk("span", "avnew", changeValue(c, c.new_value))); }
-    else if (!hasNew) { li.appendChild(mk("span", "avold", changeValue(c, c.old_value))); li.appendChild(document.createTextNode(" → removed")); }
-    else { li.appendChild(mk("span", "avold", changeValue(c, c.old_value))); li.appendChild(document.createTextNode(" → ")); li.appendChild(mk("span", "avnew", changeValue(c, c.new_value))); }
+    function val(cls, t) { var sp = mk("span", cls); sp.appendChild(changeValue(c, t)); return sp; }
+    if (e.action === "created" || !hasOld) { li.appendChild(val("avnew", c.new_value)); }
+    else if (!hasNew) { li.appendChild(val("avold", c.old_value)); li.appendChild(document.createTextNode(" → removed")); }
+    else { li.appendChild(mk("span", "avsr", "was ")); li.appendChild(val("avold", c.old_value)); li.appendChild(document.createTextNode(" → now ")); li.appendChild(val("avnew", c.new_value)); }
     if (c.truncated) li.appendChild(mk("span", "avm", " (long value, cut short)"));
     return li;
+  }
+
+  // The "what" line: a short sentence in plain words. Small edits show the change itself; bigger ones name the fields and fold the rest under Details.
+  function whatLine(e) {
+    var ch = e.changes || [], names = ch.map(function (c) { return fieldLabel(c.field); });
+    var priv = ch.some(function (c) { return c.values_withheld; });
+    if (e.action === "deleted") return "Moved out of use";
+    if (e.action === "restored") return "Put back in use";
+    var head = e.action === "created" ? "Created with " + ch.length + " field" + (ch.length === 1 ? "" : "s") : "Changed " + names.slice(0, 3).join(", ") + (names.length > 3 ? " and " + (names.length - 3) + " more" : "");
+    return ch.length ? head + (priv ? ". Personal details are not recorded." : "") : head;
   }
 
   function entryCard(e) {
     var r = mk("div", "avrow"); var top = mk("div", "av1");
     var left = mk("div"); left.appendChild(mk("div", "avwho", typeName(e.record_type) + (e.record_label ? " · " + e.record_label : "")));
-    var by = mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · ref " + String(e.record_id).slice(0, 8))); by.title = String(e.created_by || ""); left.appendChild(by); top.appendChild(left);
+    var by = mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · Record without a name")); by.title = String(e.created_by || "") + (e.record_label ? "" : " · " + String(e.record_id)); left.appendChild(by); top.appendChild(left);
     var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); right.appendChild(document.createTextNode(" "));
     right.appendChild(btn("Change history", "quiet", function () { openFor(e.record_id, e.record_label || typeName(e.record_type)); })); top.appendChild(right); r.appendChild(top);
-    var ch = e.changes || [];
-    if (ch.length) {
-      var ul = mk("ul", "avch");
-      var more = ch.length > 6 ? ch.slice(6) : [];
-      ch.slice(0, 6).forEach(function (c) { ul.appendChild(changeLine(e, c)); });
-      if (more.length) {
-        var d = mk("details"); d.appendChild(mk("summary", "avm", "Show " + more.length + " more field" + (more.length === 1 ? "" : "s")));
-        var ul2 = mk("ul", "avch"); more.forEach(function (c) { ul2.appendChild(changeLine(e, c)); }); d.appendChild(ul2);
-        if (S.openIds[e.id]) d.open = true; d.addEventListener("toggle", function () { S.openIds[e.id] = d.open; });
-        r.appendChild(ul); r.appendChild(d);
-      } else r.appendChild(ul);
-      if (e.fields_omitted) r.appendChild(mk("div", "avm", "+ " + e.fields_omitted + " more fields not listed."));
+    var ch = e.changes || [], small = (e.action === "edited" || e.action === "deleted" || e.action === "restored") && ch.length <= 2;
+    r.appendChild(mk("div", "avwhat", whatLine(e)));
+    if (small) { var ul = mk("ul", "avch"); ch.forEach(function (c) { ul.appendChild(changeLine(e, c)); }); r.appendChild(ul); }
+    else if (ch.length) {
+      var d = mk("details"); d.appendChild(mk("summary", "avm", "Details (" + ch.length + " field" + (ch.length === 1 ? "" : "s") + (e.fields_omitted ? ", " + e.fields_omitted + " more not listed" : "") + ")"));
+      var built = false; if (S.openIds[e.id]) d.open = true;
+      function build() { if (built || !d.open) return; built = true; var ul2 = mk("ul", "avch"); ch.forEach(function (c) { ul2.appendChild(changeLine(e, c)); }); d.appendChild(ul2); }
+      d.addEventListener("toggle", function () { S.openIds[e.id] = d.open; build(); }); build(); r.appendChild(d);
     }
     return r;
   }
