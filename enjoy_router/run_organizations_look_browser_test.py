@@ -70,6 +70,15 @@ with sync_playwright() as p:
     pg.fill("#roSearch", "Organization 01"); pg.wait_for_timeout(250)
     check("L-5 search still narrows (Organization 010 to 019 that are active)", pg.locator("#roList li").count() > 0 and pg.locator("#roList li").count() <= 10, pg.locator("#roList li").count())
     pg.fill("#roSearch", ""); pg.wait_for_timeout(250)
+
+    # ===== L-2 row look
+    first = pg.locator("#roList li").first
+    check("L-2 the title is the name; kind and short name on the grey line", first.locator(".vname").inner_text().startswith("Organization") and first.locator(".sub").count() == 1)
+    xs = pg.evaluate("Array.from(document.querySelectorAll('#roList > li')).slice(0, 4).map(function (e) { return Math.round(e.getBoundingClientRect().left); })")
+    check("L-2 two rows across at 1440", len(set(xs)) == 2, xs)
+    first.locator("button.head").click()
+    check("L-2 an opened card takes the whole width", pg.evaluate("(function(){var l=document.querySelector('#roList > li.open');return l && l.getBoundingClientRect().width > document.getElementById('roList').getBoundingClientRect().width * 0.9;})()"))
+    first.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

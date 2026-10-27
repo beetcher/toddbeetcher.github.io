@@ -153,7 +153,7 @@
       var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
       var top = mk("div", "top"); top.appendChild(mk("span", "vname", rec.name || "(no name)"));
       var tgl = (rec.status === "active" || rec.status === "inactive") ? statusToggle(rec, li, { coll: "organizations", on: "active", off: "inactive", label: "Organization", problem: function (res) { return problems(res, {}).other.join(" "); } }) : null;
-      if (!tgl) top.appendChild(mk("span", "type", rec.status || ""));
+      if (!tgl) top.appendChild(mk("span", "type", rec.status ? rec.status.charAt(0).toUpperCase() + rec.status.slice(1) : ""));
       head.appendChild(top);
       var sub = [kindsLine(rec), rec.short_name].filter(Boolean).join(" · ");
       if (sub) head.appendChild(mk("div", "sub", sub));
