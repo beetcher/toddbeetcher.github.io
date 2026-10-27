@@ -47,6 +47,7 @@ from discovery_door import handle_discovery
 from launch_discovery import wiring as discovery_wiring
 from handler import handle_http
 from public_regions import handle_public_regions
+from public_zip import handle_public_zip
 from public_venues import handle_public_venues
 from public_curriculums import handle_public_curriculums
 from request_completion import handle_completion
@@ -86,6 +87,7 @@ _discovery_engine = None
 _venues_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _curriculums_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _regions_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
+_zip_limiter = RateLimiter(rules=((600, 120), (86400, 1000)))
 _completion_limiter = RateLimiter(rules=((600, 60), (86400, 500)))
 _admin_store = None
 _store = None
@@ -351,6 +353,29 @@ def enjoy_public_regions(req: https_fn.Request) -> https_fn.Response:
         store=_get_admin_store(),
         limiter=_regions_limiter,
         now=_now(),
+    )
+    return https_fn.Response(json.dumps(result.body), status=result.status,
+                             headers={"Content-Type": "application/json", **result.headers})
+
+
+@https_fn.on_request(
+    invoker="public",
+    cors=options.CorsOptions(cors_origins=ORIGINS, cors_methods=["GET", "OPTIONS"]),
+    max_instances=3,
+    memory=options.MemoryOption.MB_512,
+    timeout_sec=30,
+)
+def enjoy_public_zip(req: https_fn.Request) -> https_fn.Response:
+    """The registration form's place lookup: a ZIP gives town, state and region; a region gives its ZIPs; a state gives its cities. Read only, public facts only."""
+    result = handle_public_zip(
+        method=req.method,
+        visitor=visitor_key(_client_address(req), SALT),
+        store=_get_admin_store(),
+        limiter=_zip_limiter,
+        now=_now(),
+        zip_code=req.args.get("zip"),
+        region_id=req.args.get("region"),
+        state_code=req.args.get("state"),
     )
     return https_fn.Response(json.dumps(result.body), status=result.status,
                              headers={"Content-Type": "application/json", **result.headers})
