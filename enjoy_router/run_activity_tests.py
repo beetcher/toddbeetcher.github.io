@@ -348,6 +348,15 @@ check("A10i limit is capped at 200 and must be a number", AE.list(inner, limit=1
 big_inner, big_st = fresh()
 for i in range(230):
     big_st.create("venues", new_id(1000 + i), vdoc(1000 + i))
+pg1 = AE.list(big_inner, limit=100)
+pg2 = AE.list(big_inner, limit=100, before=pg1.data["marker"])
+pg3 = AE.list(big_inner, limit=100, before=pg2.data["marker"])
+ids = [x["id"] for x in pg1.data["records"] + pg2.data["records"] + pg3.data["records"]]
+check("A10j paging: 230 entries come in three pages with no repeats and no gaps", pg1.data["more"] and pg2.data["more"] and not pg3.data["more"] and len(ids) == 230 and len(set(ids)) == 230, [pg1.data["more"], pg2.data["more"], pg3.data["count"]])
+check("A10k paging: the next page is strictly older than the marker", all(x["sequence_ms"] < pg1.data["marker"] for x in pg2.data["records"]))
+check("A10l paging: the marker is the last entry's sequence and an empty page has none", pg1.data["marker"] == pg1.data["records"][-1]["sequence_ms"] and AE.list(big_inner, before=1).data["marker"] is None)
+check("A10m paging works with a filter", AE.list(big_inner, {"action": "created"}, limit=50, before=pg1.data["marker"]).data["count"] == 50)
+check("A10n paging: bad markers and oldest-first are refused", not AE.list(big_inner, before="x").ok and not AE.list(big_inner, before=True).ok and not AE.list(big_inner, before=5, order="created_at").ok and not AE.list(big_inner, before=-1).ok)
 check("A10j never more than 200 come back", AE.list(big_inner, limit=1000).data["count"] == 200)
 one = entries(inner)[0]
 check("A10k get returns one entry; a bad or unknown id is refused", AE.get(inner, one["id"]).ok and not AE.get(inner, "nope").ok and AE.get(inner, new_id(777)).code == "not_found")

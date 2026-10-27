@@ -158,6 +158,15 @@ check("a code may read Discovery (status, runs, ZIP map)", disc(CODE, "status") 
 check("BREAK-IT: a code may not plan, step, stop or withdraw a run (403), and the engine was never called", all(disc(CODE, op, a) == 403 for op, a in (("plan", RUN), ("step", {"run_id": "r"}), ("stop", {"run_id": "r"}), ("withdraw", {"run_id": "r"}))) and not [c for c in eng.calls if c[0] != "quote"], str(eng.calls))
 check("an Inspector who signed in with Google still may plan a run (unchanged)", disc(tok(4), "plan", RUN) == 200)
 
+# ================================================================ turning it off now
+def clear(bearer): return call(bearer, "clear_review_code")
+check("BREAK-IT: only a super admin or the admin key may turn the code off (403 for the rest, and the code still works)", all(clear(tok(n))[0] == 403 for n in (2, 3, 4, 5)) and clear(CODE)[0] == 403 and me(CODE)[0] == 200)
+st, b = clear(tok(1))
+check("Turn off now: the reply says no code is active, and the code stops working at once", st == 200 and b["data"] == {"active": False} and me(CODE)[0] == 401 and status(tok(1))[1]["data"] == {"active": False}, str((st, b)))
+recs2 = raw.query("review_codes", [], limit=10)
+check("Turn off now: the record keeps no hash or salt, and turning off twice is fine", len(recs2) == 1 and recs2[0]["code_hash"] == "" and recs2[0]["salt"] == "" and clear(tok(1))[0] == 200 and clear(KEY)[0] == 200)
+check("a new code can be set after turning it off", setcode(tok(1), CODE)[0] == 200 and me(CODE)[0] == 200)
+
 # ================================================================ wrong guesses cost time
 lim = make_failure_limiter()
 codes = [call("guess number %02d" % i, "me", limiter=lim)[0] for i in range(14)]

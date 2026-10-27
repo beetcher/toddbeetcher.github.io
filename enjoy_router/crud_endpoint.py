@@ -86,7 +86,7 @@ ADMIN_BLOCKED_COLLECTIONS = frozenset({"individual_restricted_details", "discove
 OPS = {
     "create": ({"data"}, {"source"}),
     "get": ({"id"}, {"include_deleted", "expand"}),
-    "list": (set(), {"filters", "order", "limit", "expand", "near_zip"}),
+    "list": (set(), {"filters", "order", "limit", "expand", "near_zip", "before"}),
     "update": ({"id", "changes"}, {"expected_updated_at"}),
     "soft_delete": ({"id"}, set()),
     "set_review_summary": ({"id", "review_count", "average_rating"}, set()),
@@ -189,6 +189,10 @@ def _run(module, store, op: str, a: dict, now: datetime, actor: str):
         return module.get(store, a["id"], a.get("include_deleted", False), **({"expand": True} if a.get("expand") else {}))
     if op == "list":
         kw = {k: a[k] for k in ("order", "limit") if k in a}
+        if "before" in a:
+            if "before" not in module.list.__code__.co_varnames[:module.list.__code__.co_argcount]:   # only the activity log pages by marker
+                return failure("validation_failed", [{"field": "before", "issue": "not_supported"}])
+            kw["before"] = a["before"]
         if a.get("expand"):
             kw["expand"] = True
         if "near_zip" in a:
@@ -280,13 +284,17 @@ def handle_crud(method: str, authorization: str, raw_body: bytes, admin_key: str
         log.info("%s op=fix_place_zones code=ok apply=%s filled=%s", tag, summary["applied"], summary["filled"])
         return HttpResult(200, {"ok": True, "data": summary}, {"Cache-Control": "no-store"})
 
-    if body.get("op") in ("set_review_code", "review_code_status"):   # the 24-hour view-only review code (Console door only; super admin or the admin key only)
+    if body.get("op") in ("set_review_code", "review_code_status", "clear_review_code"):   # the 24-hour view-only review code (Console door only; super admin or the admin key only)
         if not allow_me:
             return _error(400, "validation_failed", "This op is not enabled here.")
         if not access.is_super_admin or access.inspector or access.method == "code":
             return _door.forbidden(tag)
         import access.review_code as RC
         if body["op"] == "review_code_status":
+            return HttpResult(200, {"ok": True, "data": RC.status(store, now)}, {"Cache-Control": "no-store"})
+        if body["op"] == "clear_review_code":   # "Turn off now": the code stops working at once
+            RC.clear(store, who, now)
+            log.info("%s op=clear_review_code code=ok", tag)
             return HttpResult(200, {"ok": True, "data": RC.status(store, now)}, {"Cache-Control": "no-store"})
         args = body.get("args", {})
         if not isinstance(args, dict) or set(args) != {"code"} or not isinstance(args.get("code"), str):

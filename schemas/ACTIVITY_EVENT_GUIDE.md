@@ -46,5 +46,5 @@ It sits beside the other two logs and replaces neither: the message log (`commun
 ## 6. Open items (parking lot)
 
 - The public registration form's creates and the completion link's edits are not logged yet.
-- Entries are listed newest first with no paging past 200.
+- Entries are listed newest first. Paging: send `before` (the `marker` of the last page, which is the last entry's `sequence_ms`) to get the entries older than it; the reply carries `more` (older entries remain) and `marker`. `before` works only newest first, and the Console asks for 50 at a time.
 - Whether personal values should be kept and scrubbed on erase instead of withheld (Todd's call).

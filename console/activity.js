@@ -6,7 +6,7 @@
   "use strict";
   var K = window.ConsoleKit;
   if (!K) return;
-  var mk = K.mk, root = null, COLL = "activity_events", MAXN = 200;
+  var mk = K.mk, root = null, COLL = "activity_events", MAXN = 50;   // one page; "Load 50 more" asks the server for entries older than the last one shown
 
   // The server takes ONE filter. Everything else (the search box) narrows what came back.
   var S = freshState(0);
@@ -25,7 +25,7 @@
     venue: "places", location: "places", location_link: "places", access_person: "access", access_role: "access", console_setting: "access" };
   function groupOf(t) { return GROUP_OF[t] || "other"; }
   var WHENS = [["any", "Any time"], ["today", "Today"], ["d7", "Last 7 days"], ["d30", "Last 30 days"]];
-  function freshState(seq) { return { checked: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: seq, pending: null, openIds: {}, names: {}, tried: {}, sel: null, cf: null }; }
+  function freshState(seq) { return { checked: "", recId: "", recLabel: "", records: [], more: false, marker: null, paging: false, loaded: false, busy: false, msg: "", q: "", seq: seq, pending: null, openIds: {}, names: {}, tried: {}, sel: null, cf: null }; }
   var VERB = { created: "Created", edited: "Edited", deleted: "Deleted", restored: "Restored" };
 
   function $(id) { return document.getElementById(id); }
@@ -206,7 +206,9 @@
   }
   function buildChips(mount) {
     if (S.cf) { try { S.cf.destroy(); } catch (e) {} }
-    var keep = S.sel;
+    var keep = S.sel, wn = whoOptions().length;
+    if (keep && keep.who && S.whoN != null && keep.who.length >= S.whoN) { keep = Object.assign({}, keep); delete keep.who; }   // "everyone" stays everyone when new people appear in the entries
+    S.whoN = wn;
     S.cf = UI.chipFilters({
       mount: mount, label: "Activity filters",
       filters: [
@@ -292,14 +294,19 @@
       var ch = {}; S.records.forEach(function (e) { ch[e.action] = (ch[e.action] || 0) + 1; });
       S.cf.setCounts({ kind: by, change: ch }); S.cf.setResult(shown.length + " of " + S.records.length + " entries");
     }
-    count.textContent = shown.length + (narrowed ? " of " + S.records.length + " entries" : " entr" + (shown.length === 1 ? "y" : "ies")) + (S.records.length >= MAXN ? " (the newest " + MAXN + " are loaded)" : "");
-    if (!shown.length) { host.appendChild(mk("div", "avm", narrowed ? "No entries match these filters." : "Nothing has been recorded here yet.")); return; }
+    var n = S.records.length;
+    count.textContent = narrowed ? shown.length + " of " + n + " loaded entries" + (S.more ? " (searched the newest " + n + ")" : "") : shown.length + (shown.length === 1 ? " entry" : " entries") + (S.more ? " loaded, older ones are not shown yet" : "");
+    function pager() { if (!S.more) return; var b = btn(narrowed ? "Search older entries" : "Load " + MAXN + " more", "quiet avmorebtn", function () { more(); }); b.id = "avMore"; b.disabled = S.paging; if (S.paging) b.textContent = "Loading…"; var w = mk("div", "avmore"); w.appendChild(b); host.appendChild(w); }
+    if (!shown.length) { host.appendChild(mk("div", "avm", narrowed ? (S.more ? "No entries match these filters among the " + n + " loaded." : "No entries match these filters.") : "Nothing has been recorded here yet.")); pager(); return; }
     var lastDay = "";
     foldBursts(shown).forEach(function (item) {
       var first = item.burst ? item.burst[0] : item, d = new Date(first.created_at), key = isNaN(d) ? "" : d.toDateString();
       if (key && key !== lastDay) { lastDay = key; host.appendChild(mk("h3", "avday", dayLabel(d))); }
-      host.appendChild(item.burst ? burstCard(item.burst) : entryCard(item));
+      var card = item.burst ? burstCard(item.burst) : entryCard(item);
+      if (S.fresh && first.id === S.fresh) { card.tabIndex = -1; card.id = "avFirstNew"; }
+      host.appendChild(card);
     });
+    pager();
   }
 
   function why(res) {
@@ -316,9 +323,22 @@
       if (my !== S.seq) return;
       S.busy = false;
       if (!ok(res)) { S.msg = why(res); S.records = []; S.loaded = true; }
-      else { S.records = (res.body.data && res.body.data.records) || []; S.loaded = true; S.checked = K.clock(new Date()); }
+      else { var dd = res.body.data || {}; S.records = dd.records || []; S.more = !!dd.more; S.marker = dd.marker == null ? null : dd.marker; S.loaded = true; S.checked = K.clock(new Date()); }
       draw();
       if (S.records.length) return nameThem(S.records).then(function (got) { if (got && my === S.seq) draw(); });
+    });
+  }
+
+  // "Load 50 more": the next page is the entries older than the last one we hold. Focus moves to the first new entry.
+  function more() {
+    if (S.paging || !S.more || S.marker == null) return; var my = S.seq; S.paging = true; list();
+    var f = serverFilter();
+    return K.admin("list", { filters: f, order: "-created_at", limit: MAXN, before: S.marker }, COLL).then(function (res) {
+      if (my !== S.seq) return; S.paging = false;
+      if (!ok(res)) { S.msg = why(res); draw(); return; }
+      var dd = res.body.data || {}, add = dd.records || []; S.fresh = add.length ? add[0].id : ""; S.records = S.records.concat(add); S.more = !!dd.more; S.marker = dd.marker == null ? S.marker : dd.marker;
+      draw(); var el = $("avFirstNew"); if (el) { el.focus(); } S.fresh = "";
+      return nameThem(add).then(function (got) { if (got && my === S.seq) draw(); });
     });
   }
 

@@ -5,6 +5,7 @@ Inspector. Only a salted hash is stored; the code is never kept or returned. Set
 
     problems(code, admin_key)        -> [issue, ...]   why a code is refused as a new code ([] when fine)
     set_code(store, code, who, now)  -> Result          creates or replaces the one record; data = {"expires_at": ...}
+    clear(store, who, now)           -> None           turns the code off at once
     status(store, now)               -> dict            {"active", "expires_at", "set_by", "set_at"}, never the hash or salt
     access_for(given, store, now)    -> Access | None   the view-only access a matching, unexpired code gives; None otherwise
 """
@@ -95,6 +96,13 @@ def set_code(store, code, who: str, now, admin_key=""):
     else:
         store.update(COLLECTION, rec["id"], {**fields, "updated_at": stamp, "updated_by": who}, ())
     return success({"expires_at": fields["expires_at"]})
+
+
+def clear(store, who: str, now) -> None:
+    """Turn the code off at once: the hash and salt are wiped and the expiry is set to now. Nothing to turn off is not an error."""
+    rec = _record(store)
+    if rec is not None:
+        store.update(COLLECTION, rec["id"], {"code_hash": "", "salt": "", "expires_at": utc_stamp(now), "updated_at": utc_stamp(now), "updated_by": who}, ())
 
 
 def status(store, now) -> dict:

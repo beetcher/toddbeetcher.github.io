@@ -788,3 +788,6 @@
 .acv .avburst{border-left:4px solid var(--orange)}.acv .avburstlist{margin-top:8px}.acv .avburstlist .avrow{margin:6px 0;box-shadow:none}
 .acs .acdup{color:var(--warn-ink);font-weight:600;min-height:1px}
 .acs .acgrp th{background:#f2efe6;font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.avmore { display: flex; justify-content: center; margin: 14px 0 6px; }
+.avmore button { min-height: 44px; min-width: 200px; }
+#avFirstNew:focus { outline: 2px solid #1b6ec2; outline-offset: 2px; }

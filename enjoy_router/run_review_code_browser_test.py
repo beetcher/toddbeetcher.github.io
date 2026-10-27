@@ -133,6 +133,18 @@ with sync_playwright() as p:
     pg.fill("#acReviewCode", "abc"); pg.click("#acReviewSave"); pg.wait_for_function("document.querySelector('#acReviewMsg').innerText.includes('at least 8')")
     check("R1 a refused code takes the shown code away", pg.locator("#acReviewShown").count() == 0)
     pg.fill("#acReviewCode", CODE2); pg.click("#acReviewSave"); pg.wait_for_selector("#acReviewShown")
+    st_line = read_status(pg)
+    check("L-7 the status line says how long is left", __import__("re").search(r"Ends in 23 h \d+ min\.", st_line), st_line)
+    check("L-7 the shown code says it will not be shown again", "You will not see it again" in pg.inner_text(".acgive"), pg.inner_text(".acgive"))
+    pg.click("#acReviewOff"); pg.wait_for_selector("#uiDialog[open]"); pg.click("#uiNo")
+    check("L-7 Turn off now asks first, and Keep it on leaves the code active", "A code is active" in read_status(pg) and pg.locator("#acReviewOff").count() == 1)
+    pg.click("#acReviewOff"); pg.wait_for_selector("#uiDialog[open]"); pg.click("#uiYes"); pg.wait_for_function("document.querySelector('#acReviewStatus').innerText.indexOf('No code is active.') >= 0")
+    check("L-7 Turn off now switches it off at once: no code active, no button, no code on show", pg.locator("#acReviewOff").count() == 0 and pg.locator("#acReviewShown").count() == 0 and "The code is off" in pg.inner_text("#acReviewMsg"), pg.inner_text("#acReview"))
+    log_dump = json.dumps(H["store"].query("activity_events", [], limit=500)) if hasattr(H["store"], "query") else ""
+    check("L-7 the review code never appears in the activity log", CODE not in log_dump and CODE2 not in log_dump)
+    pg.fill("#acReviewCode", CODE2); pg.click("#acReviewSave"); pg.wait_for_selector("#acReviewShown")
+    nowl = pg.inner_text("#acMinutesNow")
+    check("L-7 the sign-in minutes box says what it is now, what is allowed and when a change takes effect", "Now: 10 minutes." in nowl and "1 to 480" in nowl and "next time they sign in or reload" in nowl, nowl)
     # ---------- Z1: places with no time zone (super admin): check, fill the Colorado ones, list the rest
     import uuid as _uuid
     def _loc(name, region, zip_):   # saved straight into the store with no zone, the way older places were

@@ -40,9 +40,11 @@ def _filter_problem(field, value):
     return check_field(ACTIVITY, field, value, allow_read_only=True)
 
 
-def list(store, filters=None, order="-created_at", limit=DEFAULT_LIMIT, expand=False):  # noqa: A001
+def list(store, filters=None, order="-created_at", limit=DEFAULT_LIMIT, expand=False, before=None):  # noqa: A001
     """Optional ONE filter: related_ids (one id: every entry that mentions it), record_type, collection, action or created_by.
-    Newest first (order -created_at) or oldest first (created_at); at most 200."""
+    Newest first (order -created_at) or oldest first (created_at); at most 200. `before` (newest first only) is the sequence_ms of the last
+    entry the caller already has: the next page is the entries older than that. The answer carries `more` (true when older entries remain)
+    and `marker` (the sequence_ms of the last entry returned, to send back as `before`)."""
     filters = dict(filters or {})
     problems = []
     for k, v in filters.items():
@@ -53,13 +55,19 @@ def list(store, filters=None, order="-created_at", limit=DEFAULT_LIMIT, expand=F
         problems.append({"field": "order", "issue": "not_supported"})
     if isinstance(limit, builtins.bool) or not isinstance(limit, builtins.int):
         problems.append({"field": "limit", "issue": "invalid_type"})
+    if before is not None and (isinstance(before, builtins.bool) or not isinstance(before, builtins.int) or before < 0 or order != "-created_at"):
+        problems.append({"field": "before", "issue": "invalid_type" if order == "-created_at" else "not_supported"})
     if problems:
         return _bad(problems)
     descending = order.startswith("-")
     n = max(1, min(limit, MAX_LIMIT))
     q = [(k, "array_contains" if k == "related_ids" else "==", v) for k, v in filters.items()]
-    docs = store.query(ACTIVITY.name, q, order_by="sequence_ms", descending=descending, limit=n)
-    return success({"records": docs, "count": len(docs)})
+    if before is not None:
+        q.append(("sequence_ms", "<", before))
+    docs = store.query(ACTIVITY.name, q, order_by="sequence_ms", descending=descending, limit=n + 1)
+    more = len(docs) > n
+    docs = docs[:n]
+    return success({"records": docs, "count": len(docs), "more": more, "marker": docs[-1].get("sequence_ms") if docs else None})
 
 
 def _refused(*_a, **_k):

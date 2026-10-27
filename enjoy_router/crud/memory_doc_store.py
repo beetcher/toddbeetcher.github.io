@@ -46,6 +46,8 @@ def _matches(doc, field, op, value):
     got = _get_path(doc, field)
     if op == "array_contains":
         return isinstance(got, list) and value in got
+    if op in ("<", ">"):   # what Firestore does for a number field: a missing field never matches
+        return isinstance(got, (int, float)) and not isinstance(got, bool) and (got < value if op == "<" else got > value)
     return got == value
 
 

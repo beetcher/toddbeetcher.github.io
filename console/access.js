@@ -355,6 +355,7 @@
     var f = mk("div", "acf"); var l = mk("label", "", "Minutes of inactivity before sign-out (1 to 480)"); l.htmlFor = "acMinutes";
     var i = mk("input"); i.type = "number"; i.id = "acMinutes"; i.min = "1"; i.max = "480"; i.step = "1"; i.value = String(mins); i.setAttribute("inputmode", "numeric");
     f.appendChild(l); f.appendChild(i); box.appendChild(f);
+    var now = mk("p", "acm", "Now: " + mins + (mins === 1 ? " minute" : " minutes") + ". Allowed: 1 to 480. A change takes effect in this window at once, and in other windows the next time they sign in or reload."); now.id = "acMinutesNow"; box.appendChild(now);
     if (!rec && S.cs.ok) box.appendChild(mk("p", "acm", "Not set yet, so the Console uses 10 minutes."));
     if (!S.cs.ok && S.loaded) box.appendChild(mk("p", "acm", "The current setting could not be read. Saving will still work."));
     var save = btn("Save minutes", "", function () { saveMinutes(i.value); }); save.id = "acMinutesSave"; box.appendChild(save);
@@ -419,19 +420,36 @@
       Z.res = res.body.data; draw();
     });
   }
+  function timeLeft(stamp) {      // "9 h 12 min", "42 min", "less than a minute"
+    var ms = new Date(stamp).getTime() - Date.now(); if (isNaN(ms) || ms <= 0) return "";
+    var mins = Math.floor(ms / 60000), h = Math.floor(mins / 60), m = mins % 60;
+    return h ? h + " h " + m + " min" : mins ? mins + " min" : "less than a minute";
+  }
+  function turnOffReview() {
+    var go = function () {
+      return adm("clear_review_code", {}, "console_settings").then(function (res) {
+        if (!ok(res)) { S.rv.msg = res.status === 403 ? "Only a super admin may do this." : "Could not turn the code off. Try again."; S.rv.good = false; draw(); return; }
+        S.rv.st = res.body.data || { active: false }; S.rv.code = ""; S.rv.good = true; S.rv.msg = "The code is off. Anyone using it is signed out the next time their screen asks the server."; draw();
+      });
+    };
+    if (!window.UI || !UI.confirm) return go();
+    return UI.confirm({ title: "Turn the review code off now?", message: "The reviewer can no longer sign in with it, and anyone already in is signed out the next time their screen asks the server.", yes: "Turn off now", no: "Keep it on", danger: true }).then(function (yes) { if (yes) return go(); });
+  }
   function reviewBox() {
     var st = S.rv.st; if (!st) return null;
     var box = mk("div", "acform"); box.id = "acReview";
     box.appendChild(mk("h2", "", "Review access code"));
     box.appendChild(mk("p", "acm", "Lets one reviewer look at everything for 24 hours. It is view only: they can open every screen but change nothing, and private contact details stay hidden. They type the code into the Key box on the sign-in screen. A new code replaces the old one and starts the 24 hours again. Only one code works at a time."));
-    var line = mk("p", "acm", st.active ? "A code is active until " + localTime(st.expires_at) + "." : "No code is active."); line.id = "acReviewStatus"; box.appendChild(line);
+    var left = st.active ? timeLeft(st.expires_at) : "";
+    var line = mk("p", "acm", st.active ? "A code is active until " + localTime(st.expires_at) + "." + (left ? " Ends in " + left + "." : "") : "No code is active."); line.id = "acReviewStatus"; box.appendChild(line);
+    if (st.active) { var off = btn("Turn off now", "btn-secondary", turnOffReview); off.id = "acReviewOff"; box.appendChild(off); }
     var f = mk("div", "acf"); var l = mk("label", "", "New code (8 to 64 characters; spaces are fine)"); l.htmlFor = "acReviewCode";
     var i = mk("input"); i.type = "text"; i.id = "acReviewCode"; i.maxLength = 64; i.autocomplete = "off"; i.autocapitalize = "off"; i.spellcheck = false;
     f.appendChild(l); f.appendChild(i); box.appendChild(f);
     var save = btn("Set code (24 hours)", "", function () { saveReviewCode(i.value); }); save.id = "acReviewSave"; box.appendChild(save);
     var m = mk("div", S.rv.good ? "acerr acok" : "acerr", S.rv.msg); m.id = "acReviewMsg"; m.setAttribute("role", "status"); box.appendChild(m);
     if (S.rv.good && S.rv.code) {      // the code itself, on its own line, easy to see and to select
-      var g = mk("div", "acgive"); g.appendChild(mk("span", "acgivel", "Give them exactly this: ")); var cs = mk("span", "", S.rv.code); cs.id = "acReviewShown"; g.appendChild(cs); box.appendChild(g);
+      var g = mk("div", "acgive"); g.appendChild(mk("span", "acgivel", "Give them exactly this: ")); var cs = mk("span", "", S.rv.code); cs.id = "acReviewShown"; g.appendChild(cs); g.appendChild(mk("div", "acm", "You will not see it again once you leave this page.")); box.appendChild(g);
     }
     return box;
   }
