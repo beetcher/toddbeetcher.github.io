@@ -71,14 +71,18 @@ with sync_playwright() as p:
     pg.screenshot(path=str(SHOTS / "01_station.png"), full_page=True)
 
     # ---- filters
-    pg.select_option("#avMode", "action"); pg.select_option("#avValue", "deleted"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
+    def hash_to(h, rows=None, at_least=None):
+        pg.evaluate("location.hash='%s'" % h)
+        if rows is not None: pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === %d" % rows)
+        if at_least is not None: pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length >= %d" % at_least)
+    hash_to("#/activity?change=deleted", rows=1)
     check("filter: only deletes", "Deleted" in pg.inner_text("#activityView .avrow") and "Pearl Street Library" in pg.inner_text("#activityView .avrow"))
-    pg.select_option("#avMode", "record_type"); pg.select_option("#avValue", "venue"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 4")
-    check("filter: one kind of record", "Person ·" not in pg.inner_text("#avList"))
-    pg.select_option("#avMode", "all"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length >= 6")
+    hash_to("#/activity?kind=places", rows=4)
+    check("filter: one kind of record (venues and places)", "Person ·" not in pg.inner_text("#avList"))
+    hash_to("#/activity", at_least=6)
     pg.fill("#avSearch", "pearl"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 2")
     check("search narrows what is on the screen", "Pearl Street Library" in pg.inner_text("#avList") and "Trident" not in pg.inner_text("#avList") and "of" in pg.inner_text("#avCount"))
-    pg.fill("#avSearch", "no such thing xyz"); pg.wait_for_selector("#avList >> text=Nothing matches")
+    pg.fill("#avSearch", "no such thing xyz"); pg.wait_for_selector("#avList >> text=No entries match these filters.")
     check("a search that finds nothing says so", True)
     pg.fill("#avSearch", "")
 

@@ -103,21 +103,24 @@ with sync_playwright() as p:
     check("N10 searching a name finds that person's entries", all("Ada Venue" in t for t in pg.locator("#activityView .avrow").all_inner_texts()))
     pg.fill("#avSearch", "")
 
-    # the Person-or-source filter by name
-    pg.select_option("#avMode", "created_by"); pg.fill("#avValue", "Ada Lovelace"); pg.press("#avValue", "Enter")
-    pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 2")
-    check("N11 filtering by a person's name finds that person's entries", all("Ada Venue" in t for t in pg.locator("#activityView .avrow").all_inner_texts()))
-    pg.fill("#avValue", "ada lovelace"); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 2")
-    check("N11b ...whatever the capital letters", True)
-    pg.fill("#avValue", "Admin key"); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
-    check("N12 filtering by 'Admin key' finds the key's entries", "Key Venue" in pg.inner_text("#avList"))
-    pg.fill("#avValue", "user:" + PB); pg.press("#avValue", "Enter"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1 && document.getElementById('avList').innerText.indexOf('Blank Venue') >= 0")   # wait for THIS filter's row, not the one row left from the last filter
-    check("N13 an id still works in the filter", "Blank Venue" in pg.inner_text("#avList"))
-    pg.fill("#avValue", "Nobody Atall"); pg.press("#avValue", "Enter"); pg.wait_for_selector("#avList >> text=Nothing has been recorded")
-    check("N14 a name nobody has gives an empty list, not an error", True)
-    pg.fill("#avValue", "Sam Same"); pg.press("#avValue", "Enter"); pg.wait_for_selector("#activityView .avmsg:has-text('More than one person')")
-    check("N14b two people with one name: no guess, a plain message, and the id is the way", pg.locator("#activityView .avrow").count() == 0)
-    pg.select_option("#avMode", "all"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length >= 5")
+    # the Who filter (an address carries the choice: ?who=<actor>)
+    def go_who(actor, rows=None):
+        pg.evaluate("location.hash='#/activity?who=%s'" % actor)
+        if rows is not None: pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === %d" % rows)
+    go_who("user:" + PA, 2)
+    check("N11 filtering by a person finds that person's entries", all("Ada Venue" in t for t in pg.locator("#activityView .avrow").all_inner_texts()))
+    check("N11b the Who chip names the person, not the id", "Ada Lovelace" in pg.inner_text("#avChips") or pg.locator("#avChips .cf-chip", has_text="Who").first.inner_text().startswith("Who"), pg.inner_text("#avChips"))
+    go_who("user:admin", 1)
+    check("N12 filtering by the admin key finds the key's entries", "Key Venue" in pg.inner_text("#avList"))
+    go_who("user:" + PB, 1)
+    check("N13 a person with no name on file is still a choice, shown by id", "Blank Venue" in pg.inner_text("#avList"))
+    go_who("user:nobody-atall"); pg.wait_for_selector("#avList >> text=No entries match these filters.")
+    check("N14 an actor nobody has gives 'No entries match these filters.', not an error", pg.locator("#activityView .avrow").count() == 0)
+    pg.evaluate("location.hash='#/activity'"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length >= 5")
+    pg.locator("#avChips .cf-chip", has=pg.locator(".cf-lab", has_text="Who")).first.click()
+    labels = pg.locator("#avChips .cf-pop:not([hidden]) label.cf-opt").all_inner_texts()
+    check("N14b two people with one name stay two different choices", sum(1 for l in labels if l.startswith("Sam Same")) == 2 and len(set(labels)) == len(labels), labels)
+    pg.keyboard.press("Escape")
 
     # a lookup that fails leaves ids showing
     pg.select_option("#collPick", "home")
@@ -127,14 +130,8 @@ with sync_playwright() as p:
     pg.wait_for_function("window.__t = 1, document.querySelectorAll('#activityView .avrow').length >= 5")
     t = card("Ada Venue", "Created").inner_text()
     check("N15 when the lookup fails the user id is shown and the list still works", PA in t and "Ada Lovelace" not in t, t)
-    # names not known yet when the person types one: the station fetches them first
-    state["people_fail"] = False; state["key_only"] = True; state["people_calls"] = 0
-    pg.select_option("#collPick", "home"); pg.evaluate("window.ActivityStation.reset()")
-    pg.select_option("#collPick", "activity"); pg.wait_for_selector("#activityView .avrow")
-    check("N17 (set up) the first load held only the key's entries and asked for no names", pg.locator("#activityView .avrow").count() == 1 and state["people_calls"] == 0, state["people_calls"])
-    pg.select_option("#avMode", "created_by"); pg.fill("#avValue", "Ada Lovelace"); pg.press("#avValue", "Enter")
-    pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 2")
-    check("N17 a name typed before any name is known still finds the person (names are fetched first)", all("Ada Venue" in t for t in pg.locator("#activityView .avrow").all_inner_texts()))
+    # (N17 is retired: people are chosen from the loaded entries, so no name has to be fetched before a choice is made)
+    state["people_fail"] = False
     check("N16 no script errors", not errs, errs)
     pg.screenshot(path=str(SHOTS / "11_lookup_failed.png"), full_page=True)
     # ...and a lookup that never reaches the server at all

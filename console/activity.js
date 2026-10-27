@@ -9,7 +9,7 @@
   var mk = K.mk, root = null, COLL = "activity_events", MAXN = 200;
 
   // The server takes ONE filter. Everything else (the search box) narrows what came back.
-  var S = { checked: "", mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: 0, pending: null, openIds: {}, names: {}, tried: {}, allNames: false };
+  var S = freshState(0);
 
   var TYPES = [["venue", "Venue"], ["scheduled_class", "Class"], ["registration_request", "Registration request"], ["individual", "Person"],
     ["location", "Place"], ["instructor_roster", "Instructor"], ["student_roster", "Student"], ["attendance", "Attendance"], ["organization", "Organization"],
@@ -18,7 +18,14 @@
     ["access_person", "Access person"], ["access_role", "Access role"], ["discovery_area", "Discovery area"], ["discovery_model", "Discovery model"],
     ["discovery_type", "Discovery type"], ["discovery_prompt", "Discovery prompt"], ["discovery_setting", "Discovery setting"], ["console_setting", "Console setting"], ["individual_restricted_detail", "Sensitive details"]];
   var ACTIONS = [["created", "Created"], ["edited", "Edited"], ["deleted", "Deleted"], ["restored", "Restored"]];
-  var MODES = [["all", "Everything"], ["record_type", "One kind of record"], ["action", "One kind of change"], ["created_by", "One person or source"]];
+  // What the chips offer. The server takes one filter, so the page narrows the entries it has loaded; the kinds of record are grouped for people.
+  var GROUPS = [["all", "Everything"], ["requests", "Requests"], ["classes", "Classes"], ["people", "People"], ["places", "Venues and places"], ["access", "Access"], ["other", "Other"]];
+  var GROUP_OF = { registration_request: "requests", registration_assignment: "requests", transaction_record: "requests", scheduled_class: "classes", attendance: "classes", curriculum: "classes",
+    individual: "people", individual_restricted_detail: "people", merge_event: "people", instructor_roster: "people", student_roster: "people", organization: "people", organization_link: "people",
+    venue: "places", location: "places", location_link: "places", access_person: "access", access_role: "access", console_setting: "access" };
+  function groupOf(t) { return GROUP_OF[t] || "other"; }
+  var WHENS = [["any", "Any time"], ["today", "Today"], ["d7", "Last 7 days"], ["d30", "Last 30 days"]];
+  function freshState(seq) { return { checked: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: seq, pending: null, openIds: {}, names: {}, tried: {}, sel: null, cf: null }; }
   var VERB = { created: "Created", edited: "Edited", deleted: "Deleted", restored: "Restored" };
 
   function $(id) { return document.getElementById(id); }
@@ -54,17 +61,6 @@
     if (kind === "user") return S.names[rest] || rest;
     return kind === "system" ? "Automatic job (" + rest.replace(/_/g, " ") + ")" : kind === "web" ? "Website (" + rest.replace(/_/g, " ") + ")" : rest;
   }
-
-  // The stored actor for a name typed in the "Person or source" box: a person's name (or part of an id), "Admin key", "Website form" ...
-  function actorId(typed) {
-    var t = String(typed || "").trim(); if (!t) return "";
-    if (t.indexOf(":") >= 0) return t;
-    var low = t.toLowerCase(), fixed = { "admin key": "user:admin", "website form": "web:enjoy", "completion link": "web:completion" };
-    if (fixed[low]) return fixed[low];
-    var hits = nameHits(low);
-    return hits.length === 1 ? "user:" + hits[0] : t;
-  }
-  function nameHits(low) { return Object.keys(S.names).filter(function (id) { return String(S.names[id]).toLowerCase() === low; }); }
 
   // Every person actor in what came back that we have not yet tried to name.
   function unknownPeople(records) {
@@ -107,17 +103,8 @@
 
   function btn(text, cls, fn) { var b = mk("button", cls === "quiet" ? "btn-secondary" : cls || "", text); b.type = "button"; b.addEventListener("click", fn); return b; }
   function field(label, input, id) { var d = mk("div", "avf"); var l = mk("label", "", label); if (id) l.htmlFor = id; d.appendChild(l); d.appendChild(input); return d; }
-  function select(id, opts, val) {
-    var s = mk("select"); s.id = id;
-    opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; s.appendChild(op); });
-    s.value = val || opts[0][0]; return s;
-  }
 
-  function serverFilter() {
-    if (S.recId) return { related_ids: S.recId };
-    if (S.mode !== "all" && S.value) { var f = {}; f[S.mode] = S.mode === "created_by" ? actorId(S.value) : S.value; return f; }
-    return {};
-  }
+  function serverFilter() { return S.recId ? { related_ids: S.recId } : {}; }
 
   function matches(e, q) {
     if (!q) return true;
@@ -183,12 +170,61 @@
     return r;
   }
 
-  function valueControl() {
-    if (S.mode === "record_type") { var t = select("avValue", [["", "Choose…"]].concat(TYPES), S.value); t.addEventListener("change", function () { S.value = t.value; load(); }); return field("Kind of record", t, "avValue"); }
-    if (S.mode === "action") { var a = select("avValue", [["", "Choose…"]].concat(ACTIONS), S.value); a.addEventListener("change", function () { S.value = a.value; load(); }); return field("Kind of change", a, "avValue"); }
-    var i = mk("input"); i.type = "text"; i.id = "avValue"; i.value = S.value; i.placeholder = "a person's name, Admin key or Website form"; i.autocomplete = "off";
-    i.addEventListener("keydown", function (ev) { if (ev.key === "Enter") { S.value = i.value.trim(); load(); } });
-    var f = field("Person or source (press Enter)", i, "avValue"); return f;
+  // ---- the chips: What (grouped kinds), Change, When, Who. They narrow the entries already loaded; the choice lives in the address.
+  function dayStart(d) { var x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
+  function sinceFor(w) { var n = new Date(); return w === "today" ? dayStart(n) : w === "d7" ? new Date(n.getTime() - 7 * 864e5) : w === "d30" ? new Date(n.getTime() - 30 * 864e5) : null; }
+  function selNow() { var g = S.cf ? S.cf.getSelection() : null; if (g) S.sel = g; return S.sel || { kind: ["all"], change: ACTIONS.map(function (a) { return a[0]; }), when: ["any"] }; }
+  function chipMatch(e, g, since) {
+    if (g.kind && g.kind[0] && g.kind[0] !== "all" && groupOf(e.record_type) !== g.kind[0]) return false;
+    if (g.change && g.change.indexOf(e.action) < 0) return false;
+    if (since && !(new Date(e.created_at) >= since)) return false;
+    if (g.who && g.who.length < whoOptions().length && g.who.indexOf(String(e.created_by || "")) < 0) return false;
+    return true;
+  }
+  function whoOptions() {
+    var seen = {}, out = []; S.records.forEach(function (e) { var a = String(e.created_by || ""); if (a && !seen[a]) { seen[a] = 1; out.push({ value: a, label: actorName(a) }); } });
+    var n = {}; out.forEach(function (o) { n[o.label] = (n[o.label] || 0) + 1; });
+    out.forEach(function (o) { if (n[o.label] > 1) o.label += " (ends " + String(o.value).slice(-4) + ")"; });   // two people with one name stay two choices
+    return out.sort(function (x, y) { return x.label.toLowerCase() < y.label.toLowerCase() ? -1 : 1; });
+  }
+  function syncHash() {
+    if (S.recId) return;
+    var g = selNow(), q = {};
+    if (g.kind && g.kind[0] !== "all") q.kind = g.kind[0];
+    if (g.change && g.change.length < ACTIONS.length) q.change = g.change.join(",");
+    if (g.when && g.when[0] !== "any") q.when = g.when[0];
+    if (g.who && g.who.length && g.who.length < whoOptions().length) q.who = g.who.join(",");
+    if (S.q.trim()) q.q = S.q.trim();
+    K.setHash("activity", q);
+  }
+  function readHash() {
+    var h = K.hash(); if (h.route !== "activity") return;
+    var q = h.query, sel = { kind: [q.kind && GROUP_OF && GROUPS.some(function (x) { return x[0] === q.kind; }) ? q.kind : "all"], when: [WHENS.some(function (x) { return x[0] === q.when; }) ? q.when : "any"] };
+    sel.change = q.change ? q.change.split(",").filter(function (v) { return ACTIONS.some(function (a) { return a[0] === v; }); }) : ACTIONS.map(function (a) { return a[0]; });
+    if (q.who) sel.who = q.who.split(",");
+    S.sel = sel; S.q = q.q || "";
+  }
+  function buildChips(mount) {
+    if (S.cf) { try { S.cf.destroy(); } catch (e) {} }
+    var keep = S.sel;
+    S.cf = UI.chipFilters({
+      mount: mount, label: "Activity filters",
+      filters: [
+        { id: "kind", label: "What", kind: "one", options: GROUPS.map(function (x) { return { value: x[0], label: x[1] }; }) },
+        { id: "change", label: "Change", kind: "multi", options: ACTIONS.map(function (a) { return { value: a[0], label: a[1] }; }) },
+        { id: "when", label: "When", kind: "one", options: WHENS.map(function (x) { return { value: x[0], label: x[1] }; }) },
+        { id: "who", label: "Who", kind: "search-multi", options: whoOptions() }
+      ],
+      onChange: function () { selNow(); syncHash(); list(); }
+    });
+    if (keep) { var set = { kind: keep.kind, change: keep.change, when: keep.when }; if (keep.who) set.who = keep.who; S.cf.setSelection(set); }
+  }
+
+  function dayLabel(d) {
+    var t = dayStart(new Date()), y = new Date(t.getTime() - 864e5), x = dayStart(d);
+    if (x.getTime() === t.getTime()) return "Today";
+    if (x.getTime() === y.getTime()) return "Yesterday";
+    return x.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: x.getFullYear() === t.getFullYear() ? undefined : "numeric" });
   }
 
   function draw() {
@@ -197,7 +233,7 @@
     root.textContent = "";
     var wrap = mk("div", "acv");
     var hd = mk("div", "bar phead"), pt = mk("div", "ptext"); pt.appendChild(mk("h2", "ptitle", "Activity"));
-    var count = mk("div", "count"); count.id = "avCount"; pt.appendChild(count);
+    var count = mk("div", "count"); count.id = "avCount"; count.setAttribute("role", "status"); pt.appendChild(count);
     var chk = mk("div", "meta"); chk.id = "avChecked"; chk.textContent = S.checked ? "Last checked " + S.checked : ""; pt.appendChild(chk);
     hd.appendChild(pt); var ac = mk("div", "actions"); ac.appendChild(btn("Refresh", "btn-secondary", function () { load(); })); hd.appendChild(ac); wrap.appendChild(hd);
     wrap.appendChild(mk("p", "avm", "Every change made in the Console, newest first. Nothing here can be edited."));
@@ -205,18 +241,15 @@
       var fo = mk("div", "avfocus"); fo.appendChild(mk("span", "", "History of " + (S.recLabel || "one record")));
       fo.appendChild(btn("Show everything", "quiet", function () { S.recId = ""; S.recLabel = ""; load(); })); wrap.appendChild(fo);
     } else {
-      var bar = mk("div", "avbar"); var m = select("avMode", MODES, S.mode);
-      m.addEventListener("change", function () { S.mode = m.value; S.value = ""; if (S.mode === "all") load(); else draw(); });
-      bar.appendChild(field("Show", m, "avMode"));
-      if (S.mode !== "all") bar.appendChild(valueControl());
-      wrap.appendChild(bar);
+      var sb = mk("div", "avbar"); var q = mk("input"); q.type = "search"; q.id = "avSearch"; q.value = S.q; q.placeholder = "Search what is shown"; q.autocomplete = "off";
+      q.addEventListener("input", function () { S.q = q.value; syncHash(); list(); });
+      sb.appendChild(field("Search", q, "avSearch")); wrap.appendChild(sb);
+      var chips = mk("div", "avchips"); chips.id = "avChips"; wrap.appendChild(chips);
     }
-    var sb = mk("div", "avbar"); var q = mk("input"); q.type = "search"; q.id = "avSearch"; q.value = S.q; q.placeholder = "Search what is shown"; q.autocomplete = "off";
-    q.addEventListener("input", function () { S.q = q.value; list(); });
-    sb.appendChild(field("Search", q, "avSearch")); wrap.appendChild(sb);
     wrap.appendChild(mk("div", "avmsg", S.msg)); var role = wrap.lastChild; role.setAttribute("role", "alert");
     var host = mk("div"); host.id = "avList"; wrap.appendChild(host);
     root.appendChild(wrap);
+    if (!S.recId) buildChips($("avChips"));
     list();
     if (keepQ) { try { q.focus(); q.setSelectionRange(q.value.length, q.value.length); } catch (e) {} }
   }
@@ -224,12 +257,24 @@
   function list() {
     var host = $("avList"), count = $("avCount"); if (!host) return;
     host.textContent = "";
-    var q = S.q.trim().toLowerCase(), shown = S.records.filter(function (e) { return matches(e, q); });
     if (S.busy && !S.loaded) { count.textContent = "Loading…"; return; }
     if (!S.loaded) { count.textContent = ""; return; }
-    count.textContent = shown.length + (q ? " of " + S.records.length : "") + " entr" + (shown.length === 1 ? "y" : "ies") + (S.records.length >= MAXN ? " (the newest " + MAXN + " are loaded)" : "");
-    if (!shown.length) { host.appendChild(mk("div", "avm", q ? "Nothing matches that search." : "Nothing has been recorded here yet.")); return; }
-    shown.forEach(function (e) { host.appendChild(entryCard(e)); });
+    var q = S.q.trim().toLowerCase(), g = S.recId ? {} : selNow(), since = sinceFor(g.when && g.when[0]);
+    var narrowed = !!q || (!S.recId && S.cf && S.cf.isNarrowed());
+    var shown = S.records.filter(function (e) { return (S.recId || chipMatch(e, g, since)) && matches(e, q); });
+    if (S.cf && !S.recId) {
+      var by = {}; S.records.forEach(function (e) { var k = groupOf(e.record_type); by[k] = (by[k] || 0) + 1; }); by.all = S.records.length;
+      var ch = {}; S.records.forEach(function (e) { ch[e.action] = (ch[e.action] || 0) + 1; });
+      S.cf.setCounts({ kind: by, change: ch }); S.cf.setResult(shown.length + " of " + S.records.length + " entries");
+    }
+    count.textContent = shown.length + (narrowed ? " of " + S.records.length + " entries" : " entr" + (shown.length === 1 ? "y" : "ies")) + (S.records.length >= MAXN ? " (the newest " + MAXN + " are loaded)" : "");
+    if (!shown.length) { host.appendChild(mk("div", "avm", narrowed ? "No entries match these filters." : "Nothing has been recorded here yet.")); return; }
+    var lastDay = "";
+    shown.forEach(function (e) {
+      var d = new Date(e.created_at), key = isNaN(d) ? "" : d.toDateString();
+      if (key && key !== lastDay) { lastDay = key; host.appendChild(mk("h3", "avday", dayLabel(d))); }
+      host.appendChild(entryCard(e));
+    });
   }
 
   function why(res) {
@@ -241,14 +286,8 @@
 
   function load() {
     var my = ++S.seq; S.busy = true; S.msg = "";
-    if (S.mode !== "all" && !S.recId && !S.value) { S.records = []; S.loaded = true; S.busy = false; draw(); return Promise.resolve(); }
     draw();
-    // Typing a person's name in "Person or source": we need the names before we can turn it into the stored id.
-    var pre = (S.mode === "created_by" && !S.recId && S.value && S.value.indexOf(":") < 0 && !S.allNames) ? (S.allNames = true, fetchNames()) : Promise.resolve(false);
-    return pre.then(function () {
-      if (S.mode === "created_by" && !S.recId && S.value && S.value.indexOf(":") < 0 && nameHits(S.value.trim().toLowerCase()).length > 1) S.msg = "More than one person has that name. Type the user id instead.";
-      return K.admin("list", { filters: serverFilter(), order: "-created_at", limit: MAXN }, COLL);
-    }).then(function (res) {
+    return K.admin("list", { filters: serverFilter(), order: "-created_at", limit: MAXN }, COLL).then(function (res) {
       if (my !== S.seq) return;
       S.busy = false;
       if (!ok(res)) { S.msg = why(res); S.records = []; S.loaded = true; }
@@ -266,12 +305,12 @@
 
   function show() {
     root = $("activityView");
-    if (S.pending) { S.recId = S.pending.id; S.recLabel = S.pending.label; S.mode = "all"; S.value = ""; S.q = ""; S.pending = null; }
+    if (S.pending) { S.recId = S.pending.id; S.recLabel = S.pending.label; S.sel = null; S.q = ""; S.pending = null; } else { S.recId = ""; S.recLabel = ""; readHash(); }
     S.loaded = false; load();
   }
 
   window.ActivityStation = {
     show: show, openFor: openFor,
-    reset: function () { S = { checked: "", mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: S.seq + 1, pending: null, openIds: {}, names: {}, tried: {}, allNames: false }; var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = freshState(S.seq + 1); var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();

@@ -48,6 +48,13 @@ seed("venues", "venue", "edited", "v-2", "web:enjoy", NOW - timedelta(minutes=9)
 seed("venues", "venue", "edited", "v-3", "system:unattributed", NOW - timedelta(minutes=12), [ch("phone", None, None)], None)
 seed("venues", "venue", "edited", "v-4", "user:admin", NOW - timedelta(minutes=14), [ch(f, "a", "b") for f in ["name", "phone", "email", "website_url", "allows_minors"]], "Big Edit")
 
+LOCAL_MID = datetime.now().astimezone().replace(hour=0, minute=0, second=0, microsecond=0).astimezone(timezone.utc)
+seed("access_persons", "access_person", "edited", "ap-1", "user:admin", NOW - timedelta(minutes=20), [ch("is_active", True, False)], "Eli Wood")
+seed("scheduled_classes", "scheduled_class", "created", "c-1", "web:enjoy", LOCAL_MID - timedelta(hours=12), [ch("title", None, "Intro class")], "Intro class")
+seed("scheduled_classes", "scheduled_class", "deleted", "c-2", "user:admin", LOCAL_MID - timedelta(days=3, hours=-12), [ch("deleted_by", None, "user:admin")], "Old class")
+seed("venues", "venue", "edited", "v-9", "user:admin", LOCAL_MID - timedelta(days=40), [ch("name", "A", "B")], "Ancient Cafe")
+TOTAL = 8
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -79,7 +86,7 @@ with sync_playwright() as p:
 
     # ===== L-2 shared head and layout
     head = pg.locator("#activityView .phead")
-    check("L-2 the head is the shared one: title, count line, Last checked, Refresh on the right", head.count() == 1 and "Activity" in head.inner_text() and "4 entries" in pg.inner_text("#avCount") and "Last checked" in pg.inner_text("#avChecked") and pg.locator("#activityView .phead .actions button.btn-secondary", has_text="Refresh").count() == 1, head.inner_text())
+    check("L-2 the head is the shared one: title, count line, Last checked, Refresh on the right", head.count() == 1 and "Activity" in head.inner_text() and "8 entries" in pg.inner_text("#avCount") and "Last checked" in pg.inner_text("#avChecked") and pg.locator("#activityView .phead .actions button.btn-secondary", has_text="Refresh").count() == 1, head.inner_text())
     check("L-2 no inline style block (the rules are in console.css)", pg.locator("style#activityStyle").count() == 0)
     left = pg.evaluate("document.querySelector('#activityView .acv').getBoundingClientRect().left")
     pg.evaluate("location.hash='#/places'"); pg.wait_for_selector("#placesView:not([hidden])"); pleft = pg.evaluate("document.querySelector('#placesView h2, #placesView .ptitle, #placesView .bar').getBoundingClientRect().left")
@@ -88,7 +95,37 @@ with sync_playwright() as p:
     ys = pg.evaluate("[...document.querySelectorAll('#avList .avrow')].slice(0, 2).map(r => Math.round(r.getBoundingClientRect().top))")
     check("L-2 two entries sit side by side on a wide screen", len(ys) == 2 and ys[0] == ys[1], ys)
     pg.click("#activityView .phead button:has-text('Refresh')"); pg.wait_for_selector("#activityView .avrow")
-    check("L-2 Refresh keeps the list", pg.locator("#activityView .avrow").count() == 4)
+    check("L-2 Refresh keeps the list", pg.locator("#activityView .avrow").count() == TOTAL)
+    # ===== L-3 chips, date chips, day headings, filters in the address
+    def chip(name): return pg.locator("#avChips .cf-chip", has=pg.locator(".cf-lab", has_text=name)).first
+    def opt(value): return pg.locator("#avChips .cf-pop:not([hidden]) label.cf-opt", has=pg.locator("input[value='%s']" % value))
+    def pick(name, value):
+        chip(name).click(); opt(value).click(); pg.wait_for_timeout(60)
+        d = pg.get_by_role("button", name="Done with %s filter" % name)
+        if d.count() and d.first.is_visible(): d.first.click()
+    check("L-3 four chips: What, Change, When, Who", pg.locator("#avChips .cf-chip").count() == 4 and [pg.locator("#avChips .cf-chip .cf-lab").nth(i).inner_text() for i in range(4)] == ["What", "Change", "When", "Who"])
+    heads = pg.locator("#avList h3.avday").all_inner_texts()
+    check("L-3 entries sit under day headings: Today, Yesterday, then dated days, newest first", heads[0] == "Today" and heads[1] == "Yesterday" and len(heads) >= 4, heads)
+    pick("What", "access"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
+    check("L-3 What: Access shows only the access change", "Eli Wood" in pg.inner_text("#avList") and "1 of 8 entries" in pg.inner_text("#avCount"), pg.inner_text("#avCount"))
+    check("L-3 the choice is in the address", pg.evaluate("location.hash") == "#/activity?kind=access", pg.evaluate("location.hash"))
+    pg.locator("#avChips .cf-clearall").click(); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === %d" % TOTAL)
+    check("L-3 Clear all brings everything back and empties the address", pg.evaluate("location.hash") == "#/activity")
+    pick("When", "today"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 5")
+    check("L-3 When: Today hides yesterday and older", "Intro class" not in pg.inner_text("#avList") and pg.locator("#avList h3.avday").all_inner_texts() == ["Today"], pg.locator("#avList h3.avday").all_inner_texts())
+    pg.locator("#avChips .cf-clearall").click(); pick("When", "d7"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 7")
+    check("L-3 When: Last 7 days drops the 40-day-old change", "Ancient Cafe" not in pg.inner_text("#avList") and "Old class" in pg.inner_text("#avList"))
+    pg.locator("#avChips .cf-clearall").click(); pick("Change", "created"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 6")
+    check("L-3 Change: unticking Created hides the two created entries", "Intro class" not in pg.inner_text("#avList") and "Panera" not in pg.inner_text("#avList"))
+    pg.locator("#avChips .cf-clearall").click()
+    pg.evaluate("location.hash='#/home'"); pg.evaluate("location.hash='#/activity?kind=places&q=panera'"); pg.wait_for_function("document.querySelectorAll('#activityView .avrow').length === 1")
+    check("L-3 an address with a choice and a search opens already narrowed", pg.input_value("#avSearch") == "panera" and "Panera Bread" in pg.inner_text("#avList") and "What: Venues and places" in pg.inner_text("#avChips"), pg.inner_text("#avChips"))
+    pg.fill("#avSearch", "zzzz"); pg.wait_for_selector("#avList >> text=No entries match these filters.")
+    check("L-3 nothing matching says so (not 'nothing recorded')", "Nothing has been recorded" not in pg.inner_text("#avList"))
+    pg.fill("#avSearch", ""); pg.locator("#avChips .cf-clearall").click()
+    pg.set_viewport_size({"width": 390, "height": 900}); pg.evaluate("location.hash='#/activity'"); pg.wait_for_selector("#activityView .avrow")
+    check("L-3 phone width: the chips fit, nothing scrolls sideways", pg.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 1"))
+    pg.set_viewport_size({"width": 1440, "height": 1000})
     check("no script errors", not errs, errs)
     b.close()
 print("screenshots:", SHOTS)
