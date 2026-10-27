@@ -52,16 +52,15 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
     return !invalid && choices.length === 1 ? choices[0] : null;
   }
   const id = selectedProfile();
-  if (!id) return;
-  const profile = profiles[id];
+  const profile = id ? profiles[id] : null;
 
   const baseResume = {state: 'placeholder', url: '/application/resume/'};
-  const resume = profile.resume || baseResume;
+  const resume = profile?.resume || baseResume;
   for (const link of document.querySelectorAll('[data-application-resume]')) {
     link.setAttribute('href', resume.url);
     link.textContent = resume.state === 'available' ? 'Read résumé' : 'Résumé — being prepared';
   }
-  if (profile.audience === 'employer') {
+  if (profile?.audience === 'employer') {
     for (const link of document.querySelectorAll('[data-application-letter]')) {
       if (!profile.coverLetter) { link.hidden = true; continue; }
       link.hidden = false;
@@ -73,51 +72,64 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
       documentsPanel.hidden = false;
       document.getElementById('application-audience').textContent = profile.label;
     }
-    const dialog = document.getElementById('welcome-dialog');
-    const openButton = document.getElementById('open-welcome');
-    if (dialog && openButton && typeof dialog.showModal === 'function') {
-      openButton.hidden = false;
-      document.getElementById('welcome-audience').textContent = profile.label;
-      const welcomeKey = `masthead-welcome-dismissed:${id}`;
-      let nextFocus = openButton;
-      let dismissed = false;
-      try { dismissed = sessionStorage.getItem(welcomeKey) === 'true'; } catch { /* Optional storage. */ }
-      function showWelcome() {
-        if (dialog.open) return;
-        nextFocus = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : openButton;
-        dialog.showModal();
-        document.documentElement.classList.add('welcome-open');
-        document.getElementById('close-welcome').focus({preventScroll: true});
-      }
-      function dismissWelcome(explore = false) {
-        if (explore) nextFocus = document.getElementById('hero-title');
-        try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
-        if (dialog.open) dialog.close();
-      }
-      dialog.addEventListener('keydown', event => {
-        if (event.key !== 'Tab') return;
-        const stops = [...dialog.querySelectorAll('button:not([disabled]), a[href], [tabindex="0"]')].filter(element => element.getClientRects().length);
-        const first = stops[0], last = stops[stops.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault(); last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault(); first.focus();
-        }
-      });
-      dialog.addEventListener('close', () => {
-        document.documentElement.classList.remove('welcome-open');
-        try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
-        if (nextFocus && nextFocus.isConnected) nextFocus.focus({preventScroll: true});
-        if (nextFocus && nextFocus.id === 'hero-title') nextFocus.scrollIntoView({block: 'start'});
-      });
-      document.getElementById('close-welcome').addEventListener('click', () => dismissWelcome());
-      document.getElementById('explore-welcome').addEventListener('click', () => dismissWelcome(true));
-      for (const link of dialog.querySelectorAll('a[href]')) link.addEventListener('click', () => dismissWelcome());
-      openButton.addEventListener('click', showWelcome);
-      window.addEventListener('pagehide', () => { if (dialog.open) dialog.close(); });
-      if (!dismissed) showWelcome();
-    }
   }
+  const dialog = document.getElementById('welcome-dialog');
+  const openButton = document.getElementById('open-welcome');
+  if (dialog && openButton && typeof dialog.showModal === 'function') {
+    openButton.hidden = false;
+    const isEmployer = profile?.audience === 'employer';
+    document.getElementById('generic-welcome').hidden = isEmployer;
+    document.getElementById('employer-welcome').hidden = !isEmployer;
+    document.getElementById('welcome-document-links').hidden = !isEmployer;
+    document.getElementById('welcome-conversation').hidden = isEmployer;
+    document.getElementById('welcome-audience').textContent = isEmployer ? profile.label : 'A letter from Todd';
+    dialog.setAttribute('aria-labelledby', isEmployer ? 'employer-welcome-title' : 'welcome-title');
+    dialog.setAttribute('aria-describedby', isEmployer ? 'employer-welcome-intro' : 'welcome-intro');
+    openButton.textContent = isEmployer ? 'Welcome & documents ↗' : 'Read Todd’s letter ↗';
+    const welcomeKey = `masthead-welcome-dismissed:${isEmployer ? id : 'general-letter-v1'}`;
+    let nextFocus = openButton;
+    let dismissed = false;
+    try { dismissed = sessionStorage.getItem(welcomeKey) === 'true'; } catch { /* Optional storage. */ }
+    function showWelcome() {
+      if (dialog.open) return;
+      nextFocus = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : openButton;
+      dialog.showModal();
+      document.documentElement.classList.add('welcome-open');
+      document.getElementById('close-welcome').focus({preventScroll: true});
+    }
+    function dismissWelcome(explore = false) {
+      if (explore) nextFocus = document.getElementById('hero-title');
+      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+      if (dialog.open) dialog.close();
+    }
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const stops = [...dialog.querySelectorAll('button:not([disabled]), a[href], [tabindex="0"]')].filter(element => element.getClientRects().length);
+      const first = stops[0], last = stops[stops.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    });
+    dialog.addEventListener('cancel', () => {
+      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('welcome-open');
+      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+      if (nextFocus && nextFocus.isConnected) nextFocus.focus({preventScroll: true});
+      if (nextFocus && nextFocus.id === 'hero-title') nextFocus.scrollIntoView({block: 'start'});
+    });
+    document.getElementById('close-welcome').addEventListener('click', () => dismissWelcome());
+    document.getElementById('explore-welcome').addEventListener('click', () => dismissWelcome(true));
+    for (const link of dialog.querySelectorAll('a[href]')) link.addEventListener('click', () => dismissWelcome());
+    openButton.addEventListener('click', showWelcome);
+    window.addEventListener('pagehide', () => { if (dialog.open) dialog.close(); });
+    if (!dismissed) showWelcome();
+  }
+
+  if (!id) return;
 
   const panel = document.getElementById('opportunity');
   const reopen = document.getElementById('opportunity-reopen');
