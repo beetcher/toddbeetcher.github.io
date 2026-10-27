@@ -550,7 +550,7 @@
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
-  function currentRoute() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""); return h === "venues" ? "venues" : h === "classes" ? "classes" : h === "requests" ? "requests" : h === "people" ? "people" : h === "places" ? "places" : h === "instructors" ? "instructors" : h === "students" ? "students" : h === "curriculums" ? "curriculums" : h === "organizations" ? "organizations" : h === "attendance" ? "attendance" : h === "messages" ? "messages" : h === "discovery" ? "discovery" : h === "access" ? "access" : h === "activity" ? "activity" : h === "performance" ? "performance" : "home"; }
+  var ROUTES = "venues classes requests people places instructors students curriculums organizations attendance messages discovery access activity performance".split(" "); function hashParts() { var h = (location.hash || "").replace(/^#\/?/, "").replace(/^station\//, ""), q = h.indexOf("?"), p = (q < 0 ? h : h.slice(0, q)).split("/"), o = {}; (q < 0 ? "" : h.slice(q + 1)).split("&").forEach(function (kv) { var e = kv.indexOf("="); if (e > 0) try { o[decodeURIComponent(kv.slice(0, e))] = decodeURIComponent(kv.slice(e + 1)); } catch (x) {} }); return { route: p[0], sub: p.slice(1), query: o }; } function currentRoute() { var r = hashParts().route; return ROUTES.indexOf(r) >= 0 ? r : "home"; }   // a station address may carry more after the name: #/access/roles, #/activity?kind=class
   var SELF_TITLED = { requests: 1, messages: 1, attendance: 1, access: 1, activity: 1, performance: 1 };   // these draw their own visible h2
   function stationHead(r) {
     var v = $((r === "requests" ? "list" : r) + "View"), sf = surfaceById(r);
@@ -877,7 +877,7 @@
   }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
   window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
-                        go: function (id) { goTo(id); }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; },
+                        go: function (id) { goTo(id); }, hash: hashParts, setHash: function (path, query) { var q = Object.keys(query || {}).filter(function (k) { return query[k] !== "" && query[k] != null; }).map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(query[k]); }).join("&"); try { history.replaceState(null, "", "#/" + path + (q ? "?" + q : "")); } catch (x) {} }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; },
                         // Added for station files (M-1, the Messages extraction). Functions, not values, because the things they read are filled in later or replaced.
                         adminProblem: function (status) { return adminProblem(status); },
                         time: function (d) { return fmtTime.format(d); },

@@ -123,6 +123,8 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `sessionMinutes`, `lastButton` | Core: session | Idle limit; the button just pressed |
 | `when`, `time`, `clock` | Core: date words | Date and time words |
 | `go` | Core: routing | Go to another page |
+| `hash` | Core: routing | Read the address: `{route, sub: [path pieces], query: {…}}` (S-0) |
+| `setHash` | Core: routing | Write path and query into the address without reloading the station (`history.replaceState`) (S-0) |
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
 | `openAttendance` | Attendance (`attendance.js`, through a forwarder in `console.js`, DT-23) | Open a class's attendance |
 | `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
