@@ -25,7 +25,7 @@
       '<form class="panel" id="roAddForm" hidden autocomplete="off" novalidate><h2>Add an organization</h2>' +
       '<div class="hint">Only the name is needed. Everything else can be added later.</div>' +
       '<div id="roAddFields"></div>' +
-      '<div class="btns"><button type="submit" id="roSaveBtn">Save organization</button><button type="button" class="quiet" id="roCancelBtn">Cancel</button></div>' +
+      '<div class="btns"><button type="submit" id="roSaveBtn" class="btn-primary">Save organization</button><button type="button" class="btn-secondary" id="roCancelBtn">Cancel</button></div>' +
       '<div class="msg" id="roFMsg" role="alert"></div></form>' +
       '<input type="search" id="roSearch" class="psearch" placeholder="Find by name" aria-label="Find an organization by name" autocomplete="off">' +
       '<div id="roChips"></div>' +
@@ -34,10 +34,10 @@
       '<div class="empty" id="roNoMatch" hidden><b>No organization matches that.</b><br>Try fewer words, or <button type="button" class="btn-link" id="roClear">clear the filters and the search</button>.</div>';
     // t: text | area | kinds | lines (one per line) | ids (type: value per line) | date
     var FIELDS = [
-      { k: "name", label: "Name", t: "text", add: true, max: 200, hint: "What people call it, for example Ozo Coffee." },
+      { k: "name", label: "Name", t: "text", add: true, req: true, sec: "Who it is", max: 200, hint: "What people call it, for example Ozo Coffee." },
       { k: "kinds", label: "Kind (tick all that fit)", t: "kinds", add: true },
       { k: "short_name", label: "Short name (optional)", t: "text", add: true, max: 60, hint: "For example BVSD." },
-      { k: "website_url", label: "Web address (optional)", t: "text", add: true, max: 300, hint: "Starts with http:// or https://" },
+      { k: "website_url", label: "Web address (optional)", t: "text", add: true, sec: "How to reach it", max: 300, hint: "Starts with http:// or https://" },
       { k: "email", label: "Email (optional)", t: "text", add: true, max: 200 },
       { k: "phone", label: "Phone (optional)", t: "text", add: true, max: 40 },
       { k: "legal_name", label: "Legal name (optional)", t: "text", add: false, max: 200, more: true },
@@ -52,9 +52,10 @@
                 description: "Description", identifiers: "Identifiers", founded_date: "Founded", closed_date: "Closed", notes: "Notes", status: "Status" };
     function idsText(list) { return (list || []).map(function (i) { return i.type + ": " + i.value; }).join("\n"); }
     function mkF(f, idp, cur) {
-      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      var wrap = mk("div"), l = f.req ? UI.requiredLabel(f.label) : mk("label", "f", f.label), el;
+      if (f.sec) wrap.appendChild(mk("h3", "fsec", f.sec));
       if (f.t === "kinds") {
-        el = mk("div"); el.id = idp + f.k; el.setAttribute("role", "group"); el.setAttribute("aria-label", f.label); l.removeAttribute("for");
+        el = mk("div", "kindgrid"); el.id = idp + f.k; el.setAttribute("role", "group"); el.setAttribute("aria-label", f.label); l.removeAttribute("for");
         OKINDS.forEach(function (kk) {
           var lab = mk("label"), cb = mk("input"); cb.type = "checkbox"; cb.value = kk[0]; cb.checked = (cur || []).indexOf(kk[0]) >= 0;
           lab.style.display = "flex"; lab.style.gap = "8px"; lab.style.alignItems = "center"; lab.style.padding = "2px 0";
@@ -67,7 +68,7 @@
         el = mk("input"); el.type = "text"; el.maxLength = f.t === "date" ? 10 : (f.max || 200); el.value = cur == null ? "" : String(cur);
         if (f.k === "email") el.inputMode = "email"; if (f.k === "website_url") el.inputMode = "url";
       }
-      el.id = idp + f.k; if (f.t !== "kinds") l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
+      el.id = idp + f.k; if (f.t !== "kinds") l.htmlFor = el.id; if (f.req) el.setAttribute("aria-required", "true"); wrap.appendChild(l); wrap.appendChild(el);
       if (f.hint) wrap.appendChild(mk("div", "hint", f.hint));
       var er = mk("div", "ferr"); wrap.appendChild(er);
       return { wrap: wrap, el: el, err: er, f: f };
@@ -382,9 +383,9 @@
       var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rost_" + rec.id; sl.htmlFor = ss.id;
       [["active", "Active"], ["inactive", "Inactive (kept, not used)"], ["closed", "Closed (no longer exists)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
       ss.value = rec.status === "merged" ? "active" : (rec.status || "active");
-      var sw = mk("div"); sw.appendChild(sl); sw.appendChild(ss); form.appendChild(sw);
+      var sw = mk("div"); sw.appendChild(mk("h3", "fsec", "Status")); sw.appendChild(sl); sw.appendChild(ss); form.appendChild(sw);
       form.appendChild(more);
-      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var btns = mk("div", "btns"), save = mk("button", "btn-primary", "Save changes"), cancel = mk("button", "btn-secondary", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
       var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
       cancel.addEventListener("click", function () { host.textContent = ""; });
       form.addEventListener("submit", function (e) {

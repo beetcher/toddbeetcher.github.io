@@ -112,6 +112,17 @@ with sync_playwright() as p:
     check("L-7 a failed load says so and offers Try again", "Could not load the organizations" in pg.locator("#roMsg").inner_text() and pg.locator("#roRetry").inner_text() == "Try again")
     flaky["on"] = False; pg.click("#roRetry"); pg.wait_for_function("document.getElementById('roRetry').hidden && document.querySelectorAll('#roList li').length > 0")
     check("L-7 Try again loads the list", pg.locator("#roList li").count() > 0)
+
+    # ===== L-8 forms
+    pg.click("#roAddBtn"); pg.wait_for_selector("#roAddFields .fsec")
+    check("L-8 the Add form has sections and a red star on Name only", [h.lower() for h in pg.locator("#roAddFields .fsec").all_inner_texts()] == ["who it is", "how to reach it"] and pg.locator("#roAddFields .req").count() == 1 and pg.get_attribute("#roA_name", "aria-required") == "true")
+    kb = pg.locator("#roA_kinds").bounding_box(); k0 = pg.locator("#roA_kinds label").nth(0).bounding_box(); k1 = pg.locator("#roA_kinds label").nth(1).bounding_box()
+    check("L-8 the twelve kinds sit in a grid, not one long run", abs(k0["y"] - k1["y"]) < 4 and kb["height"] < 12 * 30, (kb, k0, k1))
+    pg.click("#roSaveBtn"); pg.wait_for_timeout(200)
+    check("L-8 an empty Name says Required right under the box", pg.locator("#roAddFields .ferr").first.inner_text() == "Required.")
+    sb, cb = pg.locator("#roSaveBtn").bounding_box(), pg.locator("#roCancelBtn").bounding_box()
+    check("L-8 Save and Cancel sit together, Save orange", abs(sb["y"] - cb["y"]) < 4 and "btn-primary" in pg.get_attribute("#roSaveBtn", "class"))
+    pg.click("#roCancelBtn")
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)
