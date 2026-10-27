@@ -77,6 +77,18 @@ with sync_playwright() as p:
     check("L-1 a five-field edit names the fields and folds the rest", "Changed Name, Phone, Email and 2 more" in big.inner_text() and big.locator("li").count() == 0, big.inner_text())
     pg.screenshot(path=str(SHOTS / "L1_desktop.png"), full_page=True)
 
+    # ===== L-2 shared head and layout
+    head = pg.locator("#activityView .phead")
+    check("L-2 the head is the shared one: title, count line, Last checked, Refresh on the right", head.count() == 1 and "Activity" in head.inner_text() and "4 entries" in pg.inner_text("#avCount") and "Last checked" in pg.inner_text("#avChecked") and pg.locator("#activityView .phead .actions button.btn-secondary", has_text="Refresh").count() == 1, head.inner_text())
+    check("L-2 no inline style block (the rules are in console.css)", pg.locator("style#activityStyle").count() == 0)
+    left = pg.evaluate("document.querySelector('#activityView .acv').getBoundingClientRect().left")
+    pg.evaluate("location.hash='#/places'"); pg.wait_for_selector("#placesView:not([hidden])"); pleft = pg.evaluate("document.querySelector('#placesView h2, #placesView .ptitle, #placesView .bar').getBoundingClientRect().left")
+    check("L-2 the page starts at the same left edge as the other stations", abs(left - pleft) <= 2, (left, pleft))
+    pg.evaluate("location.hash='#/activity'"); pg.wait_for_selector("#activityView .avrow")
+    ys = pg.evaluate("[...document.querySelectorAll('#avList .avrow')].slice(0, 2).map(r => Math.round(r.getBoundingClientRect().top))")
+    check("L-2 two entries sit side by side on a wide screen", len(ys) == 2 and ys[0] == ys[1], ys)
+    pg.click("#activityView .phead button:has-text('Refresh')"); pg.wait_for_selector("#activityView .avrow")
+    check("L-2 Refresh keeps the list", pg.locator("#activityView .avrow").count() == 4)
     check("no script errors", not errs, errs)
     b.close()
 print("screenshots:", SHOTS)

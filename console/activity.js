@@ -9,7 +9,7 @@
   var mk = K.mk, root = null, COLL = "activity_events", MAXN = 200;
 
   // The server takes ONE filter. Everything else (the search box) narrows what came back.
-  var S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: 0, pending: null, openIds: {}, names: {}, tried: {}, allNames: false };
+  var S = { checked: "", mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: 0, pending: null, openIds: {}, names: {}, tried: {}, allNames: false };
 
   var TYPES = [["venue", "Venue"], ["scheduled_class", "Class"], ["registration_request", "Registration request"], ["individual", "Person"],
     ["location", "Place"], ["instructor_roster", "Instructor"], ["student_roster", "Student"], ["attendance", "Attendance"], ["organization", "Organization"],
@@ -105,24 +105,7 @@
     return JSON.stringify(v);
   }
 
-  function style() {
-    if ($("activityStyle")) return;
-    var s = document.createElement("style"); s.id = "activityStyle";
-    s.textContent = ".acv{max-width:900px;margin:0 auto}.acv .avbar{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}.acv .avf{display:flex;flex-direction:column;gap:2px}" +
-      ".acv .avf label{font-weight:700;font-size:14px}.acv select,.acv input[type=text],.acv input[type=search]{font:inherit;padding:8px;min-height:44px;box-sizing:border-box;max-width:100%}" +
-      ".acv .avrow{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff}.acv .av1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}" +
-      ".acv .avwho{font-weight:700}.acv .avm{font-size:14px;color:var(--muted)}.acv .avchip{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;border:1px solid #bbb;background:#eee}" +
-      ".acv .avchip.created{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}.acv .avchip.edited{background:#e1ecff;border-color:#4a76c9;color:#12326b}" +
-      ".acv .avchip.deleted{background:#fbd9d4;border-color:#c0392b;color:#6b1208}.acv .avchip.restored{background:#ffe9b3;border-color:#c98a00;color:#6a4500}" +
-      ".acv .avch{margin:6px 0 0;padding:0;list-style:none}.acv .avch li{padding:4px 0;border-top:1px solid #eee;font-size:15px;overflow-wrap:anywhere}" +
-      ".acv .avfield{font-weight:700}.acv .avold{text-decoration:line-through;color:#8a3b30}.acv .avnew{color:#1d4d00}.acv .avw{font-style:italic;color:var(--muted)}" +
-      ".acv .avfocus{border:2px solid var(--orange);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffaf0;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}" +
-      ".acv .avwhat{margin:4px 0 0;font-size:15px}.acv .avsr{position:absolute;left:-9999px}.acv .avlink{min-height:0;padding:0 4px;border:0;background:none;text-decoration:underline;color:inherit;font:inherit;cursor:pointer}" +
-      ".acv .avmsg{color:var(--err);font-weight:600;min-height:1.4em}";
-    document.head.appendChild(s);
-  }
-
-  function btn(text, cls, fn) { var b = mk("button", cls || "", text); b.type = "button"; b.addEventListener("click", fn); return b; }
+  function btn(text, cls, fn) { var b = mk("button", cls === "quiet" ? "btn-secondary" : cls || "", text); b.type = "button"; b.addEventListener("click", fn); return b; }
   function field(label, input, id) { var d = mk("div", "avf"); var l = mk("label", "", label); if (id) l.htmlFor = id; d.appendChild(l); d.appendChild(input); return d; }
   function select(id, opts, val) {
     var s = mk("select"); s.id = id;
@@ -213,7 +196,10 @@
     var keepQ = document.activeElement && document.activeElement.id === "avSearch";
     root.textContent = "";
     var wrap = mk("div", "acv");
-    var h = mk("div", "av1"); h.appendChild(mk("h2", "", "Activity")); h.appendChild(btn("Refresh", "quiet", function () { load(); })); wrap.appendChild(h);
+    var hd = mk("div", "bar phead"), pt = mk("div", "ptext"); pt.appendChild(mk("h2", "ptitle", "Activity"));
+    var count = mk("div", "count"); count.id = "avCount"; pt.appendChild(count);
+    var chk = mk("div", "meta"); chk.id = "avChecked"; chk.textContent = S.checked ? "Last checked " + S.checked : ""; pt.appendChild(chk);
+    hd.appendChild(pt); var ac = mk("div", "actions"); ac.appendChild(btn("Refresh", "btn-secondary", function () { load(); })); hd.appendChild(ac); wrap.appendChild(hd);
     wrap.appendChild(mk("p", "avm", "Every change made in the Console, newest first. Nothing here can be edited."));
     if (S.recId) {
       var fo = mk("div", "avfocus"); fo.appendChild(mk("span", "", "History of " + (S.recLabel || "one record")));
@@ -229,7 +215,6 @@
     q.addEventListener("input", function () { S.q = q.value; list(); });
     sb.appendChild(field("Search", q, "avSearch")); wrap.appendChild(sb);
     wrap.appendChild(mk("div", "avmsg", S.msg)); var role = wrap.lastChild; role.setAttribute("role", "alert");
-    var count = mk("div", "avm"); count.id = "avCount"; wrap.appendChild(count);
     var host = mk("div"); host.id = "avList"; wrap.appendChild(host);
     root.appendChild(wrap);
     list();
@@ -267,7 +252,7 @@
       if (my !== S.seq) return;
       S.busy = false;
       if (!ok(res)) { S.msg = why(res); S.records = []; S.loaded = true; }
-      else { S.records = (res.body.data && res.body.data.records) || []; S.loaded = true; }
+      else { S.records = (res.body.data && res.body.data.records) || []; S.loaded = true; S.checked = K.clock(new Date()); }
       draw();
       if (S.records.length) return nameThem(S.records).then(function (got) { if (got && my === S.seq) draw(); });
     });
@@ -280,13 +265,13 @@
   }
 
   function show() {
-    style(); root = $("activityView");
+    root = $("activityView");
     if (S.pending) { S.recId = S.pending.id; S.recLabel = S.pending.label; S.mode = "all"; S.value = ""; S.q = ""; S.pending = null; }
     S.loaded = false; load();
   }
 
   window.ActivityStation = {
     show: show, openFor: openFor,
-    reset: function () { S = { mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: S.seq + 1, pending: null, openIds: {}, names: {}, tried: {}, allNames: false }; var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
+    reset: function () { S = { checked: "", mode: "all", value: "", recId: "", recLabel: "", records: [], loaded: false, busy: false, msg: "", q: "", seq: S.seq + 1, pending: null, openIds: {}, names: {}, tried: {}, allNames: false }; var v = $("activityView"); if (v) v.innerHTML = ""; root = null; }
   };
 })();

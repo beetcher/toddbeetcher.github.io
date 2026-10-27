@@ -755,3 +755,32 @@
 .acs button.btn-secondary[aria-pressed="true"]{background:var(--ink);color:var(--white)}
 .acs .acbtns button{white-space:nowrap}
 .acs .acform button.btn-primary,.acs .acform button.btn-secondary{min-height:44px}
+
+/* Activity station (moved out of activity.js) */
+.acv{max-width:none}
+.acv .avbar{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}
+.acv .avf{display:flex;flex-direction:column;gap:2px}
+.acv .avf label{font-weight:700;font-size:14px}
+.acv select,.acv input[type=text],.acv input[type=search]{font:inherit;padding:8px;min-height:44px;box-sizing:border-box;max-width:100%}
+.acv .avrow{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff}
+.acv .av1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.acv .avwho{font-weight:700}
+.acv .avm{font-size:14px;color:var(--muted)}
+.acv .avchip{display:inline-block;border-radius:999px;padding:1px 10px;font-size:13px;font-weight:700;border:1px solid #bbb;background:#eee}
+.acv .avchip.created{background:#d9f2c4;border-color:#5c9a00;color:#1d4d00}
+.acv .avchip.edited{background:#e1ecff;border-color:#4a76c9;color:#12326b}
+.acv .avchip.deleted{background:#fbd9d4;border-color:#c0392b;color:#6b1208}
+.acv .avchip.restored{background:#ffe9b3;border-color:#c98a00;color:#6a4500}
+.acv .avch{margin:6px 0 0;padding:0;list-style:none}
+.acv .avch li{padding:4px 0;border-top:1px solid #eee;font-size:15px;overflow-wrap:anywhere}
+.acv .avfield{font-weight:700}
+.acv .avold{text-decoration:line-through;color:#8a3b30}
+.acv .avnew{color:#1d4d00}
+.acv .avw{font-style:italic;color:var(--muted)}
+.acv .avfocus{border:2px solid var(--orange);border-radius:10px;padding:8px 12px;margin:10px 0;background:#fffaf0;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.acv .avwhat{margin:4px 0 0;font-size:15px}
+.acv .avsr{position:absolute;left:-9999px}
+.acv .avlink{min-height:0;padding:0 4px;border:0;background:none;text-decoration:underline;color:inherit;font:inherit;cursor:pointer}
+.acv .avmsg{color:var(--err);font-weight:600;min-height:1.4em}
+.acv #avList{display:grid;grid-template-columns:1fr;gap:0 var(--space-6)}
+@media (min-width:1100px){.acv #avList{grid-template-columns:1fr 1fr}.acv #avList .avday{grid-column:1/-1}}
