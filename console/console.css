@@ -849,3 +849,10 @@
 .afbox .fsec:first-child { margin-top: 0; border-top: 0; padding-top: 0; }
 .afbox .fgrid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--space-7); }
 @media (min-width: 1100px) { .afbox .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .afbox .fgrid .fwide { grid-column: 1 / -1; } }
+
+/* Phone pass (390 px) for the three stations: 44 px targets in the page head and on cards, the head's links wrap under the title */
+@media (max-width: 520px) {
+  #placesView .bar button, #peopleView .bar button, #organizationsView .bar button,
+  #lList .actions-row button, #pList .actions-row button, #roList .actions-row button { min-height: 44px; }
+  #placesView .phead .actions, #peopleView .phead .actions, #organizationsView .phead .actions { width: 100%; }
+}
