@@ -148,6 +148,7 @@
       chips().setCount("");
       g("Empty").hidden = S.all.length > 0;
     }
+    var IDWORDS = { ein: "EIN (tax number)", duns: "D-U-N-S number", nces: "NCES school number", uei: "UEI (federal vendor number)" };
     function kindsLine(rec) { return (rec.kinds || []).map(function (k) { return OKIND_LABEL[k] || k; }).join(", "); }
     function row(rec) {
       var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
@@ -182,9 +183,9 @@
       if (rec.website_url) detail.appendChild(line("Web", rec.website_url));
       if (rec.email) detail.appendChild(line("Email", rec.email));
       if (rec.phone) detail.appendChild(line("Phone", rec.phone));
-      (rec.identifiers || []).forEach(function (i) { detail.appendChild(line(i.type, i.value)); });
-      if (rec.founded_date) detail.appendChild(line("Founded", rec.founded_date));
-      if (rec.closed_date) detail.appendChild(line("Closed", rec.closed_date));
+      (rec.identifiers || []).forEach(function (i) { detail.appendChild(line(IDWORDS[i.type] || (String(i.type || "Identifier").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); })), i.value)); });
+      if (rec.founded_date) detail.appendChild(line("Founded", pDateOut(rec.founded_date)));
+      if (rec.closed_date) detail.appendChild(line("Closed", pDateOut(rec.closed_date)));
       if (rec.status === "active" || rec.status === "inactive") { /* shown by the switch */ }
       if (rec.notes) detail.appendChild(line("Notes", rec.notes));
       detail.appendChild(line("Added", when(rec.created_at)));

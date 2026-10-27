@@ -29,6 +29,7 @@ A = "user:admin"
 KINDS = [["school"], ["business"], ["school_district"], ["governing_body"], ["nonprofit", "school"]]
 for i in range(115):
     OC.create(store, {"name": "Organization %03d" % i, "kinds": KINDS[i % 5], "short_name": "O%d" % i if i % 7 == 0 else None} if i % 7 == 0 else {"name": "Organization %03d" % i, "kinds": KINDS[i % 5]}, A)
+OC.create(store, {"name": "Zzz Plain Words Co", "kinds": ["business"], "identifiers": [{"type": "ein", "value": "00-0000000"}], "founded_date": "1999-04-17", "closed_date": "2005"}, A)
 orgs = sorted(store.data["organizations"].values(), key=lambda r: r["name"])
 for r in orgs[:5]: OC.update(store, r["id"], {"status": "inactive"}, A)
 for r in orgs[5:8]: OC.update(store, r["id"], {"status": "closed"}, A)
@@ -49,7 +50,7 @@ with sync_playwright() as p:
 
     # ===== L-5 filters and paging
     check("L-5 the old drop-down is gone; chips Status and Kind are there", pg.locator("#roFilter").count() == 0 and all(w in pg.locator("#roChips .cf-row").inner_text() for w in ["Status", "Kind"]))
-    check("L-5 Active only, 50 rows, 'shown of' count", pg.locator("#roList li").count() == 50 and pg.locator("#roCount").inner_text() == "%d organizations shown of 115" % N_ACTIVE, pg.locator("#roCount").inner_text())
+    check("L-5 Active only, 50 rows, 'shown of' count", pg.locator("#roList li").count() == 50 and pg.locator("#roCount").inner_text() == "%d organizations shown of 116" % N_ACTIVE, pg.locator("#roCount").inner_text())
     check("L-5 'Showing 50 of N' and Load more", ("Showing 50 of %d" % N_ACTIVE) in pg.locator("#roMore").inner_text() and pg.locator("#roMore button").count() == 1, pg.locator("#roMore").inner_text())
     while pg.locator("#roMore button").count():
         pg.locator("#roMore button").click(); pg.wait_for_timeout(200)
@@ -87,6 +88,13 @@ with sync_playwright() as p:
     hs = pg.evaluate("Array.from(document.querySelectorAll('#roList li.open .actions-row')[0].querySelectorAll('button')).map(function (b) { return Math.round(b.getBoundingClientRect().height); })")
     check("L-3 one height (40 px) on the card's main buttons", len(set(hs)) == 1 and hs[0] == 40, hs)
     first.locator("button.head").click()
+
+    # ===== L-4 plain words in the card
+    pg.fill("#roSearch", "Zzz Plain"); pg.wait_for_timeout(250)
+    pw = pg.locator("#roList li", has_text="Zzz Plain Words Co"); pw.locator("button.head").click()
+    ptxt = pw.inner_text()
+    check("L-4 identifier and dates in plain words", "EIN (tax number): 00-0000000" in ptxt and "Founded: Apr 17, 1999" in ptxt and "Closed: 2005" in ptxt and "ein:" not in ptxt and "1999-04-17" not in ptxt, ptxt)
+    pw.locator("button.head").click()
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)
