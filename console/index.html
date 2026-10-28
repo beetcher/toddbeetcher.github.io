@@ -290,8 +290,9 @@
     </section>
   </section>
   <section id="peopleView" hidden>
-    <div class="bar">
-      <div>
+    <div class="bar phead">
+      <div class="ptext">
+        <h2 class="ptitle" id="pTitle">People</h2>
         <div class="count" id="pCount"></div>
         <div class="meta" id="pChecked"></div>
       </div>
@@ -301,9 +302,10 @@
           <option value="inactive">Inactive</option>
           <option value="">All</option>
         </select>
-        <button type="button" class="quiet manualBtn" data-m="people">Manual</button>
-        <button id="pRefresh" class="quiet" type="button">Refresh</button>
-        <button id="pAddBtn" type="button">Add person</button>
+        <button type="button" class="btn-link" id="pHistLink">Merge history</button>
+        <button type="button" class="btn-link manualBtn" data-m="people">Manual</button>
+        <button id="pRefresh" class="btn-link" type="button">Refresh</button>
+        <button id="pAddBtn" type="button" class="btn-primary">Add person</button>
       </div>
     </div>
     <form class="panel" id="pAddForm" hidden autocomplete="off" novalidate>

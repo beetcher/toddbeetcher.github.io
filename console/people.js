@@ -355,6 +355,9 @@
   $("pRetry").addEventListener("click", loadPeople);
   $("pSearch").addEventListener("input", renderPeople);
   $("pHist").addEventListener("toggle", function () { if ($("pHist").open) loadMerges(); });
+  $("pHistLink").addEventListener("click", function () {   // the link in the page head opens the Merge history box at the bottom and brings it into view
+    $("pHist").open = true; $("pHist").scrollIntoView({ block: "start" }); $("pHist").querySelector("summary").focus();
+  });
 
   // A person pointer on the venue form. The venue stores only the person's id; the name is read from their record.
   var peopleForPick = null;
