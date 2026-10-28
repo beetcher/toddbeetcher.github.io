@@ -111,68 +111,68 @@
 
   <section id="venuesView" hidden>
     <div id="vMain">
-    <div class="bar">
-      <div>
+    <div class="bar phead">
+      <div class="ptext">
+        <h2 class="ptitle" id="vTitle">Venues</h2>
         <div class="count" id="vCount"></div>
         <div class="meta" id="vChecked"></div>
       </div>
       <div class="actions">
-        <select id="vFilter" aria-label="Filter by status">
-          <option value="">All (active / inactive)</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-        <select id="vState" aria-label="Filter by state"><option value="">All states</option></select>
-        <select id="vRegion" aria-label="Filter by region"><option value="">All regions</option></select>
-        <button type="button" class="quiet manualBtn" data-m="venues">Manual</button>
-        <button id="vRefresh" class="quiet" type="button">Refresh</button>
-        <button id="vGps" class="quiet" type="button">Find missing GPS</button>
-        <button id="addBtn" type="button">Add venue</button>
+        <button type="button" class="btn-link manualBtn" data-m="venues">Manual</button>
+        <button id="vRefresh" class="btn-link" type="button">Refresh</button>
+        <button id="vGps" class="btn-link" type="button">Find missing GPS</button>
+        <button id="addBtn" type="button" class="btn-primary">Add venue</button>
       </div>
     </div>
     <form class="panel" id="addForm" hidden autocomplete="off" novalidate>
       <h2>Add a venue</h2>
       <div class="hint">It is added as inactive. If you give an address, the place is saved with it. Rooms, hours and contacts come next, when you edit it.</div>
-      <label class="f" for="fName">Name</label>
+      <div class="fsec">The venue</div>
+      <label class="f" for="fName">Name<span class="req" aria-hidden="true"> *</span></label>
       <input type="text" id="fName" maxlength="200" autocomplete="off">
       <div class="ferr" id="eName"></div>
-      <label class="f" for="fSlug">Short name (slug)</label>
+      <label class="f" for="fSlug">Short name (slug)<span class="req" aria-hidden="true"> *</span></label>
       <input type="text" id="fSlug" maxlength="100" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
       <div class="hint">Lowercase letters, numbers and underscores. It cannot be changed later.</div>
       <div class="ferr" id="eSlug"></div>
-      <label class="f" for="fPublic">Kind of place</label>
+      <label class="f" for="fPublic">Kind of place<span class="req" aria-hidden="true"> *</span></label>
       <select id="fPublic">
         <option value="">Choose one</option>
         <option value="public">Public venue (library, cafe, community room)</option>
         <option value="private">Private space (a home)</option>
       </select>
       <div class="ferr" id="ePublic"></div>
-      <div class="f" style="margin-top:14px">Where is it? (optional)</div>
+      <div class="fsec">Where is it? (optional)</div>
       <div class="hint">Leave this blank if you do not know yet. A name alone saves as a draft.</div>
       <div id="fPlaceHost"></div>
       <div class="btns">
-        <button type="submit" id="saveBtn">Save venue</button>
-        <button type="button" class="quiet" id="cancelBtn">Cancel</button>
+        <button type="submit" id="saveBtn" class="btn-primary">Save venue</button>
+        <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
       </div>
       <div class="msg" id="fMsg" role="alert"></div>
     </form>
+    <input type="search" id="vSearch" class="psearch" placeholder="Find by name or address" aria-label="Find a venue by name or address" autocomplete="off">
+    <div id="vChips"></div>
     <div class="notice" id="vNotice" role="status"></div>
     <div class="msg" id="vMsg" role="alert"></div>
+    <button type="button" class="btn-secondary" id="vRetry" hidden>Try again</button>
     <ul id="vList"></ul>
-    <div class="empty" id="vEmpty" hidden>No venues yet.</div>
+    <div id="vMore"></div>
+    <div class="empty" id="vEmpty" hidden>No venues yet. Add one to begin.</div>
+    <div class="empty" id="vNoMatch" hidden><b>No venue matches that.</b><br>Try fewer letters, or <button type="button" class="btn-link" id="vClear">clear the filters and the search</button>.</div>
     </div>
 
     <section id="editPanel" hidden>
-      <div class="headrow"><h2 id="editTitle"></h2><button type="button" class="quiet" id="helpBtn">Show field help</button></div>
+      <div class="headrow"><h2 id="editTitle"></h2><button type="button" class="btn-link" id="helpBtn">Show field help</button></div>
       <div class="hint" id="editSub"></div>
       <div class="msg" id="editMsg" role="alert"></div>
-      <button type="button" class="quiet" id="editReload" hidden>Close and reload the latest</button>
+      <button type="button" class="btn-secondary" id="editReload" hidden>Close and reload the latest</button>
       <form id="editForm" novalidate autocomplete="off">
         <div class="hint reqnote">* means required</div>
         <div id="editSections"></div>
         <div class="stickybar">
-          <button type="submit" id="editSave">Save changes</button>
-          <button type="button" class="quiet" id="editCancel">Cancel</button>
+          <button type="submit" id="editSave" class="btn-primary">Save changes</button>
+          <button type="button" class="btn-secondary" id="editCancel">Cancel</button>
         </div>
       </form>
     </section>

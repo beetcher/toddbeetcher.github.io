@@ -109,8 +109,8 @@
 
     var chips = document.createElement("div"); chips.className = "lchips";
     var nr = (rec.rooms && rec.rooms.length) || 0, nh = (rec.availability_hours && rec.availability_hours.length) || 0;
-    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "chiplink"; rlink.textContent = "Rooms: " + nr;
-    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "chiplink"; hlink.textContent = "Open days: " + nh;
+    var rlink = document.createElement("button"); rlink.type = "button"; rlink.className = "btn-secondary"; rlink.textContent = "Rooms: " + nr;
+    var hlink = document.createElement("button"); hlink.type = "button"; hlink.className = "btn-secondary"; hlink.textContent = "Open days: " + nh;
     rlink.addEventListener("click", function () { openListDlg(rec, "rooms"); });
     hlink.addEventListener("click", function () { openListDlg(rec, "hours"); });
     var added = document.createElement("span"); added.textContent = "Added: " + when(rec.created_at);
@@ -135,12 +135,21 @@
 
     // everything the record holds, folded
     var raw = document.createElement("details"); raw.className = "dfold";
-    var rs = document.createElement("summary"); rs.textContent = "All fields"; raw.appendChild(rs);
+    var rs = document.createElement("summary"); rs.textContent = "Technical details"; raw.appendChild(rs);
     var done = {};
     ["name", "slug", "status", "is_public_venue", "id"].forEach(function (f) { if (rec[f] !== undefined) { raw.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
     Object.keys(rec).sort().forEach(function (f) { if (!done[f]) raw.appendChild(line(f, str(rec[f]))); });
     detail.appendChild(raw);
     return detail;
+  }
+  // Ready to host: what a class needs from a venue. Missing items are named; "Not ready" is the same test as a filter.
+  function vMissing(rec) {
+    var m = [];
+    if (!rec.place) m.push("a place");
+    else if (rec.is_public_venue && !rec.place.has_gps) m.push("a GPS point");
+    if (!(rec.rooms && rec.rooms.length)) m.push("a room");
+    if (!(rec.availability_hours && rec.availability_hours.length)) m.push("open days");
+    return m;
   }
   function venueRow(rec, isNew) {
     var li = document.createElement("li"); li.className = "vrow" + (isNew ? " isnew" : "");
@@ -148,19 +157,13 @@
     var vm = document.createElement("div"); vm.className = "vmain";
     var nm = document.createElement("span"); nm.className = "vname"; nm.textContent = rec.name || "(no name)";
     var ad = document.createElement("span"); ad.className = "vaddr"; ad.textContent = vAddrLine(rec);
-    vm.appendChild(nm); vm.appendChild(ad);
-    var hr = vHoursShort(rec);
-    if (hr.text) { var hs = document.createElement("span"); hs.className = "vhours"; hs.textContent = hr.text; hs.title = hr.full; vm.appendChild(hs); }
+    var miss = vMissing(rec), rd = document.createElement("span"); rd.className = "vready" + (miss.length ? " no" : ""); rd.textContent = miss.length ? "Not ready to host: needs " + miss.join(", ") : "Ready to host";
+    vm.appendChild(nm); vm.appendChild(ad); vm.appendChild(rd);
     ln.appendChild(vm);
     var acts = document.createElement("div"); acts.className = "vacts";
-    if (/^https?:\/\//i.test(String(rec.website_url || ""))) {
-      var lk = document.createElement("a"); lk.className = "vlink"; lk.textContent = "Link"; lk.href = rec.website_url;
-      lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.setAttribute("aria-label", "Website for " + (rec.name || "this venue"));
-      acts.appendChild(lk);
-    }
     var tg = statusToggle(rec, li, { on: "active", off: "inactive", label: "Venue", problem: function (res) { return lProblems(res); } });
     acts.appendChild(tg.btn);
-    var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.setAttribute("aria-expanded", "false");
+    var dt = document.createElement("button"); dt.type = "button"; dt.className = "head vdetails"; dt.textContent = "Details"; dt.className = "head vdetails btn-secondary"; dt.setAttribute("aria-expanded", "false");
     acts.appendChild(dt);
     ln.appendChild(acts);
 
@@ -179,16 +182,16 @@
     if (vBusy) { vAgain = true; return Promise.resolve(); }   // a change came in while loading: load once more when done
     vBusy = true; $("vMsg").textContent = "";
     if (!vLoaded) skelOn($("vList"));
-    var f = $("vFilter").value;
-    return admin("list", { filters: f ? { status: f } : {}, limit: 200, expand: true }).then(function (res) {
+    $("vRetry").hidden = true;
+    return admin("list", { filters: {}, limit: 200, expand: true }).then(function (res) {
       vBusy = false;
       if (vAgain) { vAgain = false; return loadVenues(); }
       if (res.status === 401) { lock("That key did not work."); return; }
-      if (res.status !== 200 || !res.body.ok) { skelOff($("vList")); $("vMsg").textContent = adminProblem(res.status); return; }
+      if (res.status !== 200 || !res.body.ok) { skelOff($("vList")); $("vMsg").textContent = "Could not load the venues. " + adminProblem(res.status); $("vRetry").hidden = false; return; }
       vRecs = res.body.data.records || [];
       UI.limitNote($("vList"), vRecs.length, 200);
       return (vAreas ? Promise.resolve() : loadAreas()).then(function () {
-        drawVenueFilters(); renderVenues(); vNewId = ""; vLoaded = true;
+        fillVenueChips(); renderVenues(); vNewId = ""; vLoaded = true;
         $("vChecked").textContent = "Last checked " + fmtClock.format(new Date());
       });
     });
@@ -205,40 +208,63 @@
   function vStateOf(r) { return String(vAddr(r).region || r.state_region || "").toUpperCase(); }
   function vZipOf(r) { return String(vAddr(r).postal_code || r.postal_code || "").slice(0, 5); }
   function vByName(a, b) { return String(a.name).toLowerCase() < String(b.name).toLowerCase() ? -1 : 1; }
-  function vOptions(sel, first, items, keep) {
-    sel.textContent = "";
-    var o = document.createElement("option"); o.value = ""; o.textContent = first; sel.appendChild(o);
-    items(sel);
-    sel.value = keep; if (sel.value !== keep) sel.value = "";
+  // ---- Filters (shared chip bar): Status, State (one), Region (search list, follows the State), Kind and a "Not ready" switch. Search by name or address.
+  // Everything narrows the venues already loaded; sorted by name, 50 at a time. State and Region are the Discovery areas; a venue is in a region when its ZIP is on the region's list.
+  var vCf = null, vShow = 50, VSTEP = 50, vLastState = "";
+  function vChips() {
+    if (vCf) return vCf;
+    vCf = UI.chipFilters({
+      mount: $("vChips"), label: "Venue filters",
+      filters: [
+        { id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }] },
+        { id: "state", label: "State", kind: "one", options: [{ value: "", label: "All states" }] },
+        { id: "region", label: "Region", kind: "search-multi", start: "none", options: [] },
+        { id: "kind", label: "Kind", kind: "multi", options: [{ value: "public", label: "Public venue" }, { value: "private", label: "Private space" }] },
+        { id: "notready", label: "Not ready to host", kind: "toggle", noun: "venues" }],
+      onChange: function (sel) {
+        var st = (sel.state || [""])[0] || "";
+        if (st !== vLastState) { vLastState = st; vRegionOptions(); }
+        vShow = VSTEP; $("vNotice").textContent = ""; renderVenues();
+      }
+    });
+    return vCf;
   }
-  function drawVenueFilters() {
-    if (vBar) setTimeout(vBar.refresh, 0);
-    var areas = vAreas || [], states = areas.filter(function (a) { return a.kind === "state" && a.is_active; }).sort(vByName);
-    var on = {}; states.forEach(function (s) { on[s.state_code] = s.name; });
-    vOptions($("vState"), "All states", function (sel) {
-      states.forEach(function (s) { var o = document.createElement("option"); o.value = s.state_code; o.textContent = s.name; sel.appendChild(o); });
-    }, $("vState").value);
-    var sc = $("vState").value;
-    vOptions($("vRegion"), "All regions", function (sel) {
-      states.filter(function (s) { return !sc || s.state_code === sc; }).forEach(function (s) {
-        var regs = areas.filter(function (a) { return a.kind === "region" && a.is_active && a.state_code === s.state_code; }).sort(vByName);
-        if (!regs.length) return;
-        var g = document.createElement("optgroup"); g.label = s.name;
-        regs.forEach(function (a) { var o = document.createElement("option"); o.value = a.id; o.textContent = a.name; g.appendChild(o); });
-        sel.appendChild(g);
-      });
-    }, $("vRegion").value);
+  function vRegionOptions() {
+    var areas = vAreas || [], sc = ((vChips().getSelection().state || [""])[0]) || "";
+    var regs = areas.filter(function (a) { return a.kind === "region" && a.is_active && (!sc || a.state_code === sc); }).sort(vByName);
+    vChips().setOptions("region", regs.map(function (a) { return { value: a.id, label: a.name }; }));
+    var keep = (vChips().getSelection().region || []).filter(function (id) { return regs.some(function (a) { return a.id === id; }); });
+    vChips().setSelection({ region: keep });
+  }
+  function fillVenueChips() {
+    var c = vChips(), areas = vAreas || [], states = areas.filter(function (a) { return a.kind === "state" && a.is_active; }).sort(vByName);
+    c.setOptions("state", [{ value: "", label: "All states" }].concat(states.map(function (s) { return { value: s.state_code, label: s.name }; })));
+    vRegionOptions();
+    var cs = { active: 0, inactive: 0 }, kc = { public: 0, private: 0 };
+    vRecs.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; kc[r.is_public_venue ? "public" : "private"]++; });
+    c.setCounts({ status: cs, kind: kc });
+    c.setBadge("notready", vRecs.filter(function (r) { return vMissing(r).length; }).length);
   }
   function renderVenues() {
-    var st = $("vState").value, rg = $("vRegion").value, zips = null;
-    if (rg) { var ra = (vAreas || []).filter(function (a) { return a.id === rg; })[0]; zips = {}; ((ra && ra.zip_codes) || []).forEach(function (z) { zips[z] = 1; }); }
-    var shown = vRecs.filter(function (r) { return (!st || vStateOf(r) === st) && (!zips || zips[vZipOf(r)]); });
-    var ul = $("vList"); ul.textContent = "";
-    shown.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
+    var c = vChips(), sel = c.getSelection(), q = $("vSearch").value.trim().toLowerCase(), zips = null;
+    var st = sel.status || [], sc = (sel.state || [""])[0] || "", rg = sel.region || [], kd = sel.kind || [], nr = (sel.notready || []).length;
+    if (rg.length) { zips = {}; rg.forEach(function (id) { var ra = (vAreas || []).filter(function (a) { return a.id === id; })[0]; ((ra && ra.zip_codes) || []).forEach(function (z) { zips[z] = 1; }); }); }
+    var shown = vRecs.filter(function (r) {
+      if (st.length < 2 && st.indexOf(r.status) < 0) return false;
+      if (kd.length === 1 && kd[0] !== (r.is_public_venue ? "public" : "private")) return false;
+      if (sc && vStateOf(r) !== sc) return false;
+      if (zips && !zips[vZipOf(r)]) return false;
+      if (nr && !vMissing(r).length) return false;
+      return !q || [r.name, vAddrLine(r)].join(" ").toLowerCase().indexOf(q) >= 0;
+    }).sort(vByName);
+    var vis = shown.slice(0, vShow), had = $("vList").children.length;
+    skelOff($("vList")); var ul = $("vList"); ul.textContent = "";
+    vis.forEach(function (r) { ul.appendChild(venueRow(r, r.id === vNewId)); });
+    UI.moreBar($("vMore"), vis.length, shown.length, VSTEP, function () { vShow += VSTEP; renderVenues(); var f = $("vList").children[had]; if (f && f.querySelector("button.vdetails")) f.querySelector("button.vdetails").focus(); }, "venues");
     var word = function (n) { return n + (n === 1 ? " venue" : " venues"); };
-    $("vCount").textContent = (st || rg) ? "Showing " + shown.length + " of " + word(vRecs.length) : word(vRecs.length);
-    $("vEmpty").textContent = vRecs.length ? "No venues match these filters." : "No venues yet.";
-    $("vEmpty").hidden = shown.length > 0;
+    $("vCount").textContent = shown.length !== vRecs.length ? "Showing " + shown.length + " of " + word(vRecs.length) : word(vRecs.length);
+    $("vEmpty").hidden = vRecs.length > 0;
+    $("vNoMatch").hidden = !(vRecs.length > 0 && shown.length === 0);
   }
 
   // ---- Edit and delete a venue. The form is built from the published venue schema; the server does all the checking.
@@ -280,12 +306,12 @@
   function venueActions(rec) {
     var wrap = document.createElement("div");
     var row = document.createElement("div"); row.className = "actions-row";
-    var ed = document.createElement("button"); ed.type = "button"; ed.textContent = "Edit";
-    var del = document.createElement("button"); del.type = "button"; del.className = "danger"; del.textContent = "Delete";
+    var ed = document.createElement("button"); ed.type = "button"; ed.className = "btn-primary"; ed.textContent = "Edit";
+    var del = document.createElement("button"); del.type = "button"; del.className = "btn-danger pdel"; del.textContent = "Delete";
     row.appendChild(ed);
-    var hv = historyBtn(rec.id, rec.name); if (hv) row.appendChild(hv);
+    var hv = historyBtn(rec.id, rec.name); if (hv) { hv.className = "btn-link"; row.appendChild(hv); }
     if (rec.is_public_venue && rec.place) {
-      var gb = document.createElement("button"); gb.type = "button"; gb.textContent = "Find GPS";
+      var gb = document.createElement("button"); gb.type = "button"; gb.className = "btn-secondary"; gb.textContent = "Find GPS";
       gb.addEventListener("click", function () {
         gb.disabled = true; $("vNotice").textContent = "Looking up GPS for " + (rec.name || "the venue") + "…";
         admin("find_gps", { id: rec.id }).then(function (res) {
@@ -303,8 +329,8 @@
     var q = document.createElement("div");
     q.textContent = "Delete this venue? It is hidden from the lists but kept in the database. If a class uses this venue, make it inactive instead.";
     var btns = document.createElement("div"); btns.className = "btns";
-    var yes = document.createElement("button"); yes.type = "button"; yes.className = "danger"; yes.textContent = "Delete venue";
-    var no = document.createElement("button"); no.type = "button"; no.className = "quiet"; no.textContent = "Cancel";
+    var yes = document.createElement("button"); yes.type = "button"; yes.className = "btn-danger"; yes.textContent = "Delete venue";
+    var no = document.createElement("button"); no.type = "button"; no.className = "btn-secondary"; no.textContent = "Cancel";
     var err = document.createElement("div"); err.className = "msg"; err.setAttribute("role", "alert");
     btns.appendChild(yes); btns.appendChild(no); box.appendChild(q); box.appendChild(btns); box.appendChild(err);
 
@@ -882,10 +908,10 @@
 
 
   function resetVenues() {
-    vLoaded = false; vBusy = false; vNewId = "";
+    vLoaded = false; vBusy = false; vNewId = ""; vRecs = []; vAreas = null; if (vCf) { vLastState = ""; vCf.clearAll(); }
     $("vList").textContent = ""; $("vCount").textContent = ""; $("vChecked").textContent = "";
     $("vMsg").textContent = ""; $("vNotice").textContent = ""; $("vEmpty").hidden = true;
-    $("vFilter").value = ""; $("vState").value = ""; $("vRegion").value = ""; if (vBar) vBar.refresh(); vRecs = []; vAreas = null; closeForm(); closeEdit();
+    $("vSearch").value = ""; vShow = VSTEP; $("vMore").textContent = ""; $("vNoMatch").hidden = true; $("vRetry").hidden = true; $("vCount").textContent = ""; closeForm(); closeEdit();
   }
 
   function clearErrs() { ["eName", "eSlug", "ePublic", "fMsg"].forEach(function (id) { $(id).textContent = ""; }); }
@@ -901,10 +927,9 @@
   $("addBtn").addEventListener("click", openForm);
   $("cancelBtn").addEventListener("click", closeForm);
   $("vRefresh").addEventListener("click", function () { $("vNotice").textContent = ""; vAreas = null; loadVenues(); });
-  var vBar = UI.filterBar({ id: "v", toggleBefore: $("vFilter"), after: $("vFilter").closest(".bar"),
-    fields: [{ el: $("vFilter"), label: "Status" }, { el: $("vState"), label: "State" }, { el: $("vRegion"), label: "Region" }] });
-  $("vState").addEventListener("change", function () { drawVenueFilters(); renderVenues(); });
-  $("vRegion").addEventListener("change", renderVenues);
+  $("vSearch").addEventListener("input", function () { vShow = VSTEP; renderVenues(); });
+  $("vRetry").addEventListener("click", loadVenues);
+  $("vClear").addEventListener("click", function () { $("vSearch").value = ""; vShow = VSTEP; vLastState = ""; vChips().clearAll(); $("vSearch").focus(); });
   $("vGps").addEventListener("click", function () {   // look up GPS for every public venue that has an address but no point
     var b = $("vGps"); b.disabled = true; $("vNotice").textContent = "Looking for venues without GPS…";
     admin("list", { limit: 200, expand: true }).then(function (res) {
@@ -924,7 +949,6 @@
       })();
     });
   });
-  $("vFilter").addEventListener("change", function () { $("vNotice").textContent = ""; loadVenues(); });
 
   $("addForm").addEventListener("submit", function (e) {
     e.preventDefault(); clearErrs();

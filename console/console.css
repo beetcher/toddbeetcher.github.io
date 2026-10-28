@@ -912,3 +912,30 @@
   .rostview .phead .actions { width: 100%; }
   .rostview .stoggle { min-height: 44px; }
 }
+
+/* Venues and Classes look: head, flat status switch, name above address, ready line, two across from 1100 px, sections in forms, 44 px targets on a phone */
+#venuesView .phead { align-items: flex-start; }
+#venuesView .vline .vname, #venuesView .vline .vaddr, #venuesView .vline .vready { display: block; margin-right: 0; }
+#venuesView .vline .vready { margin-top: var(--space-1); font-size: var(--text-m); color: var(--ink-soft); }
+#venuesView .vline .vready.no { color: var(--ink); font-weight: 600; }
+#venuesView .stoggle { min-width: 0; min-height: 36px; padding: 0 var(--space-5); background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; gap: var(--space-3); }
+#venuesView .stoggle .knob { width: 10px; height: 10px; }
+#venuesView .stoggle.on { background: transparent; border-color: var(--line); color: var(--ink-soft); }
+#venuesView .stoggle:not(.on) { border-color: var(--warn, var(--muted)); color: var(--ink); }
+#venuesView button.vdetails { border: 1px solid var(--muted); border-radius: 10px; min-height: 40px; }
+#venuesView li.vrow.open button.vdetails { background: var(--card); border-color: var(--ink); }
+#venuesView .actions-row { align-items: center; }
+#venuesView .actions-row .pdel { margin-left: auto; }
+#venuesView .fsec, #classesView .fsec { margin: var(--space-7) 0 var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+#venuesView .panel > h2 + .hint + .fsec, #classesView .panel > h2 + .hint + .fsec { margin-top: var(--space-3); border-top: 0; padding-top: 0; }
+#venuesView .btns, #classesView .btns { gap: var(--space-3); }
+#venuesView .lchips .btn-secondary { min-height: 40px; }
+@media (min-width: 1100px) {
+  #venuesView #vList { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; align-items: start; }
+  #venuesView #vList > li.open { grid-column: 1 / -1; }
+  #venuesView #vList > li.pnote, #venuesView #vList > li.limitnote { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  #venuesView .bar button, #venuesView .actions-row button, #venuesView button.vdetails, #venuesView .stoggle { min-height: 44px; }
+  #venuesView .phead .actions { width: 100%; }
+}
