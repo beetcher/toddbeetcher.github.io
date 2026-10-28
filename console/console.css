@@ -888,3 +888,27 @@
 #peopleView .fsec { margin: var(--space-7) 0 var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
 #peopleView form > .fsec:first-of-type, #peopleView .eform > .fsec:first-child, #pAddForm > h2 + .hint + .fsec { margin-top: var(--space-3); }
 #peopleView .btns { gap: var(--space-3); }
+
+/* Instructors, Students, Curriculum (the roster look): same flat status switch, two across from 1100 px, sections in forms, 44 px targets on a phone */
+.rostview .phead { align-items: flex-start; }
+.rostview .stoggle { min-width: 0; min-height: 36px; padding: 0 var(--space-5); background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; gap: var(--space-3); top: 12px; }
+.rostview .stoggle .knob { width: 10px; height: 10px; }
+.rostview .stoggle.on { background: transparent; border-color: var(--line); color: var(--ink-soft); }
+.rostview .stoggle:not(.on) { border-color: var(--warn, var(--muted)); color: var(--ink); }
+.rostview li.hasToggle .top { padding-right: 104px; }
+.rostview .actions-row { align-items: center; }
+.rostview .actions-row .pdel { margin-left: auto; }
+.rostview .fsec { margin: var(--space-7) 0 var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.rostview .panel > .fsec:first-of-type, .rostview .eform > .fsec:first-child { margin-top: var(--space-3); border-top: 0; padding-top: 0; }
+.rostview .btns { gap: var(--space-3); }
+.rostview .dgroup { margin: var(--space-5) 0 0; padding-top: var(--space-4); border-top: 1px solid var(--line); }
+@media (min-width: 1100px) {
+  .rostview ul[id$="List"] { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; align-items: start; }
+  .rostview ul[id$="List"] > li.open { grid-column: 1 / -1; }
+  .rostview ul[id$="List"] > li.pnote, .rostview ul[id$="List"] > li.limitnote { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .rostview .bar button, .rostview .actions-row button { min-height: 44px; }
+  .rostview .phead .actions { width: 100%; }
+  .rostview .stoggle { min-height: 44px; }
+}

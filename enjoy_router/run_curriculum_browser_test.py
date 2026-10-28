@@ -35,6 +35,20 @@ def cors(route):
         admin_route(route)
 
 
+def status_is(pg, pre, *vals):
+    """Tick exactly these statuses in the Status chip (the old drop-down is gone)."""
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    for v in ("active", "inactive"):
+        box = pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v))
+        if box.is_checked() != (v in vals): box.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+
+def status_ticked(pg, pre):
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    got = [v for v in ("active", "inactive") if pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v)).is_checked()]
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    return got
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -62,14 +76,14 @@ with sync_playwright() as p:
     pg.fill("#rcA_session_count", "1"); pg.fill("#rcA_minutes_per_session", "60"); pg.fill("#rcA_slug", "intro_ai_use")
     pg.click("#rcSaveBtn"); pg.wait_for_selector("#rcList li")
     txt = pg.locator("#rcList").inner_text()
-    check("listed with identifier, sessions and minutes", "Introduction to AI Use" in txt and "intro_ai_use" in txt and "1 session of 60 min" in txt, txt)
+    check("listed with sessions and minutes (identifier not on the row)", "Introduction to AI Use" in txt and "intro_ai_use" not in txt and "1 session · 60 minutes" in txt, txt)
     check("added notice", "Added Introduction to AI Use" in pg.locator("#rcNotice").inner_text())
     pg.click("#rcAddBtn"); pg.fill("#rcA_title", "Dup"); pg.fill("#rcA_slug", "intro_ai_use"); pg.click("#rcSaveBtn")
     pg.wait_for_function("document.querySelector('#rcA_slug ~ .ferr').textContent.length > 0")
     check("duplicate identifier shown on its field", "already used" in pg.locator("#rcA_slug ~ .ferr").inner_text())
     pg.fill("#rcA_title", "AI for Everyday Life"); pg.fill("#rcA_tagline", "Make it part of your day."); pg.fill("#rcA_slug", "everyday"); pg.fill("#rcA_session_count", "3"); pg.fill("#rcA_minutes_per_session", "90"); pg.click("#rcSaveBtn")
     pg.wait_for_function("document.querySelectorAll('#rcList li').length == 2")
-    check("series shows 3 sessions of 90 min", "3 sessions of 90 min" in pg.locator("#rcList").inner_text())
+    check("series shows 3 sessions of 90 min", "3 sessions · 90 minutes each" in pg.locator("#rcList").inner_text())
     check("the tagline shows on the card", "Make it part of your day." in pg.locator("#rcList").inner_text())
     li = pg.locator("#rcList li", has_text="Everyday Life") if False else pg.locator("#rcList li", has_text="AI for Everyday Life")
     li.locator("button.head").click(); li.get_by_role("button", name="Edit", exact=True).click()
@@ -108,7 +122,7 @@ with sync_playwright() as p:
     pg.select_option("#collPick", "curriculums"); pg.click("#curriculumsView .manualBtn")
     check("Curriculum manual opens", pg.locator("#manual h2", has_text="Curriculum").is_visible())
     # one-tap switch on the card
-    pg.select_option("#collPick", "curriculums"); pg.select_option("#rcFilter", "")
+    pg.select_option("#collPick", "curriculums"); status_is(pg, "rc", "active", "inactive")
     pg.wait_for_selector("#rcList li button.stoggle")
     sw = pg.locator("#rcList li button.stoggle").first
     was = sw.get_attribute("aria-checked")

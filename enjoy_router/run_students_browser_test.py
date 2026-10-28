@@ -36,6 +36,20 @@ def cors(route):
 
 def people(): return IS.list(store, None, limit=200).data["records"]
 
+def status_is(pg, pre, *vals):
+    """Tick exactly these statuses in the Status chip (the old drop-down is gone)."""
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    for v in ("active", "inactive"):
+        box = pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v))
+        if box.is_checked() != (v in vals): box.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+
+def status_ticked(pg, pre):
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    got = [v for v in ("active", "inactive") if pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v)).is_checked()]
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    return got
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()

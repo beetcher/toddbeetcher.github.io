@@ -36,7 +36,12 @@
     return { fields: mine, other: out, existing: existing };
   }
   function rName(rec) { var p = rec.person; return p && !p.unavailable ? (p.display_name || p.given_name || "(no name)") : "(not available)"; }
-  function rContact(rec) { var p = rec.person; if (!p || p.unavailable) return ""; return [p.email, p.phone].filter(Boolean).join(" · "); }
+  function rContact(rec) {
+    var p = rec.person; if (!p || p.unavailable) return "";
+    var bits = [p.email, p.phone].filter(Boolean);
+    if (bits.length && bits.every(function (b) { return b === "(hidden)"; })) return "Contact is private";
+    return bits.join(" · ");
+  }
   function rField(f, idp, cur) {
     var wrap = mk("div"), l = mk("label", "f", f.label), el;
     if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
@@ -87,7 +92,7 @@
     var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
     form.appendChild(mk("div", "hint", "Where " + rName(rec) + " lives. Saved privately: after you save, only the state is shown here. A new address replaces the old one."));
     var block = addrForm({}); form.appendChild(block);
-    var btns = mk("div", "btns"), save = mk("button", "", "Save address"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button";
+    var btns = mk("div", "btns"), save = mk("button", "btn-primary", "Save address"), cancel = mk("button", "btn-secondary", "Cancel"); save.type = "submit"; cancel.type = "button";
     btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
     var fm = mk("div", "msg"); fm.setAttribute("role", "alert"); form.appendChild(fm);
     cancel.addEventListener("click", function () { form.remove(); });
@@ -111,27 +116,29 @@
     var g = function (s) { return $(P + s); };
     var root = $(cfg.id + "View");
     root.innerHTML =
-      '<div class="bar"><div><div class="count" id="' + P + 'Count"></div><div class="meta" id="' + P + 'Checked"></div></div>' +
-      '<div class="actions"><select id="' + P + 'Filter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
-      '<button type="button" class="quiet manualBtn" data-m="' + cfg.id + '">Manual</button><button id="' + P + 'Refresh" class="quiet" type="button">Refresh</button>' +
-      '<button id="' + P + 'AddBtn" type="button">Add ' + cfg.one + '</button></div></div>' +
+      '<div class="bar phead"><div class="ptext"><h2 class="ptitle" id="' + P + 'Title">' + cfg.Many + '</h2><div class="count" id="' + P + 'Count"></div><div class="meta" id="' + P + 'Checked"></div></div>' +
+      '<div class="actions"><button type="button" class="btn-link manualBtn" data-m="' + cfg.id + '">Manual</button><button id="' + P + 'Refresh" class="btn-link" type="button">Refresh</button>' +
+      '<button id="' + P + 'AddBtn" type="button" class="btn-primary">Add ' + cfg.one + '</button></div></div>' +
       '<form class="panel" id="' + P + 'AddForm" hidden autocomplete="off" novalidate><h2>Add ' + (cfg.one === "instructor" ? "an" : "a") + ' ' + cfg.one + '</h2>' +
       '<div class="hint">Type a name. Pick them from the list, or choose "Someone new". Nothing is matched for you.</div>' +
-      '<label class="f" for="' + P + 'Q">Name</label><input type="text" id="' + P + 'Q" maxlength="100" autocomplete="off">' +
+      '<div class="fsec">Who</div>' +
+      '<label class="f" for="' + P + 'Q">Name<span class="req" aria-hidden="true"> *</span></label><input type="text" id="' + P + 'Q" maxlength="100" autocomplete="off">' +
       '<div id="' + P + 'Opts" class="ropts"></div><div class="note" id="' + P + 'Chosen"></div><div class="ferr" id="' + P + 'EPick"></div>' +
       '<div id="' + P + 'New" class="eform" hidden><div class="hint">Their name, email and phone are saved with them.</div></div>' +
       '<div id="' + P + 'AddFields"></div>' +
-      '<div class="btns"><button type="submit" id="' + P + 'SaveBtn">Add to ' + cfg.Many.toLowerCase() + '</button><button type="button" class="quiet" id="' + P + 'CancelBtn">Cancel</button></div>' +
+      '<div class="btns"><button type="submit" id="' + P + 'SaveBtn" class="btn-primary">Add to ' + cfg.Many.toLowerCase() + '</button><button type="button" class="btn-secondary" id="' + P + 'CancelBtn">Cancel</button></div>' +
       '<div class="msg" id="' + P + 'FMsg" role="alert"></div></form>' +
       '<input type="search" id="' + P + 'Search" class="psearch" placeholder="Find by name" aria-label="Find by name" autocomplete="off">' +
+      '<div id="' + P + 'Chips"></div>' +
       '<div class="notice" id="' + P + 'Notice" role="status"></div><div class="msg" id="' + P + 'Msg" role="alert"></div>' +
-      '<button type="button" class="quiet" id="' + P + 'Retry" hidden>Retry</button><ul id="' + P + 'List"></ul>' +
-      '<div class="empty" id="' + P + 'Empty" hidden>Nobody on this roster yet.</div><div class="empty" id="' + P + 'NoMatch" hidden>Nobody matches that name.</div>';
+      '<button type="button" class="btn-secondary" id="' + P + 'Retry" hidden>Try again</button><ul id="' + P + 'List"></ul><div id="' + P + 'More"></div>' +
+      '<div class="empty" id="' + P + 'Empty" hidden>No ' + cfg.Many.toLowerCase() + ' yet. Add one to begin.</div>' +
+      '<div class="empty" id="' + P + 'NoMatch" hidden><b>Nobody matches that.</b><br>Try fewer letters, or <button type="button" class="btn-link" id="' + P + 'Clear">clear the filters and the search</button>.</div>';
 
     // new-person boxes and roster fields of the add window
     var newEls = {}, addEls = {};
     RPERSON.forEach(function (pf) {
-      var l = mk("label", "f", pf[1] + (pf[0] === "given_name" ? "" : " (optional)")), el = mk("input"); el.type = "text"; el.maxLength = 200; el.autocomplete = "off";
+      var l = pf[0] === "given_name" ? UI.requiredLabel(pf[1]) : mk("label", "f", pf[1] + " (optional)"), el = mk("input"); el.type = "text"; el.maxLength = 200; el.autocomplete = "off";
       el.id = P + "N_" + pf[0]; l.htmlFor = el.id; var er = mk("div", "ferr");
       g("New").appendChild(l); g("New").appendChild(el); g("New").appendChild(er); newEls["person." + pf[0]] = { el: el, err: er, k: pf[0] };
     });
@@ -145,12 +152,13 @@
 
     function load() {
       var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      if (!S.loaded) K.skelOn(g("List"));
       return admin("list", { order: "name", expand: true, limit: 200 }, cfg.coll).then(function (res) {
         if (my !== S.seq) return;
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        if (res.status !== 200 || !res.body.ok) { K.skelOff(g("List")); g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
         S.all = res.body.data.records || []; S.loaded = true;
-        var done = function () { render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
+        var done = function () { fillChips(); render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
         if (!cfg.curricula) { done(); return; }
         return Promise.all([admin("list", { limit: 200 }, "curriculums"), admin("list", { limit: 200 }, "discovery_areas")]).then(function (all) {
           var cr = all[0], ar = all[1];
@@ -162,16 +170,39 @@
     }
     S.load = load;
     function onRoster(personId) { for (var i = 0; i < S.all.length; i++) if (S.all[i].individual_id === personId) return S.all[i]; return null; }
+    // ---- Filters (shared chip bar): Status (Active by default); Instructors add "Needs an address" and "No curriculum yet". Sorted by name, 50 at a time.
+    var cf = null, show = 50, STEP = 50;
+    function chips() {
+      if (cf) return cf;
+      var fl = [{ id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }] }];
+      if (cfg.curricula) fl.push({ id: "needs", label: "Needs an address", kind: "toggle", noun: "instructors" }, { id: "nocurr", label: "No curriculum yet", kind: "toggle", noun: "instructors" });
+      cf = UI.chipFilters({ mount: g("Chips"), label: cfg.Many + " filters", filters: fl, onChange: function () { show = STEP; g("Notice").textContent = ""; render(); } });
+      cf.setSelection({ status: ["active"] });
+      return cf;
+    }
+    S.setStatus = function (vals) { chips().setSelection({ status: vals }); };
+    function fillChips() {
+      var cs = { active: 0, inactive: 0 };
+      S.all.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; });
+      var c = chips(); c.setCounts({ status: cs });
+      if (cfg.curricula) { c.setBadge("needs", S.all.filter(function (r) { return r.status === "active" && !r.residence_state; }).length); c.setBadge("nocurr", S.all.filter(function (r) { return r.status === "active" && !(r.curriculum_ids || []).length; }).length); }
+    }
     function render() {
-      var q = g("Search").value.trim().toLowerCase(), f = g("Filter").value, list = g("List");
+      var q = g("Search").value.trim().toLowerCase(), sel = chips().getSelection(), st = sel.status || [], list = g("List");
       var shown = S.all.filter(function (r) {
-        return (!f || r.status === f) && (!q || [rName(r), rContact(r)].join(" ").toLowerCase().indexOf(q) >= 0);
-      });
-      list.textContent = "";
-      shown.forEach(function (r) { list.appendChild(row(r)); });
+        if (st.indexOf(r.status) < 0) return false;
+        if (cfg.curricula && (sel.needs || []).length && r.residence_state) return false;
+        if (cfg.curricula && (sel.nocurr || []).length && (r.curriculum_ids || []).length) return false;
+        return !q || [rName(r), rContact(r)].join(" ").toLowerCase().indexOf(q) >= 0;
+      }).sort(function (a, b) { var x = rName(a).toLowerCase(), y = rName(b).toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
+      var vis = shown.slice(0, show), had = list.children.length;
+      K.skelOff(list); list.textContent = "";
+      vis.forEach(function (r) { list.appendChild(row(r)); });
       S.newId = ""; S.openId = "";
-      var act = S.all.filter(function (r) { return r.status === "active"; }).length;
-      g("Count").textContent = S.all.length + (S.all.length === 1 ? " entry" : " entries") + (S.all.length ? " (" + act + " active)" : "");
+      UI.moreBar(g("More"), vis.length, shown.length, STEP, function () { show += STEP; render(); var f = g("List").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, cfg.Many.toLowerCase());
+      var noun = cfg.Many.toLowerCase();
+      g("Count").textContent = shown.length + (shown.length === 1 ? " " + cfg.one : " " + noun);
+      chips().setCount(shown.length !== S.all.length && S.all.length ? shown.length + " of " + S.all.length + " " + noun : "");
       g("Empty").hidden = S.all.length > 0;
       g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
     }
@@ -199,7 +230,7 @@
       });
       if (cfg.curricula) {
         var lv = line("Lives in", rec.residence_state || "No address on file"); lv.id = "live_" + rec.id; detail.appendChild(lv);
-        var ab = mk("button", "quiet", rec.residence_state ? "Replace address" : "Add address"); ab.type = "button"; ab.id = "addaddr_" + rec.id;
+        var ab = mk("button", "btn-secondary", rec.residence_state ? "Replace address" : "Add address"); ab.type = "button"; ab.id = "addaddr_" + rec.id;
         var ah = mk("div"); detail.appendChild(ab); detail.appendChild(ah);
         ab.addEventListener("click", function () { if (ah.firstChild) ah.textContent = ""; else ah.appendChild(instructorAddressBox(rec, function () { g("Notice").textContent = "Saved the address for " + rName(rec) + "."; S.openId = rec.id; load(); })); });
       }
@@ -215,11 +246,11 @@
 
     function actions(rec) {
       var wrap = mk("div"), r = mk("div", "actions-row");
-      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Remove from " + cfg.Many.toLowerCase());
-      ed.type = "button"; del.type = "button"; r.appendChild(ed); var hr = historyBtn(rec.individual_id || rec.id, rName(rec)); if (hr) r.appendChild(hr); r.appendChild(del);
+      var ed = mk("button", "btn-primary", "Edit"), del = mk("button", "btn-danger pdel", "Remove from " + cfg.Many.toLowerCase());
+      ed.type = "button"; del.type = "button"; r.appendChild(ed); var hr = historyBtn(rec.individual_id || rec.id, rName(rec)); if (hr) { hr.className = "btn-link"; r.appendChild(hr); } r.appendChild(del);
       var host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
       box.appendChild(mk("div", "", "Remove " + rName(rec) + " from the " + cfg.Many.toLowerCase() + "? Their history is kept. You can add them again later."));
-      var b = mk("div", "btns"), yes = mk("button", "danger", "Remove"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg");
+      var b = mk("div", "btns"), yes = mk("button", "btn-danger", "Remove"), no = mk("button", "btn-secondary", "Cancel"), err = mk("div", "msg");
       yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert"); b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
       ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
       del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
@@ -242,15 +273,17 @@
       var form = mk("form", "eform"); form.noValidate = true; form.autocomplete = "off";
       var els = {}, pEls = {}, hEls = {}, havePerson = rec.person && !rec.person.unavailable;
       if (havePerson) {
+        form.appendChild(mk("div", "fsec", "Name and contact"));
         form.appendChild(mk("div", "hint", "Name and contact are saved with them and shared across LAUNCH."));
         RPERSON.forEach(function (pf) {
           var x = rField({ k: pf[0], label: pf[1], t: "text" }, "rp_" + rec.id + "_", rec.person[pf[0]]); form.appendChild(x.wrap); pEls["person." + pf[0]] = x; x.k = pf[0];
         });
       }
+      form.appendChild(mk("div", "fsec", cfg.curricula ? "About them" : "Notes"));
       cfg.fields.forEach(function (f) { var x = rField(f, "re_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
       var cEls = {};
       if (cfg.curricula) {
-        form.appendChild(mk("div", "f", "Curricula they can teach")); form.appendChild(mk("div", "hint", "A guide for choosing an instructor. Nothing is refused if you pick someone who is not ticked."));
+        form.appendChild(mk("div", "fsec", "What they can teach")); form.appendChild(mk("div", "f", "Curricula they can teach")); form.appendChild(mk("div", "hint", "A guide for choosing an instructor. Nothing is refused if you pick someone who is not ticked."));
         var chosen = rec.curriculum_ids || [], box2 = mk("div"); form.appendChild(box2);
         (S.curr || []).filter(function (c) { return c.status === "active" || chosen.indexOf(c.id) >= 0; }).forEach(function (c) {
           var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = chosen.indexOf(c.id) >= 0; cb.value = c.id;
@@ -261,7 +294,7 @@
       }
       var gEls = {};
       if (cfg.curricula) {
-        form.appendChild(mk("div", "f", "Regions they work in")); form.appendChild(mk("div", "hint", "Place them in regions of their own, wherever they live. People who look after a region see them there. You can only pick regions you manage."));
+        form.appendChild(mk("div", "fsec", "Where")); form.appendChild(mk("div", "f", "Regions they work in")); form.appendChild(mk("div", "hint", "Place them in regions of their own, wherever they live. People who look after a region see them there. You can only pick regions you manage."));
         var inRegs = rec.region_ids || [], box3 = mk("div", "rgbox"); form.appendChild(box3);
         (S.regions || []).forEach(function (a) {
           var lab = mk("label", "f"), cb = mk("input"); cb.type = "checkbox"; cb.checked = inRegs.indexOf(a.id) >= 0; cb.value = a.id;
@@ -271,7 +304,7 @@
         if (!Object.keys(gEls).length) box3.appendChild(mk("div", "hint", "No regions yet. Add some in the Access or Discovery station."));
       }
       if (cfg.hours) {
-        form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
+        form.appendChild(mk("div", "fsec", "Availability")); form.appendChild(mk("div", "f", "Weekly hours")); form.appendChild(mk("div", "hint", "When they can teach. Leave a day empty if they cannot."));
         var by = {}; (rec.availability || []).forEach(function (h) { by[h.day_of_week] = h; });
         RDAYS.forEach(function (d) {
           var rw = mk("div", "hrow"), a = mk("input"), z = mk("input"); a.type = "time"; z.type = "time";
@@ -283,11 +316,11 @@
         var an = rField({ k: "availability_notes", label: "Availability notes", t: "area", hint: "Anything the weekly hours cannot say." }, "re_" + rec.id + "_", rec.availability_notes);
         form.appendChild(an.wrap); els.availability_notes = an;
       }
-      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rst_" + rec.id; sl.htmlFor = ss.id;
+      form.appendChild(mk("div", "fsec", "Record")); var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rst_" + rec.id; sl.htmlFor = ss.id;
       [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
       ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
       var se = mk("div", "ferr"); form.appendChild(se); els.status = { el: ss, err: se, t: "select" };
-      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+      var btns = mk("div", "btns"), save = mk("button", "btn-primary", "Save changes"), cancel = mk("button", "btn-secondary", "Cancel");
       save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
       var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
       cancel.addEventListener("click", function () { host.textContent = ""; });
@@ -377,20 +410,20 @@
         if (!m.exact.length && m.near.length) box.appendChild(mk("div", "hint", "No one matches every word you typed. Closest matches, so you do not add the same person twice:"));
         shown.slice(0, 8).forEach(function (p) {
           var on = onRoster(p.id), rw = mk("div", "pickrow"), contact = [p.email, p.phone].filter(Boolean).join(" · ");
-          var b = mk("button", "quiet", pFull(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
+          var b = mk("button", "btn-secondary", pFull(p) + (contact ? " — " + contact : "") + (on ? " (already on the roster)" : "")); b.type = "button";
           if (on) {
             b.textContent = pFull(p) + (contact ? " — " + contact : "") + " (already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ")";
             b.addEventListener("click", function () { openCard(on.id); });
           } else b.addEventListener("click", function () { g("Q").value = pFull(p); choose({ id: p.id, name: pFull(p), contact: contact, noFamily: !p.family_name }); });
           rw.appendChild(b); box.appendChild(rw);
         });
-        var nb = mk("button", "", "Someone new: " + g("Q").value.trim()); nb.type = "button";
+        var nb = mk("button", "btn-secondary", "Someone new: " + g("Q").value.trim()); nb.type = "button";
         nb.addEventListener("click", function () { choose({ isNew: true, typed: g("Q").value.trim() }); });
         var nr = mk("div", "pickrow"); nr.appendChild(nb); box.appendChild(nr);
       });
     }
     function openCard(id) {
-      g("AddForm").hidden = true; g("AddBtn").hidden = false; g("Filter").value = ""; g("Search").value = ""; S.openId = id; render();
+      g("AddForm").hidden = true; g("AddBtn").hidden = false; S.setStatus(["active", "inactive"]); g("Search").value = ""; show = 1000; S.openId = id; render();
     }
     g("AddBtn").addEventListener("click", function () { clearAdd(); g("Notice").textContent = ""; K.forgetPeople(); g("AddForm").hidden = false; g("AddBtn").hidden = true; g("Q").focus(); });
     g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
@@ -437,7 +470,7 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           S.newId = res.body.data.id; g("Notice").textContent = "Added " + rName(res.body.data) + " to the " + cfg.Many.toLowerCase() + ".";
-          g("AddForm").hidden = true; g("AddBtn").hidden = false; if (g("Filter").value === "inactive") g("Filter").value = "active";
+          g("AddForm").hidden = true; g("AddBtn").hidden = false; S.setStatus(["active"]);
           if (res.body.data.created_person) { K.peopleStale(); }
           load(); return;
         }
@@ -446,19 +479,19 @@
         Object.keys(pr.fields).forEach(function (k) { map[k].err.textContent = pr.fields[k]; });
         if (pr.existing) {
           g("FMsg").textContent = "That person is already " + (cfg.one === "instructor" ? "an " : "a ") + cfg.one + ". ";
-          var ob = mk("button", "quiet", "Open their card"); ob.type = "button"; ob.addEventListener("click", function () { openCard(pr.existing); load(); });
+          var ob = mk("button", "btn-secondary", "Open their card"); ob.type = "button"; ob.addEventListener("click", function () { openCard(pr.existing); load(); });
           g("FMsg").appendChild(ob);
         } else if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
       });
     }
-    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
     g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
     g("Retry").addEventListener("click", load);
-    g("Search").addEventListener("input", render);
+    g("Search").addEventListener("input", function () { show = STEP; render(); });
+    g("Clear").addEventListener("click", function () { g("Search").value = ""; show = STEP; chips().clearAll(); S.setStatus(["active"]); render(); g("Search").focus(); });
     S.reset = function () {
       S.loaded = false; S.all = []; S.newId = ""; S.openId = "";
       g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = "";
-      g("Empty").hidden = true; g("NoMatch").hidden = true; g("Search").value = ""; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false;
+      g("Empty").hidden = true; g("NoMatch").hidden = true; g("Search").value = ""; show = STEP; g("More").textContent = ""; if (cf) cf.setSelection({ status: ["active"] }); g("AddForm").hidden = true; g("AddBtn").hidden = false;
     };
     return S;
   }

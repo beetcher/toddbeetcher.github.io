@@ -19,38 +19,40 @@
                  out_of_range: "That number is out of range.", invalid_type: "That value is not valid.", invalid_value: "That value is not valid.",
                  immutable: "That cannot be changed.", not_allowed: "Not allowed." };
   var CLABEL = { slug: "Identifier", title: "Title", tagline: "Tagline", description: "Description", session_count: "Sessions", minutes_per_session: "Minutes per session", status: "Status", notes: "Notes" };
-  function currLine(rec) {
-    var bits = [rec.slug];
-    var n = rec.session_count || 1;
-    bits.push(n + (n === 1 ? " session" : " sessions") + (rec.minutes_per_session ? " of " + rec.minutes_per_session + " min" : ""));
-    return bits.join(" · ");
+  function currLine(rec) {   // plain words: "3 sessions · 90 minutes each" (the short identifier shows only in the opened card)
+    var n = rec.session_count || 1, m = rec.minutes_per_session;
+    return n + (n === 1 ? " session" : " sessions") + (m ? " · " + m + (n === 1 ? " minutes" : " minutes each") : "");
   }
   function buildCurriculum() {
     var P = "rc", S = { all: [], loaded: false, seq: 0, newId: "" }, g = function (s) { return $(P + s); };
     var root = $("curriculumsView");
     root.innerHTML =
-      '<div class="bar"><div><div class="count" id="rcCount"></div><div class="meta" id="rcChecked"></div></div>' +
-      '<div class="actions"><select id="rcFilter" aria-label="Filter by status"><option value="active">Active</option><option value="inactive">Inactive</option><option value="">All</option></select>' +
-      '<button type="button" class="quiet manualBtn" data-m="curriculums">Manual</button><button id="rcRefresh" class="quiet" type="button">Refresh</button>' +
-      '<button id="rcAddBtn" type="button">Add curriculum</button></div></div>' +
+      '<div class="bar phead"><div class="ptext"><h2 class="ptitle" id="rcTitle">Curriculum</h2><div class="count" id="rcCount"></div><div class="meta" id="rcChecked"></div></div>' +
+      '<div class="actions"><button type="button" class="btn-link manualBtn" data-m="curriculums">Manual</button><button id="rcRefresh" class="btn-link" type="button">Refresh</button>' +
+      '<button id="rcAddBtn" type="button" class="btn-primary">Add curriculum</button></div></div>' +
       '<form class="panel" id="rcAddForm" hidden autocomplete="off" novalidate><h2>Add a curriculum</h2>' +
       '<div class="hint">A title and a short identifier are needed. Sessions and length can be added now or later.</div>' +
       '<div id="rcAddFields"></div>' +
-      '<div class="btns"><button type="submit" id="rcSaveBtn">Save curriculum</button><button type="button" class="quiet" id="rcCancelBtn">Cancel</button></div>' +
+      '<div class="btns"><button type="submit" id="rcSaveBtn" class="btn-primary">Save curriculum</button><button type="button" class="btn-secondary" id="rcCancelBtn">Cancel</button></div>' +
       '<div class="msg" id="rcFMsg" role="alert"></div></form>' +
+      '<input type="search" id="rcSearch" class="psearch" placeholder="Find by title" aria-label="Find a curriculum by title" autocomplete="off">' +
+      '<div id="rcChips"></div>' +
       '<div class="notice" id="rcNotice" role="status"></div><div class="msg" id="rcMsg" role="alert"></div>' +
-      '<button type="button" class="quiet" id="rcRetry" hidden>Retry</button><ul id="rcList"></ul><div class="empty" id="rcEmpty" hidden>No curricula yet.</div>';
+      '<button type="button" class="btn-secondary" id="rcRetry" hidden>Try again</button><ul id="rcList"></ul><div id="rcMore"></div>' +
+      '<div class="empty" id="rcEmpty" hidden>No curricula yet. Add one to begin.</div>' +
+      '<div class="empty" id="rcNoMatch" hidden><b>No curriculum matches that.</b><br>Try fewer letters, or <button type="button" class="btn-link" id="rcClear">clear the filters and the search</button>.</div>';
     var FIELDS = [
-      { k: "title", label: "Title", t: "text", add: true, hint: "What people see, for example Introduction to AI Use." },
-      { k: "slug", label: "Short identifier", t: "text", add: true, addOnly: true, hint: "Lowercase letters, digits and underscores. It cannot be changed later." },
+      { k: "title", label: "Title", t: "text", add: true, req: true, sec: "What it is", hint: "What people see, for example Introduction to AI Use." },
+      { k: "slug", label: "Short identifier", t: "text", add: true, addOnly: true, req: true, hint: "Lowercase letters, digits and underscores. It cannot be changed later." },
       { k: "tagline", label: "Tagline (optional)", t: "text", add: true, max: 120, hint: "One short marketing line shown with the title." },
       { k: "description", label: "Description (optional)", t: "area", add: true },
-      { k: "session_count", label: "Number of sessions (optional)", t: "num", add: true, hint: "1 for a single session. Each session becomes its own class." },
+      { k: "session_count", label: "Number of sessions (optional)", t: "num", add: true, sec: "How long", hint: "1 for a single session. Each session becomes its own class." },
       { k: "minutes_per_session", label: "Minutes per session (optional)", t: "num", add: true },
-      { k: "notes", label: "Notes (optional)", t: "area", add: false, hint: "Visible to operators only." }
+      { k: "notes", label: "Notes (optional)", t: "area", add: false, sec: "For operators", hint: "Visible to operators only." }
     ];
     function mkF(f, idp, cur) {
-      var wrap = mk("div"), l = mk("label", "f", f.label), el;
+      var wrap = mk("div"), l = f.req ? UI.requiredLabel(f.label) : mk("label", "f", f.label), el;
+      if (f.sec) wrap.appendChild(mk("div", "fsec", f.sec));
       if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur == null ? "" : cur; }
       else { el = mk("input"); el.type = "text"; el.maxLength = f.t === "num" ? 4 : (f.max || 200); el.value = cur == null ? "" : String(cur); if (f.t === "num") el.inputMode = "numeric"; }
       el.id = idp + f.k; l.htmlFor = el.id; wrap.appendChild(l); wrap.appendChild(el);
@@ -77,21 +79,43 @@
     addEls.slug.el.addEventListener("input", function () { slugTouched = true; });
 
     function load() {
-      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true;
+      var my = ++S.seq; g("Msg").textContent = ""; g("Retry").hidden = true; if (!S.loaded) K.skelOn(g("List"));
       return admin("list", { limit: 200 }, "curriculums").then(function (res) {
         if (my !== S.seq) return;
         if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status !== 200 || !res.body.ok) { g("Msg").textContent = "Could not load the curricula. " + adminProblem(res.status); g("Retry").hidden = false; return; }
-        S.all = res.body.data.records || []; S.loaded = true; render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
+        if (res.status !== 200 || !res.body.ok) { K.skelOff(g("List")); g("Msg").textContent = "Could not load the curricula. " + adminProblem(res.status); g("Retry").hidden = false; return; }
+        S.all = res.body.data.records || []; S.loaded = true; fillChips(); render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date());
       });
     }
     S.load = load;
+    // Filters (shared chip bar): Status, Active by default. Search by title. Sorted by title, 50 at a time.
+    var cf = null, show = 50, STEP = 50;
+    function chips() {
+      if (cf) return cf;
+      cf = UI.chipFilters({ mount: g("Chips"), label: "Curriculum filters", filters: [{ id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }] }],
+        onChange: function () { show = STEP; g("Notice").textContent = ""; render(); } });
+      cf.setSelection({ status: ["active"] });
+      return cf;
+    }
+    S.setStatus = function (vals) { chips().setSelection({ status: vals }); };
+    function fillChips() {
+      var cs = { active: 0, inactive: 0 };
+      S.all.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; });
+      chips().setCounts({ status: cs });
+    }
     function render() {
-      var f = g("Filter").value, list = g("List"); list.textContent = "";
-      S.all.filter(function (r) { return !f || r.status === f; }).forEach(function (r) { list.appendChild(row(r)); });
+      var q = g("Search").value.trim().toLowerCase(), st = chips().getSelection().status || [], list = g("List");
+      var shown = S.all.filter(function (r) { return st.indexOf(r.status) >= 0 && (!q || [r.title, r.tagline, r.slug].join(" ").toLowerCase().indexOf(q) >= 0); })
+        .sort(function (a, b) { var x = (a.title || "").toLowerCase(), y = (b.title || "").toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
+      var vis = shown.slice(0, show), had = list.children.length;
+      K.skelOff(list); list.textContent = "";
+      vis.forEach(function (r) { list.appendChild(row(r)); });
       S.newId = "";
-      g("Count").textContent = S.all.length + (S.all.length === 1 ? " curriculum" : " curricula");
+      UI.moreBar(g("More"), vis.length, shown.length, STEP, function () { show += STEP; render(); var f = g("List").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, "curricula");
+      g("Count").textContent = shown.length + (shown.length === 1 ? " curriculum" : " curricula");
+      chips().setCount(shown.length !== S.all.length && S.all.length ? shown.length + " of " + S.all.length + " curricula" : "");
       g("Empty").hidden = S.all.length > 0;
+      g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
     }
     function row(rec) {
       var li = mk("li", rec.id === S.newId ? "isnew" : ""), head = mk("button", "head"); head.type = "button"; head.setAttribute("aria-expanded", "false");
@@ -102,9 +126,9 @@
       if (rec.tagline) head.appendChild(mk("div", "sub", rec.tagline));
       head.appendChild(mk("div", "sub", currLine(rec)));
       var detail = mk("div", "detail"), wrap = mk("div"), r = mk("div", "actions-row"), host = mk("div"), box = mk("div", "confirm"); box.hidden = true;
-      var ed = mk("button", "", "Edit"), del = mk("button", "danger", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
+      var ed = mk("button", "btn-primary", "Edit"), del = mk("button", "btn-danger pdel", "Delete"); ed.type = "button"; del.type = "button"; r.appendChild(ed); r.appendChild(del);
       box.appendChild(mk("div", "", "Delete " + (rec.title || "this curriculum") + "? It disappears from the list but the record is kept. To stop offering it without deleting, set it to inactive."));
-      var b = mk("div", "btns"), yes = mk("button", "danger", "Delete curriculum"), no = mk("button", "quiet", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
+      var b = mk("div", "btns"), yes = mk("button", "btn-danger", "Delete curriculum"), no = mk("button", "btn-secondary", "Cancel"), err = mk("div", "msg"); yes.type = "button"; no.type = "button"; err.setAttribute("role", "alert");
       b.appendChild(yes); b.appendChild(no); box.appendChild(b); box.appendChild(err);
       ed.addEventListener("click", function () { box.hidden = true; if (host.firstChild) host.textContent = ""; else host.appendChild(editForm(rec, host)); });
       del.addEventListener("click", function () { host.textContent = ""; box.hidden = !box.hidden; err.textContent = ""; });
@@ -121,6 +145,7 @@
       });
       wrap.appendChild(r); wrap.appendChild(host); wrap.appendChild(box); detail.appendChild(wrap);
       if (rec.description) detail.appendChild(line("Description", rec.description));
+      if (rec.slug) detail.appendChild(line("Identifier", rec.slug));
       if (rec.notes) detail.appendChild(line("Notes", rec.notes));
       detail.appendChild(line("Added", when(rec.created_at)));
       head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
@@ -131,10 +156,10 @@
     function editForm(rec, host) {
       var form = mk("form", "eform"), els = {}; form.noValidate = true; form.autocomplete = "off";
       FIELDS.forEach(function (f) { if (f.addOnly) return; var x = mkF(f, "rce_" + rec.id + "_", rec[f.k]); form.appendChild(x.wrap); els[f.k] = x; });
-      var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rcst_" + rec.id; sl.htmlFor = ss.id;
+      form.appendChild(mk("div", "fsec", "Record")); var sl = mk("label", "f", "Status"), ss = mk("select"); ss.id = "rcst_" + rec.id; sl.htmlFor = ss.id;
       [["active", "Active"], ["inactive", "Inactive (kept, not offered)"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; ss.appendChild(op); });
       ss.value = rec.status || "active"; form.appendChild(sl); form.appendChild(ss);
-      var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
+      var btns = mk("div", "btns"), save = mk("button", "btn-primary", "Save changes"), cancel = mk("button", "btn-secondary", "Cancel"); save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
       var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
       cancel.addEventListener("click", function () { host.textContent = ""; });
       form.addEventListener("submit", function (e) {
@@ -181,16 +206,17 @@
         if (res.status === 401) { lock("That key did not work."); return; }
         if (res.status === 200 && res.body && res.body.ok) {
           S.newId = res.body.data.id; g("Notice").textContent = "Added " + res.body.data.title + "."; g("AddForm").hidden = true; g("AddBtn").hidden = false;
-          if (g("Filter").value === "inactive") g("Filter").value = "active"; load(); return;
+          S.setStatus(["active"]); load(); return;
         }
         var pr = problems(res, addEls); Object.keys(pr.fields).forEach(function (k) { addEls[k].err.textContent = pr.fields[k]; });
         if (pr.other.length) g("FMsg").textContent = "Could not save: " + pr.other.join(" ");
       });
     });
-    g("Filter").addEventListener("change", function () { g("Notice").textContent = ""; render(); });
+    g("Search").addEventListener("input", function () { show = STEP; render(); });
+    g("Clear").addEventListener("click", function () { g("Search").value = ""; show = STEP; S.setStatus(["active"]); render(); g("Search").focus(); });
     g("Refresh").addEventListener("click", function () { g("Notice").textContent = ""; load(); });
     g("Retry").addEventListener("click", load);
-    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("Filter").value = "active"; g("AddForm").hidden = true; g("AddBtn").hidden = false; };
+    S.reset = function () { S.loaded = false; S.all = []; S.newId = ""; g("List").textContent = ""; g("Count").textContent = ""; g("Checked").textContent = ""; g("Msg").textContent = ""; g("Notice").textContent = ""; g("Empty").hidden = true; g("NoMatch").hidden = true; g("Search").value = ""; show = STEP; g("More").textContent = ""; if (cf) cf.setSelection({ status: ["active"] }); g("AddForm").hidden = true; g("AddBtn").hidden = false; };
     return S;
   }
   var S = buildCurriculum();

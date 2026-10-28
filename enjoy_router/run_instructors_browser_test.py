@@ -36,6 +36,20 @@ def cors(route):
 
 def people(): return IS.list(store, None, limit=200).data["records"]
 
+def status_is(pg, pre, *vals):
+    """Tick exactly these statuses in the Status chip (the old drop-down is gone)."""
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    for v in ("active", "inactive"):
+        box = pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v))
+        if box.is_checked() != (v in vals): box.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+
+def status_ticked(pg, pre):
+    pg.locator("#%sChips .cf-chip" % pre, has_text="Status").click()
+    got = [v for v in ("active", "inactive") if pg.locator("#%sChips .cf-pop input[type=checkbox][value=%s]" % (pre, v)).is_checked()]
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    return got
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -144,17 +158,17 @@ with sync_playwright() as p:
     li.locator("form.eform").get_by_role("button", name="Save changes").click()
     check("nothing changed says so", "Nothing changed" in pg.locator("#riNotice").inner_text())
     # inactive filter (opening a card from the add window switched the list to All, as designed)
-    check("opening an existing card switches the list to All", pg.input_value("#riFilter") == "")
-    pg.select_option("#riFilter", "active")
+    check("opening an existing card switches the list to All", status_ticked(pg, "ri") == ["active", "inactive"])
+    status_is(pg, "ri", "active")
     li = pg.locator("#riList li", has_text="Ann Lee"); li.locator("button.head").click()
     li.get_by_role("button", name="Edit", exact=True).click()
     li.locator("form.eform select").select_option("inactive")
     li.locator("form.eform").get_by_role("button", name="Save changes").click()
     pg.wait_for_function("document.querySelectorAll('#riList li').length == 1")
     check("inactive leaves the Active list", "Ann Lee" not in pg.locator("#riList").inner_text())
-    pg.select_option("#riFilter", "")
+    status_is(pg, "ri", "active", "inactive")
     check("All shows both", pg.locator("#riList li").count() == 2)
-    pg.select_option("#riFilter", "active")
+    status_is(pg, "ri", "active")
     # remove, then add back
     li = pg.locator("#riList li", has_text="Bob Ray"); li.locator("button.head").click()
     li.get_by_role("button", name="Remove from instructors").click()
@@ -224,7 +238,7 @@ with sync_playwright() as p:
     st = [r["status"] for r in store.data.get("instructor_rosters", {}).values()]
     check("the roster switch changes the saved status after the pause", sw.get_attribute("aria-checked") != was and ("inactive" in st) == (was == "true"))
     # P-66: place an instructor in a region by ticking it on the edit form
-    pg.select_option("#collPick", "instructors"); pg.select_option("#riFilter", "active")
+    pg.select_option("#collPick", "instructors"); status_is(pg, "ri", "active")
     pg.wait_for_selector("#riList li"); pg.wait_for_timeout(500)
     li = pg.locator("#riList li", has_text="Toddy"); li.locator("button.head").click()
     li.get_by_role("button", name="Edit", exact=True).click()
