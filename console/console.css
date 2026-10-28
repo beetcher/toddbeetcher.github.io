@@ -877,3 +877,10 @@
 #roList .olinks { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--line); }
 #roList .olrow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding: var(--space-2) 0; }
 #roList .olact { display: inline-flex; gap: var(--space-3); }
+
+/* People rows: two across on wide screens, an opened card spans both (same as Places and Organizations). */
+@media (min-width: 1100px) {
+  #peopleView #pList { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; align-items: start; }
+  #peopleView #pList > li.open { grid-column: 1 / -1; }
+  #peopleView #pList > li.pnote, #peopleView #pList > li.limitnote { grid-column: 1 / -1; }
+}

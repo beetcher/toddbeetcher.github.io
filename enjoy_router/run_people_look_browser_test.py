@@ -31,6 +31,11 @@ for i in range(33):
     IC.create(store, {"given_name": n[0], "family_name": n[1], "birth_date": "19%02d-04-17" % (40 + i)}, A)
 people = sorted(store.data["individuals"].values(), key=lambda r: r["created_at"])
 for r in people[-4:]: IC.update(store, r["id"], {"status": "inactive"}, A)
+P05 = [r for r in store.data["individuals"].values() if r.get("given_name") == "Person05"][0]
+_r = LC.create(store, {"name": "Home of P05", "kind": "site", "addresses": [{"usage": "civic", "street_number": "9", "street": "Oak Street", "locality": "Boulder", "region": "CO", "postal_code": "80301", "country": "US"}]}, A)
+LOC = _r.data
+LK.create(store, {"subject_type": "individual", "subject_id": P05["id"], "location_id": LOC["id"], "relationship": "resides_at", "is_primary": True}, A)
+store.data.setdefault("instructor_rosters", {})["ins1"] = {"id": "ins1", "individual_id": P05["id"], "status": "active"}
 N_ACTIVE = len([r for r in store.data["individuals"].values() if r.get("status") == "active"])
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
@@ -55,6 +60,12 @@ with sync_playwright() as p:
     check("L-5 no match shows the no-match note", pg.evaluate("document.getElementById('pNoMatch').hidden === false"))
     pg.fill("#pSearch", ""); pg.wait_for_timeout(250)
     check("L-5 clearing restores the list", pg.locator("#pList > li").count() == N_ACTIVE)
+    # ===== J-1 / L-2 join and row
+    pg.wait_for_function("document.querySelector('#pList').textContent.indexOf('Boulder') >= 0", timeout=8000)
+    sub = pg.locator("#pList > li", has_text="Person05").first.locator(".sub").inner_text()
+    check("J-1 row shows the town and the role", "Boulder" in sub and "Instructor" in sub, sub)
+    check("L-2 born date kept in the sub-line", "Born" in sub, sub)
+    check("L-2 two rows across at 1440", pg.evaluate("(function(){var l=document.querySelectorAll('#pList > li');return l[0].getBoundingClientRect().top === l[1].getBoundingClientRect().top})()"))
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

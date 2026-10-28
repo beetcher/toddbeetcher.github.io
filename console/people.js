@@ -25,7 +25,26 @@
 
   // ---- People station: the individuals, through the same admin door. Restricted details are not reachable from here (the server refuses them).
   var COLL_MERGE = "merge_events";
-  var pAll = [], pLoaded = false, pSeq = 0, pNewId = "";
+  var pAll = [], pLoaded = false, pSeq = 0, pNewId = "", pTown = {}, pRoles = {};
+  var LIFE_WORDS = { deceased: "Deceased", unknown: "Not sure if living" }, PRIV_WORDS = { restricted: "Protected record", sensitive: "Sensitive record", private: "Private record" };
+  // Page join (after first paint, best effort): each person's town from their address links, and their roles from the Instructors and Students lists.
+  function joinPeople() {
+    var my = pSeq;
+    Promise.all([admin("list", { filters: { subject_type: "individual" }, limit: 200 }, COLL_LK), admin("list", { limit: 200 }, COLL_L), admin("list", { limit: 200 }, "instructor_rosters"), admin("list", { limit: 200 }, "student_rosters")]).then(function (rs) {
+      if (my !== pSeq) return;
+      var ok = function (r) { return r.status === 200 && r.body && r.body.ok ? (r.body.data.records || []) : null; };
+      var links = ok(rs[0]), locs = ok(rs[1]), ins = ok(rs[2]), stu = ok(rs[3]), changed = false;
+      if (links && locs) {
+        var lm = {}; locs.forEach(function (l) { lm[l.id] = l; });
+        links.filter(function (l) { return l.status !== "ended"; }).sort(function (a, b) { return (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0); }).forEach(function (l) {
+          var loc = lm[l.location_id], a = loc && loc.addresses && loc.addresses[0], t = a && a.locality;
+          if (t && !pTown[l.subject_id]) { pTown[l.subject_id] = t; changed = true; }
+        });
+      }
+      [[ins, "Instructor"], [stu, "Student"]].forEach(function (p) { (p[0] || []).forEach(function (r) { if (r.individual_id && r.status !== "inactive") { (pRoles[r.individual_id] = pRoles[r.individual_id] || []).push(p[1]); changed = true; } }); });
+      if (changed) renderPeople();
+    }).catch(function () {});
+  }
   var PLABEL = { given_name: "Given name", middle_names: "Middle names", family_name: "Family name", name_to_use: "Name to use", pronouns: "Pronouns",
                  birth_date: "Birth date", birth_date_certainty: "Birth date certainty", preferred_language: "Preferred language", time_zone: "Time zone",
                  requires_interpreter: "Interpreter", email: "Email", phone: "Phone", backup_email: "Backup email", backup_phone: "Backup phone", prefers_email: "Preferred way to reach", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
@@ -114,7 +133,7 @@
       pAll = res.body.data.records || []; pLoaded = true;
       UI.limitNote($("pList"), pAll.length, 200);
       fillPChips();
-      renderPeople();
+      renderPeople(); joinPeople();
       $("pChecked").textContent = "Last checked " + fmtClock.format(new Date());
       if ($("pHist").open) loadMerges();
     });
@@ -165,8 +184,10 @@
     var bits = [];
     if (rec.birth_date) bits.push("Born " + pDateOut(rec.birth_date));
     if (rec.is_minor) bits.push("Under 18");
-    if (rec.life_status && rec.life_status !== "alive") bits.push(rec.life_status.replace(/_/g, " "));
-    if (rec.record_privacy && rec.record_privacy !== "normal") bits.push(rec.record_privacy);
+    if (pTown[rec.id]) bits.push(pTown[rec.id]);
+    if (rec.life_status && rec.life_status !== "alive") bits.push(LIFE_WORDS[rec.life_status] || rec.life_status.replace(/_/g, " "));
+    if (rec.record_privacy && rec.record_privacy !== "normal") bits.push(PRIV_WORDS[rec.record_privacy] || rec.record_privacy);
+    (pRoles[rec.id] || []).forEach(function (r) { bits.push(r); });
     if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
     var detail = mk("div", "detail");
     detail.appendChild(personActions(rec));
@@ -345,7 +366,7 @@
   }
 
   function resetPeople() {
-    pLoaded = false; pAll = []; pNewId = "";
+    pLoaded = false; pAll = []; pNewId = ""; pTown = {}; pRoles = {};
     $("pList").textContent = ""; $("pCount").textContent = ""; $("pChecked").textContent = ""; $("pMsg").textContent = ""; $("pNotice").textContent = "";
     $("pEmpty").hidden = true; $("pNoMatch").hidden = true; $("pSearch").value = ""; pShow = PSTEP; $("pMore").textContent = ""; if (pCf) pCf.setSelection({ status: ["active"] });
     $("pAddForm").hidden = true; $("pAddBtn").hidden = false; $("pHist").open = false; $("pHList").textContent = "";
