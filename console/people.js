@@ -261,7 +261,9 @@
     var els = {};
     P_FIELDS.forEach(function (f) {
       var id = "pe_" + rec.id + "_" + f.k, cur = rec[f.k];
-      var l = mk("label", "f", f.label); l.htmlFor = id; form.appendChild(l);
+      var SEC = { given_name: "Name", birth_date: "Birth date", preferred_language: "Language and needs", email: "How to reach them", status: "Record" };
+      if (SEC[f.k]) form.appendChild(mk("div", "fsec", SEC[f.k]));
+      var l = f.k === "given_name" ? UI.requiredLabel(f.label, id) : mk("label", "f", f.label); l.htmlFor = id; form.appendChild(l);
       var el;
       if (f.t === "select" || f.t === "bool" || f.t === "prefer") {
         el = mk("select");
@@ -275,7 +277,7 @@
       var er = mk("div", "ferr"); form.appendChild(er);
       els[f.k] = { el: el, err: er, t: f.t };
     });
-    var btns = mk("div", "btns"), save = mk("button", "", "Save changes"), cancel = mk("button", "quiet", "Cancel");
+    var btns = mk("div", "btns"), save = mk("button", "btn-primary", "Save changes"), cancel = mk("button", "btn-secondary", "Cancel");
     save.type = "submit"; cancel.type = "button"; btns.appendChild(save); btns.appendChild(cancel); form.appendChild(btns);
     var msg = mk("div", "msg"); msg.setAttribute("role", "alert"); form.appendChild(msg);
     cancel.addEventListener("click", function () { host.textContent = ""; });
@@ -416,6 +418,7 @@
   });
   $("pRefresh").addEventListener("click", function () { $("pNotice").textContent = ""; loadPeople(); });
   $("pRetry").addEventListener("click", loadPeople);
+  $("pClear").addEventListener("click", function () { $("pSearch").value = ""; pShow = PSTEP; pChips().setSelection({ status: ["active"] }); renderPeople(); $("pSearch").focus(); });
   $("pSearch").addEventListener("input", function () { pShow = PSTEP; renderPeople(); });
   $("pHist").addEventListener("toggle", function () { if ($("pHist").open) loadMerges(); });
   $("pHistLink").addEventListener("click", function () {   // the link in the page head opens the Merge history box at the bottom and brings it into view

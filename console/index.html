@@ -306,7 +306,8 @@
     <form class="panel" id="pAddForm" hidden autocomplete="off" novalidate>
       <h2>Add a person</h2>
       <div class="hint">Only a given name is needed. Everything else can be added later, when you edit.</div>
-      <label class="f" for="paGiven">Given name</label>
+      <div class="fsec">Name</div>
+      <label class="f" for="paGiven">Given name<span class="req" aria-hidden="true"> *</span></label>
       <input type="text" id="paGiven" maxlength="100" autocomplete="off">
       <div class="ferr" id="epaGiven"></div>
       <label class="f" for="paFamily">Family name (optional)</label>
@@ -316,9 +317,11 @@
       <input type="text" id="paUse" maxlength="100" autocomplete="off">
       <div class="hint">What the person asks to be called. It shows instead of the given name.</div>
       <div class="ferr" id="epaUse"></div>
+      <div class="fsec">Birth date</div>
       <label class="f" for="paBirth">Birth date (optional)</label>
       <input type="text" id="paBirth" maxlength="10" placeholder="MM-DD-YYYY, MM-YYYY or YYYY" autocomplete="off">
       <div class="ferr" id="epaBirth"></div>
+      <div class="fsec">How to reach them</div>
       <label class="f" for="paEmail">Email (optional)</label>
       <input type="text" id="paEmail" maxlength="200" autocomplete="off" inputmode="email">
       <div class="ferr" id="epaEmail"></div>
@@ -327,8 +330,8 @@
       <div class="hint">We send text messages only and never call. Backups and a preference can be added when you edit.</div>
       <div class="ferr" id="epaPhone"></div>
       <div class="btns">
-        <button type="submit" id="pSaveBtn">Save person</button>
-        <button type="button" class="quiet" id="pCancelBtn">Cancel</button>
+        <button type="submit" id="pSaveBtn" class="btn-primary">Save person</button>
+        <button type="button" class="btn-secondary" id="pCancelBtn">Cancel</button>
       </div>
       <div class="msg" id="pFMsg" role="alert"></div>
     </form>
@@ -336,11 +339,11 @@
     <div id="pChips"></div>
     <div class="notice" id="pNotice" role="status"></div>
     <div class="msg" id="pMsg" role="alert"></div>
-    <button type="button" class="quiet" id="pRetry" hidden>Retry</button>
+    <button type="button" class="btn-secondary" id="pRetry" hidden>Try again</button>
     <ul id="pList"></ul>
     <div id="pMore"></div>
-    <div class="empty" id="pEmpty" hidden>No people yet.</div>
-    <div class="empty" id="pNoMatch" hidden>Nobody matches that name.</div>
+    <div class="empty" id="pEmpty" hidden>No people yet. Add one to begin.</div>
+    <div class="empty" id="pNoMatch" hidden><b>Nobody matches that.</b><br>Try fewer letters, or <button type="button" class="btn-link" id="pClear">clear the filters and the search</button>.</div>
     <details class="more" id="pHist">
       <summary>Merge history</summary>
       <div class="mbody">
