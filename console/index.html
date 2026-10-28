@@ -182,46 +182,30 @@
 
   <section id="classesView" hidden>
     <div id="cMain">
-    <div class="bar">
-      <div>
+    <div class="bar phead">
+      <div class="ptext">
+        <h2 class="ptitle" id="cTitleH">Classes</h2>
         <div class="count" id="cCount"></div>
         <div class="meta" id="cChecked"></div>
       </div>
       <div class="actions">
-        <button type="button" class="quiet manualBtn" data-m="classes">Manual</button>
-        <button id="cRefresh" class="quiet" type="button">Refresh</button>
-        <button id="cAddBtn" type="button">Add class</button>
+        <button type="button" class="btn-link manualBtn" data-m="classes">Manual</button>
+        <button id="cRefresh" class="btn-link" type="button">Refresh</button>
+        <button id="cAddBtn" type="button" class="btn-primary">Add class</button>
       </div>
     </div>
-    <details class="more filters" id="cFilters">
-      <summary id="cFilterSummary">Filters: all classes shown</summary>
-      <div class="mbody">
-        <fieldset class="fs"><legend>Status</legend>
-          <label class="chk"><input type="checkbox" data-f="status" value="identified" checked> Idea</label>
-          <label class="chk"><input type="checkbox" data-f="status" value="scheduled" checked> Scheduled</label>
-          <label class="chk"><input type="checkbox" data-f="status" value="enrolling" checked> Enrolling</label>
-          <label class="chk"><input type="checkbox" data-f="status" value="completed" checked> Completed</label>
-          <label class="chk"><input type="checkbox" data-f="status" value="cancelled" checked> Cancelled</label>
-        </fieldset>
-        <fieldset class="fs"><legend>Kind</legend>
-          <label class="chk"><input type="checkbox" data-f="class_type" value="workshop" checked> Workshop</label>
-          <label class="chk"><input type="checkbox" data-f="class_type" value="group" checked> Group</label>
-          <label class="chk"><input type="checkbox" data-f="class_type" value="private" checked> One on one</label>
-        </fieldset>
-        <button type="button" class="quiet" id="cShowAll">Show all</button>
-      </div>
-    </details>
     <form class="panel" id="cAddForm" hidden autocomplete="off" novalidate>
       <h2>Add a class</h2>
       <div class="hint">It is added as an idea with no date. Venue, date, time and price come next, when you edit it.</div>
-      <label class="f" for="cTitle">Title</label>
+      <div class="fsec">The class</div>
+      <label class="f" for="cTitle">Title<span class="req" aria-hidden="true"> *</span></label>
       <input type="text" id="cTitle" maxlength="200" autocomplete="off">
       <div class="ferr" id="eCTitle"></div>
-      <label class="f" for="cSlug">Short name (slug)</label>
+      <label class="f" for="cSlug">Short name (slug)<span class="req" aria-hidden="true"> *</span></label>
       <input type="text" id="cSlug" maxlength="100" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off">
       <div class="hint">Lowercase letters, numbers and underscores. It cannot be changed later.</div>
       <div class="ferr" id="eCSlug"></div>
-      <label class="f" for="cType">Kind of class</label>
+      <label class="f" for="cType">Kind of class<span class="req" aria-hidden="true"> *</span></label>
       <select id="cType">
         <option value="">Choose one</option>
         <option value="workshop">Workshop (people pick it from the public list)</option>
@@ -229,13 +213,14 @@
         <option value="private">One on one (one person, a couple or a family)</option>
       </select>
       <div class="ferr" id="eCType"></div>
-      <label class="f" for="cPublic">Show in the public list?</label>
+      <label class="f" for="cPublic">Show in the public list?<span class="req" aria-hidden="true"> *</span></label>
       <select id="cPublic">
         <option value="">Choose one</option>
         <option value="yes">Yes, show it</option>
         <option value="no">No, keep it out of the list</option>
       </select>
       <div class="ferr" id="eCPublic"></div>
+      <div class="fsec">How many people</div>
       <label class="f" for="cMin">Fewest people (needed for it to run)</label>
       <input type="number" id="cMin" inputmode="numeric" min="1" max="500" step="1">
       <div class="ferr" id="eCMin"></div>
@@ -246,17 +231,20 @@
       <input type="number" id="cMax" inputmode="numeric" min="1" max="500" step="1">
       <div class="ferr" id="eCMax"></div>
       <div class="btns">
-        <button type="submit" id="cSaveBtn">Save class</button>
-        <button type="button" class="quiet" id="cCancelBtn">Cancel</button>
+        <button type="submit" id="cSaveBtn" class="btn-primary">Save class</button>
+        <button type="button" class="btn-secondary" id="cCancelBtn">Cancel</button>
       </div>
       <div class="msg" id="cFMsg" role="alert"></div>
     </form>
+    <input type="search" id="cSearch" class="psearch" placeholder="Find by title" aria-label="Find a class by title" autocomplete="off">
+    <div id="cChips"></div>
     <div class="notice" id="cNotice" role="status"></div>
     <div class="msg" id="cMsg" role="alert"></div>
-    <button type="button" class="quiet" id="cRetry" hidden>Retry</button>
+    <button type="button" class="btn-secondary" id="cRetry" hidden>Try again</button>
     <ul id="cList"></ul>
-    <div class="empty" id="cEmpty" hidden>No classes yet.</div>
-    <div class="empty" id="cNoMatch" hidden>No classes match the filters. <button type="button" class="linkbtn" id="cNoMatchAll">Show all</button></div>
+    <div id="cMore"></div>
+    <div class="empty" id="cEmpty" hidden>No classes yet. Add one to begin.</div>
+    <div class="empty" id="cNoMatch" hidden><b>No class matches that.</b><br>Try fewer letters, or <button type="button" class="btn-link" id="cClear">clear the filters and the search</button>.</div>
     </div>
 
     <section id="cHub" hidden>

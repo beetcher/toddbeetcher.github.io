@@ -107,8 +107,8 @@
     var head = document.createElement("button");
     head.className = "head"; head.type = "button";
     var top = mk("div", "top");
-    top.appendChild(mk("span", "vname", rec.title || "(no title)"));
-    top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), rec.status || ""));
+    var tn = mk("span", "vname", rec.title || "(no title)"); tn.title = rec.title || ""; top.appendChild(tn);
+    top.appendChild(mk("span", "type" + (rec.status === "enrolling" || rec.status === "scheduled" ? " on" : ""), CSTAT_WORDS[rec.status] || rec.status || ""));
     head.appendChild(top);
     head.appendChild(mk("div", "who", classWhen(rec)));
     var v = rec.venue_id ? ConsoleNames.venueById(rec.venue_id) : null;
@@ -118,18 +118,11 @@
     chips.appendChild(mk("span", "", (CTYPES[rec.class_type] || rec.class_type) + (rec.is_public ? ", public" : ", not public")));
     if (rec.session_number) chips.appendChild(mk("span", "", "Session " + rec.session_number));
     chips.appendChild(mk("span", "", "People: " + rec.capacity_minimum + " to " + rec.capacity_target + " (up to " + rec.capacity_max + ")"));
-    var links = mk("div", "lchips");   // outside the card's head button: a button cannot sit inside a button
-    var at = mk("button", "chiplink", "Attendance"); at.type = "button";
-    at.addEventListener("click", function () { openAttendance(rec); });
-    links.appendChild(at);
-    var jl = mk("button", "chiplink", "Journal"); jl.type = "button";
-    jl.addEventListener("click", function () { ConsoleDialogs.openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
-    links.appendChild(jl);
     if (rec.price_cents != null) chips.appendChild(mk("span", "", money(rec.price_cents) + (rec.price_basis === "per_person" ? " per person" : " per session")));
     head.appendChild(chips);
 
     head.addEventListener("click", function () { openHub(rec, "Overview"); });
-    li.appendChild(head); li.appendChild(links); li.appendChild(classActions(rec));
+    li.appendChild(head); li.appendChild(classActions(rec));
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
     return li;
   }
@@ -137,18 +130,23 @@
   function classActions(rec) {
     var wrap = document.createElement("div"); wrap.className = "tilebtns";
     var row = mk("div", "actions-row");
-    var ed = mk("button", "", "Edit"); ed.type = "button";
-    var cn = mk("button", "", "Cancel class"); cn.type = "button";
-    var del = mk("button", "danger", "Delete"); del.type = "button";
-    row.appendChild(ed);
-    var hc = historyBtn(rec.id, rec.title || rec.short_name); if (hc) row.appendChild(hc);
+    // Cues: Attendance is the one orange action; Edit, Journal and Cancel class outlined; history a link; Delete red, last.
+    var at = mk("button", "btn-primary", "Attendance"); at.type = "button";
+    at.addEventListener("click", function () { openAttendance(rec); });
+    var ed = mk("button", "btn-secondary", "Edit"); ed.type = "button";
+    var jl = mk("button", "btn-secondary", "Journal"); jl.type = "button";
+    jl.addEventListener("click", function () { ConsoleDialogs.openJournal({ scheduled_class_id: rec.id }, "Journal: " + (rec.title || "class")); });
+    var cn = mk("button", "btn-secondary", "Cancel class"); cn.type = "button";
+    var del = mk("button", "btn-danger pdel", "Delete"); del.type = "button";
+    row.appendChild(at); row.appendChild(ed); row.appendChild(jl);
+    var hc = historyBtn(rec.id, rec.title || rec.short_name); if (hc) { hc.className = "btn-link"; row.appendChild(hc); }
     if (rec.status !== "cancelled" && rec.status !== "completed") row.appendChild(cn);
     row.appendChild(del);
     var box = mk("div", "confirm"); box.hidden = true;
     var what = mk("div", ""), why = mk("input"); why.type = "text"; why.maxLength = 200; why.setAttribute("aria-label", "Why is it cancelled?"); why.placeholder = "Why? (optional)";
     var btns = mk("div", "btns");
-    var yes = mk("button", "danger", ""); yes.type = "button";
-    var no = mk("button", "quiet", "Never mind"); no.type = "button";
+    var yes = mk("button", "btn-danger", ""); yes.type = "button";
+    var no = mk("button", "btn-secondary", "Never mind"); no.type = "button";
     var err = mk("div", "msg"); err.setAttribute("role", "alert");
     btns.appendChild(yes); btns.appendChild(no);
     box.appendChild(what); box.appendChild(why); box.appendChild(btns); box.appendChild(err);
@@ -192,56 +190,59 @@
     return wrap;
   }
 
-  // ---- filters: tick boxes. Everything ticked shows everything; unticking narrows. The page holds the whole list and filters it here.
+  // ---- filters (shared chip bar): Status and Kind (everything ticked shows everything), switches Upcoming, Past, Needs a venue; search by title.
+  // The page holds the whole list and filters it here, 50 at a time. The choice is remembered for the session.
   var CSTAT = ["identified", "scheduled", "enrolling", "completed", "cancelled"], CKIND = ["workshop", "group", "private"];
-  var CF_STORE = "console_class_filters";
-  var cAll = [], cSeq = 0;
-  function cChecks() { return document.querySelectorAll("#cFilters input[type=checkbox]"); }
-  function cSelected() {
-    var o = { status: {}, class_type: {} };
-    Array.prototype.forEach.call(cChecks(), function (c) { if (c.checked) o[c.getAttribute("data-f")][c.value] = 1; });
-    return o;
-  }
-  function cSaveFilters() {
-    try {
-      var off = [];
-      Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) off.push(c.getAttribute("data-f") + ":" + c.value); });
-      if (off.length) sessionStorage.setItem(CF_STORE, JSON.stringify(off)); else sessionStorage.removeItem(CF_STORE);
-    } catch (e) {}
-  }
-  function cRestoreFilters() {
-    try {
-      var off = JSON.parse(sessionStorage.getItem(CF_STORE) || "[]");
-      Array.prototype.forEach.call(cChecks(), function (c) { c.checked = off.indexOf(c.getAttribute("data-f") + ":" + c.value) < 0; });
-    } catch (e) {}
-    cFilterSummary();
-  }
-  function cShowEverything() {
-    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
-    cSaveFilters(); cFilterSummary(); renderClasses();
-  }
-  function cFilterSummary() {
-    var all = true;
-    Array.prototype.forEach.call(cChecks(), function (c) { if (!c.checked) all = false; });
-    $("cFilterSummary").textContent = all ? "Filters: all classes shown" : "Filters: some classes are hidden";
-    $("cFilterSummary").className = all ? "" : "some";
-  }
-  function cPass(sel, field, v) { var known = (field === "status" ? CSTAT : CKIND).indexOf(v) >= 0; return known ? !!sel[field][v] : true; }
-  function cTick(rec) {
-    Array.prototype.forEach.call(cChecks(), function (c) {
-      var f = c.getAttribute("data-f");
-      if (rec[f] === c.value) c.checked = true;
+  var CSTAT_WORDS = { identified: "Idea", scheduled: "Scheduled", enrolling: "Enrolling", completed: "Completed", cancelled: "Cancelled" };
+  var CF_STORE = "console_class_chips";
+  var cAll = [], cSeq = 0, cCf = null, cShow = 50, CSTEP = 50;
+  function cChips() {
+    if (cCf) return cCf;
+    cCf = UI.chipFilters({
+      mount: $("cChips"), label: "Class filters",
+      filters: [
+        { id: "status", label: "Status", kind: "multi", options: CSTAT.map(function (v) { return { value: v, label: CSTAT_WORDS[v] }; }) },
+        { id: "class_type", label: "Kind", kind: "multi", options: [{ value: "workshop", label: "Workshop" }, { value: "group", label: "Group" }, { value: "private", label: "One on one" }] },
+        { id: "upcoming", label: "Upcoming", kind: "toggle", noun: "classes" },
+        { id: "past", label: "Past", kind: "toggle", noun: "classes" },
+        { id: "novenue", label: "Needs a venue", kind: "toggle", noun: "classes" }],
+      onChange: function () { cSave(); cShow = CSTEP; $("cNotice").textContent = ""; renderClasses(); }
     });
-    cSaveFilters(); cFilterSummary();
+    try { var saved = JSON.parse(sessionStorage.getItem(CF_STORE) || "null"); if (saved) cCf.setSelection(saved); } catch (e) {}
+    return cCf;
+  }
+  function cSave() { try { var sel = cChips(); if (sel.isNarrowed()) sessionStorage.setItem(CF_STORE, JSON.stringify(sel.getSelection())); else sessionStorage.removeItem(CF_STORE); } catch (e) {} }
+  function cPasses(rec, sel) {
+    var st = sel.status || [], kd = sel.class_type || [], now = Date.now(), live = rec.status !== "cancelled" && rec.status !== "completed", t = rec.starts_at ? new Date(rec.starts_at).getTime() : null;
+    if (CSTAT.indexOf(rec.status) >= 0 && st.indexOf(rec.status) < 0) return false;
+    if (CKIND.indexOf(rec.class_type) >= 0 && kd.indexOf(rec.class_type) < 0) return false;
+    if ((sel.upcoming || []).length && !(live && t != null && t >= now)) return false;
+    if ((sel.past || []).length && !(t != null && t < now)) return false;
+    if ((sel.novenue || []).length && !(live && !rec.venue_id)) return false;
+    return true;
+  }
+  function cTick(rec) {   // a class you just saved is never hidden: widen the choice to include it
+    var sel = cChips().getSelection(), add = function (arr, v) { return arr.indexOf(v) >= 0 || !v ? arr : arr.concat([v]); };
+    cChips().setSelection({ status: add(sel.status || [], rec.status), class_type: add(sel.class_type || [], rec.class_type), upcoming: [], past: [], novenue: [] });
+    cSave();
+  }
+  function cCountsFill() {
+    var cs = {}, ks = {}; CSTAT.forEach(function (v) { cs[v] = 0; }); CKIND.forEach(function (v) { ks[v] = 0; });
+    cAll.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; if (ks[r.class_type] !== undefined) ks[r.class_type]++; });
+    cChips().setCounts({ status: cs, class_type: ks });
+    var now = Date.now();
+    cChips().setBadge("upcoming", cAll.filter(function (r) { return r.status !== "cancelled" && r.status !== "completed" && r.starts_at && new Date(r.starts_at).getTime() >= now; }).length);
+    cChips().setBadge("past", cAll.filter(function (r) { return r.starts_at && new Date(r.starts_at).getTime() < now; }).length);
+    cChips().setBadge("novenue", cAll.filter(function (r) { return r.status !== "cancelled" && r.status !== "completed" && !r.venue_id; }).length);
   }
 
   function renderClasses() {
-    var sel = cSelected();
-    function shownList() { return cAll.filter(function (r) { return cPass(sel, "status", r.status) && cPass(sel, "class_type", r.class_type); }); }
+    var q = $("cSearch").value.trim().toLowerCase(), sel = cChips().getSelection();
+    function shownList() { return cAll.filter(function (r) { return cPasses(r, sel) && (!q || String(r.title || "").toLowerCase().indexOf(q) >= 0); }); }
     var shown = shownList();
     if (cNewId) {   // a class you just added or saved is never hidden by the filters
       var nr = cAll.filter(function (r) { return r.id === cNewId; })[0];
-      if (nr && shown.indexOf(nr) < 0) { cTick(nr); sel = cSelected(); shown = shownList(); }
+      if (nr && shown.indexOf(nr) < 0 && !q) { cTick(nr); sel = cChips().getSelection(); shown = shownList(); }
     }
     shown.sort(function (a, b) {
       if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
@@ -249,14 +250,17 @@
       if (b.starts_at) return 1;
       return (a.title || "").toLowerCase() < (b.title || "").toLowerCase() ? -1 : 1;
     });
+    var newIdx = cNewId ? shown.findIndex(function (r) { return r.id === cNewId; }) : -1;
+    if (newIdx >= cShow) cShow = newIdx + 1;   // the new class is always on the page
+    var vis = shown.slice(0, cShow), had = $("cList").children.length;
     var ul = $("cList"); ul.textContent = "";
     var focus = null;
-    shown.forEach(function (r) { var li = classRow(r, r.id === cNewId); ul.appendChild(li); if (r.id === cNewId) focus = li; });
+    vis.forEach(function (r) { var li = classRow(r, r.id === cNewId); ul.appendChild(li); if (r.id === cNewId) focus = li; });
+    UI.moreBar($("cMore"), vis.length, shown.length, CSTEP, function () { cShow += CSTEP; renderClasses(); var f = $("cList").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, "classes");
     var n = shown.length, t = cAll.length;
     $("cCount").textContent = (n === t ? t + (t === 1 ? " class" : " classes") : "Showing " + n + " of " + t + " classes") + (t >= 200 ? " (the first 200)" : "");
     $("cEmpty").hidden = t > 0;
     $("cNoMatch").hidden = !(t > 0 && n === 0);
-    cFilterSummary();
     if (focus) { try { focus.scrollIntoView({ block: "center" }); } catch (e) {} }
     cNewId = "";
   }
@@ -275,6 +279,7 @@
       cAll = res.body.data.records || [];
       UI.limitNote($("cList"), cAll.length, 200);
       cLoaded = true;
+      cCountsFill();
       renderClasses();
       $("cChecked").textContent = "Last checked " + fmtClock.format(new Date());
     });
@@ -821,20 +826,21 @@
     cLoaded = false; cNewId = ""; cAll = []; cSeq++;
     $("cList").textContent = ""; $("cCount").textContent = ""; $("cChecked").textContent = "";
     $("cMsg").textContent = ""; $("cNotice").textContent = ""; $("cEmpty").hidden = true; $("cNoMatch").hidden = true; $("cRetry").hidden = true;
-    Array.prototype.forEach.call(cChecks(), function (c) { c.checked = true; });
+    $("cSearch").value = ""; cShow = CSTEP; $("cMore").textContent = "";
+    if (cCf) cCf.clearAll();
     try { sessionStorage.removeItem(CF_STORE); } catch (e) {}
-    cFilterSummary(); closeClassForm(); closeClassEdit();
+    $("cList").textContent = ""; $("cCount").textContent = ""; $("cEmpty").hidden = true; $("cNoMatch").hidden = true;
+    closeClassForm(); closeClassEdit();
   }
   $("cTitle").addEventListener("input", function () { if (!cSlugTouched) $("cSlug").value = slugify($("cTitle").value); });
   $("cSlug").addEventListener("input", function () { cSlugTouched = true; });
   $("cAddBtn").addEventListener("click", openClassForm);
   $("cCancelBtn").addEventListener("click", closeClassForm);
   $("cRefresh").addEventListener("click", function () { $("cNotice").textContent = ""; loadClasses(); });
-  $("cFilters").addEventListener("change", function () { cSaveFilters(); cFilterSummary(); renderClasses(); });
-  $("cShowAll").addEventListener("click", cShowEverything);
-  $("cNoMatchAll").addEventListener("click", cShowEverything);
+  $("cSearch").addEventListener("input", function () { cShow = CSTEP; renderClasses(); });
+  $("cClear").addEventListener("click", function () { $("cSearch").value = ""; cShow = CSTEP; cChips().clearAll(); $("cSearch").focus(); });
   $("cRetry").addEventListener("click", function () { loadClasses(); });
-  cRestoreFilters();
+  cChips();
   $("cAddForm").addEventListener("submit", function (e) {
     e.preventDefault(); cClearErrs();
     var ty = $("cType").value, pub = $("cPublic").value, bad = false;

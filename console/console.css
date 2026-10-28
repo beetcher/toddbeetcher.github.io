@@ -939,3 +939,19 @@
   #venuesView .bar button, #venuesView .actions-row button, #venuesView button.vdetails, #venuesView .stoggle { min-height: 44px; }
   #venuesView .phead .actions { width: 100%; }
 }
+
+/* Classes look: flat status chip, titles clamp to two lines, one action row, two across from 1100 px */
+#classesView .phead { align-items: flex-start; }
+#classesView #cList .vname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+#classesView #cList .top .type { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; }
+#classesView #cList .top .type.on { color: var(--ink); border-color: var(--muted); }
+#classesView .actions-row { align-items: center; }
+#classesView .actions-row .pdel { margin-left: auto; }
+@media (min-width: 1100px) {
+  #classesView #cList { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; align-items: start; }
+  #classesView #cList > li.pnote, #classesView #cList > li.limitnote { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  #classesView .bar button, #classesView .actions-row button { min-height: 44px; }
+  #classesView .phead .actions { width: 100%; }
+}
