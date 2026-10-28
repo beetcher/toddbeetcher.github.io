@@ -6,11 +6,11 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var mk = K.mk, root = null, MAXN = 500;
-  var S = { days: 7, device: "all", records: [], loaded: false, msg: "", seq: 0 };
+  var S = { days: 7, device: "all", records: [], loaded: false, msg: "", seq: 0, checked: "" };
 
   function $(id) { return document.getElementById(id); }
   function ok(res) { return res.status === 200 && res.body && res.body.ok; }
-  function fmt(ms) { return ms === null || ms === undefined ? "n/a" : ms < 1000 ? Math.round(ms) + " ms" : (ms / 1000).toFixed(1) + " s"; }
+  function fmt(ms) { return ms === null || ms === undefined ? "none recorded" : ms < 1000 ? Math.round(ms) + " ms" : (ms / 1000).toFixed(1) + " s"; }
   function median(a) { if (!a.length) return null; var s = a.slice().sort(function (x, y) { return x - y; }), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
   function mean(a) { return a.length ? a.reduce(function (x, y) { return x + y; }, 0) / a.length : null; }
   function num(r, f) { return typeof r[f] === "number" ? r[f] : null; }
@@ -31,7 +31,7 @@
       var w = srv === null ? check : Math.max(check - srv, 0);
       wake.push(w); if (srv !== null) work.push(srv); load.push(ld || 0); other.push(Math.max(tot - check - (ld || 0), 0));
     });
-    return [["Waking up and network", mean(wake), "#c0392b"], ["Server work", mean(work), "#e67e22"], ["Loading the lists", mean(load), "#2e86c1"], ["Everything else (page)", mean(other), "#7f8c8d"]];
+    return [["Waking up and network", mean(wake), "#1f4e79"], ["Server work", mean(work), "#4a7fb0"], ["Loading the lists", mean(load), "#93b5d6"], ["Everything else (page)", mean(other), "#a9a9a9"]];
   }
 
   function tile(label, value, note) {
@@ -41,14 +41,15 @@
   function style() {
     if ($("perfStyle")) return;
     var s = document.createElement("style"); s.id = "perfStyle";
-    s.textContent = ".pfv{max-width:1100px;margin:0 auto}.pfv .pfbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}.pfv .pfbar h2{margin:0}.pfv .pfseg{display:flex;gap:4px}" +
-      ".pfv .pfseg button{min-height:44px}.pfv .pfseg button.on{background:var(--ink,#1a1a2e);color:#fff}.pfv select{font:inherit;padding:8px;min-height:44px}" +
+    s.textContent = ".pfv{max-width:1100px;margin:0 auto}.pfv .pfbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}.pfv .pfbar h2{margin:0}" +
+      "" +
       ".pfv .pftiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}.pfv .pfT{border:1px solid #d8d2c4;border-radius:10px;padding:10px 12px;background:#fff}" +
       ".pfv .pfV{font-size:24px;font-weight:800}.pfv .pfL{font-weight:700;font-size:14px}.pfv .pfN,.pfv .pfm{font-size:13px;color:var(--muted)}" +
       ".pfv .pfstack{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid #d8d2c4;margin:8px 0}.pfv .pfstack div{min-width:2px}" +
       ".pfv .pfkey{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;margin:6px 0 14px}.pfv .pfkey i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}" +
       ".pfv .pftab{width:100%;border-collapse:collapse;font-size:14px;background:#fff}.pfv .pftab th,.pfv .pftab td{text-align:left;padding:6px 6px;border-bottom:1px solid #e6e0d2;white-space:nowrap}" +
-      ".pfv .pfscroll{overflow-x:auto}.pfv .pfcold{color:#c0392b;font-weight:700}";
+      ".pfv .pfscroll{overflow-x:auto}.pfv .pfcold{color:#c0392b;font-weight:700}.pfv .pfbar{margin:10px 0}.pfv .pfchips{margin:8px 0}\n" +
+      "@media(max-width:520px){.pfv .pftab,.pfv .pftab tbody{display:block}.pfv .pftab tr:first-child{display:none}.pfv .pftab tr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px 8px;padding:8px 0;border-bottom:1px solid #e6e0d2}.pfv .pftab td{display:block;border:0;padding:0;white-space:normal}.pfv .pftab td:nth-child(1){grid-column:span 3;font-weight:700}.pfv .pftab td:nth-child(n+5):before{content:attr(data-h) \": \";color:var(--muted)}}";
     document.head.appendChild(s);
   }
 
@@ -56,28 +57,26 @@
     if (!root) return;
     root.textContent = "";
     var wrap = mk("div", "pfv");
-    var h = mk("div", "pfbar"); h.appendChild(mk("h2", "", "Performance")); h.appendChild(btn("Refresh", "quiet", function () { load(); })); wrap.appendChild(h);
+    var h = mk("div", "bar phead"), tx = mk("div", "ptext"); tx.appendChild(mk("h2", "ptitle", "Performance")); var ck = mk("div", "meta", S.checked ? "Last checked " + S.checked : ""); ck.id = "pfChecked"; tx.appendChild(ck); h.appendChild(tx);
+    var ac = mk("div", "actions"), rf = btn("Refresh", "btn-link", function () { load(); }); rf.id = "pfRefresh"; ac.appendChild(rf); h.appendChild(ac); wrap.appendChild(h);
     wrap.appendChild(mk("h3", "", "Sign-in speed"));
     wrap.appendChild(mk("p", "pfm", "How long signing in to the Console takes, measured by each person's own page from the moment Google accepts them until the Console is ready. Nothing here can be changed."));
-    var bar = mk("div", "pfbar"), seg = mk("div", "pfseg");
-    [[7, "7 days"], [30, "30 days"], [90, "90 days"]].forEach(function (d) {
-      var b = btn(d[1], S.days === d[0] ? "on" : "quiet", function () { S.days = d[0]; draw(); }); b.setAttribute("data-days", d[0]); seg.appendChild(b);
-    });
-    bar.appendChild(seg);
-    var f = mk("div", ""), sel = mk("select", ""); sel.id = "pfDevice"; sel.setAttribute("aria-label", "Device");
-    [["all", "All devices"], ["phone", "Phones"], ["desktop", "Computers"]].forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; sel.appendChild(op); });
-    sel.value = S.device; sel.addEventListener("change", function () { S.device = sel.value; draw(); }); f.appendChild(sel); bar.appendChild(f);
-    wrap.appendChild(bar);
-    if (S.msg) { wrap.appendChild(mk("p", "msg", S.msg)); root.appendChild(wrap); return; }
-    if (!S.loaded) { wrap.appendChild(mk("p", "pfm", "Loading…")); root.appendChild(wrap); return; }
+    var mount = mk("div", "pfchips"); mount.id = "pfChips"; wrap.appendChild(mount);
+    var cf = window.UI.chipFilters({ mount: mount, label: "Performance filters", filters: [
+      { id: "days", label: "Time", kind: "one", options: [{ value: "7", label: "Last 7 days" }, { value: "30", label: "Last 30 days" }, { value: "90", label: "Last 90 days" }] },
+      { id: "device", label: "Device", kind: "one", options: [{ value: "all", label: "All devices" }, { value: "phone", label: "Phones" }, { value: "desktop", label: "Computers" }] }],
+      onChange: function () { var sl = cf.getSelection(); S.days = parseInt(sl.days[0], 10) || 7; S.device = sl.device[0] || "all"; draw(); } });
+    cf.setSelection({ days: [String(S.days)], device: [S.device] });
+    if (S.msg) { wrap.appendChild(mk("p", "msg", S.msg)); var rt = btn("Try again", "btn-secondary", function () { load(); }); rt.id = "pfRetry"; wrap.appendChild(rt); root.appendChild(wrap); return; }
+    if (!S.loaded) { wrap.appendChild(mk("p", "pfm", "Loading the timings…")); root.appendChild(wrap); return; }
     var rows = inView();
-    if (!rows.length) { wrap.appendChild(mk("p", "pfm", "No sign-ins recorded in this time yet. Each sign-in adds one.")); root.appendChild(wrap); return; }
+    if (!rows.length) { wrap.appendChild(mk("p", "pfm", "No sign-ins recorded for these choices yet. Each sign-in adds one.")); root.appendChild(wrap); return; }
     var tot = rows.map(function (r) { return r.total_ms; }), colds = rows.filter(function (r) { return typeof r.cold === "boolean"; }), nCold = colds.filter(function (r) { return r.cold; }).length;
     var tiles = mk("div", "pftiles");
     tiles.appendChild(tile("Sign-ins", String(rows.length), "in " + S.days + " days"));
     tiles.appendChild(tile("Typical (median)", fmt(median(tot))));
     tiles.appendChild(tile("Slowest", fmt(Math.max.apply(null, tot))));
-    tiles.appendChild(tile("Server was asleep", colds.length ? Math.round(100 * nCold / colds.length) + "%" : "n/a", colds.length ? nCold + " of " + colds.length + " sign-ins" : "no data"));
+    tiles.appendChild(tile("Server was asleep", colds.length ? Math.round(100 * nCold / colds.length) + "%" : "No data yet", colds.length ? nCold + " of " + colds.length + " sign-ins" : "older sign-ins did not record this"));
     wrap.appendChild(tiles);
     wrap.appendChild(mk("h3", "", "Where the time goes (average)"));
     var ps = parts(rows), sum = ps.reduce(function (a, p) { return a + (p[1] || 0); }, 0) || 1, stack = mk("div", "pfstack"), key = mk("div", "pfkey");
@@ -92,10 +91,10 @@
     var sc = mk("div", "pfscroll"), tb = mk("table", "pftab"), hd = mk("tr", "");
     ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"].forEach(function (t) { hd.appendChild(mk("th", "", t)); }); tb.appendChild(hd);
     rows.slice(0, 30).forEach(function (r) {
-      var tr = mk("tr", ""), cold = r.cold === true ? "yes" : r.cold === false ? "no" : "n/a";
+      var tr = mk("tr", ""), cold = r.cold === true ? "yes" : r.cold === false ? "no" : "unknown";
       [K.when(r.created_at), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
        fmt(r.total_ms), fmt(num(r, "check_ms")), fmt(num(r, "server_ms")), fmt(num(r, "load_ms")), cold].forEach(function (t, i) {
-        var td = mk("td", i === 8 && cold === "yes" ? "pfcold" : "", t); tr.appendChild(td);
+        var td = mk("td", i === 8 && cold === "yes" ? "pfcold" : "", t); td.setAttribute("data-h", ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"][i]); tr.appendChild(td);
       }); tb.appendChild(tr);
     });
     sc.appendChild(tb); wrap.appendChild(sc);
@@ -107,8 +106,8 @@
     var my = ++S.seq; S.msg = ""; S.loaded = false; draw();
     return K.admin("list", { order: "-created_at", limit: MAXN }, "performance_events").then(function (res) {
       if (my !== S.seq) return;
-      if (!ok(res)) { S.msg = res.status === 403 ? "You do not have access to Performance." : "Could not load the timings. Try Refresh."; S.records = []; }
-      else S.records = (res.body.data && res.body.data.records) || [];
+      if (!ok(res)) { S.msg = res.status === 403 ? "You do not have access to Performance." : "Could not load the timings."; S.records = []; }
+      else S.records = (res.body.data && res.body.data.records) || []; S.checked = K.clock(new Date());
       S.loaded = true; draw();
     });
   }

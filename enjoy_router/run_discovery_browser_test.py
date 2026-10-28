@@ -95,7 +95,7 @@ with sync_playwright() as p:
     regs = pg.locator("#dAreas label").all_inner_texts()
     check("the whole state and its regions are offered", len(regs) == 4 and "Boulder" in " ".join(regs), regs)
     check("the four starting kinds of place are offered", pg.locator("#dTypes label").count() == 4)
-    check("the starting limits are 10", pg.input_value("#dMax") == "10" and pg.input_value("#dCap") == "10")
+    check("the starting limits are 10", pg.input_value("#dMax") == "10" and pg.input_value("#dCap") == "0.10")
     check("Go starts disabled", pg.locator("#dGo").is_disabled())
     pg.click("#dEstimate")
     check("an estimate with nothing chosen says what to choose", "Choose where to look" in pg.locator("#dMsg").inner_text(), pg.locator("#dMsg").inner_text())
@@ -108,10 +108,10 @@ with sync_playwright() as p:
     ptxt = pg.locator("#dQuote .dprompt").first.inner_text()
     check("the exact prompt text can be read before Go", "Boulder" in ptxt and "coffee" in ptxt.lower(), ptxt[:200])
     check("Go is enabled after an estimate", pg.locator("#dGo").is_enabled())
-    pg.fill("#dCap", "1"); pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard")
+    pg.fill("#dCap", "0.01"); pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard")
     wt = pg.locator("#dQuote .dwarn").inner_text() if pg.locator("#dQuote .dwarn").count() else ""
     check("a cap below one call warns in words, names the smallest cap, and Go stays off", "too low to make even one call" in wt and "Raise the cap to at least $" in wt and pg.locator("#dGo").is_disabled(), wt)
-    pg.fill("#dCap", "9")
+    pg.fill("#dCap", "0.09")
     check("changing a choice throws the estimate away", pg.locator("#dGo").is_disabled() and pg.locator("#dQuote .dcard").count() == 0)
     pg.click("#dEstimate"); pg.wait_for_selector("#dQuote .dcard"); pg.click("#dGo")
     pg.wait_for_function("document.getElementById('dRunLine') && document.getElementById('dRunLine').textContent === 'Finished.'", timeout=20000)
@@ -403,7 +403,7 @@ with sync_playwright() as p:
     st = recs("discovery_settings")[0]
     check("limits are editable and saved", st["max_spend_cap_cents"] == 50 and st["default_spend_cap_cents"] == 20)
     pg.click("#dTabs button[data-tab=run]")
-    check("the Run tab picks up the new limits", pg.input_value("#dCap") == "20" and pg.get_attribute("#dCap", "max") == "50")
+    check("the Run tab picks up the new limits", pg.input_value("#dCap") == "0.20" and pg.get_attribute("#dCap", "max") == "0.5")
     pg.click("#dEditLimits") if False else None
     pg.click("#dTabs button[data-tab=settings]"); pg.click("#dEditLimits"); pg.fill("#dF_discovery_settings_default_spend_cap_cents", "90")
     pg.get_by_role("button", name="Save", exact=True).click(); pg.wait_for_selector("#dSubBody form .msg:not(:empty)")

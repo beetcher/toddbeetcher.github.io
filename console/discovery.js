@@ -7,7 +7,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var DISC_URL = window.CONSOLE_CONFIG.endpoints.discovery;
-  var mk = K.mk, root = null;
+  var mk = K.mk, root = null, UI = window.UI || K.UI;
   var S = { tab: "run", sub: "models", loaded: false, status: null, models: [], areas: [], types: [], prompts: [], settings: null,
             runs: [], openRun: null, quote: null, quoteKey: "", driving: "", stopAsk: false, seq: 0 };
 
@@ -69,7 +69,8 @@
     return Promise.all([disc("status", {}, true), adm("list", { limit: 200 }, "discovery_models"), adm("list", { limit: 200 }, "discovery_areas"),
                         adm("list", { limit: 200 }, "discovery_types"), adm("list", { limit: 200 }, "discovery_prompts"), adm("list", { limit: 5 }, "discovery_settings")]).then(function (r) {
       if (my !== S.seq || !K.key()) return;
-      if (!ok(r[0])) { setMsg("Could not reach Discovery. " + problemsText(r[0])); }
+      if (!ok(r[0])) { setMsg("Could not reach Discovery. " + problemsText(r[0])); if ($("dRetry")) $("dRetry").hidden = false; }
+      else if ($("dRetry")) $("dRetry").hidden = true;
       S.status = ok(r[0]) ? r[0].body.data : null;
       S.models = recs(r[1]); S.areas = recs(r[2]); S.types = recs(r[3]); S.prompts = recs(r[4]); S.settings = recs(r[5])[0] || null; S.loaded = true;
       $("dChecked").textContent = "Last checked " + K.clock(new Date());
@@ -110,8 +111,8 @@
       ".dcard input[type=text],#dStateFind,#dRegName{font:inherit;min-height:44px;padding:6px 12px;border:1px solid var(--muted);border-radius:10px;background:#fff;color:var(--ink);box-sizing:border-box}#dRegName{flex:1 1 220px;min-width:200px}#dStateFind{width:100%;max-width:640px;margin:6px 0}.dstate{fill:#faf8f2;stroke:#4a443b;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}#dTip{position:fixed;z-index:60;background:#1c1a17;color:#fff;font:600 13px/1.3 sans-serif;padding:5px 9px;border-radius:6px;pointer-events:none;max-width:260px}#dTip[hidden]{display:none}#dMapRow{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}#dMapRow>#dScroll{flex:1 1 300px;min-width:0}#dCities{flex:0 0 210px;display:flex;flex-direction:column;gap:6px}.dcity{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:6px 12px;min-height:44px;gap:0;color:var(--ink)}.dcity[aria-pressed=true]{background:var(--orange);color:var(--ink);border-color:var(--orange)}.dfound{fill:none;stroke:#d6006f;stroke-width:3;vector-effect:non-scaling-stroke;pointer-events:none}#dFind input{max-width:150px}#dSelList{margin:6px 0;padding:8px 10px;max-height:110px;overflow:auto;border:1px solid #d8d2c4;border-radius:6px;background:#faf8f2;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;word-spacing:2px}#dScroll{overflow:auto;max-height:72vh;max-width:100%;border-radius:6px}" +
       ".dsw{min-height:44px;min-width:84px;border-radius:999px;border:2px solid var(--muted);background:#e9e4d8;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}.dsw[aria-checked=true]{background:var(--new);border-color:#5c9a00;color:#1d4d00}";
     root.appendChild(style);
-    var bar = el("div", "bar"); var left = el("div"); var c = el("div", "count", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
-    var act = el("div", "actions"); var man = btn("Manual", "quiet manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); if (S.tab === "spend") loadSpend(); }));
+    var bar = el("div", "bar phead"); var left = el("div", "ptext"); var c = el("h2", "ptitle", "Discovery"); c.id = "dCount"; var m = el("div", "meta"); m.id = "dChecked"; left.appendChild(c); left.appendChild(m);
+    var act = el("div", "actions"); var man = btn("Manual", "btn-link manualBtn"); man.dataset.m = "discovery"; act.appendChild(man); act.appendChild(btn("Refresh", "btn-link", function () { setNote(""); loadAll(); if (S.tab === "runs") loadRuns(); if (S.tab === "spend") loadSpend(); }));
     act.lastChild.id = "dRefresh"; bar.appendChild(left); bar.appendChild(act); root.appendChild(bar);
     var ban = el("div", "dbanner"); ban.id = "dBanner"; ban.setAttribute("role", "status"); root.appendChild(ban);
     var tabs = el("div", "dtabs"); tabs.id = "dTabs";
@@ -120,17 +121,20 @@
     });
     root.appendChild(tabs);
     var n = el("div", "notice"); n.id = "dNotice"; n.setAttribute("role", "status"); var e = el("div", "msg"); e.id = "dMsg"; e.setAttribute("role", "alert"); root.appendChild(n); root.appendChild(e);
-    ["dRun", "dRuns", "dSpend", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
+    var rt = btn("Try again", "btn-secondary", function () { rt.hidden = true; setMsg(""); loadAll(); }); rt.id = "dRetry"; rt.hidden = true; root.appendChild(rt);
+    ["dRun", "dRunChips", "dRuns", "dSpend", "dSettings"].forEach(function (id) { var d = el("div"); d.id = id; root.appendChild(d); });
   }
   function drawTabs() {
     Array.prototype.forEach.call($("dTabs").children, function (b) { b.setAttribute("aria-pressed", b.dataset.tab === S.tab ? "true" : "false"); });
     $("dRun").hidden = S.tab !== "run"; $("dRuns").hidden = S.tab !== "runs"; $("dSpend").hidden = S.tab !== "spend"; $("dSettings").hidden = S.tab !== "settings";
+    $("dRunChips").hidden = S.tab !== "runs" || !!S.openRun;
     if (S.tab === "runs") drawRuns();
   }
   function drawAll() { drawBanner(); drawRun(); drawSettings(); drawTabs(); }
   function drawBanner() {
     var b = $("dBanner"), st = S.status; b.className = "dbanner";
-    if (!st) { b.textContent = "Discovery status is not known yet."; return; }
+    if (!st) { b.textContent = S.loaded ? "" : "Checking Discovery…"; b.hidden = S.loaded; return; }
+    b.hidden = false;
     var parts = [];
     if (st.mode === "live") { b.classList.add("live"); parts.push("LIVE: runs call the AI and spend real money, within the cap you set."); }
     else if (st.mode === "dry_run") parts.push("DRY RUN: nothing is sent to the AI and nothing is spent. You can see the plan and the exact prompts.");
@@ -148,22 +152,23 @@
   function typeKeys() { return Array.prototype.map.call(document.querySelectorAll("#dRun input[data-type]:checked"), function (c) { return c.value; }); }
   function formReq() {
     return { finder_key: "venue", model_id: $("dModel") ? $("dModel").value : "", area_ids: areaIds(), type_keys: typeKeys(),
-             max_results: parseInt($("dMax").value, 10), spend_cap_cents: parseInt($("dCap").value, 10) };
+             max_results: parseInt($("dMax").value, 10), spend_cap_cents: Math.round(parseFloat($("dCap").value) * 100) };
   }
   function drawRun() {
     var host = $("dRun"); host.innerHTML = ""; S.quote = null; S.quoteKey = "";
     var s = S.settings || {};
     var card = el("div", "dcard"); card.appendChild(el("h3", "", "Find venues"));
-    card.appendChild(el("p", "dmini", "Pick a model, an area and the kinds of place. Estimate first; nothing is spent until you press Go. Candidates arrive INACTIVE for you to review; nobody is contacted."));
+    card.appendChild(el("p", "dmini", "Pick a model, an area and the kinds of place. Estimate first; nothing is spent until you press Go. Candidates arrive switched off for you to review; nobody is contacted."));
     var ms = el("select"); ms.id = "dModel"; var models = active(S.models);
     models.forEach(function (m) { var o = el("option", "", m.label + modelNote(m)); o.value = m.id; if (m.key_name && S.status && !S.status.keys[m.key_name]) o.disabled = true; ms.appendChild(o); });
     if (s.default_model_id) { try { ms.value = s.default_model_id; } catch (e) {} }
     if (ms.selectedOptions.length && ms.selectedOptions[0].disabled) { for (var i = 0; i < ms.options.length; i++) if (!ms.options[i].disabled) { ms.selectedIndex = i; break; } }
-    card.appendChild(labelled("Model", ms, models.length ? "Add or switch off models in Settings." : "No model is switched on. Add one in Settings."));
+    var g1 = el("div", "dtwo"); g1.appendChild(labelled("Model", ms, models.length ? "Add or switch off models in Settings." : "No model is switched on. Add one in Settings."));
     // area: state then regions
     var states = active(S.areas).filter(function (a) { return a.kind === "state"; }).sort(byName);
     var ss = el("select"); ss.id = "dState"; states.forEach(function (a) { var o = el("option", "", a.name); o.value = a.id; ss.appendChild(o); });
-    card.appendChild(labelled("State", ss, states.length ? "Only states switched on in Settings are listed." : "No state is switched on. Switch one on in Settings > Areas."));
+    g1.appendChild(labelled("State", ss, states.length ? "Only states switched on in Settings are listed." : "No state is switched on. Switch one on in Settings > Areas."));
+    card.appendChild(el("div", "fsec", "Where")); card.appendChild(g1);
     var ah = el("div", "dfield"); ah.id = "dAreas"; card.appendChild(ah);
     var th = el("fieldset", "fs"); th.appendChild(el("legend", "", "What kinds of place")); th.id = "dTypes";
     var types = active(S.types).filter(function (t) { return t.finder_key === "venue"; }).sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0) || byName(a, b); });
@@ -171,12 +176,13 @@
       var l = el("label", "chk"); var c = el("input"); c.type = "checkbox"; c.value = t.key; c.dataset.type = "1"; l.appendChild(c); l.appendChild(document.createTextNode(" " + t.label + (t.is_chain ? " (a chain)" : ""))); th.appendChild(l);
     });
     if (!types.length) th.appendChild(el("div", "dhint", "No kind of place is switched on. Add one in Settings > Types."));
-    card.appendChild(th);
+    card.appendChild(el("div", "fsec", "What to look for")); card.appendChild(th);
     var mx = el("input"); mx.type = "number"; mx.id = "dMax"; mx.min = 1; mx.max = s.max_results_per_run || 1; mx.value = s.max_results_per_run || 10;
-    card.appendChild(labelled("Most results", mx, "At most " + (s.max_results_per_run || "?") + " (set in Settings > Limits)."));
-    var cp = el("input"); cp.type = "number"; cp.id = "dCap"; cp.min = 0; cp.max = s.max_spend_cap_cents || 0; cp.value = s.default_spend_cap_cents || 0;
-    var capHint = el("span", "", ""); card.appendChild(labelled("Spend cap (cents)", cp, "A hard stop: the run never goes over it. The most allowed is " + usd(s.max_spend_cap_cents) + " (Settings > Limits)."));
-    var acts = el("div", "btns"); var est = btn("Estimate", "", doQuote); est.id = "dEstimate"; var go = btn("Go", "", doGo); go.id = "dGo"; go.disabled = true;
+    card.appendChild(el("div", "fsec", "Limits")); var g2 = el("div", "dtwo"); g2.appendChild(labelled("Most results", mx, "At most " + (s.max_results_per_run || "?") + " (set in Settings > Limits)."));
+    var cp = el("input"); cp.type = "number"; cp.id = "dCap"; cp.step = "0.01"; cp.min = 0; cp.max = (s.max_spend_cap_cents || 0) / 100; cp.value = ((s.default_spend_cap_cents || 0) / 100).toFixed(2);
+    var capHint = el("span", "", ""); g2.appendChild(labelled("Spend cap (dollars)", cp, "A hard stop: the run never goes over it. The most allowed is " + usd(s.max_spend_cap_cents) + " (Settings > Limits)."));
+    card.appendChild(g2);
+    var acts = el("div", "btns"); var est = btn("Estimate", "btn-secondary", doQuote); est.id = "dEstimate"; var go = btn("Go", "btn-primary", doGo); go.id = "dGo"; go.disabled = true;
     acts.appendChild(est); acts.appendChild(go); card.appendChild(acts);
     host.appendChild(card);
     var qh = el("div"); qh.id = "dQuote"; host.appendChild(qh); var ph = el("div"); ph.id = "dProgress"; host.appendChild(ph);
@@ -207,7 +213,7 @@
     if (!r.area_ids.length) return "Choose where to look (the whole state or a region).";
     if (!r.type_keys.length) return "Choose at least one kind of place.";
     if (!(r.max_results >= 1)) return "Give a number of results.";
-    if (!(r.spend_cap_cents >= 0)) return "Give a spend cap (0 or more cents).";
+    if (!(r.spend_cap_cents >= 0)) return "Give a spend cap in dollars (0 or more).";
     return "";
   }
   function doQuote() {
@@ -244,7 +250,7 @@
     var host = $("dProgress"); if (S.tab !== "run") { S.tab = "run"; drawTabs(); } host = $("dProgress"); host.innerHTML = "";
     var c = el("div", "dcard"); var head = el("h3", "", "Running"); c.appendChild(head); var line = el("div", "", "Starting…"); line.id = "dRunLine"; line.setAttribute("role", "status");
     var bar = el("div", "dprog"); var fill = el("div"); bar.appendChild(fill); c.appendChild(bar); c.appendChild(line);
-    var stop = btn("Stop", "quiet", function () { S.stopAsk = true; stop.disabled = true; line.textContent = "Stopping after this call…"; }); stop.id = "dStop"; c.appendChild(stop); host.appendChild(c);
+    var stop = btn("Stop", "btn-secondary", function () { S.stopAsk = true; stop.disabled = true; line.textContent = "Stopping after this call…"; }); stop.id = "dStop"; c.appendChild(stop); host.appendChild(c);
     var done = 0;
     function next() {
       if (S.stopAsk) { disc("stop", { run_id: runId }, true).then(function () { finish("Stopped."); }); return; }
@@ -261,7 +267,7 @@
       S.driving = ""; fill.style.width = text === "Finished." ? "100%" : fill.style.width; stop.remove();
       disc("get_run", { id: runId }, true).then(function (res) {
         line.textContent = text; head.textContent = text.split(/[ .(…]/)[0] || "Run"; if ($("dEstimate")) $("dEstimate").disabled = false;
-        if (ok(res)) { c.appendChild(runSummary(res.body.data)); c.appendChild(btn("Review this run", "", function () { S.tab = "runs"; drawTabs(); openRun(runId); })); }
+        if (ok(res)) { c.appendChild(runSummary(res.body.data)); c.appendChild(btn("Review this run", "btn-secondary", function () { S.tab = "runs"; drawTabs(); openRun(runId); })); }
       });
     }
     next();
@@ -274,16 +280,31 @@
   // ---- RUNS tab
   function areaName(id) { var a = S.areas.filter(function (x) { return x.id === id; })[0]; return a ? a.name : "an area"; }
   var STATUS_WORD = { planned: "Planned", running: "Running", finished: "Finished", stopped: "Stopped", failed: "Failed", withdrawn: "Withdrawn" };
+  var runCf = null, RSTAT = [["finished", "Finished"], ["running", "Running or planned"], ["stopped", "Stopped"], ["failed", "Failed"], ["withdrawn", "Withdrawn"]];
+  function runChips() {
+    if (runCf) return runCf;
+    runCf = UI.chipFilters({ mount: $("dRunChips"), label: "Run filters", filters: [
+      { id: "status", label: "Status", kind: "multi", options: RSTAT.map(function (o) { return { value: o[0], label: o[1] }; }) },
+      { id: "mode", label: "Mode", kind: "multi", options: [{ value: "live", label: "Live" }, { value: "dry_run", label: "Dry run" }] }],
+      onChange: function () { drawRuns(); } });
+    return runCf;
+  }
+  function runGroup(st) { return st === "planned" ? "running" : st; }
   function drawRuns() {
     var host = $("dRuns"); if (!host) return; host.innerHTML = "";
+    $("dRunChips").hidden = S.tab !== "runs" || !!S.openRun;
     if (S.openRun) { drawRunDetail(host); return; }
+    var cf = runChips(), sel = cf.getSelection();
     if (!S.runs.length) { host.appendChild(el("div", "empty", "No runs yet. Use Find venues to start one.")); return; }
-    S.runs.forEach(function (r) {
+    var shown = S.runs.filter(function (r) { return (sel.status || []).indexOf(runGroup(r.status)) >= 0 || RSTAT.every(function (o) { return o[0] !== runGroup(r.status); }) ? ((sel.mode || []).indexOf(r.run_mode === "dry_run" ? "dry_run" : "live") >= 0) : false; });
+    var cnt = el("div", "meta", shown.length === S.runs.length ? S.runs.length + (S.runs.length === 1 ? " run" : " runs") : "Showing " + shown.length + " of " + S.runs.length + " runs"); cnt.id = "dRunCount"; host.appendChild(cnt);
+    if (!shown.length) host.appendChild(el("div", "empty", "No run matches those filters."));
+    shown.forEach(function (r) {
       var c = el("div", "dcard"); var top = el("div", "drow");
       var t = el("div"); t.appendChild(el("b", "", (r.area_labels || []).join(", ") || "Run")); t.appendChild(el("div", "dmini", K.when(r.created_at) + " · " + (r.model_name || "") + " · " + (r.type_keys || []).join(", ")));
       top.appendChild(t); var chip = el("span", "dchip " + (r.status === "finished" ? "good" : r.status === "failed" ? "bad" : ""), STATUS_WORD[r.status] || r.status); top.appendChild(chip); c.appendChild(top);
       c.appendChild(el("div", "dmini", (r.run_mode === "dry_run" ? "Dry run · " : "") + "saved " + (r.created_count || 0) + " · duplicates " + (r.duplicate_count || 0) + " · rejected " + (r.rejected_count || 0) + " · spent " + usd(r.actual_cost_cents) + " of " + usd(r.spend_cap_cents)));
-      var b = btn("Open", "", function () { openRun(r.id); }); b.dataset.run = r.id; c.appendChild(b); host.appendChild(c);
+      var b = btn("Open", "btn-secondary", function () { openRun(r.id); }); b.dataset.run = r.id; c.appendChild(b); host.appendChild(c);
     });
   }
 
@@ -341,16 +362,16 @@
     });
   }
   function drawRunDetail(host) {
-    var r = S.openRun; var back = btn("Back to the list", "quiet", function () { S.openRun = null; loadRuns(); }); host.appendChild(back);
+    var r = S.openRun; var back = btn("Back to the list", "btn-link", function () { S.openRun = null; loadRuns(); }); host.appendChild(back);
     var c = el("div", "dcard"); c.appendChild(el("h3", "", (r.area_labels || []).join(", ")));
     c.appendChild(el("div", "dmini", K.when(r.created_at) + " · " + r.model_name + " · prompt version " + r.prompt_version + " · " + (STATUS_WORD[r.status] || r.status) + (r.stop_reason ? " (" + r.stop_reason.replace(/_/g, " ") + ")" : "") + (r.run_mode === "dry_run" ? " · dry run" : "")));
     c.appendChild(runSummary(r));
     c.appendChild(el("div", "dmini", "Calls: " + (r.steps_done || 0) + " of " + (r.steps_planned || 0) + ". Estimate " + usd(r.estimated_cost_low_cents) + " to " + usd(r.estimated_cost_high_cents) + ". Tokens in " + (r.input_tokens || 0) + ", out " + (r.output_tokens || 0) + ", searches " + (r.search_count || 0) + "."));
     var acts = el("div", "btns");
     if (r.status === "planned" || r.status === "running") {
-      var cont = btn("Continue this run", "", function () { S.tab = "run"; drawTabs(); drive(r.id, r.steps_planned); }); cont.id = "dContinue";
+      var cont = btn("Continue this run", "btn-primary", function () { S.tab = "run"; drawTabs(); drive(r.id, r.steps_planned); }); cont.id = "dContinue";
       acts.appendChild(cont);
-      acts.appendChild(btn("Stop this run", "quiet", function () { disc("stop", { run_id: r.id }).then(function (x) { if (!ok(x)) setMsg(problemsText(x)); else openRun(r.id); }); }));
+      acts.appendChild(btn("Stop this run", "btn-secondary", function () { disc("stop", { run_id: r.id }).then(function (x) { if (!ok(x)) setMsg(problemsText(x)); else openRun(r.id); }); }));
     }
     var made = (r.created_venue_ids || []).length;
     if (r.status !== "withdrawn" && made) acts.appendChild(withdrawButton(r));
@@ -375,7 +396,7 @@
     var ch = el("div"); ch.id = "dCands"; host.appendChild(ch); drawCands();
   }
   function withdrawButton(r) {
-    var b = btn("Withdraw this run", "quiet", null), armed = false;
+    var b = btn("Withdraw this run", "btn-danger", null), armed = false;
     b.addEventListener("click", function () {
       if (!armed) { armed = true; b.textContent = "Really withdraw? Press again"; setTimeout(function () { armed = false; b.textContent = "Withdraw this run"; }, 5000); return; }
       disc("withdraw", { run_id: r.id }).then(function (x) {
@@ -432,7 +453,7 @@
       c.appendChild(tb);
       var src = (d.source_urls || []).filter(function (u) { return /^https?:\/\//.test(u); }).slice(0, 6);
       if (src.length) { var sd = el("div", "dmini", "Sources: "); src.forEach(function (u, i) { var a = el("a", "", u.replace(/^https?:\/\//, "").slice(0, 60)); a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; sd.appendChild(a); if (i < src.length - 1) sd.appendChild(document.createTextNode(" · ")); }); c.appendChild(sd); }
-      c.appendChild(btn("Open Venues to check and activate", "quiet", function () { K.go("venues"); }));
+      c.appendChild(btn("Open Venues to check and activate", "btn-secondary", function () { K.go("venues"); }));
       host.appendChild(c);
     });
   }
@@ -465,7 +486,7 @@
       inp.id = "dF_" + cfg.coll + "_" + fd.name; if (locked) inp.disabled = true; inputs[fd.name] = inp; f.appendChild(labelled(fd.label, inp, locked ? "Cannot be changed after it is saved." : fd.hint));
     });
     var err = el("div", "msg"); err.setAttribute("role", "alert"); f.appendChild(err);
-    var b = el("div", "btns"); var save = btn(rec ? "Save" : "Add", "", null); save.type = "submit"; b.appendChild(save); b.appendChild(btn("Cancel", "quiet", function () { f.remove(); })); f.appendChild(b);
+    var b = el("div", "btns"); var save = btn(rec ? "Save" : "Add", "btn-primary", null); save.type = "submit"; b.appendChild(save); b.appendChild(btn("Cancel", "btn-secondary", function () { f.remove(); })); f.appendChild(b);
     f.addEventListener("submit", function (e) {
       e.preventDefault(); err.textContent = ""; var data = {};
       cfg.fields.forEach(function (fd) {
@@ -490,14 +511,14 @@
   }
   function toggleActive(coll, rec) { adm("update", { id: rec.id, changes: { is_active: !rec.is_active }, expected_updated_at: rec.updated_at }, coll).then(function (res) { if (!ok(res)) setMsg(problemsText(res)); else setMsg(""); refreshAfter(coll); }); }
   function listSection(host, cfg, list) {
-    var top = el("div", "drow"); top.appendChild(el("h3", "", cfg.title)); var add = btn("Add " + cfg.one, "", function () { crudForm(formHost, cfg, null); }); add.id = "dAdd_" + cfg.coll; top.appendChild(add); host.appendChild(top);
+    var top = el("div", "drow"); top.appendChild(el("h3", "", cfg.title)); var add = btn("Add " + cfg.one, "btn-primary", function () { crudForm(formHost, cfg, null); }); add.id = "dAdd_" + cfg.coll; top.appendChild(add); host.appendChild(top);
     if (cfg.intro) host.appendChild(el("p", "dmini", cfg.intro));
     var formHost = el("div"); host.appendChild(formHost);
     if (!list.length) host.appendChild(el("div", "empty", "None yet."));
     list.forEach(function (rec) {
       var c = el("div", "dcard"); c.dataset.id = rec.id; var row = el("div", "drow"); var t = el("div"); t.appendChild(el("b", "", cfg.name(rec))); t.appendChild(el("div", "dmini", cfg.summary(rec))); row.appendChild(t);
-      var r2 = el("div", "btns"); r2.appendChild(switchBtn(!!rec.is_active, cfg.name(rec), function () { toggleActive(cfg.coll, rec); })); r2.appendChild(btn("Edit", "quiet", function () { crudForm(formHost, cfg, rec); }));
-      if (cfg.canDelete) r2.appendChild(btn("Delete", "quiet", function () { adm("soft_delete", { id: rec.id }, cfg.coll).then(function (res) { setMsg(ok(res) ? "" : problemsText(res)); refreshAfter(cfg.coll); }); }));
+      var r2 = el("div", "btns"); r2.appendChild(switchBtn(!!rec.is_active, cfg.name(rec), function () { toggleActive(cfg.coll, rec); })); r2.appendChild(btn("Edit", "btn-secondary", function () { crudForm(formHost, cfg, rec); }));
+      if (cfg.canDelete) r2.appendChild(btn("Delete", "btn-danger", function () { adm("soft_delete", { id: rec.id }, cfg.coll).then(function (res) { setMsg(ok(res) ? "" : problemsText(res)); refreshAfter(cfg.coll); }); }));
       row.appendChild(r2); c.appendChild(row); host.appendChild(c);
     });
   }
@@ -827,13 +848,13 @@
       { name: "max_results_per_run", label: "Most results in one run", kind: "int" }, { name: "results_per_step", label: "Results asked for in one AI call", kind: "int", hint: "Small calls keep each one quick and let the cap stop a run between calls." },
       { name: "default_model_id", label: "Model chosen first", kind: "select", options: [["", "The first one switched on"]].concat(active(S.models).map(function (m) { return [m.id, m.label]; })) }] };
     var card = el("div", "dcard"); card.appendChild(el("p", "", "Starting cap " + usd(s.default_spend_cap_cents) + ", most allowed " + usd(s.max_spend_cap_cents) + ", up to " + s.max_results_per_run + " results a run, " + s.results_per_step + " a call."));
-    var fh = el("div"); card.appendChild(fh); var e = btn("Edit limits", "", function () { crudForm(fh, cfg, s); }); e.id = "dEditLimits"; card.appendChild(e); host.appendChild(card);
+    var fh = el("div"); card.appendChild(fh); var e = btn("Edit limits", "btn-secondary", function () { crudForm(fh, cfg, s); }); e.id = "dEditLimits"; card.appendChild(e); host.appendChild(card);
   }
 
   // ---- entry point from the main page
   window.DiscoveryStation = {
     busy: function () { return !!S.driving; },      // a run is being driven from this page: the Console's inactivity sign-out waits
     show: function () { if (!root) build(); if (!S.loaded) { loadAll(); } drawTabs(); },
-    reset: function () { S = { tab: "run", sub: "models", loaded: false, status: null, models: [], areas: [], types: [], prompts: [], settings: null, runs: [], openRun: null, quote: null, quoteKey: "", driving: "", stopAsk: false, seq: S.seq + 1 }; root = null; var v = $("discoveryView"); if (v) v.innerHTML = ""; }
+    reset: function () { runCf = null; S = { tab: "run", sub: "models", loaded: false, status: null, models: [], areas: [], types: [], prompts: [], settings: null, runs: [], openRun: null, quote: null, quoteKey: "", driving: "", stopAsk: false, seq: S.seq + 1 }; root = null; var v = $("discoveryView"); if (v) v.innerHTML = ""; }
   };
 })();
