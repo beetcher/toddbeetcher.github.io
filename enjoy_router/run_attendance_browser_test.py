@@ -150,12 +150,12 @@ with sync_playwright() as p:
     # ---- person History
     pg.select_option("#collPick", "people"); pg.wait_for_selector("#pList li")
     li = pg.locator("#pList li", has_text="Ann Able"); li.locator("button.head").click()
-    li.get_by_role("button", name="History", exact=True).click()
+    li.get_by_role("button", name="Class history", exact=True).click()
     pg.wait_for_function("document.querySelector('#pList li.open .rhead') !== null")
     t = pg.locator("#pList li", has_text="Ann Able").inner_text()
     check("history shows class, role and status", "Evening Basics" in t and "Student" in t and "Attended" in t, t)
     li = pg.locator("#pList li", has_text="Ina Teach"); li.locator("button.head").click()
-    li.get_by_role("button", name="History", exact=True).click()
+    li.get_by_role("button", name="Class history", exact=True).click()
     pg.wait_for_function("document.querySelector('#pList li.open .rhead') !== null")
     try: pg.wait_for_function("document.querySelector('#pList li.open').innerText.indexOf('Lead instructor') >= 0", timeout=8000)
     except Exception: pass
