@@ -370,8 +370,8 @@
     SURFACES.forEach(function (sf, i) {
       var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "var(--err)"; op.className = "adminstn"; } pick.appendChild(op);
       var t = document.createElement("button"); t.type = "button"; t.className = "tile" + (sf.admin ? " adm" : ""); t.dataset.go = sf.id;
-      t.innerHTML = '<span class="tno">Station ' + (i + 1) + '</span><span class="tname"></span><span class="tdesc"></span>';
-      t.querySelector(".tname").textContent = sf.name; if (sf.admin) t.querySelector(".tno").textContent += " · admin"; t.querySelector(".tdesc").textContent = sf.blurb;
+      t.innerHTML = '<span class="tno"></span><span class="tname"></span><span class="tdesc"></span>';
+      t.querySelector(".tname").textContent = sf.name; t.querySelector(".tno").textContent = sf.admin ? "Admin" : ["requests", "messages", "attendance"].indexOf(sf.id) >= 0 ? "Daily work" : "Records"; t.querySelector(".tdesc").textContent = sf.blurb;
       tiles.appendChild(t);
     });
     COMING.forEach(function (c) {

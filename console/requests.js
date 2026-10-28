@@ -486,14 +486,14 @@
     body.textContent = "";
     if (!P.loaded && P.error) {
       body.appendChild(document.createTextNode("Could not check the requests. " + P.error + " "));
-      var rb = mk("button", "", "Try again"); rb.type = "button"; rb.addEventListener("click", function () { loadPlaced(); }); body.appendChild(rb);
+      var rb = mk("button", "btn-secondary", "Try again"); rb.type = "button"; rb.addEventListener("click", function () { loadPlaced(); }); body.appendChild(rb);
       badge.hidden = true; box.className = "attn"; return;
     }
     if (!P.loaded) { body.textContent = "Checking the requests…"; badge.hidden = true; box.className = "attn"; return; }
     var noTrainer = P.reqs.filter(function (r) { return r.coverage_waiting; }).length;
     if (noTrainer) {
       var cov = mk("div", "aitem"); cov.appendChild(mk("b", "", noTrainer + (noTrainer === 1 ? " request is" : " requests are") + " waiting for a trainer"));
-      var crow = mk("div", "arow"); var cg = mk("button", "", "Show them"); cg.type = "button"; cg.addEventListener("click", function () { $("reqShow").value = "notrainer"; goTo("requests"); applyReqFilter(); });
+      var crow = mk("div", "arow"); var cg = mk("button", "btn-primary", "Show them"); cg.type = "button"; cg.addEventListener("click", function () { $("reqShow").value = "notrainer"; goTo("requests"); applyReqFilter(); });
       crow.appendChild(cg); cov.appendChild(crow); body.appendChild(cov);
     }
     var waiting = P.reqs.filter(function (r) { return !P.ids[r.id]; }).sort(function (a, b) { return (a.created_at || "") < (b.created_at || "") ? 1 : -1; });
@@ -506,7 +506,7 @@
       t.appendChild(document.createTextNode(" · " + (TYPES[it.registration_type] || it.registration_type || "") + " · " + plural(it.attendee_count || 1, "person", "people") + " · " + (it.confirmation_number || "")));
       d.appendChild(t);
       var row = mk("div", "arow");
-      var g = mk("button", "", "Open requests"); g.type = "button"; g.addEventListener("click", function () { goTo("requests"); });
+      var g = mk("button", "btn-secondary", "Place " + (personOf(it).split(" ")[0] || "them")); g.type = "button"; g.addEventListener("click", function () { goTo("requests"); });
       row.appendChild(g); d.appendChild(row); body.appendChild(d);
     });
     if (waiting.length > 8) body.appendChild(mk("div", "quietline", "and " + (waiting.length - 8) + " more. Open Requests to see them all."));
