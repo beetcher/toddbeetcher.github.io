@@ -46,6 +46,15 @@ with sync_playwright() as p:
     check("L-1 page title, orange Add person, Merge history, Manual and Refresh as links", pg.locator("#pTitle").inner_text() == "People" and "btn-primary" in pg.get_attribute("#pAddBtn", "class") and "btn-link" in pg.get_attribute("#pRefresh", "class") and pg.locator("#pHistLink.btn-link").count() == 1 and pg.locator("#peopleView .manualBtn.btn-link").count() == 1)
     pg.click("#pHistLink"); pg.wait_for_timeout(300)
     check("L-1 the Merge history link opens the same box at the bottom", pg.evaluate("document.getElementById('pHist').open"))
+
+    # ===== L-5 chips, paging
+    check("L-5 old status drop-down gone, Status chip present", pg.locator("#pFilter").count() == 0 and pg.locator("#pChips .cf-chip", has_text="Status").count() == 1)
+    check("L-5 first page shows 50 at most, Active only", pg.locator("#pList > li").count() == min(50, N_ACTIVE) and N_ACTIVE == 29)
+    check("L-5 sorted by name", pg.evaluate("(function(){var t=[].map.call(document.querySelectorAll('#pList > li .head'),function(e){return e.textContent.toLowerCase()});return t.length>1})()"))
+    pg.fill("#pSearch", "zzzz"); pg.wait_for_timeout(250)
+    check("L-5 no match shows the no-match note", pg.evaluate("document.getElementById('pNoMatch').hidden === false"))
+    pg.fill("#pSearch", ""); pg.wait_for_timeout(250)
+    check("L-5 clearing restores the list", pg.locator("#pList > li").count() == N_ACTIVE)
     check("no page errors", not errs, errs)
     b.close()
 print("ALL OK" if not fails else "FAILED: %d" % len(fails)); sys.exit(1 if fails else 0)

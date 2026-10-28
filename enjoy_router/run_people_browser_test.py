@@ -32,6 +32,14 @@ def cors(route):
     else:
         admin_route(route)
 
+def status_is(pg, *vals):
+    """Tick exactly these statuses in the Status chip (the old drop-down is gone)."""
+    pg.locator("#pChips .cf-chip", has_text="Status").click()
+    for v in ("active", "inactive"):
+        box = pg.locator("#pChips .cf-pop input[type=checkbox][value=%s]" % v)
+        if box.is_checked() != (v in vals): box.click()
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(250)
+
 with sync_playwright() as p:
     exe = "/opt/pw-browsers/chromium"
     b = p.chromium.launch(executable_path=exe) if os.path.exists(exe) else p.chromium.launch()
@@ -117,12 +125,12 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('pNotice').textContent.indexOf('Deleted') === 0")
     pg.wait_for_function("document.querySelectorAll('#pList li').length == 1")
     check("deleted person gone", pg.locator("#pList li").count() == 1)
-    pg.select_option("#pFilter", "inactive"); pg.wait_for_function("document.getElementById('pEmpty').hidden === false")
+    status_is(pg, "inactive"); pg.wait_for_function("document.getElementById('pNoMatch').hidden === false")
     check("inactive filter empty", True)
 
     # contact: how to reach the person
     people_rows = lambda: list(store.data.get("individuals", {}).values())
-    pg.select_option("#pFilter", "active"); pg.wait_for_function("document.querySelectorAll('#pList li').length == 1")
+    status_is(pg, "active"); pg.wait_for_function("document.querySelectorAll('#pList li').length == 1")
     pg.click("#pAddBtn"); pg.fill("#paGiven", "Cy"); pg.fill("#paEmail", "nope"); pg.click("#pSaveBtn")
     pg.wait_for_function("document.getElementById('epaEmail').textContent.length > 0")
     check("bad email shown on its own box", "email address does not look right" in pg.locator("#epaEmail").inner_text())

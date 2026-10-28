@@ -107,25 +107,49 @@
     var my = ++pSeq;
     $("pMsg").textContent = ""; $("pRetry").hidden = true;
     if (!pLoaded) skelOn($("pList"));
-    var f = $("pFilter").value;
-    return admin("list", { filters: f ? { status: f } : {}, limit: 200 }, COLL_P).then(function (res) {
+    return admin("list", { filters: {}, limit: 200 }, COLL_P).then(function (res) {
       if (my !== pSeq) return;
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body.ok) { skelOff($("pList")); $("pMsg").textContent = "Could not load the people. " + adminProblem(res.status); $("pRetry").hidden = false; return; }
       pAll = res.body.data.records || []; pLoaded = true;
       UI.limitNote($("pList"), pAll.length, 200);
+      fillPChips();
       renderPeople();
       $("pChecked").textContent = "Last checked " + fmtClock.format(new Date());
       if ($("pHist").open) loadMerges();
     });
   }
+  // ---- Filters (shared chip bar): Status (Active by default). Everything is filtered in the page, 50 rows at a time.
+  var pCf = null, pShow = 50, PSTEP = 50;
+  function pChips() {
+    if (pCf) return pCf;
+    pCf = UI.chipFilters({
+      mount: $("pChips"), label: "People filters",
+      filters: [{ id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }] }],
+      onChange: function () { pShow = PSTEP; $("pNotice").textContent = ""; renderPeople(); }
+    });
+    pCf.setSelection({ status: ["active"] });
+    return pCf;
+  }
+  function fillPChips() {
+    var cs = { active: 0, inactive: 0 };
+    pAll.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; });
+    pChips().setCounts({ status: cs });
+  }
   function renderPeople() {
-    var q = $("pSearch").value.trim().toLowerCase(), list = $("pList");
-    var shown = pAll.filter(function (r) { return !q || [r.display_name, r.given_name, r.family_name, r.name_to_use].join(" ").toLowerCase().indexOf(q) >= 0; });
+    var q = $("pSearch").value.trim().toLowerCase(), list = $("pList"), st = pChips().getSelection().status || [];
+    var shown = pAll.filter(function (r) { return st.indexOf(r.status) >= 0 && (!q || [r.display_name, r.given_name, r.family_name, r.name_to_use].join(" ").toLowerCase().indexOf(q) >= 0); })
+      .sort(function (a, b) { var x = pFull(a).toLowerCase(), y = pFull(b).toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
+    var vis = shown.slice(0, pShow), had = list.children.length;
     list.textContent = "";
-    shown.forEach(function (r) { list.appendChild(personRow(r, r.id === pNewId)); });
+    vis.forEach(function (r) { list.appendChild(personRow(r, r.id === pNewId)); });
     pNewId = "";
-    $("pCount").textContent = pAll.length + (pAll.length === 1 ? " person" : " people");
+    UI.moreBar($("pMore"), vis.length, shown.length, PSTEP, function () {
+      pShow += PSTEP; renderPeople();
+      var f = $("pList").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus();
+    }, "people");
+    $("pCount").textContent = shown.length + (shown.length === 1 ? " person" : " people");
+    pChips().setCount(shown.length !== pAll.length && pAll.length ? shown.length + " of " + pAll.length + " people" : "");
     $("pEmpty").hidden = pAll.length > 0;
     $("pNoMatch").hidden = !(pAll.length > 0 && shown.length === 0);
   }
@@ -323,7 +347,7 @@
   function resetPeople() {
     pLoaded = false; pAll = []; pNewId = "";
     $("pList").textContent = ""; $("pCount").textContent = ""; $("pChecked").textContent = ""; $("pMsg").textContent = ""; $("pNotice").textContent = "";
-    $("pEmpty").hidden = true; $("pNoMatch").hidden = true; $("pSearch").value = ""; $("pFilter").value = "active";
+    $("pEmpty").hidden = true; $("pNoMatch").hidden = true; $("pSearch").value = ""; pShow = PSTEP; $("pMore").textContent = ""; if (pCf) pCf.setSelection({ status: ["active"] });
     $("pAddForm").hidden = true; $("pAddBtn").hidden = false; $("pHist").open = false; $("pHList").textContent = "";
   }
   function pClearErrs() { Object.keys(PADD_ERR).forEach(function (k) { $(PADD_ERR[k]).textContent = ""; }); $("pFMsg").textContent = ""; }
@@ -342,7 +366,7 @@
       if (res.status === 200 && res.body && res.body.ok) {
         pNewId = res.body.data.id; $("pNotice").textContent = "Added " + pName(res.body.data) + ".";
         $("pAddForm").hidden = true; $("pAddBtn").hidden = false;
-        if ($("pFilter").value === "inactive") $("pFilter").value = "active";
+        pChips().setSelection({ status: ["active"] });
         loadPeople(); return;
       }
       var pr = pProblems(res, PADD_ERR);
@@ -350,10 +374,9 @@
       if (pr.other.length) $("pFMsg").textContent = "Could not save: " + pr.other.join(" ");
     });
   });
-  $("pFilter").addEventListener("change", function () { $("pNotice").textContent = ""; loadPeople(); });
   $("pRefresh").addEventListener("click", function () { $("pNotice").textContent = ""; loadPeople(); });
   $("pRetry").addEventListener("click", loadPeople);
-  $("pSearch").addEventListener("input", renderPeople);
+  $("pSearch").addEventListener("input", function () { pShow = PSTEP; renderPeople(); });
   $("pHist").addEventListener("toggle", function () { if ($("pHist").open) loadMerges(); });
   $("pHistLink").addEventListener("click", function () {   // the link in the page head opens the Merge history box at the bottom and brings it into view
     $("pHist").open = true; $("pHist").scrollIntoView({ block: "start" }); $("pHist").querySelector("summary").focus();

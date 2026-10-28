@@ -297,11 +297,6 @@
         <div class="meta" id="pChecked"></div>
       </div>
       <div class="actions">
-        <select id="pFilter" aria-label="Filter by status">
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="">All</option>
-        </select>
         <button type="button" class="btn-link" id="pHistLink">Merge history</button>
         <button type="button" class="btn-link manualBtn" data-m="people">Manual</button>
         <button id="pRefresh" class="btn-link" type="button">Refresh</button>
@@ -338,10 +333,12 @@
       <div class="msg" id="pFMsg" role="alert"></div>
     </form>
     <input type="search" id="pSearch" class="psearch" placeholder="Find by name" aria-label="Find a person by name" autocomplete="off">
+    <div id="pChips"></div>
     <div class="notice" id="pNotice" role="status"></div>
     <div class="msg" id="pMsg" role="alert"></div>
     <button type="button" class="quiet" id="pRetry" hidden>Retry</button>
     <ul id="pList"></ul>
+    <div id="pMore"></div>
     <div class="empty" id="pEmpty" hidden>No people yet.</div>
     <div class="empty" id="pNoMatch" hidden>Nobody matches that name.</div>
     <details class="more" id="pHist">
