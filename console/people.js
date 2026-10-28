@@ -191,9 +191,26 @@
     if (bits.length) head.appendChild(mk("div", "sub", bits.join(" · ")));
     var detail = mk("div", "detail");
     detail.appendChild(personActions(rec));
-    var done = {};
-    ["display_name", "given_name", "family_name", "status", "birth_date", "id"].forEach(function (f) { if (rec[f] !== undefined) { detail.appendChild(line(f, str(rec[f]))); done[f] = 1; } });
-    Object.keys(rec).sort().forEach(function (f) { if (!done[f]) detail.appendChild(line(f, str(rec[f]))); });
+    function group(title) { var g = mk("div", "dgroup"); g.appendChild(mk("h3", "dgh", title)); detail.appendChild(g); return g; }
+    function add(g, label, v) { if (v !== undefined && v !== null && v !== "") g.appendChild(line(label, String(v))); }
+    var CERT = { exact: "exact", approximate: "approximate", estimated: "estimated" };
+    var gn = group("About them");
+    add(gn, "Full name", pFull(rec)); if (rec.name_to_use) add(gn, "Called", rec.name_to_use);
+    add(gn, "Pronouns", rec.pronouns);
+    if (rec.birth_date) add(gn, "Born", pDateOut(rec.birth_date) + (rec.birth_date_certainty && rec.birth_date_certainty !== "exact" ? " (" + (CERT[rec.birth_date_certainty] || rec.birth_date_certainty) + ")" : ""));
+    if (rec.is_minor) add(gn, "Age", "Under 18");
+    if (rec.life_status && rec.life_status !== "alive") add(gn, "Living", LIFE_WORDS[rec.life_status] || rec.life_status.replace(/_/g, " "));
+    if (rec.record_privacy && rec.record_privacy !== "normal") add(gn, "Record", PRIV_WORDS[rec.record_privacy] || rec.record_privacy);
+    var gc = group("How to reach them");
+    add(gc, "Email", rec.email); add(gc, "Phone (text only)", rec.phone); add(gc, "Backup email", rec.backup_email); add(gc, "Backup phone", rec.backup_phone);
+    if (rec.prefers_email === true || rec.prefers_email === "email") add(gc, "Prefers", "Email"); else if (rec.prefers_email === false || rec.prefers_email === "text") add(gc, "Prefers", "Text message");
+    if (gc.children.length === 1) gc.appendChild(mk("div", "hint", "No way to reach them on file yet."));
+    var gd = group("Details");
+    add(gd, "Language", rec.preferred_language); add(gd, "Time zone", rec.time_zone ? (UI.zoneName(rec.time_zone) || rec.time_zone) : "");
+    if (rec.requires_interpreter) add(gd, "Interpreter", "Needed");
+    add(gd, "Town", pTown[rec.id]); add(gd, "Roles", (pRoles[rec.id] || []).join(", "));
+    add(gd, "Status", rec.status === "active" ? "Active" : rec.status === "inactive" ? "Inactive" : rec.status);
+    add(gd, "Notes", rec.notes);
     head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
     li.appendChild(head); if (tgl) { li.appendChild(tgl.btn); li.appendChild(tgl.msg); } li.appendChild(detail);
     if (isNew) setTimeout(function () { li.classList.remove("isnew"); }, 6000);
@@ -202,18 +219,20 @@
 
   function personActions(rec) {
     var wrap = mk("div"), row = mk("div", "actions-row");
-    var ed = mk("button", "", "Edit"); ed.type = "button";
-    var ad = mk("button", "quiet", "Addresses"); ad.type = "button";
-    var mg = mk("button", "quiet", "Merge into another person"); mg.type = "button";
-    var del = mk("button", "danger", "Delete"); del.type = "button";
-    row.appendChild(ed); var hp = historyBtn(rec.id, "this person"); if (hp) row.appendChild(hp); row.appendChild(ad); row.appendChild(mg); row.appendChild(del);
-    var hi = mk("button", "quiet", "History"); hi.type = "button"; row.appendChild(hi);
+    var ed = mk("button", "btn-primary", "Edit"); ed.type = "button";
+    var ad = mk("button", "btn-secondary", "Addresses"); ad.type = "button";
+    var mg = mk("button", "btn-secondary", "Merge into another person"); mg.type = "button";
+    var del = mk("button", "btn-danger pdel", "Delete"); del.type = "button";
+    // Cues: Edit orange, two outlined, one History link, Delete red last.
+    row.appendChild(ed); row.appendChild(ad); row.appendChild(mg); var hp = historyBtn(rec.id, pName(rec)); if (hp) { hp.className = "btn-link"; row.appendChild(hp); }
+    var hi = mk("button", "btn-link", "Class history"); hi.type = "button"; row.appendChild(hi);
     var histHost = mk("div");
     hi.addEventListener("click", function () { if (histHost.firstChild) histHost.textContent = ""; else personHistory(rec, histHost); });
+    row.appendChild(del);
     var editHost = mk("div"), mergeHost = mk("div"), addrHost = mk("div");
     var box = mk("div", "confirm"); box.hidden = true;
     box.appendChild(mk("div", "", "Delete " + pName(rec) + "? They are hidden from the lists but the record is kept."));
-    var btns = mk("div", "btns"), yes = mk("button", "danger", "Delete person"), no = mk("button", "quiet", "Cancel");
+    var btns = mk("div", "btns"), yes = mk("button", "btn-danger", "Delete person"), no = mk("button", "btn-secondary", "Cancel");
     yes.type = "button"; no.type = "button";
     var err = mk("div", "msg"); err.setAttribute("role", "alert");
     btns.appendChild(yes); btns.appendChild(no); box.appendChild(btns); box.appendChild(err);
@@ -295,12 +314,12 @@
     var l1 = mk("label", "f", "Person to keep"); var sel = mk("select"); sel.id = "pm_" + rec.id; l1.htmlFor = sel.id;
     var o0 = mk("option", "", "Choose one"); o0.value = ""; sel.appendChild(o0);
     pAll.filter(function (p) { return p.id !== rec.id && p.status === "active"; }).forEach(function (p) {
-      var o = mk("option", "", pName(p) + (p.birth_date ? " (born " + pDateOut(p.birth_date) + ")" : "")); o.value = p.id; sel.appendChild(o);
+      var o = mk("option", "", pName(p) + (p.birth_date || pTown[p.id] ? " (" + [p.birth_date ? "born " + pDateOut(p.birth_date) : "", pTown[p.id] || ""].filter(Boolean).join(", ") + ")" : "")); o.value = p.id; sel.appendChild(o);
     });
     var e1 = mk("div", "ferr");
     var l2 = mk("label", "f", "Reason"); var why = mk("input"); why.type = "text"; why.maxLength = 500; why.id = "pr_" + rec.id; l2.htmlFor = why.id; why.placeholder = "For example: same phone and birth date, confirmed by phone";
     var e2 = mk("div", "ferr");
-    var btns = mk("div", "btns"), go = mk("button", "", "Merge"), no = mk("button", "quiet", "Cancel"); go.type = "button"; no.type = "button";
+    var btns = mk("div", "btns"), go = mk("button", "btn-primary", "Merge"), no = mk("button", "btn-secondary", "Cancel"); go.type = "button"; no.type = "button";
     btns.appendChild(go); btns.appendChild(no);
     var msg = mk("div", "msg"); msg.setAttribute("role", "alert");
     [l1, sel, e1, l2, why, e2, btns, msg].forEach(function (n) { box.appendChild(n); });
