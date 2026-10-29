@@ -29,7 +29,8 @@ errors=[]
 try:
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path=os.environ.get('READY_BROWSER_EXECUTABLE') or shutil.which('chromium'),headless=True,args=['--no-sandbox'])
-  page=browser.new_page(viewport={'width':1440,'height':1000})
+  context=browser.new_context(viewport={'width':1440,'height':1000})
+  page=context.new_page()
   page.on('pageerror',lambda e:errors.append(str(e)))
   def bridge(route):
    request=route.request
@@ -46,6 +47,31 @@ try:
   page.fill('#api-key',key);page.click('#connect-form button[type=submit]')
   page.wait_for_function("() => document.querySelector('#environment').textContent.includes('MemoryStore')")
   page.wait_for_function("() => !document.body.classList.contains('busy')")
+  assert page.evaluate('(key) => sessionStorage.getItem("ready.adminKey") === key && localStorage.length === 0', key)
+  page.reload()
+  page.wait_for_function("() => document.querySelector('#environment').textContent.includes('MemoryStore') && !document.body.classList.contains('busy')")
+  assert page.input_value('#api-key')==''
+  # A separate tab shares the origin but starts without approval. Failed keys are
+  # discarded, and Disconnect affects only that tab and survives another reload.
+  sibling=page.context.new_page()
+  if args.transport == 'inprocess': sibling.route('https://ready.local/**',bridge)
+  sibling.goto(page.url)
+  assert sibling.locator('#environment').inner_text()=='Not connected'
+  assert sibling.evaluate('sessionStorage.getItem("ready.adminKey") === null')
+  sibling.evaluate('(bad) => sessionStorage.setItem("ready.adminKey", bad)', 'invalid-test-key-that-must-not-be-remembered')
+  sibling.reload()
+  sibling.wait_for_function("() => document.querySelector('#status').classList.contains('error') && !document.body.classList.contains('busy')")
+  assert sibling.evaluate('sessionStorage.getItem("ready.adminKey") === null')
+  sibling.fill('#api-key',key);sibling.click('#connect-form button[type=submit]')
+  sibling.wait_for_function("() => document.querySelector('#environment').textContent.includes('MemoryStore') && !document.body.classList.contains('busy')")
+  sibling.click('#disconnect')
+  sibling.wait_for_function("() => document.querySelector('#environment').textContent === 'Not connected' && !document.body.classList.contains('busy')")
+  sibling.reload()
+  assert sibling.evaluate('sessionStorage.getItem("ready.adminKey") === null')
+  assert sibling.locator('#environment').inner_text()=='Not connected'
+  sibling.close()
+  page.reload()
+  page.wait_for_function("() => document.querySelector('#environment').textContent.includes('MemoryStore') && !document.body.classList.contains('busy')")
   page.click('[data-tab=import]');page.click('#load-seed')
   page.wait_for_function("() => document.querySelector('#import-input').value.includes('q_10')")
   page.click('#import-form button[type=submit]')
@@ -114,6 +140,15 @@ try:
   page.screenshot(path=str(ARTIFACTS/'mobile.png'),full_page=True)
   assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'), 'mobile horizontal overflow'
   assert not errors,errors
+  session_url=page.url
+  page.close()
+  page=context.new_page()
+  page.set_viewport_size({'width':390,'height':844})
+  page.on('pageerror',lambda e:errors.append(str(e)))
+  if args.transport == 'inprocess': page.route('https://ready.local/**',bridge)
+  page.goto(session_url)
+  assert page.locator('#environment').inner_text()=='Not connected'
+  assert page.evaluate('sessionStorage.getItem("ready.adminKey") === null && localStorage.length === 0')
   class QuietStatic(SimpleHTTPRequestHandler):
    def log_message(self,*_): pass
   preview_server=ThreadingHTTPServer(('127.0.0.1',0),partial(QuietStatic,directory=str(ROOT.parent)))

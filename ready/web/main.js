@@ -1,5 +1,5 @@
 /* READY management surface — D002. No participant test player.
- * Secret stays in this closure until disconnect/reload, never localStorage/cookies.
+ * Accepted key stays in this tab's sessionStorage across reloads, never localStorage/cookies.
  * Render content with textContent, never interpret authored strings as HTML.
  */
 (() => {
@@ -14,6 +14,14 @@
     $('library-list').textContent = 'Preview only. Inventory is available in the operational Firebase workshop.';
   }
   const state = {key: '', kind: 'questions', editing: null, questions: [], answers: [], working: [], test: null, importKey: crypto.randomUUID()};
+  const sessionKeyName = 'ready.adminKey';
+  function rememberedKey() {
+    try { return sessionStorage.getItem(sessionKeyName) || ''; } catch { return ''; }
+  }
+  function rememberKey(key) {
+    try { if (key) sessionStorage.setItem(sessionKeyName, key); else sessionStorage.removeItem(sessionKeyName); }
+    catch { /* Storage-blocking browsers can still connect for the current page. */ }
+  }
   const split = value => [...new Set(value.split(',').map(x => x.trim()).filter(Boolean))];
   const pretty = value => JSON.stringify(value, null, 2);
   const node = (tag, text, cls) => { const el = document.createElement(tag); if (text !== undefined) el.textContent = text; if (cls) el.className = cls; return el; };
@@ -33,6 +41,9 @@
     if (key) headers['Idempotency-Key'] = key;
     if (version) headers['If-Match'] = '"' + version + '"';
     const response = await fetch('/v1/' + path, {method, headers, body: data === undefined ? undefined : JSON.stringify(data), cache: 'no-store'});
+    if (response.status === 401) {
+      rememberKey(''); state.key = ''; $('environment').textContent = 'Not connected';
+    }
     if (response.ok && format === 'pdf') {
       if (!(response.headers.get('Content-Type') || '').includes('application/pdf')) throw new Error('The service did not return a PDF.');
       return response.blob();
@@ -141,16 +152,18 @@
       list.append(el);
     });
   }
-  $('connect-form').addEventListener('submit', event => { event.preventDefault(); task(async () => {
-    state.key = $('api-key').value; $('api-key').value = '';
+  async function connect(key) {
+    state.key = key; $('api-key').value = '';
     const capabilities = await api('capabilities');
+    rememberKey(state.key);
     $('environment').textContent = capabilities.persistence + ' · super admin';
     if (capabilities.persistence === 'MemoryStore') status('Connected to ephemeral local demo memory. Restarting clears this demo; production records belong in Firestore.');
     else status('Connected to READY · Firestore persistence.');
     await references(); await loadLibrary();
     const schemas = await api('schemas'); $('schema-select').replaceChildren(); option($('schema-select'), '', 'Select a contract'); schemas.schemas.forEach(row => option($('schema-select'), row.name, row.name));
-  }); });
-  $('disconnect').addEventListener('click', () => { state.key = ''; state.working = []; state.test = null; state.questions = []; state.answers = []; state.editing = null; $('environment').textContent = 'Disconnected'; location.reload(); });
+  }
+  $('connect-form').addEventListener('submit', event => { event.preventDefault(); const key = $('api-key').value; task(() => connect(key)); });
+  $('disconnect').addEventListener('click', () => { rememberKey(''); state.key = ''; state.working = []; state.test = null; state.questions = []; state.answers = []; state.editing = null; $('environment').textContent = 'Disconnected'; location.reload(); });
   $('library-kind').addEventListener('change', () => task(async () => { state.kind = $('library-kind').value; await references(); resetEditor(); await loadLibrary(); }));
   $('new-record').addEventListener('click', () => task(async () => { await references(); resetEditor(); $('record-text').focus(); }));
   ['refresh-library', 'show-archived', 'show-history'].forEach(id => $(id).addEventListener(id === 'refresh-library' ? 'click' : 'change', () => task(loadLibrary)));
@@ -281,4 +294,6 @@
   $('import-form').addEventListener('submit', event => { event.preventDefault(); task(() => doImport(false)); });
   $('commit-import').addEventListener('click', () => task(() => doImport(true)));
   $('schema-select').addEventListener('change', () => task(async () => { if ($('schema-select').value) $('schema-json').textContent = pretty((await api('schemas/' + $('schema-select').value)).schema); }));
+  const storedKey = preview ? '' : rememberedKey();
+  if (storedKey) task(() => connect(storedKey));
 })();

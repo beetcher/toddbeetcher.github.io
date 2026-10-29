@@ -165,7 +165,7 @@ def main():
             page.set_viewport_size({'width': 390, 'height': 844})
             page.screenshot(path=str(artifacts / 'hosting-mobile.png'), full_page=True)
             assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
-            assert page.evaluate('localStorage.length === 0 && sessionStorage.length === 0')
+            assert page.evaluate('(key) => localStorage.length === 0 && sessionStorage.getItem("ready.adminKey") === key', key)
             assert not errors, errors
             browser.close()
 

@@ -23,7 +23,7 @@ export READY_API_KEY
 ready/.venv/bin/python -m ready.devserver --demo --seed
 ```
 
-Open `http://127.0.0.1:8765/ready/`. Enter that local key in the connection field. Demo mode is **ephemeral memory**: restarting discards only this synthetic development database. The UI identifies MemoryStore prominently; it is not the indefinite production store. Production always selects Firestore explicitly and never falls back to memory.
+Open `http://127.0.0.1:8765/ready/`. Enter that local key in the connection field. Demo mode is **ephemeral memory**: restarting discards only this synthetic development database. After a successful connection the tab remembers its key in sessionStorage across reloads; Disconnect removes it. The UI identifies MemoryStore prominently; it is not the indefinite production store. Production always selects Firestore explicitly and never falls back to memory.
 
 To run the same development HTTP boundary against a configured Firestore project, install `runtime-requirements.txt`, use Application Default Credentials appropriate to that project and pass `--project PROJECT_ID` instead of `--demo`. This accesses real product data: use the emulator first. Do not use `--seed` for live Firestore; authenticated import preview/commit is the explicit path.
 
@@ -120,4 +120,4 @@ After restarting or redeploying, verify retained evidence with no new writes:
 python ready/scripts/hosting_check.py --base-url https://beetcher-ready.web.app --key-file /private/path/to/key --verify-manifest /private/path/to/live-evidence.json --evidence /private/path/to/durability.json
 ```
 
-The first deployment required an explicit `firebase functions:artifacts:setpolicy --location us-central1 --days 30 --project beetcher-ready --force` before Hosting could finish. The policy is now configured. Runtime currently uses Firebase's default compute service account in this dedicated project, with Firestore access and an explicit binding to this one secret. The account's project-level Editor role is the Firebase provisioning default; differentiated runtime IAM is not claimed. Exact-origin CORS is empty because the workshop and API share an origin. API auth, server validation, CSP, no browser persistence of keys and deny-browser Firestore rules remain enforced.
+The first deployment required an explicit `firebase functions:artifacts:setpolicy --location us-central1 --days 30 --project beetcher-ready --force` before Hosting could finish. The policy is now configured. Runtime currently uses Firebase's default compute service account in this dedicated project, with Firestore access and an explicit binding to this one secret. The account's project-level Editor role is the Firebase provisioning default; differentiated runtime IAM is not claimed. Exact-origin CORS is empty because the workshop and API share an origin. API auth, server validation, CSP, per-tab sessionStorage with explicit Disconnect clearing and deny-browser Firestore rules remain enforced.

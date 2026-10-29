@@ -15,7 +15,7 @@ cd /Users/nddev/nd/bd/toddbeetcher.github.io/ready
 
 The helper contains no embedded key and is excluded from deployment packaging. See ../README.md for Google sign-in instructions and the equivalent command on an authorized machine without this local helper.
 
-Open the operational workshop, paste into **Super-admin API key**, and choose **Connect**. The badge must say **FirestoreStore · super admin**. The input clears after connection; the key is held in page memory only. Reload or Disconnect ends that page's connection. Clear the clipboard after pasting if desired.
+Open the operational workshop, paste into **Super-admin API key**, and choose **Connect**. The badge must say **FirestoreStore · super admin**. The input clears after connection. The accepted key is kept in this tab’s `sessionStorage`; reload and hard refresh automatically reconnect and revalidate it with the API. Disconnect removes it before reloading. Closing a tab normally ends its session; browser restore/duplicate-tab features can restore or copy session storage, so Disconnect is the explicit clear action. A rejected/rotated key is removed on HTTP 401. No `localStorage`, cookies or authentication bypass is used. Clear the clipboard after pasting if desired.
 
 ## First inventory
 
