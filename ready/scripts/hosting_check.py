@@ -126,6 +126,7 @@ def main():
     assert first['id'] != second['id']
     attempts.extend([first, second])
 
+    browser_authored = []
     if args.browser:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
@@ -142,6 +143,23 @@ def main():
             for name in ['builder', 'results', 'import', 'guide', 'library']:
                 page.click(f'[data-tab={name}]')
                 assert page.locator(f'#panel-{name}').is_visible()
+            page.click('#new-record')
+            page.wait_for_function("() => !document.body.classList.contains('busy')")
+            page.fill('#record-text', 'Native browser authoring validation?')
+            page.fill('#record-author', 'READY builder')
+            page.fill('#record-source', 'Hosting browser validation')
+            page.select_option('#record-authorship', 'system')
+            page.fill('#record-tags', 'system_validation, ' + validation_tag)
+            page.click('#save-record')
+            page.wait_for_function("() => document.querySelector('#status').textContent.includes('Saved revision 1') && !document.body.classList.contains('busy')")
+            page.fill('#record-text', 'Native browser authoring revised?')
+            page.click('#save-record')
+            page.wait_for_function("() => document.querySelector('#status').textContent.includes('Saved revision 2') && !document.body.classList.contains('busy')")
+            page.check('#show-history')
+            page.wait_for_function("() => !document.body.classList.contains('busy')")
+            authored = api('GET', 'questions?include_history=true&limit=100')['records']
+            browser_authored = [row['id'] for row in authored if row['question_text'].startswith('Native browser authoring') and validation_tag in row.get('metadata', {}).get('tags', [])]
+            assert len(browser_authored) == 2
             page.screenshot(path=str(artifacts / 'hosting-desktop.png'), full_page=True)
             page.set_viewport_size({'width': 390, 'height': 844})
             page.screenshot(path=str(artifacts / 'hosting-mobile.png'), full_page=True)
@@ -152,6 +170,7 @@ def main():
 
     kinds = {'question': 'questions', 'answer': 'answers', 'question_answer_set': 'sets'}
     rows = [(kinds[row['type']], row['id']) for row in imported['created']]
+    rows += [('questions', record_id) for record_id in browser_authored]
     rows += [('questions', revised['id']), ('tests', test['id']), ('tests', variant['id'])] + [('attempts', row['id']) for row in attempts]
     for kind, record_id in rows:
         row = api('GET', kind + '/' + record_id)
