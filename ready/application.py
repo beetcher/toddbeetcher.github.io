@@ -20,7 +20,7 @@ from .contracts import DIRECTORY, output_validator
 ROOT = Path(__file__).resolve().parent
 LOG = logging.getLogger("ready")
 BODY_LIMIT = 262144
-MIME = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8"}
+MIME = {".svg": "image/svg+xml", ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8"}
 
 
 class Application:
@@ -52,7 +52,7 @@ class Application:
                 if origin and origin not in self.allowed_origins:
                     return respond(403, {"code": "forbidden", "message": "Origin is not configured."}, True)
                 return 204, base, b""
-            static = {"/": "index.html", "/ready": "index.html", "/ready/main.js": "main.js", "/ready/style.css": "style.css"}
+            static = {"/ready/favicon.svg": "favicon.svg", "/": "index.html", "/ready": "index.html", "/ready/main.js": "main.js", "/ready/style.css": "style.css"}
             if method == "GET" and path in static:
                 file = ROOT / "web" / static[path]
                 policy = "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"
