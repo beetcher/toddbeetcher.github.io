@@ -5,6 +5,14 @@
 (() => {
   'use strict';
   const $ = id => document.getElementById(id);
+  const preview = /\/ready\/web(?:\/|$)/.test(location.pathname);
+  if (preview) {
+    $('preview-notice').hidden = false;
+    $('environment').textContent = 'Unconnected preview';
+    $('connect-form').closest('section').hidden = true;
+    $('api-key').disabled = true;
+    $('library-list').textContent = 'Preview only. Inventory is available in the operational Firebase workshop.';
+  }
   const state = {key: '', kind: 'questions', editing: null, questions: [], answers: [], working: [], test: null, importKey: crypto.randomUUID()};
   const split = value => [...new Set(value.split(',').map(x => x.trim()).filter(Boolean))];
   const pretty = value => JSON.stringify(value, null, 2);
@@ -18,6 +26,7 @@
     finally { buttons.forEach(button => { if (button.isConnected) button.disabled = false; }); document.body.classList.remove('busy'); duplicateControls(); }
   }
   async function api(path, {method = 'GET', data, key, version} = {}) {
+    if (preview) throw new Error('This is an unconnected preview. Use the operational Firebase workshop for this action.');
     if (!state.key) throw new Error('Connect with your super-admin API key first.');
     const headers = {Authorization: 'Bearer ' + state.key};
     if (data !== undefined) headers['Content-Type'] = 'application/json';
@@ -231,7 +240,7 @@
   async function loadFile(input, target) { if (input.files[0]) { const text = await input.files[0].text(); JSON.parse(text); $(target).value = text; } }
   $('result-file').addEventListener('change', () => task(() => loadFile($('result-file'), 'result-input')));
   $('import-file').addEventListener('change', () => task(async () => { await loadFile($('import-file'), 'import-input'); state.importKey = crypto.randomUUID(); }));
-  $('load-seed').addEventListener('click', () => task(async () => { const response = await fetch('/ready/seed.json'); if (!response.ok) throw new Error('Could not load validation seed.'); $('import-input').value = pretty(await response.json()); state.importKey = crypto.randomUUID(); status('Validation seed loaded. Preview it before committing.'); }));
+  $('load-seed').addEventListener('click', () => task(async () => { const response = await fetch(preview ? '../seed/ai_readiness.json' : './seed.json'); if (!response.ok) throw new Error('Could not load validation seed.'); $('import-input').value = pretty(await response.json()); state.importKey = crypto.randomUUID(); status('Validation seed loaded. Preview it before committing.'); }));
   async function doImport(commit) { const value = JSON.parse($('import-input').value); value.dry_run = !commit; if (commit) { value.idempotency_key = value.idempotency_key || state.importKey; $('import-input').value = pretty(value); } const result = await api('content/imports', {method: 'POST', data: value}); $('import-report').textContent = pretty(result); status(commit ? 'Import recorded. IDs and provenance are preserved.' : result.is_valid ? 'Preview passed; no records were stored.' : 'Preview found issues; no records were stored.', !result.is_valid); if (commit) { await references(); await loadLibrary(); } }
   $('import-form').addEventListener('submit', event => { event.preventDefault(); task(() => doImport(false)); });
   $('commit-import').addEventListener('click', () => task(() => doImport(true)));

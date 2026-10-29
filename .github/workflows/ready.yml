@@ -25,11 +25,14 @@ jobs:
       - run: python -c "import ready.firebase_entry"
       - run: python -m playwright install --with-deps chromium
       - run: python ready/scripts/browser_check.py --artifacts /tmp/ready-browser-artifacts
+      - run: python ready/scripts/browser_check.py --transport http --artifacts /tmp/ready-browser-http-artifacts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ready-browser-evidence
-          path: /tmp/ready-browser-artifacts
+          path: |
+            /tmp/ready-browser-artifacts
+            /tmp/ready-browser-http-artifacts
           if-no-files-found: ignore
   firestore-emulator:
     runs-on: ubuntu-latest
