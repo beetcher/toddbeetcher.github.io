@@ -65,8 +65,30 @@ try:
   page.click('#test-form button[type=submit]')
   page.wait_for_function("() => document.querySelector('#test-json').textContent.includes('scoring_policy_version')")
   page.wait_for_function("() => !document.body.classList.contains('busy')")
-  test=json.loads(page.locator('#test-json').inner_text())
+  test=json.loads(page.locator('#test-json').text_content())
   assert len(test['items'])==4 and len({i['question_id'] for i in test['items']})==2
+  # Inspect a saved card while the working assembly pushes its detail below the fold.
+  # A fetched JSON document alone is insufficient: the selected test must be visible.
+  page.click('#refresh-tests')
+  page.wait_for_function("() => !document.body.classList.contains('busy')")
+  page.get_by_role('button',name='Inspect test',exact=True).click()
+  page.wait_for_function("() => !document.body.classList.contains('busy')")
+  inspection=page.locator('#test-detail').evaluate('(el) => ({focused:document.activeElement === el, top:el.getBoundingClientRect().top, viewport:window.innerHeight, active:document.activeElement.id})')
+  assert inspection['focused'] and -1 <= inspection['top'] < inspection['viewport']/2, inspection
+  assert page.locator('#test-items > li').count()==4
+  assert page.locator('#test-items > li').nth(0).locator('h3').inner_text()==test['items'][0]['question_text']
+  page.set_viewport_size({'width':390,'height':844})
+  page.click('#refresh-tests');page.wait_for_function("() => !document.body.classList.contains('busy')")
+  page.get_by_role('button',name='Inspect test',exact=True).click()
+  page.wait_for_function("() => !document.body.classList.contains('busy')")
+  inspection=page.locator('#test-detail').evaluate('(el) => ({focused:document.activeElement === el, top:el.getBoundingClientRect().top, viewport:window.innerHeight, active:document.activeElement.id})')
+  assert inspection['focused'] and -1 <= inspection['top'] < inspection['viewport']/2, inspection
+  assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+  page.screenshot(path=str(ARTIFACTS/'inspect-mobile.png'),full_page=False)
+  page.set_viewport_size({'width':1440,'height':1000})
+  with page.expect_download() as downloaded:
+   page.click('#download-test')
+  assert json.loads(Path(downloaded.value.path()).read_text())==test
   page.screenshot(path=str(ARTIFACTS/'desktop.png'),full_page=True)
   report={'test_id':test['id'],'person_id':'browser_validation','test_taken_at':'2026-10-28T12:00:00Z','responses':[{'item_id':i['item_id'],'answer_ids':[a['answer_id'] for a in i['answers'] if a['role']=='strong']} for i in test['items']],'returned_score':{'points_earned':0,'points_possible':4},'idempotency_key':str(uuid4())}
   page.click('[data-tab=results]');page.fill('#result-input',json.dumps(report));page.click('#result-form button[type=submit]')

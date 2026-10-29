@@ -215,7 +215,32 @@
     rows.forEach(row => $('test-list').append(card(row, showTest, 'Inspect test')));
     if (!rows.length) $('test-list').append(node('p', 'No preserved tests yet.', 'empty'));
   }
-  async function showTest(row) { state.test = await api('tests/' + row.id); $('test-detail').hidden = false; $('test-detail-title').textContent = state.test.label; $('test-json').textContent = pretty(state.test); $('archive-test').textContent = state.test.is_archived ? 'Restore availability' : 'Archive test'; }
+  async function showTest(row) {
+    const saved = await api('tests/' + row.id);
+    state.test = saved;
+    $('test-detail-title').textContent = saved.label;
+    $('test-summary').textContent = saved.items.length + ' question occurrences · Author: ' + saved.origin.author + ' · ' + (saved.is_archived ? 'Archived' : 'Preserved') + ' · ID: ' + saved.id;
+    $('test-items').replaceChildren();
+    saved.items.forEach(item => {
+      const question = node('li', undefined, 'record-card');
+      question.append(node('h3', item.question_text));
+      const answers = node('ul');
+      item.answers.forEach(answer => {
+        const entry = node('li');
+        entry.append(node('span', answer.answer_text + ' '), badge(answer.role));
+        if (answer.feedback) entry.append(node('p', answer.feedback, 'hint'));
+        answers.append(entry);
+      });
+      question.append(answers); $('test-items').append(question);
+    });
+    $('test-json').textContent = pretty(saved);
+    $('archive-test').textContent = saved.is_archived ? 'Restore availability' : 'Archive test';
+    const detail = $('test-detail');
+    detail.hidden = false;
+    detail.focus({preventScroll: true});
+    detail.scrollIntoView({block: 'start', behavior: 'instant'});
+    status('Inspecting saved test: ' + saved.label + '.');
+  }
   $('test-form').addEventListener('submit', event => { event.preventDefault(); task(async () => {
     if (!state.working.length) throw new Error('Add at least one set before creating a test.');
     const value = await api('tests', {method: 'POST', key: crypto.randomUUID(), data: {label: $('test-name').value.trim(), metadata: {topics: split($('test-topics').value), tags: split($('test-tags').value)}, origin: {author: $('test-author').value.trim(), authorship_kind: 'human', source_reference: $('test-source').value.trim()}, set_ids: state.working.map(row => row.id), allow_duplicates: $('allow-duplicates').checked, duplicate_pair_count: $('allow-duplicates').checked ? Number($('duplicate-pairs').value) : 0}});
