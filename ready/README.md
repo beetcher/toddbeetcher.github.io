@@ -12,6 +12,35 @@ Use READY to author introductory or challenging sets from reusable atoms, select
 
 The management workshop and API are deployed at **https://beetcher-ready.web.app/ready/** with durable Firestore persistence in the separate `beetcher-ready` project. The Pages route `/ready/web/` is a styled, explicitly unconnected preview. See [owner access](docs/ACCESS.md), [build status](docs/BUILD_STATUS.md) and [operations](docs/OPERATIONS.md) for verified evidence and exact usage.
 
+## Get the admin key on this Mac
+
+Run this in Terminal:
+
+```bash
+cd /Users/nddev/nd/bd/toddbeetcher.github.io/ready
+./getadminkey.sh
+```
+
+The executable `getadminkey.sh` is an owner-only local helper. It is Git-ignored and excluded from Firebase deployment packaging, so it stays on this Mac rather than being committed or published. It contains no embedded key. It retrieves the existing `READY_API_KEY` from Google Secret Manager in project `beetcher-ready`, using the authorized account `toddbeetcher17@gmail.com`, and copies it directly to the Mac clipboard. It does not print the key, save it in a file, create a new key or rotate the existing key.
+
+Open **https://beetcher-ready.web.app/ready/**, paste into **Super-admin API key**, and click **Connect**. Expect **FirestoreStore · super admin**. The input clears and the page holds the key in memory until disconnect/reload. The initial key has super-admin access; possession of the local helper alone does not grant Google account access.
+
+If the helper reports a sign-in error, run `gcloud auth login toddbeetcher17@gmail.com`, complete the Google sign-in, and run the helper again. It requires `gcloud` and the Mac's `pbcopy`. To clear the clipboard after pasting, run `printf '' | pbcopy`.
+
+This README is public documentation and contains no secret. On another authorized machine without the local helper, the equivalent command is:
+
+```bash
+gcloud secrets versions access latest --secret=READY_API_KEY --project=beetcher-ready --account=toddbeetcher17@gmail.com | pbcopy
+```
+
+## Source and current hosting
+
+The local Git repository is `/Users/nddev/nd/bd/toddbeetcher.github.io`, branch `finish-now`; READY source lives in its `ready/` directory and is pushed to GitHub. The separate Masthead chat workspace contains planning and verification notes.
+
+The running workshop is currently on **Google Firebase Hosting**, its API runs as a Google Cloud Function, and its durable data is in Firestore, all in the separate Firebase project **beetcher-ready**. Firebase deployment was performed from the Mac with the Firebase CLI; it is separate from the existing GitHub-to-Cloudflare deployment of beetcher.com. The live service runs independently of the Mac.
+
+**beetcher.com/ready is the intended public integration, but that integration is not implemented yet.** The existing `beetcher.com/ready/web/` route is an unconnected preview linking to the functional Firebase-hosted workshop. Do not enter the admin key into that preview.
+
 ## Verification and local demo
 
 From repository root:

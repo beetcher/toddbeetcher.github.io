@@ -6,3 +6,6 @@ __pycache__/
 *-debug.log
 .firebase-build/
 .firebase/
+
+# Owner-only local key helper; never publish or commit.
+/getadminkey.sh
