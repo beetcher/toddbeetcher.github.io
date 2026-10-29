@@ -14,7 +14,7 @@ firestore-debug.log
 .claude/settings.local.json
 
 # cert/ — source docs, full-size originals, email draft (not published)
-cert/doc/
+cert_decom_10292026/doc/
 # Word lock files
 ~$*
 

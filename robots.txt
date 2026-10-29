@@ -5,6 +5,6 @@ Disallow: /one-of-a-kind/OG_index.html
 Disallow: /one-of-a-kind/index_og.html
 Disallow: /one-of-a-kind/inspection-report.md
 Disallow: /bfn/
-Disallow: /cert/
+Disallow: /cert_decom_10292026/
 Disallow: /cert_OG/
 Disallow: /cert2/
