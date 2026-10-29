@@ -1,0 +1,48 @@
+{
+  "schemas": [
+    {
+      "name": "question",
+      "collection": "questions",
+      "schema": "question.schema.json",
+      "guide": "question.guide.md",
+      "examples": "question.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "answer",
+      "collection": "answers",
+      "schema": "answer.schema.json",
+      "guide": "answer.guide.md",
+      "examples": "answer.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "question_answer_set",
+      "collection": "question_answer_sets",
+      "schema": "question_answer_set.schema.json",
+      "guide": "question_answer_set.guide.md",
+      "examples": "question_answer_set.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "test",
+      "collection": "tests",
+      "schema": "test.schema.json",
+      "guide": "test.guide.md",
+      "examples": "test.examples.json",
+      "schema_version": 1
+    },
+    {
+      "name": "attempt",
+      "collection": "attempts",
+      "schema": "attempt.schema.json",
+      "guide": "attempt.guide.md",
+      "examples": "attempt.examples.json",
+      "schema_version": 1
+    }
+  ],
+  "extensions": {
+    "metadata_attributes": {},
+    "note": "Add typed attributes through schema/guide/import/UI/query updates; unknown attributes rejected."
+  }
+}

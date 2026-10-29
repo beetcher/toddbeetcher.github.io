@@ -1,0 +1,17 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "label": "New variant label"
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "label": "New variant label",
+      "unexpected": "reject"
+    }
+  }
+]

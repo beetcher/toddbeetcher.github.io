@@ -1,0 +1,159 @@
+[
+  {
+    "name": "actual_complete_runtime_output",
+    "valid": true,
+    "data": {
+      "test_id": "47df3190-30a1-4c7c-91d1-45afd4a3fb35",
+      "responses": [
+        {
+          "item_id": "f1d69927-0d93-426a-b2bd-6295d7c755ad",
+          "answer_ids": [
+            "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 0,
+        "points_possible": 1
+      },
+      "idempotency_key": "8a49c3fd-3bb1-4cc7-b02d-1e901cdda37a",
+      "id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "schema_version": 1,
+      "created_at": "2026-10-29T00:11:53.660499Z",
+      "created_by": "user:super_admin",
+      "updated_at": "2026-10-29T00:11:53.660499Z",
+      "updated_by": "user:super_admin",
+      "source": "ready_results",
+      "series_id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "revision_number": 1,
+      "record_version": 1,
+      "is_archived": false,
+      "lifecycle_events": [],
+      "calculated_score": {
+        "points_earned": 1.0,
+        "points_possible": 1,
+        "percentage": 100.0,
+        "policy_version": "strong_soft_fraction_v1"
+      },
+      "score_difference": {
+        "is_different": true,
+        "same_denominator": true,
+        "percentage_point_difference": -100.0,
+        "points_difference": -1.0
+      },
+      "item_results": [
+        {
+          "item_id": "f1d69927-0d93-426a-b2bd-6295d7c755ad",
+          "credit": 1.0,
+          "selected_answer_ids": [
+            "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+          ],
+          "ambiguous_answer_ids": [],
+          "feedback": [
+            "Check facts, context, tone, permissions, and any sensitive information before sharing."
+          ],
+          "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+          "set_id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3"
+        }
+      ],
+      "received_at": "2026-10-29T00:11:53.660297Z",
+      "submitted_payload": "{\"idempotency_key\":\"8a49c3fd-3bb1-4cc7-b02d-1e901cdda37a\",\"responses\":[{\"answer_ids\":[\"726e16e6-d80d-4b23-b4a2-51436b6ce1c4\"],\"item_id\":\"f1d69927-0d93-426a-b2bd-6295d7c755ad\"}],\"returned_score\":{\"points_earned\":0,\"points_possible\":1},\"test_id\":\"47df3190-30a1-4c7c-91d1-45afd4a3fb35\"}",
+      "attempt_id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "breakdowns": [
+        {
+          "dimension": "learning_objectives",
+          "label": "recognize_and_check_ai_use",
+          "points_earned": 1.0,
+          "points_possible": 1,
+          "percentage": 100.0
+        },
+        {
+          "dimension": "topics",
+          "label": "ai_readiness",
+          "points_earned": 1.0,
+          "points_possible": 1,
+          "percentage": 100.0
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown_output_field",
+    "valid": false,
+    "data": {
+      "test_id": "47df3190-30a1-4c7c-91d1-45afd4a3fb35",
+      "responses": [
+        {
+          "item_id": "f1d69927-0d93-426a-b2bd-6295d7c755ad",
+          "answer_ids": [
+            "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 0,
+        "points_possible": 1
+      },
+      "idempotency_key": "8a49c3fd-3bb1-4cc7-b02d-1e901cdda37a",
+      "id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "schema_version": 1,
+      "created_at": "2026-10-29T00:11:53.660499Z",
+      "created_by": "user:super_admin",
+      "updated_at": "2026-10-29T00:11:53.660499Z",
+      "updated_by": "user:super_admin",
+      "source": "ready_results",
+      "series_id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "revision_number": 1,
+      "record_version": 1,
+      "is_archived": false,
+      "lifecycle_events": [],
+      "calculated_score": {
+        "points_earned": 1.0,
+        "points_possible": 1,
+        "percentage": 100.0,
+        "policy_version": "strong_soft_fraction_v1"
+      },
+      "score_difference": {
+        "is_different": true,
+        "same_denominator": true,
+        "percentage_point_difference": -100.0,
+        "points_difference": -1.0
+      },
+      "item_results": [
+        {
+          "item_id": "f1d69927-0d93-426a-b2bd-6295d7c755ad",
+          "credit": 1.0,
+          "selected_answer_ids": [
+            "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+          ],
+          "ambiguous_answer_ids": [],
+          "feedback": [
+            "Check facts, context, tone, permissions, and any sensitive information before sharing."
+          ],
+          "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+          "set_id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3"
+        }
+      ],
+      "received_at": "2026-10-29T00:11:53.660297Z",
+      "submitted_payload": "{\"idempotency_key\":\"8a49c3fd-3bb1-4cc7-b02d-1e901cdda37a\",\"responses\":[{\"answer_ids\":[\"726e16e6-d80d-4b23-b4a2-51436b6ce1c4\"],\"item_id\":\"f1d69927-0d93-426a-b2bd-6295d7c755ad\"}],\"returned_score\":{\"points_earned\":0,\"points_possible\":1},\"test_id\":\"47df3190-30a1-4c7c-91d1-45afd4a3fb35\"}",
+      "attempt_id": "a96bd6fb-02f0-4747-ad54-9b012aa6079e",
+      "breakdowns": [
+        {
+          "dimension": "learning_objectives",
+          "label": "recognize_and_check_ai_use",
+          "points_earned": 1.0,
+          "points_possible": 1,
+          "percentage": 100.0
+        },
+        {
+          "dimension": "topics",
+          "label": "ai_readiness",
+          "points_earned": 1.0,
+          "points_possible": 1,
+          "percentage": 100.0
+        }
+      ],
+      "unexpected_output": true
+    }
+  }
+]

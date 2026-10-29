@@ -1,0 +1,5666 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "READY content, tests and returned results",
+    "version": "1.0.0",
+    "description": "All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained."
+  },
+  "servers": [
+    {
+      "url": "/v1"
+    }
+  ],
+  "security": [
+    {
+      "SuperAdminKey": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "ready_01_get",
+        "summary": "Liveness and API version; no secrets/data",
+        "description": "None. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "status",
+                        "api_version"
+                      ],
+                      "properties": {
+                        "status": {
+                          "const": "ok"
+                        },
+                        "api_version": {
+                          "const": "v1"
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/capabilities": {
+      "get": {
+        "operationId": "ready_02_get",
+        "summary": "Formats, supported criteria/operators, query/size bounds, implemented operations; no live-administration modes",
+        "description": "API key. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "api_version",
+                        "role",
+                        "question_types",
+                        "criteria",
+                        "max_candidate_scan",
+                        "max_import_records",
+                        "participant_administration",
+                        "persistence"
+                      ],
+                      "properties": {
+                        "api_version": {
+                          "const": "v1"
+                        },
+                        "role": {
+                          "const": "super_admin"
+                        },
+                        "question_types": {
+                          "type": "array",
+                          "items": {
+                            "enum": [
+                              "single_choice",
+                              "multiple_choice"
+                            ]
+                          }
+                        },
+                        "criteria": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "max_candidate_scan": {
+                          "type": "integer"
+                        },
+                        "max_import_records": {
+                          "type": "integer"
+                        },
+                        "participant_administration": {
+                          "const": false
+                        },
+                        "persistence": {
+                          "enum": [
+                            "MemoryStore",
+                            "FirestoreStore"
+                          ]
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schemas": {
+      "get": {
+        "operationId": "ready_03_get",
+        "summary": "Named/versioned public contract catalog, not raw private registry",
+        "description": "API key. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "schemas"
+                      ],
+                      "properties": {
+                        "schemas": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "name",
+                              "schema_version",
+                              "url"
+                            ],
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "schema_version": {
+                                "type": "integer"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schemas/{name}": {
+      "get": {
+        "operationId": "ready_04_get",
+        "summary": "Requested record/operation JSON Schema; unknown version 404",
+        "description": "Name, optional version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "name",
+                        "schema_version",
+                        "schema"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "schema_version": {
+                          "type": "integer"
+                        },
+                        "schema": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "schema_version",
+            "in": "query",
+            "required": false,
+            "description": "Only version 1 is currently available",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/person-ids": {
+      "post": {
+        "operationId": "ready_05_post",
+        "summary": "Generated opaque ID; no person record; no session/token",
+        "description": "Empty body. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "person_id",
+                        "is_persisted"
+                      ],
+                      "properties": {
+                        "person_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "is_persisted": {
+                          "const": false
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "maxProperties": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions": {
+      "post": {
+        "operationId": "ready_06_post",
+        "summary": "New draft/published question ID, content, provenance/version",
+        "description": "Writable question data. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/question_create.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "New UUID for a genuine operation; same body/key replays.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ready_08_get",
+        "summary": "Matching question inventory and cursor",
+        "description": "Criteria, pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1\u2013100, default 25",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Nonnegative offset, default 0",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": false,
+            "description": "JSON object matching selection_request criteria",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/questions/{id}": {
+      "get": {
+        "operationId": "ready_07_get",
+        "summary": "Question content and metadata; no single canonical set implied",
+        "description": "Question ID. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "ready_09_patch",
+        "summary": "Updated library record; existing tests unchanged",
+        "description": "Changed writable fields, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/question_patch.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "description": "Quoted integer record version from GET ETag. Content edit creates linked new ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ready_10_delete",
+        "summary": "Soft deletion only if reference policy permits; no distributed content destruction",
+        "description": "ID, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/answers": {
+      "post": {
+        "operationId": "ready_11_post",
+        "summary": "New answer record with provenance",
+        "description": "Writable reusable answer data. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/answer_create.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "New UUID for a genuine operation; same body/key replays.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ready_13_get",
+        "summary": "Matching answer inventory",
+        "description": "Criteria, pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1\u2013100, default 25",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Nonnegative offset, default 0",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": false,
+            "description": "JSON object matching selection_request criteria",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/answers/{id}": {
+      "get": {
+        "operationId": "ready_12_get",
+        "summary": "Reusable answer text/metadata, not global correctness",
+        "description": "Answer ID. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "ready_14_patch",
+        "summary": "Updated library answer; frozen test content unchanged",
+        "description": "Changes, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/answer_patch.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "description": "Quoted integer record version from GET ETag. Content edit creates linked new ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ready_15_delete",
+        "summary": "Reference-guarded soft deletion",
+        "description": "ID, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sets": {
+      "post": {
+        "operationId": "ready_16_post",
+        "summary": "Authored set ID, resolved relationships, version/provenance",
+        "description": "Question reference plus ordered contextual answer connections and metadata. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/question_answer_set_create.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "New UUID for a genuine operation; same body/key replays.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ready_18_get",
+        "summary": "Matching set inventory; allows inspection/reuse across variants",
+        "description": "Criteria, optional question/answer ID/relation filter, pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1\u2013100, default 25",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Nonnegative offset, default 0",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": false,
+            "description": "JSON object matching selection_request criteria",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sets/{id}": {
+      "get": {
+        "operationId": "ready_17_get",
+        "summary": "Exact set, question, offered answer connections, contextual correctness and explanations",
+        "description": "Set ID, optional revision. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/set_detail.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "ready_19_patch",
+        "summary": "New/current editable set revision under declared policy; no old test mutation",
+        "description": "Set changes, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/question_answer_set_patch.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "description": "Quoted integer record version from GET ETag. Content edit creates linked new ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ready_20_delete",
+        "summary": "Reference-guarded soft deletion/retirement; tests preserve frozen references/content",
+        "description": "ID, expected version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/questions/{id}/answers": {
+      "get": {
+        "operationId": "ready_21_get",
+        "summary": "Answers with their set context; if several sets exist, return grouped associations rather than fabricate one canonical mapping",
+        "description": "Question ID, optional set ID/revision. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/relationship_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "set_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "question_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "description": "strong, ambiguous or incorrect",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/answers/{id}/relationships": {
+      "get": {
+        "operationId": "ready_22_get",
+        "summary": "Contextual pairings, set/question IDs, metadata and correctness",
+        "description": "Answer ID, optional question/set and correctness filters, pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/relationship_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "set_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "question_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "description": "strong, ambiguous or incorrect",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/selections": {
+      "post": {
+        "operationId": "ready_23_post",
+        "summary": "Found list plus requested/found/shortfall summary; no test/attempt created",
+        "description": "Target `questions`, `answers` or `sets`; IDs or criteria/random/count; optional current working items/exclusions. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/selection_output.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/selection_request.schema.json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/imports": {
+      "post": {
+        "operationId": "ready_24_post",
+        "summary": "Per-record validation issues or atomic created-ID mapping; no live test administration",
+        "description": "Validated JSON atoms/sets with import-local refs; dry-run or commit. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/import_output.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/import_output.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/bulk_import.schema.json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tests": {
+      "post": {
+        "operationId": "ready_25_post",
+        "summary": "New immutable identified test with frozen content; no participant run created",
+        "description": "Explicit ordered set occurrences, or supported selection request; duplicate-pair rules, test metadata. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/test_create.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "New UUID for a genuine operation; same body/key replays.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "ready_27_get",
+        "summary": "Test inventory and metadata",
+        "description": "Criteria, archive filter, pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1\u2013100, default 25",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Nonnegative offset, default 0",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": false,
+            "description": "JSON object matching selection_request criteria",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tests/{test_id}": {
+      "get": {
+        "operationId": "ready_26_get",
+        "summary": "Complete delivered test bundle: occurrences, question/answer choices, correctness/explanations/scoring material where defined",
+        "description": "Test ID. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "test_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tests/{test_id}/variants": {
+      "post": {
+        "operationId": "ready_28_post",
+        "summary": "New test with new ID and provenance linking its source; old test unchanged",
+        "description": "Existing test ID plus explicit assembly/content changes. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/test_create.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "test_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "New UUID for a genuine operation; same body/key replays.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tests/{test_id}/archive": {
+      "put": {
+        "operationId": "ready_29_put",
+        "summary": "Updated availability metadata only; identity/content/history retained",
+        "description": "Archive boolean, reason, expected metadata version. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/test_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "test_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/attempts": {
+      "post": {
+        "operationId": "ready_30_post",
+        "summary": "Recorded attempt ID and submitted result; separate returned/calculated scores and discrepancy JSON",
+        "description": "Test ID, returned result entries, optional person linkage and caller score; idempotency key. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/result_detail.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/result_detail.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/result_submit.schema.json"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "ready_32_get",
+        "summary": "Recorded attempt/result summaries; no participant progress/session list",
+        "description": "Optional test ID, exact person ID, dates and pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/attempt_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "1\u2013100, default 25",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "Nonnegative offset, default 0",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "include_archived",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": false,
+            "description": "JSON object matching selection_request criteria",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "person_id",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/attempts/{attempt_id}": {
+      "get": {
+        "operationId": "ready_31_get",
+        "summary": "Recorded submitted results and test/person references, provenance and scoring fields actually supported",
+        "description": "Attempt ID. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/result_detail.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "attempt_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tests/{test_id}/attempts": {
+      "get": {
+        "operationId": "ready_33_get",
+        "summary": "Recorded attempts against this test",
+        "description": "Test ID, optional person/date filters and pagination. All operations require initial super-admin API key except health. JSON content/request contracts reject unknown fields. No participant-administration endpoints. Offset pagination is not snapshot isolated. Archived records remain retained.",
+        "x_verification": "in-process HTTP operation-family test; cloud/browser verification separately gated",
+        "responses": {
+          "200": {
+            "description": "Success; actual domain data validated against the referenced output contract.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/attempt_page.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed request, JSON or cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key missing or invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unavailable resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, immutable content or key reuse mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds byte limit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Schema/domain validation failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Best-effort request rate exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected service/output contract error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Missing server key or unavailable configured dependency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "test_id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include_history",
+            "in": "query",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ]
+      }
+    },
+    "/questions/{id}/archive": {
+      "put": {
+        "operationId": "archive_questions",
+        "summary": "Archive/restore availability without destroying product history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preserved record with appended lifecycle audit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/answers/{id}/archive": {
+      "put": {
+        "operationId": "archive_answers",
+        "summary": "Archive/restore availability without destroying product history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preserved record with appended lifecycle audit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/answer_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sets/{id}/archive": {
+      "put": {
+        "operationId": "archive_sets",
+        "summary": "Archive/restore availability without destroying product history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preserved record with appended lifecycle audit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/question_answer_set_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attempts/{id}/archive": {
+      "put": {
+        "operationId": "archive_attempts",
+        "summary": "Archive/restore availability without destroying product history",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "../schemas/archive_request.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preserved record with appended lifecycle audit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "ok",
+                    "data",
+                    "request_id"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "const": true
+                    },
+                    "data": {
+                      "$ref": "../schemas/attempt_record.output.schema.json"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Stale version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SuperAdminKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Initial runtime API key; super admin. Never embed in served code."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "error",
+          "request_id"
+        ],
+        "properties": {
+          "ok": {
+            "const": false
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "field",
+                    "code"
+                  ],
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "details": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "contracts": {
+    "question_create": "question_create.schema.json",
+    "question_patch": "question_patch.schema.json",
+    "answer_create": "answer_create.schema.json",
+    "answer_patch": "answer_patch.schema.json",
+    "question_answer_set_create": "question_answer_set_create.schema.json",
+    "question_answer_set_patch": "question_answer_set_patch.schema.json",
+    "selection_request": "selection_request.schema.json",
+    "test_create": "test_create.schema.json",
+    "result_submit": "result_submit.schema.json",
+    "archive_request": "archive_request.schema.json",
+    "bulk_import": "bulk_import.schema.json"
+  }
+}

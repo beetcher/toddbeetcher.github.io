@@ -1,0 +1,85 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963"
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963",
+      "unexpected": "reject"
+    }
+  },
+  {
+    "name": "nested_service_score_injection",
+    "valid": false,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ],
+          "service_score": 100
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963"
+    }
+  },
+  {
+    "name": "identified_run_requires_test_time",
+    "valid": false,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963",
+      "person_id": "known_person"
+    }
+  }
+]

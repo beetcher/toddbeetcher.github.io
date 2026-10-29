@@ -1,0 +1,5281 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "dry_run": true,
+      "questions": [
+        {
+          "client_ref": "q_1",
+          "data": {
+            "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_2",
+          "data": {
+            "question_text": "You open an AI app and face a blank message box. You want help with a task but do not know how to begin. What is a useful first move?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_3",
+          "data": {
+            "question_text": "You want AI to draft an invitation to a neighborhood gathering. Which request gives it the most useful direction?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_4",
+          "data": {
+            "question_text": "AI gives you a confident explanation and cites a source you have not opened. What should you do before relying on an important claim?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_5",
+          "data": {
+            "question_text": "You want help understanding a workplace document containing customer names and private account details. What should you do first?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_6",
+          "data": {
+            "question_text": "AI drafts an email that is too formal and misses your main point. What is the most productive next step?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_7",
+          "data": {
+            "question_text": "A household appliance stops working. How could you use AI as an early resource?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_8",
+          "data": {
+            "question_text": "AI builds an app that runs, but it does not solve the problem you intended. What should you do next?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_9",
+          "data": {
+            "question_text": "An AI-generated project plan conflicts with your budget and deadline. Which response is the least useful?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_10",
+          "data": {
+            "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        }
+      ],
+      "answers": [
+        {
+          "client_ref": "test_a001",
+          "data": {
+            "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a002",
+          "data": {
+            "answer_text": "Make the final decision without asking the family.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a003",
+          "data": {
+            "answer_text": "Guarantee that every suggested place is open and within budget.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a004",
+          "data": {
+            "answer_text": "It cannot help unless you already have a complete itinerary.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a005",
+          "data": {
+            "answer_text": "Wait until you have learned all the technical terms.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a006",
+          "data": {
+            "answer_text": "Describe what you are trying to do and ask it to help you clarify the next step.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a007",
+          "data": {
+            "answer_text": "Assume the app can infer your goal from an empty message.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_2",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a008",
+          "data": {
+            "answer_text": "\u201cWrite something.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a009",
+          "data": {
+            "answer_text": "\u201cWrite the perfect invitation.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a010",
+          "data": {
+            "answer_text": "\u201cDraft a friendly, short invitation for neighbors to a Saturday afternoon potluck. Leave placeholders for the date, address, and RSVP details.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a011",
+          "data": {
+            "answer_text": "\u201cMake up whatever event details sound convincing.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a012",
+          "data": {
+            "answer_text": "Trust it because confident language indicates accuracy.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a013",
+          "data": {
+            "answer_text": "Check the original source and verify that it supports the claim.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a014",
+          "data": {
+            "answer_text": "Ask it to repeat the answer in a more confident tone.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a015",
+          "data": {
+            "answer_text": "Treat agreement from a second AI as conclusive proof.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a016",
+          "data": {
+            "answer_text": "Paste the entire document into any free AI app.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a017",
+          "data": {
+            "answer_text": "Upload it, then ask the AI to forget it afterward.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a018",
+          "data": {
+            "answer_text": "Check workplace policy and use an approved tool with only the information permitted and needed.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a019",
+          "data": {
+            "answer_text": "Assume private information is safe because you are the only person using your phone.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a020",
+          "data": {
+            "answer_text": "Send it anyway because AI generated it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a021",
+          "data": {
+            "answer_text": "Explain what missed your goal and ask for a revision.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a022",
+          "data": {
+            "answer_text": "Repeat exactly the same request until the result happens to fit.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a023",
+          "data": {
+            "answer_text": "Conclude that AI can never help write an email.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a024",
+          "data": {
+            "answer_text": "Ask it to guarantee a diagnosis from a short description.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a025",
+          "data": {
+            "answer_text": "Ask it to help organize symptoms, identify information to gather, and prepare questions for the manual or a qualified repair professional.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a026",
+          "data": {
+            "answer_text": "Follow any repair instruction immediately without checking it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_7",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a027",
+          "data": {
+            "answer_text": "Accept it because running software must meet the requirements.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a028",
+          "data": {
+            "answer_text": "Add more features before clarifying the original goal.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a029",
+          "data": {
+            "answer_text": "Judge success only by how much code was generated.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a030",
+          "data": {
+            "answer_text": "State the budget and deadline, then ask for a revised plan.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a031",
+          "data": {
+            "answer_text": "Follow the plan unchanged because AI produced it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a032",
+          "data": {
+            "answer_text": "Compare the revised plan with what you can realistically do.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a033",
+          "data": {
+            "answer_text": "Nobody, because it is only a draft generated by AI.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a034",
+          "data": {
+            "answer_text": "You, as the person choosing to share it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a035",
+          "data": {
+            "answer_text": "The AI alone, because it wrote the first draft.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_10",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        }
+      ],
+      "sets": [
+        {
+          "client_ref": "set_1",
+          "question_ref": "q_1",
+          "label": "Validation scenario 1",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a001",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a002",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a003",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a004",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_2",
+          "question_ref": "q_2",
+          "label": "Validation scenario 2",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a005",
+              "role": "incorrect",
+              "feedback": "You can begin in ordinary language. Technical vocabulary is not a prerequisite.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a006",
+              "role": "strong",
+              "feedback": "Your goal and uncertainty are enough to start a conversation. You can refine it as you go.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a007",
+              "role": "incorrect",
+              "feedback": "Give it some context about what you want to accomplish.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_2",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        },
+        {
+          "client_ref": "set_3",
+          "question_ref": "q_3",
+          "label": "Validation scenario 3",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a008",
+              "role": "incorrect",
+              "feedback": "The goal, audience, and tone are unclear.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a009",
+              "role": "incorrect",
+              "feedback": "\u201cPerfect\u201d does not tell it what this gathering needs.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a010",
+              "role": "strong",
+              "feedback": "Audience, occasion, tone, length, and placeholders give the draft a useful shape without inventing missing facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a011",
+              "role": "incorrect",
+              "feedback": "Missing logistics should be supplied or marked as placeholders, not fabricated.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_4",
+          "question_ref": "q_4",
+          "label": "Validation scenario 4",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a012",
+              "role": "incorrect",
+              "feedback": "Fluency and confidence are not evidence that a claim is true.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a013",
+              "role": "strong",
+              "feedback": "Confirm that the source exists, is suitable, and actually says what the answer claims.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a014",
+              "role": "incorrect",
+              "feedback": "A change in tone does not provide independent evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a015",
+              "role": "incorrect",
+              "feedback": "Different systems can repeat the same mistake. Check suitable evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_5",
+          "question_ref": "q_5",
+          "label": "Validation scenario 5",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a016",
+              "role": "incorrect",
+              "feedback": "Convenience does not establish permission to disclose customer information.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a017",
+              "role": "incorrect",
+              "feedback": "A conversational request does not establish how the service stores or uses uploaded data.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a018",
+              "role": "strong",
+              "feedback": "Follow your organization's information rules. Remove identifying details where appropriate; removing names alone may not make a document safe to share.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a019",
+              "role": "incorrect",
+              "feedback": "The device in your hand does not determine the remote service's data handling.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_6",
+          "question_ref": "q_6",
+          "label": "Validation scenario 6",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a020",
+              "role": "incorrect",
+              "feedback": "You remain responsible for whether the message says what you intend.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "strong",
+              "feedback": "For example: \u201cMake this warmer, cut it in half, and lead with my request to reschedule.\u201d",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a022",
+              "role": "incorrect",
+              "feedback": "Clear feedback gives the next attempt better direction.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a023",
+              "role": "incorrect",
+              "feedback": "One poor draft can be a starting point for refinement rather than a final verdict.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_7",
+          "question_ref": "q_7",
+          "label": "Validation scenario 7",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a024",
+              "role": "incorrect",
+              "feedback": "Limited information cannot support a guaranteed diagnosis.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a025",
+              "role": "strong",
+              "feedback": "AI can help frame troubleshooting. Verify model-specific guidance and avoid hazardous work beyond your competence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a026",
+              "role": "incorrect",
+              "feedback": "A plausible instruction can be wrong or unsafe for your appliance.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_7",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        },
+        {
+          "client_ref": "set_8",
+          "question_ref": "q_8",
+          "label": "Validation scenario 8",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a027",
+              "role": "incorrect",
+              "feedback": "Technical execution and usefulness are different things.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "strong",
+              "feedback": "Describe the intended behavior, show a concrete example, and check the revised app against it.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a028",
+              "role": "incorrect",
+              "feedback": "More functionality may increase complexity without fixing the mismatch.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a029",
+              "role": "incorrect",
+              "feedback": "Evaluate whether the software solves the intended problem.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_9",
+          "question_ref": "q_9",
+          "label": "Validation scenario 9",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a030",
+              "role": "incorrect",
+              "feedback": "This is a useful response: it supplies constraints the next plan must respect.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "incorrect",
+              "feedback": "This is also useful. The question asks for the least useful response, not the best one.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a031",
+              "role": "strong",
+              "feedback": "This is the least useful choice. An answer that ignores your constraints should be questioned and revised, not followed automatically.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a032",
+              "role": "incorrect",
+              "feedback": "This is useful evaluation of whether the plan fits your circumstances.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_10",
+          "question_ref": "q_10",
+          "label": "Validation scenario 10",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a033",
+              "role": "incorrect",
+              "feedback": "Once you share it, others may rely on it. Review it first.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a034",
+              "role": "strong",
+              "feedback": "Check facts, context, tone, permissions, and any sensitive information before sharing.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a035",
+              "role": "incorrect",
+              "feedback": "The system cannot take over your responsibility for the material you choose to use.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_10",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "dry_run": true,
+      "questions": [
+        {
+          "client_ref": "q_1",
+          "data": {
+            "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_2",
+          "data": {
+            "question_text": "You open an AI app and face a blank message box. You want help with a task but do not know how to begin. What is a useful first move?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_3",
+          "data": {
+            "question_text": "You want AI to draft an invitation to a neighborhood gathering. Which request gives it the most useful direction?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_4",
+          "data": {
+            "question_text": "AI gives you a confident explanation and cites a source you have not opened. What should you do before relying on an important claim?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_5",
+          "data": {
+            "question_text": "You want help understanding a workplace document containing customer names and private account details. What should you do first?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_6",
+          "data": {
+            "question_text": "AI drafts an email that is too formal and misses your main point. What is the most productive next step?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_7",
+          "data": {
+            "question_text": "A household appliance stops working. How could you use AI as an early resource?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_8",
+          "data": {
+            "question_text": "AI builds an app that runs, but it does not solve the problem you intended. What should you do next?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_9",
+          "data": {
+            "question_text": "An AI-generated project plan conflicts with your budget and deadline. Which response is the least useful?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "q_10",
+          "data": {
+            "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+            "question_type": "single_choice",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        }
+      ],
+      "answers": [
+        {
+          "client_ref": "test_a001",
+          "data": {
+            "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a002",
+          "data": {
+            "answer_text": "Make the final decision without asking the family.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a003",
+          "data": {
+            "answer_text": "Guarantee that every suggested place is open and within budget.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a004",
+          "data": {
+            "answer_text": "It cannot help unless you already have a complete itinerary.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a005",
+          "data": {
+            "answer_text": "Wait until you have learned all the technical terms.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a006",
+          "data": {
+            "answer_text": "Describe what you are trying to do and ask it to help you clarify the next step.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a007",
+          "data": {
+            "answer_text": "Assume the app can infer your goal from an empty message.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_2",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a008",
+          "data": {
+            "answer_text": "\u201cWrite something.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a009",
+          "data": {
+            "answer_text": "\u201cWrite the perfect invitation.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a010",
+          "data": {
+            "answer_text": "\u201cDraft a friendly, short invitation for neighbors to a Saturday afternoon potluck. Leave placeholders for the date, address, and RSVP details.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a011",
+          "data": {
+            "answer_text": "\u201cMake up whatever event details sound convincing.\u201d",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a012",
+          "data": {
+            "answer_text": "Trust it because confident language indicates accuracy.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a013",
+          "data": {
+            "answer_text": "Check the original source and verify that it supports the claim.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a014",
+          "data": {
+            "answer_text": "Ask it to repeat the answer in a more confident tone.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a015",
+          "data": {
+            "answer_text": "Treat agreement from a second AI as conclusive proof.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a016",
+          "data": {
+            "answer_text": "Paste the entire document into any free AI app.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a017",
+          "data": {
+            "answer_text": "Upload it, then ask the AI to forget it afterward.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a018",
+          "data": {
+            "answer_text": "Check workplace policy and use an approved tool with only the information permitted and needed.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a019",
+          "data": {
+            "answer_text": "Assume private information is safe because you are the only person using your phone.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a020",
+          "data": {
+            "answer_text": "Send it anyway because AI generated it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a021",
+          "data": {
+            "answer_text": "Explain what missed your goal and ask for a revision.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a022",
+          "data": {
+            "answer_text": "Repeat exactly the same request until the result happens to fit.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a023",
+          "data": {
+            "answer_text": "Conclude that AI can never help write an email.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a024",
+          "data": {
+            "answer_text": "Ask it to guarantee a diagnosis from a short description.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a025",
+          "data": {
+            "answer_text": "Ask it to help organize symptoms, identify information to gather, and prepare questions for the manual or a qualified repair professional.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a026",
+          "data": {
+            "answer_text": "Follow any repair instruction immediately without checking it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_7",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a027",
+          "data": {
+            "answer_text": "Accept it because running software must meet the requirements.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a028",
+          "data": {
+            "answer_text": "Add more features before clarifying the original goal.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a029",
+          "data": {
+            "answer_text": "Judge success only by how much code was generated.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a030",
+          "data": {
+            "answer_text": "State the budget and deadline, then ask for a revised plan.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a031",
+          "data": {
+            "answer_text": "Follow the plan unchanged because AI produced it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a032",
+          "data": {
+            "answer_text": "Compare the revised plan with what you can realistically do.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a033",
+          "data": {
+            "answer_text": "Nobody, because it is only a draft generated by AI.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a034",
+          "data": {
+            "answer_text": "You, as the person choosing to share it.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "test_a035",
+          "data": {
+            "answer_text": "The AI alone, because it wrote the first draft.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        },
+        {
+          "client_ref": "extra_10",
+          "data": {
+            "answer_text": "Let the AI decide what matters without describing your goal or checking its suggestions.",
+            "origin": {
+              "author": "READY builder",
+              "authorship_kind": "system",
+              "source_reference": "Original validation examples; not an official assessment"
+            },
+            "metadata": {
+              "topics": [
+                "ai_readiness"
+              ],
+              "audiences": [
+                "adult_beginner"
+              ],
+              "difficulty": "basic",
+              "learning_objectives": [
+                "recognize_and_check_ai_use"
+              ],
+              "tags": [
+                "builder_created",
+                "system_validation",
+                "ready_seed_01"
+              ],
+              "attributes": {}
+            },
+            "status": "published"
+          }
+        }
+      ],
+      "sets": [
+        {
+          "client_ref": "set_1",
+          "question_ref": "q_1",
+          "label": "Validation scenario 1",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a001",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a002",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a003",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a004",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_2",
+          "question_ref": "q_2",
+          "label": "Validation scenario 2",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a005",
+              "role": "incorrect",
+              "feedback": "You can begin in ordinary language. Technical vocabulary is not a prerequisite.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a006",
+              "role": "strong",
+              "feedback": "Your goal and uncertainty are enough to start a conversation. You can refine it as you go.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a007",
+              "role": "incorrect",
+              "feedback": "Give it some context about what you want to accomplish.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_2",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        },
+        {
+          "client_ref": "set_3",
+          "question_ref": "q_3",
+          "label": "Validation scenario 3",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a008",
+              "role": "incorrect",
+              "feedback": "The goal, audience, and tone are unclear.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a009",
+              "role": "incorrect",
+              "feedback": "\u201cPerfect\u201d does not tell it what this gathering needs.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a010",
+              "role": "strong",
+              "feedback": "Audience, occasion, tone, length, and placeholders give the draft a useful shape without inventing missing facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a011",
+              "role": "incorrect",
+              "feedback": "Missing logistics should be supplied or marked as placeholders, not fabricated.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_4",
+          "question_ref": "q_4",
+          "label": "Validation scenario 4",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a012",
+              "role": "incorrect",
+              "feedback": "Fluency and confidence are not evidence that a claim is true.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a013",
+              "role": "strong",
+              "feedback": "Confirm that the source exists, is suitable, and actually says what the answer claims.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a014",
+              "role": "incorrect",
+              "feedback": "A change in tone does not provide independent evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a015",
+              "role": "incorrect",
+              "feedback": "Different systems can repeat the same mistake. Check suitable evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_5",
+          "question_ref": "q_5",
+          "label": "Validation scenario 5",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a016",
+              "role": "incorrect",
+              "feedback": "Convenience does not establish permission to disclose customer information.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a017",
+              "role": "incorrect",
+              "feedback": "A conversational request does not establish how the service stores or uses uploaded data.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a018",
+              "role": "strong",
+              "feedback": "Follow your organization's information rules. Remove identifying details where appropriate; removing names alone may not make a document safe to share.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a019",
+              "role": "incorrect",
+              "feedback": "The device in your hand does not determine the remote service's data handling.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_6",
+          "question_ref": "q_6",
+          "label": "Validation scenario 6",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a020",
+              "role": "incorrect",
+              "feedback": "You remain responsible for whether the message says what you intend.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "strong",
+              "feedback": "For example: \u201cMake this warmer, cut it in half, and lead with my request to reschedule.\u201d",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a022",
+              "role": "incorrect",
+              "feedback": "Clear feedback gives the next attempt better direction.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a023",
+              "role": "incorrect",
+              "feedback": "One poor draft can be a starting point for refinement rather than a final verdict.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_7",
+          "question_ref": "q_7",
+          "label": "Validation scenario 7",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a024",
+              "role": "incorrect",
+              "feedback": "Limited information cannot support a guaranteed diagnosis.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a025",
+              "role": "strong",
+              "feedback": "AI can help frame troubleshooting. Verify model-specific guidance and avoid hazardous work beyond your competence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a026",
+              "role": "incorrect",
+              "feedback": "A plausible instruction can be wrong or unsafe for your appliance.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_7",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        },
+        {
+          "client_ref": "set_8",
+          "question_ref": "q_8",
+          "label": "Validation scenario 8",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a027",
+              "role": "incorrect",
+              "feedback": "Technical execution and usefulness are different things.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "strong",
+              "feedback": "Describe the intended behavior, show a concrete example, and check the revised app against it.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a028",
+              "role": "incorrect",
+              "feedback": "More functionality may increase complexity without fixing the mismatch.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a029",
+              "role": "incorrect",
+              "feedback": "Evaluate whether the software solves the intended problem.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_9",
+          "question_ref": "q_9",
+          "label": "Validation scenario 9",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a030",
+              "role": "incorrect",
+              "feedback": "This is a useful response: it supplies constraints the next plan must respect.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a021",
+              "role": "incorrect",
+              "feedback": "This is also useful. The question asks for the least useful response, not the best one.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a031",
+              "role": "strong",
+              "feedback": "This is the least useful choice. An answer that ignores your constraints should be questioned and revised, not followed automatically.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a032",
+              "role": "incorrect",
+              "feedback": "This is useful evaluation of whether the plan fits your circumstances.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            }
+          ]
+        },
+        {
+          "client_ref": "set_10",
+          "question_ref": "q_10",
+          "label": "Validation scenario 10",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "connections": [
+            {
+              "answer_ref": "test_a033",
+              "role": "incorrect",
+              "feedback": "Once you share it, others may rely on it. Review it first.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a034",
+              "role": "strong",
+              "feedback": "Check facts, context, tone, permissions, and any sensitive information before sharing.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "test_a035",
+              "role": "incorrect",
+              "feedback": "The system cannot take over your responsibility for the material you choose to use.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              }
+            },
+            {
+              "answer_ref": "extra_10",
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment."
+            }
+          ]
+        }
+      ],
+      "unexpected": "reject"
+    }
+  }
+]

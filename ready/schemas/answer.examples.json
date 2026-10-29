@@ -1,0 +1,139 @@
+[
+  {
+    "name": "minimal_valid_record_input",
+    "valid": true,
+    "data": {
+      "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published"
+    }
+  },
+  {
+    "name": "complete_stored_record",
+    "valid": true,
+    "stored": true,
+    "data": {
+      "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "id": "1410eddc-b22c-4232-832a-0b491c4ee333",
+      "series_id": "1410eddc-b22c-4232-832a-0b491c4ee333",
+      "schema_version": 1,
+      "revision_number": 1,
+      "record_version": 1,
+      "created_at": "2026-10-28T12:00:00Z",
+      "created_by": "system:ready_builder",
+      "updated_at": "2026-10-28T12:00:00Z",
+      "updated_by": "system:ready_builder",
+      "source": "ready_system",
+      "is_archived": false,
+      "lifecycle_events": []
+    }
+  },
+  {
+    "name": "unknown_field",
+    "valid": false,
+    "data": {
+      "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "unexpected_field": "must be rejected"
+    }
+  },
+  {
+    "name": "missing_required_field",
+    "valid": false,
+    "data": {
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published"
+    }
+  }
+]

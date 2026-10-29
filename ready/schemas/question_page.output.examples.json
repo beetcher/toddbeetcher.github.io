@@ -1,0 +1,841 @@
+[
+  {
+    "name": "actual_complete_runtime_output",
+    "valid": true,
+    "data": {
+      "records": [
+        {
+          "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.625441Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.625441Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "An AI-generated project plan conflicts with your budget and deadline. Which response is the least useful?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.624804Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.624804Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI builds an app that runs, but it does not solve the problem you intended. What should you do next?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.624244Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.624244Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "A household appliance stops working. How could you use AI as an early resource?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "93787827-aee6-4744-a837-79282a096cc1",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.623748Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.623748Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "93787827-aee6-4744-a837-79282a096cc1",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI drafts an email that is too formal and misses your main point. What is the most productive next step?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.623269Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.623269Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You want help understanding a workplace document containing customer names and private account details. What should you do first?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.622770Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.622770Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI gives you a confident explanation and cites a source you have not opened. What should you do before relying on an important claim?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.622238Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.622238Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You want AI to draft an invitation to a neighborhood gathering. Which request gives it the most useful direction?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.621613Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.621613Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You open an AI app and face a blank message box. You want help with a task but do not know how to begin. What is a useful first move?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.620893Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.620893Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.620404Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.620404Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        }
+      ],
+      "count": 10
+    }
+  },
+  {
+    "name": "unknown_output_field",
+    "valid": false,
+    "data": {
+      "records": [
+        {
+          "question_text": "AI helps you prepare a summary for a community group. Who is responsible for checking that the version you share is accurate and appropriate?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.625441Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.625441Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "An AI-generated project plan conflicts with your budget and deadline. Which response is the least useful?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.624804Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.624804Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI builds an app that runs, but it does not solve the problem you intended. What should you do next?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.624244Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.624244Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "A household appliance stops working. How could you use AI as an early resource?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "93787827-aee6-4744-a837-79282a096cc1",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.623748Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.623748Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "93787827-aee6-4744-a837-79282a096cc1",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI drafts an email that is too formal and misses your main point. What is the most productive next step?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.623269Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.623269Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You want help understanding a workplace document containing customer names and private account details. What should you do first?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.622770Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.622770Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "AI gives you a confident explanation and cites a source you have not opened. What should you do before relying on an important claim?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.622238Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.622238Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You want AI to draft an invitation to a neighborhood gathering. Which request gives it the most useful direction?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.621613Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.621613Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You open an AI app and face a blank message box. You want help with a task but do not know how to begin. What is a useful first move?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.620893Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.620893Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.620404Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.620404Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        }
+      ],
+      "count": 10,
+      "unexpected_output": true
+    }
+  }
+]

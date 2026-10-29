@@ -1,0 +1,519 @@
+[
+  {
+    "name": "minimal_valid_record_input",
+    "valid": true,
+    "data": {
+      "label": "Validation scenario 1",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "connections": [
+        {
+          "role": "strong",
+          "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "You can ask for help organizing the problem before you know the plan.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02"
+        }
+      ],
+      "question_id": "962389bc-0d06-43bb-b47a-917e19687f69"
+    }
+  },
+  {
+    "name": "complete_stored_record",
+    "valid": true,
+    "stored": true,
+    "data": {
+      "label": "Validation scenario 1",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "connections": [
+        {
+          "role": "strong",
+          "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "You can ask for help organizing the problem before you know the plan.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02"
+        }
+      ],
+      "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+      "id": "a9845457-6f0b-4346-91bc-7a03c5083a3d",
+      "series_id": "a9845457-6f0b-4346-91bc-7a03c5083a3d",
+      "schema_version": 1,
+      "revision_number": 1,
+      "record_version": 1,
+      "created_at": "2026-10-28T12:00:00Z",
+      "created_by": "system:ready_builder",
+      "updated_at": "2026-10-28T12:00:00Z",
+      "updated_by": "system:ready_builder",
+      "source": "ready_system",
+      "is_archived": false,
+      "lifecycle_events": []
+    }
+  },
+  {
+    "name": "unknown_field",
+    "valid": false,
+    "data": {
+      "label": "Validation scenario 1",
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "connections": [
+        {
+          "role": "strong",
+          "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "You can ask for help organizing the problem before you know the plan.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02"
+        }
+      ],
+      "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+      "unexpected_field": "must be rejected"
+    }
+  },
+  {
+    "name": "missing_required_field",
+    "valid": false,
+    "data": {
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "status": "published",
+      "connections": [
+        {
+          "role": "strong",
+          "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64"
+        },
+        {
+          "role": "incorrect",
+          "feedback": "You can ask for help organizing the problem before you know the plan.",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02"
+        }
+      ],
+      "question_id": "962389bc-0d06-43bb-b47a-917e19687f69"
+    }
+  }
+]

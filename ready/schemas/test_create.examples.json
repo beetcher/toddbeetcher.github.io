@@ -1,0 +1,109 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "set_ids": [
+        "64b81f66-635e-4f82-ab48-ea31abb24a15"
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "set_ids": [
+        "64b81f66-635e-4f82-ab48-ea31abb24a15"
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "unexpected": "reject"
+    }
+  },
+  {
+    "name": "person_id_not_on_test",
+    "valid": false,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "set_ids": [
+        "64b81f66-635e-4f82-ab48-ea31abb24a15"
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "person_id": "not_a_test_field"
+    }
+  }
+]

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>READY · Test workshop</title>
+  <link rel="stylesheet" href="/ready/style.css">
+  <script src="/ready/main.js" defer></script>
+</head>
+<body>
+  <header class="masthead"><a href="/ready/" class="brand">READY<span>Test workshop</span></a><span class="environment" id="environment">Not connected</span></header>
+  <main>
+    <section class="intro"><p class="eyebrow">From a useful question to a considered test</p><h1>Build tests.<br><em>Keep the evidence.</em></h1><p class="lead">Questions and answers are the atoms. Sets give them meaning. Tests preserve the arrangement. Results tell you what happened.</p></section>
+    <section class="connection card"><form id="connect-form"><label for="api-key">Super-admin API key</label><div class="inline"><input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="Enter your key for this session" required><button type="submit">Connect</button><button type="button" id="disconnect" class="quiet">Disconnect</button></div><p class="hint">Held in memory only. Never saved in this browser or embedded in the page.</p></form></section>
+    <div id="status" role="status" aria-live="polite"></div>
+    <nav class="tabs" aria-label="Workshop sections"><button data-tab="library" class="active" aria-current="page">01 · Library</button><button data-tab="builder">02 · Build a test</button><button data-tab="results">03 · Returned results</button><button data-tab="import">04 · Bulk import</button><button data-tab="guide">05 · Guide & schemas</button></nav>
+
+    <section id="panel-library" class="panel">
+      <div class="section-head"><div><p class="eyebrow">The reusable inventory</p><h2>Start with the atoms.</h2></div><button id="new-record">New record</button></div>
+      <div class="toolbar"><label>Show<select id="library-kind"><option value="questions">Questions</option><option value="answers">Answers</option><option value="sets">Question–answer sets</option></select></label><label class="check"><input id="show-archived" type="checkbox">Include archived</label><label class="check"><input id="show-history" type="checkbox">Include revisions</label><button id="refresh-library" class="secondary">Refresh</button></div>
+      <div class="split"><div id="library-list" class="record-list"><p class="empty">Connect to browse your inventory.</p></div>
+        <article class="card editor"><p class="eyebrow" id="editor-mode">New question</p><form id="record-form">
+          <label id="text-label">Question<textarea id="record-text" rows="3" required></textarea></label>
+          <label id="question-type-label">Format<select id="question-type"><option value="single_choice">Single choice</option><option value="multiple_choice">Multiple choice</option></select></label>
+          <label id="question-reference-label" hidden>Question atom<select id="question-reference"></select></label>
+          <div id="connections-section" hidden><div class="inline between"><h3>Answer connections</h3><button type="button" id="add-connection" class="quiet">+ Add answer</button></div><p class="hint">Correctness and teaching notes belong to this connection, not to the answer atom.</p><div id="connections"></div></div>
+          <div class="two"><label>Publication<select id="record-state"><option value="draft">Draft</option><option value="published">Published</option><option value="retired">Retired</option></select></label><label>Difficulty<select id="record-difficulty"><option value="">Unspecified</option><option>introductory</option><option>basic</option><option>intermediate</option><option>advanced</option><option>expert</option></select></label></div>
+          <label>Description<textarea id="record-description" rows="2"></textarea></label>
+          <div class="two"><label>Topics<input id="record-topics" placeholder="Comma-separated"></label><label>Audiences<input id="record-audiences" placeholder="Comma-separated"></label></div>
+          <label>Learning objectives<input id="record-objectives" placeholder="Comma-separated"></label><label>Tags<input id="record-tags" placeholder="Comma-separated"></label>
+          <div class="two"><label>Author<input id="record-author" required></label><label>Authorship<select id="record-authorship"><option value="human">Human</option><option value="system">System</option><option value="mixed">Mixed</option></select></label></div>
+          <label>Source/reference<input id="record-source" required></label><label>Editorial notes<textarea id="record-notes" rows="2"></textarea></label>
+          <div class="inline"><button type="submit" id="save-record">Save record</button><button type="button" id="archive-record" class="quiet" hidden>Archive</button></div><p class="hint">Editing content creates a preserved revision. Archiving changes availability; it never destroys evidence.</p>
+        </form></article>
+      </div>
+    </section>
+
+    <section id="panel-builder" class="panel" hidden>
+      <div class="section-head"><div><p class="eyebrow">An authored arrangement</p><h2>Assemble deliberately.</h2></div><button id="refresh-tests" class="secondary">Refresh tests</button></div>
+      <div class="split"><div>
+        <form id="selection-form" class="card"><h3>Find sets</h3><div class="two"><label>Number of sets<input id="selection-count" type="number" min="1" max="50" value="5"></label><label>Selection<select id="selection-mode"><option value="random">Random</option><option value="ordered">Ordered</option></select></label></div>
+          <label>Topics<input id="selection-topics" placeholder="Any of these topics"></label><label>Audiences<input id="selection-audiences" placeholder="Any of these audiences"></label><label>Learning objectives<input id="selection-objectives"></label><label>Required tags<input id="selection-tags" placeholder="All of these tags"></label><label>Difficulty<select id="selection-difficulty"><option value="">Any</option><option>introductory</option><option>basic</option><option>intermediate</option><option>advanced</option><option>expert</option></select></label><button type="submit">Find & add to working list</button>
+        </form>
+        <div id="shortfall" class="notice" hidden><h3>Here is what we found.</h3><p id="shortfall-summary"></p><div class="inline"><button id="start-over" class="secondary">Start over</button><button id="add-more" class="secondary">Add to this</button><button id="cancel-selection" class="quiet">Cancel selection</button></div><p class="hint">Nothing is finalized automatically. Your found list stays in place until you choose otherwise.</p></div>
+        <div class="card"><h3>Preserved tests</h3><label class="check"><input id="tests-archived" type="checkbox">Include archived tests</label><div id="test-list" class="record-list"></div></div>
+      </div><div>
+        <div class="card"><div class="inline between"><h3>Working assembly <span id="working-count" class="pill">0</span></h3><button id="clear-working" class="quiet">Clear</button></div><div id="working-list"><p class="empty">Find sets or add one from the library.</p></div>
+          <label class="check"><input type="checkbox" id="allow-duplicates">Allow duplicate pairs</label><div class="inline"><label>Number of pairs<input id="duplicate-pairs" type="number" min="0" max="25" value="0" disabled></label><button id="arrange-pairs" class="secondary" disabled>Arrange pairs</button></div><p class="hint">One pair is exactly two of the same question. Two pairs use four positions. No triplets.</p>
+        </div>
+        <form id="test-form" class="card"><h3>Freeze an identified test</h3><label>Test name<input id="test-name" required placeholder="AI readiness · first discoveries"></label><label>Author<input id="test-author" required></label><label>Source/reference<input id="test-source" required value="Authored in READY test workshop"></label><label>Topics<input id="test-topics"></label><label>Tags<input id="test-tags"></label><button type="submit">Create immutable test</button><p class="hint">Changing its content means a different test with a new ID. This does not start a participant session.</p></form>
+        <article class="card" id="test-detail" hidden><div class="inline between"><h3 id="test-detail-title"></h3><button id="download-test" class="secondary">Download test JSON</button></div><button id="archive-test" class="quiet">Archive test</button><pre id="test-json"></pre></article>
+      </div></div>
+    </section>
+
+    <section id="panel-results" class="panel" hidden>
+      <div class="section-head"><div><p class="eyebrow">Evidence returned by a caller</p><h2>Keep both sides of the story.</h2></div><button id="refresh-results" class="secondary">Refresh</button></div>
+      <p class="section-note">The caller administers the test and sends results here. READY calculates its own score, preserves the caller's score and explains differences.</p>
+      <div class="split"><div><form id="result-form" class="card"><h3>Submit a returned result</h3><label>Result JSON file<input id="result-file" type="file" accept=".json,application/json"></label><label>Submission JSON<textarea id="result-input" class="code" rows="13" spellcheck="false" placeholder='{"test_id":"…","responses":[{"item_id":"…","answer_ids":["…"]}],"returned_score":{"points_earned":1,"points_possible":5},"idempotency_key":"…"}' required></textarea></label><div class="inline"><button type="submit">Record & calculate</button><button id="new-result-key" type="button" class="quiet">New submission key</button></div><p class="hint">Person ID is optional, only here on results. If supplied, include test_taken_at. A same-key retry is not another result; genuine updates preserve a linked history.</p></form>
+        <div class="card"><h3>Recorded results</h3><label>Filter by caller's person ID<input id="result-person"></label><label class="check"><input id="result-history" type="checkbox">Include all updated versions</label><div id="result-list" class="record-list"></div></div>
+      </div><article class="card" id="result-detail"><p class="empty">Select or submit a result.</p></article></div>
+    </section>
+
+    <section id="panel-import" class="panel" hidden><div class="section-head"><div><p class="eyebrow">Native atoms, meaningful connections</p><h2>Bring a well-shaped inventory.</h2></div><button id="load-seed" class="secondary">Load builder validation seed</button></div><p class="section-note">JSON imports use a documented schema with local references. Preview checks the complete batch without storing it. Commit preserves the original authorship and records the import provenance.</p><div class="split"><form id="import-form" class="card"><label>JSON file<input id="import-file" type="file" accept=".json,application/json"></label><label>Import JSON<textarea id="import-input" rows="20" class="code" spellcheck="false" required></textarea></label><div class="inline"><button type="submit">Validate without saving</button><button type="button" id="commit-import" class="secondary">Commit this import</button></div><p class="hint">Seed records are tagged builder_created, system_validation and ready_seed_01. They are educational examples, not an official assessment.</p></form><article class="card"><h3>Import report</h3><pre id="import-report">No import checked yet.</pre></article></div></section>
+
+    <section id="panel-guide" class="panel" hidden><p class="eyebrow">What READY does</p><h2>A service, not a test player.</h2><div class="three"><article class="card"><h3>1. Author content</h3><p>Keep questions and answers independent. Put correctness, ambiguity and explanations on the connection inside a set.</p></article><article class="card"><h3>2. Deliver tests</h3><p>Freeze an assembly with an ID. Your caller presents it however it chooses. Archive old tests; never erase them.</p></article><article class="card"><h3>3. Record evidence</h3><p>Return selections and a score. Keep both returned and calculated scores, diagnostic detail and every linked update.</p></article></div><article class="card"><h3>Schema reference</h3><select id="schema-select"><option value="">Connect to load schemas</option></select><pre id="schema-json"></pre></article><p class="hint">Future work: written answers, AI interpretation, differentiated API roles and participant applications. These are not live READY administration features.</p></section>
+  </main><footer>READY · Make AI useful. Make people capable.<span>Content → sets → tests → returned results</span></footer>
+</body>
+</html>

@@ -1,0 +1,830 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "audiences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "difficulty": {
+          "enum": [
+            "introductory",
+            "basic",
+            "intermediate",
+            "advanced",
+            "expert"
+          ]
+        },
+        "learning_objectives": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "origin": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "authorship_kind": {
+          "enum": [
+            "human",
+            "system",
+            "mixed"
+          ]
+        },
+        "source_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8000
+        }
+      },
+      "required": [
+        "author",
+        "authorship_kind",
+        "source_reference"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "lifecycle_event": {
+      "type": "object",
+      "properties": {
+        "at": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^(web|system|user):[A-Za-z0-9_.-]{1,90}$"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "at",
+        "by",
+        "is_archived",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "score_input": {
+      "type": "object",
+      "properties": {
+        "points_earned": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "points_possible": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000
+        },
+        "grading_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "points_earned",
+        "points_possible"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "connection": {
+      "type": "object",
+      "properties": {
+        "answer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "role": {
+          "enum": [
+            "strong",
+            "ambiguous",
+            "incorrect"
+          ]
+        },
+        "feedback": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      },
+      "required": [
+        "answer_id",
+        "role"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "connection_import": {
+      "type": "object",
+      "properties": {
+        "answer_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "role": {
+          "enum": [
+            "strong",
+            "ambiguous",
+            "incorrect"
+          ]
+        },
+        "feedback": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        }
+      },
+      "required": [
+        "answer_ref",
+        "role"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "frozen_answer": {
+      "type": "object",
+      "properties": {
+        "answer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "answer_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000
+        },
+        "answer_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "role": {
+          "enum": [
+            "strong",
+            "ambiguous",
+            "incorrect"
+          ]
+        },
+        "feedback": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "answer_metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "answer_origin": {
+          "$ref": "#/$defs/public_origin"
+        }
+      },
+      "required": [
+        "answer_id",
+        "answer_revision",
+        "answer_text",
+        "role"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "frozen_item": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "set_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "set_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000
+        },
+        "question_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "question_revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000000
+        },
+        "question_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "question_type": {
+          "enum": [
+            "single_choice",
+            "multiple_choice"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/frozen_answer"
+          },
+          "maxItems": 20,
+          "minItems": 2
+        },
+        "question_metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "set_metadata": {
+          "$ref": "#/$defs/metadata"
+        },
+        "question_origin": {
+          "$ref": "#/$defs/public_origin"
+        },
+        "set_origin": {
+          "$ref": "#/$defs/public_origin"
+        }
+      },
+      "required": [
+        "item_id",
+        "set_id",
+        "set_revision",
+        "question_id",
+        "question_revision",
+        "question_text",
+        "question_type",
+        "answers"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "response_input": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "answer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 36,
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "maxItems": 20,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "item_id",
+        "answer_ids"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "item_result": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 36,
+          "format": "uuid",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "credit": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ambiguous_answer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 36,
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "selected_answer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 36,
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "feedback": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "item_id",
+        "credit",
+        "ambiguous_answer_ids",
+        "selected_answer_ids"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "calculated_score": {
+      "type": "object",
+      "properties": {
+        "points_earned": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "points_possible": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1000000
+        },
+        "percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "policy_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "points_earned",
+        "points_possible",
+        "percentage",
+        "policy_version"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "score_difference": {
+      "type": "object",
+      "properties": {
+        "is_different": {
+          "type": "boolean"
+        },
+        "same_denominator": {
+          "type": "boolean"
+        },
+        "percentage_point_difference": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "points_difference": {
+          "type": "number",
+          "minimum": -1000000,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "is_different",
+        "same_denominator",
+        "percentage_point_difference"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "public_origin": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "authorship_kind": {
+          "enum": [
+            "human",
+            "system",
+            "mixed"
+          ]
+        },
+        "source_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "author",
+        "authorship_kind",
+        "source_reference"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 36,
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "readOnly": true
+    },
+    "series_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 36,
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "readOnly": true
+    },
+    "previous_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 36,
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "readOnly": true
+    },
+    "revision_number": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000,
+      "readOnly": true
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000,
+      "readOnly": true
+    },
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "readOnly": true
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "format": "date-time",
+      "pattern": "Z$",
+      "readOnly": true
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^(web|system|user):[A-Za-z0-9_.-]{1,90}$",
+      "readOnly": true
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "format": "date-time",
+      "pattern": "Z$",
+      "readOnly": true
+    },
+    "updated_by": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^(web|system|user):[A-Za-z0-9_.-]{1,90}$",
+      "readOnly": true
+    },
+    "source": {
+      "enum": [
+        "ready_admin",
+        "ready_import",
+        "ready_system",
+        "ready_results"
+      ],
+      "readOnly": true
+    },
+    "is_archived": {
+      "type": "boolean",
+      "readOnly": true
+    },
+    "lifecycle_events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lifecycle_event"
+      },
+      "maxItems": 1000,
+      "readOnly": true
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "origin": {
+      "$ref": "#/$defs/origin"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/frozen_item"
+      },
+      "maxItems": 50,
+      "minItems": 1
+    },
+    "allow_duplicates": {
+      "type": "boolean"
+    },
+    "duplicate_pair_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 25
+    },
+    "scoring_policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "selection_summary": {
+      "type": "object",
+      "properties": {
+        "requested_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "selected_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "mode": {
+          "enum": [
+            "explicit",
+            "ordered",
+            "random"
+          ]
+        }
+      },
+      "required": [
+        "requested_count",
+        "selected_count",
+        "mode"
+      ],
+      "additionalProperties": false,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    "successor_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 36,
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "readOnly": true,
+      "description": "Server link to next preserved revision; chain concurrency guard."
+    },
+    "operation_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 36,
+      "format": "uuid",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "readOnly": true,
+      "description": "Server idempotency receipt key for content/test creation."
+    },
+    "request_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "maxLength": 64,
+      "readOnly": true
+    },
+    "import_receipt": {
+      "type": "object",
+      "readOnly": true,
+      "additionalProperties": false,
+      "properties": {
+        "mapping": {
+          "type": "array",
+          "maxItems": 600,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "client_ref": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "type": {
+                "enum": [
+                  "question",
+                  "answer",
+                  "question_answer_set"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36,
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            },
+            "required": [
+              "client_ref",
+              "type",
+              "id"
+            ]
+          }
+        }
+      },
+      "required": [
+        "mapping"
+      ]
+    }
+  },
+  "required": [
+    "allow_duplicates",
+    "created_at",
+    "created_by",
+    "duplicate_pair_count",
+    "id",
+    "is_archived",
+    "items",
+    "label",
+    "lifecycle_events",
+    "metadata",
+    "origin",
+    "record_version",
+    "revision_number",
+    "schema_version",
+    "scoring_policy_version",
+    "selection_summary",
+    "series_id",
+    "source",
+    "updated_at",
+    "updated_by"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,619 @@
+[
+  {
+    "name": "actual_complete_runtime_output",
+    "valid": true,
+    "data": {
+      "dry_run": false,
+      "is_valid": true,
+      "created": [
+        {
+          "client_ref": "test_a001",
+          "type": "answer",
+          "id": "dfcba6c4-1423-4225-ae59-92da71806605"
+        },
+        {
+          "client_ref": "test_a002",
+          "type": "answer",
+          "id": "d7535d50-3ea2-4fa8-98cc-187c28c1ff45"
+        },
+        {
+          "client_ref": "test_a003",
+          "type": "answer",
+          "id": "04974a40-e685-41b3-ac5d-a8151fef1ded"
+        },
+        {
+          "client_ref": "test_a004",
+          "type": "answer",
+          "id": "74e50de7-7163-4529-8540-09fec0dfce6f"
+        },
+        {
+          "client_ref": "test_a005",
+          "type": "answer",
+          "id": "7c0d96db-2f21-483c-b4bd-dcc288318dad"
+        },
+        {
+          "client_ref": "test_a006",
+          "type": "answer",
+          "id": "2af7d23b-ba38-42ab-bdcf-d74e8322b2be"
+        },
+        {
+          "client_ref": "test_a007",
+          "type": "answer",
+          "id": "a5b331d2-473c-47a6-89e1-4b290dbe42b3"
+        },
+        {
+          "client_ref": "extra_2",
+          "type": "answer",
+          "id": "9c57b9d2-66d4-4380-a4b5-eec3e08fcb80"
+        },
+        {
+          "client_ref": "test_a008",
+          "type": "answer",
+          "id": "65ba32f8-c5f3-4561-8456-418e25fc343e"
+        },
+        {
+          "client_ref": "test_a009",
+          "type": "answer",
+          "id": "ed04cd4f-3951-406f-b5d9-2f724a0d01b5"
+        },
+        {
+          "client_ref": "test_a010",
+          "type": "answer",
+          "id": "53a7d06c-59a4-44c2-8723-f06f207ce3c2"
+        },
+        {
+          "client_ref": "test_a011",
+          "type": "answer",
+          "id": "a983fb8c-6703-48bf-b18e-ddea0adb666f"
+        },
+        {
+          "client_ref": "test_a012",
+          "type": "answer",
+          "id": "668b08df-89b3-40a8-8540-39d9dc6d1eb6"
+        },
+        {
+          "client_ref": "test_a013",
+          "type": "answer",
+          "id": "3ea0fbd3-7efd-42c4-9ad7-23a7c6543e0b"
+        },
+        {
+          "client_ref": "test_a014",
+          "type": "answer",
+          "id": "7e2576f4-b888-4fa8-9438-e16c8e3a8b2d"
+        },
+        {
+          "client_ref": "test_a015",
+          "type": "answer",
+          "id": "cd609b37-5df2-4a80-be52-27fab9092547"
+        },
+        {
+          "client_ref": "test_a016",
+          "type": "answer",
+          "id": "940955bc-cd5f-446b-9043-092490a7cd35"
+        },
+        {
+          "client_ref": "test_a017",
+          "type": "answer",
+          "id": "a5c4fe1f-5839-449f-856e-db4eeb53950a"
+        },
+        {
+          "client_ref": "test_a018",
+          "type": "answer",
+          "id": "e666cad3-643b-435e-b55a-1ad6f534e60f"
+        },
+        {
+          "client_ref": "test_a019",
+          "type": "answer",
+          "id": "a6d5b6ff-4be9-4b2d-a071-7925734bcfdb"
+        },
+        {
+          "client_ref": "test_a020",
+          "type": "answer",
+          "id": "68c2568b-261f-4459-b1ac-4d1ef13d5bd7"
+        },
+        {
+          "client_ref": "test_a021",
+          "type": "answer",
+          "id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+        },
+        {
+          "client_ref": "test_a022",
+          "type": "answer",
+          "id": "bf1f72b5-a72e-409c-a7c3-fbcc986dd0ba"
+        },
+        {
+          "client_ref": "test_a023",
+          "type": "answer",
+          "id": "3c250b9b-4b32-4ca3-86b7-ad061ff9bed5"
+        },
+        {
+          "client_ref": "test_a024",
+          "type": "answer",
+          "id": "9c2aca96-f75e-453e-9a49-cb36b64cdadf"
+        },
+        {
+          "client_ref": "test_a025",
+          "type": "answer",
+          "id": "bda1b335-dc24-44b6-aa40-322b947583c5"
+        },
+        {
+          "client_ref": "test_a026",
+          "type": "answer",
+          "id": "5aed6b10-b0ea-4bd1-b569-312d9935a16d"
+        },
+        {
+          "client_ref": "extra_7",
+          "type": "answer",
+          "id": "4bf95478-a2c0-4755-91e1-7d46a618acc4"
+        },
+        {
+          "client_ref": "test_a027",
+          "type": "answer",
+          "id": "f31d60a5-0cad-4aed-a3ac-a020c5891e58"
+        },
+        {
+          "client_ref": "test_a028",
+          "type": "answer",
+          "id": "a118ccb3-986d-4b2d-a775-4f1365252bfc"
+        },
+        {
+          "client_ref": "test_a029",
+          "type": "answer",
+          "id": "970f950a-402f-48e3-a566-1110966b8318"
+        },
+        {
+          "client_ref": "test_a030",
+          "type": "answer",
+          "id": "153eec0c-b198-417f-ae02-dcf18698e620"
+        },
+        {
+          "client_ref": "test_a031",
+          "type": "answer",
+          "id": "fcfcb65c-d884-421f-87f0-890a07788ad7"
+        },
+        {
+          "client_ref": "test_a032",
+          "type": "answer",
+          "id": "18c55cfe-3011-4e53-967a-8b51eabd11ea"
+        },
+        {
+          "client_ref": "test_a033",
+          "type": "answer",
+          "id": "53c14f93-05f7-40a0-bcb8-8b29228403bc"
+        },
+        {
+          "client_ref": "test_a034",
+          "type": "answer",
+          "id": "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+        },
+        {
+          "client_ref": "test_a035",
+          "type": "answer",
+          "id": "9a3b32f3-3731-472e-889e-e5d41ff9b49a"
+        },
+        {
+          "client_ref": "extra_10",
+          "type": "answer",
+          "id": "06e9c73a-ecec-458e-9178-a3b0f22d5e55"
+        },
+        {
+          "client_ref": "q_1",
+          "type": "question",
+          "id": "6f3b66d0-111e-47e5-b179-af2bb718a868"
+        },
+        {
+          "client_ref": "q_2",
+          "type": "question",
+          "id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a"
+        },
+        {
+          "client_ref": "q_3",
+          "type": "question",
+          "id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602"
+        },
+        {
+          "client_ref": "q_4",
+          "type": "question",
+          "id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1"
+        },
+        {
+          "client_ref": "q_5",
+          "type": "question",
+          "id": "6b5b4859-a989-409d-86dd-b7f520b4deeb"
+        },
+        {
+          "client_ref": "q_6",
+          "type": "question",
+          "id": "22476e27-942f-48df-95d3-3e195e9a553a"
+        },
+        {
+          "client_ref": "q_7",
+          "type": "question",
+          "id": "93787827-aee6-4744-a837-79282a096cc1"
+        },
+        {
+          "client_ref": "q_8",
+          "type": "question",
+          "id": "edea1f66-2f21-4208-aca8-076e366a5931"
+        },
+        {
+          "client_ref": "q_9",
+          "type": "question",
+          "id": "f8251505-c47a-4797-8080-bb83b4ca870c"
+        },
+        {
+          "client_ref": "q_10",
+          "type": "question",
+          "id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7"
+        },
+        {
+          "client_ref": "set_1",
+          "type": "question_answer_set",
+          "id": "60092904-9fc5-47ec-881b-fde50a2ccf30"
+        },
+        {
+          "client_ref": "set_2",
+          "type": "question_answer_set",
+          "id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0"
+        },
+        {
+          "client_ref": "set_3",
+          "type": "question_answer_set",
+          "id": "7e232d4b-97cc-4607-a2f7-033e073a04df"
+        },
+        {
+          "client_ref": "set_4",
+          "type": "question_answer_set",
+          "id": "cfb605e1-8348-4278-9817-62472438892c"
+        },
+        {
+          "client_ref": "set_5",
+          "type": "question_answer_set",
+          "id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0"
+        },
+        {
+          "client_ref": "set_6",
+          "type": "question_answer_set",
+          "id": "79090bcd-4376-4a18-9f8c-559a5550a29d"
+        },
+        {
+          "client_ref": "set_7",
+          "type": "question_answer_set",
+          "id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc"
+        },
+        {
+          "client_ref": "set_8",
+          "type": "question_answer_set",
+          "id": "be363f1f-774c-4071-b6d5-06a53615d8f5"
+        },
+        {
+          "client_ref": "set_9",
+          "type": "question_answer_set",
+          "id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259"
+        },
+        {
+          "client_ref": "set_10",
+          "type": "question_answer_set",
+          "id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3"
+        }
+      ],
+      "replayed": false
+    }
+  },
+  {
+    "name": "unknown_output_field",
+    "valid": false,
+    "data": {
+      "dry_run": false,
+      "is_valid": true,
+      "created": [
+        {
+          "client_ref": "test_a001",
+          "type": "answer",
+          "id": "dfcba6c4-1423-4225-ae59-92da71806605"
+        },
+        {
+          "client_ref": "test_a002",
+          "type": "answer",
+          "id": "d7535d50-3ea2-4fa8-98cc-187c28c1ff45"
+        },
+        {
+          "client_ref": "test_a003",
+          "type": "answer",
+          "id": "04974a40-e685-41b3-ac5d-a8151fef1ded"
+        },
+        {
+          "client_ref": "test_a004",
+          "type": "answer",
+          "id": "74e50de7-7163-4529-8540-09fec0dfce6f"
+        },
+        {
+          "client_ref": "test_a005",
+          "type": "answer",
+          "id": "7c0d96db-2f21-483c-b4bd-dcc288318dad"
+        },
+        {
+          "client_ref": "test_a006",
+          "type": "answer",
+          "id": "2af7d23b-ba38-42ab-bdcf-d74e8322b2be"
+        },
+        {
+          "client_ref": "test_a007",
+          "type": "answer",
+          "id": "a5b331d2-473c-47a6-89e1-4b290dbe42b3"
+        },
+        {
+          "client_ref": "extra_2",
+          "type": "answer",
+          "id": "9c57b9d2-66d4-4380-a4b5-eec3e08fcb80"
+        },
+        {
+          "client_ref": "test_a008",
+          "type": "answer",
+          "id": "65ba32f8-c5f3-4561-8456-418e25fc343e"
+        },
+        {
+          "client_ref": "test_a009",
+          "type": "answer",
+          "id": "ed04cd4f-3951-406f-b5d9-2f724a0d01b5"
+        },
+        {
+          "client_ref": "test_a010",
+          "type": "answer",
+          "id": "53a7d06c-59a4-44c2-8723-f06f207ce3c2"
+        },
+        {
+          "client_ref": "test_a011",
+          "type": "answer",
+          "id": "a983fb8c-6703-48bf-b18e-ddea0adb666f"
+        },
+        {
+          "client_ref": "test_a012",
+          "type": "answer",
+          "id": "668b08df-89b3-40a8-8540-39d9dc6d1eb6"
+        },
+        {
+          "client_ref": "test_a013",
+          "type": "answer",
+          "id": "3ea0fbd3-7efd-42c4-9ad7-23a7c6543e0b"
+        },
+        {
+          "client_ref": "test_a014",
+          "type": "answer",
+          "id": "7e2576f4-b888-4fa8-9438-e16c8e3a8b2d"
+        },
+        {
+          "client_ref": "test_a015",
+          "type": "answer",
+          "id": "cd609b37-5df2-4a80-be52-27fab9092547"
+        },
+        {
+          "client_ref": "test_a016",
+          "type": "answer",
+          "id": "940955bc-cd5f-446b-9043-092490a7cd35"
+        },
+        {
+          "client_ref": "test_a017",
+          "type": "answer",
+          "id": "a5c4fe1f-5839-449f-856e-db4eeb53950a"
+        },
+        {
+          "client_ref": "test_a018",
+          "type": "answer",
+          "id": "e666cad3-643b-435e-b55a-1ad6f534e60f"
+        },
+        {
+          "client_ref": "test_a019",
+          "type": "answer",
+          "id": "a6d5b6ff-4be9-4b2d-a071-7925734bcfdb"
+        },
+        {
+          "client_ref": "test_a020",
+          "type": "answer",
+          "id": "68c2568b-261f-4459-b1ac-4d1ef13d5bd7"
+        },
+        {
+          "client_ref": "test_a021",
+          "type": "answer",
+          "id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+        },
+        {
+          "client_ref": "test_a022",
+          "type": "answer",
+          "id": "bf1f72b5-a72e-409c-a7c3-fbcc986dd0ba"
+        },
+        {
+          "client_ref": "test_a023",
+          "type": "answer",
+          "id": "3c250b9b-4b32-4ca3-86b7-ad061ff9bed5"
+        },
+        {
+          "client_ref": "test_a024",
+          "type": "answer",
+          "id": "9c2aca96-f75e-453e-9a49-cb36b64cdadf"
+        },
+        {
+          "client_ref": "test_a025",
+          "type": "answer",
+          "id": "bda1b335-dc24-44b6-aa40-322b947583c5"
+        },
+        {
+          "client_ref": "test_a026",
+          "type": "answer",
+          "id": "5aed6b10-b0ea-4bd1-b569-312d9935a16d"
+        },
+        {
+          "client_ref": "extra_7",
+          "type": "answer",
+          "id": "4bf95478-a2c0-4755-91e1-7d46a618acc4"
+        },
+        {
+          "client_ref": "test_a027",
+          "type": "answer",
+          "id": "f31d60a5-0cad-4aed-a3ac-a020c5891e58"
+        },
+        {
+          "client_ref": "test_a028",
+          "type": "answer",
+          "id": "a118ccb3-986d-4b2d-a775-4f1365252bfc"
+        },
+        {
+          "client_ref": "test_a029",
+          "type": "answer",
+          "id": "970f950a-402f-48e3-a566-1110966b8318"
+        },
+        {
+          "client_ref": "test_a030",
+          "type": "answer",
+          "id": "153eec0c-b198-417f-ae02-dcf18698e620"
+        },
+        {
+          "client_ref": "test_a031",
+          "type": "answer",
+          "id": "fcfcb65c-d884-421f-87f0-890a07788ad7"
+        },
+        {
+          "client_ref": "test_a032",
+          "type": "answer",
+          "id": "18c55cfe-3011-4e53-967a-8b51eabd11ea"
+        },
+        {
+          "client_ref": "test_a033",
+          "type": "answer",
+          "id": "53c14f93-05f7-40a0-bcb8-8b29228403bc"
+        },
+        {
+          "client_ref": "test_a034",
+          "type": "answer",
+          "id": "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+        },
+        {
+          "client_ref": "test_a035",
+          "type": "answer",
+          "id": "9a3b32f3-3731-472e-889e-e5d41ff9b49a"
+        },
+        {
+          "client_ref": "extra_10",
+          "type": "answer",
+          "id": "06e9c73a-ecec-458e-9178-a3b0f22d5e55"
+        },
+        {
+          "client_ref": "q_1",
+          "type": "question",
+          "id": "6f3b66d0-111e-47e5-b179-af2bb718a868"
+        },
+        {
+          "client_ref": "q_2",
+          "type": "question",
+          "id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a"
+        },
+        {
+          "client_ref": "q_3",
+          "type": "question",
+          "id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602"
+        },
+        {
+          "client_ref": "q_4",
+          "type": "question",
+          "id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1"
+        },
+        {
+          "client_ref": "q_5",
+          "type": "question",
+          "id": "6b5b4859-a989-409d-86dd-b7f520b4deeb"
+        },
+        {
+          "client_ref": "q_6",
+          "type": "question",
+          "id": "22476e27-942f-48df-95d3-3e195e9a553a"
+        },
+        {
+          "client_ref": "q_7",
+          "type": "question",
+          "id": "93787827-aee6-4744-a837-79282a096cc1"
+        },
+        {
+          "client_ref": "q_8",
+          "type": "question",
+          "id": "edea1f66-2f21-4208-aca8-076e366a5931"
+        },
+        {
+          "client_ref": "q_9",
+          "type": "question",
+          "id": "f8251505-c47a-4797-8080-bb83b4ca870c"
+        },
+        {
+          "client_ref": "q_10",
+          "type": "question",
+          "id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7"
+        },
+        {
+          "client_ref": "set_1",
+          "type": "question_answer_set",
+          "id": "60092904-9fc5-47ec-881b-fde50a2ccf30"
+        },
+        {
+          "client_ref": "set_2",
+          "type": "question_answer_set",
+          "id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0"
+        },
+        {
+          "client_ref": "set_3",
+          "type": "question_answer_set",
+          "id": "7e232d4b-97cc-4607-a2f7-033e073a04df"
+        },
+        {
+          "client_ref": "set_4",
+          "type": "question_answer_set",
+          "id": "cfb605e1-8348-4278-9817-62472438892c"
+        },
+        {
+          "client_ref": "set_5",
+          "type": "question_answer_set",
+          "id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0"
+        },
+        {
+          "client_ref": "set_6",
+          "type": "question_answer_set",
+          "id": "79090bcd-4376-4a18-9f8c-559a5550a29d"
+        },
+        {
+          "client_ref": "set_7",
+          "type": "question_answer_set",
+          "id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc"
+        },
+        {
+          "client_ref": "set_8",
+          "type": "question_answer_set",
+          "id": "be363f1f-774c-4071-b6d5-06a53615d8f5"
+        },
+        {
+          "client_ref": "set_9",
+          "type": "question_answer_set",
+          "id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259"
+        },
+        {
+          "client_ref": "set_10",
+          "type": "question_answer_set",
+          "id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3"
+        }
+      ],
+      "replayed": false,
+      "unexpected_output": true
+    }
+  },
+  {
+    "name": "dry_run_no_write_output",
+    "valid": true,
+    "data": {
+      "dry_run": true,
+      "is_valid": true,
+      "replayed": false,
+      "would_create": {
+        "questions": 10,
+        "answers": 38,
+        "sets": 10
+      }
+    }
+  }
+]

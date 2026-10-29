@@ -1,0 +1,211 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "questions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "previous_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created_at",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "answers",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "previous_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created_at",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "previous_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created_at",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "previous_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created_at",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "attempts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "previous_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created_at",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "questions",
+      "fieldPath": "question_text",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "questions",
+      "fieldPath": "metadata",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "questions",
+      "fieldPath": "origin",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "questions",
+      "fieldPath": "lifecycle_events",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "questions",
+      "fieldPath": "import_receipt",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "answers",
+      "fieldPath": "answer_text",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "answers",
+      "fieldPath": "metadata",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "answers",
+      "fieldPath": "origin",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "answers",
+      "fieldPath": "lifecycle_events",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "answers",
+      "fieldPath": "import_receipt",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "fieldPath": "connections",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "fieldPath": "metadata",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "fieldPath": "origin",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "fieldPath": "lifecycle_events",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "question_answer_sets",
+      "fieldPath": "import_receipt",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "tests",
+      "fieldPath": "items",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "tests",
+      "fieldPath": "metadata",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "tests",
+      "fieldPath": "origin",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "tests",
+      "fieldPath": "lifecycle_events",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "tests",
+      "fieldPath": "import_receipt",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "responses",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "item_results",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "submitted_payload",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "metadata",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "origin",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "lifecycle_events",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "attempts",
+      "fieldPath": "import_receipt",
+      "indexes": []
+    }
+  ]
+}

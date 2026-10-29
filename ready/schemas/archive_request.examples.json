@@ -1,0 +1,21 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "is_archived": true,
+      "reason": "Decommission validation example",
+      "expected_record_version": 1
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "is_archived": true,
+      "reason": "Decommission validation example",
+      "expected_record_version": 1,
+      "unexpected": "reject"
+    }
+  }
+]

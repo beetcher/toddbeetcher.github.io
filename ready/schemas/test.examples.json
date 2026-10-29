@@ -1,0 +1,403 @@
+[
+  {
+    "name": "minimal_valid_record_input",
+    "valid": true,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "items": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "set_id": "72122f62-7dcf-41ec-b8d9-0752559f547d",
+          "set_revision": 1,
+          "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+          "question_revision": 1,
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answers": [
+            {
+              "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d",
+              "answer_revision": 1,
+              "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding."
+            },
+            {
+              "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc",
+              "answer_revision": 1,
+              "answer_text": "Make the final decision without asking the family.",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them."
+            },
+            {
+              "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64",
+              "answer_revision": 1,
+              "answer_text": "Guarantee that every suggested place is open and within budget.",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts."
+            },
+            {
+              "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02",
+              "answer_revision": 1,
+              "answer_text": "It cannot help unless you already have a complete itinerary.",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan."
+            }
+          ]
+        }
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "scoring_policy_version": "strong_soft_v1",
+      "selection_summary": {
+        "requested_count": 1,
+        "selected_count": 1,
+        "mode": "explicit"
+      }
+    }
+  },
+  {
+    "name": "complete_stored_record",
+    "valid": true,
+    "stored": true,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "items": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "set_id": "72122f62-7dcf-41ec-b8d9-0752559f547d",
+          "set_revision": 1,
+          "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+          "question_revision": 1,
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answers": [
+            {
+              "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d",
+              "answer_revision": 1,
+              "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding."
+            },
+            {
+              "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc",
+              "answer_revision": 1,
+              "answer_text": "Make the final decision without asking the family.",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them."
+            },
+            {
+              "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64",
+              "answer_revision": 1,
+              "answer_text": "Guarantee that every suggested place is open and within budget.",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts."
+            },
+            {
+              "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02",
+              "answer_revision": 1,
+              "answer_text": "It cannot help unless you already have a complete itinerary.",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan."
+            }
+          ]
+        }
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "scoring_policy_version": "strong_soft_v1",
+      "selection_summary": {
+        "requested_count": 1,
+        "selected_count": 1,
+        "mode": "explicit"
+      },
+      "id": "117a91ac-5959-4180-88c8-58bd7c9ef60d",
+      "series_id": "117a91ac-5959-4180-88c8-58bd7c9ef60d",
+      "schema_version": 1,
+      "revision_number": 1,
+      "record_version": 1,
+      "created_at": "2026-10-28T12:00:00Z",
+      "created_by": "system:ready_builder",
+      "updated_at": "2026-10-28T12:00:00Z",
+      "updated_by": "system:ready_builder",
+      "source": "ready_system",
+      "is_archived": false,
+      "lifecycle_events": []
+    }
+  },
+  {
+    "name": "unknown_field",
+    "valid": false,
+    "data": {
+      "label": "Validation test",
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "items": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "set_id": "72122f62-7dcf-41ec-b8d9-0752559f547d",
+          "set_revision": 1,
+          "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+          "question_revision": 1,
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answers": [
+            {
+              "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d",
+              "answer_revision": 1,
+              "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding."
+            },
+            {
+              "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc",
+              "answer_revision": 1,
+              "answer_text": "Make the final decision without asking the family.",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them."
+            },
+            {
+              "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64",
+              "answer_revision": 1,
+              "answer_text": "Guarantee that every suggested place is open and within budget.",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts."
+            },
+            {
+              "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02",
+              "answer_revision": 1,
+              "answer_text": "It cannot help unless you already have a complete itinerary.",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan."
+            }
+          ]
+        }
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "scoring_policy_version": "strong_soft_v1",
+      "selection_summary": {
+        "requested_count": 1,
+        "selected_count": 1,
+        "mode": "explicit"
+      },
+      "unexpected_field": "must be rejected"
+    }
+  },
+  {
+    "name": "missing_required_field",
+    "valid": false,
+    "data": {
+      "metadata": {
+        "topics": [
+          "ai_readiness"
+        ],
+        "audiences": [
+          "adult_beginner"
+        ],
+        "difficulty": "basic",
+        "learning_objectives": [
+          "recognize_and_check_ai_use"
+        ],
+        "tags": [
+          "builder_created",
+          "system_validation",
+          "ready_seed_01"
+        ],
+        "attributes": {}
+      },
+      "origin": {
+        "author": "READY builder",
+        "authorship_kind": "system",
+        "source_reference": "Original validation examples; not an official assessment"
+      },
+      "items": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "set_id": "72122f62-7dcf-41ec-b8d9-0752559f547d",
+          "set_revision": 1,
+          "question_id": "962389bc-0d06-43bb-b47a-917e19687f69",
+          "question_revision": 1,
+          "question_text": "You are planning a family outing with different interests, a limited budget, and only one afternoon. Where could AI help?",
+          "question_type": "single_choice",
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "answers": [
+            {
+              "answer_id": "2a6277c6-0e58-441f-9acc-3817aa531f2d",
+              "answer_revision": 1,
+              "answer_text": "Help organize the preferences and suggest a few plans to compare.",
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding."
+            },
+            {
+              "answer_id": "e131a13e-b30c-4ef8-9796-12b0abab8cfc",
+              "answer_revision": 1,
+              "answer_text": "Make the final decision without asking the family.",
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them."
+            },
+            {
+              "answer_id": "11b8b52b-8c25-4072-93aa-098df9403c64",
+              "answer_revision": 1,
+              "answer_text": "Guarantee that every suggested place is open and within budget.",
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts."
+            },
+            {
+              "answer_id": "18ff66f6-d138-4d1b-847c-b7eaf4c2ea02",
+              "answer_revision": 1,
+              "answer_text": "It cannot help unless you already have a complete itinerary.",
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan."
+            }
+          ]
+        }
+      ],
+      "allow_duplicates": false,
+      "duplicate_pair_count": 0,
+      "scoring_policy_version": "strong_soft_v1",
+      "selection_summary": {
+        "requested_count": 1,
+        "selected_count": 1,
+        "mode": "explicit"
+      }
+    }
+  }
+]

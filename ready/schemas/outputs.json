@@ -1,0 +1,19 @@
+{
+  "outputs": {
+    "question_record": "question_record.output.schema.json",
+    "answer_record": "answer_record.output.schema.json",
+    "question_answer_set_record": "question_answer_set_record.output.schema.json",
+    "test_record": "test_record.output.schema.json",
+    "attempt_record": "attempt_record.output.schema.json",
+    "set_detail": "set_detail.output.schema.json",
+    "result_detail": "result_detail.output.schema.json",
+    "question_page": "question_page.output.schema.json",
+    "answer_page": "answer_page.output.schema.json",
+    "question_answer_set_page": "question_answer_set_page.output.schema.json",
+    "test_page": "test_page.output.schema.json",
+    "attempt_page": "attempt_page.output.schema.json",
+    "relationship_page": "relationship_page.output.schema.json",
+    "selection_output": "selection_output.output.schema.json",
+    "import_output": "import_output.output.schema.json"
+  }
+}

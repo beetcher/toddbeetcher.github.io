@@ -1,0 +1,17 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "answer_text": "Revised answer"
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "answer_text": "Revised answer",
+      "unexpected": "reject"
+    }
+  }
+]

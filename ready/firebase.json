@@ -1,0 +1,60 @@
+{
+  "functions": [
+    {
+      "source": ".firebase-build",
+      "codebase": "ready",
+      "runtime": "python312"
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5201
+    },
+    "firestore": {
+      "port": 8280
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4200
+    },
+    "singleProjectMode": true,
+    "hosting": {
+      "port": 5300
+    }
+  },
+  "hosting": {
+    "public": "hosting",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/ready/",
+        "type": 302
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/ready{,/**}",
+        "function": {
+          "functionId": "ready_api",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/v1{,/**}",
+        "function": {
+          "functionId": "ready_api",
+          "region": "us-central1"
+        }
+      }
+    ]
+  }
+}

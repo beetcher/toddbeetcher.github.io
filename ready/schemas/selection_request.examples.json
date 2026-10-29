@@ -1,0 +1,40 @@
+[
+  {
+    "name": "valid_request",
+    "valid": true,
+    "data": {
+      "target": "sets",
+      "mode": "random",
+      "count": 5,
+      "criteria": {
+        "topics": [
+          "ai_readiness"
+        ]
+      }
+    }
+  },
+  {
+    "name": "unknown_field_rejected",
+    "valid": false,
+    "data": {
+      "target": "sets",
+      "mode": "random",
+      "count": 5,
+      "criteria": {
+        "topics": [
+          "ai_readiness"
+        ]
+      },
+      "unexpected": "reject"
+    }
+  },
+  {
+    "name": "explicit_requires_ids_not_count",
+    "valid": false,
+    "data": {
+      "target": "sets",
+      "mode": "explicit",
+      "count": 2
+    }
+  }
+]

@@ -1,0 +1,2629 @@
+[
+  {
+    "name": "actual_complete_runtime_output",
+    "valid": true,
+    "data": {
+      "target": "sets",
+      "requested_count": 50,
+      "found_count": 10,
+      "shortfall_count": 40,
+      "items": [
+        {
+          "label": "Validation scenario 8",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Technical execution and usefulness are different things.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "f31d60a5-0cad-4aed-a3ac-a020c5891e58"
+            },
+            {
+              "role": "strong",
+              "feedback": "Describe the intended behavior, show a concrete example, and check the revised app against it.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "More functionality may increase complexity without fixing the mismatch.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a118ccb3-986d-4b2d-a775-4f1365252bfc"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Evaluate whether the software solves the intended problem.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "970f950a-402f-48e3-a566-1110966b8318"
+            }
+          ],
+          "id": "be363f1f-774c-4071-b6d5-06a53615d8f5",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.641899Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.641899Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "be363f1f-774c-4071-b6d5-06a53615d8f5",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 7",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "93787827-aee6-4744-a837-79282a096cc1",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Limited information cannot support a guaranteed diagnosis.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "9c2aca96-f75e-453e-9a49-cb36b64cdadf"
+            },
+            {
+              "role": "strong",
+              "feedback": "AI can help frame troubleshooting. Verify model-specific guidance and avoid hazardous work beyond your competence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "bda1b335-dc24-44b6-aa40-322b947583c5"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A plausible instruction can be wrong or unsafe for your appliance.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "5aed6b10-b0ea-4bd1-b569-312d9935a16d"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "4bf95478-a2c0-4755-91e1-7d46a618acc4"
+            }
+          ],
+          "id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.639997Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.639997Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 2",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "You can begin in ordinary language. Technical vocabulary is not a prerequisite.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "7c0d96db-2f21-483c-b4bd-dcc288318dad"
+            },
+            {
+              "role": "strong",
+              "feedback": "Your goal and uncertainty are enough to start a conversation. You can refine it as you go.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "2af7d23b-ba38-42ab-bdcf-d74e8322b2be"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Give it some context about what you want to accomplish.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a5b331d2-473c-47a6-89e1-4b290dbe42b3"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "9c57b9d2-66d4-4380-a4b5-eec3e08fcb80"
+            }
+          ],
+          "id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.629572Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.629572Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 3",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "The goal, audience, and tone are unclear.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "65ba32f8-c5f3-4561-8456-418e25fc343e"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "\u201cPerfect\u201d does not tell it what this gathering needs.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "ed04cd4f-3951-406f-b5d9-2f724a0d01b5"
+            },
+            {
+              "role": "strong",
+              "feedback": "Audience, occasion, tone, length, and placeholders give the draft a useful shape without inventing missing facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "53a7d06c-59a4-44c2-8723-f06f207ce3c2"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Missing logistics should be supplied or marked as placeholders, not fabricated.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a983fb8c-6703-48bf-b18e-ddea0adb666f"
+            }
+          ],
+          "id": "7e232d4b-97cc-4607-a2f7-033e073a04df",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.631672Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.631672Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "7e232d4b-97cc-4607-a2f7-033e073a04df",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 6",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "You remain responsible for whether the message says what you intend.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "68c2568b-261f-4459-b1ac-4d1ef13d5bd7"
+            },
+            {
+              "role": "strong",
+              "feedback": "For example: \u201cMake this warmer, cut it in half, and lead with my request to reschedule.\u201d",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Clear feedback gives the next attempt better direction.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "bf1f72b5-a72e-409c-a7c3-fbcc986dd0ba"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "One poor draft can be a starting point for refinement rather than a final verdict.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "3c250b9b-4b32-4ca3-86b7-ad061ff9bed5"
+            }
+          ],
+          "id": "79090bcd-4376-4a18-9f8c-559a5550a29d",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.637876Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.637876Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "79090bcd-4376-4a18-9f8c-559a5550a29d",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 10",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Once you share it, others may rely on it. Review it first.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "53c14f93-05f7-40a0-bcb8-8b29228403bc"
+            },
+            {
+              "role": "strong",
+              "feedback": "Check facts, context, tone, permissions, and any sensitive information before sharing.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "The system cannot take over your responsibility for the material you choose to use.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "9a3b32f3-3731-472e-889e-e5d41ff9b49a"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "06e9c73a-ecec-458e-9178-a3b0f22d5e55"
+            }
+          ],
+          "id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.647053Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.647053Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 9",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "This is a useful response: it supplies constraints the next plan must respect.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "153eec0c-b198-417f-ae02-dcf18698e620"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "This is also useful. The question asks for the least useful response, not the best one.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "strong",
+              "feedback": "This is the least useful choice. An answer that ignores your constraints should be questioned and revised, not followed automatically.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "fcfcb65c-d884-421f-87f0-890a07788ad7"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "This is useful evaluation of whether the plan fits your circumstances.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "18c55cfe-3011-4e53-967a-8b51eabd11ea"
+            }
+          ],
+          "id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.644850Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.644850Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 4",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Fluency and confidence are not evidence that a claim is true.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "668b08df-89b3-40a8-8540-39d9dc6d1eb6"
+            },
+            {
+              "role": "strong",
+              "feedback": "Confirm that the source exists, is suitable, and actually says what the answer claims.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "3ea0fbd3-7efd-42c4-9ad7-23a7c6543e0b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A change in tone does not provide independent evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "7e2576f4-b888-4fa8-9438-e16c8e3a8b2d"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Different systems can repeat the same mistake. Check suitable evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "cd609b37-5df2-4a80-be52-27fab9092547"
+            }
+          ],
+          "id": "cfb605e1-8348-4278-9817-62472438892c",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.633677Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.633677Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "cfb605e1-8348-4278-9817-62472438892c",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 5",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Convenience does not establish permission to disclose customer information.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "940955bc-cd5f-446b-9043-092490a7cd35"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A conversational request does not establish how the service stores or uses uploaded data.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a5c4fe1f-5839-449f-856e-db4eeb53950a"
+            },
+            {
+              "role": "strong",
+              "feedback": "Follow your organization's information rules. Remove identifying details where appropriate; removing names alone may not make a document safe to share.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "e666cad3-643b-435e-b55a-1ad6f534e60f"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "The device in your hand does not determine the remote service's data handling.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a6d5b6ff-4be9-4b2d-a071-7925734bcfdb"
+            }
+          ],
+          "id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.635819Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.635819Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 1",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "connections": [
+            {
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "dfcba6c4-1423-4225-ae59-92da71806605"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "d7535d50-3ea2-4fa8-98cc-187c28c1ff45"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "04974a40-e685-41b3-ac5d-a8151fef1ded"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "74e50de7-7163-4529-8540-09fec0dfce6f"
+            }
+          ],
+          "id": "60092904-9fc5-47ec-881b-fde50a2ccf30",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.627574Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.627574Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "60092904-9fc5-47ec-881b-fde50a2ccf30",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        }
+      ],
+      "available_actions": [
+        "start_over",
+        "add_more",
+        "cancel"
+      ]
+    }
+  },
+  {
+    "name": "unknown_output_field",
+    "valid": false,
+    "data": {
+      "target": "sets",
+      "requested_count": 50,
+      "found_count": 10,
+      "shortfall_count": 40,
+      "items": [
+        {
+          "label": "Validation scenario 8",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "edea1f66-2f21-4208-aca8-076e366a5931",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Technical execution and usefulness are different things.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "f31d60a5-0cad-4aed-a3ac-a020c5891e58"
+            },
+            {
+              "role": "strong",
+              "feedback": "Describe the intended behavior, show a concrete example, and check the revised app against it.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "More functionality may increase complexity without fixing the mismatch.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a118ccb3-986d-4b2d-a775-4f1365252bfc"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Evaluate whether the software solves the intended problem.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "970f950a-402f-48e3-a566-1110966b8318"
+            }
+          ],
+          "id": "be363f1f-774c-4071-b6d5-06a53615d8f5",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.641899Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.641899Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "be363f1f-774c-4071-b6d5-06a53615d8f5",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 7",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "93787827-aee6-4744-a837-79282a096cc1",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Limited information cannot support a guaranteed diagnosis.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "9c2aca96-f75e-453e-9a49-cb36b64cdadf"
+            },
+            {
+              "role": "strong",
+              "feedback": "AI can help frame troubleshooting. Verify model-specific guidance and avoid hazardous work beyond your competence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "bda1b335-dc24-44b6-aa40-322b947583c5"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A plausible instruction can be wrong or unsafe for your appliance.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "5aed6b10-b0ea-4bd1-b569-312d9935a16d"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "4bf95478-a2c0-4755-91e1-7d46a618acc4"
+            }
+          ],
+          "id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.639997Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.639997Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "d76cab63-46cf-4dc3-a8fb-af959e99acbc",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 2",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6b1e6f2b-99b9-415c-b8de-e40f1e67644a",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "You can begin in ordinary language. Technical vocabulary is not a prerequisite.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "7c0d96db-2f21-483c-b4bd-dcc288318dad"
+            },
+            {
+              "role": "strong",
+              "feedback": "Your goal and uncertainty are enough to start a conversation. You can refine it as you go.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "2af7d23b-ba38-42ab-bdcf-d74e8322b2be"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Give it some context about what you want to accomplish.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a5b331d2-473c-47a6-89e1-4b290dbe42b3"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "9c57b9d2-66d4-4380-a4b5-eec3e08fcb80"
+            }
+          ],
+          "id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.629572Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.629572Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "179556f7-5fad-4edf-9a7f-5d1a9428c2e0",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 3",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "fdc0765a-4da3-4c49-8599-b4ca99ba5602",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "The goal, audience, and tone are unclear.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "65ba32f8-c5f3-4561-8456-418e25fc343e"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "\u201cPerfect\u201d does not tell it what this gathering needs.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "ed04cd4f-3951-406f-b5d9-2f724a0d01b5"
+            },
+            {
+              "role": "strong",
+              "feedback": "Audience, occasion, tone, length, and placeholders give the draft a useful shape without inventing missing facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "53a7d06c-59a4-44c2-8723-f06f207ce3c2"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Missing logistics should be supplied or marked as placeholders, not fabricated.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a983fb8c-6703-48bf-b18e-ddea0adb666f"
+            }
+          ],
+          "id": "7e232d4b-97cc-4607-a2f7-033e073a04df",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.631672Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.631672Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "7e232d4b-97cc-4607-a2f7-033e073a04df",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 6",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "22476e27-942f-48df-95d3-3e195e9a553a",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "You remain responsible for whether the message says what you intend.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "68c2568b-261f-4459-b1ac-4d1ef13d5bd7"
+            },
+            {
+              "role": "strong",
+              "feedback": "For example: \u201cMake this warmer, cut it in half, and lead with my request to reschedule.\u201d",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Clear feedback gives the next attempt better direction.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "bf1f72b5-a72e-409c-a7c3-fbcc986dd0ba"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "One poor draft can be a starting point for refinement rather than a final verdict.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "3c250b9b-4b32-4ca3-86b7-ad061ff9bed5"
+            }
+          ],
+          "id": "79090bcd-4376-4a18-9f8c-559a5550a29d",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.637876Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.637876Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "79090bcd-4376-4a18-9f8c-559a5550a29d",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 10",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "9ffb7706-3621-4e7e-b7ba-2c03a70968c7",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Once you share it, others may rely on it. Review it first.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "53c14f93-05f7-40a0-bcb8-8b29228403bc"
+            },
+            {
+              "role": "strong",
+              "feedback": "Check facts, context, tone, permissions, and any sensitive information before sharing.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "726e16e6-d80d-4b23-b4a2-51436b6ce1c4"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "The system cannot take over your responsibility for the material you choose to use.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "9a3b32f3-3731-472e-889e-e5d41ff9b49a"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Describe what matters to you and verify the result; retain human judgment.",
+              "answer_id": "06e9c73a-ecec-458e-9178-a3b0f22d5e55"
+            }
+          ],
+          "id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.647053Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.647053Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "38678f2f-8d97-4039-b8b0-838d5b0b33b3",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 9",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "f8251505-c47a-4797-8080-bb83b4ca870c",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "This is a useful response: it supplies constraints the next plan must respect.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "153eec0c-b198-417f-ae02-dcf18698e620"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "This is also useful. The question asks for the least useful response, not the best one.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "29e76025-f216-4dbd-be9b-fd78d8d6644b"
+            },
+            {
+              "role": "strong",
+              "feedback": "This is the least useful choice. An answer that ignores your constraints should be questioned and revised, not followed automatically.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "fcfcb65c-d884-421f-87f0-890a07788ad7"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "This is useful evaluation of whether the plan fits your circumstances.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "18c55cfe-3011-4e53-967a-8b51eabd11ea"
+            }
+          ],
+          "id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.644850Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.644850Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "93eb6fe1-046f-4ef1-9ed9-bcbda0ec0259",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 4",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "919a7217-ef3c-47d9-8d24-0bd3eeeff4e1",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Fluency and confidence are not evidence that a claim is true.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "668b08df-89b3-40a8-8540-39d9dc6d1eb6"
+            },
+            {
+              "role": "strong",
+              "feedback": "Confirm that the source exists, is suitable, and actually says what the answer claims.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "3ea0fbd3-7efd-42c4-9ad7-23a7c6543e0b"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A change in tone does not provide independent evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "7e2576f4-b888-4fa8-9438-e16c8e3a8b2d"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Different systems can repeat the same mistake. Check suitable evidence.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "cd609b37-5df2-4a80-be52-27fab9092547"
+            }
+          ],
+          "id": "cfb605e1-8348-4278-9817-62472438892c",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.633677Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.633677Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "cfb605e1-8348-4278-9817-62472438892c",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 5",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6b5b4859-a989-409d-86dd-b7f520b4deeb",
+          "connections": [
+            {
+              "role": "incorrect",
+              "feedback": "Convenience does not establish permission to disclose customer information.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "940955bc-cd5f-446b-9043-092490a7cd35"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "A conversational request does not establish how the service stores or uses uploaded data.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a5c4fe1f-5839-449f-856e-db4eeb53950a"
+            },
+            {
+              "role": "strong",
+              "feedback": "Follow your organization's information rules. Remove identifying details where appropriate; removing names alone may not make a document safe to share.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "e666cad3-643b-435e-b55a-1ad6f534e60f"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "The device in your hand does not determine the remote service's data handling.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "a6d5b6ff-4be9-4b2d-a071-7925734bcfdb"
+            }
+          ],
+          "id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.635819Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.635819Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "f4e5ecbc-b2d4-4850-82df-ba6db14799f0",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        },
+        {
+          "label": "Validation scenario 1",
+          "origin": {
+            "author": "READY builder",
+            "authorship_kind": "system",
+            "source_reference": "Original validation examples; not an official assessment"
+          },
+          "metadata": {
+            "topics": [
+              "ai_readiness"
+            ],
+            "audiences": [
+              "adult_beginner"
+            ],
+            "difficulty": "basic",
+            "learning_objectives": [
+              "recognize_and_check_ai_use"
+            ],
+            "tags": [
+              "builder_created",
+              "system_validation",
+              "ready_seed_01"
+            ],
+            "attributes": {}
+          },
+          "status": "published",
+          "question_id": "6f3b66d0-111e-47e5-b179-af2bb718a868",
+          "connections": [
+            {
+              "role": "strong",
+              "feedback": "AI can help turn competing preferences into options. Check opening hours, prices, and availability before deciding.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "dfcba6c4-1423-4225-ae59-92da71806605"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "AI can suggest options, but the people involved should choose what suits them.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "d7535d50-3ea2-4fa8-98cc-187c28c1ff45"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "Suggestions can contain outdated or invented details. Verify important facts.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "04974a40-e685-41b3-ac5d-a8151fef1ded"
+            },
+            {
+              "role": "incorrect",
+              "feedback": "You can ask for help organizing the problem before you know the plan.",
+              "metadata": {
+                "topics": [
+                  "ai_readiness"
+                ],
+                "audiences": [
+                  "adult_beginner"
+                ],
+                "difficulty": "basic",
+                "learning_objectives": [
+                  "recognize_and_check_ai_use"
+                ],
+                "tags": [
+                  "builder_created",
+                  "system_validation",
+                  "ready_seed_01"
+                ],
+                "attributes": {}
+              },
+              "answer_id": "74e50de7-7163-4529-8540-09fec0dfce6f"
+            }
+          ],
+          "id": "60092904-9fc5-47ec-881b-fde50a2ccf30",
+          "schema_version": 1,
+          "created_at": "2026-10-29T00:11:53.627574Z",
+          "created_by": "user:super_admin",
+          "updated_at": "2026-10-29T00:11:53.627574Z",
+          "updated_by": "user:super_admin",
+          "source": "ready_import",
+          "series_id": "60092904-9fc5-47ec-881b-fde50a2ccf30",
+          "revision_number": 1,
+          "record_version": 1,
+          "is_archived": false,
+          "lifecycle_events": [],
+          "operation_key": "b5a9cf5f-8570-4aba-a149-9862e0579f38"
+        }
+      ],
+      "available_actions": [
+        "start_over",
+        "add_more",
+        "cancel"
+      ],
+      "unexpected_output": true
+    }
+  }
+]

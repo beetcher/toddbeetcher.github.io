@@ -1,0 +1,119 @@
+[
+  {
+    "name": "minimal_valid_record_input",
+    "valid": true,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963"
+    }
+  },
+  {
+    "name": "complete_stored_record",
+    "valid": true,
+    "stored": true,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963",
+      "id": "e851be1a-1854-4234-ab44-766fc4a15ca3",
+      "series_id": "e851be1a-1854-4234-ab44-766fc4a15ca3",
+      "schema_version": 1,
+      "revision_number": 1,
+      "record_version": 1,
+      "created_at": "2026-10-28T12:00:00Z",
+      "created_by": "system:ready_builder",
+      "updated_at": "2026-10-28T12:00:00Z",
+      "updated_by": "system:ready_builder",
+      "source": "ready_system",
+      "is_archived": false,
+      "lifecycle_events": [],
+      "calculated_score": {
+        "points_earned": 1,
+        "points_possible": 1,
+        "percentage": 100,
+        "policy_version": "strong_soft_v1"
+      },
+      "score_difference": {
+        "is_different": false,
+        "same_denominator": true,
+        "percentage_point_difference": 0,
+        "points_difference": 0
+      },
+      "item_results": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "credit": 1,
+          "ambiguous_answer_ids": [],
+          "selected_answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "received_at": "2026-10-28T12:00:00Z",
+      "request_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "name": "unknown_field",
+    "valid": false,
+    "data": {
+      "test_id": "1c879ec8-331d-47a6-846e-2ce87247111b",
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963",
+      "unexpected_field": "must be rejected"
+    }
+  },
+  {
+    "name": "missing_required_field",
+    "valid": false,
+    "data": {
+      "responses": [
+        {
+          "item_id": "e03fdee0-c3b0-4c2a-af42-efa8d6fe3bd8",
+          "answer_ids": [
+            "2a6277c6-0e58-441f-9acc-3817aa531f2d"
+          ]
+        }
+      ],
+      "returned_score": {
+        "points_earned": 1,
+        "points_possible": 1
+      },
+      "idempotency_key": "4712c808-cfde-4462-bd5d-6592b3f2d963"
+    }
+  }
+]
