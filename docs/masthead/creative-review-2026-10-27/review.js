@@ -1,0 +1,37 @@
+'use strict';
+const questions=[
+ {key:'audience',title:'Who are you thinking about?',help:'Your own learning, a team, or the people you teach and support.',options:[['self','Myself'],['organization','My organization'],['learning','Students or a learning community']]},
+ {key:'experience',title:'Where are you starting?',help:'There is no preferred answer. Start with what is true today.',options:[['new','I’m not sure where to begin'],['occasional','I use AI occasionally'],['regular','It is already part of my routine'],['builder','I’m building with it or helping others']]},
+ {key:'friction',title:'What gets in the way most?',help:'Choose the thing you would most like to work through.',options:[['begin','Finding a manageable first step'],['notice','Remembering to reach for AI'],['judgment','Knowing what to trust and check'],['workflow','Connecting it to useful work']]},
+ {key:'goal',title:'What would make the next step worthwhile?',help:'A small meaningful task gives learning somewhere to land.',options:[['understand','Understand something unfamiliar'],['make','Make or improve something'],['work','Improve a recurring workflow'],['teach','Help someone else learn']]},
+ {key:'support',title:'What kind of help would be useful?',help:'This is a starting conversation, not a commitment.',options:[['guided','A guided first experience'],['workshop','A small workshop'],['prototype','Help exploring a practical prototype'],['conversation','A conversation to work out where to start']]}
+];
+const plans={
+ begin:{title:'Start with one task you can check.',intro:'A first useful experience can give the next question somewhere to land.',steps:['Choose a small task that matters to you and does not require private or sensitive information.','Describe the goal and ask for one manageable first step. Ask what context is missing.','Inspect the result together. Keep what helps, question what does not, and identify one place to try again.'],link:'https://beetcher.com/enjoy/',label:'Explore LAUNCH and a place to begin'},
+ notice:{title:'Practice recognizing the moment.',intro:'The opportunity may already be there. The useful change is noticing it during an ordinary day.',steps:['Write down one recurring moment of friction: confusion, repetition, or something you have put off understanding.','At the next occurrence, pause and describe what you want help figuring out. Try one appropriate step.','Keep a short note of what helped and what needed checking. Look for another similar moment.'],link:'https://beetcher.com/field-notes/recognizing-the-moment/',label:'Explore recognizing the moment'},
+ judgment:{title:'Make checking part of the task.',intro:'You can develop judgment by inspecting a result, questioning it and explaining your own decision.',steps:['Choose a low-stakes task where you can compare the response with a reliable source or an observable result.','Ask what assumptions the response depends on and what would need independent verification.','Revise or reject what does not hold up. Explain the final decision in your own words.'],link:'https://beetcher.com/thinking/learning-to-navigate-the-unknown/',label:'Explore the learning approach'},
+ workflow:{title:'Choose a useful piece of real work.',intro:'Begin with a concrete problem and the people who understand it, then test whether a small change helps.',steps:['Describe one recurring task, who does it, where it gets stuck and what a better result would mean.','Identify an appropriate tool, information boundaries, a human owner and a small reviewable trial.','Compare the result with the starting point. Ask what improved, what failed and what support people need next.'],link:'https://beetcher.com/work/launch-console/',label:'Inspect a workflow and the system behind it'}
+};
+let step=0;const answers={};let task='';let chosenPlan=null;
+const byId=id=>document.getElementById(id),form=byId('question-form');
+function render(focus=false){
+ byId('question-view').hidden=false;byId('result-view').hidden=true;
+ const q=questions[step];byId('progress-label').textContent=`Question ${step+1} of ${questions.length}`;byId('progress').value=step+1;byId('question-title').textContent=q.title;byId('question-help').textContent=q.help;
+ byId('options').replaceChildren();for(const [value,label]of q.options){const wrap=document.createElement('label');wrap.className='option';const input=document.createElement('input');input.type='radio';input.name=q.key;input.value=value;input.checked=answers[q.key]===value;input.addEventListener('change',()=>{answers[q.key]=value;byId('question-error').textContent=''});const text=document.createElement('span');text.textContent=label;wrap.append(input,text);byId('options').append(wrap);}
+ byId('back').hidden=step===0;byId('task-wrap').hidden=q.key!=='goal';byId('task').value=task;byId('question-error').textContent='';byId('next').textContent=step===questions.length-1?'Find my starting point →':'Continue →';if(focus)byId('question-title').focus({preventScroll:true});
+}
+function labelFor(key){const q=questions.find(q=>q.key===key);return q.options.find(([v])=>v===answers[key])?.[1]||'';}
+function showResult(){
+ chosenPlan=plans[answers.friction];byId('question-view').hidden=true;byId('result-view').hidden=false;byId('result-title').textContent=chosenPlan.title;
+ const context=answers.audience==='organization'?'You are thinking about an organization. ':answers.audience==='learning'?'You are thinking about a learning community. ':'You are thinking about your own next step. ';
+ byId('result-intro').textContent=context+chosenPlan.intro;byId('result-steps').replaceChildren();for(const text of chosenPlan.steps){const li=document.createElement('li');li.textContent=text;byId('result-steps').append(li);}
+ const link=byId('artifact-link');link.href=chosenPlan.link;link.textContent=chosenPlan.label+' ↗';
+ byId('brief-text').value=`I would like to explore a useful next step with AI.\n\nThinking about: ${labelFor('audience')}\nStarting point: ${labelFor('experience')}\nWhat gets in the way: ${labelFor('friction')}\nWhat would matter: ${labelFor('goal')}\nUseful support: ${labelFor('support')}${task.trim()?'\nA task I have in mind: '+task.trim():''}\n\nPossible starting point: ${chosenPlan.title}`;
+ byId('handoff').hidden=true;byId('handoff-button').setAttribute('aria-expanded','false');byId('copy-status').textContent='';byId('result-view').focus({preventScroll:true});
+}
+form.addEventListener('submit',event=>{event.preventDefault();if(!answers[questions[step].key]){byId('question-error').textContent='Choose the answer that is closest to your situation.';return;}if(step===questions.length-1)showResult();else{step++;render(true);}});
+byId('task').addEventListener('input',event=>task=event.target.value);byId('back').addEventListener('click',()=>{if(step>0){step--;render(true)}});
+byId('restart').addEventListener('click',()=>{for(const k of Object.keys(answers))delete answers[k];task='';step=0;render(true)});
+byId('copy-brief').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(byId('brief-text').value);byId('copy-status').textContent='Brief copied. Nothing has been sent.'}catch{byId('brief-text').focus();byId('brief-text').select();byId('copy-status').textContent='Select and copy the brief above. Nothing has been sent.'}});
+byId('handoff-button').addEventListener('click',()=>{byId('handoff').hidden=!byId('handoff').hidden;byId('handoff-button').setAttribute('aria-expanded',String(!byId('handoff').hidden));});
+render();

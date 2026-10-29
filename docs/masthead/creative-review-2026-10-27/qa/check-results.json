@@ -1,0 +1,54 @@
+{
+  "imageCount": 3,
+  "widths": [
+    {
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "overflow": false
+    }
+  ],
+  "results": [
+    {
+      "route": "begin",
+      "title": "Start with one task you can check.",
+      "link": "https://beetcher.com/enjoy/"
+    },
+    {
+      "route": "notice",
+      "title": "Practice recognizing the moment.",
+      "link": "https://beetcher.com/field-notes/recognizing-the-moment/"
+    },
+    {
+      "route": "judgment",
+      "title": "Make checking part of the task.",
+      "link": "https://beetcher.com/thinking/learning-to-navigate-the-unknown/"
+    },
+    {
+      "route": "workflow",
+      "title": "Choose a useful piece of real work.",
+      "link": "https://beetcher.com/work/launch-console/"
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "required answer",
+    "four result routes",
+    "back preserves task",
+    "safe text insertion",
+    "handoff preview",
+    "copy fallback",
+    "reset",
+    "reload clears"
+  ]
+}
