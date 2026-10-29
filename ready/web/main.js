@@ -25,7 +25,7 @@
     try { await work(); } catch (error) { status(error.message, true); }
     finally { buttons.forEach(button => { if (button.isConnected) button.disabled = false; }); document.body.classList.remove('busy'); duplicateControls(); }
   }
-  async function api(path, {method = 'GET', data, key, version} = {}) {
+  async function api(path, {method = 'GET', data, key, version, format = 'json'} = {}) {
     if (preview) throw new Error('This is an unconnected preview. Use the operational Firebase workshop for this action.');
     if (!state.key) throw new Error('Connect with your super-admin API key first.');
     const headers = {Authorization: 'Bearer ' + state.key};
@@ -33,6 +33,10 @@
     if (key) headers['Idempotency-Key'] = key;
     if (version) headers['If-Match'] = '"' + version + '"';
     const response = await fetch('/v1/' + path, {method, headers, body: data === undefined ? undefined : JSON.stringify(data), cache: 'no-store'});
+    if (response.ok && format === 'pdf') {
+      if (!(response.headers.get('Content-Type') || '').includes('application/pdf')) throw new Error('The service did not return a PDF.');
+      return response.blob();
+    }
     let result;
     try { result = await response.json(); } catch { throw new Error('The service did not return JSON.'); }
     if (!response.ok || !result.ok) {
@@ -247,8 +251,15 @@
     await showTest(value); await loadTests(); status('Test preserved as ' + value.id + '. Deliver the downloaded bundle through your caller application.');
   }); });
   $('refresh-tests').addEventListener('click', () => task(loadTests)); $('tests-archived').addEventListener('change', () => task(loadTests));
-  function download(value, name) { const url = URL.createObjectURL(new Blob([pretty(value)], {type: 'application/json'})); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  function downloadBlob(blob, name) { const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  function download(value, name) { downloadBlob(new Blob([pretty(value)], {type: 'application/json'}), name); }
   $('download-test').addEventListener('click', () => { if (state.test) download(state.test, 'ready-test-' + state.test.id + '.json'); });
+  $('download-test-pdf').addEventListener('click', () => task(async () => {
+    if (!state.test) throw new Error('Inspect a saved test before downloading its PDF.');
+    const pdf = await api('tests/' + state.test.id + '/pdf', {format: 'pdf'});
+    downloadBlob(pdf, 'ready-test-' + state.test.id + '.pdf');
+    status('Test PDF downloaded. This review copy includes answer classifications and feedback.');
+  }));
   $('archive-test').addEventListener('click', () => task(async () => { if (!state.test) return; const reason = prompt('Archive/restore reason:'); if (!reason) return; await api('tests/' + state.test.id + '/archive', {method: 'PUT', data: {is_archived: !state.test.is_archived, reason, expected_record_version: state.test.record_version}}); await showTest(state.test); await loadTests(); status('Test availability changed. Frozen content and results remain.'); }));
   async function loadResults() { const options = {include_history: String($('result-history').checked)}; if ($('result-person').value.trim()) options.person_id = $('result-person').value.trim(); const rows = await all('attempts', options); $('result-list').replaceChildren(); rows.forEach(row => { const display = {...row, label: 'Result · ' + row.test_id.slice(0, 8) + (row.person_id ? ' · ' + row.person_id : ' · anonymous')}; $('result-list').append(card(display, async selected => renderResult(await api('attempts/' + selected.id)), 'Inspect result')); }); if (!rows.length) $('result-list').append(node('p', 'No returned results found.', 'empty')); }
   function renderResult(value) {

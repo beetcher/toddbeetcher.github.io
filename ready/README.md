@@ -12,6 +12,10 @@ Use READY to author introductory or challenging sets from reusable atoms, select
 
 The management workshop and API are deployed at **https://beetcher-ready.web.app/ready/** with durable Firestore persistence in the separate `beetcher-ready` project. The Pages route `/ready/web/` is a styled, explicitly unconnected preview. See [owner access](docs/ACCESS.md), [build status](docs/BUILD_STATUS.md) and [operations](docs/OPERATIONS.md) for verified evidence and exact usage.
 
+## Saved test downloads
+
+In the saved-test inspector, **Download test PDF** sits beside **Download test JSON**. The PDF is a paginated review copy of the saved test, including its questions, contextual answer classifications and feedback. It includes the answer key shown on screen. Exporting it does not change the stored test.
+
 ## Get the admin key on this Mac
 
 Run this in Terminal:

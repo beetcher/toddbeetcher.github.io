@@ -75,3 +75,9 @@ Duplicate pairs are validated at test creation: one repeated question appears ex
 ## Scope exclusions
 
 No next-question, per-answer administration, feedback-release, participant token, timer, session start/complete/resume or conversational AI endpoint. AI interpretation, written answers, differentiated roles, test events and premium packaging remain in the parking lot. Management UI submits reports as a caller; it does not administer tests.
+
+## Saved-test PDF export
+
+`GET /v1/tests/{test_id}/pdf` requires the same super-admin Bearer key as JSON retrieval. It accepts no query parameters or content. Success is an `application/pdf` attachment named `ready-test-<UUID>.pdf`, rather than a JSON envelope; errors retain the standard JSON error envelope and status codes. The saved test record is validated against `test_record` before rendering.
+
+**Download test PDF**, beside **Download test JSON** in the inspector, exports a read-only review copy of the frozen test, with title/ID, author, numbered question occurrences, every offered answer, contextual classifications and teaching feedback. It includes the answer key visible on screen; it is not a participant exam sheet. Archived tests remain exportable. PDF generation does not revise a test or create another record. Text is escaped and embedded fonts support the seed's typographic punctuation; letter-sized pages wrap content and include page numbers.

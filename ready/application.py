@@ -102,6 +102,16 @@ class Application:
             if any(len(values) != 1 for values in query.values()):
                 raise ServiceError("invalid_request", issue="duplicate_query_parameter")
             query = {key: values[0] for key, values in query.items()}
+            pdf_parts = path.strip("/").split("/")
+            if method == "GET" and len(pdf_parts) == 4 and pdf_parts[:2] == ["v1", "tests"] and pdf_parts[3] == "pdf":
+                if query or data:
+                    raise ServiceError("invalid_request", field="pdf", issue="no_parameters_allowed")
+                saved = self.service.get("tests", pdf_parts[2])
+                if not output_validator("test_record").is_valid(saved):
+                    raise RuntimeError("output_contract_violation")
+                from .pdf_export import render_test_pdf
+                return 200, {**base, "Content-Type": "application/pdf",
+                    "Content-Disposition": 'attachment; filename="ready-test-' + saved["id"] + '.pdf"'}, render_test_pdf(saved)
             status, result, replay = self.route(method, path, query, data, headers)
             route_parts = path.strip("/").split("/")[1:]
             kind = route_parts[0] if route_parts else ""

@@ -90,6 +90,32 @@ class HttpTests(unittest.TestCase):
         self.assertEqual(self.call("POST", "/v1/attempts/" + random_id + "/complete", {})[0], 405)
         self.assertEqual(self.call("DELETE", "/v1/tests/" + random_id, {})[0], 405)
 
+    def test_saved_test_pdf_requires_auth_and_preserves_frozen_content(self):
+        seed = json.loads((ROOT / "seed/ai_readiness.json").read_text())
+        seed.update(dry_run=False, idempotency_key=str(uuid4()))
+        created = self.call("POST", "/v1/content/imports", seed)[2]["data"]["created"]
+        sets = [row["id"] for row in created if row["type"] == "question_answer_set"][:2]
+        request = {"set_ids": sets, "allow_duplicates": False, "duplicate_pair_count": 0,
+            "label": "Literal <b>title</b> & review", "metadata": {},
+            "origin": {"author": "Builder", "authorship_kind": "system", "source_reference": "PDF validation"}}
+        saved = self.call("POST", "/v1/tests", request, **{"Idempotency-Key": str(uuid4())})[2]["data"]
+        path = "/v1/tests/" + saved["id"] + "/pdf"
+        status, headers, pdf = self.app.handle("GET", path, {"Authorization": "Bearer " + KEY})
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Content-Type"], "application/pdf")
+        self.assertIn(saved["id"] + ".pdf", headers["Content-Disposition"])
+        self.assertEqual(headers["Cache-Control"], "no-store")
+        self.assertTrue(pdf.startswith(b"%PDF-"))
+        self.assertNotIn(KEY.encode(), pdf)
+        self.assertEqual(self.service.get("tests", saved["id"]), saved)
+        self.assertEqual(self.app.handle("GET", path)[0], 401)
+        self.assertEqual(self.call("GET", path + "?unexpected=true")[0], 400)
+        self.assertEqual(self.call("GET", "/v1/tests/" + str(uuid4()) + "/pdf")[0], 404)
+        self.call("PUT", "/v1/tests/" + saved["id"] + "/archive",
+            {"is_archived": True, "reason": "PDF archival check", "expected_record_version": saved["record_version"]})
+        self.assertEqual(self.app.handle("GET", path, {"Authorization": "Bearer " + KEY})[0], 200)
+        self.assertEqual(self.service.get("tests", saved["id"])["items"], saved["items"])
+
     def test_no_path_traversal(self):
         self.assertNotEqual(self.app.handle("GET", "/ready/../../.env")[0], 200)
 

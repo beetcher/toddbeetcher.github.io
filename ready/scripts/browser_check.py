@@ -89,6 +89,14 @@ try:
   with page.expect_download() as downloaded:
    page.click('#download-test')
   assert json.loads(Path(downloaded.value.path()).read_text())==test
+  with page.expect_download() as pdf_download:
+   page.click('#download-test-pdf')
+  pdf=pdf_download.value
+  assert pdf.suggested_filename=='ready-test-'+test['id']+'.pdf'
+  assert Path(pdf.path()).read_bytes().startswith(b'%PDF-')
+  pdf.save_as(str(ARTIFACTS/'saved-test-review.pdf'))
+  page.wait_for_function("() => !document.body.classList.contains('busy')")
+  assert service.get('tests',test['id'])['items']==test['items']
   page.screenshot(path=str(ARTIFACTS/'desktop.png'),full_page=True)
   report={'test_id':test['id'],'person_id':'browser_validation','test_taken_at':'2026-10-28T12:00:00Z','responses':[{'item_id':i['item_id'],'answer_ids':[a['answer_id'] for a in i['answers'] if a['role']=='strong']} for i in test['items']],'returned_score':{'points_earned':0,'points_possible':4},'idempotency_key':str(uuid4())}
   page.click('[data-tab=results]');page.fill('#result-input',json.dumps(report));page.click('#result-form button[type=submit]')
