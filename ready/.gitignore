@@ -5,3 +5,4 @@ __pycache__/
 !.env.example
 *-debug.log
 .firebase-build/
+.firebase/

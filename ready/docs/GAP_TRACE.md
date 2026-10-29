@@ -30,4 +30,4 @@ All G01–G25 from the design review are retained. This is requirement traceabil
 | G24 Sequencing | Retain staged content → selection/assembly → tests → returned results → management/demo. No participant player prerequisite. |
 | G25 Delivery/documentation | Retain runnable build/deploy/test/rollback artifacts and intent-focused code documentation. |
 
-Foundation proof: schemas/checker, closed request fixtures, preserved handler revisions, duplicate-pair and immutable-test checks. Upcoming proof: cross-record services, real indexed selection, grading/result chains, Firestore concurrency, authenticated HTTP contracts and management UI.
+Foundation proof: schemas/checker, closed request fixtures, preserved handler revisions, duplicate-pair and immutable-test checks. Current implementation and live proof are recorded in BUILD_STATUS.md and D002/D003. The table above preserves historical review language; grading, result-chain, API, Firestore and management decisions have since been implemented and verified. The initial selector uses a bounded 1,000-revision scan, not an unlimited indexed criteria engine.

@@ -2,7 +2,7 @@
 
 ## What is running versus verified
 
-The service, management interface and Firebase adapter/entrypoint are implemented. Offline service/HTTP checks do not prove a deployed function or real Firestore behavior. See BUILD_STATUS.md for exact evidence and blockers. No production key is in source; no project was provisioned in this build environment.
+The service, management interface and Firebase adapter/entrypoint are implemented. Offline service/HTTP checks do not prove a deployed function or real Firestore behavior. See BUILD_STATUS.md for exact evidence and blockers. Production is the separate `beetcher-ready` Firebase project, with Firestore Native and Functions in `us-central1`. Owner authorized project creation and linking the existing billing account. Canonical workshop: https://beetcher-ready.web.app/ready/. The key is in Secret Manager; see ACCESS.md for owner connection. No production key is in source.
 
 ## Local development, synthetic data only
 
@@ -35,11 +35,11 @@ Install optional `browser-requirements.txt` and use Chromium or Playwright's ins
 ready/.venv/bin/python ready/scripts/browser_check.py
 ```
 
-This script drives the real HTML/CSS/JS and actual Application through intercepted in-process requests on a synthetic HTTPS origin. It does not need outbound Internet or a local HTTP socket, but Chromium still needs local IPC support. It validates connect, import preview/commit, native library, duplicate pairs, immutable test creation, discrepancy display, result history and mobile overflow; screenshots go to the selected artifacts directory. Socket/IPC denial means **blocked**, not passed. The stdlib socket server is separately covered by its deployment/runtime code and needs an environment allowing loopback sockets.
+This script drives the real HTML/CSS/JS and actual Application through intercepted in-process requests on a synthetic HTTPS origin. It does not need outbound Internet or a local HTTP socket, but Chromium still needs local IPC support. It validates connect, import preview/commit, native library, duplicate pairs, immutable test creation, discrepancy display, result history and mobile overflow; screenshots go to the selected artifacts directory. Socket/IPC denial means **blocked**, not passed. Run the same workflow over actual stdlib HTTP, plus a static Pages-layout preview check, with `python ready/scripts/browser_check.py --transport http`. Both modes have passed on the Mac; CSP remains enforced. Browser screenshots include desktop, results, mobile and the unconnected preview.
 
 ## Firebase project prerequisites
 
-Owner selected a **new** Firebase project, but its actual ID, account authorization, Firestore location and deployment access still must be supplied/provisioned. Do not infer an existing LAUNCH project or silently replace its rules. Cloud Functions/Hosting/Firestore must be enabled and billing/quota prerequisites satisfied by the project owner. Default function region is `us-central1`; choose the Firestore location deliberately before creating its database.
+The selected new project is **beetcher-ready**, administered by the authorized owner account. Its `(default)` Firestore Native database is in **us-central1**, and billing is enabled. All five composite indexes were verified READY and the active ruleset was inspected to confirm browser reads/writes are denied. These resources are separate from LAUNCH. Do not infer an existing LAUNCH project or silently replace its rules. Cloud Functions/Hosting/Firestore must be enabled and billing/quota prerequisites satisfied by the project owner. Default function region is `us-central1`; choose the Firestore location deliberately before creating its database.
 
 Use an authenticated Firebase CLI on a deployment workstation. No default `.firebaserc` project is included. Set `READY_FIREBASE_PROJECT` to the explicitly selected new project ID; every cloud command below includes it. Do not paste keys into chat or command arguments.
 
@@ -53,7 +53,7 @@ python3 -m venv ready/.firebase-build/venv
 ready/.firebase-build/venv/bin/python -m pip install -r ready/.firebase-build/requirements.txt
 ```
 
-Staging creates `main.py`, runtime requirements and an importable `ready` package. It excludes env files, tests, virtualenvs and unrelated site media. Re-running staging replaces that generated directory; keep durable secrets in Secret Manager, not staging. It does not choose a project or deploy. Python 3.12 runtime is declared in firebase.json.
+Staging creates `main.py`, runtime requirements and an importable `ready` package. It excludes env files, tests, virtualenvs and unrelated site media. The `venv` directory and `.secret.local` are explicitly excluded by Firebase configuration, and `.firebase/` caches are excluded from staging/version control. Re-running staging replaces that generated directory; keep durable secrets in Secret Manager, not staging. It does not choose a project or deploy. Python 3.12 runtime is declared in firebase.json.
 
 ## Real emulator verification
 
@@ -82,7 +82,7 @@ firebase functions:secrets:set READY_API_KEY --project "$READY_FIREBASE_PROJECT"
 firebase deploy --only functions:ready,firestore:rules,firestore:indexes,hosting --project "$READY_FIREBASE_PROJECT"
 ```
 
-The CLI secret prompt hides its value. Initial key is super admin. Hosting redirects `/` to `/ready/` and rewrites management/API paths to ready_api in us-central1. This hosting is for the new READY project; no beetcher.com domain change is implied. Firestore rules deny all browser reads/writes; server Admin SDK uses the runtime service account. Review its project IAM permissions. Index definitions include same-collection linked-revision lookups.
+The CLI secret prompt hides its value. Initial key is super admin. Functions are capped at three instances. A 30-day Artifact Registry cleanup policy applies only to disposable container build images, not product records. Hosting redirects `/` to `/ready/` and rewrites management/API paths to ready_api in us-central1. This hosting is for the new READY project; no beetcher.com domain change is implied. Firestore rules deny all browser reads/writes; server Admin SDK uses the runtime service account. Review its project IAM permissions. Index definitions include same-collection linked-revision lookups.
 
 ## Non-destructive smoke checks
 
@@ -103,3 +103,21 @@ The CLI secret prompt hides its value. Initial key is super admin. Hosting redir
 - A conflicting reuse returns 409; inspect input/version rather than bypass it. A candidate-pool or document limit returns validation failure rather than sampling/truncating silently.
 - Key rotation: add/update Secret Manager value, redeploy the function binding and distribute the new key through an approved secret channel. Initial implementation has one key, no multi-role UI. Old key ceases to authorize calls after rotation.
 - In-process rate limiting is best-effort across function instances; CORS is not authentication. Enable stronger edge protection when deployment exposure requires it; do not invent participant sessions.
+
+## Full Hosting boundary and durability checks
+
+`ready/scripts/hosting_check.py` checks the actual HTTP origin, not an intercepted in-process bridge. Supply a private file containing only the key (or emulator `READY_API_KEY=...` line); never put the key in command arguments. The check intentionally creates tagged builder validation data, verifies it, then archives it without deletion. A synthetic seed variant exercises ambiguous grading without changing the shipped educational seed.
+
+```bash
+python ready/scripts/hosting_check.py --base-url https://beetcher-ready.web.app --key-file /private/path/to/key --evidence /private/path/to/live-evidence.json --browser
+```
+
+It checks auth/FirestoreStore, assets, dry-run/no-write, exact seed counts, replay, shortage preservation, duplicate pairs, frozen content after revisions, distinct variants, full/half/zero scoring, original submitted JSON, retained corrections, independent anonymous results, native browser authoring/revisions, mobile layout, archival and delayed results against archived tests. The evidence manifest contains only synthetic validation record IDs and frozen test content, never the key. Respect the five-collection 1,000-revision cap when repeating checks.
+
+After restarting or redeploying, verify retained evidence with no new writes:
+
+```bash
+python ready/scripts/hosting_check.py --base-url https://beetcher-ready.web.app --key-file /private/path/to/key --verify-manifest /private/path/to/live-evidence.json --evidence /private/path/to/durability.json
+```
+
+The first deployment required an explicit `firebase functions:artifacts:setpolicy --location us-central1 --days 30 --project beetcher-ready --force` before Hosting could finish. The policy is now configured. Runtime currently uses Firebase's default compute service account in this dedicated project, with Firestore access and an explicit binding to this one secret. The account's project-level Editor role is the Firebase provisioning default; differentiated runtime IAM is not claimed. Exact-origin CORS is empty because the workshop and API share an origin. API auth, server validation, CSP, no browser persistence of keys and deny-browser Firestore rules remain enforced.

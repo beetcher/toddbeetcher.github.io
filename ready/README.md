@@ -10,7 +10,7 @@ Use READY to author introductory or challenging sets from reusable atoms, select
 
 ## Current build status
 
-The service, Firebase adapter, API and management web interface are implemented locally. Five collection schemas, eleven input contracts and fifteen output contracts pass validation; 56 behavioral tests pass. Browser rendering and real Firestore emulator verification remain pending. No Firebase deployment has occurred. See [build status](docs/BUILD_STATUS.md) and [operations](docs/OPERATIONS.md).
+The management workshop and API are deployed at **https://beetcher-ready.web.app/ready/** with durable Firestore persistence in the separate `beetcher-ready` project. The Pages route `/ready/web/` is a styled, explicitly unconnected preview. See [owner access](docs/ACCESS.md), [build status](docs/BUILD_STATUS.md) and [operations](docs/OPERATIONS.md) for verified evidence and exact usage.
 
 ## Verification and local demo
 

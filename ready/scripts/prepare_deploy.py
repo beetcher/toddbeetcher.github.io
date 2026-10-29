@@ -16,7 +16,7 @@ def main():
         shutil.rmtree(STAGE)
     STAGE.mkdir()
     shutil.copytree(ROOT, STAGE / "ready", ignore=shutil.ignore_patterns(
-        ".firebase-build", ".venv", "venv", "__pycache__", "*.pyc", ".env*", "tests", "scripts", ".git"))
+        ".firebase-build", ".firebase", ".venv", "venv", "__pycache__", "*.pyc", ".env*", "tests", "scripts", ".git"))
     shutil.copy2(ROOT / "firebase_entry.py", STAGE / "main.py")
     shutil.copy2(ROOT / "runtime-requirements.txt", STAGE / "requirements.txt")
     print("READY function staged; no project selected or deployed.")
