@@ -36,11 +36,6 @@
     ],
     "redirects": [
       {
-        "source": "/ready",
-        "destination": "/ready/",
-        "type": 301
-      },
-      {
         "source": "/",
         "destination": "/ready/",
         "type": 302
