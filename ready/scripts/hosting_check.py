@@ -114,6 +114,7 @@ def main():
                   'returned_score': {'points_earned': 0, 'points_possible': 4}, 'idempotency_key': str(uuid4())}
         result = api('POST', 'attempts', report)
         assert result['calculated_score']['points_earned'] == expected
+        assert json.loads(api('GET', 'attempts/' + result['id'])['submitted_payload']) == report
         assert api('POST', 'attempts', report)['id'] == result['id']
         attempts.append(result)
     assert attempts[0]['score_difference']['is_different']
