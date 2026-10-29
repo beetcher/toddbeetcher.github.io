@@ -21,7 +21,7 @@ def application():
     return Application(ReadyService(FirestoreStore(project)), os.environ.get("READY_API_KEY", ""), origins)
 
 
-@https_fn.on_request(secrets=["READY_API_KEY"], timeout_sec=60, region="us-central1")
+@https_fn.on_request(secrets=["READY_API_KEY"], timeout_sec=60, region="us-central1", max_instances=3)
 def ready_api(req: https_fn.Request) -> https_fn.Response:
     target = req.path + ("?" + req.query_string.decode() if req.query_string else "")
     status, headers, body = application().handle(req.method, target, dict(req.headers), req.get_data(), req.remote_addr or "unknown")

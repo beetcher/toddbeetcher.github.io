@@ -46,6 +46,8 @@ class Application:
         try:
             parsed = urlsplit(target)
             path = unquote(parsed.path).rstrip("/") or "/"
+            if method == "GET" and parsed.path in ("/", "/ready"):
+                return 308, {**base, "Location": "/ready/"}, b""
             if method == "OPTIONS":
                 if origin and origin not in self.allowed_origins:
                     return respond(403, {"code": "forbidden", "message": "Origin is not configured."}, True)

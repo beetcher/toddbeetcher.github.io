@@ -30,6 +30,12 @@ class HttpTests(unittest.TestCase):
         self.assertIn("frame-ancestors 'none'", headers["Content-Security-Policy"])
         self.assertNotIn(KEY.encode(), body)
 
+    def test_management_canonical_path_preserves_relative_asset_base(self):
+        for path in ("/", "/ready"):
+            status, headers, _ = self.app.handle("GET", path)
+            self.assertEqual(status, 308)
+            self.assertEqual(headers["Location"], "/ready/")
+
     def test_health_public_but_data_requires_key(self):
         self.assertEqual(self.call("GET", "/v1/health", auth=False)[0], 200)
         self.assertEqual(self.call("GET", "/v1/questions", auth=False)[0], 401)
