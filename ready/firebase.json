@@ -3,7 +3,8 @@
     {
       "source": ".firebase-build",
       "codebase": "ready",
-      "runtime": "python312"
+      "runtime": "python312",
+      "ignore": ["venv", ".venv", ".secret.local", ".env*.local", "**/__pycache__/**", "**/*.pyc", "*-debug.log"]
     }
   ],
   "firestore": {
