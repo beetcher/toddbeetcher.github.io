@@ -34,11 +34,12 @@ def main():
     test, _ = service.create_test({"label": "Emulator validation", "metadata": {"tags": ["system_validation"]},
         "origin": {"author": "READY builder", "authorship_kind": "system", "source_reference": "emulator check"},
         "set_ids": ids, "allow_duplicates": False, "duplicate_pair_count": 0}, str(uuid4()))
-    report = {"test_id": test["id"], "person_id": "emulator-"+str(uuid4()), "test_taken_at": "2026-10-28T12:00:00Z",
+    report = {"test_id": test["id"], "person_id": "emulator-"+str(uuid4()), "test_taken_at": "2026-10-28T14:00:00+02:00",
         "responses": [{"item_id": row["item_id"], "answer_ids": [answer["answer_id"] for answer in row["answers"] if answer["role"] == "strong"]} for row in test["items"]],
         "returned_score": {"points_earned": 0, "points_possible": 2}, "idempotency_key": str(uuid4())}
     first, replay = service.submit_result(report)
     assert not replay and first["calculated_score"]["points_earned"] == 2
+    assert service.result(first["id"])["submitted_payload"] == report
     assert service.submit_result(report)[1]
     with ThreadPoolExecutor(max_workers=2) as pool:
         rows = list(pool.map(service.submit_result, ({**report, "idempotency_key": str(uuid4())} for _ in range(2))))

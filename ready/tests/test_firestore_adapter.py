@@ -56,6 +56,13 @@ class FirestoreAdapterTests(unittest.TestCase):
         self.assertEqual(fake.writes[0][0], "create")
         self.assertEqual(fake.writes[0][2]["record_version"], 2)
 
+    def test_original_report_time_survives_firestore_serialization(self):
+        report = {"test_taken_at": "2026-10-28T14:00:00+02:00", "responses": []}
+        stored = encode({"test_taken_at": "2026-10-28T12:00:00Z", "submitted_payload": report})
+        self.assertIsInstance(stored["test_taken_at"], datetime)
+        self.assertEqual(stored["submitted_payload"], report)
+        self.assertEqual(decode(stored)["submitted_payload"], report)
+
 
 if __name__ == "__main__":
     unittest.main()

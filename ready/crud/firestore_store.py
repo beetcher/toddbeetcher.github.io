@@ -10,6 +10,10 @@ from datetime import datetime, timezone
 
 
 def encode(value, field=""):
+    if field == "submitted_payload":
+        # Caller evidence keeps its original timezone/precision spelling. Only
+        # operational timestamps outside this preserved JSON become native dates.
+        return deepcopy(value)
     if isinstance(value, dict):
         return {key: encode(child, key) for key, child in value.items()}
     if isinstance(value, list):

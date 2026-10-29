@@ -177,6 +177,12 @@ def main():
         archived = api('PUT', kind + '/' + record_id + '/archive', {'is_archived': True, 'reason': 'Hosting validation complete; retain all evidence', 'expected_record_version': row['record_version']})
         assert archived['is_archived']
         retained.append({'kind': kind, 'id': record_id})
+    anonymous['idempotency_key'] = str(uuid4())
+    delayed = api('POST', 'attempts', anonymous)
+    assert delayed['test_id'] == test['id'] and delayed['calculated_score']['points_earned'] == 0
+    archived = api('PUT', 'attempts/' + delayed['id'] + '/archive', {'is_archived': True, 'reason': 'Delayed result after archival verified', 'expected_record_version': delayed['record_version']})
+    assert archived['is_archived']
+    retained.append({'kind': 'attempts', 'id': delayed['id']})
     evidence.write_text(json.dumps({'origin': base, 'checked_at': datetime.now(timezone.utc).isoformat(), 'test_id': test['id'], 'frozen_items': test['items'], 'retained': retained, 'passed': True}, indent=2))
     print('Hosting HTTP check passed: Firestore auth, seed dry-run/import/replay, revisions, frozen paired tests, grading, correction history, independent anonymous results, archival and browser layout.')
 
