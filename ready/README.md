@@ -72,3 +72,5 @@ Participant test player, live navigation/feedback timing, participant tokens/ses
 ### Favicon artwork
 
 The workshop uses a single staring blue eye (`web/favicon.svg`). Successive page loads in a tab cycle its iris through blue, red, green, and yellow, while varying its fibers and pupil size. The original two-eye artwork is preserved unchanged in `web/favicon-eyes.svg`, available at https://beetcher-ready.web.app/ready/favicon-eyes.svg.
+
+The iPhone Home Screen shortcut uses `web/apple-touch-icon.png`, a 180×180 PNG of the blue eye on a dark background. In Safari choose Share → Add to Home Screen. This saved icon stays blue; reload color cycling applies to the tab favicon.
