@@ -71,4 +71,4 @@ Participant test player, live navigation/feedback timing, participant tokens/ses
 
 ### Favicon artwork
 
-The workshop uses a single staring blue eye (`web/favicon.svg`). Each page load varies its iris shade, fibers, and pupil size in the browser. The original two-eye artwork is preserved unchanged in `web/favicon-eyes.svg`, available at https://beetcher-ready.web.app/ready/favicon-eyes.svg.
+The workshop uses a single staring blue eye (`web/favicon.svg`). Successive page loads in a tab cycle its iris through blue, red, green, and yellow, while varying its fibers and pupil size. The original two-eye artwork is preserved unchanged in `web/favicon-eyes.svg`, available at https://beetcher-ready.web.app/ready/favicon-eyes.svg.

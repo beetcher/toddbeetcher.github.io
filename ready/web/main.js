@@ -4,7 +4,7 @@
  */
 (() => {
   'use strict';
-  // A fresh iris on each load. The static blue eye remains if fetching is blocked.
+  // Cycle blue, red, green, yellow per tab; retain the static eye if fetching fails.
   async function refreshEye() {
     const icon = document.querySelector('link[rel="icon"]');
     try {
@@ -12,7 +12,21 @@
       if (!response.ok) return;
       const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
       const random = crypto.getRandomValues(new Uint32Array(3));
-      svg.getElementById('iris-color').setAttribute('stop-color', `hsl(${190 + random[0] % 41} 85% 58%)`);
+      const hues = [205, 0, 125, 52];
+      let colorIndex = random[0] % hues.length;
+      try {
+        const saved = sessionStorage.getItem('ready.eyeColor');
+        const previous = saved === null ? -1 : Number(saved);
+        colorIndex = Number.isInteger(previous) && previous >= -1 && previous < hues.length
+          ? (previous + 1) % hues.length : 0;
+        sessionStorage.setItem('ready.eyeColor', String(colorIndex));
+      } catch { /* Random color still works when tab storage is unavailable. */ }
+      const hue = hues[colorIndex];
+      const stops = svg.querySelectorAll('#iris stop');
+      [5, 25, 58, 34, 7].forEach((lightness, index) => {
+        stops[index].setAttribute('stop-color', `hsl(${hue} 85% ${lightness}%)`);
+      });
+      svg.getElementById('iris-fibers').setAttribute('stroke', `hsl(${hue} 90% 82%)`);
       svg.getElementById('iris-fibers').setAttribute('transform', `rotate(${random[1] % 360} 32 32)`);
       svg.getElementById('pupil').setAttribute('r', String(9 + (random[2] % 31) / 10));
       icon.href = 'data:image/svg+xml,' + encodeURIComponent(new XMLSerializer().serializeToString(svg.documentElement));
