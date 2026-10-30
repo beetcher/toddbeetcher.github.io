@@ -68,3 +68,7 @@ See `docs/ARCHITECTURE.md`, `docs/API.md`, and `docs/decisions/0001-foundation.m
 ## Parking lot
 
 Participant test player, live navigation/feedback timing, participant tokens/sessions, AI narrative interpretation, written answers, differentiated roles, test events with place/date/time, premium packaging and calibrated cohort difficulty. These are not required to implement test delivery/result recording.
+
+### Favicon artwork
+
+The workshop uses a single staring blue eye (`web/favicon.svg`). Each page load varies its iris shade, fibers, and pupil size in the browser. The original two-eye artwork is preserved unchanged in `web/favicon-eyes.svg`, available at https://beetcher-ready.web.app/ready/favicon-eyes.svg.

@@ -4,6 +4,21 @@
  */
 (() => {
   'use strict';
+  // A fresh iris on each load. The static blue eye remains if fetching is blocked.
+  async function refreshEye() {
+    const icon = document.querySelector('link[rel="icon"]');
+    try {
+      const response = await fetch(icon.href);
+      if (!response.ok) return;
+      const svg = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
+      const random = crypto.getRandomValues(new Uint32Array(3));
+      svg.getElementById('iris-color').setAttribute('stop-color', `hsl(${190 + random[0] % 41} 85% 58%)`);
+      svg.getElementById('iris-fibers').setAttribute('transform', `rotate(${random[1] % 360} 32 32)`);
+      svg.getElementById('pupil').setAttribute('r', String(9 + (random[2] % 31) / 10));
+      icon.href = 'data:image/svg+xml,' + encodeURIComponent(new XMLSerializer().serializeToString(svg.documentElement));
+    } catch { /* Keep the static eye when offline or in a restricted browser. */ }
+  }
+  refreshEye();
   const $ = id => document.getElementById(id);
   const preview = /\/ready\/web(?:\/|$)/.test(location.pathname);
   if (preview) {

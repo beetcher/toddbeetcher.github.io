@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <title>READY staring eyes</title>
-  <rect width="64" height="64" rx="14" fill="#236348"/>
-  <g fill="#fffef8" stroke="#153b2c" stroke-width="2">
-    <ellipse cx="21" cy="32" rx="13" ry="21"/>
-    <ellipse cx="45" cy="32" rx="13" ry="21"/>
-  </g>
-  <g fill="#142c23">
-    <ellipse cx="25" cy="33" rx="6" ry="10"/>
-    <ellipse cx="41" cy="33" rx="6" ry="10"/>
-  </g>
-  <g fill="white">
-    <circle cx="26" cy="29" r="2"/>
-    <circle cx="42" cy="29" r="2"/>
-  </g>
+<title>READY single staring blue eye</title>
+<defs>
+ <radialGradient id="white"><stop stop-color="#fffef3"/><stop offset=".7" stop-color="#e8e5dc"/><stop offset="1" stop-color="#ab7880"/></radialGradient>
+ <radialGradient id="iris"><stop stop-color="#020e21"/><stop offset=".4" stop-color="#064578"/><stop id="iris-color" offset=".7" stop-color="#39a9f8"/><stop offset=".91" stop-color="#125f99"/><stop offset="1" stop-color="#071322"/></radialGradient>
+</defs>
+<circle cx="32" cy="32" r="30.5" fill="url(#white)" stroke="#191923" stroke-width="2"/>
+<g fill="none" stroke="#a34957" stroke-width=".8" opacity=".7">
+ <path d="M3 26l7 2 5-3m-5 3-2-7M6 46l7-5 4 1m-4-1-2-5M60 22l-7 6-4-1m4 1 3 6M58 48l-9-7 1-6M23 3l2 7-3 4M40 61l-1-7 4-4"/>
+</g>
+<circle cx="32" cy="32" r="22" fill="url(#iris)" stroke="#0b1520" stroke-width="1.5"/>
+<g id="iris-fibers" stroke="#b4e1ff" stroke-width=".7" opacity=".45"><path d="M 44.00 32.00 L 51.97 33.05"/><path d="M 43.90 33.57 L 51.67 35.64"/><path d="M 43.59 35.11 L 51.02 38.18"/><path d="M 43.09 36.59 L 50.05 40.61"/><path d="M 42.39 38.00 L 48.77 42.89"/><path d="M 41.52 39.31 L 47.21 44.99"/><path d="M 40.49 40.49 L 45.38 46.86"/><path d="M 39.31 41.52 L 43.33 48.48"/><path d="M 38.00 42.39 L 41.08 49.82"/><path d="M 36.59 43.09 L 38.68 50.85"/><path d="M 35.11 43.59 L 36.16 51.56"/><path d="M 33.57 43.90 L 33.57 51.94"/><path d="M 32.00 44.00 L 30.95 51.97"/><path d="M 30.43 43.90 L 28.36 51.67"/><path d="M 28.89 43.59 L 25.82 51.02"/><path d="M 27.41 43.09 L 23.39 50.05"/><path d="M 26.00 42.39 L 21.11 48.77"/><path d="M 24.69 41.52 L 19.01 47.21"/><path d="M 23.51 40.49 L 17.14 45.38"/><path d="M 22.48 39.31 L 15.52 43.33"/><path d="M 21.61 38.00 L 14.18 41.08"/><path d="M 20.91 36.59 L 13.15 38.68"/><path d="M 20.41 35.11 L 12.44 36.16"/><path d="M 20.10 33.57 L 12.06 33.57"/><path d="M 20.00 32.00 L 12.03 30.95"/><path d="M 20.10 30.43 L 12.33 28.36"/><path d="M 20.41 28.89 L 12.98 25.82"/><path d="M 20.91 27.41 L 13.95 23.39"/><path d="M 21.61 26.00 L 15.23 21.11"/><path d="M 22.48 24.69 L 16.79 19.01"/><path d="M 23.51 23.51 L 18.62 17.14"/><path d="M 24.69 22.48 L 20.67 15.52"/><path d="M 26.00 21.61 L 22.92 14.18"/><path d="M 27.41 20.91 L 25.32 13.15"/><path d="M 28.89 20.41 L 27.84 12.44"/><path d="M 30.43 20.10 L 30.43 12.06"/><path d="M 32.00 20.00 L 33.05 12.03"/><path d="M 33.57 20.10 L 35.64 12.33"/><path d="M 35.11 20.41 L 38.18 12.98"/><path d="M 36.59 20.91 L 40.61 13.95"/><path d="M 38.00 21.61 L 42.89 15.23"/><path d="M 39.31 22.48 L 44.99 16.79"/><path d="M 40.49 23.51 L 46.86 18.62"/><path d="M 41.52 24.69 L 48.48 20.67"/><path d="M 42.39 26.00 L 49.82 22.92"/><path d="M 43.09 27.41 L 50.85 25.32"/><path d="M 43.59 28.89 L 51.56 27.84"/><path d="M 43.90 30.43 L 51.94 30.43"/></g>
+<circle id="pupil" cx="32" cy="32" r="10.5" fill="#01030a"/>
+<ellipse cx="25" cy="23" rx="5" ry="3.5" fill="white" opacity=".95" transform="rotate(-35 25 23)"/>
+<circle cx="39" cy="41" r="1.5" fill="#def4ff" opacity=".7"/>
 </svg>

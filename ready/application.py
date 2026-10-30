@@ -52,7 +52,7 @@ class Application:
                 if origin and origin not in self.allowed_origins:
                     return respond(403, {"code": "forbidden", "message": "Origin is not configured."}, True)
                 return 204, base, b""
-            static = {"/ready/favicon.svg": "favicon.svg", "/": "index.html", "/ready": "index.html", "/ready/main.js": "main.js", "/ready/style.css": "style.css"}
+            static = {"/ready/favicon-eyes.svg": "favicon-eyes.svg", "/ready/favicon.svg": "favicon.svg", "/": "index.html", "/ready": "index.html", "/ready/main.js": "main.js", "/ready/style.css": "style.css"}
             if method == "GET" and path in static:
                 file = ROOT / "web" / static[path]
                 policy = "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"
