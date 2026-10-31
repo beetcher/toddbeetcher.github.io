@@ -99,5 +99,44 @@ check("ARCHITECTURE.md has a 'Who owns what' section", bool(owns))
 missing = [k for k in kit_items if not re.search(r"`%s[`(\s,]" % k, owns)]
 check("every ConsoleKit item (%d) has an owner line" % len(kit_items), kit_items != [] and not missing, missing)
 
+# 7. no undefined names (DT-12): ESLint "no-undef" on every console/*.js, when Node and npm can be used here.
+# Each file may use the browser globals plus the shared objects (window.X = ... in the shared files). A station may not use another station by bare name;
+# console.js may name the stations. Skipped quietly (with a note) if Node/npm or the one-time install is not available, so the test still runs offline.
+def lint_no_undef():
+    import json, shutil, subprocess, tempfile
+    node, npm = shutil.which("node"), shutil.which("npm")
+    if not node or not npm:
+        print("note: no-undef lint skipped (node/npm not found)"); return
+    tool = pathlib.Path(tempfile.gettempdir()) / "console-lint-eslint9"
+    eslint = tool / "node_modules" / ".bin" / "eslint"
+    if not eslint.exists():
+        tool.mkdir(exist_ok=True)
+        try:
+            subprocess.run([npm, "install", "--prefix", str(tool), "--silent", "--no-audit", "--no-fund", "eslint@9", "globals"], capture_output=True, timeout=170, check=True)
+        except Exception as e:
+            print("note: no-undef lint skipped (could not install eslint: %s)" % str(e)[:80]); return
+    def exposed(f):
+        return re.findall(r"window\.(\w+)\s*=\s*[\{\(f]", (CON / f).read_text())
+    shared_names = sorted({n for f in SHARED + shared_after for n in exposed(f)})
+    station_names = sorted({n for f in stations for n in exposed(f)})
+    entries = []
+    for f in sorted(p.name for p in CON.glob("*.js")):
+        extra = list(shared_names)
+        if f == LEGACY: extra += station_names
+        elif f in station_globals.values() or f in stations: extra += [n for n in exposed(f)]
+        entries.append({"files": [f], "languageOptions": {"ecmaVersion": 2022, "sourceType": "script", "globals": dict((n, "readonly") for n in extra)},
+                        "rules": {"no-undef": "error"}})
+    cfg = tool / "eslint.config.cjs"
+    cfg.write_text("const globals = require('globals');\nconst entries = %s;\n"
+                   "module.exports = entries.map(e => { e.languageOptions.globals = Object.assign({}, globals.browser, e.languageOptions.globals); return e; });\n" % json.dumps(entries))
+    r = subprocess.run([str(eslint), "-c", str(cfg), "--format", "json", "."], cwd=str(CON), capture_output=True, text=True, timeout=170)
+    try:
+        res = json.loads(r.stdout)
+    except Exception:
+        print("note: no-undef lint skipped (eslint gave no result: %s)" % (r.stderr or r.stdout)[:120]); return
+    bad = ["%s:%d %s" % (pathlib.Path(x["filePath"]).name, m["line"], m["message"]) for x in res for m in x["messages"]]
+    check("no undefined names in the %d console scripts (ESLint no-undef)" % len(res), bad == [], bad[:8])
+lint_no_undef()
+
 print("\n" + ("all passed" if not fails else "%d FAILED: %s" % (len(fails), "; ".join(fails))))
 sys.exit(1 if fails else 0)
