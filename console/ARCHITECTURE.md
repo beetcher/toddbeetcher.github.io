@@ -115,7 +115,7 @@ Layers, from the bottom. A layer depends only on the layers below it.
 2a. **Shared data tables**: `data.js` (`window.ConsoleData`): the collection names (`COLL_P`, `COLL_L`, `COLL_LK`) the relation words (`REL`, `PERSON_RELS`) and the person word tables (`PLABEL`, `PISSUE`). Plain data, loads BEFORE `console.js`; read it as `ConsoleData.REL` etc. Done (DT-33); the kit doors `colls`, `rel` and `personRels` are gone.
 3a. **Help drawer**: `help.js` (`window.ConsoleHelp`): the manuals (one per station), the Workflows tab and the drawer; `ConsoleHelp.close()` and `.openWorkflows(ids)`. Done (H-1). The station list stays in `console.js`; the manual text lives in `help.js` (`MANUALS`, keyed by station id).
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
-4. **Shared UI**: `ui.js`, `filters.js`, `forms.js`. Used directly.
+4. **Shared UI**: `ui.js`, `filters.js`, `forms.js`. Used directly. `ui.js` also holds `UI.line`, `UI.str`, `UI.askDiscard` and `UI.statusToggle` (DT-19; the kit doors for them are gone; `statusToggle` reaches the server and the lock through `ConsoleKit` at call time).
 5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
 
 Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the stations. They are not stations: no `show`, but they empty their data on sign-out. A shared file never names a station (checked).
@@ -138,7 +138,6 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
 | `fetchRecords` | Core: transport and sign-in | The read of requests that doubles as the key check (DT-2) |
 | `canPlaced` | Core: session | Placing permission |
-| `line`, `str` | Core: detail-row helpers | Used by many cards; to become shared UI (DT-19) |
 | `problem` | Core: sign-in | The failed sign-in sentence (DT-1) |
 | `consts` | Core: constants (transport) | `MAX`, `READ_MS`, `RECORDS_URL`: constants only, never a value that changes; they go with the transport module (DT-2) |
 | `attFail` | Attendance (`attendance.js`, `AttendanceStation.fail`; the person words are `ConsoleData.PLABEL` and `.PISSUE`) | The failed-write sentence (DT-34) |
@@ -147,8 +146,6 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `placeInput`, `placeText` | **Shared addresses** (`addresses.js`) | The address form with saved-place offer, and the one-line address text |
 | `forgetSavedPlaces` | **Shared addresses** (`addresses.js`) | Forget the cached saved places after a place changed |
 | `peopleList`, `peopleMatches`, `pFull` | **People station** (`people.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
-| `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
-| `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
 | `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Help (`help.js`, `ConsoleHelp.openWorkflows`) / Attendance / People (`forgetPeople` forwards to the People station) | Open the Help drawer on the Workflows tab; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
 | `addrForm`, `pProblems`, `refreshPlaces`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People station (`pProblems`, `peopleStale`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; mark the People list and the pick list stale after a person changed (read by the roster engine) |
 | `personHistory` | Core: a forwarder to Attendance | One person's attendance history |

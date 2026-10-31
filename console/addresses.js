@@ -4,7 +4,7 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str;
   var D = window.ConsoleData, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL;
 
   // ---- Places station and the Addresses panel on a person's card: locations and the links to them, through the same admin door.

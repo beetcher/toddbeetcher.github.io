@@ -5,7 +5,7 @@
   "use strict";
   var K = window.ConsoleKit;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, when = window.ConsoleFormat.when, statusToggle = K.statusToggle;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, when = window.ConsoleFormat.when, statusToggle = UI.statusToggle;
   var peopleList = K.peopleList, refreshPlaces = K.refreshPlaces, pDateOut = K.pDateOut, locAddr = K.locAddr, REL = window.ConsoleData.REL, COLL_LK = window.ConsoleData.COLL_LK;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 

@@ -10,7 +10,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, when = window.ConsoleFormat.when, statusToggle = K.statusToggle;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, when = window.ConsoleFormat.when, statusToggle = UI.statusToggle;
   var slugify = window.ConsoleForms.slugify;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 

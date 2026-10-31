@@ -6,7 +6,7 @@
   "use strict";
   var K = window.ConsoleKit;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str, statusToggle = K.statusToggle, historyBtn = K.historyBtn;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str, statusToggle = UI.statusToggle, historyBtn = K.historyBtn;
   var skelOn = K.skelOn, skelOff = K.skelOff, personHistory = K.personHistory, refreshPlaces = K.refreshPlaces, when = window.ConsoleFormat.when;
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL, PERSON_RELS = D.PERSON_RELS;
   var A = window.ConsoleAddresses, addrForm = A.addrForm, lProblems = A.lProblems, locAddr = A.locAddr, locSummary = A.locSummary, placeText = A.placeText;

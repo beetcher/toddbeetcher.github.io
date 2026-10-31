@@ -154,5 +154,63 @@
     b.type = "button"; b.addEventListener("click", onMore); d.appendChild(t); d.appendChild(b); host.appendChild(d); return d;
   }
 
-  window.UI = { zoneName: zoneName, zoneOptions: zoneOptions, requiredLabel: requiredLabel, moreBar: moreBar, skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
+
+  // ---- Small shared helpers moved from console.js (DT-19). line and str build detail rows; askDiscard asks before leaving unsaved edits; statusToggle is the
+  // Active/Inactive switch that collects taps into one save (it reaches the server and the lock through ConsoleKit when it is used, not when this file loads).
+  function kit() { return window.ConsoleKit; }
+  function line(label, value) {
+    var d = document.createElement("div");
+    var b = document.createElement("b");
+    b.textContent = label + ": ";
+    d.appendChild(b);
+    d.appendChild(document.createTextNode(value));
+    return d;
+  }
+  function str(v) { return (v !== null && typeof v === "object") ? JSON.stringify(v) : String(v); }
+  var DISCARD = { title: "Discard your changes?", message: "You have edits that are not saved.", yes: "Discard", no: "Keep editing", danger: true };
+  function askDiscard(dirty, go, stay) {   // runs go() at once when nothing is unsaved; otherwise asks first
+    if (!dirty) { go(); return; }
+    UI.confirm(DISCARD).then(function (ok) { if (ok) go(); else if (stay) stay(); });
+  }
+  var TOGGLE_WAIT = 1500;
+  function statusToggle(rec, li, opts) {
+    var b = el("button", "stoggle"); b.type = "button"; b.setAttribute("role", "switch");
+    var knob = el("span", "knob"), word = el("span", "");
+    b.appendChild(knob); b.appendChild(word);
+    var want = rec.status === opts.on, timer = null, busy = false;
+    var msg = el("div", "stmsg"); msg.setAttribute("role", "alert");
+    function draw() {
+      var saved = rec.status === opts.on;
+      b.classList.toggle("on", want); b.classList.toggle("pending", want !== saved || !!timer);
+      b.setAttribute("aria-checked", want ? "true" : "false");
+      word.textContent = want ? (opts.onWord || "Active") : (opts.offWord || "Inactive");
+      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? (opts.onWord || "Active") : (opts.offWord || "Inactive")).toLowerCase() + (timer ? ", saving soon" : "") + ". Tap to change.");
+    }
+    function send() {
+      timer = null;
+      if (want === (rec.status === opts.on)) { draw(); return; }
+      busy = true; b.disabled = true; msg.textContent = "";
+      var args = { id: rec.id, changes: { status: want ? opts.on : opts.off }, expected_updated_at: rec.updated_at };
+      (opts.coll ? kit().admin("update", args, opts.coll) : kit().admin("update", args)).then(function (res) {
+        busy = false; b.disabled = false;
+        if (res.status === 401) { kit().lock("That key did not work."); return; }
+        if (res.status === 200 && res.body && res.body.ok) {
+          rec.status = want ? opts.on : opts.off;
+          var u = res.body.data && res.body.data.updated_at; if (u) rec.updated_at = u;
+          draw(); return;
+        }
+        want = rec.status === opts.on; draw();
+        msg.textContent = res.status === 409 ? "This changed somewhere else. Tap Refresh, then try again." : res.status === 400 ? opts.problem(res) : kit().adminProblem(res.status);
+      });
+    }
+    b.addEventListener("click", function () {
+      if (busy) return;
+      want = !want; if (timer) clearTimeout(timer);
+      timer = setTimeout(send, TOGGLE_WAIT); draw();
+    });
+    li.classList.add("hasToggle"); draw();
+    return { btn: b, msg: msg };
+  }
+
+  window.UI = { line: line, str: str, askDiscard: askDiscard, statusToggle: statusToggle, zoneName: zoneName, zoneOptions: zoneOptions, requiredLabel: requiredLabel, moreBar: moreBar, skelOn: skelOn, skelOff: skelOff, filterBar: filterBar, skeleton: skeleton, limitNote: limitNote, dismiss: function () { finish(false); }, confirm: confirmDialog, chip: chip, banner: banner, empty: empty };
 })();

@@ -191,13 +191,8 @@
     viewOnlyPass();
   }
   function closeManual() { if (window.ConsoleHelp) window.ConsoleHelp.close(); }   // the Help drawer is help.js (loads after this file)
-  var DISCARD = { title: "Discard your changes?", message: "You have edits that are not saved.", yes: "Discard", no: "Keep editing", danger: true };
-  function askDiscard(dirty, go, stay) {   // runs go() at once when nothing is unsaved; otherwise asks first
-    if (!dirty) { go(); return; }
-    UI.confirm(DISCARD).then(function (ok) { if (ok) go(); else if (stay) stay(); });
-  }
   function goTo(id) {
-    askDiscard((window.VenuesStation && window.VenuesStation.dirty()) || (window.ClassesStation && window.ClassesStation.dirty()), function () {
+    UI.askDiscard((window.VenuesStation && window.VenuesStation.dirty()) || (window.ClassesStation && window.ClassesStation.dirty()), function () {
       closeManual();
       if (location.hash === "#/" + id) route(); else location.hash = "#/" + id;
     }, function () { $("collPick").value = currentRoute(); });
@@ -278,15 +273,6 @@
       .catch(function (e) { netShow(!!(e && e.timedOut)); return { status: "network" }; });
   }
 
-  function line(label, value) {
-    var d = document.createElement("div");
-    var b = document.createElement("b");
-    b.textContent = label + ": ";
-    d.appendChild(b);
-    d.appendChild(document.createTextNode(value));
-    return d;
-  }
-  function str(v) { return (v !== null && typeof v === "object") ? JSON.stringify(v) : String(v); }
   function problem(status) {
     if (status === "unauthorized") return method === "google" ? "Google sign-in did not work. Try again." : "That key did not work.";
     if (status === "forbidden") return "This Google account has not been invited. Ask the owner.";
@@ -490,45 +476,6 @@
 
   // A one-tap status switch on a card. Taps are collected: 1.5 seconds after the LAST tap the server is asked once, and only if the
   // final choice differs from what is saved (two taps cancel out). opts: coll (admin collection or undefined), on, off (status words), problem(res).
-  var TOGGLE_WAIT = 1500;
-  function statusToggle(rec, li, opts) {
-    var b = mk("button", "stoggle"); b.type = "button"; b.setAttribute("role", "switch");
-    var knob = mk("span", "knob"), word = mk("span", "");
-    b.appendChild(knob); b.appendChild(word);
-    var want = rec.status === opts.on, timer = null, busy = false;
-    var msg = mk("div", "stmsg"); msg.setAttribute("role", "alert");
-    function draw() {
-      var saved = rec.status === opts.on;
-      b.classList.toggle("on", want); b.classList.toggle("pending", want !== saved || !!timer);
-      b.setAttribute("aria-checked", want ? "true" : "false");
-      word.textContent = want ? (opts.onWord || "Active") : (opts.offWord || "Inactive");
-      b.setAttribute("aria-label", (opts.label || "Status") + ": " + (want ? (opts.onWord || "Active") : (opts.offWord || "Inactive")).toLowerCase() + (timer ? ", saving soon" : "") + ". Tap to change.");
-    }
-    function send() {
-      timer = null;
-      if (want === (rec.status === opts.on)) { draw(); return; }
-      busy = true; b.disabled = true; msg.textContent = "";
-      var args = { id: rec.id, changes: { status: want ? opts.on : opts.off }, expected_updated_at: rec.updated_at };
-      (opts.coll ? admin("update", args, opts.coll) : admin("update", args)).then(function (res) {
-        busy = false; b.disabled = false;
-        if (res.status === 401) { lock("That key did not work."); return; }
-        if (res.status === 200 && res.body && res.body.ok) {
-          rec.status = want ? opts.on : opts.off;
-          var u = res.body.data && res.body.data.updated_at; if (u) rec.updated_at = u;
-          draw(); return;
-        }
-        want = rec.status === opts.on; draw();
-        msg.textContent = res.status === 409 ? "This changed somewhere else. Tap Refresh, then try again." : res.status === 400 ? opts.problem(res) : adminProblem(res.status);
-      });
-    }
-    b.addEventListener("click", function () {
-      if (busy) return;
-      want = !want; if (timer) clearTimeout(timer);
-      timer = setTimeout(send, TOGGLE_WAIT); draw();
-    });
-    li.classList.add("hasToggle"); draw();
-    return { btn: b, msg: msg };
-  }
 
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   // The History button on a card: opens the Activity station on this one record. Only a super admin gets it (the server decides; this is courtesy).
@@ -547,13 +494,13 @@
                         classById: function (id) { return window.ClassesStation ? window.ClassesStation.byId(id) : undefined; },
                         openAttendance: function (cls, host) { openAttendance(cls, host); },
                         requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
-                        historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, RECORDS_URL: CFG.endpoints.records }; }, attFail: function (res) { return window.AttendanceStation.fail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
+                        historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, RECORDS_URL: CFG.endpoints.records }; }, attFail: function (res) { return window.AttendanceStation.fail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
                         openWorkflows: function () { return window.ConsoleHelp.openWorkflows.apply(null, arguments); }, surfaces: function () { return SURFACES; }, allowed: function (id) { return stationAllowed(id); }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
                         // Added for the Venues station (V-4). Functions that point at the places, people and shared helpers still in this file.
                         lProblems: function () { return window.ConsoleAddresses.lProblems.apply(null, arguments); }, placeInput: function () { return window.ConsoleAddresses.placeInput.apply(null, arguments); }, placeText: function () { return window.ConsoleAddresses.placeText.apply(null, arguments); },
                         forgetSavedPlaces: function () { window.ConsoleAddresses.forgetSaved(); }, peopleList: function () { return window.PeopleStation.list.apply(null, arguments); }, peopleMatches: function () { return window.PeopleStation.matches.apply(null, arguments); },
-                        pFull: function () { return window.PeopleStation.full.apply(null, arguments); }, statusToggle: function () { return statusToggle.apply(null, arguments); }, askDiscard: function () { return askDiscard.apply(null, arguments); },
+                        pFull: function () { return window.PeopleStation.full.apply(null, arguments); }, 
                         // Added for the Instructors and Students stations (RO-2): the address form, the People problem words, the Places refresh, the collection names, and People's stale flags.
                         addrForm: function () { return window.ConsoleAddresses.addrForm.apply(null, arguments); }, pProblems: function () { return window.PeopleStation.problems.apply(null, arguments); }, refreshPlaces: function () { window.PlacesStation.refresh(); },
                         peopleStale: function () { window.PeopleStation.stale(); },

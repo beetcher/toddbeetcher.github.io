@@ -13,7 +13,7 @@
   var C = K.consts();   // true constants only
   var MAX = C.MAX, READ_MS = C.READ_MS, ATT_RANK = window.ConsoleWords.att.ATT_RANK, ATT_GONE = window.ConsoleWords.att.ATT_GONE;
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, can = K.can, canPlaced = K.canPlaced,
-      fetchRecords = K.fetchRecords, fetchT = K.fetchT, netShow = K.netShow, putInClass = K.putInClass, line = K.line, str = K.str, problem = K.problem, goTo = K.go;
+      fetchRecords = K.fetchRecords, fetchT = K.fetchT, netShow = K.netShow, putInClass = K.putInClass, line = UI.line, str = UI.str, problem = K.problem, goTo = K.go;
 
   var known = {};        // id -> record
   var rows = {};         // id -> <li>

@@ -11,11 +11,11 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var CF = window.ConsoleForms;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, line = K.line, str = K.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, line = UI.line, str = UI.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
   var lProblems = K.lProblems, placeInput = K.placeInput, placeText = K.placeText, peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull;
-  var statusToggle = K.statusToggle, askDiscard = K.askDiscard;
+  var statusToggle = UI.statusToggle, askDiscard = UI.askDiscard;
   var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
   var slugTouched = false, addPlace = null;
