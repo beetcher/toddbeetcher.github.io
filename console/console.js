@@ -552,7 +552,7 @@
                         classById: function (id) { return window.ClassesStation ? window.ClassesStation.byId(id) : undefined; },
                         openAttendance: function (cls, host) { openAttendance(cls, host); },
                         requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
-                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return attFail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
+                        words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return window.AttendanceStation.fail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
                         openWorkflows: function () { return window.ConsoleHelp.openWorkflows.apply(null, arguments); }, surfaces: function () { return SURFACES; }, allowed: function (id) { return stationAllowed(id); }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
                         // Added for the Venues station (V-4). Functions that point at the places, people and shared helpers still in this file.
@@ -619,22 +619,6 @@
   var ATT_OFF = { waitlisted: 1, declined: 1, withdrawn: 1, cancelled: 1 };   // statuses that do not hold a seat
   var afSeq = 0;
 
-  function attFail(res) {
-    var ps = (res.body && res.body.error && res.body.error.problems) || [];
-    if (res.status === 409 && !ps.length) return "Someone changed this a moment ago. Close this window and open it again.";
-    if (!ps.length) return adminProblem(res.status);
-    return ps.map(function (p) {
-      if (p.issue === "duplicate") return "They are already in this class in that role.";
-      if (p.issue === "choose_one") return "Choose someone we know or add someone new, not both.";
-      if (/^person\./.test(p.field)) return (window.PeopleStation.words().label[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (window.PeopleStation.words().issue[p.issue] || "That value is not valid."));
-      if (p.field === "scheduled_class_id") return "Choose a class.";
-      if (p.field === "role") return "Choose a role.";
-      if (p.field === "individual_id" && p.issue === "address_required") return "An instructor needs an address first. Add the person in the Instructors station with their address, then add them here.";
-      if (p.field === "individual_id") return p.issue === "required" ? "Choose someone." : "We could not find them.";
-      if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
-      return p.field + ": " + (window.PeopleStation.words().issue[p.issue] || p.issue);
-    }).join(" ");
-  }
   // The card's tone, chip words and "Next" line, by status (the cue rules in console/DESIGN-RULES.md)
   var ATT_TONE = {
     assigned: { tone: "wait", next: "Next: wait for them to confirm." },

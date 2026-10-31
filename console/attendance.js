@@ -10,7 +10,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName, attFail = K.attFail, classWhen = K.classWhen,
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName, classWhen = K.classWhen,
       refreshPlaced = K.refreshPlaced, assignForm = K.assignForm;
   var A = K.attConsts();   // the shared tables (constants) and leftOpen
   var ATT = A.ATT, ATT_STATUSES = A.ATT_STATUSES, ATT_WORD = A.ATT_WORD, ROLE_WORD = A.ROLE_WORD, ATT_TONE = A.ATT_TONE, ATT_OPEN = A.ATT_OPEN, ATT_OFF = A.ATT_OFF,
@@ -279,7 +279,26 @@
 
   // The hooks console.js calls. show: Attendance was opened. reset: the Console locked or signed out (empties the page: list, counts, message, search).
   // openAttendance, personHistory, attLine: used by Classes, Messages, Home, People and Put in a class, which still live in console.js (small forwarders there).
+  // The plain sentence for a failed attendance write (moved from console.js, DT-34; the person words come from data.js). Classes asks for it through the kit.
+  function attFail(res) {
+    var ps = (res.body && res.body.error && res.body.error.problems) || [];
+    if (res.status === 409 && !ps.length) return "Someone changed this a moment ago. Close this window and open it again.";
+    if (!ps.length) return adminProblem(res.status);
+    return ps.map(function (p) {
+      if (p.issue === "duplicate") return "They are already in this class in that role.";
+      if (p.issue === "choose_one") return "Choose someone we know or add someone new, not both.";
+      if (/^person\./.test(p.field)) return (window.ConsoleData.PLABEL[p.field.slice(7)] || p.field) + ": " + (p.issue === "invalid_format" && /email$/.test(p.field) ? "That email address does not look right." : (window.ConsoleData.PISSUE[p.issue] || "That value is not valid."));
+      if (p.field === "scheduled_class_id") return "Choose a class.";
+      if (p.field === "role") return "Choose a role.";
+      if (p.field === "individual_id" && p.issue === "address_required") return "An instructor needs an address first. Add the person in the Instructors station with their address, then add them here.";
+      if (p.field === "individual_id") return p.issue === "required" ? "Choose someone." : "We could not find them.";
+      if (p.field === "order") return "Place has to be a whole number from 1 to 50.";
+      return p.field + ": " + (window.ConsoleData.PISSUE[p.issue] || p.issue);
+    }).join(" ");
+  }
+
   window.AttendanceStation = {
+    fail: function (res) { return attFail(res); },
     show: function () { loadAttendanceStation(); },
     reset: function () {
       AS.seq++; AS.recs = []; AS.loaded = false; AS.capped = false;

@@ -45,15 +45,7 @@
       if (changed) renderPeople();
     }).catch(function () {});
   }
-  var PLABEL = { given_name: "Given name", middle_names: "Middle names", family_name: "Family name", name_to_use: "Name to use", pronouns: "Pronouns",
-                 birth_date: "Birth date", birth_date_certainty: "Birth date certainty", preferred_language: "Preferred language", time_zone: "Time zone",
-                 requires_interpreter: "Interpreter", email: "Email", phone: "Phone", backup_email: "Backup email", backup_phone: "Backup phone", prefers_email: "Preferred way to reach", status: "Status", notes: "Notes", survivor_id: "Person to keep", duplicate_id: "This person", reason: "Reason", id: "Person" };
-  var PISSUE = { required: "Required.", invalid_format: "That value is not valid.", out_of_range: "Too long or too short.", invalid_value: "That value is not valid.",
-                 invalid_type: "That value is not valid.", not_found: "That person was not found.", same_as_survivor: "Pick a different person.",
-                 conflict_restricted_detail: "Both people hold protected details. That needs a person to sort out first.",
-                 too_many_links: "Too many records point at this person to merge in one go.", snapshots_erased: "One of the people has been erased, so this cannot be undone.",
-                 not_merged: "This merge was already undone.", already_erased: "Already erased.", in_use: "Protected details exist for this person.", immutable: "That cannot be changed.",
-                 inconsistent: "That does not fit with the other answers." };
+  var PLABEL = D.PLABEL, PISSUE = D.PISSUE;   // the person word tables are shared (data.js): Attendance reads them too (DT-34)
   var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth", email: "epaEmail", phone: "epaPhone" };
   var P_FIELDS = [
     { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },
@@ -597,6 +589,6 @@
     list: function () { return peopleList.apply(null, arguments); }, matches: function () { return peopleMatches.apply(null, arguments); },
     full: function () { return pFull.apply(null, arguments); }, problems: function () { return pProblems.apply(null, arguments); },
     dateOut: function () { return pDateOut.apply(null, arguments); }, forgetPick: function () { peopleForPick = null; },
-    stale: function () { pLoaded = false; peopleForPick = null; }, words: function () { return { label: PLABEL, issue: PISSUE }; }
+    stale: function () { pLoaded = false; peopleForPick = null; }
   };
 })();
