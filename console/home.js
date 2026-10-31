@@ -57,9 +57,63 @@
     }, function () { if (my === needSeq) box.hidden = true; });
   }
 
+  // ---- Home for the role (P-103). Only from what the server already lets this person read: the grants in who they are, and their own class list.
+  // A person limited to a territory is told which one (and that the rest is not shown). An Instructor sees the classes they teach, soonest first.
+  var roleSeq = 0;
+  function limited() { var me = K.me(); return !!me && !me.is_super_admin && !me.inspector && !me.unlimited; }
+  function drawScope(areas) {
+    var me = K.me(), line = $("scopeLine"), parts = [];
+    var gr = (me && me.grants) || [];
+    gr.forEach(function (g) {
+      if (g.kind === "state") parts.push("all of " + (g.state_code || "your state"));
+      else if (g.kind === "regions") (g.region_ids || []).forEach(function (id) { parts.push((areas && areas[id]) || "a region"); });
+    });
+    var seen = {}; parts = parts.filter(function (p) { if (seen[p]) return false; seen[p] = 1; return true; });
+    if (!parts.length) { line.hidden = true; return; }
+    line.textContent = "Showing you " + parts.join(", ") + ". Everything outside it is hidden from you."; line.hidden = false;
+  }
+  function loadRole() {
+    var my = ++roleSeq, me = K.me(), line = $("scopeLine"), box = $("mineBox"), body = $("mineBody"), badge = $("mineBadge");
+    line.hidden = true; box.hidden = true;
+    if (!me || !limited()) return;
+    var hasRegions = ((me.grants || []).some(function (g) { return g.kind === "regions" && (g.region_ids || []).length; }));
+    if (hasRegions) {
+      K.admin("list", { limit: 200 }, "discovery_areas").then(function (res) {
+        if (my !== roleSeq || !K.key()) return;
+        var areas = {}; if (okRes(res)) (res.body.data.records || []).forEach(function (a) { areas[a.id] = a.name; });
+        drawScope(areas);
+      }, function () { if (my === roleSeq) drawScope(null); });
+    } else drawScope(null);
+    if (me.role_key === "instructor" && K.can("view_console")) {
+      K.admin("list", { limit: 200 }, "scheduled_classes").then(function (res) {
+        if (my !== roleSeq || !K.key() || !okRes(res)) return;
+        var now = Date.now();
+        var mine = (res.body.data.records || []).filter(function (c) {
+          if (c.status === "cancelled" || c.status === "completed") return false;
+          return !c.starts_at || new Date(c.starts_at).getTime() >= now;
+        }).sort(function (a, b) {
+          if (a.starts_at && b.starts_at) return a.starts_at < b.starts_at ? -1 : a.starts_at > b.starts_at ? 1 : 0;
+          return a.starts_at ? -1 : b.starts_at ? 1 : 0;
+        });
+        body.textContent = "";
+        mine.slice(0, 5).forEach(function (c) {
+          var d = document.createElement("div"); d.className = "aitem";
+          var t = document.createElement("div"), b = document.createElement("b"); b.textContent = c.title || "(no title)"; t.appendChild(b);
+          t.appendChild(document.createTextNode(" · " + (c.starts_at ? K.classWhen(c) : "date not set yet"))); d.appendChild(t); body.appendChild(d);
+        });
+        if (!mine.length) { var e = document.createElement("div"); e.textContent = "No classes are listed for you yet. If one is missing, ask an admin to check that you are attached to it as an instructor."; body.appendChild(e); }
+        else if (mine.length > 5) { var m = document.createElement("div"); m.className = "quietline"; m.textContent = "and " + (mine.length - 5) + " more in Classes."; body.appendChild(m); }
+        var row = document.createElement("div"); row.className = "arow";
+        var go = document.createElement("button"); go.type = "button"; go.className = "btn-secondary"; go.dataset.go = "classes"; go.textContent = "Open Classes"; row.appendChild(go);
+        var wrap = document.createElement("div"); wrap.appendChild(row); body.appendChild(wrap);
+        badge.textContent = mine.length; badge.hidden = !mine.length; box.hidden = false;
+      }, function () {});
+    }
+  }
+
   window.HomeStation = {
-    show: function () { K.refreshPlaced(); loadNeeds(); },   // arriving on Home: refresh the waiting card and the needs-you-now box
-    reset: function () { needSeq++; $("needBox").hidden = true; $("needBody").textContent = ""; $("homeView").hidden = true; },   // the Console locked
+    show: function () { K.refreshPlaced(); loadNeeds(); loadRole(); },   // arriving on Home: refresh the waiting card, the needs-you-now box and the role's own part
+    reset: function () { needSeq++; roleSeq++; $("needBox").hidden = true; $("needBody").textContent = ""; $("scopeLine").hidden = true; $("mineBox").hidden = true; $("mineBody").textContent = ""; $("homeView").hidden = true; },   // the Console locked
     access: function () {   // hide the tiles this person's role can never open
       Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = K.allowed(b.dataset.go) ? "" : "none"; });
     }

@@ -1003,6 +1003,7 @@
 #homeView .attn { background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 12px; }
 #homeView .attn.hot { border-color: #c98a00; box-shadow: inset 4px 0 0 #c98a00; }
 #homeView .attn h3 { color: var(--ink); }
+#homeView .scope { margin: var(--space-2) 0 0; color: var(--ink-soft); font-size: var(--text-s); }
 #homeView .attn .aitem { border-top: 1px solid var(--line); }
 #homeView .attn .aitem b { color: var(--ink); }
 #homeView .attn .aitem .why { color: var(--ink-soft); }
@@ -1021,8 +1022,8 @@
 #homeView .tile.soon { background: transparent; border: 1px dashed var(--line-strong, var(--line)); }
 #homeView .mbtns button { background: #fff; color: var(--ink); border-color: var(--line-strong, var(--line)); }
 @media (min-width: 1100px) {
-  #homeView #attnBody, #homeView #needBody { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-  #homeView #attnBody > .quietline, #homeView #attnBody > div:not(.aitem), #homeView #needBody > .quietline, #homeView #needBody > div:not(.aitem) { grid-column: 1 / -1; }
+  #homeView #attnBody, #homeView #needBody, #homeView #mineBody { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  #homeView #attnBody > .quietline, #homeView #attnBody > div:not(.aitem), #homeView #needBody > .quietline, #homeView #needBody > div:not(.aitem), #homeView #mineBody > .quietline, #homeView #mineBody > div:not(.aitem) { grid-column: 1 / -1; }
 }
 @media (max-width: 520px) {
   #homeView .tiles { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
