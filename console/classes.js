@@ -13,7 +13,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var CF = window.ConsoleForms;
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName, attFail = K.attFail;
-  var askDiscard = UI.askDiscard, openAttendance = K.openAttendance, refreshPlaced = K.refreshPlaced, attLine = K.attLine, openWorkflows = K.openWorkflows;
+  var askDiscard = UI.askDiscard, openAttendance = K.openAttendance, refreshPlaced = K.refreshPlaced, attLine = K.attLine, openWorkflows = window.ConsoleHelp.openWorkflows;
   var pFull = K.pFull, peopleList = K.peopleList, peopleMatches = K.peopleMatches;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var LABELS = CF.labels, humanize = CF.humanize, readValue = CF.readValue, buildField = CF.buildField;

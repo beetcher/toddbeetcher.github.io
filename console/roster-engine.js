@@ -5,7 +5,7 @@
   var K = window.ConsoleKit;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, when = window.ConsoleFormat.when, statusToggle = UI.statusToggle, historyBtn = K.historyBtn;
-  var peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull, lProblems = K.lProblems, pProblems = K.pProblems, addrForm = K.addrForm, refreshPlaces = K.refreshPlaces;
+  var peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull, lProblems = window.ConsoleAddresses.lProblems, pProblems = K.pProblems, addrForm = window.ConsoleAddresses.addrForm, refreshPlaces = K.refreshPlaces;
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 

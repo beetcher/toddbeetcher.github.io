@@ -14,7 +14,7 @@
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, line = UI.line, str = UI.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
-  var lProblems = K.lProblems, placeInput = K.placeInput, placeText = K.placeText, peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull;
+  var lProblems = window.ConsoleAddresses.lProblems, placeInput = window.ConsoleAddresses.placeInput, placeText = window.ConsoleAddresses.placeText, peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull;
   var statusToggle = UI.statusToggle, askDiscard = UI.askDiscard;
   var vLoaded = false, vBusy = false, vAgain = false, vNewId = "", vRecs = [], vAreas = null;
   var FIELD_ERR = { name: "eName", slug: "eSlug", is_public_venue: "ePublic" };
@@ -1021,7 +1021,7 @@
           save.disabled = false;
           if (r.status === 401) { lock("That key did not work."); return; }
           if (r.status === 200 && r.body.ok) {
-            editRec.place = r.body.data.place; host.textContent = ""; show(); K.forgetSavedPlaces();
+            editRec.place = r.body.data.place; host.textContent = ""; show(); window.ConsoleAddresses.forgetSaved();
             $("vNotice").textContent = r.body.data.changed === false ? "That is already the venue's place." : "Moved " + (rec.name || "venue") + " to its new place. People in upcoming classes here are emailed the new address. Messages shows the result.";
             loadVenues(); liveReady();
             return;
