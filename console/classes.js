@@ -205,7 +205,9 @@
         { id: "class_type", label: "Kind", kind: "multi", options: [{ value: "workshop", label: "Workshop" }, { value: "group", label: "Group" }, { value: "private", label: "One on one" }] },
         { id: "upcoming", label: "Upcoming", kind: "toggle", noun: "classes" },
         { id: "past", label: "Past", kind: "toggle", noun: "classes" },
-        { id: "novenue", label: "Needs a venue", kind: "toggle", noun: "classes" }],
+        { id: "novenue", label: "Needs a venue", kind: "toggle", noun: "classes" },
+        { id: "noinst", label: "Needs an instructor", kind: "toggle", noun: "classes" },
+        { id: "full", label: "Full", kind: "toggle", noun: "classes" }],
       onChange: function () { cSave(); cShow = CSTEP; $("cNotice").textContent = ""; renderClasses(); }
     });
     try { var saved = JSON.parse(sessionStorage.getItem(CF_STORE) || "null"); if (saved) cCf.setSelection(saved); } catch (e) {}
@@ -219,11 +221,13 @@
     if ((sel.upcoming || []).length && !(live && t != null && t >= now)) return false;
     if ((sel.past || []).length && !(t != null && t < now)) return false;
     if ((sel.novenue || []).length && !(live && !rec.venue_id)) return false;
+    if ((sel.noinst || []).length && !cNeedsInst(rec)) return false;
+    if ((sel.full || []).length && !cIsFull(rec)) return false;
     return true;
   }
   function cTick(rec) {   // a class you just saved is never hidden: widen the choice to include it
     var sel = cChips().getSelection(), add = function (arr, v) { return arr.indexOf(v) >= 0 || !v ? arr : arr.concat([v]); };
-    cChips().setSelection({ status: add(sel.status || [], rec.status), class_type: add(sel.class_type || [], rec.class_type), upcoming: [], past: [], novenue: [] });
+    cChips().setSelection({ status: add(sel.status || [], rec.status), class_type: add(sel.class_type || [], rec.class_type), upcoming: [], past: [], novenue: [], noinst: [], full: [] });
     cSave();
   }
   function cCountsFill() {
@@ -234,6 +238,8 @@
     cChips().setBadge("upcoming", cAll.filter(function (r) { return r.status !== "cancelled" && r.status !== "completed" && r.starts_at && new Date(r.starts_at).getTime() >= now; }).length);
     cChips().setBadge("past", cAll.filter(function (r) { return r.starts_at && new Date(r.starts_at).getTime() < now; }).length);
     cChips().setBadge("novenue", cAll.filter(function (r) { return r.status !== "cancelled" && r.status !== "completed" && !r.venue_id; }).length);
+    cChips().setBadge("noinst", cAtt ? cAll.filter(cNeedsInst).length : "");
+    cChips().setBadge("full", cAtt ? cAll.filter(cIsFull).length : "");
   }
 
   function renderClasses() {
@@ -258,18 +264,35 @@
     vis.forEach(function (r) { var li = classRow(r, r.id === cNewId); ul.appendChild(li); if (r.id === cNewId) focus = li; });
     UI.moreBar($("cMore"), vis.length, shown.length, CSTEP, function () { cShow += CSTEP; renderClasses(); var f = $("cList").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, "classes");
     var n = shown.length, t = cAll.length;
-    $("cCount").textContent = (n === t ? t + (t === 1 ? " class" : " classes") : "Showing " + n + " of " + t + " classes") + (t >= 200 ? " (the first 200)" : "");
+    $("cCount").textContent = (n === t ? t + (t === 1 ? " class" : " classes") : "Showing " + n + " of " + t + " classes") + (t >= 200 ? " (the first 200)" : "") + (!cAtt ? ". Could not check instructors and seats just now, so those two switches show nothing." : cAttCapped ? ". The instructor and seat switches count only the newest 200 sign-ups." : "");
     $("cEmpty").hidden = t > 0;
     $("cNoMatch").hidden = !(t > 0 && n === 0);
     if (focus) { try { focus.scrollIntoView({ block: "center" }); } catch (e) {} }
     cNewId = "";
   }
 
+  // Who teaches and how many seats are taken, per class, for the "Needs an instructor" and "Full" chips (P-100). One read of the sign-ups list (the newest 200);
+  // null when it could not be read. A sign-up that does not hold a seat (waiting list, declined, withdrawn, cancelled) does not count.
+  var cAtt = null, cAttCapped = false;
+  function loadAttCounts() {
+    return admin("list", { limit: 200 }, ATT).then(function (res) {
+      if (res.status !== 200 || !res.body || !res.body.ok) return null;
+      var recs = res.body.data.records || [], by = {};
+      recs.forEach(function (a) {
+        if (CW.att.ATT_OFF[a.status]) return;
+        var c = by[a.scheduled_class_id] || (by[a.scheduled_class_id] = { inst: 0, seats: 0 });
+        if (a.role === "student") c.seats++; else if (a.role === "primary_instructor" || a.role === "instructor") c.inst++;
+      });
+      return { by: by, capped: recs.length >= 200 };
+    }, function () { return null; });
+  }
+  function cNeedsInst(r) { return !!cAtt && r.status !== "cancelled" && r.status !== "completed" && !(cAtt[r.id] && cAtt[r.id].inst); }
+  function cIsFull(r) { return !!cAtt && r.status !== "cancelled" && r.status !== "completed" && !!r.capacity_max && !!cAtt[r.id] && cAtt[r.id].seats >= r.capacity_max; }
   function loadClasses() {
     var my = ++cSeq;   // only the newest load may change the page, so a slow older answer can never overwrite a newer one
     $("cMsg").textContent = ""; $("cRetry").hidden = true;
     if (!cLoaded) skelOn($("cList"));
-    return Promise.all([ConsoleNames.loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes")]).then(function (both) {
+    return Promise.all([ConsoleNames.loadVenueChoices(), admin("list", { limit: 200 }, "scheduled_classes"), loadAttCounts()]).then(function (both) {
       if (my !== cSeq) return;
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
@@ -277,6 +300,7 @@
         skelOff($("cList")); $("cMsg").textContent = "Could not load the classes. " + adminProblem(res.status); $("cRetry").hidden = false; return;
       }
       cAll = res.body.data.records || [];
+      cAtt = both[2] ? both[2].by : null; cAttCapped = !!(both[2] && both[2].capped);
       UI.limitNote($("cList"), cAll.length, 200);
       cLoaded = true;
       cCountsFill();
