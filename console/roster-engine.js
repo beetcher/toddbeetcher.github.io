@@ -159,6 +159,15 @@
         if (res.status !== 200 || !res.body.ok) { K.skelOff(g("List")); g("Msg").textContent = "Could not load the " + cfg.Many.toLowerCase() + ". " + adminProblem(res.status); g("Retry").hidden = false; return; }
         S.all = res.body.data.records || []; S.loaded = true;
         var done = function () { fillChips(); render(); g("Checked").textContent = "Last checked " + fmtClock.format(new Date()); };
+        if (cfg.placement) {   // Students: who holds a seat in a class right now (P-99). One read of the sign-ups list (the newest 200); null when it could not be read.
+          return admin("list", { limit: 200 }, "attendances").then(function (ar) {
+            if (my !== S.seq) return;
+            if (ar.status !== 200 || !ar.body || !ar.body.ok) { S.placed = null; return; }
+            var recs = ar.body.data.records || [], by = {};
+            recs.forEach(function (a) { if (a.role === "student" && window.ConsoleWords.att.ATT_OPEN[a.status] && a.status !== "waitlisted") by[a.individual_id] = true; });
+            S.placed = { by: by, capped: recs.length >= 200 };
+          }, function () { S.placed = null; }).then(function () { if (my === S.seq) done(); });
+        }
         if (!cfg.curricula) { done(); return; }
         return Promise.all([admin("list", { limit: 200 }, "curriculums"), admin("list", { limit: 200 }, "discovery_areas")]).then(function (all) {
           var cr = all[0], ar = all[1];
@@ -176,6 +185,7 @@
       if (cf) return cf;
       var fl = [{ id: "status", label: "Status", kind: "multi", options: [{ value: "active", label: "Active" }, { value: "inactive", label: "Inactive" }] }];
       if (cfg.curricula) fl.push({ id: "needs", label: "Needs an address", kind: "toggle", noun: "instructors" }, { id: "nocurr", label: "No curriculum yet", kind: "toggle", noun: "instructors" });
+      if (cfg.placement) fl.push({ id: "waiting", label: "Waiting for a class", kind: "toggle", noun: "students" }, { id: "inclass", label: "In a class", kind: "toggle", noun: "students" });
       cf = UI.chipFilters({ mount: g("Chips"), label: cfg.Many + " filters", filters: fl, onChange: function () { show = STEP; g("Notice").textContent = ""; render(); } });
       cf.setSelection({ status: ["active"] });
       return cf;
@@ -185,14 +195,19 @@
       var cs = { active: 0, inactive: 0 };
       S.all.forEach(function (r) { if (cs[r.status] !== undefined) cs[r.status]++; });
       var c = chips(); c.setCounts({ status: cs });
+      if (cfg.placement) { c.setBadge("waiting", S.placed ? S.all.filter(sWaiting).length : ""); c.setBadge("inclass", S.placed ? S.all.filter(sIn).length : ""); }
       if (cfg.curricula) { c.setBadge("needs", S.all.filter(function (r) { return r.status === "active" && !r.residence_state; }).length); c.setBadge("nocurr", S.all.filter(function (r) { return r.status === "active" && !(r.curriculum_ids || []).length; }).length); }
     }
+    function sIn(r) { return !!S.placed && !!S.placed.by[r.individual_id]; }
+    function sWaiting(r) { return !!S.placed && r.status === "active" && !S.placed.by[r.individual_id]; }   // an active student with no seat in a class (never placed, on the waiting list only, or the class is over)
     function render() {
       var q = g("Search").value.trim().toLowerCase(), sel = chips().getSelection(), st = sel.status || [], list = g("List");
       var shown = S.all.filter(function (r) {
         if (st.indexOf(r.status) < 0) return false;
         if (cfg.curricula && (sel.needs || []).length && r.residence_state) return false;
         if (cfg.curricula && (sel.nocurr || []).length && (r.curriculum_ids || []).length) return false;
+        if (cfg.placement && (sel.waiting || []).length && !sWaiting(r)) return false;
+        if (cfg.placement && (sel.inclass || []).length && !sIn(r)) return false;
         return !q || [rName(r), rContact(r)].join(" ").toLowerCase().indexOf(q) >= 0;
       }).sort(function (a, b) { var x = rName(a).toLowerCase(), y = rName(b).toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; });
       var vis = shown.slice(0, show), had = list.children.length;
@@ -201,7 +216,7 @@
       S.newId = ""; S.openId = "";
       UI.moreBar(g("More"), vis.length, shown.length, STEP, function () { show += STEP; render(); var f = g("List").children[had]; if (f && f.querySelector("button.head")) f.querySelector("button.head").focus(); }, cfg.Many.toLowerCase());
       var noun = cfg.Many.toLowerCase();
-      g("Count").textContent = shown.length + (shown.length === 1 ? " " + cfg.one : " " + noun);
+      g("Count").textContent = shown.length + (shown.length === 1 ? " " + cfg.one : " " + noun) + (cfg.placement ? (!S.placed ? ". Could not check who is in a class just now, so those two switches show nothing." : S.placed.capped ? ". The class switches count only the newest 200 sign-ups." : "") : "");
       chips().setCount(shown.length !== S.all.length && S.all.length ? shown.length + " of " + S.all.length + " " + noun : "");
       g("Empty").hidden = S.all.length > 0;
       g("NoMatch").hidden = !(S.all.length > 0 && shown.length === 0);
