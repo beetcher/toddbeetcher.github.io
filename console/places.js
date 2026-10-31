@@ -4,9 +4,10 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str, statusToggle = UI.statusToggle, historyBtn = K.historyBtn;
-  var pDateOut = K.pDateOut, skelOn = K.skelOn, skelOff = K.skelOff, currentRoute = K.currentRoute;
+  var pDateOut = SV.fn("people", "dateOut"), skelOn = K.skelOn, skelOff = K.skelOff, currentRoute = K.currentRoute;
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL;
   var A = window.ConsoleAddresses, addrForm = A.addrForm, lProblems = A.lProblems, locAddr = A.locAddr, locSummary = A.locSummary;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
@@ -294,4 +295,5 @@
 
 
   window.PlacesStation = { show: function () { if (!lLoaded) loadPlaces(); }, reset: function () { resetPlaces(); }, forget: function () { lLoaded = false; }, refresh: function () { refreshPlaces(); } };
+  window.ConsoleServices.provide("places", window.PlacesStation);
 })();

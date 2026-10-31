@@ -4,6 +4,7 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var SURFACES = K.surfaces();
@@ -99,7 +100,7 @@
         mine.slice(0, 5).forEach(function (c) {
           var d = document.createElement("div"); d.className = "aitem";
           var t = document.createElement("div"), b = document.createElement("b"); b.textContent = c.title || "(no title)"; t.appendChild(b);
-          t.appendChild(document.createTextNode(" · " + (c.starts_at ? K.classWhen(c) : "date not set yet"))); d.appendChild(t); body.appendChild(d);
+          t.appendChild(document.createTextNode(" · " + (c.starts_at ? SV.call("classes", "classWhen", c) : "date not set yet"))); d.appendChild(t); body.appendChild(d);
         });
         if (!mine.length) { var e = document.createElement("div"); e.textContent = "No classes are listed for you yet. If one is missing, ask an admin to check that you are attached to it as an instructor."; body.appendChild(e); }
         else if (mine.length > 5) { var m = document.createElement("div"); m.className = "quietline"; m.textContent = "and " + (mine.length - 5) + " more in Classes."; body.appendChild(m); }
@@ -112,7 +113,7 @@
   }
 
   window.HomeStation = {
-    show: function () { K.refreshPlaced(); loadNeeds(); loadRole(); },   // arriving on Home: refresh the waiting card, the needs-you-now box and the role's own part
+    show: function () { SV.call("requests", "loadPlaced"); loadNeeds(); loadRole(); },   // arriving on Home: refresh the waiting card, the needs-you-now box and the role's own part
     reset: function () { needSeq++; roleSeq++; $("needBox").hidden = true; $("needBody").textContent = ""; $("scopeLine").hidden = true; $("mineBox").hidden = true; $("mineBody").textContent = ""; $("homeView").hidden = true; },   // the Console locked
     access: function () {   // hide the tiles this person's role can never open
       Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = K.allowed(b.dataset.go) ? "" : "none"; });

@@ -490,26 +490,26 @@
                         go: function (id) { goTo(id); }, hash: hashParts, setHash: function (path, query) { var q = Object.keys(query || {}).filter(function (k) { return query[k] !== "" && query[k] != null; }).map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(query[k]); }).join("&"); try { history.replaceState(null, "", "#/" + path + (q ? "?" + q : "")); } catch (x) {} }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; },
                         // Added for station files (M-1, the Messages extraction). Functions, not values, because the things they read are filled in later or replaced.
                         adminProblem: function (status) { return adminProblem(status); },
-                        classChoices: function () { return window.ClassesStation.choices(); },
-                        classById: function (id) { return window.ClassesStation ? window.ClassesStation.byId(id) : undefined; },
-                        openAttendance: function (cls, host) { openAttendance(cls, host); },
-                        requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
-                        historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, RECORDS_URL: CFG.endpoints.records }; }, attFail: function (res) { return window.AttendanceStation.fail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
+                        
+                        
+                        
+                        
+                        historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, RECORDS_URL: CFG.endpoints.records }; }, 
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
-                        surfaces: function () { return SURFACES; }, allowed: function (id) { return stationAllowed(id); }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
+                        surfaces: function () { return SURFACES; }, allowed: function (id) { return stationAllowed(id); }, afNext: function () { return ++afSeq; }, 
                         // Added for the Venues station (V-4). Functions that point at the places, people and shared helpers still in this file.
                         
-                        peopleList: function () { return window.PeopleStation.list.apply(null, arguments); }, peopleMatches: function () { return window.PeopleStation.matches.apply(null, arguments); },
-                        pFull: function () { return window.PeopleStation.full.apply(null, arguments); }, 
+                        
+                        
                         // Added for the Instructors and Students stations (RO-2): the address form, the People problem words, the Places refresh, the collection names, and People's stale flags.
-                        pProblems: function () { return window.PeopleStation.problems.apply(null, arguments); }, refreshPlaces: function () { window.PlacesStation.refresh(); },
-                        peopleStale: function () { window.PeopleStation.stale(); },
+                        
+                        
                         // Added for the Organizations station (OR-2): People's date words, Places' one-line address, the Places relation words (a function: defined later in this file).
-                        pDateOut: function () { return window.PeopleStation.dateOut.apply(null, arguments); }, 
+                        
                         // Added for the Places station (PP-2): the skeleton helpers and the current page, which it needs and cannot own.
                         skelOn: function () { return skelOn.apply(null, arguments); }, skelOff: function () { return skelOff.apply(null, arguments); }, currentRoute: function () { return currentRoute(); },
                         // Added for the People station (PP-5): the person history forwarder, and the person relation list (data, stays here).
-                        personHistory: function () { return personHistory.apply(null, arguments); } };   // consts holds constants only (they go with the transport module, DT-2).
+                        };   // consts holds constants only (they go with the transport module, DT-2).
   $("lockForm").addEventListener("submit", function (e) {
     e.preventDefault(); if (launching) return;
     var k = $("keyInput").value.trim();
@@ -546,7 +546,6 @@
   buildMenus();
 
 
-  function refreshPlaced() { return window.RequestsStation ? window.RequestsStation.loadPlaced() : Promise.resolve(); }   // Classes and Attendance call this after they place or remove someone
 
 
   // ================= Attendance: who is in which class =================
@@ -556,8 +555,6 @@
 
 
   // Attendance lives in attendance.js. These forwarders keep the callers that are still here (Classes, People, Put in a class) unchanged; they go when the placing machinery moves (DT-18).
-  function openAttendance(cls, host) { if (window.AttendanceStation) window.AttendanceStation.openAttendance(cls, host); }
-  function personHistory(rec, host) { if (window.AttendanceStation) window.AttendanceStation.personHistory(rec, host); }
 
 
   function resetPlaced() {

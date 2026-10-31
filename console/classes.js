@@ -9,12 +9,13 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var CF = window.ConsoleForms;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName, attFail = K.attFail;
-  var askDiscard = UI.askDiscard, openAttendance = K.openAttendance, refreshPlaced = K.refreshPlaced, attLine = K.attLine, openWorkflows = window.ConsoleHelp.openWorkflows;
-  var pFull = K.pFull, peopleList = K.peopleList, peopleMatches = K.peopleMatches;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, str = UI.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName, attFail = SV.fn("attendance", "fail");
+  var askDiscard = UI.askDiscard, openAttendance = SV.fn("attendance", "openAttendance"), refreshPlaced = SV.fn("requests", "loadPlaced"), attLine = SV.fn("attendance", "attLine"), openWorkflows = window.ConsoleHelp.openWorkflows;
+  var pFull = SV.fn("people", "full"), peopleList = SV.fn("people", "list"), peopleMatches = SV.fn("people", "matches");
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var LABELS = CF.labels, humanize = CF.humanize, readValue = CF.readValue, buildField = CF.buildField;
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
@@ -1256,7 +1257,7 @@
             if (res.status === 401) { lock("That key did not work."); return; }
             if (res.status === 200 && res.body && res.body.ok) {
               var d = res.body.data;
-              if (d.created_person) K.forgetPeople();
+              if (d.created_person) SV.call("people", "forgetPick");
               var told = function (last) {
                 var said = (prefix || "") + "Added " + attName(d) + " as " + ROLE_WORD[d.role].toLowerCase() + ": " + ATT_WORD[d.status].toLowerCase() + "."
                   + (d.created_roster_entry ? " Added to the " + (d.role === "student" ? "student" : "instructor") + " list." : "")
@@ -1290,7 +1291,7 @@
             if (res.status === 401) { lock("That key did not work."); return; }
             if (res.status === 200 && res.body && res.body.ok) {
               var recs = res.body.data.records || [];
-              if (res.body.data.created_people) K.forgetPeople();
+              if (res.body.data.created_people) SV.call("people", "forgetPick");
               return Promise.all(recs.map(function (r) { return admin("list", { filters: { attendance_id: r.id } }, "communication_logs"); })).then(function (lrs) {
                 var parts = recs.map(function (r, i) {
                   var l = ((lrs[i].body && lrs[i].body.data && lrs[i].body.data.records) || [])[0];
@@ -1368,4 +1369,5 @@
     putInClass: function (rec, host, said) { putInClass(rec, host, said); }, assignForm: function (opts) { return assignForm(opts); },
     classWhen: function (c) { return classWhen(c); }, choices: function () { return loadClassChoices(); }, byId: function (id) { return aClassById ? aClassById[id] : undefined; }
   };
+  window.ConsoleServices.provide("classes", window.ClassesStation);
 })();

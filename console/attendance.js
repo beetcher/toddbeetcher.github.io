@@ -8,10 +8,11 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = window.ConsoleFormat.attName, classWhen = K.classWhen,
-      refreshPlaced = K.refreshPlaced, assignForm = K.assignForm;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = window.ConsoleFormat.attName, classWhen = SV.fn("classes", "classWhen"),
+      refreshPlaced = SV.fn("requests", "loadPlaced"), assignForm = SV.fn("classes", "assignForm");
   var CW = window.ConsoleWords, A = CW.att;   // the shared tables (words.js): the attendance status tables and leftOpen
   var ATT = A.ATT, ATT_STATUSES = A.ATT_STATUSES, ATT_WORD = CW.attWord, ROLE_WORD = CW.roleWord, ATT_TONE = A.ATT_TONE, ATT_OPEN = A.ATT_OPEN, ATT_OFF = A.ATT_OFF,
       CORR_KIND = CW.corrKind, REASON_WORD = CW.reasonWord, leftOpen = A.leftOpen;
@@ -229,7 +230,7 @@
       var top = mk("div", "lchips");
       var cl = mk("button", "btn-link", ((r["class"] && r["class"].title) || "(class not found)") + (r["class"] && r["class"].starts_at ? " · " + classWhen(r["class"]) : ""));
       cl.type = "button"; cl.setAttribute("aria-label", "Open class attendance: " + cl.textContent);
-      cl.addEventListener("click", function () { var c = K.classById(r.scheduled_class_id); if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
+      cl.addEventListener("click", function () { var c = SV.call("classes", "byId", r.scheduled_class_id); if (c) openAttendance(c); else $("aMsg").textContent = "That class could not be found."; });
       top.appendChild(cl); top.appendChild(mk("span", "", ROLE_WORD[r.role] || r.role));
       var tn = ATT_TONE[r.status] || ATT_TONE.assigned;
       top.appendChild(mk("span", "qchip" + (tn.tone === "wait" ? " warn" : tn.tone === "ok" ? " ok" : ""), ATT_WORD[r.status] || r.status));
@@ -249,7 +250,7 @@
     asChips();
     var my = ++AS.seq;
     $("aMsg").textContent = "";
-    Promise.all([K.classChoices(), admin("list", { limit: 200, expand: true, order: "-created_at" }, ATT)]).then(function (both) {
+    Promise.all([SV.call("classes", "choices"), admin("list", { limit: 200, expand: true, order: "-created_at" }, ATT)]).then(function (both) {
       if (my !== AS.seq || !K.key()) return;
       var res = both[1];
       if (res.status === 401) { lock("That key did not work."); return; }
@@ -308,4 +309,5 @@
     },
     openAttendance: openAttendance, personHistory: personHistory, attLine: attLine
   };
+  window.ConsoleServices.provide("attendance", window.AttendanceStation);
 })();

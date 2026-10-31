@@ -6,6 +6,7 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = window.ConsoleFormat.attName;
@@ -19,6 +20,10 @@
   function mKindWord(k) { return W().corrKind[k] || String(k || "").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }); }
   function mReasonWord(r) { return W().reasonWord[r] || String(r || "").replace(/_/g, " "); }
   function mNeedsAttention(e) { return e.status === "failed" || e.status === "unknown" || (e.status === "not_sent" && !e.handled_at); }
+  function loadRequests() {   // the requests already loaded by the Requests station, else read them
+    var have = SV.call("requests", "records");
+    return have.length ? Promise.resolve(have) : K.fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; });
+  }
   function mWhen(e) { return e.created_at ? window.ConsoleFormat.time(new Date(e.created_at)) : ""; }
   // The filter chips: one shared control (filters.js). The page only says which filters it has and what to do when the person changes one.
   function mChips() {
@@ -65,7 +70,7 @@
     var rows = [], me = MS.person[e.individual_id], a = e.attendance_id ? MS.att[e.attendance_id] : null;
     if (me) rows.push(["Sent to", me + (e.audience ? " (" + e.audience + ")" : "")]);
     if (a && a.name && (a.name !== me || e.kind === "participant_left")) rows.push([e.kind === "participant_left" ? (a.role === "student" ? "Student who left" : "Left") : a.role === "student" ? "Student" : "Instructor", a.name]);
-    var c = e.scheduled_class_id && K.classById(e.scheduled_class_id);
+    var c = e.scheduled_class_id && SV.call("classes", "byId", e.scheduled_class_id);
     if (c) rows.push(["Class", (c.title || "(no title)") + (c.starts_at ? " · " + window.ConsoleFormat.time(new Date(c.starts_at)) : "")]);
     if (mConf(e)) rows.push(["Confirmation number", mConf(e)]);
     return rows;
@@ -149,7 +154,7 @@
     btns.appendChild(c1); btns.appendChild(c2);
     if (e.scheduled_class_id) {
       var j = mk("button", "btn-link", "Open the class attendance"); j.type = "button"; say(j, "Open the class attendance");
-      j.addEventListener("click", function () { var c = K.classById(e.scheduled_class_id); if (c) K.openAttendance(c); else $("mMsg").textContent = "That class could not be found."; });
+      j.addEventListener("click", function () { var c = SV.call("classes", "byId", e.scheduled_class_id); if (c) SV.call("attendance", "openAttendance", c); else $("mMsg").textContent = "That class could not be found."; });
       btns.appendChild(j);
     }
     box.appendChild(btns); box.appendChild(err);
@@ -200,8 +205,8 @@
     var my = ++MS.seq;
     $("mMsg").textContent = "";
     mBuildChips();
-    Promise.all([K.classChoices(), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
-                 K.requests(), admin("list", { limit: 200, order: "-created_at", expand: true }, "attendances"), admin("list", { limit: 200 }, "individuals")]).then(function (both) {
+    Promise.all([SV.call("classes", "choices"), admin("list", { limit: 200, order: "-created_at" }, "communication_logs"),
+                 loadRequests(), admin("list", { limit: 200, order: "-created_at", expand: true }, "attendances"), admin("list", { limit: 200 }, "individuals")]).then(function (both) {
       if (my !== MS.seq || !K.key()) return;
       var res = both[1];
       // Confirmation numbers: a log entry names its request directly, or (older entries) through its attendance.

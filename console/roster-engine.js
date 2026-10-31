@@ -3,9 +3,10 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, when = window.ConsoleFormat.when, statusToggle = UI.statusToggle, historyBtn = K.historyBtn;
-  var peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull, lProblems = window.ConsoleAddresses.lProblems, pProblems = K.pProblems, addrForm = window.ConsoleAddresses.addrForm, refreshPlaces = K.refreshPlaces;
+  var peopleList = SV.fn("people", "list"), peopleMatches = SV.fn("people", "matches"), pFull = SV.fn("people", "full"), lProblems = window.ConsoleAddresses.lProblems, pProblems = SV.fn("people", "problems"), addrForm = window.ConsoleAddresses.addrForm, refreshPlaces = SV.fn("places", "refresh");
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 
@@ -395,7 +396,7 @@
         admin("update_with_person", args, cfg.coll).then(function (res) {
           save.disabled = false;
           if (res.status === 401) { lock("That key did not work."); return; }
-          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + rName(rec) + "."; if (Object.keys(person).length) { K.peopleStale(); } load(); return; }
+          if (res.status === 200 && res.body && res.body.ok) { S.newId = rec.id; g("Notice").textContent = "Saved changes to " + rName(rec) + "."; if (Object.keys(person).length) { SV.call("people", "stale"); } load(); return; }
           if (res.status === 409) { msg.textContent = "Someone changed this entry while you were editing. Close this, tap Refresh, and try again. Nothing was overwritten."; return; }
           if (res.status === 404) { msg.textContent = "That entry is gone. Tap Refresh."; return; }
           var map = {}; Object.keys(els).forEach(function (k) { map[k] = els[k]; }); Object.keys(pEls).forEach(function (k) { map[k] = pEls[k]; });
@@ -450,7 +451,7 @@
     function openCard(id) {
       g("AddForm").hidden = true; g("AddBtn").hidden = false; S.setStatus(["active", "inactive"]); g("Search").value = ""; show = 1000; S.openId = id; render();
     }
-    g("AddBtn").addEventListener("click", function () { clearAdd(); g("Notice").textContent = ""; K.forgetPeople(); g("AddForm").hidden = false; g("AddBtn").hidden = true; g("Q").focus(); });
+    g("AddBtn").addEventListener("click", function () { clearAdd(); g("Notice").textContent = ""; SV.call("people", "forgetPick"); g("AddForm").hidden = false; g("AddBtn").hidden = true; g("Q").focus(); });
     g("CancelBtn").addEventListener("click", function () { g("AddForm").hidden = true; g("AddBtn").hidden = false; });
     g("Q").addEventListener("input", showOpts);
     g("AddForm").addEventListener("submit", function (e) {
@@ -483,7 +484,7 @@
       admin("create", { data: person }, COLL_P).then(function (res) {
         if (res.status === 401) { lock("That key did not work."); return; }
         if (!(res.status === 200 && res.body && res.body.ok)) { g("SaveBtn").disabled = false; g("FMsg").textContent = "Could not save the person: " + pProblems(res).other.join(" "); return; }
-        K.peopleStale();
+        SV.call("people", "stale");
         S.choice = { id: res.body.data.id, name: person.given_name, contact: "" };   // a retry now uses the person just made, not a second copy
         afterPerson(res.body.data.id);
       });
@@ -496,7 +497,7 @@
         if (res.status === 200 && res.body && res.body.ok) {
           S.newId = res.body.data.id; g("Notice").textContent = "Added " + rName(res.body.data) + " to the " + cfg.Many.toLowerCase() + ".";
           g("AddForm").hidden = true; g("AddBtn").hidden = false; S.setStatus(["active"]);
-          if (res.body.data.created_person) { K.peopleStale(); }
+          if (res.body.data.created_person) { SV.call("people", "stale"); }
           load(); return;
         }
         var map = {}; Object.keys(newEls).forEach(function (k) { map[k] = newEls[k]; }); Object.keys(addEls).forEach(function (k) { map[k] = addEls[k]; });

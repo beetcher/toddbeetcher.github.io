@@ -113,6 +113,17 @@ Layers, from the bottom. A layer depends only on the layers below it.
 2c. **Shared formatters**: `format.js` (`window.ConsoleFormat`): `when(iso)`, `time(date)`, `clock(date)`, `attName(row)`. Pure functions, load BEFORE `console.js`; read as `ConsoleFormat.when(...)`. Done (DT-9); the kit doors `when`, `time`, `clock` and `attName` are gone.
 2b. **Shared word tables**: `words.js` (`window.ConsoleWords`): `corrKind`, `reasonWord`, `roleWord`, `attWord`, `personLabel`, `personIssue`. Plain data, loads BEFORE `console.js`; read it as `ConsoleWords.attWord` etc. Done (DT-8); the kit door `words` is gone and the attendance status tables (`ConsoleWords.att`: DT-20; the kit door `attConsts` is gone).
 2a. **Shared data tables**: `data.js` (`window.ConsoleData`): the collection names (`COLL_P`, `COLL_L`, `COLL_LK`) the relation words (`REL`, `PERSON_RELS`) and the person word tables (`PLABEL`, `PISSUE`). Plain data, loads BEFORE `console.js`; read it as `ConsoleData.REL` etc. Done (DT-33); the kit doors `colls`, `rel` and `personRels` are gone.
+2d. **Services** (DT-29, DT-3, DT-4): `services.js` (`window.ConsoleServices`). One station asks another through it and never by name: `ConsoleServices.fn(service, member)` (a function that finds the owner when it is called) or `.call(service, member, args…)`. An owner registers its own station object at the end of its file. The architecture test checks every request names a provided service and that the owner file defines the member. Replaces the kit doors that forwarded from one station to another and the two local forwarders in `console.js`.
+
+   | Service | Owner | Members others use |
+   |---|---|---|
+   | `classes` | Classes (`classes.js`) | `choices`, `byId`, `putInClass`, `classWhen`, `assignForm` |
+   | `attendance` | Attendance (`attendance.js`) | `openAttendance`, `attLine`, `fail`, `personHistory` |
+   | `requests` | Requests (`requests.js`) | `records`, `loadPlaced` (the placed-requests data, DT-3: Classes, Attendance and Home refresh it through here) |
+   | `people` | People (`people.js`) | `list`, `matches`, `full`, `problems`, `stale`, `dateOut`, `forgetPick` |
+   | `places` | Places (`places.js`) | `refresh` |
+
+   Shared files (`addresses.js`, `help.js`, `data.js`, `words.js`, `format.js`, `ui.js`) are not services: read them directly.
 3a. **Help drawer**: `help.js` (`window.ConsoleHelp`): the manuals (one per station), the Workflows tab and the drawer; `ConsoleHelp.close()` and `.openWorkflows(ids)`. Done (H-1). The station list stays in `console.js`; the manual text lives in `help.js` (`MANUALS`, keyed by station id).
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
 4. **Shared UI**: `ui.js`, `filters.js`, `forms.js`. Used directly. `ui.js` also holds `UI.line`, `UI.str`, `UI.askDiscard` and `UI.statusToggle` (DT-19; the kit doors for them are gone; `statusToggle` reaches the server and the lock through `ConsoleKit` at call time).
@@ -132,26 +143,14 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `allowed` | Core: session | Whether this person's role may open a station (`stationAllowed`); `home.js` uses it to hide tiles |
 | `hash` | Core: routing | Read the address: `{route, sub: [path pieces], query: {…}}` (S-0) |
 | `setHash` | Core: routing | Write path and query into the address without reloading the station (`history.replaceState`) (S-0) |
-| `openAttendance` | Attendance (`attendance.js`, through a forwarder in `console.js`, DT-23) | Open a class's attendance |
-| `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
 | `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
 | `fetchRecords` | Core: transport and sign-in | The read of requests that doubles as the key check (DT-2) |
 | `canPlaced` | Core: session | Placing permission |
 | `problem` | Core: sign-in | The failed sign-in sentence (DT-1) |
 | `consts` | Core: constants (transport) | `MAX`, `READ_MS`, `RECORDS_URL`: constants only, never a value that changes; they go with the transport module (DT-2) |
-| `attFail` | Attendance (`attendance.js`, `AttendanceStation.fail`; the person words are `ConsoleData.PLABEL` and `.PISSUE`) | The failed-write sentence (DT-34) |
-| `refreshPlaced` | Core: a forwarder to Requests | Calls `RequestsStation.loadPlaced` |
-| `lProblems` | **Shared addresses** (`addresses.js`) | The plain sentence for a failed place save (used by Venues' Add and Place panel) |
-| `placeInput`, `placeText` | **Shared addresses** (`addresses.js`) | The address form with saved-place offer, and the one-line address text |
-| `forgetSavedPlaces` | **Shared addresses** (`addresses.js`) | Forget the cached saved places after a place changed |
-| `peopleList`, `peopleMatches`, `pFull` | **People station** (`people.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
-| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Help (`help.js`, `ConsoleHelp.openWorkflows`) / Attendance / People (`forgetPeople` forwards to the People station) | Open the Help drawer on the Workflows tab; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
-| `addrForm`, `pProblems`, `refreshPlaces`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People station (`pProblems`, `peopleStale`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; mark the People list and the pick list stale after a person changed (read by the roster engine) |
-| `personHistory` | Core: a forwarder to Attendance | One person's attendance history |
+| `afNext` | Help (`help.js`, `ConsoleHelp.openWorkflows`) / Attendance / People (`forgetPeople` forwards to the People station) | Open the Help drawer on the Workflows tab; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
 | `skelOn`, `skelOff`, `currentRoute` | Core: shared list helpers and routing (still in `console.js`) | The loading skeleton on/off for a list; the page the Console is on (read by Places) |
-| `pDateOut`, `locAddr` | People station (`pDateOut`) / Shared addresses (`locAddr`) | A stored date as words; a place's address on one line |
-| `putInClass`, `assignForm`, `classWhen`, `classChoices`, `classById` | **Classes station** (`classes.js`, `ClassesStation`) | The kit only forwards to it, so Requests and Attendance still ask the kit and never another station |
 
 Rows for later items (names, dialogs, placed requests, the connection helpers) are added in the same commit as the kit item.
 

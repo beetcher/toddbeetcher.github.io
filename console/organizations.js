@@ -4,9 +4,10 @@
 (function () {
   "use strict";
   var K = window.ConsoleKit;
+  var SV = window.ConsoleServices;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = UI.line, when = window.ConsoleFormat.when, statusToggle = UI.statusToggle;
-  var peopleList = K.peopleList, refreshPlaces = K.refreshPlaces, pDateOut = K.pDateOut, locAddr = window.ConsoleAddresses.locAddr, REL = window.ConsoleData.REL, COLL_LK = window.ConsoleData.COLL_LK;
+  var peopleList = SV.fn("people", "list"), refreshPlaces = SV.fn("places", "refresh"), pDateOut = SV.fn("people", "dateOut"), locAddr = window.ConsoleAddresses.locAddr, REL = window.ConsoleData.REL, COLL_LK = window.ConsoleData.COLL_LK;
   var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 
   var OISSUE = { required: "Required.", invalid_format: "Check the format.", out_of_range: "That is too long, too short or out of range.", invalid_type: "That value is not valid.",

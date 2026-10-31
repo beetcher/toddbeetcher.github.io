@@ -16,8 +16,8 @@ import os, pathlib, re, sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 CON = pathlib.Path(os.environ.get("CONSOLE_DIR") or (HERE.parent / "console"))
-CAP = 663           # lines in console.js after DT-19 (line, str, statusToggle, askDiscard left it: ui.js). LOWER this after each extraction; never raise.
-SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js", "forms.js", "data.js", "words.js", "format.js"]   # load before console.js
+CAP = 660           # lines in console.js after DT-4 part 2 (the station-to-station doors left it: services.js). LOWER this after each extraction; never raise.
+SHARED = ["firebase-config.js", "console-config.js", "ui.js", "filters.js", "forms.js", "data.js", "words.js", "format.js", "services.js"]   # load before console.js
 SHARED_AFTER = ["names.js", "dialogs.js", "help.js", "addresses.js", "roster-engine.js", "access-roles.js", "access-territory.js"]   # shared data / dialogs: load AFTER console.js (they use the kit) and BEFORE the stations; not stations
 LEGACY = "console.js"
 fails = []
@@ -98,6 +98,27 @@ owns = arch.split("## Who owns what", 1)[1] if "## Who owns what" in arch else "
 check("ARCHITECTURE.md has a 'Who owns what' section", bool(owns))
 missing = [k for k in kit_items if not re.search(r"`%s[`(\s,]" % k, owns)]
 check("every ConsoleKit item (%d) has an owner line" % len(kit_items), kit_items != [] and not missing, missing)
+
+# 8. services (DT-29, DT-4): one station asks another through ConsoleServices, never by name. Every service asked for is provided exactly once, by the
+# station's own file, and that file defines the member.
+provided = {}
+for f in sorted(p.name for p in CON.glob("*.js")):
+    for m in re.finditer(r'ConsoleServices\.provide\("(\w+)", window\.(\w+)\)', (CON / f).read_text()):
+        provided.setdefault(m.group(1), []).append((f, m.group(2)))
+check("every service is provided once", all(len(v) == 1 for v in provided.values()) and provided != {}, {k: v for k, v in provided.items() if len(v) != 1})
+for name, v in provided.items():
+    f, glob = v[0]
+    check("service %s is the station object of its own file (%s, window.%s)" % (name, f, glob), ("window.%s = {" % glob) in (CON / f).read_text())
+asked, bad = set(), []
+for f in sorted(p.name for p in CON.glob("*.js")):
+    for m in re.finditer(r'(?:SV|ConsoleServices)\.(?:fn|call)\("(\w+)",\s*"(\w+)"', (CON / f).read_text()):
+        asked.add((f, m.group(1), m.group(2)))
+for f, name, mem in sorted(asked):
+    if name not in provided: bad.append("%s asks for %s.%s: no such service" % (f, name, mem)); continue
+    of, glob = provided[name][0]
+    body = (CON / of).read_text().split("window.%s = {" % glob, 1)[1]
+    if not re.search(r"\b%s\s*:" % mem, body): bad.append("%s asks for %s.%s: %s does not define %s" % (f, name, mem, of, mem))
+check("every service asked for (%d requests) exists and its owner defines the member" % len(asked), not bad, bad[:6])
 
 # 7. no undefined names (DT-12): ESLint "no-undef" on every console/*.js, when Node and npm can be used here.
 # Each file may use the browser globals plus the shared objects (window.X = ... in the shared files). A station may not use another station by bare name;
