@@ -7,7 +7,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str, statusToggle = K.statusToggle, historyBtn = K.historyBtn;
   var pDateOut = K.pDateOut, skelOn = K.skelOn, skelOff = K.skelOff, currentRoute = K.currentRoute;
-  var COLL_P = K.colls().P, COLL_L = K.colls().L, COLL_LK = K.colls().LK, REL = K.rel();
+  var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL;
   var A = window.ConsoleAddresses, addrForm = A.addrForm, lProblems = A.lProblems, locAddr = A.locAddr, locSummary = A.locSummary;
   var fmtClock = { format: function (d) { return K.clock(d); } };
 

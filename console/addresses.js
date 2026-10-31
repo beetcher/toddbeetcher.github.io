@@ -5,7 +5,7 @@
   "use strict";
   var K = window.ConsoleKit;
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str;
-  var COLL_L = K.colls().L, COLL_LK = K.colls().LK, REL = K.rel();
+  var D = window.ConsoleData, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL;
 
   // ---- Places station and the Addresses panel on a person's card: locations and the links to them, through the same admin door.
   // A place is saved once and knows nothing about who is there. A person (or venue) is linked to it with dates.

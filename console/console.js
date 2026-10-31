@@ -561,13 +561,13 @@
                         pFull: function () { return window.PeopleStation.full.apply(null, arguments); }, statusToggle: function () { return statusToggle.apply(null, arguments); }, askDiscard: function () { return askDiscard.apply(null, arguments); },
                         // Added for the Instructors and Students stations (RO-2): the address form, the People problem words, the Places refresh, the collection names, and People's stale flags.
                         addrForm: function () { return window.ConsoleAddresses.addrForm.apply(null, arguments); }, pProblems: function () { return window.PeopleStation.problems.apply(null, arguments); }, refreshPlaces: function () { window.PlacesStation.refresh(); },
-                        colls: function () { return { P: COLL_P, L: COLL_L, LK: COLL_LK }; }, peopleStale: function () { window.PeopleStation.stale(); },
+                        peopleStale: function () { window.PeopleStation.stale(); },
                         // Added for the Organizations station (OR-2): People's date words, Places' one-line address, the Places relation words (a function: defined later in this file).
-                        pDateOut: function () { return window.PeopleStation.dateOut.apply(null, arguments); }, locAddr: function () { return window.ConsoleAddresses.locAddr.apply(null, arguments); }, rel: function () { return REL; },
+                        pDateOut: function () { return window.PeopleStation.dateOut.apply(null, arguments); }, locAddr: function () { return window.ConsoleAddresses.locAddr.apply(null, arguments); },
                         // Added for the Places station (PP-2): the skeleton helpers and the current page, which it needs and cannot own.
                         skelOn: function () { return skelOn.apply(null, arguments); }, skelOff: function () { return skelOff.apply(null, arguments); }, currentRoute: function () { return currentRoute(); },
                         // Added for the People station (PP-5): the person history forwarder, and the person relation list (data, stays here).
-                        personHistory: function () { return personHistory.apply(null, arguments); }, personRels: function () { return PERSON_RELS; } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only. A-1 (Attendance): attConsts to assignForm.
+                        personHistory: function () { return personHistory.apply(null, arguments); } };   // R-2 (Journal): attWord, roleWord, historyBtn. R-3 (Requests): fetchT to consts. consts holds constants only. A-1 (Attendance): attConsts to assignForm.
   $("lockForm").addEventListener("submit", function (e) {
     e.preventDefault(); if (launching) return;
     var k = $("keyInput").value.trim();
@@ -666,15 +666,6 @@
     $("attnBody").textContent = "Checking the requests…"; $("attnBadge").hidden = true; $("attnBox").className = "attn";
   }
   $("atClose").addEventListener("click", function () { $("atDlg").close(); });
-
-  var COLL_P = "individuals";   // the People collection name stays here as data (the kit hands it to the rosters and Places); the People station is people.js (PP-5)
-
-  // Places moved to places.js and addresses.js (PP-2). The data tables stay here (the rosters and Organizations read them at load); the kit doors call addresses.js and places.js directly (DT-35).
-  var COLL_L = "locations", COLL_LK = "location_links";
-  var REL = { resides_at: "Lives here", mailing_address_for: "Mailing address", billing_address_for: "Billing address", works_at: "Works here",
-              owns: "Owns", manages: "Manages", operates_at: "Operates here", delivers_to: "Delivers here", other: "Other" };
-  var PERSON_RELS = ["resides_at", "mailing_address_for", "billing_address_for", "works_at", "owns", "other"];
-
 
 
   // ---- Google sign-in. Only switched on when console/firebase-config.js holds the project's public web key; until then the page is key-only.

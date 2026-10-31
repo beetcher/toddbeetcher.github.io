@@ -6,7 +6,7 @@
   var K = window.ConsoleKit;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, when = K.when, statusToggle = K.statusToggle;
-  var peopleList = K.peopleList, refreshPlaces = K.refreshPlaces, pDateOut = K.pDateOut, locAddr = K.locAddr, REL = K.rel(), COLL_LK = K.colls().LK;
+  var peopleList = K.peopleList, refreshPlaces = K.refreshPlaces, pDateOut = K.pDateOut, locAddr = K.locAddr, REL = window.ConsoleData.REL, COLL_LK = window.ConsoleData.COLL_LK;
   var fmtClock = { format: function (d) { return K.clock(d); } };
 
   var OISSUE = { required: "Required.", invalid_format: "Check the format.", out_of_range: "That is too long, too short or out of range.", invalid_type: "That value is not valid.",

@@ -6,7 +6,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, when = K.when, statusToggle = K.statusToggle, historyBtn = K.historyBtn;
   var peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull, lProblems = K.lProblems, pProblems = K.pProblems, addrForm = K.addrForm, refreshPlaces = K.refreshPlaces;
-  var COLL_P = K.colls().P, COLL_L = K.colls().L, COLL_LK = K.colls().LK;
+  var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK;
   var fmtClock = { format: function (d) { return K.clock(d); } };
 
   // ---- Instructors and Students stations. One builder, two configs. A roster entry points at a person: name and contact stay in
