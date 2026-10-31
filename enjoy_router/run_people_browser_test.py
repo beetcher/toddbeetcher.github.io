@@ -108,6 +108,7 @@ with sync_playwright() as p:
     li.get_by_role("button", name="Merge", exact=True).click()
     pg.wait_for_function("document.getElementById('pNotice').textContent.indexOf('Merged') === 0")
     check("merge notice", "into Ann Lee" in pg.locator("#pNotice").inner_text())
+    pg.wait_for_function("document.querySelectorAll('#pList li').length == 1")   # the list redraws after the notice; under load the count used to be read too early
     check("duplicate left the active list", pg.locator("#pList li").count() == 1)
     pg.click("#pHist summary"); pg.wait_for_selector("#pHList li")
     pg.wait_for_function("document.getElementById('pHList').textContent.indexOf('merged into') >= 0")
@@ -177,6 +178,7 @@ with sync_playwright() as p:
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#pList li")
     check("signing back in loads the People page again", pg.locator("#pCount").inner_text() != "")
     # P-98: the person's time zone is a drop-down (like Places), not free text
+    pg.wait_for_selector("#pList li button.head")
     li = pg.locator("#pList li").first; li.locator("button.head").click(); li.get_by_role("button", name="Edit", exact=True).click()
     tz = li.locator("form.eform").get_by_label("Time zone")
     check("P-98: time zone is a drop-down with Not set and the named zones", tz.evaluate("e => e.tagName") == "SELECT" and tz.locator("option").all_text_contents()[:3] == ["Not set", "Eastern", "Central"] and "Mountain" in tz.locator("option").all_text_contents())
