@@ -73,6 +73,7 @@ with sync_playwright() as p:
     pg.route("**/enjoy_admin", admin_route)
     pg.route("**/enjoy_console_records*", lambda r: r.fulfill(status=200, headers=CORS, body=json.dumps({"ok": True, "data": {"records": []}})))
     pg.goto(PAGE); pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#homeView:not([hidden])")
+    pg.wait_for_timeout(700); state["people_calls"] = 0   # Home reads the same people list for its Needs you now box (P-102); count only Activity's own lookups
     pg.select_option("#collPick", "activity"); pg.wait_for_selector("#activityView .avrow")
     pg.wait_for_function("document.querySelector('#avList').innerText.includes('Ada Lovelace')")
     def card(venue_name, action):

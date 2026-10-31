@@ -241,7 +241,7 @@ with sync_playwright() as p:
 
     # ---------- T8: the Access > Sign-in box
     H["store"], toks = new_store()
-    pg = page(b, fake_clock=False); key_in(pg); pg.goto(PAGE + "#/access"); pg.wait_for_selector("#acSignIn"); pg.wait_for_timeout(200)
+    pg = page(b, fake_clock=False); key_in(pg); pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#acSignIn"); pg.wait_for_timeout(200)
     check("T8 the super admin sees the Sign-in box with 10 (nothing saved yet)", pg.input_value("#acMinutes") == "10" and "Not set yet" in pg.inner_text("#acSignIn"))
     pg.fill("#acMinutes", "5"); pg.click("#acMinutesSave"); pg.wait_for_function("document.querySelector('#acMinutesMsg').innerText.includes('Saved')")
     rec = CS.list(H["store"]).data["records"]
@@ -266,7 +266,7 @@ with sync_playwright() as p:
     H["store"], toks = new_store()
     pg = page(b, fake_clock=False, google=True); pg.goto(PAGE); pg.wait_for_selector("#googleBtn")
     pg.evaluate("t => { window.__NEXT = t; }", toks["lead"]); pg.click("#googleBtn"); pg.wait_for_selector("#homeView:not([hidden])"); pg.wait_for_timeout(150)
-    pg.goto(PAGE + "#/access"); pg.wait_for_selector("#accessView:not([hidden])"); pg.wait_for_timeout(300)
+    pg.goto(PAGE + "#/access/signin"); pg.wait_for_selector("#accessView:not([hidden])"); pg.wait_for_timeout(300)
     check("T8 a lead who may invite people does NOT see the Sign-in box", pg.locator("#acSignIn").count() == 0)
     pg.close()
 

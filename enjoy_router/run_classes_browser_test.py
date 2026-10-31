@@ -104,9 +104,9 @@ with sync_playwright() as p:
     li.get_by_role("button", name="Edit", exact=True).click(); pg.wait_for_selector("#cEditPanel:not([hidden])")
     pg.select_option("#collPick", "venues"); pg.wait_for_timeout(400)
     check("leaving the Classes page closes the edit form", pg.locator("#cEditPanel:not([hidden])").count() == 0)
-    check("the kit forwards to the station (classWhen, classChoices, classById)", pg.evaluate("""(async () => {
-      const K = window.ConsoleKit; const w = K.classWhen({starts_at: '2026-11-05T01:00:00Z', time_zone: 'America/Denver'});
-      const list = await K.classChoices(); return typeof w === 'string' && w.length > 0 && Array.isArray(list) ? true : (list === undefined || list === null); })()"""))
+    check("the classes service answers other stations (classWhen, choices)", pg.evaluate("""(async () => {
+      const w = ConsoleServices.call('classes', 'classWhen', {starts_at: '2026-11-05T01:00:00Z', time_zone: 'America/Denver'});
+      const list = await ConsoleServices.call('classes', 'choices'); return typeof w === 'string' && w.length > 0 && Array.isArray(list) ? true : (list === undefined || list === null); })()"""))
     pg.select_option("#collPick", "classes"); pg.wait_for_selector("#cList li")
     n_c = pg.locator("#cList li").count()
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")

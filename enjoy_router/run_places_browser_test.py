@@ -212,7 +212,7 @@ with sync_playwright() as p:
     check("places.js and addresses.js are their own files; PlacesStation and ConsoleAddresses have every hook", pg.evaluate("typeof window.PlacesStation === 'object' && ['show','reset','forget','refresh'].every(k => typeof window.PlacesStation[k] === 'function') && ['addrForm','lProblems','locAddr','locSummary','placeInput','placeText','forgetSaved'].every(k => typeof window.ConsoleAddresses[k] === 'function')"))
     check("nothing of the Places station is left in console.js", not re.search(r"function (loadPlaces|renderPlaces|placeRow|placeActions|showLinked|resetPlaces|cszRead|cszRemember|savedPlacesList|venuePlaceLine|locSummary\(loc\))|lAddBtn|lList|LISSUE|LLABEL", big))
     check("places.js and addresses.js reach the big file only through the kit", "window.ConsoleKit" in mine and "ROSTER" not in mine)
-    check("the kit forwards the address form to the station", pg.evaluate("typeof window.ConsoleKit.placeInput === 'function' && typeof window.ConsoleKit.lProblems === 'function'"))
+    check("the shared address file carries the address form helpers (DT-4: no kit door in between)", pg.evaluate("typeof window.ConsoleAddresses.placeInput === 'function' && typeof window.ConsoleAddresses.lProblems === 'function' && !('placeInput' in window.ConsoleKit)"))
     pg.select_option("#collPick", "places"); pg.wait_for_selector("#lList li")
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
     check("sign-out empties the Places page", pg.evaluate("document.querySelectorAll('#lList li').length === 0 && document.getElementById('lCount').textContent === '' && document.getElementById('lChecked').textContent === '' && document.getElementById('lAddForm').hidden"))

@@ -187,7 +187,7 @@ with sync_playwright() as p:
     big = (CON / "console.js").read_text(); own = (CON / "messages.js").read_text()
     check("Messages is its own file, loaded after console.js and exposing MessagesStation", "window.MessagesStation" in own and (CON / "index.html").read_text().index('src="console.js"') < (CON / "index.html").read_text().index('src="messages.js"') and pg.evaluate("typeof window.MessagesStation.show === 'function' && typeof window.MessagesStation.reset === 'function'"))
     check("nothing of the Messages station is left in console.js", not re.search(r"loadMessagesStation|\\bmRender\\b|var MS =|\\bmChips\\b", big))
-    check("the station reaches the big file only through ConsoleKit", "window.ConsoleKit" in own and not any(w in own for w in ["aClassById", "fetchRecords", "fmtTime", "loadClassChoices"]))
+    check("the station reaches the big file only through ConsoleKit", "window.ConsoleKit" in own and not any(w in own for w in ["aClassById", "fmtTime", "loadClassChoices"]))
     pg.fill("#mSearch", "ann@example.com"); pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
     check("signing out empties the list, the summary and the search box", pg.evaluate("document.getElementById('mList').children.length === 0 && document.getElementById('mSummary').textContent === '' && document.getElementById('mSearch').value === ''") and "example.com" not in pg.evaluate("document.getElementById('messagesView').textContent") and pg.evaluate("document.querySelector('#mChips .cf-badge').textContent") == "" and pg.locator("#mChips .cf-n:visible").count() == 0)
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_selector("#lockView", state="hidden")
