@@ -287,6 +287,13 @@ check("own classes: ...but cannot change anything", code(20, "scheduled_classes"
 check("own classes: ...and sees no venues, requests or people", ids(20, "venues") == (200, []) and code(20, "individuals", "list") == 403 and code(20, "registration_assignments", "list") == 403)
 check("own classes: a signed-in person not linked to anyone sees no classes and no rosters", ids(21, "scheduled_classes") == (200, []) and code(21, "attendances", "list") == 403)
 check("own classes: an instructor who stops teaching loses the class", code(1, "attendances", "soft_delete", {"id": tT}) == 200 and ids(20, "scheduled_classes") == (200, []))
+# a LEAD instructor (role primary_instructor) counts as teaching too (P-104): before, a person placed as the lead saw nothing
+tLead = raw("attendances", 225, scheduled_class_id=cB, individual_id=pT, role="primary_instructor")
+check("own classes (lead): a person placed as the lead instructor sees that class, and only that one", ids(20, "scheduled_classes") == (200, [cB]))
+check("own classes (lead): ...opens it, sees its roster, and cannot change anything", code(20, "scheduled_classes", "get", {"id": cB}) == 200 and code(20, "scheduled_classes", "get", {"id": cL}) == 403
+      and tLead in ids(20, "attendances")[1] and code(20, "scheduled_classes", "update", {"id": cB, "changes": {"description": "x"}}) == 403)
+check("own classes (lead): a student row alone still shows nothing", ids(21, "scheduled_classes") == (200, []))
+check("own classes (lead): a lead who is taken off the class loses it", code(1, "attendances", "soft_delete", {"id": tLead}) == 200 and ids(20, "scheduled_classes") == (200, []))
 
 # ================================================================ state leads can invite (P-68)
 INV = TERR + ["invite_people"]

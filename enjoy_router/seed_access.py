@@ -43,7 +43,7 @@ ROLES = [
                      "runs Discovery searches. Cannot create regions or send messages. Where they work is their territory."),
     dict(key="instructor", label="Instructor", is_super_admin=False, is_active=True,
          capabilities=["view_console", "manage_classes"],
-         description="Sees the classes they teach (and who is in them), once their sign-in is linked to their person record."),
+         description="Sees the classes they teach or lead (and who is in them), once their sign-in is linked to their person record."),
     dict(key="global_inspector", label="Global Inspector", is_super_admin=False, is_active=True, capabilities=["inspect_everything"],
          description="View only. Sees every station and list (Activity, Access, Spend, Discovery and Messages too) and changes nothing. Private details "
                      "are hidden or masked. May start a Discovery run, capped at 25 cents. For demos."),

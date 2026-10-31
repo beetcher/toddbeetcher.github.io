@@ -154,14 +154,14 @@ class Scope:
         return self.access.is_super_admin or any(self.territory.covers_region(g, region_id) for g in self.access.grants)
 
     def teaches(self, store, class_id):
-        """Is this person attached to this class as an instructor (an attendance record, role instructor, for the person their sign-in is
-        linked to)? Looking only; it never lets them change anything."""
+        """Is this person attached to this class as an instructor (an attendance record, role instructor or primary_instructor (the lead), for the
+        person their sign-in is linked to)? Looking only; it never lets them change anything."""
         pid = self.access.individual_id if self.access.ok else ""
         if not pid or not class_id:
             return False
         if not hasattr(self, "_taught"):
             self._taught = {a.get("scheduled_class_id") for a in store.query("attendances", [("individual_id", "==", pid)], limit=1000)
-                            if a.get("role") == "instructor" and "deleted_at" not in a}
+                            if a.get("role") in ("instructor", "primary_instructor") and "deleted_at" not in a}
         return class_id in self._taught
 
     def can_read(self, need, zip_code):
