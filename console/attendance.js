@@ -10,7 +10,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName, classWhen = K.classWhen,
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = window.ConsoleFormat.attName, classWhen = K.classWhen,
       refreshPlaced = K.refreshPlaced, assignForm = K.assignForm;
   var CW = window.ConsoleWords, A = CW.att;   // the shared tables (words.js): the attendance status tables and leftOpen
   var ATT = A.ATT, ATT_STATUSES = A.ATT_STATUSES, ATT_WORD = CW.attWord, ROLE_WORD = CW.roleWord, ATT_TONE = A.ATT_TONE, ATT_OPEN = A.ATT_OPEN, ATT_OFF = A.ATT_OFF,
@@ -255,7 +255,7 @@
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body || !res.body.ok) { $("aMsg").textContent = "Could not load the attendance. " + adminProblem(res.status); return; }
       AS.recs = res.body.data.records || []; AS.loaded = true; AS.capped = AS.recs.length >= 200;
-      $("aChecked").textContent = "Last checked " + K.clock(new Date()) + (AS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      $("aChecked").textContent = "Last checked " + window.ConsoleFormat.clock(new Date()) + (AS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
       asRender();
     });
   }

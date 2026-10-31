@@ -73,7 +73,7 @@
       else if ($("dRetry")) $("dRetry").hidden = true;
       S.status = ok(r[0]) ? r[0].body.data : null;
       S.models = recs(r[1]); S.areas = recs(r[2]); S.types = recs(r[3]); S.prompts = recs(r[4]); S.settings = recs(r[5])[0] || null; S.loaded = true;
-      $("dChecked").textContent = "Last checked " + K.clock(new Date());
+      $("dChecked").textContent = "Last checked " + window.ConsoleFormat.clock(new Date());
       drawAll();
     });
   }
@@ -301,7 +301,7 @@
     if (!shown.length) host.appendChild(el("div", "empty", "No run matches those filters."));
     shown.forEach(function (r) {
       var c = el("div", "dcard"); var top = el("div", "drow");
-      var t = el("div"); t.appendChild(el("b", "", (r.area_labels || []).join(", ") || "Run")); t.appendChild(el("div", "dmini", K.when(r.created_at) + " · " + (r.model_name || "") + " · " + (r.type_keys || []).join(", ")));
+      var t = el("div"); t.appendChild(el("b", "", (r.area_labels || []).join(", ") || "Run")); t.appendChild(el("div", "dmini", window.ConsoleFormat.when(r.created_at) + " · " + (r.model_name || "") + " · " + (r.type_keys || []).join(", ")));
       top.appendChild(t); var chip = el("span", "dchip " + (r.status === "finished" ? "good" : r.status === "failed" ? "bad" : ""), STATUS_WORD[r.status] || r.status); top.appendChild(chip); c.appendChild(top);
       c.appendChild(el("div", "dmini", (r.run_mode === "dry_run" ? "Dry run · " : "") + "saved " + (r.created_count || 0) + " · duplicates " + (r.duplicate_count || 0) + " · rejected " + (r.rejected_count || 0) + " · spent " + usd(r.actual_cost_cents) + " of " + usd(r.spend_cap_cents)));
       var b = btn("Open", "btn-secondary", function () { openRun(r.id); }); b.dataset.run = r.id; c.appendChild(b); host.appendChild(c);
@@ -364,7 +364,7 @@
   function drawRunDetail(host) {
     var r = S.openRun; var back = btn("Back to the list", "btn-link", function () { S.openRun = null; loadRuns(); }); host.appendChild(back);
     var c = el("div", "dcard"); c.appendChild(el("h3", "", (r.area_labels || []).join(", ")));
-    c.appendChild(el("div", "dmini", K.when(r.created_at) + " · " + r.model_name + " · prompt version " + r.prompt_version + " · " + (STATUS_WORD[r.status] || r.status) + (r.stop_reason ? " (" + r.stop_reason.replace(/_/g, " ") + ")" : "") + (r.run_mode === "dry_run" ? " · dry run" : "")));
+    c.appendChild(el("div", "dmini", window.ConsoleFormat.when(r.created_at) + " · " + r.model_name + " · prompt version " + r.prompt_version + " · " + (STATUS_WORD[r.status] || r.status) + (r.stop_reason ? " (" + r.stop_reason.replace(/_/g, " ") + ")" : "") + (r.run_mode === "dry_run" ? " · dry run" : "")));
     c.appendChild(runSummary(r));
     c.appendChild(el("div", "dmini", "Calls: " + (r.steps_done || 0) + " of " + (r.steps_planned || 0) + ". Estimate " + usd(r.estimated_cost_low_cents) + " to " + usd(r.estimated_cost_high_cents) + ". Tokens in " + (r.input_tokens || 0) + ", out " + (r.output_tokens || 0) + ", searches " + (r.search_count || 0) + "."));
     var acts = el("div", "btns");
@@ -834,7 +834,7 @@
     if (pub.length > 1) {
       var h = el("details", "more"); h.appendChild(el("summary", "", "Earlier versions (" + (pub.length - 1) + ")"));
       pub.slice(1).forEach(function (p) {
-        var d = el("div", "dcard"); d.appendChild(el("b", "", "Version " + p.version + (p.published_at ? " · " + K.when(p.published_at) : ""))); d.appendChild(el("div", "dprompt", p.text));
+        var d = el("div", "dcard"); d.appendChild(el("b", "", "Version " + p.version + (p.published_at ? " · " + window.ConsoleFormat.when(p.published_at) : ""))); d.appendChild(el("div", "dprompt", p.text));
         if (!draft) d.appendChild(btn("Start a draft from this version", "quiet", function () { adm("draft_from", { id: p.id }, "discovery_prompts").then(function (r) { if (!ok(r)) msg.textContent = problemsText(r); else refreshAfter("discovery_prompts"); }); }));
         h.appendChild(d);
       }); host.appendChild(h);

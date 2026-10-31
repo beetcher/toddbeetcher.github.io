@@ -65,9 +65,6 @@
   function canPlaced() { return canAny(["manage_requests", "manage_classes"]); }
   function keyMe() { return { name: "Admin key", role_key: "super_admin", method: "key", is_super_admin: true, capabilities: [], email: "", scope_region_id: "" }; }
 
-  var fmtTime = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });   // the viewer's own zone, named (a class shows its own zone: classWhen)
-  var fmtClock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
-  function when(iso) { var d = new Date(iso); return isNaN(d) ? String(iso || "") : fmtTime.format(d); }
 
 
   // ---- Stations and manuals. To add a station: one SURFACES entry (name, blurb, manual), one view section, one line in route().
@@ -542,12 +539,10 @@
     return b;
   }
   // What a station that lives in its own file (console/discovery.js) may use from this page. Nothing here exposes the key except to that file's own calls.
-  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, when: when, clock: function (d) { return fmtClock.format(d); },
+  window.ConsoleKit = { mk: mk, admin: admin, toast: toast, lock: lock, key: function () { return key; }, can: can, me: function () { return ME; }, 
                         go: function (id) { goTo(id); }, hash: hashParts, setHash: function (path, query) { var q = Object.keys(query || {}).filter(function (k) { return query[k] !== "" && query[k] != null; }).map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(query[k]); }).join("&"); try { history.replaceState(null, "", "#/" + path + (q ? "?" + q : "")); } catch (x) {} }, sessionMinutes: function (n) { if (n === undefined) return idleMinutes; idleMinutes = idleClamp(n); idleSet(IDLE_MIN, idleMinutes); return idleMinutes; }, lastButton: function () { return lastBtn && Date.now() - lastBtnAt < 4000 ? lastBtn : null; },
                         // Added for station files (M-1, the Messages extraction). Functions, not values, because the things they read are filled in later or replaced.
                         adminProblem: function (status) { return adminProblem(status); },
-                        time: function (d) { return fmtTime.format(d); },
-                        attName: function (r) { return attName(r); },
                         classChoices: function () { return window.ClassesStation.choices(); },
                         classById: function (id) { return window.ClassesStation ? window.ClassesStation.byId(id) : undefined; },
                         openAttendance: function (cls, host) { openAttendance(cls, host); },
@@ -610,7 +605,6 @@
   // ================= Attendance: who is in which class =================
   var afSeq = 0;
 
-  function attName(r) { return (r.person && r.person.display_name) || "(person not found)"; }
 
 
 

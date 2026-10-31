@@ -110,6 +110,7 @@ The cure for tangling is one owner per shared thing. A station never reaches int
 Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
 2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
+2c. **Shared formatters**: `format.js` (`window.ConsoleFormat`): `when(iso)`, `time(date)`, `clock(date)`, `attName(row)`. Pure functions, load BEFORE `console.js`; read as `ConsoleFormat.when(...)`. Done (DT-9); the kit doors `when`, `time`, `clock` and `attName` are gone.
 2b. **Shared word tables**: `words.js` (`window.ConsoleWords`): `corrKind`, `reasonWord`, `roleWord`, `attWord`, `personLabel`, `personIssue`. Plain data, loads BEFORE `console.js`; read it as `ConsoleWords.attWord` etc. Done (DT-8); the kit door `words` is gone and the attendance status tables (`ConsoleWords.att`: DT-20; the kit door `attConsts` is gone).
 2a. **Shared data tables**: `data.js` (`window.ConsoleData`): the collection names (`COLL_P`, `COLL_L`, `COLL_LK`) the relation words (`REL`, `PERSON_RELS`) and the person word tables (`PLABEL`, `PISSUE`). Plain data, loads BEFORE `console.js`; read it as `ConsoleData.REL` etc. Done (DT-33); the kit doors `colls`, `rel` and `personRels` are gone.
 3a. **Help drawer**: `help.js` (`window.ConsoleHelp`): the manuals (one per station), the Workflows tab and the drawer; `ConsoleHelp.close()` and `.openWorkflows(ids)`. Done (H-1). The station list stays in `console.js`; the manual text lives in `help.js` (`MANUALS`, keyed by station id).
@@ -126,13 +127,11 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `toast` | Core: notices | The small notice |
 | `lock`, `key`, `can`, `me` | Core: session | Lock the Console; the current key; what this person may do; who they are |
 | `sessionMinutes`, `lastButton` | Core: session | Idle limit; the button just pressed |
-| `when`, `time`, `clock` | Core: date words | Date and time words |
 | `go` | Core: routing | Go to another page |
 | `surfaces` | Core (`console.js`: the station list) | The station list (id, name, short name, blurb, admin flag); `help.js` reads it to build the manual pages and buttons |
 | `allowed` | Core: session | Whether this person's role may open a station (`stationAllowed`); `home.js` uses it to hide tiles |
 | `hash` | Core: routing | Read the address: `{route, sub: [path pieces], query: {…}}` (S-0) |
 | `setHash` | Core: routing | Write path and query into the address without reloading the station (`history.replaceState`) (S-0) |
-| `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
 | `openAttendance` | Attendance (`attendance.js`, through a forwarder in `console.js`, DT-23) | Open a class's attendance |
 | `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |

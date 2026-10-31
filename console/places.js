@@ -9,7 +9,7 @@
   var pDateOut = K.pDateOut, skelOn = K.skelOn, skelOff = K.skelOff, currentRoute = K.currentRoute;
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL;
   var A = window.ConsoleAddresses, addrForm = A.addrForm, lProblems = A.lProblems, locAddr = A.locAddr, locSummary = A.locSummary;
-  var fmtClock = { format: function (d) { return K.clock(d); } };
+  var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 
   var lAll = [], lLoaded = false, lSeq = 0, lNewId = "";
   function refreshPlaces() { lLoaded = false; if (currentRoute() === "places") loadPlaces(); }

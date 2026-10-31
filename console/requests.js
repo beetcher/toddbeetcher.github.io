@@ -12,7 +12,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var C = K.consts();   // true constants only
   var MAX = C.MAX, READ_MS = C.READ_MS, ATT_RANK = window.ConsoleWords.att.ATT_RANK, ATT_GONE = window.ConsoleWords.att.ATT_GONE;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = K.when, can = K.can, canPlaced = K.canPlaced,
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, can = K.can, canPlaced = K.canPlaced,
       fetchRecords = K.fetchRecords, fetchT = K.fetchT, netShow = K.netShow, putInClass = K.putInClass, line = K.line, str = K.str, problem = K.problem, goTo = K.go;
 
   var known = {};        // id -> record
@@ -232,7 +232,7 @@
         merge(res.records);
         if (!firstLoadDone) UI.limitNote($("list"), res.records.length, MAX, "Showing the newest " + MAX + " requests. Older ones are not listed here.");
         firstLoadDone = true;
-        $("checkedText").textContent = "Last checked " + K.clock(new Date());
+        $("checkedText").textContent = "Last checked " + window.ConsoleFormat.clock(new Date());
       } else if (res.status === "unauthorized") {
         lock("That key did not work.");
       } else if (manual || !firstLoadDone || res.status !== "network") {
@@ -451,7 +451,7 @@
         var who = personOf(rec), box = mk("div", "qrow");
         box.appendChild(mk("b", "", rec.confirmation_number || ""));
         box.appendChild(mk("span", "qchip", "Deleted"));
-        var meta = [who, rec.email, rec.zip_code ? "ZIP: " + rec.zip_code : "", rec.deleted_at ? "deleted " + K.time(new Date(rec.deleted_at)) : ""].filter(Boolean).join(" · ");
+        var meta = [who, rec.email, rec.zip_code ? "ZIP: " + rec.zip_code : "", rec.deleted_at ? "deleted " + window.ConsoleFormat.time(new Date(rec.deleted_at)) : ""].filter(Boolean).join(" · ");
         box.appendChild(mk("span", "qnext", meta));
         if (can("manage_requests") && !(K.me() && K.me().inspector)) {
           var rb = mk("button", "btn-primary", "Restore"); rb.type = "button"; rb.setAttribute("aria-label", "Restore (" + who + ")");
@@ -520,7 +520,7 @@
     start: startTimer, stop: stopTimer, check: check, loadPlaced: loadPlaced,
     reset: function () { stopTimer(); reset(); resetPlaced(); },
     clearList: reset,
-    adopt: function (recs) { merge(recs); firstLoadDone = true; $("checkedText").textContent = "Last checked " + K.clock(new Date()); },
+    adopt: function (recs) { merge(recs); firstLoadDone = true; $("checkedText").textContent = "Last checked " + window.ConsoleFormat.clock(new Date()); },
     records: function () { return Object.keys(known).map(function (k) { return known[k]; }); }
   };
 })();

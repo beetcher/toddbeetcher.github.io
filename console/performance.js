@@ -92,7 +92,7 @@
     ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"].forEach(function (t) { hd.appendChild(mk("th", "", t)); }); tb.appendChild(hd);
     rows.slice(0, 30).forEach(function (r) {
       var tr = mk("tr", ""), cold = r.cold === true ? "yes" : r.cold === false ? "no" : "unknown";
-      [K.when(r.created_at), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
+      [window.ConsoleFormat.when(r.created_at), String(r.role_key || "").replace(/_/g, " "), r.device === "phone" ? "Phone" : "Computer", r.method === "key" ? "Admin key" : "Google",
        fmt(r.total_ms), fmt(num(r, "check_ms")), fmt(num(r, "server_ms")), fmt(num(r, "load_ms")), cold].forEach(function (t, i) {
         var td = mk("td", i === 8 && cold === "yes" ? "pfcold" : "", t); td.setAttribute("data-h", ["When", "Role", "Device", "How", "Total", "First call", "Server", "Lists", "Asleep"][i]); tr.appendChild(td);
       }); tb.appendChild(tr);
@@ -107,7 +107,7 @@
     return K.admin("list", { order: "-created_at", limit: MAXN }, "performance_events").then(function (res) {
       if (my !== S.seq) return;
       if (!ok(res)) { S.msg = res.status === 403 ? "You do not have access to Performance." : "Could not load the timings."; S.records = []; }
-      else S.records = (res.body.data && res.body.data.records) || []; S.checked = K.clock(new Date());
+      else S.records = (res.body.data && res.body.data.records) || []; S.checked = window.ConsoleFormat.clock(new Date());
       S.loaded = true; draw();
     });
   }

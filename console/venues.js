@@ -11,8 +11,8 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var CF = window.ConsoleForms;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = K.when, line = K.line, str = K.str, historyBtn = K.historyBtn, attName = K.attName;
-  var fmtClock = { format: function (d) { return K.clock(d); } };
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, line = K.line, str = K.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName;
+  var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
   var lProblems = K.lProblems, placeInput = K.placeInput, placeText = K.placeText, peopleList = K.peopleList, peopleMatches = K.peopleMatches, pFull = K.pFull;
   var statusToggle = K.statusToggle, askDiscard = K.askDiscard;

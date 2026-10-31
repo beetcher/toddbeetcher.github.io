@@ -299,6 +299,9 @@ with sync_playwright() as p:
     pg3.click("#lockBtn"); pg3.wait_for_selector("#lockView:not([hidden])")
     check("sign-out empties the search box and the Region chip", pg3.evaluate("document.getElementById('rSearch').value === '' && document.getElementById('rChips').children.length === 0"))
     errs += errs3
+    check("format.js owns the formatters (ConsoleFormat) and the kit doors when, time, clock, attName are gone (DT-9)", pg.evaluate("typeof ConsoleFormat === 'object' && ['when', 'time', 'clock', 'attName'].every(function (k) { return typeof ConsoleFormat[k] === 'function' }) && ['when', 'time', 'clock', 'attName'].every(function (k) { return !(k in ConsoleKit) })"))
+    check("the formatters give plain words", pg.evaluate("ConsoleFormat.when('not a date') === 'not a date' && /^[A-Z][a-z]{2} \\d{1,2}, \\d{1,2}:\\d{2} [AP]M/.test(ConsoleFormat.when('2026-10-10T15:00:00Z')) && /^\\d{1,2}:\\d{2}:\\d{2} [AP]M$/.test(ConsoleFormat.clock(new Date())) && ConsoleFormat.attName({}) === '(person not found)' && ConsoleFormat.attName({person: {display_name: 'Ann Lee'}}) === 'Ann Lee'"))
+    check("the formatters are not in console.js any more", not any(w in (HERE.parent / "console" / "console.js").read_text() for w in ["fmtTime", "fmtClock", "function when(", "function attName("]))
     check("no script errors", not errs and not errs2, errs + errs2)
     b.close()
 

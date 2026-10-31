@@ -8,7 +8,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = window.ConsoleFormat.attName;
   function W() { return window.ConsoleWords; }   // the word tables are shared with Requests, so they are read when needed, not copied
 
   // ---- Messages station: the whole message log (communication_logs), chip filters (UI.chipFilters, filters.js), notes (add only), copy
@@ -19,7 +19,7 @@
   function mKindWord(k) { return W().corrKind[k] || String(k || "").replace(/_/g, " ").replace(/^./, function (c) { return c.toUpperCase(); }); }
   function mReasonWord(r) { return W().reasonWord[r] || String(r || "").replace(/_/g, " "); }
   function mNeedsAttention(e) { return e.status === "failed" || e.status === "unknown" || (e.status === "not_sent" && !e.handled_at); }
-  function mWhen(e) { return e.created_at ? K.time(new Date(e.created_at)) : ""; }
+  function mWhen(e) { return e.created_at ? window.ConsoleFormat.time(new Date(e.created_at)) : ""; }
   // The filter chips: one shared control (filters.js). The page only says which filters it has and what to do when the person changes one.
   function mChips() {
     if (MS.cf) return MS.cf;
@@ -66,7 +66,7 @@
     if (me) rows.push(["Sent to", me + (e.audience ? " (" + e.audience + ")" : "")]);
     if (a && a.name && (a.name !== me || e.kind === "participant_left")) rows.push([e.kind === "participant_left" ? (a.role === "student" ? "Student who left" : "Left") : a.role === "student" ? "Student" : "Instructor", a.name]);
     var c = e.scheduled_class_id && K.classById(e.scheduled_class_id);
-    if (c) rows.push(["Class", (c.title || "(no title)") + (c.starts_at ? " · " + K.time(new Date(c.starts_at)) : "")]);
+    if (c) rows.push(["Class", (c.title || "(no title)") + (c.starts_at ? " · " + window.ConsoleFormat.time(new Date(c.starts_at)) : "")]);
     if (mConf(e)) rows.push(["Confirmation number", mConf(e)]);
     return rows;
   }
@@ -107,7 +107,7 @@
     var nb = mk("div", "mnotes"); nb.appendChild(mk("b", "", "Notes (" + (e.notes ? e.notes.length : 0) + ")"));
     (e.notes || []).forEach(function (n) {
       var d = mk("div", "mnote"); d.appendChild(mk("div", "", n.text));
-      d.appendChild(mk("div", "who", (n.at ? K.time(new Date(n.at)) : "") + " · " + (n.by || ""))); nb.appendChild(d);
+      d.appendChild(mk("div", "who", (n.at ? window.ConsoleFormat.time(new Date(n.at)) : "") + " · " + (n.by || ""))); nb.appendChild(d);
     });
     if (!(e.notes && e.notes.length)) nb.appendChild(mk("div", "empty2", "No notes yet."));
     box.appendChild(nb);
@@ -217,7 +217,7 @@
       if (res.status === 401) { lock("That key did not work."); return; }
       if (res.status !== 200 || !res.body || !res.body.ok) { $("mMsg").textContent = "Could not load the messages. " + adminProblem(res.status); return; }
       MS.recs = res.body.data.records || []; MS.loaded = true; MS.capped = MS.recs.length >= 200;
-      $("mChecked").textContent = "Last checked " + K.clock(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
+      $("mChecked").textContent = "Last checked " + window.ConsoleFormat.clock(new Date()) + (MS.capped ? ". Showing the newest 200: narrow it with the filters or search." : "");
       mBuildChips(); mRender();
       // A student who left (or was removed) is no longer in the live list, so ask for those placements by id and fill in the names.
       var gone = []; MS.recs.forEach(function (e) { if (e.attendance_id && !MS.att[e.attendance_id] && gone.indexOf(e.attendance_id) < 0 && gone.length < 60) gone.push(e.attendance_id); });

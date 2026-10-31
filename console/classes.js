@@ -12,10 +12,10 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var CF = window.ConsoleForms;
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str, historyBtn = K.historyBtn, attName = K.attName, attFail = K.attFail;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str, historyBtn = K.historyBtn, attName = window.ConsoleFormat.attName, attFail = K.attFail;
   var askDiscard = K.askDiscard, openAttendance = K.openAttendance, refreshPlaced = K.refreshPlaced, attLine = K.attLine, openWorkflows = K.openWorkflows;
   var pFull = K.pFull, peopleList = K.peopleList, peopleMatches = K.peopleMatches;
-  var fmtClock = { format: function (d) { return K.clock(d); } };
+  var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
   var LABELS = CF.labels, humanize = CF.humanize, readValue = CF.readValue, buildField = CF.buildField;
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
   var CW = window.ConsoleWords, ATT = CW.att.ATT, ATT_STATUSES = CW.att.ATT_STATUSES, ATT_WORD = CW.attWord, ROLE_WORD = CW.roleWord, REASON_WORD = CW.reasonWord;

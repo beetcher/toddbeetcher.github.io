@@ -9,7 +9,7 @@
   var K = window.ConsoleKit;
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
-  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = K.when, historyBtn = K.historyBtn;
+  var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = window.ConsoleFormat.when, historyBtn = K.historyBtn;
   function W() { return window.ConsoleWords; }
 
   // ---- Journal: the append-only log of placing, status changes and cancellations

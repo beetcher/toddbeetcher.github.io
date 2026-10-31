@@ -7,10 +7,10 @@
   var K = window.ConsoleKit;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, line = K.line, str = K.str, statusToggle = K.statusToggle, historyBtn = K.historyBtn;
-  var skelOn = K.skelOn, skelOff = K.skelOff, personHistory = K.personHistory, refreshPlaces = K.refreshPlaces, when = K.when;
+  var skelOn = K.skelOn, skelOff = K.skelOff, personHistory = K.personHistory, refreshPlaces = K.refreshPlaces, when = window.ConsoleFormat.when;
   var D = window.ConsoleData, COLL_P = D.COLL_P, COLL_L = D.COLL_L, COLL_LK = D.COLL_LK, REL = D.REL, PERSON_RELS = D.PERSON_RELS;
   var A = window.ConsoleAddresses, addrForm = A.addrForm, lProblems = A.lProblems, locAddr = A.locAddr, locSummary = A.locSummary, placeText = A.placeText;
-  var fmtClock = { format: function (d) { return K.clock(d); } };
+  var fmtClock = { format: function (d) { return window.ConsoleFormat.clock(d); } };
 
   // People that fit what was typed. Every word must appear somewhere in the name, email or phone (any order), so "Todd Beecher" finds a Todd Beecher.
   // If nobody fits every word, people who fit ANY word are offered as "close" matches, so a record with only a first name is not missed and then duplicated.

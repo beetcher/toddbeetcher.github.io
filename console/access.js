@@ -305,7 +305,7 @@
       chips.appendChild(document.createTextNode(" ")); chips.appendChild(mk("span", "acchip" + (p.is_active ? " on" : ""), p.is_active ? "On" : "Off"));
       top.appendChild(chips); r.appendChild(top);
       var bits = [];
-      bits.push(p.last_sign_in_at ? "Last signed in " + K.when(p.last_sign_in_at) : "Invited" + (p.created_at ? " " + K.when(p.created_at) : "") + ". Has not signed in yet.");
+      bits.push(p.last_sign_in_at ? "Last signed in " + window.ConsoleFormat.when(p.last_sign_in_at) : "Invited" + (p.created_at ? " " + window.ConsoleFormat.when(p.created_at) : "") + ". Has not signed in yet.");
       r.appendChild(mk("div", "acm", bits.join(" · ")));
       r.appendChild(mk("div", "acm actitle", "Works in: " + titleOf(p, role)));
       var gl = grantsOf(p);

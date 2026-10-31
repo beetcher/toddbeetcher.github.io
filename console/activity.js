@@ -98,7 +98,7 @@
     var v;
     try { v = JSON.parse(text); } catch (e) { return String(text) + "…"; }     // cut in the middle: the text is not whole JSON
     if (v === null || v === "") return "(empty)";
-    if (typeof v === "string") return /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(v) ? K.when(v) : v;
+    if (typeof v === "string") return /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(v) ? window.ConsoleFormat.when(v) : v;
     if (typeof v === "boolean") return v ? "Yes" : "No";
     if (typeof v === "number") return String(v);
     if (Array.isArray(v)) return v.length ? v.map(function (x) { return typeof x === "object" ? JSON.stringify(x) : String(x); }).join(", ") : "(empty list)";
@@ -159,7 +159,7 @@
   function entryCard(e) {
     var r = mk("div", "avrow"); var top = mk("div", "av1");
     var left = mk("div"); left.appendChild(mk("div", "avwho", typeName(e.record_type) + (e.record_label ? " · " + e.record_label : "")));
-    var by = mk("div", "avm", K.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · Record without a name")); by.title = String(e.created_by || "") + (e.record_label ? "" : " · " + String(e.record_id)); left.appendChild(by); top.appendChild(left);
+    var by = mk("div", "avm", window.ConsoleFormat.when(e.created_at) + " · " + actorName(e.created_by) + (e.record_label ? "" : " · Record without a name")); by.title = String(e.created_by || "") + (e.record_label ? "" : " · " + String(e.record_id)); left.appendChild(by); top.appendChild(left);
     var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); right.appendChild(document.createTextNode(" "));
     var st = STATION[e.record_type];
     if (st && !S.recId) { var open = mk("a", "btn-link avopen", "Open " + st[1]); open.href = "#/" + st[0]; open.setAttribute("aria-label", "Open " + st[1] + " (" + typeName(e.record_type) + (e.record_label ? " " + e.record_label : "") + ")"); right.appendChild(open); }
@@ -244,7 +244,7 @@
   function burstCard(list) {
     var e = list[0], last = list[list.length - 1], r = mk("div", "avrow avburst"), top = mk("div", "av1"), left = mk("div");
     left.appendChild(mk("div", "avwho", list.length + " " + typeName(e.record_type) + " entries"));
-    left.appendChild(mk("div", "avm", K.when(last.created_at) + " to " + K.when(e.created_at) + " · " + actorName(e.created_by)));
+    left.appendChild(mk("div", "avm", window.ConsoleFormat.when(last.created_at) + " to " + window.ConsoleFormat.when(e.created_at) + " · " + actorName(e.created_by)));
     top.appendChild(left); var right = mk("div", "avbtns"); right.appendChild(mk("span", "avchip " + e.action, VERB[e.action] || e.action)); top.appendChild(right); r.appendChild(top);
     r.appendChild(mk("div", "avwhat", list.length + " " + String(VERB[e.action] || e.action).toLowerCase() + " within " + span(new Date(e.created_at) - new Date(last.created_at)) + ", one after another."));
     var d = mk("details"); d.appendChild(mk("summary", "avm", "Show all " + list.length + " entries")); var built = false, key = "burst:" + e.id;
@@ -330,7 +330,7 @@
       if (my !== S.seq) return;
       S.busy = false;
       if (!ok(res)) { S.msg = why(res); S.records = []; S.loaded = true; }
-      else { var dd = res.body.data || {}; S.records = dd.records || []; S.more = !!dd.more; S.marker = dd.marker == null ? null : dd.marker; S.loaded = true; S.checked = K.clock(new Date()); }
+      else { var dd = res.body.data || {}; S.records = dd.records || []; S.more = !!dd.more; S.marker = dd.marker == null ? null : dd.marker; S.loaded = true; S.checked = window.ConsoleFormat.clock(new Date()); }
       draw();
       if (S.records.length) return nameThem(S.records).then(function (got) { if (got && my === S.seq) draw(); });
     });
