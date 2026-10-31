@@ -890,14 +890,14 @@
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
                         openWorkflows: function () { return openWorkflows.apply(null, arguments); }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
                         // Added for the Venues station (V-4). Functions that point at the places, people and shared helpers still in this file.
-                        lProblems: function () { return lProblems.apply(null, arguments); }, placeInput: function () { return placeInput.apply(null, arguments); }, placeText: function () { return placeText.apply(null, arguments); },
+                        lProblems: function () { return window.ConsoleAddresses.lProblems.apply(null, arguments); }, placeInput: function () { return window.ConsoleAddresses.placeInput.apply(null, arguments); }, placeText: function () { return window.ConsoleAddresses.placeText.apply(null, arguments); },
                         forgetSavedPlaces: function () { window.ConsoleAddresses.forgetSaved(); }, peopleList: function () { return window.PeopleStation.list.apply(null, arguments); }, peopleMatches: function () { return window.PeopleStation.matches.apply(null, arguments); },
                         pFull: function () { return window.PeopleStation.full.apply(null, arguments); }, statusToggle: function () { return statusToggle.apply(null, arguments); }, askDiscard: function () { return askDiscard.apply(null, arguments); },
                         // Added for the Instructors and Students stations (RO-2): the address form, the People problem words, the Places refresh, the collection names, and People's stale flags.
-                        addrForm: function () { return addrForm.apply(null, arguments); }, pProblems: function () { return window.PeopleStation.problems.apply(null, arguments); }, refreshPlaces: function () { refreshPlaces(); },
+                        addrForm: function () { return window.ConsoleAddresses.addrForm.apply(null, arguments); }, pProblems: function () { return window.PeopleStation.problems.apply(null, arguments); }, refreshPlaces: function () { window.PlacesStation.refresh(); },
                         colls: function () { return { P: COLL_P, L: COLL_L, LK: COLL_LK }; }, peopleStale: function () { window.PeopleStation.stale(); },
                         // Added for the Organizations station (OR-2): People's date words, Places' one-line address, the Places relation words (a function: defined later in this file).
-                        pDateOut: function () { return window.PeopleStation.dateOut.apply(null, arguments); }, locAddr: function () { return locAddr.apply(null, arguments); }, rel: function () { return REL; },
+                        pDateOut: function () { return window.PeopleStation.dateOut.apply(null, arguments); }, locAddr: function () { return window.ConsoleAddresses.locAddr.apply(null, arguments); }, rel: function () { return REL; },
                         // Added for the Places station (PP-2): the skeleton helpers and the current page, which it needs and cannot own.
                         skelOn: function () { return skelOn.apply(null, arguments); }, skelOff: function () { return skelOff.apply(null, arguments); }, currentRoute: function () { return currentRoute(); },
                         // Added for the People station (PP-5): the person history forwarder, and the person relation list (data, stays here).
@@ -1059,18 +1059,11 @@
 
   var COLL_P = "individuals";   // the People collection name stays here as data (the kit hands it to the rosters and Places); the People station is people.js (PP-5)
 
-  // Places moved to places.js and addresses.js (PP-2). The data tables stay here (the rosters and Organizations read them at load); the helpers below forward so the code that stays reads as before.
+  // Places moved to places.js and addresses.js (PP-2). The data tables stay here (the rosters and Organizations read them at load); the kit doors call addresses.js and places.js directly (DT-35).
   var COLL_L = "locations", COLL_LK = "location_links";
   var REL = { resides_at: "Lives here", mailing_address_for: "Mailing address", billing_address_for: "Billing address", works_at: "Works here",
               owns: "Owns", manages: "Manages", operates_at: "Operates here", delivers_to: "Delivers here", other: "Other" };
   var PERSON_RELS = ["resides_at", "mailing_address_for", "billing_address_for", "works_at", "owns", "other"];
-  function addrForm() { return window.ConsoleAddresses.addrForm.apply(null, arguments); }
-  function lProblems() { return window.ConsoleAddresses.lProblems.apply(null, arguments); }
-  function locAddr() { return window.ConsoleAddresses.locAddr.apply(null, arguments); }
-  function locSummary() { return window.ConsoleAddresses.locSummary.apply(null, arguments); }
-  function placeInput() { return window.ConsoleAddresses.placeInput.apply(null, arguments); }
-  function placeText() { return window.ConsoleAddresses.placeText.apply(null, arguments); }
-  function refreshPlaces() { window.PlacesStation.refresh(); }
 
 
 
