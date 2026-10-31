@@ -473,7 +473,7 @@
       drawBanner(); drawRun(); drawSettings(); drawTabs(); if (then) then();
     });
   }
-  // A generic form. fields: {name,label,kind: text|int|bool|select|textarea|zips, options:[[v,l]], hint, keepOnEdit}
+  // A generic form. fields: {name,label,kind: text|int|dollars|bool|select|textarea|zips, options:[[v,l]], hint, keepOnEdit}. A dollars field is stored as whole cents, typed and shown in dollars.
   function crudForm(host, cfg, rec, done) {
     var f = el("form", "dcard"); f.noValidate = true; f.appendChild(el("h3", "", rec ? "Edit " + cfg.one : "Add " + cfg.one));
     var inputs = {};
@@ -482,20 +482,24 @@
       if (fd.kind === "bool") { inp = el("input"); inp.type = "checkbox"; inp.checked = rec ? !!rec[fd.name] : !!fd.def; var w = el("label", "chk"); w.appendChild(inp); w.appendChild(document.createTextNode(" " + fd.label)); if (fd.hint) w.appendChild(el("div", "dhint", fd.hint)); f.appendChild(w); inputs[fd.name] = inp; return; }
       if (fd.kind === "select") { inp = el("select"); (fd.options || []).forEach(function (o) { var op = el("option", "", o[1]); op.value = o[0]; inp.appendChild(op); }); inp.value = rec && rec[fd.name] != null ? rec[fd.name] : (fd.def != null ? fd.def : inp.value); }
       else if (fd.kind === "textarea" || fd.kind === "zips") { inp = el("textarea"); inp.value = rec ? (fd.kind === "zips" ? (rec[fd.name] || []).join(", ") : esc(rec[fd.name])) : ""; }
+      else if (fd.kind === "dollars") { inp = el("input"); inp.type = "number"; inp.step = "0.01"; inp.min = 0; inp.value = rec && rec[fd.name] != null ? (rec[fd.name] / 100).toFixed(2) : (fd.def != null ? (fd.def / 100).toFixed(2) : ""); }
       else { inp = el("input"); inp.type = fd.kind === "int" ? "number" : "text"; inp.value = rec && rec[fd.name] != null ? rec[fd.name] : (fd.def != null ? fd.def : ""); }
       inp.id = "dF_" + cfg.coll + "_" + fd.name; if (locked) inp.disabled = true; inputs[fd.name] = inp; f.appendChild(labelled(fd.label, inp, locked ? "Cannot be changed after it is saved." : fd.hint));
     });
     var err = el("div", "msg"); err.setAttribute("role", "alert"); f.appendChild(err);
     var b = el("div", "btns"); var save = btn(rec ? "Save" : "Add", "btn-primary", null); save.type = "submit"; b.appendChild(save); b.appendChild(btn("Cancel", "btn-secondary", function () { f.remove(); })); f.appendChild(b);
     f.addEventListener("submit", function (e) {
-      e.preventDefault(); err.textContent = ""; var data = {};
+      e.preventDefault(); err.textContent = ""; var data = {}, bad = false;
       cfg.fields.forEach(function (fd) {
         var inp = inputs[fd.name]; if (rec && fd.immutable) return; var v;
+        if (fd.kind === "dollars" && inp.value !== "" && !(parseFloat(inp.value) >= 0)) { err.textContent = "Give an amount in dollars (0 or more)."; bad = true; return; }
         if (fd.kind === "bool") v = inp.checked; else if (fd.kind === "int") v = inp.value === "" ? undefined : parseInt(inp.value, 10);
+        else if (fd.kind === "dollars") v = inp.value === "" ? undefined : Math.round(parseFloat(inp.value) * 100);
         else if (fd.kind === "zips") v = inp.value.split(/[\s,;]+/).filter(Boolean); else v = inp.value.trim();
-        if (v === "" || v === undefined) { if (rec && fd.kind !== "int" && rec[fd.name] != null) data[fd.name] = ""; return; }
+        if (v === "" || v === undefined) { if (rec && fd.kind !== "int" && fd.kind !== "dollars" && rec[fd.name] != null) data[fd.name] = ""; return; }
         data[fd.name] = v;
       });
+      if (bad) return;
       if (cfg.fixed && !rec) Object.keys(cfg.fixed).forEach(function (k) { data[k] = cfg.fixed[k]; });
       var call = rec ? adm("update", { id: rec.id, changes: changed(rec, data), expected_updated_at: rec.updated_at }, cfg.coll) : adm("create", { data: data }, cfg.coll);
       call.then(function (res) { if (!ok(res)) { err.textContent = problemsText(res); return; } refreshAfter(cfg.coll, done); });
@@ -844,7 +848,7 @@
     var s = S.settings; host.appendChild(el("h3", "", "Limits"));
     if (!s) { host.appendChild(el("div", "empty", "No settings record yet. Run seed_discovery.py.")); return; }
     var cfg = { coll: "discovery_settings", one: "limits", fields: [
-      { name: "default_spend_cap_cents", label: "Spend cap a run starts with (cents)", kind: "int" }, { name: "max_spend_cap_cents", label: "Most any run may spend (cents)", kind: "int", hint: "The Find venues tab cannot go above this." },
+      { name: "default_spend_cap_cents", label: "Spend cap a run starts with (dollars)", kind: "dollars" }, { name: "max_spend_cap_cents", label: "Most any run may spend (dollars)", kind: "dollars", hint: "The Find venues tab cannot go above this." },
       { name: "max_results_per_run", label: "Most results in one run", kind: "int" }, { name: "results_per_step", label: "Results asked for in one AI call", kind: "int", hint: "Small calls keep each one quick and let the cap stop a run between calls." },
       { name: "default_model_id", label: "Model chosen first", kind: "select", options: [["", "The first one switched on"]].concat(active(S.models).map(function (m) { return [m.id, m.label]; })) }] };
     var card = el("div", "dcard"); card.appendChild(el("p", "", "Starting cap " + usd(s.default_spend_cap_cents) + ", most allowed " + usd(s.max_spend_cap_cents) + ", up to " + s.max_results_per_run + " results a run, " + s.results_per_step + " a call."));

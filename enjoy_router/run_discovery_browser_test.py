@@ -398,14 +398,18 @@ with sync_playwright() as p:
     check("the next estimate uses the new wording", "quiet back room" in pg.locator("#dQuote .dprompt").first.inner_text())
 
     pg.click("#dTabs button[data-tab=settings]"); pg.click("#dSubs button[data-sub=limits]"); pg.click("#dEditLimits")
-    pg.fill("#dF_discovery_settings_max_spend_cap_cents", "50"); pg.fill("#dF_discovery_settings_default_spend_cap_cents", "20")
+    check("Limits: the two spend caps are typed in dollars and say so (P-101)", pg.locator("#dSubBody form label", has_text="(dollars)").count() == 2 and "cents" not in " ".join(pg.locator("#dSubBody form label").all_text_contents()).split("Most results")[0].lower())
+    check("Limits: the form shows the saved caps in dollars", pg.input_value("#dF_discovery_settings_max_spend_cap_cents") == "%.2f" % (recs("discovery_settings")[0]["max_spend_cap_cents"] / 100) and pg.input_value("#dF_discovery_settings_default_spend_cap_cents") == "%.2f" % (recs("discovery_settings")[0]["default_spend_cap_cents"] / 100))
+    pg.fill("#dF_discovery_settings_max_spend_cap_cents", "-1"); pg.get_by_role("button", name="Save", exact=True).click()
+    check("Limits: a negative cap is refused in plain words", "dollars" in pg.locator("#dSubBody form .msg").inner_text())
+    pg.fill("#dF_discovery_settings_max_spend_cap_cents", "0.50"); pg.fill("#dF_discovery_settings_default_spend_cap_cents", "0.205")
     pg.get_by_role("button", name="Save", exact=True).click(); pg.wait_for_function("document.getElementById('dSubBody').textContent.indexOf('$0.50') >= 0")
     st = recs("discovery_settings")[0]
-    check("limits are editable and saved", st["max_spend_cap_cents"] == 50 and st["default_spend_cap_cents"] == 20)
+    check("limits are editable and saved in whole cents (0.50 dollars is 50; a fraction of a cent rounds to a whole cent)", st["max_spend_cap_cents"] == 50 and st["default_spend_cap_cents"] in (20, 21) and isinstance(st["default_spend_cap_cents"], int))
     pg.click("#dTabs button[data-tab=run]")
-    check("the Run tab picks up the new limits", pg.input_value("#dCap") == "0.20" and pg.get_attribute("#dCap", "max") == "0.5")
+    check("the Run tab picks up the new limits", pg.input_value("#dCap") in ("0.20", "0.21") and pg.get_attribute("#dCap", "max") == "0.5")
     pg.click("#dEditLimits") if False else None
-    pg.click("#dTabs button[data-tab=settings]"); pg.click("#dEditLimits"); pg.fill("#dF_discovery_settings_default_spend_cap_cents", "90")
+    pg.click("#dTabs button[data-tab=settings]"); pg.click("#dEditLimits"); pg.fill("#dF_discovery_settings_default_spend_cap_cents", "0.90")
     pg.get_by_role("button", name="Save", exact=True).click(); pg.wait_for_selector("#dSubBody form .msg:not(:empty)")
     check("a starting cap above the maximum is refused", pg.locator("#dSubBody form .msg").inner_text() != "", pg.locator("#dSubBody form .msg").inner_text())
 
