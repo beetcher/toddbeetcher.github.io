@@ -209,6 +209,9 @@ with sync_playwright() as p:
     pg.click("#helpOpen")
     pg.click("#lockBtn"); pg.wait_for_selector("#lockView:not([hidden])")
     check("locking closes the drawer and hides Help", pg.locator("#manual").is_hidden() and pg.locator("#helpOpen").is_hidden())
+    check("help.js is loaded and owns the drawer (ConsoleHelp.close and .openWorkflows)", pg.evaluate("typeof ConsoleHelp === 'object' && typeof ConsoleHelp.close === 'function' && typeof ConsoleHelp.openWorkflows === 'function'"))
+    check("the manuals and Workflows are not in console.js any more (H-1)", not any(w in (HERE.parent / "console" / "console.js").read_text() for w in ["var WORKFLOWS", "function openManual", "MANUALS", "manual:"]))
+    check("one manual page for every station in the list", pg.evaluate("document.querySelectorAll('#manualScroll .mpage').length") == pg.evaluate("document.querySelectorAll('#overlayBtns button[data-m]').length") > 10)
     check("the page made no script errors", not errs, errs)
     b.close()
 

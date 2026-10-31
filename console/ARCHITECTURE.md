@@ -110,6 +110,7 @@ The cure for tangling is one owner per shared thing. A station never reaches int
 Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
 2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
+3a. **Help drawer**: `help.js` (`window.ConsoleHelp`): the manuals (one per station), the Workflows tab and the drawer; `ConsoleHelp.close()` and `.openWorkflows(ids)`. Done (H-1). The station list stays in `console.js`; the manual text lives in `help.js` (`MANUALS`, keyed by station id).
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
 4. **Shared UI**: `ui.js`, `filters.js`, `forms.js`. Used directly.
 5. **Stations**: one file each. They use layers 1 to 4 and **never another station**.
@@ -125,6 +126,7 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `sessionMinutes`, `lastButton` | Core: session | Idle limit; the button just pressed |
 | `when`, `time`, `clock` | Core: date words | Date and time words |
 | `go` | Core: routing | Go to another page |
+| `surfaces` | Core (`console.js`: the station list) | The station list (id, name, short name, blurb, admin flag); `help.js` reads it to build the manual pages and buttons |
 | `hash` | Core: routing | Read the address: `{route, sub: [path pieces], query: {…}}` (S-0) |
 | `setHash` | Core: routing | Write path and query into the address without reloading the station (`history.replaceState`) (S-0) |
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
@@ -147,7 +149,7 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `peopleList`, `peopleMatches`, `pFull` | **People station** (`people.js`) | The cached list of people, name matching, a person's full name (Venues' Contact picker) |
 | `statusToggle` | Core: shared list helper (still in `console.js`) | The Active/Inactive switch that collects taps into one save |
 | `askDiscard` | Core: shared dialog helper (still in `console.js`) | "Discard unsaved changes?" before leaving a form |
-| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Core / Attendance / People (`forgetPeople` forwards to the People station) | The Help drawer; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
+| `openWorkflows`, `attLine`, `afNext`, `forgetPeople` | Help (`help.js`, `ConsoleHelp.openWorkflows`) / Attendance / People (`forgetPeople` forwards to the People station) | Open the Help drawer on the Workflows tab; one Attendance line (straight to `AttendanceStation`); the shared id counter for address and assign forms; forget the cached people list after one was created |
 | `addrForm`, `pProblems`, `refreshPlaces`, `colls`, `peopleStale` | Shared addresses (`addrForm`) / Places (`refreshPlaces`) / People station (`pProblems`, `peopleStale`) / `console.js` data (`colls`) | The address form block; the plain sentences for a failed person save; reload the Places page after a place changed; the three collection names (people, places, place links); mark the People list and the pick list stale after a person changed (read by the roster engine) |
 | `personHistory`, `personRels` | Core: a forwarder to Attendance / People relation list (data, still in `console.js`) | One person's attendance history; the relation words offered on a person's address (read by People) |
 | `skelOn`, `skelOff`, `currentRoute` | Core: shared list helpers and routing (still in `console.js`) | The loading skeleton on/off for a list; the page the Console is on (read by Places) |
