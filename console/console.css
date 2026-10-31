@@ -1021,8 +1021,8 @@
 #homeView .tile.soon { background: transparent; border: 1px dashed var(--line-strong, var(--line)); }
 #homeView .mbtns button { background: #fff; color: var(--ink); border-color: var(--line-strong, var(--line)); }
 @media (min-width: 1100px) {
-  #homeView #attnBody { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-  #homeView #attnBody > .quietline, #homeView #attnBody > div:not(.aitem) { grid-column: 1 / -1; }
+  #homeView #attnBody, #homeView #needBody { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  #homeView #attnBody > .quietline, #homeView #attnBody > div:not(.aitem), #homeView #needBody > .quietline, #homeView #needBody > div:not(.aitem) { grid-column: 1 / -1; }
 }
 @media (max-width: 520px) {
   #homeView .tiles { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
