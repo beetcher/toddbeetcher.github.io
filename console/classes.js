@@ -18,7 +18,7 @@
   var fmtClock = { format: function (d) { return K.clock(d); } };
   var LABELS = CF.labels, humanize = CF.humanize, readValue = CF.readValue, buildField = CF.buildField;
   var ISSUE = CF.issue, wholeNum = CF.wholeNum, slugify = CF.slugify, skelOn = UI.skelOn, skelOff = UI.skelOff;
-  var AC = K.attConsts(), ATT = AC.ATT, ATT_STATUSES = AC.ATT_STATUSES, ATT_WORD = AC.ATT_WORD, ROLE_WORD = AC.ROLE_WORD, REASON_WORD = AC.REASON_WORD;
+  var CW = window.ConsoleWords, ATT = CW.att.ATT, ATT_STATUSES = CW.att.ATT_STATUSES, ATT_WORD = CW.attWord, ROLE_WORD = CW.roleWord, REASON_WORD = CW.reasonWord;
   // ======================================================================================================
   // ---- Classes view: list, add, edit, delete. Same pattern as venues; the server does all the checking.
   // The form is built from the published scheduled_class schema. The venue and room are pick lists made from

@@ -3,7 +3,7 @@
    students, seat summary, add a person, change status, remove, messages sent, Send confirmation email); and a person's class history.
    Moved out of console.js (the Attendance extraction, A-2): the code is the same; everything it used to borrow from the big file now comes through
    ConsoleKit. The placing machinery (assignForm, Put in a class, the class builder) stays in console.js for now (DT-18); the shared word tables stay
-   there too and are read through K.attConsts(). The page markup (#attendanceView, #atDlg) lives in index.html and the manual text in the stations list in
+   there too and are read from ConsoleWords (words.js). The page markup (#attendanceView, #atDlg) lives in index.html and the manual text in the stations list in
    console.js (DT-7). Loaded by index.html after console.js and requests.js. */
 (function () {
   "use strict";
@@ -12,9 +12,9 @@
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName, classWhen = K.classWhen,
       refreshPlaced = K.refreshPlaced, assignForm = K.assignForm;
-  var A = K.attConsts();   // the shared tables (constants) and leftOpen
-  var ATT = A.ATT, ATT_STATUSES = A.ATT_STATUSES, ATT_WORD = A.ATT_WORD, ROLE_WORD = A.ROLE_WORD, ATT_TONE = A.ATT_TONE, ATT_OPEN = A.ATT_OPEN, ATT_OFF = A.ATT_OFF,
-      CORR_KIND = A.CORR_KIND, REASON_WORD = A.REASON_WORD, leftOpen = A.leftOpen;
+  var CW = window.ConsoleWords, A = CW.att;   // the shared tables (words.js): the attendance status tables and leftOpen
+  var ATT = A.ATT, ATT_STATUSES = A.ATT_STATUSES, ATT_WORD = CW.attWord, ROLE_WORD = CW.roleWord, ATT_TONE = A.ATT_TONE, ATT_OPEN = A.ATT_OPEN, ATT_OFF = A.ATT_OFF,
+      CORR_KIND = CW.corrKind, REASON_WORD = CW.reasonWord, leftOpen = A.leftOpen;
 
   function attLine(r, withClass) {
     var row = mk("div", "rrow");

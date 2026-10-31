@@ -11,7 +11,7 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var C = K.consts();   // true constants only
-  var MAX = C.MAX, READ_MS = C.READ_MS, ATT_RANK = C.ATT_RANK, ATT_GONE = C.ATT_GONE;
+  var MAX = C.MAX, READ_MS = C.READ_MS, ATT_RANK = window.ConsoleWords.att.ATT_RANK, ATT_GONE = window.ConsoleWords.att.ATT_GONE;
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = K.when, can = K.can, canPlaced = K.canPlaced,
       fetchRecords = K.fetchRecords, fetchT = K.fetchT, netShow = K.netShow, putInClass = K.putInClass, line = K.line, str = K.str, problem = K.problem, goTo = K.go;
 
