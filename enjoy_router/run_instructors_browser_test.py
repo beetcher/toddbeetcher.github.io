@@ -144,7 +144,7 @@ with sync_playwright() as p:
     pg.wait_for_function("document.getElementById('riNotice').textContent.indexOf('Saved') === 0")
     pg.wait_for_function("document.querySelectorAll('#riList li').length == 2")
     li = pg.locator("#riList li", has_text="Ann Lee"); li.locator("button.head").click()
-    check("hours and area shown", "Tue 09:00–15:00" in li.inner_text() and "Denver metro" in li.inner_text())
+    check("hours and area shown (Tuesday 09:00 over 15:00 in the week grid)", li.locator(".hday").nth(1).inner_text().split() == ["Tue", "09:00", "15:00"] and "Denver metro" in li.inner_text())
     check("phone changed in People too", any(x.get("given_name") == "Ann" and x.get("phone", "").endswith("0199") for x in people()))
     # bad hours
     li.get_by_role("button", name="Edit", exact=True).click()
@@ -268,6 +268,17 @@ with sync_playwright() as p:
     pg.fill("#keyInput", KEY); pg.click("#unlockBtn"); pg.wait_for_function("document.getElementById('rsChecked').textContent.length > 0")
     pg.select_option("#collPick", "instructors"); pg.wait_for_function("document.getElementById('riChecked').textContent.length > 0")
     check("signing back in loads the Instructors page again", pg.locator("#riCount").inner_text() != "")
+    # P-99: the weekly hours are a small week grid, not a line of text
+    for rr in store.data.get("instructor_rosters", {}).values():
+        rr["status"] = "active"; rr["availability"] = [{"day_of_week": "monday", "opens_at": "09:00", "closes_at": "17:00"}, {"day_of_week": "thursday", "opens_at": "10:30", "closes_at": "14:00"}]
+    pg.click("#riRefresh"); pg.wait_for_selector("#riList li"); li = pg.locator("#riList li").first; li.locator("button.head").click(); pg.wait_for_selector("#riList li.open .hgrid")
+    gd = li.locator(".hgrid")
+    check("P-99: weekly hours show as seven day boxes under the words Weekly hours", gd.locator(".hday").count() == 7 and "Weekly hours" in li.locator(".hwrap").inner_text())
+    check("P-99: Monday shows 09:00 over 17:00, Thursday 10:30 over 14:00, and the other days a dash", gd.locator(".hday").nth(0).inner_text().split() == ["Mon", "09:00", "17:00"] and gd.locator(".hday").nth(3).inner_text().split() == ["Thu", "10:30", "14:00"] and gd.locator(".hday.on").count() == 2 and gd.locator(".hday").nth(1).inner_text().split() == ["Tue", "–"])
+    check("P-99: each day box has a spoken name", gd.locator(".hday").nth(0).get_attribute("aria-label") == "Mon 09:00 to 17:00" and gd.locator(".hday").nth(1).get_attribute("aria-label") == "Tue not available")
+    check("P-99: the old one-line text is gone", "Mon 09:00" not in li.inner_text())
+    pg.set_viewport_size({"width": 390, "height": 800}); pg.wait_for_timeout(250)
+    check("P-99: on a phone the week still fits the width (no sideways scroll)", pg.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth"))
     check("no page errors", errors == [])
     if errors: print(errors)
     b.close()

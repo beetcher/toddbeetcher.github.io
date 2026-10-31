@@ -220,6 +220,13 @@
   .who { margin-top: var(--space-3); font-weight: 600; }
   .sub { color: var(--muted); font-size: var(--text-m); }
   select.buildnew { border-color: var(--ok); box-shadow: 0 0 0 2px var(--ok); background: var(--ok-bg); }
+  /* The week at a glance on an instructor's card (P-99): seven day boxes, opening time over closing time. */
+  .hwrap { margin: var(--space-3) 0; }
+  .hgrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-1); margin-top: var(--space-2); max-width: 34rem; }
+  .hday { border: 1px solid var(--line); border-radius: 6px; padding: var(--space-1); text-align: center; font-size: var(--text-xs); color: var(--muted); background: var(--card); }
+  .hday b { display: block; color: var(--ink); font-size: var(--text-s); }
+  .hday span { display: block; }
+  .hday.on { background: var(--ok-bg); border-color: var(--ok-edge); color: var(--ink); }
   .chips { margin-top: var(--space-3); display: flex; gap: var(--space-7); flex-wrap: wrap; font-size: var(--text-m); color: var(--muted); }
   .detail { display: none; border-top: 1px solid var(--line); padding: var(--space-5) var(--space-7) var(--space-6); background: var(--paper); font-size: var(--text-m); }
   li.open .detail { display: block; }

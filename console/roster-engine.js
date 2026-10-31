@@ -57,9 +57,19 @@
     if (x.t === "tags") return v ? v.split(/[,;\n]+/).map(function (s) { return s.trim(); }).filter(Boolean) : [];
     return v;
   }
-  function rHoursText(av) {
+  // The week at a glance (P-99): seven day boxes, the opening and closing time in each; a day with no hours shows a dash. Replaces the one line of text.
+  function rHoursGrid(av) {
     var by = {}; (av || []).forEach(function (h) { by[h.day_of_week] = h; });
-    return RDAYS.filter(function (d) { return by[d[0]]; }).map(function (d) { return d[1] + " " + by[d[0]].opens_at + "–" + by[d[0]].closes_at; }).join(", ");
+    var wrap = mk("div", "hwrap"); wrap.appendChild(mk("b", "", "Weekly hours"));
+    var gr = mk("div", "hgrid"); gr.setAttribute("role", "list");
+    RDAYS.forEach(function (d) {
+      var h = by[d[0]], c = mk("div", "hday" + (h ? " on" : "")); c.setAttribute("role", "listitem");
+      c.setAttribute("aria-label", d[1] + (h ? " " + h.opens_at + " to " + h.closes_at : " not available"));
+      c.appendChild(mk("b", "", d[1]));
+      if (h) { c.appendChild(mk("span", "", h.opens_at)); c.appendChild(mk("span", "", h.closes_at)); } else c.appendChild(mk("span", "", "–"));
+      gr.appendChild(c);
+    });
+    wrap.appendChild(gr); return wrap;
   }
 
   function currTitle(S, id) { var l = S.curr || []; for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i].title; return "(removed curriculum)"; }
@@ -249,7 +259,7 @@
         var ah = mk("div"); detail.appendChild(ab); detail.appendChild(ah);
         ab.addEventListener("click", function () { if (ah.firstChild) ah.textContent = ""; else ah.appendChild(instructorAddressBox(rec, function () { g("Notice").textContent = "Saved the address for " + rName(rec) + "."; S.openId = rec.id; load(); })); });
       }
-      if (cfg.hours && rec.availability && rec.availability.length) detail.appendChild(line("Weekly hours", rHoursText(rec.availability)));
+      if (cfg.hours && rec.availability && rec.availability.length) detail.appendChild(rHoursGrid(rec.availability));
       if (cfg.hours && rec.availability_notes) detail.appendChild(line("Availability notes", rec.availability_notes));
       detail.appendChild(line("Added", when(rec.created_at)));
       head.addEventListener("click", function () { var open = li.classList.toggle("open"); head.setAttribute("aria-expanded", open ? "true" : "false"); });
