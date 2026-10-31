@@ -127,6 +127,7 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `when`, `time`, `clock` | Core: date words | Date and time words |
 | `go` | Core: routing | Go to another page |
 | `surfaces` | Core (`console.js`: the station list) | The station list (id, name, short name, blurb, admin flag); `help.js` reads it to build the manual pages and buttons |
+| `allowed` | Core: session | Whether this person's role may open a station (`stationAllowed`); `home.js` uses it to hide tiles |
 | `hash` | Core: routing | Read the address: `{route, sub: [path pieces], query: {…}}` (S-0) |
 | `setHash` | Core: routing | Write path and query into the address without reloading the station (`history.replaceState`) (S-0) |
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
@@ -178,4 +179,4 @@ Write a run sheet and get a GO first, then four steps, one commit each:
 - **No borrowed names (lint).** A station file must not use anything that only exists inside `console.js`. With ESLint available: `npx eslint --no-eslintrc -c <config> console/<name>.js` where the config sets `env: {browser: true, es2020: true}`, `rules: {"no-undef": "error"}` and `globals: {UI: "readonly", ConsoleNames: "readonly", ConsoleDialogs: "readonly"}`. A clean run means no hidden dependency on the big file (this is how the Messages move was checked). **Since DT-12 the architecture test (`enjoy_router/run_console_architecture_test.py`, section 7) runs this check by itself on every `console/*.js`**: it installs ESLint 9 once into the temp folder, gives each file the browser globals plus the shared objects, lets only `console.js` name the stations, and skips with a note if Node or the install is not available. A new shared object needs no setup (it is read from `window.X = ...`); a bare name that exists only in another file fails the test.
 
 ## Still inside `console.js` (to be extracted, each with its own sheet and GO)
-People, Places, Organizations, the three rosters (Instructors, Students, Curriculum), Workflows, sign-in, idle timeout, and the shared kit itself. The order is in `claude/console-build-order-bookmark.md`.
+Sign-in, idle timeout, transport, routing and the shared kit itself, plus the station list (`SURFACES`), the drop-down and the sidebar. Every station is now in its own file: Home (`home.js`, H-2) and the Help drawer with Workflows (`help.js`, H-1) were the last to leave. The order is in `claude/console-build-order-bookmark.md`.

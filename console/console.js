@@ -88,27 +88,13 @@
     { id: "activity", admin: true, name: "Activity", short: "Activity", blurb: "Who changed what, and when. Read only." },
     { id: "performance", admin: true, name: "Performance", short: "Performance", blurb: "How fast the Console is. Read only." },
   ];
-  var COMING = [
-    { name: "More stations", blurb: "New collections dock here as they are built." }
-  ];
 
   function surfaceById(id) { for (var i = 0; i < SURFACES.length; i++) if (SURFACES[i].id === id) return SURFACES[i]; return null; }
-  function buildHome() {
+  function buildMenus() {   // the drop-down and the sidebar (the Home tiles are home.js)
     var pick = $("collPick"); pick.innerHTML = "";
     var o = document.createElement("option"); o.value = "home"; o.textContent = "Home"; pick.appendChild(o);
-    var tiles = $("stationTiles");
     SURFACES.forEach(function (sf, i) {
       var op = document.createElement("option"); op.value = sf.id; op.textContent = sf.name + (sf.admin ? " (admin)" : ""); if (sf.admin) { op.style.color = "var(--err)"; op.className = "adminstn"; } pick.appendChild(op);
-      var t = document.createElement("button"); t.type = "button"; t.className = "tile" + (sf.admin ? " adm" : ""); t.dataset.go = sf.id;
-      t.innerHTML = '<span class="tno"></span><span class="tname"></span><span class="tdesc"></span>';
-      t.querySelector(".tname").textContent = sf.name; t.querySelector(".tno").textContent = sf.admin ? "Admin" : ["requests", "messages", "attendance"].indexOf(sf.id) >= 0 ? "Daily work" : "Records"; t.querySelector(".tdesc").textContent = sf.blurb;
-      tiles.appendChild(t);
-    });
-    COMING.forEach(function (c) {
-      var d = document.createElement("div"); d.className = "tile soon";
-      d.innerHTML = '<span class="tno">Coming soon</span><span class="tname"></span><span class="tdesc"></span>';
-      d.querySelector(".tname").textContent = c.name; d.querySelector(".tdesc").textContent = c.blurb;
-      tiles.appendChild(d);
     });
     buildNav();
   }
@@ -159,7 +145,7 @@
     pick.innerHTML = "";
     ALL_OPTS.forEach(function (o) { if (o.value === "home" || stationAllowed(o.value)) pick.appendChild(o); });
     pick.value = cur;
-    Array.prototype.forEach.call(document.querySelectorAll("#stationTiles [data-go]"), function (b) { b.style.display = stationAllowed(b.dataset.go) ? "" : "none"; });
+    if (window.HomeStation) window.HomeStation.access();
     Array.prototype.forEach.call(document.querySelectorAll(".mbtns button[data-m]"), function (b) { b.style.display = stationAllowed(b.dataset.m) ? "" : "none"; });
     navAccess();
     $("attnBox").hidden = !canPlaced();
@@ -226,7 +212,7 @@
     $("collPick").hidden = locked;
     $("helpOpen").hidden = locked;
     document.body.classList.toggle("withnav", !locked); setTopH(); if (locked) { lastRoute = null; document.title = "Console"; UI.dismiss(); netOk(); }
-    if (locked) { closeManual(); $("homeView").hidden = true; $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
+    if (locked) { closeManual(); if (window.HomeStation) window.HomeStation.reset(); $("listView").hidden = true; $("venuesView").hidden = true; $("classesView").hidden = true; $("peopleView").hidden = true; $("placesView").hidden = true; $("instructorsView").hidden = true; $("studentsView").hidden = true; $("curriculumsView").hidden = true; $("organizationsView").hidden = true; $("attendanceView").hidden = true; $("messagesView").hidden = true; $("discoveryView").hidden = true; $("accessView").hidden = true; $("activityView").hidden = true; $("performanceView").hidden = true; }
   }
 
   // Addresses: #/requests (default) and #/venues. A new collection is one more option and one more view.
@@ -273,7 +259,7 @@
     if (r === "performance" && window.PerformanceStation) window.PerformanceStation.show();
     if (r === "messages" && window.MessagesStation) window.MessagesStation.show();
     if (r === "attendance" && window.AttendanceStation) window.AttendanceStation.show();
-    if (r === "home" && window.RequestsStation) window.RequestsStation.loadPlaced();
+    if (r === "home" && window.HomeStation) window.HomeStation.show();
     if (r === "requests" && window.RequestsStation) window.RequestsStation.show();
     if (r !== "requests") { if (window.RequestsStation) window.RequestsStation.stop(); if (r === "venues" && window.VenuesStation) window.VenuesStation.show(); if (r === "classes" && window.ClassesStation) window.ClassesStation.show(); if (r === "people" && window.PeopleStation) window.PeopleStation.show(); if (r === "places" && window.PlacesStation) window.PlacesStation.show(); if (r === "curriculums" && window.CurriculumStation) window.CurriculumStation.show(); if (r === "instructors" && window.InstructorsStation) window.InstructorsStation.show(); if (r === "students" && window.StudentsStation) window.StudentsStation.show(); if (r === "organizations" && window.OrganizationsStation) window.OrganizationsStation.show(); }
     stationHead(r);   // after the stations that redraw their own page (Discovery) have drawn it
@@ -568,7 +554,7 @@
                         requests: function () { var have = window.RequestsStation ? window.RequestsStation.records() : []; return have.length ? Promise.resolve(have) : fetchRecords("").then(function (r) { return r.status === "ok" ? r.records : []; }); },
                         words: function () { return { corrKind: CORR_KIND, reasonWord: REASON_WORD, attWord: ATT_WORD, roleWord: ROLE_WORD }; }, historyBtn: function (id, label) { return historyBtn(id, label); }, fetchT: function (url, opts, ms) { return fetchT(url, opts, ms); }, netShow: function (t) { netShow(t); }, canPlaced: function () { return canPlaced(); }, fetchRecords: function (since, opt) { return fetchRecords(since, opt); }, putInClass: function (rec, host, said) { window.ClassesStation.putInClass(rec, host, said); }, line: function (l, v) { return line(l, v); }, str: function (v) { return str(v); }, problem: function (st) { return problem(st); }, consts: function () { return { MAX: MAX, READ_MS: READ_MS, ATT_RANK: ATT_RANK, ATT_GONE: ATT_GONE, RECORDS_URL: CFG.endpoints.records }; }, attConsts: function () { return { ATT: ATT, ATT_STATUSES: ATT_STATUSES, ATT_WORD: ATT_WORD, ROLE_WORD: ROLE_WORD, ATT_TONE: ATT_TONE, ATT_OPEN: ATT_OPEN, ATT_OFF: ATT_OFF, CORR_KIND: CORR_KIND, REASON_WORD: REASON_WORD, leftOpen: leftOpen }; }, attFail: function (res) { return attFail(res); }, classWhen: function (c) { return window.ClassesStation.classWhen(c); }, refreshPlaced: function () { return refreshPlaced(); }, assignForm: function (opts) { return window.ClassesStation.assignForm(opts); },
                         // Added for the Classes station (C-2): openWorkflows, attLine (straight to the Attendance station), afNext (the shared id counter), forgetPeople.
-                        openWorkflows: function () { return window.ConsoleHelp.openWorkflows.apply(null, arguments); }, surfaces: function () { return SURFACES; }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
+                        openWorkflows: function () { return window.ConsoleHelp.openWorkflows.apply(null, arguments); }, surfaces: function () { return SURFACES; }, allowed: function (id) { return stationAllowed(id); }, attLine: function (r, withClass) { return window.AttendanceStation.attLine(r, withClass); }, afNext: function () { return ++afSeq; }, forgetPeople: function () { window.PeopleStation.forgetPick(); },
                         // Added for the Venues station (V-4). Functions that point at the places, people and shared helpers still in this file.
                         lProblems: function () { return window.ConsoleAddresses.lProblems.apply(null, arguments); }, placeInput: function () { return window.ConsoleAddresses.placeInput.apply(null, arguments); }, placeText: function () { return window.ConsoleAddresses.placeText.apply(null, arguments); },
                         forgetSavedPlaces: function () { window.ConsoleAddresses.forgetSaved(); }, peopleList: function () { return window.PeopleStation.list.apply(null, arguments); }, peopleMatches: function () { return window.PeopleStation.matches.apply(null, arguments); },
@@ -615,7 +601,7 @@
     if (!t) return;
     goTo(t.dataset.go);
   });
-  buildHome();
+  buildMenus();
 
 
   function refreshPlaced() { return window.RequestsStation ? window.RequestsStation.loadPlaced() : Promise.resolve(); }   // Classes and Attendance call this after they place or remove someone
