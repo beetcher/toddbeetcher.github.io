@@ -9,7 +9,7 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, attName = K.attName;
-  function W() { return K.words(); }   // the word tables are shared with Requests, so they are read when needed, not copied
+  function W() { return window.ConsoleWords; }   // the word tables are shared with Requests, so they are read when needed, not copied
 
   // ---- Messages station: the whole message log (communication_logs), chip filters (UI.chipFilters, filters.js), notes (add only), copy
   var MS = { recs: [], loaded: false, capped: false, seq: 0, open: {}, conf: {}, person: {}, att: {}, cf: null };

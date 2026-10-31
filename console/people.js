@@ -45,7 +45,7 @@
       if (changed) renderPeople();
     }).catch(function () {});
   }
-  var PLABEL = D.PLABEL, PISSUE = D.PISSUE;   // the person word tables are shared (data.js): Attendance reads them too (DT-34)
+  var PLABEL = window.ConsoleWords.personLabel, PISSUE = window.ConsoleWords.personIssue;   // the person word tables are shared (words.js): Attendance reads them too (DT-34)
   var PADD_ERR = { given_name: "epaGiven", family_name: "epaFamily", name_to_use: "epaUse", birth_date: "epaBirth", email: "epaEmail", phone: "epaPhone" };
   var P_FIELDS = [
     { k: "given_name", label: "Given name", t: "text" }, { k: "middle_names", label: "Middle names", t: "text" },

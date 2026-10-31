@@ -10,7 +10,7 @@
   if (!K) return;
   var $ = function (id) { return document.getElementById(id); };
   var mk = K.mk, admin = K.admin, lock = K.lock, adminProblem = K.adminProblem, when = K.when, historyBtn = K.historyBtn;
-  function W() { return K.words(); }
+  function W() { return window.ConsoleWords; }
 
   // ---- Journal: the append-only log of placing, status changes and cancellations
   var JR_WORD = { placed: "Placed in a class", status_changed: "Status changed", removed: "Removed from a class", class_cancelled: "Class cancelled", class_removed: "Class deleted", request_unassigned: "Request back to waiting to be placed" };

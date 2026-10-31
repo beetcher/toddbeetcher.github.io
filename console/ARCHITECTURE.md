@@ -110,6 +110,7 @@ The cure for tangling is one owner per shared thing. A station never reaches int
 Layers, from the bottom. A layer depends only on the layers below it.
 1. **Core** (still inside `console.js`, reached only through the kit): sign-in and session, server transport and the network banner, config and constants. Planned to leave `console.js` later (`claude/detangling-parking-lot.md`, DT-1 and DT-2).
 2. **Shared data**: `names.js` (`window.ConsoleNames`): the venue and curriculum name caches. One owner. Done (Requests run, R-1): read it as `ConsoleNames.venues()`, `.venueById(id)`, `.curricula()`, `.venueAsked(id)`, `.curriculumAsked(id)`; it empties on sign-out.
+2b. **Shared word tables**: `words.js` (`window.ConsoleWords`): `corrKind`, `reasonWord`, `roleWord`, `attWord`, `personLabel`, `personIssue`. Plain data, loads BEFORE `console.js`; read it as `ConsoleWords.attWord` etc. Done (DT-8); the kit door `words` is gone (the Attendance tables follow in DT-20).
 2a. **Shared data tables**: `data.js` (`window.ConsoleData`): the collection names (`COLL_P`, `COLL_L`, `COLL_LK`) the relation words (`REL`, `PERSON_RELS`) and the person word tables (`PLABEL`, `PISSUE`). Plain data, loads BEFORE `console.js`; read it as `ConsoleData.REL` etc. Done (DT-33); the kit doors `colls`, `rel` and `personRels` are gone.
 3a. **Help drawer**: `help.js` (`window.ConsoleHelp`): the manuals (one per station), the Workflows tab and the drawer; `ConsoleHelp.close()` and `.openWorkflows(ids)`. Done (H-1). The station list stays in `console.js`; the manual text lives in `help.js` (`MANUALS`, keyed by station id).
 3. **Shared dialogs**: `dialogs.js` (`window.ConsoleDialogs`): the Journal (`ConsoleDialogs.openJournal(filter, title, hist)`), one owner. Done (Requests run, R-2). **Put in a class is not here**: it uses eight things that belong to Attendance (`ATT`, `aClasses`, `assignForm`, `attLine`, `attName`, `loadClassChoices`, `loadPlaced`, `openWorkflows`), so it stays in `console.js` (reached through the kit) and moves with Attendance (DT-18).
@@ -134,7 +135,6 @@ Shared files (`names.js`, `dialogs.js`) load after `console.js` and before the s
 | `attName` | Attendance (still in `console.js`) | A person's display name from an attendance row |
 | `openAttendance` | Attendance (`attendance.js`, through a forwarder in `console.js`, DT-23) | Open a class's attendance |
 | `requests` | Requests (`requests.js`) | The loaded registration requests (fetched if none are loaded yet) |
-| `words` | Core: shared word tables | `corrKind`, `reasonWord`, `attWord`, `roleWord` |
 | `historyBtn` | Core (the link to the Activity page) | The "Change history" button for a record, or nothing when this person may not see the log |
 | `fetchT`, `netShow` | Core: transport | The timed read; the network banner (DT-2) |
 | `fetchRecords` | Core: transport and sign-in | The read of requests that doubles as the key check (DT-2) |

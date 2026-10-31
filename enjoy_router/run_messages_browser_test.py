@@ -198,6 +198,8 @@ with sync_playwright() as p:
     pg.click("#mRefresh"); pg.wait_for_function("document.getElementById('mMsg').textContent.indexOf('Could not') >= 0")
     check("an unreachable server is said plainly", "Could not load the messages. Could not reach the server." in pg.locator("#mMsg").inner_text())
     check("the manual opens for Messages", pg.evaluate("document.querySelectorAll('[data-m=messages]').length") >= 1)
+    check("words.js owns the word tables (ConsoleWords) and the kit door words is gone (DT-8)", pg.evaluate("typeof ConsoleWords === 'object' && ConsoleWords.attWord.assigned === 'Assigned' && ConsoleWords.roleWord.primary_instructor === 'Lead instructor' && ConsoleWords.corrKind.request_received === 'Request received' && ConsoleWords.reasonWord.no_contact === 'no email or phone on file' && ConsoleWords.personLabel.given_name === 'Given name' && ConsoleWords.personIssue.required === 'Required.' && !('words' in ConsoleKit)"))
+    check("the word tables are not in console.js, people.js or data.js any more", not any(w in (HERE.parent / "console" / f).read_text() for f, w in [("console.js", "var ATT_WORD"), ("console.js", "var CORR_KIND"), ("console.js", "var REASON_WORD"), ("console.js", "var ROLE_WORD"), ("people.js", "PLABEL = {"), ("data.js", "PLABEL")]))
     check("no script errors", not errors, errors)
     b.close()
 print(f"\n{'all passed' if not fails else str(len(fails)) + ' FAILED: ' + '; '.join(fails)}")
