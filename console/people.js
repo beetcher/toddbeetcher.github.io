@@ -54,7 +54,7 @@
     { k: "birth_date", label: "Birth date", t: "text", hint: "Month first: 04-17-1961, 04-1961 or just 1961. A year alone is fine." },
     { k: "birth_date_certainty", label: "How sure is the birth date?", t: "select", opts: [["", "Not stated (treated as exact)"], ["exact", "Exact"], ["approximate", "Approximate"], ["estimated", "Estimated"]] },
     { k: "preferred_language", label: "Preferred language", t: "text", hint: "A language tag such as en or es-MX." },
-    { k: "time_zone", label: "Time zone", t: "text", hint: "For example America/Denver." },
+    { k: "time_zone", label: "Time zone", t: "select", opts: [["", "Not set"]].concat(UI.zoneOptions()), hint: "Pick the nearest one. Leave it unset if you do not know." },
     { k: "requires_interpreter", label: "Needs an interpreter?", t: "bool" },
     { k: "email", label: "Email", t: "text", hint: "The email address they asked us to use. Couples may share one." },
     { k: "phone", label: "Phone (text messages)", t: "text", hint: "We send text messages only and never call." },
@@ -261,6 +261,7 @@
         el = mk("select");
         var opts = f.t === "bool" ? [["", "Not stated"], ["yes", "Yes"], ["no", "No"]] : f.opts;
         opts.forEach(function (o) { var op = mk("option", "", o[1]); op.value = o[0]; el.appendChild(op); });
+        if (f.t === "select" && typeof cur === "string" && cur && !opts.some(function (o) { return o[0] === cur; })) { var ox = mk("option", "", UI.zoneName(cur) || cur); ox.value = cur; el.appendChild(ox); }   // a stored value the list does not know stays selectable (a time zone typed before the drop-down existed)
         el.value = f.t === "prefer" ? (cur === true ? "email" : cur === false ? "text" : "") : f.t === "bool" ? (cur === true ? "yes" : cur === false ? "no" : "") : (cur === undefined ? (f.k === "status" ? "active" : "") : cur);
       } else if (f.t === "area") { el = mk("textarea"); el.maxLength = 2000; el.value = cur === undefined ? "" : cur; }
       else { el = mk("input"); el.type = "text"; el.maxLength = 200; el.value = cur === undefined ? "" : (f.k === "birth_date" ? pDateField(cur) : cur); }
