@@ -23,6 +23,7 @@ SCHEMA = json.loads((ROOT / "schemas" / "bulk_import.schema.json").read_text())
 # file -> (questions, answers, sets, batch tag)
 EXPECTED = {
     "judgment_sample_01.json": (8, 34, 10, "ready_lib_judgment_01"),
+    "judgment_lib_02_evidence_claims.json": (10, 41, 13, "ready_lib_judgment_02"),
 }
 SAMPLE = "judgment_sample_01.json"
 MAIN = [name for name in EXPECTED if name != SAMPLE]
