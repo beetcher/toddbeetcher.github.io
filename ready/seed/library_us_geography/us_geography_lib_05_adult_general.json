@@ -667,6 +667,76 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g5_q_kansas_region",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which region is Kansas in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_conference_time",
+   "data": {
+    "question_text": "A conference call starts at 10:00 a.m. Mountain time. What time is that in the Eastern time zone, if both places use the same clock rules that day?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -1990,7 +2060,7 @@
      "audiences": [
       "adult_general"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -2023,7 +2093,7 @@
      "audiences": [
       "adult_general"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -2056,7 +2126,7 @@
      "audiences": [
       "adult_general"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -2089,7 +2159,7 @@
      "audiences": [
       "adult_general"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -2771,6 +2841,39 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g5_a_10_00_a_m",
+   "data": {
+    "answer_text": "10:00 a.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -3195,7 +3298,7 @@
     {
      "answer_ref": "g5_a_idaho",
      "role": "incorrect",
-     "feedback": "Idaho is in the Census West region."
+     "feedback": "Idaho is in the Census West region, in the Rocky Mountain area, not the South."
     },
     {
      "answer_ref": "g5_a_vermont",
@@ -3210,7 +3313,7 @@
     {
      "answer_ref": "g5_a_iowa",
      "role": "incorrect",
-     "feedback": "Iowa is in the Census Midwest region."
+     "feedback": "Iowa is in the Census Midwest region, in the north-central part of the country, not the South."
     }
    ]
   },
@@ -3255,17 +3358,17 @@
     {
      "answer_ref": "g5_a_iowa",
      "role": "incorrect",
-     "feedback": "Iowa is in the Census Midwest region."
+     "feedback": "Iowa is in the Census Midwest region, in the north-central part of the country, not the West."
     },
     {
      "answer_ref": "g5_a_arkansas",
      "role": "incorrect",
-     "feedback": "Arkansas is in the Census South region."
+     "feedback": "Arkansas is in the Census South region, west of the Mississippi River but not in the West."
     },
     {
      "answer_ref": "g5_a_georgia",
      "role": "incorrect",
-     "feedback": "Georgia is in the Census South region."
+     "feedback": "Georgia is in the Census South region, on the Atlantic side of the country, not the West."
     }
    ]
   },
@@ -3929,6 +4032,116 @@
      "answer_ref": "g5_a_great_river",
      "role": "strong",
      "feedback": "Correct. The name is an English and French rendering of Ojibwe words for great river."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s22_kansas_region",
+   "question_ref": "g5_q_kansas_region",
+   "label": "Census region of Kansas (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_northeast",
+     "role": "incorrect",
+     "feedback": "Kansas is in the middle of the country, far from the Northeast."
+    },
+    {
+     "answer_ref": "g5_a_midwest",
+     "role": "strong",
+     "feedback": "Correct. Kansas is in the Census Midwest region, on the Great Plains."
+    },
+    {
+     "answer_ref": "g5_a_west",
+     "role": "incorrect",
+     "feedback": "Kansas is on the Great Plains. The Census Bureau puts it in the Midwest, not the West."
+    },
+    {
+     "answer_ref": "g5_a_south",
+     "role": "incorrect",
+     "feedback": "Kansas is north of Oklahoma and Texas, and the Census Bureau does not place it in the South."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s23_conference_time",
+   "question_ref": "g5_q_conference_time",
+   "label": "Mountain call time in Eastern (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_9_00_a_m",
+     "role": "incorrect",
+     "feedback": "That subtracts an hour. Going east, the clock is later, so add the difference."
+    },
+    {
+     "answer_ref": "g5_a_11_00_a_m",
+     "role": "incorrect",
+     "feedback": "That adds only one hour. Mountain and Eastern are two zones apart."
+    },
+    {
+     "answer_ref": "g5_a_10_00_a_m",
+     "role": "incorrect",
+     "feedback": "The zones have different clock times. Eastern is two hours ahead of Mountain."
+    },
+    {
+     "answer_ref": "g5_a_12_00_noon",
+     "role": "strong",
+     "feedback": "Correct. Eastern time is two hours ahead of Mountain, so 10:00 a.m. Mountain is 12:00 noon Eastern."
     }
    ]
   }

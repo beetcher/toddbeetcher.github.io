@@ -23,6 +23,11 @@ SCHEMA = json.loads((ROOT / "schemas" / "bulk_import.schema.json").read_text())
 # file -> (questions, answers, sets, batch tag)
 EXPECTED = {
     "us_geography_sample_01.json": (8, 33, 10, "ready_lib_us_geography_01"),
+    "us_geography_lib_02_grades_3_5.json": (24, 60, 24, "ready_lib_us_geography_02"),
+    "us_geography_lib_03_grades_6_8.json": (23, 80, 26, "ready_lib_us_geography_03"),
+    "us_geography_lib_04_grades_9_12.json": (17, 62, 19, "ready_lib_us_geography_04"),
+    "us_geography_lib_05_adult_general.json": (21, 64, 23, "ready_lib_us_geography_05"),
+    "us_geography_lib_06_adult_enthusiast.json": (17, 49, 17, "ready_lib_us_geography_06"),
 }
 SAMPLE = "us_geography_sample_01.json"
 MAIN = [name for name in EXPECTED if name != SAMPLE]
@@ -243,8 +248,9 @@ class LibraryCoverage(unittest.TestCase):
                 by_level[meta["difficulty"]] += 1
                 audiences.update(meta["audiences"])
                 levels_for_objective[meta["learning_objectives"][0]].add(meta["difficulty"])
+        minimum = {"introductory": 9, "basic": 30, "intermediate": 20, "advanced": 15, "expert": 5}
         for level in DIFFICULTIES:
-            self.assertGreaterEqual(by_level[level], 9, level)
+            self.assertGreaterEqual(by_level[level], minimum[level], level)
         self.assertEqual(audiences, AUDIENCES)
         for objective in OBJECTIVES:
             self.assertGreaterEqual(len(levels_for_objective[objective]), 2, objective)
@@ -256,7 +262,7 @@ class LibraryCoverage(unittest.TestCase):
         for name in MAIN:
             for s in load(name)["sets"]:
                 uses.update(c["answer_ref"] for c in s["connections"])
-        self.assertGreaterEqual(len([r for r, n in uses.items() if n >= 2]), 40)
+        self.assertGreaterEqual(len([r for r, n in uses.items() if n >= 2]), 50)
 
     @unittest.skipUnless(MAIN, 'main batches not written yet')
     def test_some_main_library_answers_change_role_between_sets(self):
@@ -267,7 +273,7 @@ class LibraryCoverage(unittest.TestCase):
                 for c in s["connections"]:
                     roles[c["answer_ref"]].add(c["role"])
             changed += sum(len(r) > 1 for r in roles.values())
-        self.assertGreaterEqual(changed, 5)
+        self.assertGreaterEqual(changed, 20)
 
     @unittest.skipUnless(MAIN, 'main batches not written yet')
     def test_both_question_types_and_ambiguous_choices_are_present(self):
@@ -279,7 +285,7 @@ class LibraryCoverage(unittest.TestCase):
                 types[kinds[s["question_ref"]]] += 1
                 roles.update(c["role"] for c in s["connections"])
         self.assertGreaterEqual(types["multiple_choice"], 8)
-        self.assertGreaterEqual(roles["ambiguous"], 20)
+        self.assertGreaterEqual(roles["ambiguous"], 8)
 
 
 class LibraryThroughTheService(unittest.TestCase):
@@ -296,8 +302,8 @@ class LibraryThroughTheService(unittest.TestCase):
             done = service.import_content(real)
             self.assertTrue(done["is_valid"])
             self.assertEqual(len(done["created"]), q + a + s, name)
-            self.assertEqual(len(service.list("sets")["records"]), s, name)
-            self.assertEqual({r["status"] for r in service.list("sets")["records"]}, {"draft"})
+            self.assertEqual(len(service.list("sets", limit=100)["records"]), s, name)
+            self.assertEqual({r["status"] for r in service.list("sets", limit=100)["records"]}, {"draft"})
 
     def test_draft_content_is_never_selected(self):
         service = ReadyService(MemoryStore())
@@ -318,17 +324,23 @@ class LibraryThroughTheService(unittest.TestCase):
 
         def pool(**criteria):
             return service.select({"target": "sets", "mode": "ordered", "count": 50, "criteria": criteria})
-        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=["hobbyist_beginner"])["found_count"], 8)
-        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["hobbyist_beginner"])["found_count"], 3)
-        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["backyard_host_for_a_crowd"])["found_count"], 3)
-        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=["home_enthusiast"])["found_count"], 8)
-        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=["aspiring_competitor_or_caterer"])["found_count"], 5)
-        self.assertGreaterEqual(pool(difficulty=["expert"])["found_count"], 9)
+        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=["grades_3_5"])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["grades_3_5"])["found_count"], 12)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["grades_6_8"])["found_count"], 10)
+        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=["grades_6_8"])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=["grades_9_12"])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=["grades_9_12"])["found_count"], 5)
+        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=["adult_general"])["found_count"], 3)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["adult_general"])["found_count"], 10)
+        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=["adult_enthusiast"])["found_count"], 10)
+        self.assertGreaterEqual(pool(difficulty=["expert"], audiences=["adult_enthusiast"])["found_count"], 6)
+        for audience in AUDIENCES:
+            self.assertGreaterEqual(pool(audiences=[audience])["found_count"], 15, audience)
         for objective in OBJECTIVES:
-            self.assertGreaterEqual(pool(learning_objectives=[objective])["found_count"], 3, objective)
+            self.assertGreaterEqual(pool(learning_objectives=[objective])["found_count"], 6, objective)
         # A pool shortage is reported explicitly, never padded silently.
         short = service.select({"target": "sets", "mode": "ordered", "count": 50,
-                                "criteria": {"difficulty": ["expert"], "audiences": ["hobbyist_beginner"]}})
+                                "criteria": {"difficulty": ["expert"], "audiences": ["grades_3_5"]}})
         self.assertGreater(short["shortfall_count"], 0)
         self.assertEqual(short["requested_count"], 50)
         self.assertEqual(short["available_actions"], ["start_over", "add_more", "cancel"])

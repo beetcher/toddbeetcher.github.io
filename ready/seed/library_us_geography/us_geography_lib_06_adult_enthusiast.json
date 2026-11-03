@@ -1,0 +1,3170 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "g6_q_fall_line",
+   "data": {
+    "question_text": "Several East Coast cities, such as Richmond, grew where major rivers cross the fall line between higher ground and the coastal plain. Why was that spot useful?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_human_geography",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_plss_section",
+   "data": {
+    "question_text": "In the Public Land Survey System used across much of the country, how much land does a standard section cover?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_mercator",
+   "data": {
+    "question_text": "On a standard Mercator world map, Alaska looks far larger next to the connected states than it really is. What explains this?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_great_circle",
+   "data": {
+    "question_text": "On a flat map, a flight path from New York to Europe often looks curved toward the north. Why?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_gl_entirely_us",
+   "data": {
+    "question_text": "Four of the five Great Lakes lie partly in Canada. Which one lies entirely within the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_gl_largest",
+   "data": {
+    "question_text": "Which Great Lake has the largest surface area?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_niagara_into",
+   "data": {
+    "question_text": "The Niagara River, home of the famous falls, flows into which Great Lake?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_arizona_zone",
+   "data": {
+    "question_text": "Under long-standing practice, most of Arizona does not move its clocks for daylight saving time. In summer, Arizona's clocks show the same time as which zone?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_panhandle_zone",
+   "data": {
+    "question_text": "The western end of Florida's Panhandle uses a different time zone from the rest of the state. Which zone is it?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_chinook",
+   "data": {
+    "question_text": "Chinook winds on the eastern slope of the Rocky Mountains can raise winter temperatures within hours. What causes them?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_divide",
+   "data": {
+    "question_text": "Rain falling on opposite sides of the Continental Divide in the Rocky Mountains usually flows toward which destinations?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_missouri_region",
+   "data": {
+    "question_text": "Which statement about Missouri's regional placement is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_hawaii_volcanoes",
+   "data": {
+    "question_text": "Which national park protects active volcanoes on the island of Hawaii?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_gateway_arch",
+   "data": {
+    "question_text": "The Gateway Arch in St. Louis stands on the western bank of which river?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_longest_daylight",
+   "data": {
+    "question_text": "In late June, which of these places has the longest stretch of daylight?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_gl_easternmost",
+   "data": {
+    "question_text": "Which Great Lake lies farthest east?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_q_idaho_panhandle",
+   "data": {
+    "question_text": "Most of Idaho is on Mountain time, but the northern Panhandle of Idaho uses a different zone. Which one?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "g6_a_land_above_the_line_was_perfectly_flat_so_builde",
+   "data": {
+    "answer_text": "Land above the line was perfectly flat, so builders preferred it to the coast",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_drop_made_the_river_salty_which_suited_fish",
+   "data": {
+    "answer_text": "The drop made the river salty, which suited fish markets and salt works there",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_boats_could_not_go_farther_upstream_and_the_rive",
+   "data": {
+    "answer_text": "Boats could not go farther upstream, and the river's drop gave waterpower for mills",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_line_marked_a_boundary_where_each_colony_cha",
+   "data": {
+    "answer_text": "The line marked a boundary where each colony charged tolls on river traffic",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_six_square_miles_six_miles_by_one_mile",
+   "data": {
+    "answer_text": "Six square miles, six miles by one mile",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_a_quarter_of_a_square_mile_or_160_acres",
+   "data": {
+    "answer_text": "A quarter of a square mile, or 160 acres",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_thirty_six_square_miles_six_miles_on_a_side",
+   "data": {
+    "answer_text": "Thirty-six square miles, six miles on a side",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_one_square_mile_or_640_acres",
+   "data": {
+    "answer_text": "One square mile, or 640 acres",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_alaska_is_drawn_closer_to_the_viewer_as_in_a_pho",
+   "data": {
+    "answer_text": "Alaska is drawn closer to the viewer, as in a photograph",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_map_makers_enlarge_places_with_few_roads_so_that",
+   "data": {
+    "answer_text": "Map makers enlarge places with few roads so that they are easy to see",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_projection_shrinks_areas_near_the_equator_by",
+   "data": {
+    "answer_text": "The projection shrinks areas near the equator by a fixed share",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_projection_stretches_areas_more_and_more_as",
+   "data": {
+    "answer_text": "The projection stretches areas more and more as latitude increases",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_curve_is_added_so_that_the_plane_burns_more",
+   "data": {
+    "answer_text": "The curve is added so that the plane burns more fuel and stays stable",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_shortest_path_on_a_sphere_is_a_great_circle",
+   "data": {
+    "answer_text": "The shortest path on a sphere is a great circle, which often looks curved on a flat map",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_air_traffic_rules_require_every_atlantic_flight",
+   "data": {
+    "answer_text": "Air traffic rules require every Atlantic flight to bend north around ships",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_planes_steer_north_to_avoid_the_strong_magnetic",
+   "data": {
+    "answer_text": "Planes steer north to avoid the strong magnetic pull that drags them south",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_lake_michigan",
+   "data": {
+    "answer_text": "Lake Michigan",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_lake_superior",
+   "data": {
+    "answer_text": "Lake Superior",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features",
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_lake_erie",
+   "data": {
+    "answer_text": "Lake Erie",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features",
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_lake_ontario",
+   "data": {
+    "answer_text": "Lake Ontario",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features",
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_lake_huron",
+   "data": {
+    "answer_text": "Lake Huron",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features",
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_eastern_time",
+   "data": {
+    "answer_text": "Eastern time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_mountain_time",
+   "data": {
+    "answer_text": "Mountain time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_pacific_time",
+   "data": {
+    "answer_text": "Pacific time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_central_time",
+   "data": {
+    "answer_text": "Central time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_air_sinking_down_the_slope_is_compressed_and_war",
+   "data": {
+    "answer_text": "Air sinking down the slope is compressed and warms, so it arrives warm and dry",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_volcanic_heat_from_under_the_mountains_warms_the",
+   "data": {
+    "answer_text": "Volcanic heat from under the mountains warms the passing air",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_cold_air_rising_up_the_slope_releases_stored_hea",
+   "data": {
+    "answer_text": "Cold air rising up the slope releases stored heat into the valley",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_warm_ocean_currents_flow_directly_over_the_peaks",
+   "data": {
+    "answer_text": "Warm ocean currents flow directly over the peaks and spill onto the plains",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_arctic_ocean_on_both_sides_through_large_riv",
+   "data": {
+    "answer_text": "The Arctic Ocean on both sides, through large rivers that run north",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_different_oceans_one_side_toward_the_pacific_and",
+   "data": {
+    "answer_text": "Different oceans, one side toward the Pacific and the other toward the Atlantic",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_same_ocean_on_both_sides_since_the_divide_is",
+   "data": {
+    "answer_text": "The same ocean on both sides, since the divide is only a line drawn on maps",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_two_lakes_in_the_great_basin_where_all_the_water",
+   "data": {
+    "answer_text": "Two lakes in the Great Basin, where all the water from both sides collects",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_missouri_is_often_called_a_border_state_that_sit",
+   "data": {
+    "answer_text": "Missouri is often called a border state that sits between regional identities",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_census_bureau_places_it_in_the_midwest_thoug",
+   "data": {
+    "answer_text": "The Census Bureau places it in the Midwest, though its history also links it to the South",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_census_bureau_places_missouri_in_the_south",
+   "data": {
+    "answer_text": "The Census Bureau places Missouri in the South",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_missouri_belongs_to_the_west_because_it_touches",
+   "data": {
+    "answer_text": "Missouri belongs to the West because it touches the Great Plains",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_haleakala_national_park",
+   "data": {
+    "answer_text": "Haleakala National Park",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_crater_lake_national_park",
+   "data": {
+    "answer_text": "Crater Lake National Park",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_hawaii_volcanoes_national_park",
+   "data": {
+    "answer_text": "Hawaii Volcanoes National Park",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_carlsbad_caverns_national_park",
+   "data": {
+    "answer_text": "Carlsbad Caverns National Park",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_missouri_river",
+   "data": {
+    "answer_text": "The Missouri River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_ohio_river",
+   "data": {
+    "answer_text": "The Ohio River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_mississippi_river",
+   "data": {
+    "answer_text": "The Mississippi River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_the_colorado_river",
+   "data": {
+    "answer_text": "The Colorado River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_honolulu_hawaii",
+   "data": {
+    "answer_text": "Honolulu, Hawaii",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_phoenix_arizona",
+   "data": {
+    "answer_text": "Phoenix, Arizona",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_anchorage_alaska",
+   "data": {
+    "answer_text": "Anchorage, Alaska",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g6_a_miami_florida",
+   "data": {
+    "answer_text": "Miami, Florida",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_06",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "g6_s01_fall_line",
+   "question_ref": "g6_q_fall_line",
+   "label": "Cities on the fall line (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_human_geography",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_land_above_the_line_was_perfectly_flat_so_builde",
+     "role": "incorrect",
+     "feedback": "Land above the fall line is generally higher and more rolling. Flat building land was not the reason."
+    },
+    {
+     "answer_ref": "g6_a_the_drop_made_the_river_salty_which_suited_fish",
+     "role": "incorrect",
+     "feedback": "Rivers at the fall line are fresh water. The advantage was the end of navigation and the waterpower."
+    },
+    {
+     "answer_ref": "g6_a_boats_could_not_go_farther_upstream_and_the_rive",
+     "role": "strong",
+     "feedback": "Correct. Falls and rapids ended river travel from the coast and powered mills, so goods changed hands and industry grew."
+    },
+    {
+     "answer_ref": "g6_a_the_line_marked_a_boundary_where_each_colony_cha",
+     "role": "incorrect",
+     "feedback": "The fall line is a physical feature, not a political boundary. Towns grew there because of the river's drop."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s02_plss_section",
+   "question_ref": "g6_q_plss_section",
+   "label": "Size of a survey section (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_map_skills",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_six_square_miles_six_miles_by_one_mile",
+     "role": "incorrect",
+     "feedback": "No standard unit has that shape. A section is one mile by one mile."
+    },
+    {
+     "answer_ref": "g6_a_a_quarter_of_a_square_mile_or_160_acres",
+     "role": "incorrect",
+     "feedback": "That is a quarter section, one fourth of a standard section."
+    },
+    {
+     "answer_ref": "g6_a_thirty_six_square_miles_six_miles_on_a_side",
+     "role": "incorrect",
+     "feedback": "That is a township, which contains 36 sections."
+    },
+    {
+     "answer_ref": "g6_a_one_square_mile_or_640_acres",
+     "role": "strong",
+     "feedback": "Correct. A standard section is one mile on each side, which is 640 acres. A township has 36 of them."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s03_mercator",
+   "question_ref": "g6_q_mercator",
+   "label": "Why Alaska looks oversized (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_map_skills",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_alaska_is_drawn_closer_to_the_viewer_as_in_a_pho",
+     "role": "incorrect",
+     "feedback": "A flat map has no viewing distance. The oversizing comes from how the globe is flattened."
+    },
+    {
+     "answer_ref": "g6_a_map_makers_enlarge_places_with_few_roads_so_that",
+     "role": "incorrect",
+     "feedback": "Mapmakers do not resize places by their roads. The size change comes from the projection's math."
+    },
+    {
+     "answer_ref": "g6_a_the_projection_shrinks_areas_near_the_equator_by",
+     "role": "incorrect",
+     "feedback": "Mercator does not shrink the equator by a fixed share. Its distortion grows steadily toward the poles."
+    },
+    {
+     "answer_ref": "g6_a_the_projection_stretches_areas_more_and_more_as",
+     "role": "strong",
+     "feedback": "Correct. Mercator keeps directions true but enlarges areas toward the poles, so far northern places look oversized."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s04_great_circle",
+   "question_ref": "g6_q_great_circle",
+   "label": "Curved flight paths (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_map_skills",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_the_curve_is_added_so_that_the_plane_burns_more",
+     "role": "incorrect",
+     "feedback": "Pilots do not add distance to burn fuel. The path is short on the globe, though it looks bent on a map."
+    },
+    {
+     "answer_ref": "g6_a_the_shortest_path_on_a_sphere_is_a_great_circle",
+     "role": "strong",
+     "feedback": "Correct. A great-circle route is the shortest distance on the globe. Many flat maps show it as a curve."
+    },
+    {
+     "answer_ref": "g6_a_air_traffic_rules_require_every_atlantic_flight",
+     "role": "incorrect",
+     "feedback": "No such rule exists. The route is curved because of how the globe is flattened onto a map."
+    },
+    {
+     "answer_ref": "g6_a_planes_steer_north_to_avoid_the_strong_magnetic",
+     "role": "incorrect",
+     "feedback": "Magnetic pull does not drag planes south. Their routes follow the shortest path and wind conditions."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s05_gl_entirely_us",
+   "question_ref": "g6_q_gl_entirely_us",
+   "label": "Great Lake wholly in the U.S. (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_lake_michigan",
+     "role": "strong",
+     "feedback": "Correct. Lake Michigan is the only Great Lake entirely inside the United States."
+    },
+    {
+     "answer_ref": "g6_a_lake_superior",
+     "role": "incorrect",
+     "feedback": "Lake Superior is shared with Canada, along its northern shore."
+    },
+    {
+     "answer_ref": "g6_a_lake_erie",
+     "role": "incorrect",
+     "feedback": "Lake Erie is shared with Canada, along its northern shore."
+    },
+    {
+     "answer_ref": "g6_a_lake_ontario",
+     "role": "incorrect",
+     "feedback": "Lake Ontario is shared with Canada, along its northern shore."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s06_gl_largest",
+   "question_ref": "g6_q_gl_largest",
+   "label": "Largest Great Lake by area (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_lake_michigan",
+     "role": "incorrect",
+     "feedback": "Lake Michigan is large and well known, but Lake Superior is bigger."
+    },
+    {
+     "answer_ref": "g6_a_lake_huron",
+     "role": "incorrect",
+     "feedback": "Lake Huron is a very large lake, but its surface area is smaller than Lake Superior's."
+    },
+    {
+     "answer_ref": "g6_a_lake_erie",
+     "role": "incorrect",
+     "feedback": "Lake Erie is one of the smaller Great Lakes by area."
+    },
+    {
+     "answer_ref": "g6_a_lake_superior",
+     "role": "strong",
+     "feedback": "Correct. Lake Superior is the largest of the Great Lakes by surface area."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s07_niagara_into",
+   "question_ref": "g6_q_niagara_into",
+   "label": "Where the Niagara River ends (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_lake_ontario",
+     "role": "strong",
+     "feedback": "Correct. The Niagara River carries water from Lake Erie over the falls and into Lake Ontario."
+    },
+    {
+     "answer_ref": "g6_a_lake_erie",
+     "role": "incorrect",
+     "feedback": "Lake Erie is where the Niagara River begins, so the river flows out of it, not into it."
+    },
+    {
+     "answer_ref": "g6_a_lake_superior",
+     "role": "incorrect",
+     "feedback": "Lake Superior is the farthest upstream of the Great Lakes, not connected to the Niagara River."
+    },
+    {
+     "answer_ref": "g6_a_lake_huron",
+     "role": "incorrect",
+     "feedback": "Lake Huron is farther upstream in the Great Lakes chain and is not connected to the Niagara River directly."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s08_arizona_zone",
+   "question_ref": "g6_q_arizona_zone",
+   "label": "Arizona's clocks in summer (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_time_zones",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_eastern_time",
+     "role": "incorrect",
+     "feedback": "In summer, Eastern daylight time is three hours ahead of Arizona's clocks, so it does not match."
+    },
+    {
+     "answer_ref": "g6_a_mountain_time",
+     "role": "ambiguous",
+     "feedback": "Arizona is in the Mountain zone and stays on its standard time, so the name fits. But in summer the rest of the Mountain zone moves ahead one hour, so Arizona's clocks differ from theirs.",
+     "notes": "Zone name versus the clock actually shown. A reasonable reading of the stem, so ambiguous; the strong answer matches the clock difference."
+    },
+    {
+     "answer_ref": "g6_a_pacific_time",
+     "role": "strong",
+     "feedback": "Correct. Arizona stays on Mountain standard time, which in summer matches Pacific daylight time."
+    },
+    {
+     "answer_ref": "g6_a_central_time",
+     "role": "incorrect",
+     "feedback": "In summer, Central daylight time is two hours ahead of Arizona's clocks, so it does not match."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s09_panhandle_zone",
+   "question_ref": "g6_q_panhandle_zone",
+   "label": "Time zone of the western Panhandle (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_time_zones",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_central_time",
+     "role": "strong",
+     "feedback": "Correct. Part of the western Panhandle is in the Central time zone. The rest of the state is Eastern."
+    },
+    {
+     "answer_ref": "g6_a_mountain_time",
+     "role": "incorrect",
+     "feedback": "The Mountain zone is much farther west. No part of Florida uses it."
+    },
+    {
+     "answer_ref": "g6_a_eastern_time",
+     "role": "incorrect",
+     "feedback": "Eastern time is used by most of Florida, so it is the zone the Panhandle's western end differs from."
+    },
+    {
+     "answer_ref": "g6_a_pacific_time",
+     "role": "incorrect",
+     "feedback": "The Pacific zone is on the West Coast. No part of Florida uses it."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s10_chinook",
+   "question_ref": "g6_q_chinook",
+   "label": "Cause of chinook winds (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_air_sinking_down_the_slope_is_compressed_and_war",
+     "role": "strong",
+     "feedback": "Correct. Air that sinks down a mountain's lee side warms as it is compressed. The result is a warm, dry wind."
+    },
+    {
+     "answer_ref": "g6_a_volcanic_heat_from_under_the_mountains_warms_the",
+     "role": "incorrect",
+     "feedback": "Volcanic heat is not the cause. Descending, compressed air creates the warmth."
+    },
+    {
+     "answer_ref": "g6_a_cold_air_rising_up_the_slope_releases_stored_hea",
+     "role": "incorrect",
+     "feedback": "Rising air cools. Warming happens when air sinks down the far side of a mountain."
+    },
+    {
+     "answer_ref": "g6_a_warm_ocean_currents_flow_directly_over_the_peaks",
+     "role": "incorrect",
+     "feedback": "Ocean currents do not cross the Rockies. The warming happens as air descends the slope."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s11_divide",
+   "question_ref": "g6_q_divide",
+   "label": "Opposite sides of the Continental Divide (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_the_arctic_ocean_on_both_sides_through_large_riv",
+     "role": "incorrect",
+     "feedback": "Within the United States, the divide does not send water north to the Arctic on both sides."
+    },
+    {
+     "answer_ref": "g6_a_different_oceans_one_side_toward_the_pacific_and",
+     "role": "strong",
+     "feedback": "Correct. The divide separates water flowing toward the Pacific from water flowing toward the Atlantic side. A few interior basins drain to neither."
+    },
+    {
+     "answer_ref": "g6_a_the_same_ocean_on_both_sides_since_the_divide_is",
+     "role": "incorrect",
+     "feedback": "The divide is a real ridge line. Water on each side flows to a different ocean basin."
+    },
+    {
+     "answer_ref": "g6_a_two_lakes_in_the_great_basin_where_all_the_water",
+     "role": "incorrect",
+     "feedback": "The Great Basin is a separate region of interior drainage. It is not the destination of the water on both sides of the divide."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s12_missouri_region",
+   "question_ref": "g6_q_missouri_region",
+   "label": "Missouri's regional label (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_missouri_is_often_called_a_border_state_that_sit",
+     "role": "ambiguous",
+     "feedback": "This is a real and common description of Missouri, so it is defensible. It does not give the Census placement, which the question expects.",
+     "notes": "Common cultural description, true as far as it goes, but it does not answer which region the Census Bureau assigns. Marked ambiguous."
+    },
+    {
+     "answer_ref": "g6_a_the_census_bureau_places_it_in_the_midwest_thoug",
+     "role": "strong",
+     "feedback": "Correct. The official Census region is the Midwest, but many people find Southern ties in Missouri's history and culture."
+    },
+    {
+     "answer_ref": "g6_a_the_census_bureau_places_missouri_in_the_south",
+     "role": "incorrect",
+     "feedback": "The Census Bureau places Missouri in the Midwest. Some other sources place it in the South, but that is not the Census assignment."
+    },
+    {
+     "answer_ref": "g6_a_missouri_belongs_to_the_west_because_it_touches",
+     "role": "incorrect",
+     "feedback": "Touching the Plains does not make a state part of the West. The Census Bureau places Missouri in the Midwest."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s13_hawaii_volcanoes",
+   "question_ref": "g6_q_hawaii_volcanoes",
+   "label": "Park with active volcanoes (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_haleakala_national_park",
+     "role": "incorrect",
+     "feedback": "Haleakala is a real volcanic park, but it is on the island of Maui, not on the island of Hawaii."
+    },
+    {
+     "answer_ref": "g6_a_crater_lake_national_park",
+     "role": "incorrect",
+     "feedback": "Crater Lake is a volcanic park in Oregon, on the mainland, not in Hawaii."
+    },
+    {
+     "answer_ref": "g6_a_hawaii_volcanoes_national_park",
+     "role": "strong",
+     "feedback": "Correct. Hawaii Volcanoes National Park, on the island of Hawaii, protects Kilauea and Mauna Loa."
+    },
+    {
+     "answer_ref": "g6_a_carlsbad_caverns_national_park",
+     "role": "incorrect",
+     "feedback": "Carlsbad Caverns, in New Mexico, protects caves formed in rock, not volcanoes."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s14_gateway_arch",
+   "question_ref": "g6_q_gateway_arch",
+   "label": "River beside the Gateway Arch (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_the_missouri_river",
+     "role": "incorrect",
+     "feedback": "The Missouri joins the Mississippi just north of St. Louis, but the arch stands beside the Mississippi."
+    },
+    {
+     "answer_ref": "g6_a_the_ohio_river",
+     "role": "incorrect",
+     "feedback": "The Ohio River meets the Mississippi far to the southeast, at the southern tip of Illinois."
+    },
+    {
+     "answer_ref": "g6_a_the_mississippi_river",
+     "role": "strong",
+     "feedback": "Correct. The Gateway Arch stands on the west bank of the Mississippi, not far below the Missouri River's mouth."
+    },
+    {
+     "answer_ref": "g6_a_the_colorado_river",
+     "role": "incorrect",
+     "feedback": "The Colorado River flows through the Southwest, far from St. Louis."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s15_longest_daylight",
+   "question_ref": "g6_q_longest_daylight",
+   "label": "Longest June day (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_honolulu_hawaii",
+     "role": "incorrect",
+     "feedback": "Honolulu is the farthest south of the four and has the smallest summer change in daylight."
+    },
+    {
+     "answer_ref": "g6_a_phoenix_arizona",
+     "role": "incorrect",
+     "feedback": "Phoenix is hot, but its daylight hours are shorter than at higher latitudes."
+    },
+    {
+     "answer_ref": "g6_a_anchorage_alaska",
+     "role": "strong",
+     "feedback": "Correct. Daylight in summer lengthens with latitude. Anchorage is the farthest north of the four."
+    },
+    {
+     "answer_ref": "g6_a_miami_florida",
+     "role": "incorrect",
+     "feedback": "Miami is far south, so its June days are shorter than those in the far north."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s16_gl_easternmost",
+   "question_ref": "g6_q_gl_easternmost",
+   "label": "Easternmost Great Lake (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_lake_superior",
+     "role": "incorrect",
+     "feedback": "Lake Superior is the westernmost of the five, not the easternmost."
+    },
+    {
+     "answer_ref": "g6_a_lake_erie",
+     "role": "incorrect",
+     "feedback": "Lake Erie is just west of Lake Ontario, so it is not the farthest east."
+    },
+    {
+     "answer_ref": "g6_a_lake_huron",
+     "role": "incorrect",
+     "feedback": "Lake Huron is farther west, upstream of Lake Erie."
+    },
+    {
+     "answer_ref": "g6_a_lake_ontario",
+     "role": "strong",
+     "feedback": "Correct. Lake Ontario is the easternmost Great Lake, at the end of the chain."
+    }
+   ]
+  },
+  {
+   "client_ref": "g6_s17_idaho_panhandle",
+   "question_ref": "g6_q_idaho_panhandle",
+   "label": "Time zone of northern Idaho (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_06",
+     "us_geography",
+     "skill_time_zones",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g6_a_central_time",
+     "role": "incorrect",
+     "feedback": "The Central zone is far to the east. No part of Idaho uses it."
+    },
+    {
+     "answer_ref": "g6_a_mountain_time",
+     "role": "incorrect",
+     "feedback": "Mountain time is what most of Idaho uses, so it is the zone the northern Panhandle differs from."
+    },
+    {
+     "answer_ref": "g6_a_eastern_time",
+     "role": "incorrect",
+     "feedback": "The Eastern zone is on the other side of the country. No part of Idaho uses it."
+    },
+    {
+     "answer_ref": "g6_a_pacific_time",
+     "role": "strong",
+     "feedback": "Correct. The northern Idaho Panhandle is on Pacific time, like neighboring Washington."
+    }
+   ]
+  }
+ ]
+}

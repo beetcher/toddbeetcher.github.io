@@ -492,6 +492,111 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g4_q_states_multi",
+   "data": {
+    "question_text": "Which of these are states, not territories? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_rainier_range",
+   "data": {
+    "question_text": "Mount Rainier, a tall volcano near Seattle, belongs to which mountain range?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_eastern_range",
+   "data": {
+    "question_text": "Which mountain range runs along much of the eastern United States, from the Northeast toward the Southeast?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -1141,7 +1246,7 @@
      "audiences": [
       "grades_9_12"
      ],
-     "difficulty": "advanced",
+     "difficulty": "basic",
      "learning_objectives": [
       "identify_physical_features"
      ],
@@ -1174,7 +1279,7 @@
      "audiences": [
       "grades_9_12"
      ],
-     "difficulty": "advanced",
+     "difficulty": "basic",
      "learning_objectives": [
       "identify_physical_features"
      ],
@@ -1207,7 +1312,7 @@
      "audiences": [
       "grades_9_12"
      ],
-     "difficulty": "advanced",
+     "difficulty": "basic",
      "learning_objectives": [
       "identify_physical_features"
      ],
@@ -1240,7 +1345,7 @@
      "audiences": [
       "grades_9_12"
      ],
-     "difficulty": "advanced",
+     "difficulty": "basic",
      "learning_objectives": [
       "identify_physical_features"
      ],
@@ -2510,6 +2615,39 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g4_a_alaska",
+   "data": {
+    "answer_text": "Alaska",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -3392,6 +3530,171 @@
      "answer_ref": "g4_a_5_00_p_m_eastern",
      "role": "incorrect",
      "feedback": "That is the end of the Eastern workday, and the one-hour meeting would run over."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s17_states_multi",
+   "question_ref": "g4_q_states_multi",
+   "label": "Which are states (Grades 9-12, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_territories_dc",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_guam",
+     "role": "incorrect",
+     "feedback": "No. Guam is a U.S. territory, not a state."
+    },
+    {
+     "answer_ref": "g4_a_hawaii",
+     "role": "strong",
+     "feedback": "Yes. Hawaii is one of the 50 states, even though it is an island chain far from the mainland."
+    },
+    {
+     "answer_ref": "g4_a_alaska",
+     "role": "strong",
+     "feedback": "Yes. Alaska is one of the 50 states, although it does not touch any other state."
+    },
+    {
+     "answer_ref": "g4_a_puerto_rico",
+     "role": "incorrect",
+     "feedback": "No. Puerto Rico is a U.S. territory, not a state."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s18_rainier_range",
+   "question_ref": "g4_q_rainier_range",
+   "label": "Range of Mount Rainier (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rocky Mountains are farther inland and east of Washington's Cascades."
+    },
+    {
+     "answer_ref": "g4_a_the_appalachians",
+     "role": "incorrect",
+     "feedback": "The Appalachians are in the East. Mount Rainier is in the Pacific Northwest."
+    },
+    {
+     "answer_ref": "g4_a_the_sierra_nevada",
+     "role": "incorrect",
+     "feedback": "The Sierra Nevada lies in California, far south of Washington."
+    },
+    {
+     "answer_ref": "g4_a_the_cascade_range",
+     "role": "strong",
+     "feedback": "Correct. Mount Rainier is one of the large volcanoes of the Cascade Range in Washington."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s19_eastern_range",
+   "question_ref": "g4_q_eastern_range",
+   "label": "Eastern mountain range (Grades 9-12, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_cascade_range",
+     "role": "incorrect",
+     "feedback": "The Cascades are in the Pacific Northwest, in the West."
+    },
+    {
+     "answer_ref": "g4_a_the_appalachians",
+     "role": "strong",
+     "feedback": "Correct. The Appalachians run through the eastern United States. They are among the older mountains on the continent."
+    },
+    {
+     "answer_ref": "g4_a_the_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rockies are in the western half of the country."
+    },
+    {
+     "answer_ref": "g4_a_the_sierra_nevada",
+     "role": "incorrect",
+     "feedback": "The Sierra Nevada is in California, in the West."
     }
    ]
   }

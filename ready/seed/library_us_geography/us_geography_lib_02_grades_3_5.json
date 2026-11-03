@@ -700,6 +700,146 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g2_q_which_lake",
+   "data": {
+    "question_text": "Which of these is a lake?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_02",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g2_q_which_desert",
+   "data": {
+    "question_text": "Which of these is a desert?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_02",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g2_q_capital_colorado",
+   "data": {
+    "question_text": "Which city is the capital of Colorado, a state in the Rocky Mountains?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_02",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g2_q_capital_massachusetts",
+   "data": {
+    "question_text": "Which city is the capital of Massachusetts, a state in the Northeast?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_02",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -3803,6 +3943,226 @@
      "answer_ref": "g2_a_which_way_the_wind_blows_across_the_whole_map",
      "role": "incorrect",
      "feedback": "Wind direction is not in the key. The key tells what the map's symbols and colors mean."
+    }
+   ]
+  },
+  {
+   "client_ref": "g2_s21_which_lake",
+   "question_ref": "g2_q_which_lake",
+   "label": "Pick the lake (Grades 3-5, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_02",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g2_a_lake_michigan",
+     "role": "strong",
+     "feedback": "Yes! Lake Michigan is a lake, one of the five Great Lakes. It is a huge body of water with land all around it."
+    },
+    {
+     "answer_ref": "g2_a_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rocky Mountains are tall land, not water. A lake is water."
+    },
+    {
+     "answer_ref": "g2_a_mojave_desert",
+     "role": "incorrect",
+     "feedback": "The Mojave is a dry desert. A lake is a large body of water."
+    },
+    {
+     "answer_ref": "g2_a_mississippi_river",
+     "role": "incorrect",
+     "feedback": "The Mississippi is a river. A river flows from one place to another, like a long moving ribbon of water."
+    }
+   ]
+  },
+  {
+   "client_ref": "g2_s22_which_desert",
+   "question_ref": "g2_q_which_desert",
+   "label": "Pick the desert (Grades 3-5, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_02",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g2_a_mississippi_river",
+     "role": "incorrect",
+     "feedback": "The Mississippi is a river with lots of water, the opposite of a desert."
+    },
+    {
+     "answer_ref": "g2_a_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rocky Mountains are tall, and some places get snow. A desert is a dry place with little rain."
+    },
+    {
+     "answer_ref": "g2_a_mojave_desert",
+     "role": "strong",
+     "feedback": "Right! The Mojave is a desert in the Southwest. Deserts get very little rain."
+    },
+    {
+     "answer_ref": "g2_a_lake_michigan",
+     "role": "incorrect",
+     "feedback": "Lake Michigan is a huge lake full of water. A desert is a very dry place."
+    }
+   ]
+  },
+  {
+   "client_ref": "g2_s23_capital_colorado",
+   "question_ref": "g2_q_capital_colorado",
+   "label": "Capital of Colorado (Grades 3-5, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_02",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g2_a_denver",
+     "role": "strong",
+     "feedback": "Yes! Denver is the capital of Colorado. It is called the Mile High City because it sits high above sea level."
+    },
+    {
+     "answer_ref": "g2_a_los_angeles",
+     "role": "incorrect",
+     "feedback": "Los Angeles is a big city in California. Colorado's capital is Denver."
+    },
+    {
+     "answer_ref": "g2_a_boston",
+     "role": "incorrect",
+     "feedback": "Boston is the capital of Massachusetts, in the Northeast. It is not in Colorado."
+    },
+    {
+     "answer_ref": "g2_a_chicago",
+     "role": "incorrect",
+     "feedback": "Chicago is a big city in Illinois, far to the east. It is not in Colorado."
+    }
+   ]
+  },
+  {
+   "client_ref": "g2_s24_capital_massachusetts",
+   "question_ref": "g2_q_capital_massachusetts",
+   "label": "Capital of Massachusetts (Grades 3-5, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_02",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g2_a_los_angeles",
+     "role": "incorrect",
+     "feedback": "Los Angeles is in California, on the opposite coast from Massachusetts."
+    },
+    {
+     "answer_ref": "g2_a_chicago",
+     "role": "incorrect",
+     "feedback": "Chicago is a big city in Illinois, in the middle of the country. Massachusetts is in the Northeast."
+    },
+    {
+     "answer_ref": "g2_a_denver",
+     "role": "incorrect",
+     "feedback": "Denver is the capital of Colorado, far to the west. Massachusetts is on the Atlantic coast."
+    },
+    {
+     "answer_ref": "g2_a_boston",
+     "role": "strong",
+     "feedback": "Yes! Boston is the capital of Massachusetts. It is also a busy port on the Atlantic coast."
     }
    ]
   }

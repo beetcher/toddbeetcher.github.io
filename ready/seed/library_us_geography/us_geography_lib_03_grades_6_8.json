@@ -668,6 +668,146 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "g3_q_michigan_region",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which region is Michigan in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_oregon_region",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which region is Oregon in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_georgia_region",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which region is Georgia in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_mountain_time",
+   "data": {
+    "question_text": "A baseball game starts at 7:00 p.m. Eastern time. If both places use the same clock rules that day, what time does it start in the Mountain time zone?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -953,7 +1093,7 @@
      "audiences": [
       "grades_6_8"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -986,7 +1126,7 @@
      "audiences": [
       "grades_6_8"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -1019,7 +1159,7 @@
      "audiences": [
       "grades_6_8"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -1052,7 +1192,7 @@
      "audiences": [
       "grades_6_8"
      ],
-     "difficulty": "intermediate",
+     "difficulty": "basic",
      "learning_objectives": [
       "name_regions_and_neighbors"
      ],
@@ -4526,6 +4666,226 @@
      "answer_ref": "g3_a_the_slope_is_gentle",
      "role": "incorrect",
      "feedback": "A gentle slope has lines far apart, because elevation changes slowly."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s23_michigan_region",
+   "question_ref": "g3_q_michigan_region",
+   "label": "Census region of Michigan (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_midwest",
+     "role": "strong",
+     "feedback": "Correct. Michigan is in the Census Midwest, with the other Great Lakes states."
+    },
+    {
+     "answer_ref": "g3_a_west",
+     "role": "incorrect",
+     "feedback": "Michigan is far east of the Rocky Mountain and Pacific states that make up the West."
+    },
+    {
+     "answer_ref": "g3_a_northeast",
+     "role": "incorrect",
+     "feedback": "Michigan is not in the Census Northeast. That region has New England, New York, New Jersey and Pennsylvania."
+    },
+    {
+     "answer_ref": "g3_a_south",
+     "role": "incorrect",
+     "feedback": "Michigan is in the north of the country, not the South."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s24_oregon_region",
+   "question_ref": "g3_q_oregon_region",
+   "label": "Census region of Oregon (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_west",
+     "role": "strong",
+     "feedback": "Correct. Oregon is on the Pacific coast and is in the Census West region."
+    },
+    {
+     "answer_ref": "g3_a_midwest",
+     "role": "incorrect",
+     "feedback": "The Midwest is in the north-central part of the country. Oregon is on the Pacific coast."
+    },
+    {
+     "answer_ref": "g3_a_south",
+     "role": "incorrect",
+     "feedback": "Oregon is in the far northwest, not the South."
+    },
+    {
+     "answer_ref": "g3_a_northeast",
+     "role": "incorrect",
+     "feedback": "Oregon is on the opposite side of the country from the Northeast."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s25_georgia_region",
+   "question_ref": "g3_q_georgia_region",
+   "label": "Census region of Georgia (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_midwest",
+     "role": "incorrect",
+     "feedback": "Georgia is south and east of the Midwest, in the Southeast."
+    },
+    {
+     "answer_ref": "g3_a_south",
+     "role": "strong",
+     "feedback": "Correct. Georgia is in the Census South region, in the Southeast."
+    },
+    {
+     "answer_ref": "g3_a_west",
+     "role": "incorrect",
+     "feedback": "Georgia is on the Atlantic side of the country, not in the West."
+    },
+    {
+     "answer_ref": "g3_a_northeast",
+     "role": "incorrect",
+     "feedback": "Georgia is far south of the Northeast states such as New York and Maine."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s26_mountain_time",
+   "question_ref": "g3_q_mountain_time",
+   "label": "Eastern to Mountain time (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_8_00_p_m",
+     "role": "incorrect",
+     "feedback": "That adds an hour. Going west, the clock is earlier, so subtract two hours."
+    },
+    {
+     "answer_ref": "g3_a_5_00_p_m",
+     "role": "strong",
+     "feedback": "Correct. Mountain time is two hours behind Eastern, so 7:00 p.m. Eastern is 5:00 p.m. Mountain."
+    },
+    {
+     "answer_ref": "g3_a_7_00_p_m",
+     "role": "incorrect",
+     "feedback": "The zones have different clock times. Mountain is two hours behind Eastern."
+    },
+    {
+     "answer_ref": "g3_a_6_00_p_m",
+     "role": "incorrect",
+     "feedback": "That is the Central time. Mountain time is one more hour behind, so it is 5:00 p.m."
     }
    ]
   }
