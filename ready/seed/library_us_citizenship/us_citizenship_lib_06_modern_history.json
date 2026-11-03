@@ -1,0 +1,3079 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c6_q_ww1first",
+   "data": {
+    "question_text": "World War I and World War II were both world wars. Which one happened first?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_axis",
+   "data": {
+    "question_text": "Which countries were part of the Axis powers in World War II? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_allies",
+   "data": {
+    "question_text": "Which country fought on the same side as the United States in World War II?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_pearl_war",
+   "data": {
+    "question_text": "In 1941 an attack on Pearl Harbor in Hawaii led the United States to enter which war?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_pearl_who",
+   "data": {
+    "question_text": "Which country attacked Pearl Harbor in Hawaii in 1941?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_depression",
+   "data": {
+    "question_text": "What was the Great Depression?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_depression_cause",
+   "data": {
+    "question_text": "A tutor is asked what caused the Great Depression. Which answer is the most careful?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_cold_who",
+   "data": {
+    "question_text": "The Cold War was a long period of tension between the United States and which country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_cold_war",
+   "data": {
+    "question_text": "Which statement best describes the Cold War?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_cr_goal",
+   "data": {
+    "question_text": "What was a main goal of the civil rights movement of the 1950s and 1960s?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_mlk",
+   "data": {
+    "question_text": "Martin Luther King Jr. is best known as a leader who did what?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_cra64",
+   "data": {
+    "question_text": "What did the Civil Rights Act of 1964 do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_post_equal",
+   "data": {
+    "question_text": "A tutor explains why the end of slavery did not immediately bring equal rights. Which account is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_q_timeline",
+   "data": {
+    "question_text": "Which of these events happened first?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c6_a_wwi",
+   "data": {
+    "answer_text": "World War I",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_wwii",
+   "data": {
+    "answer_text": "World War II",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_same",
+   "data": {
+    "answer_text": "They happened at the same time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_never",
+   "data": {
+    "answer_text": "Neither of them was fought in the 1900s",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_de",
+   "data": {
+    "answer_text": "Germany",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_jp",
+   "data": {
+    "answer_text": "Japan",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_it",
+   "data": {
+    "answer_text": "Italy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_gb",
+   "data": {
+    "answer_text": "Britain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_gbr",
+   "data": {
+    "answer_text": "Great Britain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_sov",
+   "data": {
+    "answer_text": "Soviet Union",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_civil",
+   "data": {
+    "answer_text": "The Civil War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_korean",
+   "data": {
+    "answer_text": "The Korean War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dp_s",
+   "data": {
+    "answer_text": "A long period of severe job loss and economic hardship in the 1930s",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dp_war",
+   "data": {
+    "answer_text": "A major war fought in Europe and Asia in the early 1940s",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dp_law",
+   "data": {
+    "answer_text": "A set of laws that ended segregation in public places",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dp_dust",
+   "data": {
+    "answer_text": "A period of bad weather that ruined crops in every state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dc_many",
+   "data": {
+    "answer_text": "Several linked causes were involved, and historians still debate how much weight each deserves",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dc_crash",
+   "data": {
+    "answer_text": "The stock market crash of 1929 was the main and only cause of it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dc_bank",
+   "data": {
+    "answer_text": "Problems in the banking system were the main cause, and nothing else mattered much",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_dc_war",
+   "data": {
+    "answer_text": "It was caused by the country's entry into a world war that ended before it began",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cx_s",
+   "data": {
+    "answer_text": "A long period of tension between the United States and the Soviet Union, without direct war between them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cx_w",
+   "data": {
+    "answer_text": "A war between the Northern and Southern states that took place in the 1860s across the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cx_m",
+   "data": {
+    "answer_text": "A conflict between the United States and Mexico over land along the border in the 1840s",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cx_c",
+   "data": {
+    "answer_text": "A series of weather events that caused very cold winters and failed crops for many years",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cr_s",
+   "data": {
+    "answer_text": "Ending segregation and discrimination based on race",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cr_ind",
+   "data": {
+    "answer_text": "Winning independence from British rule for the colonies",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cr_hw",
+   "data": {
+    "answer_text": "Building a national system of highways across the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_cr_flag",
+   "data": {
+    "answer_text": "Changing the national flag and the national anthem",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_s",
+   "data": {
+    "answer_text": "Worked for equal rights using peaceful protest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_pres",
+   "data": {
+    "answer_text": "Was the President during the Civil War years",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_decl",
+   "data": {
+    "answer_text": "Wrote the Declaration of Independence in 1776",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_gen",
+   "data": {
+    "answer_text": "Led the army in World War II as a general",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_s2",
+   "data": {
+    "answer_text": "Led peaceful protests for equal rights and an end to segregation",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_union",
+   "data": {
+    "answer_text": "Led the Union army to victory in the Civil War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ml_const",
+   "data": {
+    "answer_text": "Wrote the first draft of the Constitution at the convention",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ca_s",
+   "data": {
+    "answer_text": "It banned discrimination in jobs and public places based on race, color, religion, sex or national origin",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ca_slave",
+   "data": {
+    "answer_text": "It ended slavery in every state by adding a new amendment to the Constitution after the war",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ca_women",
+   "data": {
+    "answer_text": "It gave women the right to vote in all federal elections across the whole country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_ca_age",
+   "data": {
+    "answer_text": "It lowered the voting age to eighteen for every kind of election across the entire nation",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_pe_s",
+   "data": {
+    "answer_text": "Laws and customs such as segregation and barriers to voting continued, so more amendments, laws and a long movement were needed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_pe_done",
+   "data": {
+    "answer_text": "Equal rights were fully secured by the end of the war, so no later laws or movements were ever needed at all",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_pe_repeal",
+   "data": {
+    "answer_text": "The post-war amendments were repealed soon after, so the Constitution went back to its earlier form again",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_pe_full",
+   "data": {
+    "answer_text": "Freed people were given full voting rights in every state and kept them without any interference at all",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_tl_decl",
+   "data": {
+    "answer_text": "The Declaration of Independence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_tl_depr",
+   "data": {
+    "answer_text": "The Great Depression",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_tl_pearl",
+   "data": {
+    "answer_text": "The attack on Pearl Harbor",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c6_a_tl_cr",
+   "data": {
+    "answer_text": "The Civil Rights Act of 1964",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "modern_history"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "summarize_modern_american_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_06",
+      "us_citizenship",
+      "skill_modern_history"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c6_s_w1first_e",
+   "question_ref": "c6_q_ww1first",
+   "label": "Which world war first (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_wwi",
+     "role": "strong",
+     "feedback": "Yes. World War I came first. World War II came later."
+    },
+    {
+     "answer_ref": "c6_a_wwii",
+     "role": "incorrect",
+     "feedback": "No. World War II came after World War I, a few decades later."
+    },
+    {
+     "answer_ref": "c6_a_same",
+     "role": "incorrect",
+     "feedback": "No. They did not happen at the same time. There were years between them."
+    },
+    {
+     "answer_ref": "c6_a_never",
+     "role": "incorrect",
+     "feedback": "No. Both wars were fought in the 1900s. World War I was the earlier one."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_axis_a",
+   "question_ref": "c6_q_axis",
+   "label": "Axis powers (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_de",
+     "role": "strong",
+     "feedback": "Yes. Germany was a leading Axis power and fought against the Allies in Europe."
+    },
+    {
+     "answer_ref": "c6_a_jp",
+     "role": "strong",
+     "feedback": "Yes. Japan was an Axis power in the Pacific, and it fought against the United States."
+    },
+    {
+     "answer_ref": "c6_a_it",
+     "role": "strong",
+     "feedback": "Yes. Italy was an Axis power and fought with Germany against the Allies."
+    },
+    {
+     "answer_ref": "c6_a_gb",
+     "role": "incorrect",
+     "feedback": "Great Britain fought against the Axis. It was one of the Allies, along with the United States."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_allies_e",
+   "question_ref": "c6_q_allies",
+   "label": "Ally in World War II (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_gb",
+     "role": "strong",
+     "feedback": "Yes. Great Britain fought on the same side as the United States."
+    },
+    {
+     "answer_ref": "c6_a_de",
+     "role": "incorrect",
+     "feedback": "No. Germany fought against the United States in World War II."
+    },
+    {
+     "answer_ref": "c6_a_jp",
+     "role": "incorrect",
+     "feedback": "No. Japan fought against the United States in World War II."
+    },
+    {
+     "answer_ref": "c6_a_it",
+     "role": "incorrect",
+     "feedback": "No. Italy fought against the United States in World War II."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_allies_a",
+   "question_ref": "c6_q_allies",
+   "label": "Ally in World War II (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_gb",
+     "role": "strong",
+     "feedback": "Correct. Great Britain was one of the main Allies. The Soviet Union was also an ally in the war."
+    },
+    {
+     "answer_ref": "c6_a_de",
+     "role": "incorrect",
+     "feedback": "Germany led the Axis powers and fought against the Allies."
+    },
+    {
+     "answer_ref": "c6_a_jp",
+     "role": "incorrect",
+     "feedback": "Japan was an Axis power. It attacked Pearl Harbor in 1941."
+    },
+    {
+     "answer_ref": "c6_a_it",
+     "role": "incorrect",
+     "feedback": "Italy was an Axis power for most of the war."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_pearlwar_a",
+   "question_ref": "c6_q_pearl_war",
+   "label": "Pearl Harbor and the war (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_wwii",
+     "role": "strong",
+     "feedback": "Correct. After Pearl Harbor, the United States entered World War II."
+    },
+    {
+     "answer_ref": "c6_a_wwi",
+     "role": "incorrect",
+     "feedback": "World War I ended long before 1941. The United States entered that war earlier, in 1917."
+    },
+    {
+     "answer_ref": "c6_a_civil",
+     "role": "incorrect",
+     "feedback": "The Civil War ended in the 1860s, long before Pearl Harbor."
+    },
+    {
+     "answer_ref": "c6_a_korean",
+     "role": "incorrect",
+     "feedback": "The Korean War began in the 1950s, after World War II."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_pearlwho_e",
+   "question_ref": "c6_q_pearl_who",
+   "label": "Who attacked Pearl Harbor (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_jp",
+     "role": "strong",
+     "feedback": "Yes. Japan attacked Pearl Harbor in 1941."
+    },
+    {
+     "answer_ref": "c6_a_de",
+     "role": "incorrect",
+     "feedback": "No. Germany did not attack Pearl Harbor. It was another country."
+    },
+    {
+     "answer_ref": "c6_a_it",
+     "role": "incorrect",
+     "feedback": "No. Italy did not attack Pearl Harbor. Japan did, in 1941."
+    },
+    {
+     "answer_ref": "c6_a_gb",
+     "role": "incorrect",
+     "feedback": "No. Great Britain was a friend of the United States in the war."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_depr_a",
+   "question_ref": "c6_q_depression",
+   "label": "Great Depression (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_dp_s",
+     "role": "strong",
+     "feedback": "Correct. In the 1930s many people lost jobs and savings. The government tried new programs to help."
+    },
+    {
+     "answer_ref": "c6_a_dp_war",
+     "role": "incorrect",
+     "feedback": "That describes World War II, which came after the worst of the Great Depression."
+    },
+    {
+     "answer_ref": "c6_a_dp_law",
+     "role": "incorrect",
+     "feedback": "Laws against segregation came much later, in the civil rights era."
+    },
+    {
+     "answer_ref": "c6_a_dp_dust",
+     "role": "incorrect",
+     "feedback": "Bad weather and dust storms hurt farms in some places, but the Depression was an economic crisis across the country."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_depr_g",
+   "question_ref": "c6_q_depression",
+   "label": "Great Depression (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_dp_s",
+     "role": "strong",
+     "feedback": "Yes. It was a long economic crisis with high unemployment and hardship in the 1930s."
+    },
+    {
+     "answer_ref": "c6_a_dp_dust",
+     "role": "incorrect",
+     "feedback": "Dust storms hurt farms in some regions. The Depression was a wider economic crisis."
+    },
+    {
+     "answer_ref": "c6_a_dp_war",
+     "role": "incorrect",
+     "feedback": "World War II was a war. The Great Depression was an economic crisis before it."
+    },
+    {
+     "answer_ref": "c6_a_dp_law",
+     "role": "incorrect",
+     "feedback": "This is about civil rights laws, which came later."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_deprcause_t",
+   "question_ref": "c6_q_depression_cause",
+   "label": "Causes of the Great Depression (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_dc_many",
+     "role": "strong",
+     "feedback": "Yes. Historians point to several linked causes and still debate the weights. Model careful language for learners rather than a single cause."
+    },
+    {
+     "answer_ref": "c6_a_dc_crash",
+     "role": "ambiguous",
+     "feedback": "Defensible but incomplete. The 1929 stock market crash is widely taught as a trigger, but most historians see deeper causes too.",
+     "notes": "The crash is often given as the main cause in simple summaries. Many historians call it a trigger, so the item is marked ambiguous."
+    },
+    {
+     "answer_ref": "c6_a_dc_bank",
+     "role": "ambiguous",
+     "feedback": "Defensible but incomplete. Bank failures made the crisis worse, but historians generally name several linked causes.",
+     "notes": "Economists disagree about the weight of banking failures. Marked ambiguous to avoid penalizing a reasonable view."
+    },
+    {
+     "answer_ref": "c6_a_dc_war",
+     "role": "incorrect",
+     "feedback": "This is not accurate. The Depression began before the country entered World War II."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_coldwho_e",
+   "question_ref": "c6_q_cold_who",
+   "label": "Cold War opponent (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_sov",
+     "role": "strong",
+     "feedback": "Yes. The Cold War was between the United States and the Soviet Union."
+    },
+    {
+     "answer_ref": "c6_a_de",
+     "role": "incorrect",
+     "feedback": "No. Germany was an enemy in World War II. The Cold War was a different time."
+    },
+    {
+     "answer_ref": "c6_a_jp",
+     "role": "incorrect",
+     "feedback": "No. Japan was an enemy in World War II. It later became a friend of the United States."
+    },
+    {
+     "answer_ref": "c6_a_gbr",
+     "role": "incorrect",
+     "feedback": "No. Great Britain was a friend of the United States during the Cold War."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_coldwar_a",
+   "question_ref": "c6_q_cold_war",
+   "label": "Cold War (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_cx_s",
+     "role": "strong",
+     "feedback": "Correct. The two countries competed for influence around the world, but did not fight each other directly."
+    },
+    {
+     "answer_ref": "c6_a_cx_w",
+     "role": "incorrect",
+     "feedback": "That describes the Civil War, which happened about a century earlier."
+    },
+    {
+     "answer_ref": "c6_a_cx_m",
+     "role": "incorrect",
+     "feedback": "That describes the Mexican-American War, a different event."
+    },
+    {
+     "answer_ref": "c6_a_cx_c",
+     "role": "incorrect",
+     "feedback": "'Cold' in the name is about tension, not weather."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_crgoal_a",
+   "question_ref": "c6_q_cr_goal",
+   "label": "Civil rights movement goal (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_cr_s",
+     "role": "strong",
+     "feedback": "Correct. The movement worked to end segregation and discrimination and to protect equal rights, including the right to vote."
+    },
+    {
+     "answer_ref": "c6_a_cr_ind",
+     "role": "incorrect",
+     "feedback": "That was the goal of the colonists in the Revolution, in the 1700s."
+    },
+    {
+     "answer_ref": "c6_a_cr_hw",
+     "role": "incorrect",
+     "feedback": "Highways were built in the same period, but they were not the aim of the movement."
+    },
+    {
+     "answer_ref": "c6_a_cr_flag",
+     "role": "incorrect",
+     "feedback": "Flags and anthems were not the aims of the movement."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_mlk_e",
+   "question_ref": "c6_q_mlk",
+   "label": "Martin Luther King Jr. (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_ml_s",
+     "role": "strong",
+     "feedback": "Yes. He led peaceful protests for equal rights."
+    },
+    {
+     "answer_ref": "c6_a_ml_pres",
+     "role": "incorrect",
+     "feedback": "No. He was not a President. The Civil War President was Abraham Lincoln."
+    },
+    {
+     "answer_ref": "c6_a_ml_decl",
+     "role": "incorrect",
+     "feedback": "No. The Declaration of Independence was written in 1776, long before his time."
+    },
+    {
+     "answer_ref": "c6_a_ml_gen",
+     "role": "incorrect",
+     "feedback": "No. He was not a general. He worked for civil rights with peaceful protest."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_mlk_a",
+   "question_ref": "c6_q_mlk",
+   "label": "Martin Luther King Jr. (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_ml_s2",
+     "role": "strong",
+     "feedback": "Correct. Dr. King was a leading figure of the civil rights movement who used nonviolent protest."
+    },
+    {
+     "answer_ref": "c6_a_ml_union",
+     "role": "incorrect",
+     "feedback": "Leading the Union army in the Civil War was done by generals such as Ulysses S. Grant."
+    },
+    {
+     "answer_ref": "c6_a_ml_const",
+     "role": "incorrect",
+     "feedback": "The Constitution was written in 1787, long before Dr. King."
+    },
+    {
+     "answer_ref": "c6_a_ml_gen",
+     "role": "incorrect",
+     "feedback": "He was a minister and a civil rights leader. He did not lead an army."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_cra_a",
+   "question_ref": "c6_q_cra64",
+   "label": "Civil Rights Act of 1964 (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_ca_s",
+     "role": "strong",
+     "feedback": "Correct. The Civil Rights Act of 1964 banned discrimination in jobs and public places on those grounds."
+    },
+    {
+     "answer_ref": "c6_a_ca_slave",
+     "role": "incorrect",
+     "feedback": "Slavery was ended by the Thirteenth Amendment in 1865."
+    },
+    {
+     "answer_ref": "c6_a_ca_women",
+     "role": "incorrect",
+     "feedback": "Women's right to vote came from the Nineteenth Amendment, in 1920."
+    },
+    {
+     "answer_ref": "c6_a_ca_age",
+     "role": "incorrect",
+     "feedback": "The voting age was lowered to eighteen by the Twenty-Sixth Amendment, in 1971."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_posteq_t",
+   "question_ref": "c6_q_post_equal",
+   "label": "After the Civil War (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_pe_s",
+     "role": "strong",
+     "feedback": "Yes. The end of slavery did not end segregation or voting barriers. Further amendments, laws and a long civil rights movement followed."
+    },
+    {
+     "answer_ref": "c6_a_pe_done",
+     "role": "incorrect",
+     "feedback": "This is a common misunderstanding. Equal treatment under the law was far from complete after the war."
+    },
+    {
+     "answer_ref": "c6_a_pe_repeal",
+     "role": "incorrect",
+     "feedback": "The amendments were never repealed. They remain part of the Constitution."
+    },
+    {
+     "answer_ref": "c6_a_pe_full",
+     "role": "incorrect",
+     "feedback": "Many freed people were kept from voting in practice. Later laws and amendments were needed."
+    }
+   ]
+  },
+  {
+   "client_ref": "c6_s_timeline_a",
+   "question_ref": "c6_q_timeline",
+   "label": "Order of events (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "modern_history"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "summarize_modern_american_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_06",
+     "us_citizenship",
+     "skill_modern_history",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c6_a_tl_decl",
+     "role": "strong",
+     "feedback": "Correct. The Declaration of Independence was written in 1776, long before the other events."
+    },
+    {
+     "answer_ref": "c6_a_tl_depr",
+     "role": "incorrect",
+     "feedback": "The Great Depression was in the 1930s, so it came later than 1776."
+    },
+    {
+     "answer_ref": "c6_a_tl_pearl",
+     "role": "incorrect",
+     "feedback": "The attack on Pearl Harbor was in 1941, so it came much later than 1776."
+    },
+    {
+     "answer_ref": "c6_a_tl_cr",
+     "role": "incorrect",
+     "feedback": "The Civil Rights Act of 1964 was passed in the 1960s."
+    }
+   ]
+  }
+ ]
+}

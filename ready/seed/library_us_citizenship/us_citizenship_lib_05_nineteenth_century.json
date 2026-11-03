@@ -1,0 +1,2995 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c5_q_louisiana",
+   "data": {
+    "question_text": "In 1803 the United States bought a very large area of land from France. What is this purchase called?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_civil_war",
+   "data": {
+    "question_text": "Which war was fought in the 1860s between the Northern and Southern states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_lincoln",
+   "data": {
+    "question_text": "Who was President during most of the Civil War?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_civil_issue",
+   "data": {
+    "question_text": "What was a central issue that divided the North and the South before the Civil War?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_emancipation",
+   "data": {
+    "question_text": "What did the Emancipation Proclamation declare?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_emanc_vs13",
+   "data": {
+    "question_text": "A tutor compares the Emancipation Proclamation with the Thirteenth Amendment. Which comparison is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_recon",
+   "data": {
+    "question_text": "Which amendments were added to the Constitution soon after the Civil War? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_tubman",
+   "data": {
+    "question_text": "Harriet Tubman is best known for which action?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_removal",
+   "data": {
+    "question_text": "In the 1830s, thousands of Native American people were forced from their homelands in the Southeast and made to move west. What is one name for this forced journey?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_removal_nuance",
+   "data": {
+    "question_text": "Which statement about the forced removal of Native nations in the 1800s is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_anthony",
+   "data": {
+    "question_text": "Susan B. Anthony is best known for her work for which cause?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_q_ellis",
+   "data": {
+    "question_text": "Ellis Island in New York harbor is best known as what?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c5_a_lp",
+   "data": {
+    "answer_text": "The Louisiana Purchase",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ap",
+   "data": {
+    "answer_text": "The Alaska Purchase",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_mc",
+   "data": {
+    "answer_text": "The Mexican Cession",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_gp",
+   "data": {
+    "answer_text": "The Gadsden Purchase",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_cw",
+   "data": {
+    "answer_text": "The Civil War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rw",
+   "data": {
+    "answer_text": "The Revolutionary War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_w1",
+   "data": {
+    "answer_text": "World War I",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_w12",
+   "data": {
+    "answer_text": "The War of 1812",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_kw",
+   "data": {
+    "answer_text": "The Korean War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_al",
+   "data": {
+    "answer_text": "Abraham Lincoln",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_gw",
+   "data": {
+    "answer_text": "George Washington",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tj",
+   "data": {
+    "answer_text": "Thomas Jefferson",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tr",
+   "data": {
+    "answer_text": "Theodore Roosevelt",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ci_slavery",
+   "data": {
+    "answer_text": "Slavery and whether it would spread",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ci_capital",
+   "data": {
+    "answer_text": "Where to place the nation's capital",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ci_canal",
+   "data": {
+    "answer_text": "Who would control a canal in Central America",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ci_flag",
+   "data": {
+    "answer_text": "Whether the country should have a national flag",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ci_states",
+   "data": {
+    "answer_text": "How much power the states should have compared with the national government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_em_free",
+   "data": {
+    "answer_text": "Enslaved people in areas held by the Confederacy were to be free",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_em_all",
+   "data": {
+    "answer_text": "Slavery was ended in every state through a new amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_em_leave",
+   "data": {
+    "answer_text": "Southern states were allowed to leave the Union peacefully",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_em_vote",
+   "data": {
+    "answer_text": "Women across the country were given the right to vote in elections",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ev_s",
+   "data": {
+    "answer_text": "The Proclamation freed enslaved people in Confederate-held areas; the amendment later ended slavery everywhere",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ev_same",
+   "data": {
+    "answer_text": "They were two names for the same act, passed by Congress at the same moment during the war",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ev_rev",
+   "data": {
+    "answer_text": "The amendment came first, and the Proclamation later carried it into the Confederate states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_ev_all",
+   "data": {
+    "answer_text": "The Proclamation ended slavery everywhere at once, and the amendment only confirmed it in writing",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_am13",
+   "data": {
+    "answer_text": "The Thirteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_am14",
+   "data": {
+    "answer_text": "The Fourteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_am15",
+   "data": {
+    "answer_text": "The Fifteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_am19",
+   "data": {
+    "answer_text": "The Nineteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tu_rr",
+   "data": {
+    "answer_text": "Guiding enslaved people to freedom on the Underground Railroad",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tu_army",
+   "data": {
+    "answer_text": "Commanding the army that won the Revolutionary War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tu_decl",
+   "data": {
+    "answer_text": "Writing the Declaration of Independence for the colonies",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_tu_buy",
+   "data": {
+    "answer_text": "Arranging the purchase of the Louisiana Territory for the nation",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rm_tot",
+   "data": {
+    "answer_text": "The Trail of Tears",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rm_ug",
+   "data": {
+    "answer_text": "The Underground Railroad",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rm_or",
+   "data": {
+    "answer_text": "The Oregon Trail",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rm_lc",
+   "data": {
+    "answer_text": "The Lewis and Clark expedition",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rn_s",
+   "data": {
+    "answer_text": "The government used laws and force to move many Native nations from their homelands, and many people died on the journeys",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rn_vol",
+   "data": {
+    "answer_text": "Native nations moved west by their own choice, after fair agreements that all sides freely accepted without pressure",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rn_none",
+   "data": {
+    "answer_text": "No Native nations lived east of the Mississippi River, so there were no homelands there from which anyone could be moved",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_rn_states",
+   "data": {
+    "answer_text": "Only individual states ordered removals, and the national government never took part in any of them in any way",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_an_vote",
+   "data": {
+    "answer_text": "Working to win women the right to vote",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_an_rail",
+   "data": {
+    "answer_text": "Building the first railroad across the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_an_const",
+   "data": {
+    "answer_text": "Writing the first draft of the Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_an_army",
+   "data": {
+    "answer_text": "Leading a Union army in the Civil War",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_el_im",
+   "data": {
+    "answer_text": "A place where many arriving immigrants were processed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_el_prison",
+   "data": {
+    "answer_text": "A prison where criminals were held for many years",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_el_sign",
+   "data": {
+    "answer_text": "The building where the Constitution was signed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c5_a_el_cap",
+   "data": {
+    "answer_text": "The first capital building of the new country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_05",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c5_s_louisiana_a",
+   "question_ref": "c5_q_louisiana",
+   "label": "Louisiana Purchase (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_lp",
+     "role": "strong",
+     "feedback": "Correct. In 1803 the United States bought the Louisiana Territory from France. It roughly doubled the size of the country and opened the West to settlement."
+    },
+    {
+     "answer_ref": "c5_a_ap",
+     "role": "incorrect",
+     "feedback": "The Alaska Purchase was a later deal. The United States bought Alaska from Russia, not land from France."
+    },
+    {
+     "answer_ref": "c5_a_mc",
+     "role": "incorrect",
+     "feedback": "The Mexican Cession was land gained from Mexico after the Mexican-American War, in the 1840s."
+    },
+    {
+     "answer_ref": "c5_a_gp",
+     "role": "incorrect",
+     "feedback": "The Gadsden Purchase was a smaller land purchase from Mexico in the 1850s."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_cw_e",
+   "question_ref": "c5_q_civil_war",
+   "label": "The Civil War (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_cw",
+     "role": "strong",
+     "feedback": "Yes. The Civil War was fought between the North and the South in the 1860s."
+    },
+    {
+     "answer_ref": "c5_a_rw",
+     "role": "incorrect",
+     "feedback": "No. The Revolutionary War was earlier. It was fought against Britain."
+    },
+    {
+     "answer_ref": "c5_a_w1",
+     "role": "incorrect",
+     "feedback": "No. World War I was fought in the 1910s, in Europe and other places."
+    },
+    {
+     "answer_ref": "c5_a_w12",
+     "role": "incorrect",
+     "feedback": "No. The War of 1812 was fought against Britain, earlier than the 1860s."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_cw_a",
+   "question_ref": "c5_q_civil_war",
+   "label": "The Civil War (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_cw",
+     "role": "strong",
+     "feedback": "Correct. The Civil War (1861 to 1865) was fought between the Union in the North and the Confederacy in the South."
+    },
+    {
+     "answer_ref": "c5_a_rw",
+     "role": "incorrect",
+     "feedback": "The Revolutionary War was fought against Britain in the 1700s, not between North and South."
+    },
+    {
+     "answer_ref": "c5_a_kw",
+     "role": "incorrect",
+     "feedback": "The Korean War was fought in the 1950s, in Asia."
+    },
+    {
+     "answer_ref": "c5_a_w12",
+     "role": "incorrect",
+     "feedback": "The War of 1812 was fought against Britain, before the 1860s."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_lincoln_e",
+   "question_ref": "c5_q_lincoln",
+   "label": "President in the Civil War (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_al",
+     "role": "strong",
+     "feedback": "Yes. Abraham Lincoln was President during the Civil War."
+    },
+    {
+     "answer_ref": "c5_a_gw",
+     "role": "incorrect",
+     "feedback": "No. George Washington was the first President, many years before."
+    },
+    {
+     "answer_ref": "c5_a_tj",
+     "role": "incorrect",
+     "feedback": "No. Thomas Jefferson was President earlier, in the early 1800s."
+    },
+    {
+     "answer_ref": "c5_a_tr",
+     "role": "incorrect",
+     "feedback": "No. Theodore Roosevelt was President later, in the early 1900s."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_lincoln_a",
+   "question_ref": "c5_q_lincoln",
+   "label": "President in the Civil War (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_al",
+     "role": "strong",
+     "feedback": "Correct. Abraham Lincoln led the Union through the Civil War and issued the Emancipation Proclamation."
+    },
+    {
+     "answer_ref": "c5_a_gw",
+     "role": "incorrect",
+     "feedback": "Washington was the first President, many decades before the war began."
+    },
+    {
+     "answer_ref": "c5_a_tj",
+     "role": "incorrect",
+     "feedback": "Jefferson was President early in the 1800s and bought the Louisiana Territory."
+    },
+    {
+     "answer_ref": "c5_a_tr",
+     "role": "incorrect",
+     "feedback": "Theodore Roosevelt was President in the early 1900s, long after the Civil War."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_issue_a",
+   "question_ref": "c5_q_civil_issue",
+   "label": "Cause of the Civil War (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_ci_slavery",
+     "role": "strong",
+     "feedback": "Correct. Disagreement over slavery, including whether it should spread to new territories, was the central issue that divided the country."
+    },
+    {
+     "answer_ref": "c5_a_ci_capital",
+     "role": "incorrect",
+     "feedback": "The capital was not the issue that divided the country. The disagreement was about slavery."
+    },
+    {
+     "answer_ref": "c5_a_ci_canal",
+     "role": "incorrect",
+     "feedback": "Canals in Central America came later. They were not a cause of the Civil War."
+    },
+    {
+     "answer_ref": "c5_a_ci_flag",
+     "role": "incorrect",
+     "feedback": "The country already had a national flag. The conflict was about much deeper questions."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_issue_g",
+   "question_ref": "c5_q_civil_issue",
+   "label": "Cause of the Civil War (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_ci_slavery",
+     "role": "strong",
+     "feedback": "Yes. Historians widely agree that slavery was the central cause. Southern states left the Union largely to protect it."
+    },
+    {
+     "answer_ref": "c5_a_ci_states",
+     "role": "ambiguous",
+     "feedback": "Partly true, but incomplete. The power of states was argued in the debates, but the main right the Southern states claimed to protect was the right to hold enslaved people.",
+     "notes": "The phrase 'states' rights' was used in the period, so it is not simply wrong, but most historians treat it as a way of arguing about slavery rather than a separate main cause."
+    },
+    {
+     "answer_ref": "c5_a_ci_capital",
+     "role": "incorrect",
+     "feedback": "The location of the capital was not what divided the country."
+    },
+    {
+     "answer_ref": "c5_a_ci_flag",
+     "role": "incorrect",
+     "feedback": "The flag was not a cause of the war. The disagreement was about slavery."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_emanc_a",
+   "question_ref": "c5_q_emancipation",
+   "label": "Emancipation Proclamation (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_em_free",
+     "role": "strong",
+     "feedback": "Correct. Issued by Abraham Lincoln during the war, it declared that enslaved people in areas held by the Confederacy were free."
+    },
+    {
+     "answer_ref": "c5_a_em_all",
+     "role": "incorrect",
+     "feedback": "Slavery was ended in every state later, by the Thirteenth Amendment."
+    },
+    {
+     "answer_ref": "c5_a_em_leave",
+     "role": "incorrect",
+     "feedback": "The Union fought to keep the country together. It did not allow states to leave."
+    },
+    {
+     "answer_ref": "c5_a_em_vote",
+     "role": "incorrect",
+     "feedback": "Women's right to vote came much later, with the Nineteenth Amendment."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_emanc_t",
+   "question_ref": "c5_q_emanc_vs13",
+   "label": "Proclamation and amendment (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_ev_s",
+     "role": "strong",
+     "feedback": "Yes. The Proclamation was a wartime order covering Confederate-held areas. The Thirteenth Amendment made the end of slavery part of the Constitution everywhere."
+    },
+    {
+     "answer_ref": "c5_a_ev_all",
+     "role": "incorrect",
+     "feedback": "A common mix-up. The Proclamation did not reach every state at once, which is why the amendment was needed."
+    },
+    {
+     "answer_ref": "c5_a_ev_same",
+     "role": "incorrect",
+     "feedback": "They were separate acts. One was an order by the President, and the other a constitutional amendment passed by Congress and ratified by the states."
+    },
+    {
+     "answer_ref": "c5_a_ev_rev",
+     "role": "incorrect",
+     "feedback": "The order of events was the reverse. The Proclamation came during the war, and the amendment after it."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_recon_t",
+   "question_ref": "c5_q_recon",
+   "label": "Reconstruction amendments (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_am13",
+     "role": "strong",
+     "feedback": "Yes. The Thirteenth Amendment ended slavery."
+    },
+    {
+     "answer_ref": "c5_a_am14",
+     "role": "strong",
+     "feedback": "Yes. The Fourteenth Amendment addressed citizenship and equal protection."
+    },
+    {
+     "answer_ref": "c5_a_am15",
+     "role": "strong",
+     "feedback": "Yes. The Fifteenth Amendment protected the vote from being denied because of race."
+    },
+    {
+     "answer_ref": "c5_a_am19",
+     "role": "incorrect",
+     "feedback": "The Nineteenth Amendment, on women's right to vote, was added much later, in 1920. It is often mixed up with the Fifteenth."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_tubman_a",
+   "question_ref": "c5_q_tubman",
+   "label": "Harriet Tubman (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_tu_rr",
+     "role": "strong",
+     "feedback": "Correct. Harriet Tubman escaped slavery and then helped many others reach freedom. The Underground Railroad was a secret network, not a real railroad."
+    },
+    {
+     "answer_ref": "c5_a_tu_army",
+     "role": "incorrect",
+     "feedback": "That describes George Washington, who led the Continental Army."
+    },
+    {
+     "answer_ref": "c5_a_tu_decl",
+     "role": "incorrect",
+     "feedback": "Thomas Jefferson was the main writer of the Declaration of Independence."
+    },
+    {
+     "answer_ref": "c5_a_tu_buy",
+     "role": "incorrect",
+     "feedback": "The Louisiana Purchase was arranged by officials in the early 1800s, before Tubman's work."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_removal_a",
+   "question_ref": "c5_q_removal",
+   "label": "Forced removal (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_rm_tot",
+     "role": "strong",
+     "feedback": "Correct. The forced removal of the Cherokee and other nations is remembered as the Trail of Tears. Many people died on the way."
+    },
+    {
+     "answer_ref": "c5_a_rm_ug",
+     "role": "incorrect",
+     "feedback": "The Underground Railroad was a network that helped enslaved people escape to freedom."
+    },
+    {
+     "answer_ref": "c5_a_rm_or",
+     "role": "incorrect",
+     "feedback": "The Oregon Trail was a route used by settlers moving west, not the forced removal of Native nations."
+    },
+    {
+     "answer_ref": "c5_a_rm_lc",
+     "role": "incorrect",
+     "feedback": "The Lewis and Clark expedition explored the West in the early 1800s. It was not a forced removal."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_remnuance_t",
+   "question_ref": "c5_q_removal_nuance",
+   "label": "Removal of Native nations (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_rn_s",
+     "role": "strong",
+     "feedback": "Yes. The Indian Removal Act and later actions used law and force, and many Native people died on the way west. State this plainly and without euphemism."
+    },
+    {
+     "answer_ref": "c5_a_rn_vol",
+     "role": "incorrect",
+     "feedback": "Removal was not freely chosen. Treaties were often signed under pressure, and many people were moved by force."
+    },
+    {
+     "answer_ref": "c5_a_rn_none",
+     "role": "incorrect",
+     "feedback": "Many nations lived east of the Mississippi River and were removed from their homelands there."
+    },
+    {
+     "answer_ref": "c5_a_rn_states",
+     "role": "incorrect",
+     "feedback": "The national government took part, including through a federal removal law and the use of the army."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_anthony_a",
+   "question_ref": "c5_q_anthony",
+   "label": "Susan B. Anthony (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_an_vote",
+     "role": "strong",
+     "feedback": "Correct. Susan B. Anthony was a leader of the movement for women's right to vote. The Nineteenth Amendment came after her lifetime."
+    },
+    {
+     "answer_ref": "c5_a_an_rail",
+     "role": "incorrect",
+     "feedback": "She was not a railroad builder. The first line across the country was finished by 1869."
+    },
+    {
+     "answer_ref": "c5_a_an_const",
+     "role": "incorrect",
+     "feedback": "The Constitution was drafted in 1787, long before her time."
+    },
+    {
+     "answer_ref": "c5_a_an_army",
+     "role": "incorrect",
+     "feedback": "She did not lead an army. She worked through speeches, writing and organizing."
+    }
+   ]
+  },
+  {
+   "client_ref": "c5_s_ellis_a",
+   "question_ref": "c5_q_ellis",
+   "label": "Ellis Island (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_05",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c5_a_el_im",
+     "role": "strong",
+     "feedback": "Correct. Millions of immigrants were checked at Ellis Island before entering the country, mostly in the late 1800s and early 1900s."
+    },
+    {
+     "answer_ref": "c5_a_el_prison",
+     "role": "incorrect",
+     "feedback": "Ellis Island was not a prison. It was an immigration station."
+    },
+    {
+     "answer_ref": "c5_a_el_sign",
+     "role": "incorrect",
+     "feedback": "The Constitution was signed in Philadelphia."
+    },
+    {
+     "answer_ref": "c5_a_el_cap",
+     "role": "incorrect",
+     "feedback": "The first capital was in New York City, but not on Ellis Island."
+    }
+   ]
+  }
+ ]
+}
