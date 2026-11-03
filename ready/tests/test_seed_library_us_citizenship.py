@@ -24,6 +24,7 @@ SCHEMA = json.loads((ROOT / "schemas" / "bulk_import.schema.json").read_text())
 EXPECTED = {
     "us_citizenship_sample_01.json": (8, 27, 10, "ready_lib_us_citizenship_01"),
     "us_citizenship_lib_02_principles_government.json": (23, 75, 30, "ready_lib_us_citizenship_02"),
+    "us_citizenship_lib_03_rights_responsibilities_elections.json": (21, 71, 26, "ready_lib_us_citizenship_03"),
 }
 SAMPLE = "us_citizenship_sample_01.json"
 MAIN = [name for name in EXPECTED if name != SAMPLE]
