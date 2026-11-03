@@ -1,0 +1,2209 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "l05_q_two_muscles",
+   "data": {
+    "question_text": "A whole brisket has two muscles, the flat and the point, and their fibers run in different directions. How should you slice it?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "slicing_serving"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "slice_and_serve_well"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_serving",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_serve_plan",
+   "data": {
+    "question_text": "You must serve a hot brisket dinner at 6:00 pm for a large group. Which plan best protects both safety and quality?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_cooler_drop",
+   "data": {
+    "question_text": "At a catered event, the held brisket's center now reads 125°F. The cooler lid was opened many times, and you do not know how long the meat has been below 140°F. What should you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_temp_swings",
+   "data": {
+    "question_text": "Your charcoal cooker swings about 40°F up and down over a short cycle while you keep adjusting the vents. What is the most likely cause, and the best fix?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_hot_fast",
+   "data": {
+    "question_text": "Which statement best captures the trade-off between hot-and-fast and low-and-slow smoking?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_reheat_target",
+   "data": {
+    "question_text": "You are reheating leftover smoked brisket for service the next day. What internal temperature should it reach?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_canopy",
+   "data": {
+    "question_text": "At an outdoor event, the only shade for guests is a pop-up canopy. Where do you put the cooker?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_fire_safety",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_soot",
+   "data": {
+    "question_text": "The smoke from the stack looks thin and pale, yet the meat tastes acrid and sooty, and black flakes coat the inside of the lid. What is the most likely cause?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_sugar_rub",
+   "data": {
+    "question_text": "On a hot-and-fast cook, the bark on your ribs blackens and tastes bitter well before the meat is done. The rub is heavy with sugar. What is the best change?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "meat_prep"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "select_and_prepare_meat"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_prep",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l05_a_mus_each_grain",
+   "data": {
+    "answer_text": "Separate them, or turn the meat as you go, so each muscle is cut across its own grain.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "slicing_serving"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "slice_and_serve_well"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_serving"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_mus_one_pass",
+   "data": {
+    "answer_text": "Cut the whole brisket in one direction from end to end.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "slicing_serving"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "slice_and_serve_well"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_serving"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_mus_with_grain",
+   "data": {
+    "answer_text": "Cut along the fibers for thicker, neater slices.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "slicing_serving"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "slice_and_serve_well"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_serving"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_mus_burnt_ends",
+   "data": {
+    "answer_text": "Slice the flat thin, and cube the point into bite-sized pieces for burnt ends.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "slicing_serving"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "slice_and_serve_well"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_serving"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_plan_buffer_hold",
+   "data": {
+    "answer_text": "Work back from serving time, start early, and build in a long, monitored hold in a preheated insulated cooler as a buffer.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_plan_exact",
+   "data": {
+    "answer_text": "Time the start so the brisket comes off the cooker at exactly 6:00.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_plan_recipe_time",
+   "data": {
+    "answer_text": "Start it when the recipe's cook time says to, and assume it will be on schedule.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_plan_day_before",
+   "data": {
+    "answer_text": "Cook it the day before, chill it quickly in shallow pans, and reheat it thoroughly for service.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_plan_stack_pans",
+   "data": {
+    "answer_text": "Pack all the finished meat tightly into one big pan and cover it to hold the heat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_drop_discard",
+   "data": {
+    "answer_text": "Discard it, because when the time in the danger zone is unknown it cannot be judged safe.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_drop_reheat",
+   "data": {
+    "answer_text": "Reheat it to 165°F and serve it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_drop_serve_cooked",
+   "data": {
+    "answer_text": "Serve it as it is, because it was fully cooked earlier.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_drop_slice_thin",
+   "data": {
+    "answer_text": "Slice it thin so the heat of the room warms it through.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_swing_overcorrect",
+   "data": {
+    "answer_text": "You are overcorrecting. Make smaller changes, less often, and let the fire settle between them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_swing_thermal_mass",
+   "data": {
+    "answer_text": "Add thermal mass, such as a water pan, to smooth out the swings.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_swing_more_often",
+   "data": {
+    "answer_text": "You are not adjusting often enough, so adjust the vents even more frequently.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_swing_more_fuel",
+   "data": {
+    "answer_text": "The fire is too small, so keep dropping in unlit coals.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_hf_tradeoff",
+   "data": {
+    "answer_text": "Hot-and-fast saves time and can work well on forgiving cuts, while low-and-slow gives longer smoke exposure and gentler rendering but takes much more time. Both can give good results.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_hf_unsafe",
+   "data": {
+    "answer_text": "Hot-and-fast is unsafe, because the outside cooks before the inside.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_hf_required",
+   "data": {
+    "answer_text": "Only low-and-slow can make tough cuts tender.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_hf_no_difference",
+   "data": {
+    "answer_text": "They give identical results, so the only difference is the clock.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_hf_judges",
+   "data": {
+    "answer_text": "Competition judges always prefer low-and-slow, so competitors should never use anything else.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_reheat_165",
+   "data": {
+    "answer_text": "165°F (74°C) throughout.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_reheat_140",
+   "data": {
+    "answer_text": "140°F (60°C), since that is the hot-holding temperature.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_reheat_120",
+   "data": {
+    "answer_text": "120°F (49°C), which is warm enough to eat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_reheat_steam",
+   "data": {
+    "answer_text": "Whatever temperature makes it steam on the plate.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer",
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_can_open_clear",
+   "data": {
+    "answer_text": "In the open, well clear of the canopy and anything flammable, with a barrier keeping guests back.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_can_under_sides_up",
+   "data": {
+    "answer_text": "Under the canopy, with the sides rolled up for ventilation.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_can_edge",
+   "data": {
+    "answer_text": "Just beside the canopy's edge so the roof keeps the rain off.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_can_between_tents",
+   "data": {
+    "answer_text": "Between two canopies, so each shelters one side.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_soot_buildup",
+   "data": {
+    "answer_text": "Soot and old grease have built up inside the cooker and are flaking and dripping onto the meat, so it needs a thorough cleaning.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_soot_dry_wood",
+   "data": {
+    "answer_text": "The wood is too dry.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_soot_rub",
+   "data": {
+    "answer_text": "There is too much rub on the meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_soot_hot",
+   "data": {
+    "answer_text": "The cooker is running too cool.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_sugar_less_or_late",
+   "data": {
+    "answer_text": "Cut back the sugar in the rub, or add sugary glaze only near the end.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "meat_prep"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "select_and_prepare_meat"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_prep"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_sugar_more",
+   "data": {
+    "answer_text": "Add more sugar, which will build a thicker bark.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "meat_prep"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "select_and_prepare_meat"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_prep"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_sugar_wrap_early",
+   "data": {
+    "answer_text": "Leave the rub as it is and take the ribs off early.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "meat_prep"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "select_and_prepare_meat"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_prep"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_sugar_more_smoke",
+   "data": {
+    "answer_text": "Add more wood, so the smoke covers the burnt taste.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "meat_prep"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "select_and_prepare_meat"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_prep"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "l05_s_two_muscles_a",
+   "question_ref": "l05_q_two_muscles",
+   "label": "advanced / aspiring competitor or caterer / two muscles",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "slicing_serving"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "slice_and_serve_well"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_serving",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner account for grain that changes direction?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_mus_each_grain",
+     "role": "strong",
+     "feedback": "Fibers in the two muscles do not line up, so one cutting direction leaves one muscle stringy. Separating them, or turning the meat as the grain changes, makes every slice short-fibered and tender."
+    },
+    {
+     "answer_ref": "l05_a_mus_burnt_ends",
+     "role": "ambiguous",
+     "feedback": "Cubing the point and saucing it for burnt ends is a well-loved way to serve it, and the flat is still sliced across the grain. It is a menu choice, not the answer to the grain question, but it is a legitimate way to handle the two muscles.",
+     "notes": "Ambiguous on purpose: a recognised serving style that answers the problem by changing the product."
+    },
+    {
+     "answer_ref": "l05_a_mus_one_pass",
+     "role": "incorrect",
+     "feedback": "With the grain running a different way in each muscle, a single cut direction leaves one of them stringy and chewy. Turn the meat or separate the muscles."
+    },
+    {
+     "answer_ref": "l05_a_mus_with_grain",
+     "role": "incorrect",
+     "feedback": "Cutting along the fibers leaves them long, so the slices are chewy however well the brisket was cooked. Cut across them."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_serve_plan_host",
+   "question_ref": "l05_q_serve_plan",
+   "label": "advanced / backyard host for a crowd / serve plan",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_timing",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host plan a buffer and avoid a razor-thin schedule?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_plan_buffer_hold",
+     "role": "strong",
+     "feedback": "Brisket finishes when it is ready, not when the clock says so. Starting early and holding the finished meat hot in an insulated cooler turns a late finish into no problem. Check the hold temperature with a probe."
+    },
+    {
+     "answer_ref": "l05_a_plan_day_before",
+     "role": "ambiguous",
+     "feedback": "Cooking ahead, chilling in shallow pans and reheating thoroughly is safe when done well, and takes the clock pressure away. You trade some texture and juiciness for that certainty, so many cooks prefer the hot hold.",
+     "notes": "Ambiguous on purpose: a legitimate, widely used make-ahead method with a quality cost."
+    },
+    {
+     "answer_ref": "l05_a_plan_exact",
+     "role": "incorrect",
+     "feedback": "The finish time of a brisket cannot be predicted to the minute, because it depends on the cut, the cooker and the weather. Aiming for an exact finish leaves no buffer."
+    },
+    {
+     "answer_ref": "l05_a_plan_recipe_time",
+     "role": "incorrect",
+     "feedback": "Recipe times are a guide for when to start checking, not a promise. Without a buffer, an ordinary stall will make dinner late."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_serve_plan_pro",
+   "question_ref": "l05_q_serve_plan",
+   "label": "advanced / aspiring competitor or caterer / serve plan",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_timing",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the caterer protect the schedule and handle volume safely?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_plan_buffer_hold",
+     "role": "strong",
+     "feedback": "A buffer and a monitored hot hold give you control over the finish, which matters when paying guests are waiting. Probe the held meat at set times and record the readings."
+    },
+    {
+     "answer_ref": "l05_a_plan_day_before",
+     "role": "ambiguous",
+     "feedback": "Cook-chill-reheat is standard in catering and is safe with fast chilling, shallow pans and thorough reheating. Hot holding keeps the better texture, but chilling gives the most control over timing at volume.",
+     "notes": "Ambiguous on purpose: both are professional practice, and the best choice depends on volume, equipment and the standard you want."
+    },
+    {
+     "answer_ref": "l05_a_plan_stack_pans",
+     "role": "incorrect",
+     "feedback": "A deep, tightly packed pan holds heat unevenly and the center can drift into the danger zone. Spread the meat out in shallow pans, and hold at 140°F or above."
+    },
+    {
+     "answer_ref": "l05_a_plan_exact",
+     "role": "incorrect",
+     "feedback": "Finish times vary with each cut, so a plan that has no slack makes lateness likely. Start early and hold the meat hot."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_cooler_drop_a",
+   "question_ref": "l05_q_cooler_drop",
+   "label": "advanced / aspiring competitor or caterer / cooler drop",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the caterer refuse to gamble on unknown time in the danger zone?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_drop_discard",
+     "role": "strong",
+     "feedback": "Reheating can kill bacteria but not all the toxins some of them leave behind, and you cannot tell how long the meat sat in the danger zone. With an unknown history, the safe course is to discard it and use the backup plan."
+    },
+    {
+     "answer_ref": "l05_a_drop_reheat",
+     "role": "incorrect",
+     "feedback": "Heating kills many bacteria but does not remove every toxin that may have formed while the meat sat warm. With no record of how long it was in the danger zone, reheating is not enough."
+    },
+    {
+     "answer_ref": "l05_a_drop_serve_cooked",
+     "role": "incorrect",
+     "feedback": "Being cooked earlier does not protect food that then sits in the danger zone. Bacteria can grow again. Without a known safe history, do not serve it."
+    },
+    {
+     "answer_ref": "l05_a_drop_slice_thin",
+     "role": "incorrect",
+     "feedback": "The room is not warm enough to heat meat through, and slicing exposes more surface to the air. This does nothing about the time already spent in the danger zone."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_temp_swings_a",
+   "question_ref": "l05_q_temp_swings",
+   "label": "advanced / aspiring competitor or caterer / temp swings",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "troubleshooting"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "diagnose_and_fix_problems"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_troubleshooting",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner diagnose chasing the temperature?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_swing_overcorrect",
+     "role": "strong",
+     "feedback": "A fire responds with a delay, so quick, repeated vent changes push it past the target in both directions. Set it slightly, wait ten to twenty minutes, and trust the trend more than any single reading."
+    },
+    {
+     "answer_ref": "l05_a_swing_thermal_mass",
+     "role": "ambiguous",
+     "feedback": "A water pan or other thermal mass absorbs and releases heat and smooths swings, and many cooks use one. It treats the symptom and costs fuel and some bark, so it works best alongside fewer, smaller adjustments.",
+     "notes": "Ambiguous on purpose: a recognised technique, but secondary to correcting the over-adjusting."
+    },
+    {
+     "answer_ref": "l05_a_swing_more_often",
+     "role": "incorrect",
+     "feedback": "More frequent adjustments make a delayed system swing harder. The fire needs time to respond to each change."
+    },
+    {
+     "answer_ref": "l05_a_swing_more_fuel",
+     "role": "incorrect",
+     "feedback": "Dropping in unlit coals cools the fire and then makes it spike as they catch, which feeds the swings. Add fuel in a steady, planned way."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_hot_fast_enth",
+   "question_ref": "l05_q_hot_fast",
+   "label": "advanced / home enthusiast / hot fast",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_timing",
+     "format_concept"
+    ],
+    "attributes": {},
+    "description": "Does the learner see two valid schools?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_hf_tradeoff",
+     "role": "strong",
+     "feedback": "Both are real methods with different costs. A hotter cook shortens the clock and suits a fatty, forgiving cut, while a lower cook gives more smoke time and a gentler finish. Pick by the schedule and cut, and judge by results."
+    },
+    {
+     "answer_ref": "l05_a_hf_unsafe",
+     "role": "incorrect",
+     "feedback": "Cooking hotter is not unsafe, and the meat is judged by its internal temperature and feel in both. What changes is the timing and texture."
+    },
+    {
+     "answer_ref": "l05_a_hf_required",
+     "role": "incorrect",
+     "feedback": "Tough cuts get tender from enough heat for long enough, and a hotter cooker can get there too, with a shorter clock and a different result."
+    },
+    {
+     "answer_ref": "l05_a_hf_no_difference",
+     "role": "incorrect",
+     "feedback": "Cooking temperature changes bark, smoke exposure, moisture loss and timing, so the results are not identical."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_hot_fast_pro",
+   "question_ref": "l05_q_hot_fast",
+   "label": "advanced / aspiring competitor or caterer / hot fast",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_timing",
+     "format_concept"
+    ],
+    "attributes": {},
+    "description": "Does the competitor see that judges and conditions vary?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_hf_tradeoff",
+     "role": "strong",
+     "feedback": "Both approaches win and lose. Pro cooks choose a method by the cut, the cooker, the time available and the result they can repeat. Keep notes, test both, and trust results over rules."
+    },
+    {
+     "answer_ref": "l05_a_hf_judges",
+     "role": "ambiguous",
+     "feedback": "Many competitors favor a lower, slower cook, but judges score what is on the plate, not the method. Some winning entries are cooked hotter. It is a preference with real support, though not a rule.",
+     "notes": "Ambiguous on purpose: a widely held belief with exceptions, and one the learner should be able to question."
+    },
+    {
+     "answer_ref": "l05_a_hf_required",
+     "role": "incorrect",
+     "feedback": "A hotter cook can also make tough cuts tender if it is long enough. The method changes the clock and the texture, not whether tenderness is possible."
+    },
+    {
+     "answer_ref": "l05_a_hf_no_difference",
+     "role": "incorrect",
+     "feedback": "Different temperatures change the bark, the smoke taste, the moisture and the timing. They do not give identical results."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_reheat_target_a",
+   "question_ref": "l05_q_reheat_target",
+   "label": "advanced / aspiring competitor or caterer / reheat target",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the caterer know the reheating target?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_reheat_165",
+     "role": "strong",
+     "feedback": "Leftovers and cooked food that has been chilled are reheated to 165°F throughout, in the thickest part, before they are served or held. Check with a probe, not by steam."
+    },
+    {
+     "answer_ref": "l05_a_reheat_140",
+     "role": "incorrect",
+     "feedback": "140°F is the lowest temperature for holding hot food, not for reheating it. Reheat chilled food to 165°F first, and then hold it at 140°F or above."
+    },
+    {
+     "answer_ref": "l05_a_reheat_120",
+     "role": "incorrect",
+     "feedback": "At 120°F the food is inside the danger zone, and the reheat has not done its job. Take it to 165°F."
+    },
+    {
+     "answer_ref": "l05_a_reheat_steam",
+     "role": "incorrect",
+     "feedback": "Steam shows the surface is hot, not that the middle has reached a safe temperature. Check with a probe."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_reheat_target_host",
+   "question_ref": "l05_q_reheat_target",
+   "label": "advanced / backyard host for a crowd / reheat target",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host know the reheating target?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_reheat_165",
+     "role": "strong",
+     "feedback": "Chilled leftovers go to 165°F throughout before serving. After reheating you can hold them hot at 140°F or above for the meal."
+    },
+    {
+     "answer_ref": "l05_a_reheat_140",
+     "role": "incorrect",
+     "feedback": "140°F is for holding hot food, not reheating it. Take chilled meat to 165°F, then hold it at 140°F or above."
+    },
+    {
+     "answer_ref": "l05_a_reheat_steam",
+     "role": "incorrect",
+     "feedback": "Steam can rise from a hot surface while the center is still cool. A probe in the thickest part tells you the truth."
+    },
+    {
+     "answer_ref": "l05_a_reheat_120",
+     "role": "incorrect",
+     "feedback": "120°F is within the danger zone, so reheating to it does not make the food safe. Go to 165°F."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_canopy_a",
+   "question_ref": "l05_q_canopy",
+   "label": "advanced / aspiring competitor or caterer / canopy",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "fire_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "stay_safe_around_fire_and_smoke"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_fire_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the caterer keep the fire clear of fabric and guests?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_can_open_clear",
+     "role": "strong",
+     "feedback": "Canopy fabric can ignite from heat or a spark, and fumes collect under a roof. The cooker goes in the open, clear of fabric, with a barrier so guests keep their distance."
+    },
+    {
+     "answer_ref": "l05_a_can_under_sides_up",
+     "role": "incorrect",
+     "feedback": "A canopy roof traps heat, smoke and carbon monoxide, and the fabric can ignite. Open sides do not make it safe."
+    },
+    {
+     "answer_ref": "l05_a_can_edge",
+     "role": "incorrect",
+     "feedback": "Sparks and heat rise onto the fabric roof, and a gust can blow smoke under it. Keep the cooker well clear."
+    },
+    {
+     "answer_ref": "l05_a_can_between_tents",
+     "role": "incorrect",
+     "feedback": "A cooker between two canopies puts fabric on both sides within reach of sparks and heat. Leave plenty of open space around it."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_soot_a",
+   "question_ref": "l05_q_soot",
+   "label": "advanced / home enthusiast / soot",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "troubleshooting"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "diagnose_and_fix_problems"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_troubleshooting",
+     "format_concept"
+    ],
+    "attributes": {},
+    "description": "Does the learner look past the smoke to a dirty cooker?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_soot_buildup",
+     "role": "strong",
+     "feedback": "Old soot and grease can bake into a crust and flake onto the meat even when the fire is burning cleanly. Scraping the lid, grates and stack, and cleaning out old grease, is the fix."
+    },
+    {
+     "answer_ref": "l05_a_soot_dry_wood",
+     "role": "incorrect",
+     "feedback": "Dry, seasoned wood is what you want and it burns cleanly. A sooty taste with a clean fire points at the cooker, not the wood."
+    },
+    {
+     "answer_ref": "l05_a_soot_rub",
+     "role": "incorrect",
+     "feedback": "Rub can make a surface salty or burnt, but it does not produce black flakes from the lid. Look at the cooker's interior."
+    },
+    {
+     "answer_ref": "l05_a_soot_hot",
+     "role": "incorrect",
+     "feedback": "A cooler cooker would give less bark and a milder flavor, not black flakes and a sooty taste. Clean the inside."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_sugar_rub_a",
+   "question_ref": "l05_q_sugar_rub",
+   "label": "advanced / home enthusiast / sugar rub",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "meat_prep"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "select_and_prepare_meat"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_prep",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner know that sugar burns at high heat?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_sugar_less_or_late",
+     "role": "strong",
+     "feedback": "Sugar burns at the temperatures of a hot cook, which gives black, bitter bark. Less sugar in the rub, or a glaze added in the last stretch, avoids the burn."
+    },
+    {
+     "answer_ref": "l05_a_sugar_more",
+     "role": "incorrect",
+     "feedback": "More sugar makes the burning worse, not better. The bark goes black faster."
+    },
+    {
+     "answer_ref": "l05_a_sugar_wrap_early",
+     "role": "incorrect",
+     "feedback": "Pulling the ribs early leaves them tough, and you have not changed the rub that burned. Fix the sugar, not the timing."
+    },
+    {
+     "answer_ref": "l05_a_sugar_more_smoke",
+     "role": "incorrect",
+     "feedback": "Extra smoke makes bitterness worse, not better. Fix the cause, which is the sugar burning."
+    }
+   ]
+  }
+ ]
+}
