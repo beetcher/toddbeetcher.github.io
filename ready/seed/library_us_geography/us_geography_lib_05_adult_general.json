@@ -1,0 +1,3936 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "g5_q_golden_gate",
+   "data": {
+    "question_text": "In which state would you find the Golden Gate Bridge?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_oceans_multi",
+   "data": {
+    "question_text": "Which two oceans touch the coasts of the 48 connected states? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_physical_features",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_capital_fl",
+   "data": {
+    "question_text": "Florida's largest tourist cities are well known, but they are not the state capital. Which city is the capital of Florida?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_capital_il",
+   "data": {
+    "question_text": "Chicago is the best-known city in Illinois. Which city is the state's capital?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_call_time",
+   "data": {
+    "question_text": "A phone call is set for 9:00 a.m. Pacific time. What time is that in the Eastern time zone, if both places use the same clock rules that day?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_webinar_time",
+   "data": {
+    "question_text": "A webinar starts at 2:00 p.m. Eastern time. What time does it start in the Pacific time zone, if both places use the same clock rules that day?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_midwest_multi",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which of these states are in the Midwest? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_south_one",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which of these states is in the South?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_west_one",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions, which of these states is in the West?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_interstate_numbers",
+   "data": {
+    "question_text": "On the U.S. Interstate system, a route with an odd number, such as 95, usually runs in which general direction?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_everyday_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_grassland",
+   "data": {
+    "question_text": "Which biome covers much of the Great Plains in the central United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_texas_two_zones",
+   "data": {
+    "question_text": "Which of these states has land in two different time zones?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_delaware_region",
+   "data": {
+    "question_text": "In the Census Bureau's four-region system, which region is Delaware in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_spanish_names",
+   "data": {
+    "question_text": "Some state names come from Spanish words. Which of these state names do? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_dc_not_state",
+   "data": {
+    "question_text": "Why is Washington, D.C. not part of any state?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_dc_true_multi",
+   "data": {
+    "question_text": "Which statements about Washington, D.C. are accurate? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_central_valley",
+   "data": {
+    "question_text": "California's Central Valley is best known for which kind of economic activity?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_not_a_territory",
+   "data": {
+    "question_text": "Which of these places is an independent country, not a U.S. territory?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_q_mississippi_name",
+   "data": {
+    "question_text": "The name of the Mississippi River comes from an Ojibwe phrase. What does the phrase mean in its best-known sense?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "g5_a_oregon",
+   "data": {
+    "answer_text": "Oregon",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_california",
+   "data": {
+    "answer_text": "California",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_nevada",
+   "data": {
+    "answer_text": "Nevada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks",
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_parks_landmarks",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_washington",
+   "data": {
+    "answer_text": "Washington",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_indian_ocean",
+   "data": {
+    "answer_text": "Indian Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_pacific_ocean",
+   "data": {
+    "answer_text": "Pacific Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_arctic_ocean",
+   "data": {
+    "answer_text": "Arctic Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_atlantic_ocean",
+   "data": {
+    "answer_text": "Atlantic Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_jacksonville",
+   "data": {
+    "answer_text": "Jacksonville",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_fort_lauderdale",
+   "data": {
+    "answer_text": "Fort Lauderdale",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_miami",
+   "data": {
+    "answer_text": "Miami",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_tallahassee",
+   "data": {
+    "answer_text": "Tallahassee",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_champaign",
+   "data": {
+    "answer_text": "Champaign",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_bloomington",
+   "data": {
+    "answer_text": "Bloomington",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_chicago",
+   "data": {
+    "answer_text": "Chicago",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_springfield",
+   "data": {
+    "answer_text": "Springfield",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_11_00_a_m",
+   "data": {
+    "answer_text": "11:00 a.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_12_00_noon",
+   "data": {
+    "answer_text": "12:00 noon",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_9_00_a_m",
+   "data": {
+    "answer_text": "9:00 a.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_6_00_a_m",
+   "data": {
+    "answer_text": "6:00 a.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_2_00_p_m",
+   "data": {
+    "answer_text": "2:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_5_00_p_m",
+   "data": {
+    "answer_text": "5:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_nebraska",
+   "data": {
+    "answer_text": "Nebraska",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_iowa",
+   "data": {
+    "answer_text": "Iowa",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors",
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_montana",
+   "data": {
+    "answer_text": "Montana",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors",
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_arkansas",
+   "data": {
+    "answer_text": "Arkansas",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_idaho",
+   "data": {
+    "answer_text": "Idaho",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_vermont",
+   "data": {
+    "answer_text": "Vermont",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_georgia",
+   "data": {
+    "answer_text": "Georgia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors",
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_only_around_a_city",
+   "data": {
+    "answer_text": "Only around a city",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_only_within_one_state",
+   "data": {
+    "answer_text": "Only within one state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_mainly_east_west",
+   "data": {
+    "answer_text": "Mainly east-west",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_mainly_north_south",
+   "data": {
+    "answer_text": "Mainly north-south",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_grassland",
+   "data": {
+    "answer_text": "Grassland",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_tropical_rain_forest",
+   "data": {
+    "answer_text": "Tropical rain forest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_tundra",
+   "data": {
+    "answer_text": "Tundra",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_desert",
+   "data": {
+    "answer_text": "Desert",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_texas",
+   "data": {
+    "answer_text": "Texas",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_colorado",
+   "data": {
+    "answer_text": "Colorado",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones",
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_time_zones",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_west",
+   "data": {
+    "answer_text": "West",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_south",
+   "data": {
+    "answer_text": "South",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_northeast",
+   "data": {
+    "answer_text": "Northeast",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_midwest",
+   "data": {
+    "answer_text": "Midwest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_ohio",
+   "data": {
+    "answer_text": "Ohio",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_the_constitution_lets_congress_create_a_federal",
+   "data": {
+    "answer_text": "The Constitution lets Congress create a federal district for the capital, apart from any state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_is_part_of_maryland_which_still_governs_it_as",
+   "data": {
+    "answer_text": "It is part of Maryland, which still governs it as one of its counties",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_was_a_state_for_a_time_before_it_chose_to_giv",
+   "data": {
+    "answer_text": "It was a state for a time before it chose to give up its statehood",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_is_officially_a_u_s_territory_in_the_same_cat",
+   "data": {
+    "answer_text": "It is officially a U.S. territory, in the same category as Guam and Puerto Rico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_is_the_seat_of_the_national_government",
+   "data": {
+    "answer_text": "It is the seat of the national government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_is_a_u_s_territory_in_the_pacific_ocean",
+   "data": {
+    "answer_text": "It is a U.S. territory in the Pacific Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_it_is_not_one_of_the_50_states",
+   "data": {
+    "answer_text": "It is not one of the 50 states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_deep_sea_fishing",
+   "data": {
+    "answer_text": "Deep-sea fishing",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_large_scale_farming",
+   "data": {
+    "answer_text": "Large-scale farming",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_rain_forest_logging",
+   "data": {
+    "answer_text": "Rain forest logging",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_ski_resorts",
+   "data": {
+    "answer_text": "Ski resorts",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_american_samoa",
+   "data": {
+    "answer_text": "American Samoa",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_northern_mariana_islands",
+   "data": {
+    "answer_text": "Northern Mariana Islands",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_guam",
+   "data": {
+    "answer_text": "Guam",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_samoa",
+   "data": {
+    "answer_text": "Samoa",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_great_river",
+   "data": {
+    "answer_text": "Great river",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_land_of_many_lakes",
+   "data": {
+    "answer_text": "Land of many lakes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_muddy_water",
+   "data": {
+    "answer_text": "Muddy water",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g5_a_father_of_waters",
+   "data": {
+    "answer_text": "Father of waters",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_05",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "g5_s01_golden_gate",
+   "question_ref": "g5_q_golden_gate",
+   "label": "State of the Golden Gate Bridge (General adult, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_oregon",
+     "role": "incorrect",
+     "feedback": "Oregon is the state just north of California. The bridge is in San Francisco, California."
+    },
+    {
+     "answer_ref": "g5_a_california",
+     "role": "strong",
+     "feedback": "Correct. The Golden Gate Bridge crosses the entrance to San Francisco Bay in California."
+    },
+    {
+     "answer_ref": "g5_a_nevada",
+     "role": "incorrect",
+     "feedback": "Nevada is east of California and has no coast. The Golden Gate Bridge is on the California coast."
+    },
+    {
+     "answer_ref": "g5_a_washington",
+     "role": "incorrect",
+     "feedback": "Washington State is in the Pacific Northwest, far north of the bridge, which is in California."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s02_oceans_multi",
+   "question_ref": "g5_q_oceans_multi",
+   "label": "Oceans of the connected states (General adult, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_physical_features",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_indian_ocean",
+     "role": "incorrect",
+     "feedback": "No. The Indian Ocean is on the far side of the world and does not touch any U.S. state."
+    },
+    {
+     "answer_ref": "g5_a_pacific_ocean",
+     "role": "strong",
+     "feedback": "Yes. The Pacific Ocean lies along the western coast of the connected states."
+    },
+    {
+     "answer_ref": "g5_a_arctic_ocean",
+     "role": "incorrect",
+     "feedback": "No. The Arctic Ocean touches Alaska's north coast, not the connected states."
+    },
+    {
+     "answer_ref": "g5_a_atlantic_ocean",
+     "role": "strong",
+     "feedback": "Yes. The Atlantic Ocean lies along the eastern coast of the connected states."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s03_capital_fl",
+   "question_ref": "g5_q_capital_fl",
+   "label": "Capital of Florida (General adult, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_jacksonville",
+     "role": "incorrect",
+     "feedback": "Jacksonville is a large city in northeastern Florida, but it is not the capital."
+    },
+    {
+     "answer_ref": "g5_a_fort_lauderdale",
+     "role": "incorrect",
+     "feedback": "Fort Lauderdale is a coastal city in southeastern Florida, but it is not the capital."
+    },
+    {
+     "answer_ref": "g5_a_miami",
+     "role": "incorrect",
+     "feedback": "Miami is a major city on the southeastern coast, but it is not the capital."
+    },
+    {
+     "answer_ref": "g5_a_tallahassee",
+     "role": "strong",
+     "feedback": "Correct. Tallahassee, in the Panhandle region, is the capital of Florida."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s04_capital_il",
+   "question_ref": "g5_q_capital_il",
+   "label": "Capital of Illinois (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_champaign",
+     "role": "incorrect",
+     "feedback": "Champaign is a college city in east-central Illinois, but it is not the capital."
+    },
+    {
+     "answer_ref": "g5_a_bloomington",
+     "role": "incorrect",
+     "feedback": "Bloomington is a city in central Illinois, but it is not the capital."
+    },
+    {
+     "answer_ref": "g5_a_chicago",
+     "role": "incorrect",
+     "feedback": "Chicago is the state's best-known city, but not the capital. The capital is in central Illinois."
+    },
+    {
+     "answer_ref": "g5_a_springfield",
+     "role": "strong",
+     "feedback": "Correct. Springfield is the capital of Illinois. Several other states have a Springfield too."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s05_call_time",
+   "question_ref": "g5_q_call_time",
+   "label": "Pacific call time in Eastern (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_11_00_a_m",
+     "role": "incorrect",
+     "feedback": "That adds only two hours. Pacific and Eastern are three zones apart."
+    },
+    {
+     "answer_ref": "g5_a_12_00_noon",
+     "role": "strong",
+     "feedback": "Correct. Eastern time is three hours ahead of Pacific, so 9:00 a.m. Pacific is 12:00 noon Eastern."
+    },
+    {
+     "answer_ref": "g5_a_9_00_a_m",
+     "role": "incorrect",
+     "feedback": "The two zones show different times. Eastern is ahead of Pacific by three hours."
+    },
+    {
+     "answer_ref": "g5_a_6_00_a_m",
+     "role": "incorrect",
+     "feedback": "That subtracts three hours. Going east, the clock is later, so add the difference."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s06_webinar_time",
+   "question_ref": "g5_q_webinar_time",
+   "label": "Eastern webinar time in Pacific (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_11_00_a_m",
+     "role": "strong",
+     "feedback": "Correct. Pacific time is three hours behind Eastern, so 2:00 p.m. Eastern is 11:00 a.m. Pacific."
+    },
+    {
+     "answer_ref": "g5_a_12_00_noon",
+     "role": "incorrect",
+     "feedback": "That is the time in the Mountain zone, two hours behind Eastern. Pacific is three hours behind."
+    },
+    {
+     "answer_ref": "g5_a_2_00_p_m",
+     "role": "incorrect",
+     "feedback": "The zones show different clock times. Pacific is behind Eastern by three hours."
+    },
+    {
+     "answer_ref": "g5_a_5_00_p_m",
+     "role": "incorrect",
+     "feedback": "That adds three hours. Going west, the clock is earlier, so subtract."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s07_midwest_multi",
+   "question_ref": "g5_q_midwest_multi",
+   "label": "Which states are in the Midwest (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_regions_borders",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_nebraska",
+     "role": "strong",
+     "feedback": "Yes. Nebraska is in the Census Midwest, in the Great Plains."
+    },
+    {
+     "answer_ref": "g5_a_iowa",
+     "role": "strong",
+     "feedback": "Yes. Iowa is in the Census Bureau's Midwest region."
+    },
+    {
+     "answer_ref": "g5_a_montana",
+     "role": "incorrect",
+     "feedback": "No. The Census Bureau puts Montana in the West region."
+    },
+    {
+     "answer_ref": "g5_a_arkansas",
+     "role": "incorrect",
+     "feedback": "No. The Census Bureau puts Arkansas in the South region."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s08_south_one",
+   "question_ref": "g5_q_south_one",
+   "label": "Pick the Southern state (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_idaho",
+     "role": "incorrect",
+     "feedback": "Idaho is in the Census West region."
+    },
+    {
+     "answer_ref": "g5_a_vermont",
+     "role": "incorrect",
+     "feedback": "Vermont is in the Census Northeast region."
+    },
+    {
+     "answer_ref": "g5_a_georgia",
+     "role": "strong",
+     "feedback": "Correct. Georgia is in the Census Bureau's South region."
+    },
+    {
+     "answer_ref": "g5_a_iowa",
+     "role": "incorrect",
+     "feedback": "Iowa is in the Census Midwest region."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s09_west_one",
+   "question_ref": "g5_q_west_one",
+   "label": "Pick the Western state (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_montana",
+     "role": "strong",
+     "feedback": "Correct. Montana is in the Census Bureau's West region, which includes the Mountain states."
+    },
+    {
+     "answer_ref": "g5_a_iowa",
+     "role": "incorrect",
+     "feedback": "Iowa is in the Census Midwest region."
+    },
+    {
+     "answer_ref": "g5_a_arkansas",
+     "role": "incorrect",
+     "feedback": "Arkansas is in the Census South region."
+    },
+    {
+     "answer_ref": "g5_a_georgia",
+     "role": "incorrect",
+     "feedback": "Georgia is in the Census South region."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s10_interstate_numbers",
+   "question_ref": "g5_q_interstate_numbers",
+   "label": "Interstate numbering (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "everyday_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_geography_in_everyday_decisions"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_everyday_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_only_around_a_city",
+     "role": "incorrect",
+     "feedback": "Loops around cities have three-digit numbers. A main two-digit odd route runs north-south."
+    },
+    {
+     "answer_ref": "g5_a_only_within_one_state",
+     "role": "incorrect",
+     "feedback": "Interstate numbers do not show whether a route stays in one state."
+    },
+    {
+     "answer_ref": "g5_a_mainly_east_west",
+     "role": "incorrect",
+     "feedback": "East-west routes use even numbers, such as 80 or 90."
+    },
+    {
+     "answer_ref": "g5_a_mainly_north_south",
+     "role": "strong",
+     "feedback": "Correct. Main Interstates with odd numbers run north-south, and those with even numbers run east-west."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s11_grassland",
+   "question_ref": "g5_q_grassland",
+   "label": "Biome of the Great Plains (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_grassland",
+     "role": "strong",
+     "feedback": "Correct. The Great Plains are mostly grassland, or prairie, with grasses suited to dry summers and wind."
+    },
+    {
+     "answer_ref": "g5_a_tropical_rain_forest",
+     "role": "incorrect",
+     "feedback": "Tropical rain forests need warm, wet weather all year, which does not fit the Great Plains."
+    },
+    {
+     "answer_ref": "g5_a_tundra",
+     "role": "incorrect",
+     "feedback": "Tundra is a cold treeless biome found in far northern places such as northern Alaska."
+    },
+    {
+     "answer_ref": "g5_a_desert",
+     "role": "incorrect",
+     "feedback": "Deserts are much drier than the Plains. Parts of the Southwest are deserts."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s12_texas_two_zones",
+   "question_ref": "g5_q_texas_two_zones",
+   "label": "State split by a time-zone line (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_time_zones",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_iowa",
+     "role": "incorrect",
+     "feedback": "Iowa is entirely in the Central time zone."
+    },
+    {
+     "answer_ref": "g5_a_texas",
+     "role": "strong",
+     "feedback": "Correct. Most of Texas is on Central time, but the El Paso area in the far west uses Mountain time."
+    },
+    {
+     "answer_ref": "g5_a_georgia",
+     "role": "incorrect",
+     "feedback": "Georgia is entirely in the Eastern time zone."
+    },
+    {
+     "answer_ref": "g5_a_colorado",
+     "role": "incorrect",
+     "feedback": "Colorado is entirely in the Mountain time zone."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s13_delaware_region",
+   "question_ref": "g5_q_delaware_region",
+   "label": "Census region of Delaware (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_west",
+     "role": "incorrect",
+     "feedback": "Delaware is on the Atlantic coast, far east of the West region."
+    },
+    {
+     "answer_ref": "g5_a_south",
+     "role": "strong",
+     "feedback": "Correct. The Census Bureau groups Delaware, Maryland and Washington, D.C. with the South Atlantic states, in its South region."
+    },
+    {
+     "answer_ref": "g5_a_northeast",
+     "role": "ambiguous",
+     "feedback": "Many people think of Delaware as Northeastern or Mid-Atlantic, and its location on the Atlantic seaboard supports that. It is not the Census assignment, though.",
+     "notes": "Cultural and geographic usage often places Delaware in the Northeast or Mid-Atlantic. The Census South assignment surprises many people. Marked ambiguous."
+    },
+    {
+     "answer_ref": "g5_a_midwest",
+     "role": "incorrect",
+     "feedback": "Delaware is on the Atlantic coast, far east of the Midwest."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s14_spanish_names",
+   "question_ref": "g5_q_spanish_names",
+   "label": "Spanish-language state names (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_human_geography",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_ohio",
+     "role": "incorrect",
+     "feedback": "No. Ohio comes from an Iroquoian word, often explained as meaning good river or great river."
+    },
+    {
+     "answer_ref": "g5_a_montana",
+     "role": "strong",
+     "feedback": "Yes. Montana comes from a Spanish word for mountainous."
+    },
+    {
+     "answer_ref": "g5_a_nevada",
+     "role": "strong",
+     "feedback": "Yes. Nevada is Spanish for snow-covered, a name given to the Sierra Nevada."
+    },
+    {
+     "answer_ref": "g5_a_colorado",
+     "role": "strong",
+     "feedback": "Yes. Colorado is a Spanish word meaning colored red, probably for the red rock and river."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s15_dc_not_state",
+   "question_ref": "g5_q_dc_not_state",
+   "label": "Why D.C. is not in a state (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_territories_dc",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_the_constitution_lets_congress_create_a_federal",
+     "role": "strong",
+     "feedback": "Correct. A federal district means the national capital does not depend on a single state."
+    },
+    {
+     "answer_ref": "g5_a_it_is_part_of_maryland_which_still_governs_it_as",
+     "role": "incorrect",
+     "feedback": "The land was once part of Maryland, but Maryland does not govern the city today. It is its own district."
+    },
+    {
+     "answer_ref": "g5_a_it_was_a_state_for_a_time_before_it_chose_to_giv",
+     "role": "incorrect",
+     "feedback": "No. Washington, D.C. was created as a federal district. It was never a state."
+    },
+    {
+     "answer_ref": "g5_a_it_is_officially_a_u_s_territory_in_the_same_cat",
+     "role": "incorrect",
+     "feedback": "No. Washington, D.C. is a federal district, a separate category from territories such as Guam."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s16_dc_true_multi",
+   "question_ref": "g5_q_dc_true_multi",
+   "label": "True statements about D.C. (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_territories_dc",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_it_is_the_seat_of_the_national_government",
+     "role": "strong",
+     "feedback": "Yes. Congress and the federal government have their home in Washington, D.C."
+    },
+    {
+     "answer_ref": "g5_a_it_is_a_u_s_territory_in_the_pacific_ocean",
+     "role": "incorrect",
+     "feedback": "No. D.C. sits on the Potomac River on the East Coast. Territories in the Pacific include Guam and American Samoa."
+    },
+    {
+     "answer_ref": "g5_a_it_is_part_of_maryland_which_still_governs_it_as",
+     "role": "incorrect",
+     "feedback": "No. The district is separate from Maryland and is not governed by it."
+    },
+    {
+     "answer_ref": "g5_a_it_is_not_one_of_the_50_states",
+     "role": "strong",
+     "feedback": "Yes. Washington, D.C. is a federal district, not a state."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s17_central_valley",
+   "question_ref": "g5_q_central_valley",
+   "label": "Economy of the Central Valley (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_human_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_deep_sea_fishing",
+     "role": "incorrect",
+     "feedback": "Deep-sea fishing is done on the coast and the ocean, not in an inland valley."
+    },
+    {
+     "answer_ref": "g5_a_large_scale_farming",
+     "role": "strong",
+     "feedback": "Correct. The Central Valley's flat land, long growing season and irrigation make it one of the country's major farming regions."
+    },
+    {
+     "answer_ref": "g5_a_rain_forest_logging",
+     "role": "incorrect",
+     "feedback": "The valley is dry in summer. Rain forests are in other parts of the Pacific Northwest."
+    },
+    {
+     "answer_ref": "g5_a_ski_resorts",
+     "role": "incorrect",
+     "feedback": "Ski resorts are in the nearby mountains, not on the valley floor."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s18_not_a_territory",
+   "question_ref": "g5_q_not_a_territory",
+   "label": "Independent country, not a territory (General adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_territories_dc",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_american_samoa",
+     "role": "incorrect",
+     "feedback": "American Samoa is a U.S. territory. Its name is easy to confuse with the independent country of Samoa."
+    },
+    {
+     "answer_ref": "g5_a_northern_mariana_islands",
+     "role": "incorrect",
+     "feedback": "The Northern Mariana Islands are a U.S. commonwealth, a kind of territory, in the western Pacific."
+    },
+    {
+     "answer_ref": "g5_a_guam",
+     "role": "incorrect",
+     "feedback": "Guam is a U.S. territory in the western Pacific."
+    },
+    {
+     "answer_ref": "g5_a_samoa",
+     "role": "strong",
+     "feedback": "Correct. Samoa is an independent country. American Samoa, a separate place, is a U.S. territory."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s19_not_a_territory",
+   "question_ref": "g5_q_not_a_territory",
+   "label": "Independent country, not a territory (Adult enthusiast, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_territories_dc",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_american_samoa",
+     "role": "incorrect",
+     "feedback": "American Samoa is a U.S. territory, and the name invites a mix-up with the neighboring country."
+    },
+    {
+     "answer_ref": "g5_a_northern_mariana_islands",
+     "role": "incorrect",
+     "feedback": "The Northern Mariana Islands are a U.S. commonwealth, a kind of territory, in the western Pacific."
+    },
+    {
+     "answer_ref": "g5_a_samoa",
+     "role": "strong",
+     "feedback": "Correct. Samoa is a sovereign country. American Samoa, to its east, is an unincorporated U.S. territory."
+    },
+    {
+     "answer_ref": "g5_a_guam",
+     "role": "incorrect",
+     "feedback": "Guam is an unincorporated U.S. territory in the western Pacific."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s20_mississippi_name",
+   "question_ref": "g5_q_mississippi_name",
+   "label": "Meaning of the name Mississippi (General adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_human_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_great_river",
+     "role": "strong",
+     "feedback": "Correct. The name comes from Ojibwe words that mean great river."
+    },
+    {
+     "answer_ref": "g5_a_land_of_many_lakes",
+     "role": "incorrect",
+     "feedback": "Many lakes are linked to Minnesota, near the river's source, but that is not the meaning of the name."
+    },
+    {
+     "answer_ref": "g5_a_muddy_water",
+     "role": "incorrect",
+     "feedback": "Muddy is a trait people link to the Missouri River, not the meaning of the Mississippi's name."
+    },
+    {
+     "answer_ref": "g5_a_father_of_waters",
+     "role": "ambiguous",
+     "feedback": "This is a popular translation and widely quoted, so it is not a careless answer. Many language experts prefer great river as the more direct meaning.",
+     "notes": "A very common translation in popular sources, but scholarly sources favor great river. Marked ambiguous so the feedback can explain, not mark it flatly wrong."
+    }
+   ]
+  },
+  {
+   "client_ref": "g5_s21_mississippi_name",
+   "question_ref": "g5_q_mississippi_name",
+   "label": "Meaning of the name Mississippi (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_05",
+     "us_geography",
+     "skill_human_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g5_a_land_of_many_lakes",
+     "role": "incorrect",
+     "feedback": "This is not the meaning. The name refers to the river itself, not to lakes."
+    },
+    {
+     "answer_ref": "g5_a_father_of_waters",
+     "role": "ambiguous",
+     "feedback": "Popular sources often give this, and it is a famous phrase, so it is a defensible answer. Language scholars generally prefer great river for the literal meaning.",
+     "notes": "Popular translation versus scholarly meaning. Marked ambiguous for expert level."
+    },
+    {
+     "answer_ref": "g5_a_muddy_water",
+     "role": "incorrect",
+     "feedback": "This is not the meaning. The word for muddy is not part of the name."
+    },
+    {
+     "answer_ref": "g5_a_great_river",
+     "role": "strong",
+     "feedback": "Correct. The name is an English and French rendering of Ojibwe words for great river."
+    }
+   ]
+  }
+ ]
+}
