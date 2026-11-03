@@ -1,0 +1,2524 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c4_q_decl_free",
+   "data": {
+    "question_text": "The Declaration of Independence said the American colonies were free from which country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_first_pres",
+   "data": {
+    "question_text": "Who was the first President of the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_decl_author",
+   "data": {
+    "question_text": "Who was the main writer of the Declaration of Independence?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_thirteen",
+   "data": {
+    "question_text": "How many colonies became the first states of the new country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_why_came",
+   "data": {
+    "question_text": "Which of these were reasons many European settlers chose to come to the colonies? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_no_tax",
+   "data": {
+    "question_text": "Colonists used the slogan 'no taxation without representation.' What did they mean?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_articles",
+   "data": {
+    "question_text": "Why did the founders replace the Articles of Confederation with the Constitution?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_philly",
+   "data": {
+    "question_text": "In which city did delegates meet in 1787 to write the Constitution?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_federalist",
+   "data": {
+    "question_text": "What was the purpose of the Federalist Papers?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_q_slavery_founding",
+   "data": {
+    "question_text": "A tutor is explaining slavery and the founding. Which statement is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c4_a_gb",
+   "data": {
+    "answer_text": "Britain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_fr",
+   "data": {
+    "answer_text": "France",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_sp",
+   "data": {
+    "answer_text": "Spain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_mx",
+   "data": {
+    "answer_text": "Mexico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ca",
+   "data": {
+    "answer_text": "Canada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_gw",
+   "data": {
+    "answer_text": "George Washington",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_tj",
+   "data": {
+    "answer_text": "Thomas Jefferson",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_al",
+   "data": {
+    "answer_text": "Abraham Lincoln",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_bf",
+   "data": {
+    "answer_text": "Benjamin Franklin",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_n13",
+   "data": {
+    "answer_text": "Thirteen",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_n10",
+   "data": {
+    "answer_text": "Ten",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_n12",
+   "data": {
+    "answer_text": "Twelve",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_n14",
+   "data": {
+    "answer_text": "Fourteen",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_n50",
+   "data": {
+    "answer_text": "Fifty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_wc_rel",
+   "data": {
+    "answer_text": "Freedom to practice their religion",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_wc_land",
+   "data": {
+    "answer_text": "A chance to own land and earn a living",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_wc_rules",
+   "data": {
+    "answer_text": "Because the colonies had no rulers and no rules",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_wc_fact",
+   "data": {
+    "answer_text": "To work in large factories that were common in the colonies",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_nt_voice",
+   "data": {
+    "answer_text": "They objected to paying taxes when they had no elected voice in the government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_nt_none",
+   "data": {
+    "answer_text": "They wanted to avoid paying taxes to any government at any time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_nt_king",
+   "data": {
+    "answer_text": "They wanted the king to pay all of the taxes of the colonies himself",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_nt_big",
+   "data": {
+    "answer_text": "They wanted only the largest and richest colonies to pay any tax",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ar_weak",
+   "data": {
+    "answer_text": "The national government they created was too weak to work well",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ar_strong",
+   "data": {
+    "answer_text": "The national government they created was too strong and powerful",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ar_brit",
+   "data": {
+    "answer_text": "Great Britain demanded that the new country change its plan",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ar_pres",
+   "data": {
+    "answer_text": "They gave the President far too much power over the states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ph_phil",
+   "data": {
+    "answer_text": "Philadelphia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ph_boston",
+   "data": {
+    "answer_text": "Boston",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ph_ny",
+   "data": {
+    "answer_text": "New York City",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_ph_dc",
+   "data": {
+    "answer_text": "Washington, D.C.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_fp_support",
+   "data": {
+    "answer_text": "To explain the Constitution and persuade people to approve it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_fp_oppose",
+   "data": {
+    "answer_text": "To argue that the states should reject the Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_fp_decl",
+   "data": {
+    "answer_text": "To announce that the colonies were separate from Britain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_fp_slave",
+   "data": {
+    "answer_text": "To argue for ending slavery in the new country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_sf_allow",
+   "data": {
+    "answer_text": "The original Constitution allowed slavery to continue, and later amendments ended it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_sf_ended",
+   "data": {
+    "answer_text": "The original Constitution ended slavery in every state at once, but the law was ignored",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_sf_terr",
+   "data": {
+    "answer_text": "The original Constitution allowed slavery only in new territories and banned it in the states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c4_a_sf_none",
+   "data": {
+    "answer_text": "The original Constitution contained nothing that touched on slavery, even indirectly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "colonial_founding"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "outline_colonial_and_founding_history"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_04",
+      "us_citizenship",
+      "skill_colonial_founding"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c4_s_free_e",
+   "question_ref": "c4_q_decl_free",
+   "label": "Declaration and Britain (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_gb",
+     "role": "strong",
+     "feedback": "Yes. The colonies said they were free from Great Britain."
+    },
+    {
+     "answer_ref": "c4_a_fr",
+     "role": "incorrect",
+     "feedback": "No. France helped the colonies later in the war. The colonies became free from Britain."
+    },
+    {
+     "answer_ref": "c4_a_sp",
+     "role": "incorrect",
+     "feedback": "No. Spain is a different country. The colonies were under British rule."
+    },
+    {
+     "answer_ref": "c4_a_mx",
+     "role": "incorrect",
+     "feedback": "No. Mexico is a neighbor today, but it was not the country that ruled the colonies."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_free_a",
+   "question_ref": "c4_q_decl_free",
+   "label": "Declaration and Britain (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_gb",
+     "role": "strong",
+     "feedback": "Correct. The Declaration of Independence announced that the thirteen colonies were no longer under British rule."
+    },
+    {
+     "answer_ref": "c4_a_fr",
+     "role": "incorrect",
+     "feedback": "France later became an ally of the colonies, but it was not the country that ruled them."
+    },
+    {
+     "answer_ref": "c4_a_sp",
+     "role": "incorrect",
+     "feedback": "Spain held other lands in the Americas, but the thirteen colonies were British."
+    },
+    {
+     "answer_ref": "c4_a_ca",
+     "role": "incorrect",
+     "feedback": "Canada was also under British rule at that time. The colonies that declared independence were the thirteen to the south."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_pres_e",
+   "question_ref": "c4_q_first_pres",
+   "label": "First President (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_gw",
+     "role": "strong",
+     "feedback": "Yes. George Washington was the first President of the United States."
+    },
+    {
+     "answer_ref": "c4_a_tj",
+     "role": "incorrect",
+     "feedback": "No. Thomas Jefferson was a later President. He wrote the Declaration of Independence."
+    },
+    {
+     "answer_ref": "c4_a_al",
+     "role": "incorrect",
+     "feedback": "No. Abraham Lincoln was President many years later, during the Civil War."
+    },
+    {
+     "answer_ref": "c4_a_bf",
+     "role": "incorrect",
+     "feedback": "No. Benjamin Franklin was an important leader, but he was not President."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_pres_a",
+   "question_ref": "c4_q_first_pres",
+   "label": "First President (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_gw",
+     "role": "strong",
+     "feedback": "Correct. George Washington led the army in the Revolution and was then the first President."
+    },
+    {
+     "answer_ref": "c4_a_tj",
+     "role": "incorrect",
+     "feedback": "Thomas Jefferson was an early President, but not the first. He is known as the main writer of the Declaration of Independence."
+    },
+    {
+     "answer_ref": "c4_a_al",
+     "role": "incorrect",
+     "feedback": "Abraham Lincoln was President during the Civil War, long after the first President."
+    },
+    {
+     "answer_ref": "c4_a_bf",
+     "role": "incorrect",
+     "feedback": "Benjamin Franklin was a writer, scientist and diplomat. He helped found the country but was never President."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_author_a",
+   "question_ref": "c4_q_decl_author",
+   "label": "Writer of the Declaration (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_tj",
+     "role": "strong",
+     "feedback": "Correct. Thomas Jefferson was the main writer, working with a committee."
+    },
+    {
+     "answer_ref": "c4_a_gw",
+     "role": "incorrect",
+     "feedback": "George Washington led the army and later became the first President. He did not write the Declaration."
+    },
+    {
+     "answer_ref": "c4_a_al",
+     "role": "incorrect",
+     "feedback": "Abraham Lincoln lived much later, in the era of the Civil War."
+    },
+    {
+     "answer_ref": "c4_a_bf",
+     "role": "incorrect",
+     "feedback": "Benjamin Franklin helped edit the Declaration as part of the committee, but Jefferson was the main writer."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_author_g",
+   "question_ref": "c4_q_decl_author",
+   "label": "Writer of the Declaration (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_tj",
+     "role": "strong",
+     "feedback": "Yes. Thomas Jefferson drafted the Declaration of Independence."
+    },
+    {
+     "answer_ref": "c4_a_gw",
+     "role": "incorrect",
+     "feedback": "Washington commanded the Continental Army. He was not the drafter of the Declaration."
+    },
+    {
+     "answer_ref": "c4_a_bf",
+     "role": "incorrect",
+     "feedback": "Franklin was on the drafting committee and offered edits, but Jefferson wrote the main text."
+    },
+    {
+     "answer_ref": "c4_a_al",
+     "role": "incorrect",
+     "feedback": "Lincoln was born long after the Declaration was written."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_thirteen_e",
+   "question_ref": "c4_q_thirteen",
+   "label": "Original colonies (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_n13",
+     "role": "strong",
+     "feedback": "Yes. There were thirteen colonies. They became the first states."
+    },
+    {
+     "answer_ref": "c4_a_n10",
+     "role": "incorrect",
+     "feedback": "No. Ten is not the number. There were thirteen colonies."
+    },
+    {
+     "answer_ref": "c4_a_n14",
+     "role": "incorrect",
+     "feedback": "No. Fourteen is one too many. There were thirteen."
+    },
+    {
+     "answer_ref": "c4_a_n50",
+     "role": "incorrect",
+     "feedback": "No. Fifty is the number of states today. At first there were thirteen."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_thirteen_a",
+   "question_ref": "c4_q_thirteen",
+   "label": "Original colonies (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_n13",
+     "role": "strong",
+     "feedback": "Correct. Thirteen colonies became the first states. This is why the flag has thirteen stripes."
+    },
+    {
+     "answer_ref": "c4_a_n14",
+     "role": "incorrect",
+     "feedback": "Fourteen is one too many. There were thirteen original colonies, and the number ten belongs to the Bill of Rights."
+    },
+    {
+     "answer_ref": "c4_a_n50",
+     "role": "incorrect",
+     "feedback": "Fifty is the number of states today. The country started with thirteen."
+    },
+    {
+     "answer_ref": "c4_a_n12",
+     "role": "incorrect",
+     "feedback": "Twelve is one too few. The correct number is thirteen, and the thirteen stripes on the flag remind us of them."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_whycame_g",
+   "question_ref": "c4_q_why_came",
+   "label": "Why settlers came (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_wc_rel",
+     "role": "strong",
+     "feedback": "Yes. Many settlers came to practice their religion freely. Some other people, such as enslaved Africans, were brought by force and did not choose to come."
+    },
+    {
+     "answer_ref": "c4_a_wc_land",
+     "role": "strong",
+     "feedback": "Yes. Land and a chance to earn a living drew many settlers."
+    },
+    {
+     "answer_ref": "c4_a_wc_rules",
+     "role": "incorrect",
+     "feedback": "The colonies had rulers and laws. They were governed by colonial governments under Britain."
+    },
+    {
+     "answer_ref": "c4_a_wc_fact",
+     "role": "incorrect",
+     "feedback": "The colonies were mostly farming communities. Large factories came later."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_notax_a",
+   "question_ref": "c4_q_no_tax",
+   "label": "No taxation without representation (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_nt_voice",
+     "role": "strong",
+     "feedback": "Correct. Colonists objected to taxes passed by a government in which they had no elected representatives."
+    },
+    {
+     "answer_ref": "c4_a_nt_none",
+     "role": "incorrect",
+     "feedback": "They accepted government and taxes in general. Their complaint was about having no voice in decisions."
+    },
+    {
+     "answer_ref": "c4_a_nt_king",
+     "role": "incorrect",
+     "feedback": "Colonists did not ask the king to pay their taxes. They wanted a say in how they were taxed."
+    },
+    {
+     "answer_ref": "c4_a_nt_big",
+     "role": "incorrect",
+     "feedback": "The complaint was not about which colonies paid. It was about having no elected voice."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_notax_g",
+   "question_ref": "c4_q_no_tax",
+   "label": "No taxation without representation (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_nt_voice",
+     "role": "strong",
+     "feedback": "Yes. The slogan asked for a voice in government. Taxes were being set in Britain, where the colonists had no representatives."
+    },
+    {
+     "answer_ref": "c4_a_nt_big",
+     "role": "incorrect",
+     "feedback": "This misses the point. The protest was about representation, not about which colonies were taxed."
+    },
+    {
+     "answer_ref": "c4_a_nt_none",
+     "role": "incorrect",
+     "feedback": "Colonists paid taxes to their own colonial governments. They objected to taxes from a distant government that did not represent them."
+    },
+    {
+     "answer_ref": "c4_a_nt_king",
+     "role": "incorrect",
+     "feedback": "The slogan is about representation, not about shifting costs to the king."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_articles_a",
+   "question_ref": "c4_q_articles",
+   "label": "Articles replaced (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_ar_weak",
+     "role": "strong",
+     "feedback": "Correct. Under the Articles, the national government could not raise taxes directly or manage trade between states well. The Constitution created a stronger government."
+    },
+    {
+     "answer_ref": "c4_a_ar_strong",
+     "role": "incorrect",
+     "feedback": "It was the opposite. The Articles left the national government too weak."
+    },
+    {
+     "answer_ref": "c4_a_ar_brit",
+     "role": "incorrect",
+     "feedback": "Britain had no say in the plan. The founders made the change themselves."
+    },
+    {
+     "answer_ref": "c4_a_ar_pres",
+     "role": "incorrect",
+     "feedback": "The Articles did not create a President. A separate executive branch came with the Constitution."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_philly_a",
+   "question_ref": "c4_q_philly",
+   "label": "City of the Constitutional Convention (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_ph_phil",
+     "role": "strong",
+     "feedback": "Correct. Delegates met in Philadelphia in 1787 and wrote the Constitution."
+    },
+    {
+     "answer_ref": "c4_a_ph_boston",
+     "role": "incorrect",
+     "feedback": "Boston was important in the Revolution, but the Constitution was not written there."
+    },
+    {
+     "answer_ref": "c4_a_ph_ny",
+     "role": "incorrect",
+     "feedback": "New York City served as an early capital, but the convention met in Philadelphia."
+    },
+    {
+     "answer_ref": "c4_a_ph_dc",
+     "role": "incorrect",
+     "feedback": "Washington, D.C. did not yet exist in 1787. It was founded later as the capital."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_fed_a",
+   "question_ref": "c4_q_federalist",
+   "label": "Federalist Papers (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_fp_support",
+     "role": "strong",
+     "feedback": "Correct. The Federalist Papers were essays that explained the new Constitution and argued for approving it."
+    },
+    {
+     "answer_ref": "c4_a_fp_oppose",
+     "role": "incorrect",
+     "feedback": "They argued for the Constitution. Writers who opposed it were called Anti-Federalists."
+    },
+    {
+     "answer_ref": "c4_a_fp_decl",
+     "role": "incorrect",
+     "feedback": "That was the purpose of the Declaration of Independence, written years earlier."
+    },
+    {
+     "answer_ref": "c4_a_fp_slave",
+     "role": "incorrect",
+     "feedback": "The essays were about the structure of the new government, not about ending slavery."
+    }
+   ]
+  },
+  {
+   "client_ref": "c4_s_slavefound_t",
+   "question_ref": "c4_q_slavery_founding",
+   "label": "Slavery and the founding (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "colonial_founding"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "outline_colonial_and_founding_history"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_04",
+     "us_citizenship",
+     "skill_colonial_founding",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c4_a_sf_allow",
+     "role": "strong",
+     "feedback": "Yes. The original Constitution did not end slavery, and it included provisions that protected it, though it avoided the word. Later amendments ended it."
+    },
+    {
+     "answer_ref": "c4_a_sf_ended",
+     "role": "incorrect",
+     "feedback": "The original Constitution did not end slavery. Slavery ended later, through the Civil War and the Thirteenth Amendment."
+    },
+    {
+     "answer_ref": "c4_a_sf_terr",
+     "role": "incorrect",
+     "feedback": "This is not what the Constitution said. Slavery continued in several states."
+    },
+    {
+     "answer_ref": "c4_a_sf_none",
+     "role": "incorrect",
+     "feedback": "Although the word is avoided, several clauses dealt with slavery. For example, one counted enslaved people for representation."
+    }
+   ]
+  }
+ ]
+}

@@ -1074,7 +1074,7 @@
   {
    "client_ref": "c3_a_su_new",
    "data": {
-    "answer_text": "Whichever law was passed more recently",
+    "answer_text": "Whichever law is newer",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -3298,7 +3298,7 @@
     {
      "answer_ref": "c3_a_np_license",
      "role": "strong",
-     "feedback": "Yes. States issue driver's licenses."
+     "feedback": "Yes. States issue driver's licenses to people who live there."
     },
     {
      "answer_ref": "c3_a_sp_school",
@@ -3476,7 +3476,7 @@
     {
      "answer_ref": "c3_a_yr6",
      "role": "incorrect",
-     "feedback": "Six years is the term for a senator."
+     "feedback": "Six years is the term for a senator, not the President."
     },
     {
      "answer_ref": "c3_a_yr8",
@@ -3532,7 +3532,7 @@
     {
      "answer_ref": "c3_a_yr4",
      "role": "incorrect",
-     "feedback": "Four years is the term for the President."
+     "feedback": "Four years is the term for the President, not for a member of Congress."
     },
     {
      "answer_ref": "c3_a_yr8",
@@ -3583,12 +3583,12 @@
     {
      "answer_ref": "c3_a_yr4",
      "role": "incorrect",
-     "feedback": "Four years is the term for the President."
+     "feedback": "Four years is the term for the President, not for a member of Congress."
     },
     {
      "answer_ref": "c3_a_yr6",
      "role": "incorrect",
-     "feedback": "Six years is the term for a senator."
+     "feedback": "Six years is the term for a senator, not a House member."
     },
     {
      "answer_ref": "c3_a_yr8",
