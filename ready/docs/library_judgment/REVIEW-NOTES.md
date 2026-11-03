@@ -34,5 +34,5 @@ These were already softened (the rival choice is `ambiguous` with an editor note
 ## Known gaps
 - Thin pools: see COVERAGE.md (college intermediate and advanced, teen above introductory, manager basic, adult introductory and expert).
 - Answer reuse is low compared with a fact library. Judgment answers are tied to scenarios, so reuse comes mostly from shared scenarios and a few general moves.
-- Reasoning-error items name the error by function in the feedback. The classic names (circular reasoning, cherry-picking, false dilemma, appeal to authority, slippery slope) appear in the feedback, but "straw man", "ad hominem" and "false cause" are only described, not named, in a few places.
+- Reasoning-error items describe the error by what it does in the feedback. Some classic labels appear (sunk-cost trap, slippery slope, confirmation bias), but others (circular reasoning, cherry-picking, false dilemma, appeal to authority, straw man) are described rather than named. Say if you want the labels added.
 - No item uses an image, chart or link; items that ideally need a table (for example a base-rate table) are described in words.
