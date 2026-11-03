@@ -1,0 +1,1800 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c1_q_supreme_law",
+   "data": {
+    "question_text": "Which document is the supreme law of the United States? (Supreme means highest.)",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_three_branches",
+   "data": {
+    "question_text": "Which of these are branches of the national government? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_makes_laws",
+   "data": {
+    "question_text": "Which part of the national government writes and passes laws?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_commander",
+   "data": {
+    "question_text": "Who is the commander in chief of the armed forces of the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_first_amend",
+   "data": {
+    "question_text": "Which of these freedoms does the First Amendment protect? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_amend_slavery",
+   "data": {
+    "question_text": "Which amendment to the Constitution ended slavery in the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_amend_citizen",
+   "data": {
+    "question_text": "Which amendment says that people born in the United States are citizens, and that no state may deny any person equal protection of the laws?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_q_rep_democracy",
+   "data": {
+    "question_text": "Which phrase describes a government in which citizens vote for people who make laws for them?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c1_a_constitution",
+   "data": {
+    "answer_text": "The Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_declaration",
+   "data": {
+    "answer_text": "The Declaration of Independence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_bill_of_rights",
+   "data": {
+    "answer_text": "The Bill of Rights",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_articles",
+   "data": {
+    "answer_text": "The Articles of Confederation",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_act_congress",
+   "data": {
+    "answer_text": "A law passed by Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_legislative",
+   "data": {
+    "answer_text": "The legislative branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_executive",
+   "data": {
+    "answer_text": "The executive branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_judicial",
+   "data": {
+    "answer_text": "The judicial branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_military",
+   "data": {
+    "answer_text": "The military branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_congress",
+   "data": {
+    "answer_text": "Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_president",
+   "data": {
+    "answer_text": "The President",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_supreme_court",
+   "data": {
+    "answer_text": "The Supreme Court",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_cabinet",
+   "data": {
+    "answer_text": "The Cabinet",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_speech",
+   "data": {
+    "answer_text": "Freedom of speech",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_religion",
+   "data": {
+    "answer_text": "Freedom of religion",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_press",
+   "data": {
+    "answer_text": "Freedom of the press",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_bear_arms",
+   "data": {
+    "answer_text": "The right to keep and bear arms",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am13",
+   "data": {
+    "answer_text": "The Thirteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes",
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am14",
+   "data": {
+    "answer_text": "The Fourteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes",
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am15",
+   "data": {
+    "answer_text": "The Fifteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes",
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am19",
+   "data": {
+    "answer_text": "The Nineteenth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am26",
+   "data": {
+    "answer_text": "The Twenty-Sixth Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_am1",
+   "data": {
+    "answer_text": "The First Amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes",
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_rep_dem",
+   "data": {
+    "answer_text": "A representative democracy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_republic",
+   "data": {
+    "answer_text": "A republic",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_monarchy",
+   "data": {
+    "answer_text": "A monarchy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c1_a_direct_dem",
+   "data": {
+    "answer_text": "A direct democracy, where every citizen votes on every law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_01",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c1_s_supreme_law_e",
+   "question_ref": "c1_q_supreme_law",
+   "label": "Supreme law (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_constitution",
+     "role": "strong",
+     "feedback": "Yes. The Constitution is the highest law in the country. Every other law must follow it."
+    },
+    {
+     "answer_ref": "c1_a_declaration",
+     "role": "incorrect",
+     "feedback": "Not this one. The Declaration of Independence said the colonies were free from Britain. It is not the highest law."
+    },
+    {
+     "answer_ref": "c1_a_bill_of_rights",
+     "role": "incorrect",
+     "feedback": "Close, but no. The Bill of Rights is the first ten amendments. They are a part of the Constitution."
+    },
+    {
+     "answer_ref": "c1_a_articles",
+     "role": "incorrect",
+     "feedback": "No. The Articles of Confederation were the first plan of government. The Constitution replaced them."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_supreme_law_a",
+   "question_ref": "c1_q_supreme_law",
+   "label": "Supreme law (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_constitution",
+     "role": "strong",
+     "feedback": "Correct. The Constitution is the supreme law of the land. Laws made by Congress, states and courts must agree with it."
+    },
+    {
+     "answer_ref": "c1_a_declaration",
+     "role": "incorrect",
+     "feedback": "The Declaration of Independence explains why the colonies separated from Britain. It is a founding document, but it does not set the rules of government."
+    },
+    {
+     "answer_ref": "c1_a_act_congress",
+     "role": "incorrect",
+     "feedback": "Laws passed by Congress are important, but they must follow the Constitution. If a law conflicts with it, courts can strike the law down."
+    },
+    {
+     "answer_ref": "c1_a_articles",
+     "role": "incorrect",
+     "feedback": "The Articles of Confederation were the first national plan of government. They were replaced by the Constitution."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_branches_g",
+   "question_ref": "c1_q_three_branches",
+   "label": "Branches of government (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_system_government",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_legislative",
+     "role": "strong",
+     "feedback": "Yes. The legislative branch (Congress) makes laws."
+    },
+    {
+     "answer_ref": "c1_a_executive",
+     "role": "strong",
+     "feedback": "Yes. The executive branch, led by the President, carries out and enforces laws."
+    },
+    {
+     "answer_ref": "c1_a_judicial",
+     "role": "strong",
+     "feedback": "Yes. The judicial branch, the courts, explains the laws and decides disputes about them."
+    },
+    {
+     "answer_ref": "c1_a_military",
+     "role": "incorrect",
+     "feedback": "The armed forces are important, but they are part of the executive branch. The military is not a separate branch of the national government."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_makes_laws_e",
+   "question_ref": "c1_q_makes_laws",
+   "label": "Who passes laws (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_congress",
+     "role": "strong",
+     "feedback": "Yes. Congress writes and passes the laws of the country."
+    },
+    {
+     "answer_ref": "c1_a_president",
+     "role": "incorrect",
+     "feedback": "Not quite. The President signs laws or says no to them. The President does not write them."
+    },
+    {
+     "answer_ref": "c1_a_supreme_court",
+     "role": "incorrect",
+     "feedback": "No. The Supreme Court decides what laws mean. It does not pass laws."
+    },
+    {
+     "answer_ref": "c1_a_cabinet",
+     "role": "incorrect",
+     "feedback": "No. The Cabinet is a group of leaders who advise the President. They do not pass laws."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_commander_a",
+   "question_ref": "c1_q_commander",
+   "label": "Commander in chief (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_president",
+     "role": "strong",
+     "feedback": "Correct. The Constitution makes the President the commander in chief. This keeps the military under the control of an elected civilian leader."
+    },
+    {
+     "answer_ref": "c1_a_congress",
+     "role": "incorrect",
+     "feedback": "Congress has important war powers: it declares war and pays for the military. But it does not command the forces. That role belongs to the President."
+    },
+    {
+     "answer_ref": "c1_a_supreme_court",
+     "role": "incorrect",
+     "feedback": "The Supreme Court is the top court. It decides legal cases and does not command the armed forces."
+    },
+    {
+     "answer_ref": "c1_a_cabinet",
+     "role": "incorrect",
+     "feedback": "Cabinet members lead departments and advise the President. The President, not the Cabinet, is the commander in chief."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_first_amend_a",
+   "question_ref": "c1_q_first_amend",
+   "label": "First Amendment freedoms (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "rights_freedoms"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_rights_and_freedoms"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_rights_freedoms",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_speech",
+     "role": "strong",
+     "feedback": "Yes. Freedom of speech is in the First Amendment."
+    },
+    {
+     "answer_ref": "c1_a_religion",
+     "role": "strong",
+     "feedback": "Yes. The First Amendment protects the freedom to practice any religion or none."
+    },
+    {
+     "answer_ref": "c1_a_press",
+     "role": "strong",
+     "feedback": "Yes. Freedom of the press means the government cannot generally control what news outlets publish."
+    },
+    {
+     "answer_ref": "c1_a_bear_arms",
+     "role": "incorrect",
+     "feedback": "This right is in the Second Amendment, not the First. The First Amendment covers religion, speech, press, assembly and petition."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_slavery_a",
+   "question_ref": "c1_q_amend_slavery",
+   "label": "Amendment ending slavery (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_am13",
+     "role": "strong",
+     "feedback": "Correct. The Thirteenth Amendment, approved after the Civil War, ended slavery in the United States."
+    },
+    {
+     "answer_ref": "c1_a_am15",
+     "role": "incorrect",
+     "feedback": "The Fifteenth Amendment says a citizen's right to vote cannot be denied because of race. It came after slavery had already ended."
+    },
+    {
+     "answer_ref": "c1_a_am19",
+     "role": "incorrect",
+     "feedback": "The Nineteenth Amendment gave women the right to vote. It came much later, in the twentieth century."
+    },
+    {
+     "answer_ref": "c1_a_am1",
+     "role": "incorrect",
+     "feedback": "The First Amendment protects freedoms such as speech and religion. It does not deal with slavery."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_slavery_t",
+   "question_ref": "c1_q_amend_slavery",
+   "label": "Amendment ending slavery (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_am13",
+     "role": "strong",
+     "feedback": "Correct. Ratified after the Civil War, the Thirteenth Amendment abolished slavery. Learners often mix it up with the next two amendments, so teach the three together."
+    },
+    {
+     "answer_ref": "c1_a_am14",
+     "role": "incorrect",
+     "feedback": "The Fourteenth Amendment addressed citizenship and equal protection. It built on the Thirteenth but did not itself end slavery. A useful teaching point: separate ending slavery from defining citizenship."
+    },
+    {
+     "answer_ref": "c1_a_am15",
+     "role": "incorrect",
+     "feedback": "The Fifteenth Amendment protects the vote from denial on grounds of race. It is the third of the three post-war amendments."
+    },
+    {
+     "answer_ref": "c1_a_am26",
+     "role": "incorrect",
+     "feedback": "The Twenty-Sixth Amendment lowered the voting age to eighteen. It is unrelated to slavery."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_citizen_t",
+   "question_ref": "c1_q_amend_citizen",
+   "label": "Citizenship and equal protection (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "rights_freedoms"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "identify_rights_and_freedoms"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_rights_freedoms",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_am14",
+     "role": "strong",
+     "feedback": "Correct. The Fourteenth Amendment defines citizenship by birth in the country and guarantees equal protection and due process against the states."
+    },
+    {
+     "answer_ref": "c1_a_am13",
+     "role": "incorrect",
+     "feedback": "The Thirteenth Amendment ended slavery. The question asks about citizenship and equal protection, which the Fourteenth Amendment covers."
+    },
+    {
+     "answer_ref": "c1_a_am15",
+     "role": "incorrect",
+     "feedback": "The Fifteenth Amendment protects voting from racial denial. It does not define citizenship or state the equal protection principle."
+    },
+    {
+     "answer_ref": "c1_a_am1",
+     "role": "incorrect",
+     "feedback": "The First Amendment protects freedoms such as speech and religion. Equal protection language is in the Fourteenth."
+    }
+   ]
+  },
+  {
+   "client_ref": "c1_s_rep_dem_g",
+   "question_ref": "c1_q_rep_democracy",
+   "label": "Representative government (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_01",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c1_a_rep_dem",
+     "role": "strong",
+     "feedback": "Yes. In a representative democracy, citizens elect representatives who make decisions for them."
+    },
+    {
+     "answer_ref": "c1_a_republic",
+     "role": "ambiguous",
+     "feedback": "Also defensible. Many people call the United States a republic, a government with elected leaders and a constitution. The two terms overlap, so either may be taught.",
+     "notes": "Republic and representative democracy are used for the same system in many classrooms. Some tutors reserve 'republic' for emphasis on constitutional limits. Accepting both avoids penalising a correct use."
+    },
+    {
+     "answer_ref": "c1_a_monarchy",
+     "role": "incorrect",
+     "feedback": "A monarchy is ruled by a king or queen, usually by inheritance. Citizens do not elect the ruler."
+    },
+    {
+     "answer_ref": "c1_a_direct_dem",
+     "role": "incorrect",
+     "feedback": "In a direct democracy people vote on laws themselves. The national government of the United States does not work this way."
+    }
+   ]
+  }
+ ]
+}
