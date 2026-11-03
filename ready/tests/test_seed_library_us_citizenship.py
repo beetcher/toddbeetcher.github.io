@@ -22,9 +22,15 @@ SCHEMA = json.loads((ROOT / "schemas" / "bulk_import.schema.json").read_text())
 
 # file -> (questions, answers, sets, batch tag)
 EXPECTED = {
-    "us_citizenship_sample_01.json": (8, 27, 10, "ready_lib_us_citizenship_01"),
     "us_citizenship_lib_02_principles_government.json": (23, 75, 30, "ready_lib_us_citizenship_02"),
     "us_citizenship_lib_03_rights_responsibilities_elections.json": (21, 71, 26, "ready_lib_us_citizenship_03"),
+    "us_citizenship_lib_04_colonial_founding.json": (10, 38, 15, "ready_lib_us_citizenship_04"),
+    "us_citizenship_lib_05_nineteenth_century.json": (12, 50, 15, "ready_lib_us_citizenship_05"),
+    "us_citizenship_lib_06_modern_history.json": (14, 47, 17, "ready_lib_us_citizenship_06"),
+    "us_citizenship_lib_07_symbols_geography.json": (20, 61, 25, "ready_lib_us_citizenship_07"),
+    "us_citizenship_lib_08_reading_vocabulary.json": (13, 52, 14, "ready_lib_us_citizenship_08"),
+    "us_citizenship_lib_09_applied_and_expert.json": (10, 41, 12, "ready_lib_us_citizenship_09"),
+    "us_citizenship_sample_01.json": (8, 27, 10, "ready_lib_us_citizenship_01"),
 }
 SAMPLE = "us_citizenship_sample_01.json"
 MAIN = [name for name in EXPECTED if name != SAMPLE]
@@ -247,7 +253,7 @@ class LibraryCoverage(unittest.TestCase):
                 by_level[meta["difficulty"]] += 1
                 audiences.update(meta["audiences"])
                 levels_for_objective[meta["learning_objectives"][0]].add(meta["difficulty"])
-        minimum = {"introductory": 9, "basic": 30, "intermediate": 20, "advanced": 15, "expert": 5}
+        minimum = {"introductory": 15, "basic": 45, "intermediate": 30, "advanced": 12, "expert": 5}
         for level in DIFFICULTIES:
             self.assertGreaterEqual(by_level[level], minimum[level], level)
         self.assertEqual(audiences, AUDIENCES)
@@ -323,23 +329,25 @@ class LibraryThroughTheService(unittest.TestCase):
 
         def pool(**criteria):
             return service.select({"target": "sets", "mode": "ordered", "count": 50, "criteria": criteria})
-        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=["grades_3_5"])["found_count"], 8)
-        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["grades_3_5"])["found_count"], 12)
-        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["grades_6_8"])["found_count"], 10)
-        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=["grades_6_8"])["found_count"], 8)
-        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=["grades_9_12"])["found_count"], 8)
-        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=["grades_9_12"])["found_count"], 5)
-        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=["adult_general"])["found_count"], 3)
-        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=["adult_general"])["found_count"], 10)
-        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=["adult_enthusiast"])["found_count"], 10)
-        self.assertGreaterEqual(pool(difficulty=["expert"], audiences=["adult_enthusiast"])["found_count"], 6)
+        A, E, T, G = "naturalization_applicant", "adult_english_learner", "civics_teacher_or_tutor", "general_adult_learner"
+        self.assertGreaterEqual(pool(difficulty=["introductory"], audiences=[E])["found_count"], 15)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=[E])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=[A])["found_count"], 30)
+        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=[A])["found_count"], 15)
+        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=[A])["found_count"], 2)
+        self.assertGreaterEqual(pool(difficulty=["basic"], audiences=[G])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=[G])["found_count"], 8)
+        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=[G])["found_count"], 4)
+        self.assertGreaterEqual(pool(difficulty=["intermediate"], audiences=[T])["found_count"], 5)
+        self.assertGreaterEqual(pool(difficulty=["advanced"], audiences=[T])["found_count"], 5)
+        self.assertGreaterEqual(pool(difficulty=["expert"], audiences=[T])["found_count"], 5)
         for audience in AUDIENCES:
             self.assertGreaterEqual(pool(audiences=[audience])["found_count"], 15, audience)
         for objective in OBJECTIVES:
             self.assertGreaterEqual(pool(learning_objectives=[objective])["found_count"], 6, objective)
         # A pool shortage is reported explicitly, never padded silently.
         short = service.select({"target": "sets", "mode": "ordered", "count": 50,
-                                "criteria": {"difficulty": ["expert"], "audiences": ["grades_3_5"]}})
+                                "criteria": {"difficulty": ["expert"], "audiences": ["adult_english_learner"]}})
         self.assertGreater(short["shortfall_count"], 0)
         self.assertEqual(short["requested_count"], 50)
         self.assertEqual(short["available_actions"], ["start_over", "add_more", "cancel"])

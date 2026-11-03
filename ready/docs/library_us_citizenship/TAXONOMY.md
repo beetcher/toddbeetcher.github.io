@@ -78,7 +78,7 @@ Each set has exactly one objective. A question placed in several sets keeps the 
 
 ## Tag scheme
 
-Every record has `builder_created`, `needs_owner_review`, `us_citizenship`, its batch label `ready_lib_us_citizenship_NN`, and the skill tag for each of its objectives. Batches: 01 sample; 02 principles and government; 03 rights and responsibilities; 04 history; 05 symbols, geography and reading. Questions and sets also carry one format tag: `format_fact`, `format_reasoning`, `format_scenario`, or `format_select_all` (multiple choice). Answer atoms carry no format tag.
+Every record has `builder_created`, `needs_owner_review`, `us_citizenship`, its batch label `ready_lib_us_citizenship_NN`, and the skill tag for each of its objectives. Batches: 01 sample; 02 principles and government; 03 rights, responsibilities and elections; 04 colonial period and founding; 05 the 1800s; 06 modern history; 07 symbols, holidays and geography; 08 reading and vocabulary; 09 applied and expert items. Questions and sets also carry one format tag: `format_fact`, `format_reasoning`, `format_scenario`, or `format_select_all` (multiple choice). Answer atoms carry no format tag.
 
 ## Content conventions
 

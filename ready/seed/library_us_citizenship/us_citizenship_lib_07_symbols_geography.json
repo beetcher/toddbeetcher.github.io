@@ -1,0 +1,4240 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c7_q_flag_colors",
+   "data": {
+    "question_text": "What are the colors of the American flag?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_flag_stars",
+   "data": {
+    "question_text": "What do the stars on the American flag stand for?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_flag_stripes",
+   "data": {
+    "question_text": "What do the stripes on the American flag stand for?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_anthem",
+   "data": {
+    "question_text": "What is the name of the national anthem of the United States? (An anthem is a song for a country.)",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_july4",
+   "data": {
+    "question_text": "On July 4, Americans celebrate which holiday?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_memorial",
+   "data": {
+    "question_text": "Which holiday honors people who died while serving in the military?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_veterans",
+   "data": {
+    "question_text": "Which holiday honors all who have served in the U.S. military, including those who are living?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_mlkday",
+   "data": {
+    "question_text": "Martin Luther King Jr. Day honors a leader of which movement?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_labor",
+   "data": {
+    "question_text": "Which holiday honors the work and contributions of American workers?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_liberty",
+   "data": {
+    "question_text": "The Statue of Liberty was a gift to the United States from which country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_symbols_why",
+   "data": {
+    "question_text": "A tutor asks why a nation uses symbols such as a flag and an anthem. Which answer is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_neighbors",
+   "data": {
+    "question_text": "Which two countries share a land border with the 48 connected states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_oceans",
+   "data": {
+    "question_text": "Which two oceans touch the east and west coasts of the 48 connected states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_capcity",
+   "data": {
+    "question_text": "What is the capital city of the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_dcstate",
+   "data": {
+    "question_text": "Which statement about Washington, D.C. is correct?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_states_number",
+   "data": {
+    "question_text": "How many states are in the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_noncontig",
+   "data": {
+    "question_text": "Which two states are not part of the 48 connected states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_rio",
+   "data": {
+    "question_text": "Which river forms much of the border between Texas and Mexico?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_mississippi",
+   "data": {
+    "question_text": "Which major river flows from north to south through the middle of the country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_q_dcwhy",
+   "data": {
+    "question_text": "Why is the nation's capital a federal district and not part of a state?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c7_a_fc_rwb",
+   "data": {
+    "answer_text": "Red, white and blue",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_fc_a",
+   "data": {
+    "answer_text": "Red, green and yellow",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_fc_b",
+   "data": {
+    "answer_text": "Blue, black and orange",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_fc_c",
+   "data": {
+    "answer_text": "Green, white and gold",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sa_states",
+   "data": {
+    "answer_text": "The fifty states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_col",
+   "data": {
+    "answer_text": "The first colonies",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_pres",
+   "data": {
+    "answer_text": "The Presidents",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_wars",
+   "data": {
+    "answer_text": "The wars",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_am_ssb",
+   "data": {
+    "answer_text": "The Star-Spangled Banner",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_am_yd",
+   "data": {
+    "answer_text": "Yankee Doodle",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_am_hail",
+   "data": {
+    "answer_text": "Hail to the Chief",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_am_beaut",
+   "data": {
+    "answer_text": "America the Beautiful",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ind",
+   "data": {
+    "answer_text": "Independence Day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_tg",
+   "data": {
+    "answer_text": "Thanksgiving Day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_md",
+   "data": {
+    "answer_text": "Memorial Day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ld",
+   "data": {
+    "answer_text": "Labor Day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_vd",
+   "data": {
+    "answer_text": "Veterans Day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ml_civil",
+   "data": {
+    "answer_text": "The civil rights movement",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ml_ind",
+   "data": {
+    "answer_text": "The movement to win independence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ml_abol",
+   "data": {
+    "answer_text": "The movement to abolish slavery",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ml_rail",
+   "data": {
+    "answer_text": "The movement to build the railroads",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_li_fr",
+   "data": {
+    "answer_text": "France",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_li_gb",
+   "data": {
+    "answer_text": "Britain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_li_sp",
+   "data": {
+    "answer_text": "Spain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_li_it",
+   "data": {
+    "answer_text": "Italy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sy_s",
+   "data": {
+    "answer_text": "They give people a shared sign of national identity and common ideas",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sy_con",
+   "data": {
+    "answer_text": "They are required in detail by a clause of the Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sy_law",
+   "data": {
+    "answer_text": "They decide which laws Congress and the courts are allowed to make",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sy_party",
+   "data": {
+    "answer_text": "They show which political party leads the government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nb_cm",
+   "data": {
+    "answer_text": "Canada and Mexico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nb_cc",
+   "data": {
+    "answer_text": "Canada and Cuba",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nb_mc",
+   "data": {
+    "answer_text": "Mexico and Cuba",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nb_mb",
+   "data": {
+    "answer_text": "Mexico and Brazil",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_oc_ap",
+   "data": {
+    "answer_text": "The Atlantic and Pacific oceans",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_oc_pi",
+   "data": {
+    "answer_text": "The Pacific and Indian oceans",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_oc_aa",
+   "data": {
+    "answer_text": "The Atlantic and Arctic oceans",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_oc_ia",
+   "data": {
+    "answer_text": "The Indian and Arctic oceans",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_cc_dc",
+   "data": {
+    "answer_text": "Washington, D.C.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_cc_ny",
+   "data": {
+    "answer_text": "New York City",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_cc_ph",
+   "data": {
+    "answer_text": "Philadelphia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_cc_bo",
+   "data": {
+    "answer_text": "Boston",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dcs_dist",
+   "data": {
+    "answer_text": "It is a federal district, not a state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dcs_small",
+   "data": {
+    "answer_text": "It is the smallest of the fifty states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dcs_va",
+   "data": {
+    "answer_text": "It is a city inside the state of Virginia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dcs_md",
+   "data": {
+    "answer_text": "It is a city inside the state of Maryland",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sn_50",
+   "data": {
+    "answer_text": "Fifty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sn_48",
+   "data": {
+    "answer_text": "Forty-eight",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sn_13",
+   "data": {
+    "answer_text": "Thirteen",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_sn_60",
+   "data": {
+    "answer_text": "Sixty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nc_ah",
+   "data": {
+    "answer_text": "Alaska and Hawaii",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nc_hf",
+   "data": {
+    "answer_text": "Hawaii and Florida",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nc_am",
+   "data": {
+    "answer_text": "Alaska and Maine",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_nc_fm",
+   "data": {
+    "answer_text": "Florida and Maine",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ri_rg",
+   "data": {
+    "answer_text": "The Rio Grande",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ri_ms",
+   "data": {
+    "answer_text": "The Mississippi River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ri_hd",
+   "data": {
+    "answer_text": "The Hudson River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_ri_cl",
+   "data": {
+    "answer_text": "The Columbia River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dw_s",
+   "data": {
+    "answer_text": "So that no single state would have power over the seat of the national government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dw_nostate",
+   "data": {
+    "answer_text": "Because the Constitution does not allow any city to be inside a state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dw_pres",
+   "data": {
+    "answer_text": "So that the President could choose the city's leaders without Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c7_a_dw_pop",
+   "data": {
+    "answer_text": "Because too few people lived in the area to form a state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civics_geography"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_civics_geography"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_07",
+      "us_citizenship",
+      "skill_civics_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c7_s_colors_e",
+   "question_ref": "c7_q_flag_colors",
+   "label": "Flag colors (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_fc_rwb",
+     "role": "strong",
+     "feedback": "Yes. The flag has red, white and blue. Look at the stripes and the stars."
+    },
+    {
+     "answer_ref": "c7_a_fc_a",
+     "role": "incorrect",
+     "feedback": "No. The flag does not have green or yellow. It is red, white and blue."
+    },
+    {
+     "answer_ref": "c7_a_fc_b",
+     "role": "incorrect",
+     "feedback": "No. The flag does not have black or orange. It is red, white and blue."
+    },
+    {
+     "answer_ref": "c7_a_fc_c",
+     "role": "incorrect",
+     "feedback": "No. The flag does not have green or gold. It is red, white and blue."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_stars_e",
+   "question_ref": "c7_q_flag_stars",
+   "label": "Stars on the flag (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_sa_states",
+     "role": "strong",
+     "feedback": "Yes. Each star stands for one state. The flag has one star for every state."
+    },
+    {
+     "answer_ref": "c7_a_col",
+     "role": "incorrect",
+     "feedback": "No. The colonies are shown by the stripes. The stars show the states."
+    },
+    {
+     "answer_ref": "c7_a_pres",
+     "role": "incorrect",
+     "feedback": "No. The stars do not show Presidents. Each star is one state."
+    },
+    {
+     "answer_ref": "c7_a_wars",
+     "role": "incorrect",
+     "feedback": "No. The stars do not show wars. Each star is one state."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_stars_a",
+   "question_ref": "c7_q_flag_stars",
+   "label": "Stars on the flag (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_sa_states",
+     "role": "strong",
+     "feedback": "Correct. There is one star for each state."
+    },
+    {
+     "answer_ref": "c7_a_col",
+     "role": "incorrect",
+     "feedback": "The original colonies are represented by the stripes, not by the stars."
+    },
+    {
+     "answer_ref": "c7_a_pres",
+     "role": "incorrect",
+     "feedback": "The flag does not show Presidents. The stars represent the states."
+    },
+    {
+     "answer_ref": "c7_a_wars",
+     "role": "incorrect",
+     "feedback": "The flag does not record wars. The stars represent the states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_stripes_a",
+   "question_ref": "c7_q_flag_stripes",
+   "label": "Stripes on the flag (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_col",
+     "role": "strong",
+     "feedback": "Correct. The thirteen stripes stand for the thirteen original colonies."
+    },
+    {
+     "answer_ref": "c7_a_sa_states",
+     "role": "incorrect",
+     "feedback": "The states are shown by the stars. The stripes show the first thirteen colonies."
+    },
+    {
+     "answer_ref": "c7_a_pres",
+     "role": "incorrect",
+     "feedback": "The flag does not show Presidents. The stripes stand for the original colonies."
+    },
+    {
+     "answer_ref": "c7_a_wars",
+     "role": "incorrect",
+     "feedback": "The flag does not show wars. The stripes stand for the original colonies."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_stripes_g",
+   "question_ref": "c7_q_flag_stripes",
+   "label": "Stripes on the flag (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_col",
+     "role": "strong",
+     "feedback": "Yes. The stripes recall the thirteen colonies that declared independence."
+    },
+    {
+     "answer_ref": "c7_a_sa_states",
+     "role": "incorrect",
+     "feedback": "The stars represent the states. The stripes look back to the original colonies."
+    },
+    {
+     "answer_ref": "c7_a_wars",
+     "role": "incorrect",
+     "feedback": "The stripes are not a record of wars. They recall the first colonies."
+    },
+    {
+     "answer_ref": "c7_a_pres",
+     "role": "incorrect",
+     "feedback": "The stripes do not stand for Presidents. They recall the first colonies."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_anthem_e",
+   "question_ref": "c7_q_anthem",
+   "label": "National anthem (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_am_ssb",
+     "role": "strong",
+     "feedback": "Yes. The national anthem is 'The Star-Spangled Banner.'"
+    },
+    {
+     "answer_ref": "c7_a_am_yd",
+     "role": "incorrect",
+     "feedback": "No. 'Yankee Doodle' is an old song, but it is not the national anthem."
+    },
+    {
+     "answer_ref": "c7_a_am_hail",
+     "role": "incorrect",
+     "feedback": "No. 'Hail to the Chief' is music played for the President. It is not the anthem."
+    },
+    {
+     "answer_ref": "c7_a_am_beaut",
+     "role": "incorrect",
+     "feedback": "No. 'America the Beautiful' is a well-known song, but it is not the national anthem."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_july_e",
+   "question_ref": "c7_q_july4",
+   "label": "July 4 (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_ind",
+     "role": "strong",
+     "feedback": "Yes. On July 4 Americans celebrate Independence Day."
+    },
+    {
+     "answer_ref": "c7_a_tg",
+     "role": "incorrect",
+     "feedback": "No. Thanksgiving Day is in the fall. July 4 is in the summer."
+    },
+    {
+     "answer_ref": "c7_a_md",
+     "role": "incorrect",
+     "feedback": "No. Memorial Day is in late spring. It honors people who died in military service."
+    },
+    {
+     "answer_ref": "c7_a_ld",
+     "role": "incorrect",
+     "feedback": "No. Labor Day is in early September. It honors workers."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_memorial_a",
+   "question_ref": "c7_q_memorial",
+   "label": "Memorial Day (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_md",
+     "role": "strong",
+     "feedback": "Correct. Memorial Day honors those who died while serving in the military."
+    },
+    {
+     "answer_ref": "c7_a_vd",
+     "role": "incorrect",
+     "feedback": "Veterans Day honors all who served in the military, including those who are still living."
+    },
+    {
+     "answer_ref": "c7_a_ld",
+     "role": "incorrect",
+     "feedback": "Labor Day honors American workers, not those who died in military service."
+    },
+    {
+     "answer_ref": "c7_a_ind",
+     "role": "incorrect",
+     "feedback": "Independence Day celebrates the adoption of the Declaration of Independence."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_veterans_a",
+   "question_ref": "c7_q_veterans",
+   "label": "Veterans Day (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_vd",
+     "role": "strong",
+     "feedback": "Correct. Veterans Day honors all who served in the military, living and dead."
+    },
+    {
+     "answer_ref": "c7_a_md",
+     "role": "incorrect",
+     "feedback": "Memorial Day is for those who died in service. A common mix-up, so remember: Memorial for those lost, Veterans for all who served."
+    },
+    {
+     "answer_ref": "c7_a_tg",
+     "role": "incorrect",
+     "feedback": "Thanksgiving Day is a day of gratitude and family gatherings, not a day for veterans."
+    },
+    {
+     "answer_ref": "c7_a_ld",
+     "role": "incorrect",
+     "feedback": "Labor Day honors workers. It is not a day for the military."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_mlkday_a",
+   "question_ref": "c7_q_mlkday",
+   "label": "Martin Luther King Jr. Day (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_ml_civil",
+     "role": "strong",
+     "feedback": "Correct. The holiday honors Dr. King, a leader of the civil rights movement."
+    },
+    {
+     "answer_ref": "c7_a_ml_ind",
+     "role": "incorrect",
+     "feedback": "The movement for independence was in the 1700s, long before Dr. King."
+    },
+    {
+     "answer_ref": "c7_a_ml_abol",
+     "role": "incorrect",
+     "feedback": "The movement to abolish slavery was in the 1800s. Dr. King worked in the 1950s and 1960s."
+    },
+    {
+     "answer_ref": "c7_a_ml_rail",
+     "role": "incorrect",
+     "feedback": "Dr. King was not connected with building railroads."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_labor_g",
+   "question_ref": "c7_q_labor",
+   "label": "Labor Day (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_ld",
+     "role": "strong",
+     "feedback": "Yes. Labor Day honors American workers and their contributions."
+    },
+    {
+     "answer_ref": "c7_a_md",
+     "role": "incorrect",
+     "feedback": "Memorial Day honors people who died while serving in the military."
+    },
+    {
+     "answer_ref": "c7_a_vd",
+     "role": "incorrect",
+     "feedback": "Veterans Day honors those who have served in the military."
+    },
+    {
+     "answer_ref": "c7_a_tg",
+     "role": "incorrect",
+     "feedback": "Thanksgiving Day is a day of gratitude and family gatherings."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_liberty_a",
+   "question_ref": "c7_q_liberty",
+   "label": "Statue of Liberty (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_li_fr",
+     "role": "strong",
+     "feedback": "Correct. The people of France gave the Statue of Liberty to the United States as a sign of friendship."
+    },
+    {
+     "answer_ref": "c7_a_li_gb",
+     "role": "incorrect",
+     "feedback": "Britain ruled the colonies before independence. It did not give the statue."
+    },
+    {
+     "answer_ref": "c7_a_li_sp",
+     "role": "incorrect",
+     "feedback": "Spain is not the source of the statue. The gift came from France."
+    },
+    {
+     "answer_ref": "c7_a_li_it",
+     "role": "incorrect",
+     "feedback": "Italy is not the source of the statue. The gift came from France."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_symbols_t",
+   "question_ref": "c7_q_symbols_why",
+   "label": "Why nations use symbols (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_sy_s",
+     "role": "strong",
+     "feedback": "Yes. Symbols give a diverse population a shared sign of belonging and shared ideals."
+    },
+    {
+     "answer_ref": "c7_a_sy_con",
+     "role": "incorrect",
+     "feedback": "The Constitution does not require a detailed flag or anthem. They developed by custom and law."
+    },
+    {
+     "answer_ref": "c7_a_sy_law",
+     "role": "incorrect",
+     "feedback": "Symbols do not decide what laws are permitted. The Constitution does that."
+    },
+    {
+     "answer_ref": "c7_a_sy_party",
+     "role": "incorrect",
+     "feedback": "Symbols belong to the whole nation. They do not show which party is in power."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_neighbors_e",
+   "question_ref": "c7_q_neighbors",
+   "label": "Neighbors (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_nb_cm",
+     "role": "strong",
+     "feedback": "Yes. Canada is to the north, and Mexico is to the south."
+    },
+    {
+     "answer_ref": "c7_a_nb_cc",
+     "role": "incorrect",
+     "feedback": "Not quite. Canada is a neighbor, but Cuba is an island. It does not touch the 48 states by land."
+    },
+    {
+     "answer_ref": "c7_a_nb_mc",
+     "role": "incorrect",
+     "feedback": "Not quite. Mexico is a neighbor, but Cuba is an island. It does not touch by land."
+    },
+    {
+     "answer_ref": "c7_a_nb_mb",
+     "role": "incorrect",
+     "feedback": "Not quite. Mexico is a neighbor, but Brazil is far away in South America."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_neighbors_a",
+   "question_ref": "c7_q_neighbors",
+   "label": "Neighbors (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_nb_cm",
+     "role": "strong",
+     "feedback": "Correct. Canada borders the 48 states on the north and Mexico on the south."
+    },
+    {
+     "answer_ref": "c7_a_nb_cc",
+     "role": "incorrect",
+     "feedback": "Cuba is an island nation and shares no land border with the United States."
+    },
+    {
+     "answer_ref": "c7_a_nb_mc",
+     "role": "incorrect",
+     "feedback": "Cuba shares no land border with the United States."
+    },
+    {
+     "answer_ref": "c7_a_nb_mb",
+     "role": "incorrect",
+     "feedback": "Brazil is in South America and does not border the United States."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_oceans_e",
+   "question_ref": "c7_q_oceans",
+   "label": "Oceans (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_oc_ap",
+     "role": "strong",
+     "feedback": "Yes. The Atlantic Ocean is on the east. The Pacific Ocean is on the west."
+    },
+    {
+     "answer_ref": "c7_a_oc_pi",
+     "role": "incorrect",
+     "feedback": "No. The Pacific Ocean is on the west, but the Indian Ocean is far away."
+    },
+    {
+     "answer_ref": "c7_a_oc_aa",
+     "role": "incorrect",
+     "feedback": "No. The Atlantic Ocean is on the east, but the Arctic Ocean is far to the north."
+    },
+    {
+     "answer_ref": "c7_a_oc_ia",
+     "role": "incorrect",
+     "feedback": "No. The Indian and Arctic oceans do not touch the east and west coasts."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_oceans_a",
+   "question_ref": "c7_q_oceans",
+   "label": "Oceans (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_oc_ap",
+     "role": "strong",
+     "feedback": "Correct. The Atlantic Ocean is on the east coast and the Pacific Ocean on the west coast."
+    },
+    {
+     "answer_ref": "c7_a_oc_pi",
+     "role": "incorrect",
+     "feedback": "The Pacific is correct for the west, but the Indian Ocean is not off the east coast."
+    },
+    {
+     "answer_ref": "c7_a_oc_aa",
+     "role": "incorrect",
+     "feedback": "The Atlantic is correct for the east, but the Arctic Ocean does not touch the west coast of the 48 states."
+    },
+    {
+     "answer_ref": "c7_a_oc_ia",
+     "role": "incorrect",
+     "feedback": "Neither the Indian nor the Arctic Ocean touches the east and west coasts of the 48 states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_capcity_e",
+   "question_ref": "c7_q_capcity",
+   "label": "Capital city (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_cc_dc",
+     "role": "strong",
+     "feedback": "Yes. The capital is Washington, D.C. The President works there."
+    },
+    {
+     "answer_ref": "c7_a_cc_ny",
+     "role": "incorrect",
+     "feedback": "No. New York City is a very large city, but it is not the capital."
+    },
+    {
+     "answer_ref": "c7_a_cc_ph",
+     "role": "incorrect",
+     "feedback": "No. Philadelphia was an early capital, but it is not the capital now."
+    },
+    {
+     "answer_ref": "c7_a_cc_bo",
+     "role": "incorrect",
+     "feedback": "No. Boston is a big city, but it is not the capital."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_capcity_a",
+   "question_ref": "c7_q_capcity",
+   "label": "Capital city (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_cc_dc",
+     "role": "strong",
+     "feedback": "Correct. Washington, D.C. is the capital and the home of Congress, the White House and the Supreme Court."
+    },
+    {
+     "answer_ref": "c7_a_cc_ny",
+     "role": "incorrect",
+     "feedback": "New York City was an early capital of the new government, but the capital moved."
+    },
+    {
+     "answer_ref": "c7_a_cc_ph",
+     "role": "incorrect",
+     "feedback": "Philadelphia served as a capital for a time in the 1790s, but it is not the capital now."
+    },
+    {
+     "answer_ref": "c7_a_cc_bo",
+     "role": "incorrect",
+     "feedback": "Boston is the capital of Massachusetts, not the national capital."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_dcstate_a",
+   "question_ref": "c7_q_dcstate",
+   "label": "Washington, D.C. (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_dcs_dist",
+     "role": "strong",
+     "feedback": "Correct. Washington, D.C. is a federal district. It is not part of any state."
+    },
+    {
+     "answer_ref": "c7_a_dcs_small",
+     "role": "incorrect",
+     "feedback": "The District of Columbia is not a state. The smallest state by area is Rhode Island."
+    },
+    {
+     "answer_ref": "c7_a_dcs_va",
+     "role": "incorrect",
+     "feedback": "Virginia gave land for the district long ago, but the District is not inside Virginia."
+    },
+    {
+     "answer_ref": "c7_a_dcs_md",
+     "role": "incorrect",
+     "feedback": "Maryland gave land for the district long ago, but the District is not inside Maryland."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_statenum_e",
+   "question_ref": "c7_q_states_number",
+   "label": "Number of states (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_sn_50",
+     "role": "strong",
+     "feedback": "Yes. There are fifty states. Each one has a star on the flag."
+    },
+    {
+     "answer_ref": "c7_a_sn_48",
+     "role": "incorrect",
+     "feedback": "No. Forty-eight is the number of connected states. Alaska and Hawaii are also states, so there are fifty."
+    },
+    {
+     "answer_ref": "c7_a_sn_13",
+     "role": "incorrect",
+     "feedback": "No. Thirteen was the number of the first states."
+    },
+    {
+     "answer_ref": "c7_a_sn_60",
+     "role": "incorrect",
+     "feedback": "No. Sixty is too many. There are fifty states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_noncontig_a",
+   "question_ref": "c7_q_noncontig",
+   "label": "Alaska and Hawaii (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_nc_ah",
+     "role": "strong",
+     "feedback": "Correct. Alaska and Hawaii are the two states that are not part of the 48 connected states."
+    },
+    {
+     "answer_ref": "c7_a_nc_hf",
+     "role": "incorrect",
+     "feedback": "Hawaii is one of the two, but Florida is connected to the other states by land."
+    },
+    {
+     "answer_ref": "c7_a_nc_am",
+     "role": "incorrect",
+     "feedback": "Alaska is one of the two, but Maine is connected to the other states by land."
+    },
+    {
+     "answer_ref": "c7_a_nc_fm",
+     "role": "incorrect",
+     "feedback": "Both Florida and Maine are part of the 48 connected states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_rio_a",
+   "question_ref": "c7_q_rio",
+   "label": "Rio Grande (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_ri_rg",
+     "role": "strong",
+     "feedback": "Correct. The Rio Grande forms much of the border between Texas and Mexico."
+    },
+    {
+     "answer_ref": "c7_a_ri_ms",
+     "role": "incorrect",
+     "feedback": "The Mississippi River runs through the middle of the country, far from the Texas-Mexico border."
+    },
+    {
+     "answer_ref": "c7_a_ri_hd",
+     "role": "incorrect",
+     "feedback": "The Hudson River is in the northeast, in New York."
+    },
+    {
+     "answer_ref": "c7_a_ri_cl",
+     "role": "incorrect",
+     "feedback": "The Columbia River is in the northwest, between Oregon and Washington."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_mississippi_g",
+   "question_ref": "c7_q_mississippi",
+   "label": "Mississippi River (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_ri_ms",
+     "role": "strong",
+     "feedback": "Yes. The Mississippi River flows from north to south through the middle of the country."
+    },
+    {
+     "answer_ref": "c7_a_ri_rg",
+     "role": "incorrect",
+     "feedback": "The Rio Grande is a border river in the south, between Texas and Mexico."
+    },
+    {
+     "answer_ref": "c7_a_ri_hd",
+     "role": "incorrect",
+     "feedback": "The Hudson River is in the northeast, in New York, not in the middle."
+    },
+    {
+     "answer_ref": "c7_a_ri_cl",
+     "role": "incorrect",
+     "feedback": "The Columbia River flows in the northwest."
+    }
+   ]
+  },
+  {
+   "client_ref": "c7_s_dcwhy_t",
+   "question_ref": "c7_q_dcwhy",
+   "label": "Why a federal district (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civics_geography"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "use_civics_geography"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_07",
+     "us_citizenship",
+     "skill_civics_geography",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c7_a_dw_s",
+     "role": "strong",
+     "feedback": "Yes. The framers wanted the national government not to depend on any single state. Tutors can link this to the principle of national authority."
+    },
+    {
+     "answer_ref": "c7_a_dw_nostate",
+     "role": "incorrect",
+     "feedback": "The Constitution does not forbid cities inside states. Many national offices are located elsewhere."
+    },
+    {
+     "answer_ref": "c7_a_dw_pres",
+     "role": "incorrect",
+     "feedback": "The District's leadership is set by Congress and local government. This is not about giving the President control."
+    },
+    {
+     "answer_ref": "c7_a_dw_pop",
+     "role": "incorrect",
+     "feedback": "Size and population were not the reason. The reason was to keep the seat of government independent of any one state."
+    }
+   ]
+  }
+ ]
+}

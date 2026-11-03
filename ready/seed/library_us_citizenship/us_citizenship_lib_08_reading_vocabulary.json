@@ -1,0 +1,3035 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c8_q_vocab_citizen",
+   "data": {
+    "question_text": "Read this sentence: 'A citizen has the right to vote.' What does 'citizen' mean?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_vocab_vote",
+   "data": {
+    "question_text": "Read this sentence: 'Citizens vote in elections.' What does 'vote' mean?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_vocab_obey",
+   "data": {
+    "question_text": "Read this sentence: 'Everyone must obey the law.' What does 'obey' mean?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_fill_vote",
+   "data": {
+    "question_text": "Choose the best word to finish the sentence: 'Citizens have the right to ___ for their leaders.'",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_sentence_ok",
+   "data": {
+    "question_text": "Which sentence is written correctly?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_vocab_amend",
+   "data": {
+    "question_text": "Read this sentence: 'Congress passed an amendment.' What is an amendment?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_vocab_branch",
+   "data": {
+    "question_text": "In the phrase 'the executive branch,' what does 'branch' mean?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_ctx_capital",
+   "data": {
+    "question_text": "Which sentence uses 'capital' to mean the city where a government meets?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_ctx_right",
+   "data": {
+    "question_text": "Which sentence uses 'right' to mean something a person is allowed to do by law?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_verb_congress",
+   "data": {
+    "question_text": "Which word best completes the sentence: 'Congress ___ the laws of the country.'",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_check_vocab",
+   "data": {
+    "question_text": "A tutor wants to check whether a learner understands the word 'amend.' Which task shows understanding best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_ctx_state",
+   "data": {
+    "question_text": "Which sentence uses 'state' to mean one of the parts of the country?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_q_ctx_term",
+   "data": {
+    "question_text": "Which sentence uses 'term' to mean the length of time an official serves?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c8_a_vc_s",
+   "data": {
+    "answer_text": "A person who belongs to a country by birth or by law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vc_visit",
+   "data": {
+    "answer_text": "A person who visits a country for a short time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vc_lead",
+   "data": {
+    "answer_text": "A person who leads the government of a country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vc_court",
+   "data": {
+    "answer_text": "A person who works for a court of law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vv_s",
+   "data": {
+    "answer_text": "To choose a leader or an answer by marking a ballot",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vv_tax",
+   "data": {
+    "answer_text": "To pay money to the government every year",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vv_law",
+   "data": {
+    "answer_text": "To write a new law for the whole country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vv_army",
+   "data": {
+    "answer_text": "To join the army of the country for a time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vo_s",
+   "data": {
+    "answer_text": "To follow a rule or a law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vo_arg",
+   "data": {
+    "answer_text": "To argue about a rule or a law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vo_chg",
+   "data": {
+    "answer_text": "To change a rule or a law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vo_wri",
+   "data": {
+    "answer_text": "To write a rule or a law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_fv_vote",
+   "data": {
+    "answer_text": "vote",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_fv_carry",
+   "data": {
+    "answer_text": "carry",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_fv_paint",
+   "data": {
+    "answer_text": "paint",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_fv_borrow",
+   "data": {
+    "answer_text": "borrow",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_so_s",
+   "data": {
+    "answer_text": "Citizens vote for their leaders.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_so_a",
+   "data": {
+    "answer_text": "Citizens votes for their leaders.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_so_b",
+   "data": {
+    "answer_text": "Citizens voting for their leaders.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_so_c",
+   "data": {
+    "answer_text": "Citizens vote for there leaders.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_va_s",
+   "data": {
+    "answer_text": "A change or addition to the Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_va_state",
+   "data": {
+    "answer_text": "A new state added to the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_va_court",
+   "data": {
+    "answer_text": "A decision made by a court of law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_va_tax",
+   "data": {
+    "answer_text": "A tax paid by all citizens each year",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vb_s",
+   "data": {
+    "answer_text": "A part of a larger organization",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vb_tree",
+   "data": {
+    "answer_text": "A limb that grows from a tree trunk",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vb_bank",
+   "data": {
+    "answer_text": "A local office of a large bank",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vb_river",
+   "data": {
+    "answer_text": "A small stream that joins a river",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cx_s",
+   "data": {
+    "answer_text": "Washington, D.C. is the capital of the country.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cx_money",
+   "data": {
+    "answer_text": "The company needs capital to open a new store.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cx_letter",
+   "data": {
+    "answer_text": "She wrote the first word in capital letters.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cx_crime",
+   "data": {
+    "answer_text": "The judge heard a capital case that day.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cr_s",
+   "data": {
+    "answer_text": "Every citizen has the right to speak freely.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cr_turn",
+   "data": {
+    "answer_text": "Please turn right at the next street.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cr_ans",
+   "data": {
+    "answer_text": "Her answer to the question was right.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_cr_hand",
+   "data": {
+    "answer_text": "He hurt his right hand while working.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vk_makes",
+   "data": {
+    "answer_text": "makes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vk_passes",
+   "data": {
+    "answer_text": "passes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vk_enforces",
+   "data": {
+    "answer_text": "enforces",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_vk_interprets",
+   "data": {
+    "answer_text": "interprets",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ck_s",
+   "data": {
+    "answer_text": "Ask the learner to explain the word in their own words and use it in a new sentence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ck_copy",
+   "data": {
+    "answer_text": "Ask the learner to copy the word several times onto a page to practice the spelling",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ck_read",
+   "data": {
+    "answer_text": "Ask the learner to read the word out loud and then to move on to the next word on the list",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ck_seen",
+   "data": {
+    "answer_text": "Ask the learner whether they have seen the word before and then to move on to the next one",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ct_s",
+   "data": {
+    "answer_text": "Ohio is a state in the Midwest.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ct_say",
+   "data": {
+    "answer_text": "Please state your name clearly.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ct_repair",
+   "data": {
+    "answer_text": "The room was in a poor state of repair.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_ct_econ",
+   "data": {
+    "answer_text": "The two leaders spoke about the state of the economy.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_tm_s",
+   "data": {
+    "answer_text": "A senator's term lasts six years.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_tm_word",
+   "data": {
+    "answer_text": "The teacher explained a new term in class.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_tm_contract",
+   "data": {
+    "answer_text": "They agreed to the terms of the contract.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c8_a_tm_long",
+   "data": {
+    "answer_text": "In the long term, prices may change.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "reading_vocabulary"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_civic_vocabulary_in_context"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_08",
+      "us_citizenship",
+      "skill_reading_vocabulary"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c8_s_citizen_e",
+   "question_ref": "c8_q_vocab_citizen",
+   "label": "Meaning of citizen (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vc_s",
+     "role": "strong",
+     "feedback": "Yes. A citizen belongs to a country by birth or by law."
+    },
+    {
+     "answer_ref": "c8_a_vc_visit",
+     "role": "incorrect",
+     "feedback": "No. A visitor is in a country for a short time. A citizen belongs to the country."
+    },
+    {
+     "answer_ref": "c8_a_vc_lead",
+     "role": "incorrect",
+     "feedback": "No. A citizen is not always a leader. Every citizen can vote for leaders."
+    },
+    {
+     "answer_ref": "c8_a_vc_court",
+     "role": "incorrect",
+     "feedback": "No. A citizen does not need to work in a court. The word is about belonging to a country."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_citizen_a",
+   "question_ref": "c8_q_vocab_citizen",
+   "label": "Meaning of citizen (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vc_s",
+     "role": "strong",
+     "feedback": "Correct. A citizen is a legal member of a country, either by birth or through naturalization."
+    },
+    {
+     "answer_ref": "c8_a_vc_visit",
+     "role": "incorrect",
+     "feedback": "A visitor or tourist stays for a short time and is not a legal member of the country."
+    },
+    {
+     "answer_ref": "c8_a_vc_lead",
+     "role": "incorrect",
+     "feedback": "Only some citizens become leaders. The word means a legal member of a country."
+    },
+    {
+     "answer_ref": "c8_a_vc_court",
+     "role": "incorrect",
+     "feedback": "Some citizens work in courts, but that is not what the word means."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_vote_e",
+   "question_ref": "c8_q_vocab_vote",
+   "label": "Meaning of vote (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vv_s",
+     "role": "strong",
+     "feedback": "Yes. To vote means to make a choice, often by marking a ballot."
+    },
+    {
+     "answer_ref": "c8_a_vv_tax",
+     "role": "incorrect",
+     "feedback": "No. Paying money to the government is paying taxes. Voting is making a choice."
+    },
+    {
+     "answer_ref": "c8_a_vv_law",
+     "role": "incorrect",
+     "feedback": "No. Congress writes laws. Citizens vote for the people who write them."
+    },
+    {
+     "answer_ref": "c8_a_vv_army",
+     "role": "incorrect",
+     "feedback": "No. Joining the army is a different thing. To vote is to make a choice."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_obey_e",
+   "question_ref": "c8_q_vocab_obey",
+   "label": "Meaning of obey (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vo_s",
+     "role": "strong",
+     "feedback": "Yes. To obey a law means to follow it and do what it says."
+    },
+    {
+     "answer_ref": "c8_a_vo_arg",
+     "role": "incorrect",
+     "feedback": "No. To argue is to disagree with words. To obey is to follow."
+    },
+    {
+     "answer_ref": "c8_a_vo_chg",
+     "role": "incorrect",
+     "feedback": "No. Changing a law is done by lawmakers. To obey is to follow the law."
+    },
+    {
+     "answer_ref": "c8_a_vo_wri",
+     "role": "incorrect",
+     "feedback": "No. Writing a law is done by Congress. To obey is to follow the law."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_fill_e",
+   "question_ref": "c8_q_fill_vote",
+   "label": "Complete the sentence (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_fv_vote",
+     "role": "strong",
+     "feedback": "Yes. Citizens have the right to vote for their leaders."
+    },
+    {
+     "answer_ref": "c8_a_fv_carry",
+     "role": "incorrect",
+     "feedback": "No. 'Carry' does not fit. People do not carry their leaders."
+    },
+    {
+     "answer_ref": "c8_a_fv_paint",
+     "role": "incorrect",
+     "feedback": "No. 'Paint' does not fit. The sentence is about choosing leaders."
+    },
+    {
+     "answer_ref": "c8_a_fv_borrow",
+     "role": "incorrect",
+     "feedback": "No. 'Borrow' does not fit. The sentence is about choosing leaders."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_sentence_e",
+   "question_ref": "c8_q_sentence_ok",
+   "label": "Correct sentence (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_so_s",
+     "role": "strong",
+     "feedback": "Yes. This sentence is correct. 'Citizens' is plural, so the verb is 'vote.'"
+    },
+    {
+     "answer_ref": "c8_a_so_a",
+     "role": "incorrect",
+     "feedback": "Not quite. 'Citizens' is plural, so use 'vote,' not 'votes.'"
+    },
+    {
+     "answer_ref": "c8_a_so_b",
+     "role": "incorrect",
+     "feedback": "Not quite. 'Voting' alone leaves the sentence unfinished. Use 'vote.'"
+    },
+    {
+     "answer_ref": "c8_a_so_c",
+     "role": "incorrect",
+     "feedback": "Not quite. The word 'there' is a place. Here you need 'their,' which shows who has the leaders."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_amend_a",
+   "question_ref": "c8_q_vocab_amend",
+   "label": "Meaning of amendment (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_va_s",
+     "role": "strong",
+     "feedback": "Correct. An amendment is a change or addition to the Constitution. The first ten are the Bill of Rights."
+    },
+    {
+     "answer_ref": "c8_a_va_state",
+     "role": "incorrect",
+     "feedback": "A new state is added by Congress. It is not an amendment."
+    },
+    {
+     "answer_ref": "c8_a_va_court",
+     "role": "incorrect",
+     "feedback": "Court decisions are called rulings or opinions, not amendments."
+    },
+    {
+     "answer_ref": "c8_a_va_tax",
+     "role": "incorrect",
+     "feedback": "A tax is money paid to the government. An amendment changes the Constitution."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_branch_g",
+   "question_ref": "c8_q_vocab_branch",
+   "label": "Meaning of branch (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vb_s",
+     "role": "strong",
+     "feedback": "Yes. Here 'branch' means a part of a larger organization, in this case the government."
+    },
+    {
+     "answer_ref": "c8_a_vb_tree",
+     "role": "incorrect",
+     "feedback": "That is a real meaning of the word, but it does not fit the government context."
+    },
+    {
+     "answer_ref": "c8_a_vb_bank",
+     "role": "incorrect",
+     "feedback": "A bank can have branches, but the phrase here is about government."
+    },
+    {
+     "answer_ref": "c8_a_vb_river",
+     "role": "incorrect",
+     "feedback": "A river can have a branch, but 'executive branch' is a part of the government."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_capital_a",
+   "question_ref": "c8_q_ctx_capital",
+   "label": "Capital in context (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_cx_s",
+     "role": "strong",
+     "feedback": "Correct. Here 'capital' means the city where a government meets."
+    },
+    {
+     "answer_ref": "c8_a_cx_money",
+     "role": "incorrect",
+     "feedback": "Here 'capital' means money used to start or run a business."
+    },
+    {
+     "answer_ref": "c8_a_cx_letter",
+     "role": "incorrect",
+     "feedback": "Here 'capital' describes large letters, such as the first letter of a name."
+    },
+    {
+     "answer_ref": "c8_a_cx_crime",
+     "role": "incorrect",
+     "feedback": "Here 'capital' describes a very serious crime that can bring the most severe punishment."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_right_g",
+   "question_ref": "c8_q_ctx_right",
+   "label": "Right in context (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_cr_s",
+     "role": "strong",
+     "feedback": "Yes. Here 'right' means something a person is allowed to do under the law."
+    },
+    {
+     "answer_ref": "c8_a_cr_turn",
+     "role": "incorrect",
+     "feedback": "Here 'right' means a direction, the opposite of left."
+    },
+    {
+     "answer_ref": "c8_a_cr_ans",
+     "role": "incorrect",
+     "feedback": "Here 'right' means correct, as in a right answer. That is not a legal right."
+    },
+    {
+     "answer_ref": "c8_a_cr_hand",
+     "role": "incorrect",
+     "feedback": "Here 'right' names the hand on the opposite side from the left hand."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_verb_a",
+   "question_ref": "c8_q_verb_congress",
+   "label": "Choosing the verb (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_vk_makes",
+     "role": "strong",
+     "feedback": "Yes. Congress makes the laws. It is the legislative branch."
+    },
+    {
+     "answer_ref": "c8_a_vk_passes",
+     "role": "ambiguous",
+     "feedback": "Also acceptable. Congress passes laws. The difference is small, but 'makes' is the more common phrase.",
+     "notes": "In ordinary use 'makes' and 'passes' are both natural for describing Congress. Marked ambiguous so a learner who writes 'passes' is not told they are wrong."
+    },
+    {
+     "answer_ref": "c8_a_vk_enforces",
+     "role": "incorrect",
+     "feedback": "The executive branch enforces the laws. Congress makes them."
+    },
+    {
+     "answer_ref": "c8_a_vk_interprets",
+     "role": "incorrect",
+     "feedback": "Courts interpret the laws. Congress makes them."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_check_t",
+   "question_ref": "c8_q_check_vocab",
+   "label": "Checking a word (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_ck_s",
+     "role": "strong",
+     "feedback": "Yes. Explaining and using a word shows understanding better than recognizing it."
+    },
+    {
+     "answer_ref": "c8_a_ck_copy",
+     "role": "incorrect",
+     "feedback": "Copying practices spelling, but it does not show that the learner understands the word."
+    },
+    {
+     "answer_ref": "c8_a_ck_read",
+     "role": "incorrect",
+     "feedback": "Reading aloud checks pronunciation. A learner can read a word without knowing its meaning."
+    },
+    {
+     "answer_ref": "c8_a_ck_seen",
+     "role": "incorrect",
+     "feedback": "Having seen a word is not the same as understanding it."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_state_a",
+   "question_ref": "c8_q_ctx_state",
+   "label": "State in context (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_ct_s",
+     "role": "strong",
+     "feedback": "Correct. Here 'state' means one of the fifty parts of the country."
+    },
+    {
+     "answer_ref": "c8_a_ct_say",
+     "role": "incorrect",
+     "feedback": "Here 'state' is a verb that means to say something clearly."
+    },
+    {
+     "answer_ref": "c8_a_ct_repair",
+     "role": "incorrect",
+     "feedback": "Here 'state' means condition, as in how something is. It is not a part of the country."
+    },
+    {
+     "answer_ref": "c8_a_ct_econ",
+     "role": "incorrect",
+     "feedback": "Here 'state' means the condition of something at a given time."
+    }
+   ]
+  },
+  {
+   "client_ref": "c8_s_term_g",
+   "question_ref": "c8_q_ctx_term",
+   "label": "Term in context (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "reading_vocabulary"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_civic_vocabulary_in_context"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_08",
+     "us_citizenship",
+     "skill_reading_vocabulary",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c8_a_tm_s",
+     "role": "strong",
+     "feedback": "Yes. Here 'term' means the period an official serves."
+    },
+    {
+     "answer_ref": "c8_a_tm_word",
+     "role": "incorrect",
+     "feedback": "Here 'term' means a word or phrase with a special meaning."
+    },
+    {
+     "answer_ref": "c8_a_tm_contract",
+     "role": "incorrect",
+     "feedback": "Here 'terms' are the conditions of an agreement."
+    },
+    {
+     "answer_ref": "c8_a_tm_long",
+     "role": "incorrect",
+     "feedback": "Here 'long term' means a long period of time in general, not an office."
+    }
+   ]
+  }
+ ]
+}

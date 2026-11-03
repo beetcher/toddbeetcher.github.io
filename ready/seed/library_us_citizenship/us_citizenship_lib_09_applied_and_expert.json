@@ -1,0 +1,2448 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c9_q_scen_speech",
+   "data": {
+    "question_text": "A person stands on a public sidewalk and calmly criticizes a government decision. A passerby says this is not allowed. Which response is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_scen_jury",
+   "data": {
+    "question_text": "A citizen receives a notice to appear for jury service on the same day as an important meeting at work. Which statement best describes the citizen's situation?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_scen_courts",
+   "data": {
+    "question_text": "A mayor tells a judge how to decide a case. Which principle is most directly threatened?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_amend_rules",
+   "data": {
+    "question_text": "Which of these are true about changing the Constitution by amendment? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_bor_protects",
+   "data": {
+    "question_text": "Which of these are protected by the Bill of Rights? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_civic_part",
+   "data": {
+    "question_text": "Which of these are ways to take part in civic life? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_vote_right_duty",
+   "data": {
+    "question_text": "Is voting a right or a duty? Which answer is the most careful?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_lincoln_aim",
+   "data": {
+    "question_text": "Which statement best describes the main aim of the Union government at the very start of the Civil War?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_nineteenth_century",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_flag_change",
+   "data": {
+    "question_text": "A tutor explains that the number of stars on the flag can change but the number of stripes stays the same. Which explanation is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_symbols_holidays",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_q_money_scen",
+   "data": {
+    "question_text": "A state government announces that it will print its own national currency. Why would this not be allowed?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_federalism_elections",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c9_a_sp_ok",
+   "data": {
+    "answer_text": "The First Amendment generally protects peaceful criticism of the government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_sp_news",
+   "data": {
+    "answer_text": "Only newspapers and broadcasters are allowed to criticize the government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_sp_permit",
+   "data": {
+    "answer_text": "A person may criticize the government only after getting a permit from the mayor",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_sp_emp",
+   "data": {
+    "answer_text": "Only people who work for the government may criticize its decisions",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_sp_agree",
+   "data": {
+    "answer_text": "Only people who agree with the decision are permitted to talk about it publicly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_jy_s",
+   "data": {
+    "answer_text": "Jury service is a civic duty, and courts have a process to ask for a postponement for good reasons",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_jy_ignore",
+   "data": {
+    "answer_text": "The citizen may simply ignore the notice because the employer's meeting comes first at work",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_jy_boss",
+   "data": {
+    "answer_text": "The employer alone decides whether the citizen will serve on the jury, whatever the court says",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_jy_never",
+   "data": {
+    "answer_text": "Jury service applies only to people who do not have a job or who live far from the court",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_ju_ind",
+   "data": {
+    "answer_text": "The independence of the courts",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_ju_pop",
+   "data": {
+    "answer_text": "Popular sovereignty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_ju_fed",
+   "data": {
+    "answer_text": "Federalism",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_ju_arms",
+   "data": {
+    "answer_text": "The right to keep and bear arms",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_am_two",
+   "data": {
+    "answer_text": "Congress can propose an amendment by a two-thirds vote in both houses",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_am_three",
+   "data": {
+    "answer_text": "Three-fourths of the states must ratify an amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_am_pres",
+   "data": {
+    "answer_text": "The President's signature is not required for an amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_am_half",
+   "data": {
+    "answer_text": "A simple majority of the states is enough to ratify an amendment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_bp_search",
+   "data": {
+    "answer_text": "Protection against unreasonable searches",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_bp_jury",
+   "data": {
+    "answer_text": "The right to a trial by jury in many cases",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_bp_pet",
+   "data": {
+    "answer_text": "Freedom to petition the government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_bp_job",
+   "data": {
+    "answer_text": "The right to a government job",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "rights_freedoms"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_rights_and_freedoms"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_rights_freedoms"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_cp_vote",
+   "data": {
+    "answer_text": "Voting in elections",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_cp_contact",
+   "data": {
+    "answer_text": "Contacting an elected representative about an issue",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_cp_vol",
+   "data": {
+    "answer_text": "Volunteering to help in the community",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_cp_avoid",
+   "data": {
+    "answer_text": "Avoiding any learning about public issues",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_vr_s",
+   "data": {
+    "answer_text": "It is a legal right, and many people also see it as a civic responsibility",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_vr_only",
+   "data": {
+    "answer_text": "It is only a right, and calling it a duty confuses what the law actually says",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_vr_law",
+   "data": {
+    "answer_text": "It is a legal duty in federal elections, and people who skip it can be punished",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_vr_neither",
+   "data": {
+    "answer_text": "It is neither, because citizens have no legal connection to elections at all",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "civic_responsibilities"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "describe_civic_responsibilities"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_civic_responsibilities"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_li_union",
+   "data": {
+    "answer_text": "To keep the Union together and bring the Southern states back",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_li_end",
+   "data": {
+    "answer_text": "To end slavery everywhere in the country from the first day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_li_land",
+   "data": {
+    "answer_text": "To win new land in the West for the Northern states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_li_money",
+   "data": {
+    "answer_text": "To collect unpaid taxes owed by the Southern states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "nineteenth_century"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "trace_nineteenth_century_changes"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_nineteenth_century"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_fl_s",
+   "data": {
+    "answer_text": "Stars track the number of states, while the stripes honor the original colonies",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_fl_both",
+   "data": {
+    "answer_text": "Both stars and stripes honor the states, and both change as states join the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_fl_pres",
+   "data": {
+    "answer_text": "Stars are added when a new President is elected, and stripes never change",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_fl_war",
+   "data": {
+    "answer_text": "Stars are added after each war, and stripes are added after each treaty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "symbols_holidays"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_symbols_and_holidays"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_symbols_holidays"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_mo_nat",
+   "data": {
+    "answer_text": "The Constitution gives the power to coin money to the national government",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_mo_none",
+   "data": {
+    "answer_text": "States have no power over any money matters, including taxes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_mo_court",
+   "data": {
+    "answer_text": "Only the Supreme Court is allowed to print money for the country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c9_a_mo_pres",
+   "data": {
+    "answer_text": "Only the President is allowed to sign paper money into existence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_09",
+      "us_citizenship",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c9_s_speech_a",
+   "question_ref": "c9_q_scen_speech",
+   "label": "Calm criticism on a sidewalk (applicant, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "rights_freedoms"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_rights_and_freedoms"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_rights_freedoms",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_sp_ok",
+     "role": "strong",
+     "feedback": "Correct. Peaceful criticism of the government is at the heart of the First Amendment, even when others disagree."
+    },
+    {
+     "answer_ref": "c9_a_sp_news",
+     "role": "incorrect",
+     "feedback": "The right belongs to individuals as well as the press. Ordinary people may speak, write and share opinions."
+    },
+    {
+     "answer_ref": "c9_a_sp_permit",
+     "role": "incorrect",
+     "feedback": "A person generally does not need a permit to express an opinion on a public sidewalk. Large events can have separate rules."
+    },
+    {
+     "answer_ref": "c9_a_sp_emp",
+     "role": "incorrect",
+     "feedback": "The right is not limited to government workers. It protects all people, including critics."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_speech_g",
+   "question_ref": "c9_q_scen_speech",
+   "label": "Calm criticism on a sidewalk (general adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "rights_freedoms"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_rights_and_freedoms"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_rights_freedoms",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_sp_ok",
+     "role": "strong",
+     "feedback": "Yes. The First Amendment protects peaceful criticism of the government, though courts allow some limits on time, place and manner."
+    },
+    {
+     "answer_ref": "c9_a_sp_agree",
+     "role": "incorrect",
+     "feedback": "The right matters most for views others dislike. It does not depend on agreeing with the decision."
+    },
+    {
+     "answer_ref": "c9_a_sp_news",
+     "role": "incorrect",
+     "feedback": "Free speech belongs to individuals, not only to news organizations."
+    },
+    {
+     "answer_ref": "c9_a_sp_permit",
+     "role": "incorrect",
+     "feedback": "A permit is not needed for an individual to speak calmly on a public sidewalk."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_jury_a",
+   "question_ref": "c9_q_scen_jury",
+   "label": "Jury notice and a work meeting (applicant, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civic_responsibilities"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "describe_civic_responsibilities"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_civic_responsibilities",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_jy_s",
+     "role": "strong",
+     "feedback": "Correct. Jury service is a duty, but courts usually let people ask to postpone or be excused for a good reason."
+    },
+    {
+     "answer_ref": "c9_a_jy_ignore",
+     "role": "incorrect",
+     "feedback": "Ignoring a jury notice can have legal consequences. The citizen should contact the court instead."
+    },
+    {
+     "answer_ref": "c9_a_jy_boss",
+     "role": "incorrect",
+     "feedback": "An employer cannot decide this. The court controls jury service, and many places protect employees who are called."
+    },
+    {
+     "answer_ref": "c9_a_jy_never",
+     "role": "incorrect",
+     "feedback": "Jury duty can apply to working citizens. Courts handle hardships case by case."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_courts_g",
+   "question_ref": "c9_q_scen_courts",
+   "label": "Pressure on a judge (general adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_ju_ind",
+     "role": "strong",
+     "feedback": "Yes. Courts must decide cases fairly, without orders from officials. Judges decide based on the law and the facts."
+    },
+    {
+     "answer_ref": "c9_a_ju_pop",
+     "role": "incorrect",
+     "feedback": "Popular sovereignty is about the people being the source of power. Here the issue is the court's independence."
+    },
+    {
+     "answer_ref": "c9_a_ju_fed",
+     "role": "incorrect",
+     "feedback": "Federalism concerns sharing power between national and state governments, not this situation."
+    },
+    {
+     "answer_ref": "c9_a_ju_arms",
+     "role": "incorrect",
+     "feedback": "This situation has nothing to do with the right to bear arms."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_amend_t",
+   "question_ref": "c9_q_amend_rules",
+   "label": "Amendment rules (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_am_two",
+     "role": "strong",
+     "feedback": "Yes. Two-thirds of both houses can propose an amendment, which is one of the two ways to start the process."
+    },
+    {
+     "answer_ref": "c9_a_am_three",
+     "role": "strong",
+     "feedback": "Yes. Three-fourths of the states must ratify an amendment before it becomes part of the Constitution."
+    },
+    {
+     "answer_ref": "c9_a_am_pres",
+     "role": "strong",
+     "feedback": "Yes. The President does not sign amendments, which is a good point to stress to learners."
+    },
+    {
+     "answer_ref": "c9_a_am_half",
+     "role": "incorrect",
+     "feedback": "A simple majority of states is not enough. Three-fourths is required."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_bor_g",
+   "question_ref": "c9_q_bor_protects",
+   "label": "Protections in the Bill of Rights (general adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "rights_freedoms"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_rights_and_freedoms"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_rights_freedoms",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_bp_search",
+     "role": "strong",
+     "feedback": "Yes. The Fourth Amendment protects against unreasonable searches and seizures."
+    },
+    {
+     "answer_ref": "c9_a_bp_jury",
+     "role": "strong",
+     "feedback": "Yes. The Sixth and Seventh Amendments protect trial by jury in many cases."
+    },
+    {
+     "answer_ref": "c9_a_bp_pet",
+     "role": "strong",
+     "feedback": "Yes. The First Amendment protects the right to petition the government."
+    },
+    {
+     "answer_ref": "c9_a_bp_job",
+     "role": "incorrect",
+     "feedback": "No right to a government job appears in the Bill of Rights."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_civic_g",
+   "question_ref": "c9_q_civic_part",
+   "label": "Taking part in civic life (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civic_responsibilities"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_civic_responsibilities"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_civic_responsibilities",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_cp_vote",
+     "role": "strong",
+     "feedback": "Yes. Voting is a main way to take part in civic life."
+    },
+    {
+     "answer_ref": "c9_a_cp_contact",
+     "role": "strong",
+     "feedback": "Yes. Writing or calling an elected representative lets citizens share views."
+    },
+    {
+     "answer_ref": "c9_a_cp_vol",
+     "role": "ambiguous",
+     "feedback": "Reasonable. Volunteering is a form of community involvement. Some teachers count it as civic life and others reserve the term for government-related actions.",
+     "notes": "Definitions of civic participation vary: some include community service, and some limit it to political and government activities. Marked ambiguous."
+    },
+    {
+     "answer_ref": "c9_a_cp_avoid",
+     "role": "incorrect",
+     "feedback": "Avoiding public issues is the opposite of taking part. Staying informed is part of civic life."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_civic_a",
+   "question_ref": "c9_q_civic_part",
+   "label": "Taking part in civic life (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civic_responsibilities"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_civic_responsibilities"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_civic_responsibilities",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_cp_vote",
+     "role": "strong",
+     "feedback": "Correct. Voting is a main way for citizens to take part."
+    },
+    {
+     "answer_ref": "c9_a_cp_contact",
+     "role": "strong",
+     "feedback": "Correct. Contacting an elected representative is another way to take part."
+    },
+    {
+     "answer_ref": "c9_a_cp_vol",
+     "role": "ambiguous",
+     "feedback": "Defensible. Volunteering in the community helps others and many people consider it civic involvement. The test could go either way, so it is not marked wrong.",
+     "notes": "Same reason as the general adult set: usage of 'civic life' differs, so a volunteer answer is accepted."
+    },
+    {
+     "answer_ref": "c9_a_cp_avoid",
+     "role": "incorrect",
+     "feedback": "Avoiding information on public issues does not help anyone take part in civic life."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_votingrd_t",
+   "question_ref": "c9_q_vote_right_duty",
+   "label": "Voting: right or duty (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "civic_responsibilities"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "describe_civic_responsibilities"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_civic_responsibilities",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_vr_s",
+     "role": "strong",
+     "feedback": "Yes. In federal elections voting is a legal right. Many people also see it as a civic responsibility, which is a matter of values rather than law."
+    },
+    {
+     "answer_ref": "c9_a_vr_only",
+     "role": "ambiguous",
+     "feedback": "Defensible on the law. Legally, voting is a right and not required. The answer is incomplete, because it ignores the common view that voting is also a civic responsibility.",
+     "notes": "A strictly legal reading says right, not duty. Many civic educators also call it a responsibility. Both are reasonable, so this option is marked ambiguous."
+    },
+    {
+     "answer_ref": "c9_a_vr_law",
+     "role": "incorrect",
+     "feedback": "Federal law does not require citizens to vote or punish them for not voting."
+    },
+    {
+     "answer_ref": "c9_a_vr_neither",
+     "role": "incorrect",
+     "feedback": "Citizens do have a legal connection to elections. Voting is a right protected by law."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_lincoln_t",
+   "question_ref": "c9_q_lincoln_aim",
+   "label": "Union war aim (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "nineteenth_century"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "trace_nineteenth_century_changes"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_nineteenth_century",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_li_union",
+     "role": "strong",
+     "feedback": "Yes. At the start the Union's stated aim was preserving the Union. Ending slavery became a declared war aim later, with the Emancipation Proclamation and the Thirteenth Amendment."
+    },
+    {
+     "answer_ref": "c9_a_li_end",
+     "role": "ambiguous",
+     "feedback": "Partly true, but the timing matters. Many in the North opposed slavery, but the government's stated war aim at the start was to restore the Union. Emancipation became an official aim later in the war.",
+     "notes": "Historians agree slavery was the central cause of the war, but also agree the Union's stated aim at the start was to preserve the Union. The item tests that distinction, so the option is ambiguous."
+    },
+    {
+     "answer_ref": "c9_a_li_land",
+     "role": "incorrect",
+     "feedback": "New western land was an issue before the war, but it was not the Union's war aim."
+    },
+    {
+     "answer_ref": "c9_a_li_money",
+     "role": "incorrect",
+     "feedback": "Unpaid taxes were not the reason for the war."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_flag_t",
+   "question_ref": "c9_q_flag_change",
+   "label": "Why stars change but stripes do not (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "symbols_holidays"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "recognize_symbols_and_holidays"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_symbols_holidays",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_fl_s",
+     "role": "strong",
+     "feedback": "Yes. A star is added for each new state, and the thirteen stripes honor the original colonies."
+    },
+    {
+     "answer_ref": "c9_a_fl_both",
+     "role": "incorrect",
+     "feedback": "Only the stars change with the number of states. The stripes stay fixed."
+    },
+    {
+     "answer_ref": "c9_a_fl_pres",
+     "role": "incorrect",
+     "feedback": "Stars are tied to states, not to Presidents or elections."
+    },
+    {
+     "answer_ref": "c9_a_fl_war",
+     "role": "incorrect",
+     "feedback": "The flag is not changed after wars or treaties. Stars track the number of states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c9_s_money_g",
+   "question_ref": "c9_q_money_scen",
+   "label": "A state prints money (general adult, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "federalism_elections"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "explain_federalism_and_elections"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_09",
+     "us_citizenship",
+     "skill_federalism_elections",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c9_a_mo_nat",
+     "role": "strong",
+     "feedback": "Yes. The Constitution gives the national government the power to coin money and stops states from doing so."
+    },
+    {
+     "answer_ref": "c9_a_mo_none",
+     "role": "incorrect",
+     "feedback": "States do have powers over many money matters, including taxes. The currency power is separate."
+    },
+    {
+     "answer_ref": "c9_a_mo_court",
+     "role": "incorrect",
+     "feedback": "Courts do not print money. The national government does."
+    },
+    {
+     "answer_ref": "c9_a_mo_pres",
+     "role": "incorrect",
+     "feedback": "The President does not personally issue money. The national government does so through its agencies."
+    }
+   ]
+  }
+ ]
+}
