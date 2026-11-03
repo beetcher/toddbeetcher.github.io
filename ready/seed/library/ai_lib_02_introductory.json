@@ -1,0 +1,3129 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "l02_q_helpful_task",
+   "data": {
+    "question_text": "Which everyday job is an AI tool most likely to help with?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_first_message",
+   "data": {
+    "question_text": "You open an AI tool for the first time. You want help studying for a quiz on the water cycle. What is a good first message?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_prompting",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_keep_out",
+   "data": {
+    "question_text": "Which of these should you keep out of a request to an AI tool? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy",
+      "format_concept",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_library_hours",
+   "data": {
+    "question_text": "An AI tool tells you the opening hours of a local library. You plan to go tonight. What should you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_true_statement",
+   "data": {
+    "question_text": "Which statement about AI tools is true?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_limits",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_poor_fit",
+   "data": {
+    "question_text": "Which of these is a poor fit for relying on an AI tool alone?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_judgment",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_wrong_date",
+   "data": {
+    "question_text": "You send a letter that an AI tool wrote for you. It has a wrong date in it. Who is responsible for the mistake?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_accountability",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_too_long",
+   "data": {
+    "question_text": "An AI tool gives you a paragraph that is too long for your poster. What can you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_iteration",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_reading_help",
+   "data": {
+    "question_text": "Which is a good way for a student to use AI on a reading assignment?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_nervous_friend",
+   "data": {
+    "question_text": "A friend feels nervous about trying an AI tool. What is a kind way to help?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_teaching",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_weekly_list",
+   "data": {
+    "question_text": "Every week you write a grocery list from a few notes. How could AI fit into this regular task?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_workflow",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_classmate_number",
+   "data": {
+    "question_text": "A classmate gave you their phone number. You want AI to help you write them a message. What should you do with the number?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_recipe_time",
+   "data": {
+    "question_text": "An AI tool gives you a recipe that says to bake a cake for only five minutes. That seems far too short. What should you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_sure_tone",
+   "data": {
+    "question_text": "An AI tool gives you a long answer that sounds very sure. What does that confident tone tell you?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l02_a_check_source",
+   "data": {
+    "answer_text": "Check the important parts against a source you trust.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_trust_sure",
+   "data": {
+    "answer_text": "Believe it, because it sounds sure of itself.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_ask_same_again",
+   "data": {
+    "answer_text": "Ask the same tool again and trust it if the answer matches.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_copy_unread",
+   "data": {
+    "answer_text": "Copy its answer into your homework without reading it, to save time.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_use_list_as_is",
+   "data": {
+    "answer_text": "Shop from the list exactly as it comes back, to save time.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_follow_as_written",
+   "data": {
+    "answer_text": "Follow the recipe exactly as written, to save time.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_you_responsible",
+   "data": {
+    "answer_text": "You are, because you chose to use it and to send it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_share_everything",
+   "data": {
+    "answer_text": "Include every detail you have, so the answer fits as well as possible.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "help_others_learn_ai",
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_draft_from_points",
+   "data": {
+    "answer_text": "Turn a rough list of points into a first draft that you can edit.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_read_minds",
+   "data": {
+    "answer_text": "Tell you exactly what other people are thinking.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_recipient_blame",
+   "data": {
+    "answer_text": "The person who got the letter, for not noticing the date.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_always_correct",
+   "data": {
+    "answer_text": "Always give you the one correct answer to any question.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_decide_for_me",
+   "data": {
+    "answer_text": "Decide a personal matter for you, so you do not have to think about it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_water_specific",
+   "data": {
+    "answer_text": "Explain the water cycle simply, then ask me three practice questions.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_single_word",
+   "data": {
+    "answer_text": "Just send the word 'water' and see what comes back.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_tell_everything",
+   "data": {
+    "answer_text": "Tell me everything you know about water, rain, rivers and the sea.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_explain_water",
+   "data": {
+    "answer_text": "Explain the water cycle to me, please, for my quiz.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_friend_ai",
+   "data": {
+    "answer_text": "Ask a friend to ask their AI tool, and go if both answers agree.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_card_number",
+   "data": {
+    "answer_text": "Your bank card number.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_passwords",
+   "data": {
+    "answer_text": "Your passwords.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_kind_of_tone",
+   "data": {
+    "answer_text": "The kind of tone you want, such as warm and short.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_topic_of_note",
+   "data": {
+    "answer_text": "What the note is about.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_check_site_or_call",
+   "data": {
+    "answer_text": "Check the library's own website or call to confirm.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_go_anyway",
+   "data": {
+    "answer_text": "Go anyway, and come back another day if it is closed.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_sounds_right_wrong",
+   "data": {
+    "answer_text": "They can write something that sounds right and still be wrong.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_always_say_unsure",
+   "data": {
+    "answer_text": "They always warn you clearly when they are unsure of an answer.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_never_wrong_numbers",
+   "data": {
+    "answer_text": "They never make mistakes when they work with numbers or dates.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_remember_life",
+   "data": {
+    "answer_text": "They know you personally and remember everything you have ever told them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_comfort_person",
+   "data": {
+    "answer_text": "Comforting a friend who is upset and needs to be heard.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_birthday_ideas",
+   "data": {
+    "answer_text": "Getting some ideas for a message to write in a birthday card.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_packing_list",
+   "data": {
+    "answer_text": "Making a packing list for a weekend trip away with the family.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_reword_friendly",
+   "data": {
+    "answer_text": "Rewording a sentence in a message so it sounds friendlier.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_ai_tool_blamed",
+   "data": {
+    "answer_text": "The AI tool, because it wrote the words.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_nobody",
+   "data": {
+    "answer_text": "Nobody, because a computer made the mistake.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_ask_shorter",
+   "data": {
+    "answer_text": "Ask it to make the paragraph shorter, about two sentences.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cannot_change",
+   "data": {
+    "answer_text": "Give up, because the tool cannot change anything once it has written it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_tiny_font",
+   "data": {
+    "answer_text": "Copy it anyway and shrink the font until it fits.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cut_yourself",
+   "data": {
+    "answer_text": "Cut it down yourself, keeping the main points.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_explain_then_reread",
+   "data": {
+    "answer_text": "Ask it to explain a hard paragraph simply, then reread the paragraph yourself.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_read_book_for_me",
+   "data": {
+    "answer_text": "Ask it to read the book so you never have to read it at all.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_whole_essay",
+   "data": {
+    "answer_text": "Ask it to write your whole essay and hand it in as if it were your own work.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_small_try_together",
+   "data": {
+    "answer_text": "Sit with them and try one small, safe request together.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_too_hard",
+   "data": {
+    "answer_text": "Tell them it is too complicated for most people to learn.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_long_manual",
+   "data": {
+    "answer_text": "Send them a long manual and let them work it out alone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_sort_notes_check",
+   "data": {
+    "answer_text": "Give it your notes, ask it to sort them by store section, then compare with your notes.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_family_meals",
+   "data": {
+    "answer_text": "Let it decide what your family eats each week without asking anyone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_list_from_nothing",
+   "data": {
+    "answer_text": "Ask for a whole list from nothing and shop from it without a second look.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_leave_number_out",
+   "data": {
+    "answer_text": "Leave the number out of your request, since you can add it yourself.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_include_number",
+   "data": {
+    "answer_text": "Put the number in so the message sounds more personal.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_ask_classmate",
+   "data": {
+    "answer_text": "Ask your classmate whether they are happy for you to share it, then decide.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_nothing_about_right",
+   "data": {
+    "answer_text": "Nothing about whether it is right. Sounding sure is not proof, so check what matters.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_probably_correct",
+   "data": {
+    "answer_text": "That the answer is probably correct, since it sounds so certain.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_looked_up_library",
+   "data": {
+    "answer_text": "That the tool looked it up in a trusted library before it answered.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_others_confirmed",
+   "data": {
+    "answer_text": "That other people have already confirmed that it is correct.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_home_address",
+   "data": {
+    "answer_text": "Your home address and the name of your school.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "l02_s_helpful",
+   "question_ref": "l02_q_helpful_task",
+   "label": "intro / adult beginner / helpful task",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_opportunities"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_when_ai_can_help"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_opportunity",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_always_correct",
+     "role": "incorrect",
+     "feedback": "No tool always gives the one correct answer. AI can be useful and still be wrong, so you check what matters."
+    },
+    {
+     "answer_ref": "l02_a_read_minds",
+     "role": "incorrect",
+     "feedback": "AI cannot know what people are thinking. It can help you word a question to them, but it cannot read their minds."
+    },
+    {
+     "answer_ref": "l02_a_decide_for_me",
+     "role": "incorrect",
+     "feedback": "AI can offer ideas or lists, but a personal matter is yours to decide. It does not know your life or what matters to you."
+    },
+    {
+     "answer_ref": "l02_a_draft_from_points",
+     "role": "strong",
+     "feedback": "AI is good at turning rough points into a first draft. You still read it and change it, but it saves a lot of starting effort."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_first_msg",
+   "question_ref": "l02_q_first_message",
+   "label": "intro / student / first message",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_prompting"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "write_a_clear_request"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_prompting",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_tell_everything",
+     "role": "incorrect",
+     "feedback": "This is too wide. You would get a long, unfocused answer. Narrow it to the quiz topic and the kind of help."
+    },
+    {
+     "answer_ref": "l02_a_water_specific",
+     "role": "strong",
+     "feedback": "This says the topic, the kind of help (a simple explanation) and what to do next (practice questions). Clear requests get more useful answers."
+    },
+    {
+     "answer_ref": "l02_a_explain_water",
+     "role": "ambiguous",
+     "feedback": "This names the topic and a task, which is fine. It leaves out your level and what to do next, so a fuller request would serve you better.",
+     "notes": "Ambiguous: clear enough to work, weaker than the strong choice."
+    },
+    {
+     "answer_ref": "l02_a_single_word",
+     "role": "incorrect",
+     "feedback": "One word does not tell the tool what you want. It could define water, describe a lake or anything else. Say the topic and the help you need."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_keep_out_set",
+   "question_ref": "l02_q_keep_out",
+   "label": "intro / adult beginner / keep out",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_privacy",
+     "format_concept",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_card_number",
+     "role": "strong",
+     "feedback": "A bank card number can be misused if it is shared or stored. Keep it out of requests."
+    },
+    {
+     "answer_ref": "l02_a_passwords",
+     "role": "strong",
+     "feedback": "Passwords protect your accounts. Never type them into a request, even to get help with a task."
+    },
+    {
+     "answer_ref": "l02_a_kind_of_tone",
+     "role": "incorrect",
+     "feedback": "The tone you want is safe and useful to include. It helps the tool write in the right voice."
+    },
+    {
+     "answer_ref": "l02_a_topic_of_note",
+     "role": "incorrect",
+     "feedback": "The topic is the point of your request. It is safe to include and needed to get a useful answer."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_library_ab",
+   "question_ref": "l02_q_library_hours",
+   "label": "intro / adult beginner / library hours",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_go_anyway",
+     "role": "ambiguous",
+     "feedback": "If a wasted trip costs little, going anyway is a sensible risk. A quick check would save you the trouble, though, so it is not the best choice.",
+     "notes": "Ambiguous: low stakes make this defensible."
+    },
+    {
+     "answer_ref": "l02_a_trust_sure",
+     "role": "incorrect",
+     "feedback": "Sounding sure is not proof. AI tools can state wrong details just as confidently as right ones."
+    },
+    {
+     "answer_ref": "l02_a_check_site_or_call",
+     "role": "strong",
+     "feedback": "Opening hours can change, and AI may repeat old or wrong information. The library's own website or phone line is the reliable place to check."
+    },
+    {
+     "answer_ref": "l02_a_ask_same_again",
+     "role": "incorrect",
+     "feedback": "Repeating the question to the same tool is not a check. It can repeat the same mistake. Use a different, trusted source."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_library_st",
+   "question_ref": "l02_q_library_hours",
+   "label": "intro / student / library hours",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_friend_ai",
+     "role": "incorrect",
+     "feedback": "Two AI tools can share the same mistake, especially about local details. Agreement between them is not a check. Use the library's own information."
+    },
+    {
+     "answer_ref": "l02_a_check_site_or_call",
+     "role": "strong",
+     "feedback": "A library's own site or phone line is the reliable source for its hours. Use that before you travel."
+    },
+    {
+     "answer_ref": "l02_a_go_anyway",
+     "role": "ambiguous",
+     "feedback": "For a student with time to spare, a wasted trip is a small cost, so going anyway is understandable. Checking first is still the better habit.",
+     "notes": "Ambiguous: low stakes make this defensible."
+    },
+    {
+     "answer_ref": "l02_a_trust_sure",
+     "role": "incorrect",
+     "feedback": "A confident tone does not make the hours correct. Opening times change, so check with the library itself before you travel."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_true_stmt",
+   "question_ref": "l02_q_true_statement",
+   "label": "intro / adult beginner / true statement",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_limits_and_bias"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "understand_limits_and_bias"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_limits",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_remember_life",
+     "role": "incorrect",
+     "feedback": "An AI tool does not know you or your life unless you tell it, and what it keeps depends on the tool's settings."
+    },
+    {
+     "answer_ref": "l02_a_always_say_unsure",
+     "role": "incorrect",
+     "feedback": "AI often sounds equally sure when it is wrong. You cannot count on it to warn you."
+    },
+    {
+     "answer_ref": "l02_a_sounds_right_wrong",
+     "role": "strong",
+     "feedback": "AI tools make text that sounds natural, but they can be wrong. That is why checking matters."
+    },
+    {
+     "answer_ref": "l02_a_never_wrong_numbers",
+     "role": "incorrect",
+     "feedback": "AI tools can make mistakes with numbers and facts. Check important figures."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_poor_fit_set",
+   "question_ref": "l02_q_poor_fit",
+   "label": "intro / adult beginner / poor fit",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_judgment"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "choose_when_not_to_use_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_judgment",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_reword_friendly",
+     "role": "incorrect",
+     "feedback": "Rewording is a common, low-risk use. You read the result and keep or change it."
+    },
+    {
+     "answer_ref": "l02_a_comfort_person",
+     "role": "strong",
+     "feedback": "When a friend is upset, they need a person who listens. Some situations call for human care, not a tool."
+    },
+    {
+     "answer_ref": "l02_a_birthday_ideas",
+     "role": "incorrect",
+     "feedback": "Ideas for a card are a good use of AI. Mistakes cost little and you choose the final words."
+    },
+    {
+     "answer_ref": "l02_a_packing_list",
+     "role": "incorrect",
+     "feedback": "A packing list is a good use of AI as a starting point. You can easily adjust it."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_wrong_date_set",
+   "question_ref": "l02_q_wrong_date",
+   "label": "intro / adult beginner / wrong date",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_accountability"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "take_responsibility_for_results"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_accountability",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_nobody",
+     "role": "incorrect",
+     "feedback": "The mistake does not go away because a tool made it. Someone still has to fix it, and that is you."
+    },
+    {
+     "answer_ref": "l02_a_you_responsible",
+     "role": "strong",
+     "feedback": "You chose to send the letter, so its content is yours. Read what AI writes before you send it."
+    },
+    {
+     "answer_ref": "l02_a_ai_tool_blamed",
+     "role": "incorrect",
+     "feedback": "A tool cannot take responsibility. The person who uses and sends the words does."
+    },
+    {
+     "answer_ref": "l02_a_recipient_blame",
+     "role": "incorrect",
+     "feedback": "The reader is not responsible for catching your mistakes. The sender is, and reading before sending is the way to catch them."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_too_long_set",
+   "question_ref": "l02_q_too_long",
+   "label": "intro / student / too long",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_iteration"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "improve_results_by_iterating"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_iteration",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_ask_shorter",
+     "role": "strong",
+     "feedback": "You can tell the tool what to change, such as 'make it shorter'. Refining a result step by step is normal."
+    },
+    {
+     "answer_ref": "l02_a_cut_yourself",
+     "role": "ambiguous",
+     "feedback": "Editing it yourself works, and keeps you in control. The point of this question, though, is that you can ask the tool to revise.",
+     "notes": "Ambiguous: valid, but skips the skill being tested."
+    },
+    {
+     "answer_ref": "l02_a_cannot_change",
+     "role": "incorrect",
+     "feedback": "You can ask the tool to revise its work, and it will usually try again. Tell it what to change, such as 'make it shorter'."
+    },
+    {
+     "answer_ref": "l02_a_tiny_font",
+     "role": "incorrect",
+     "feedback": "A tiny font makes a poster hard to read. Change the content instead, and ask the tool to shorten the paragraph."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_reading_set",
+   "question_ref": "l02_q_reading_help",
+   "label": "intro / student / reading help",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_opportunities"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_when_ai_can_help"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_opportunity",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_explain_then_reread",
+     "role": "strong",
+     "feedback": "AI can explain hard text in simpler words. Reading the paragraph again afterward is how you actually learn it."
+    },
+    {
+     "answer_ref": "l02_a_copy_unread",
+     "role": "incorrect",
+     "feedback": "Copying without reading means you do not know whether it is right or whether it answers the assignment."
+    },
+    {
+     "answer_ref": "l02_a_read_book_for_me",
+     "role": "incorrect",
+     "feedback": "Skipping the reading means skipping the learning, and the tool may leave out important parts. Ask for an explanation, then read."
+    },
+    {
+     "answer_ref": "l02_a_whole_essay",
+     "role": "incorrect",
+     "feedback": "Handing in work you did not do is dishonest. Use AI to help you learn, then do the work yourself."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_friend_set",
+   "question_ref": "l02_q_nervous_friend",
+   "label": "intro / adult beginner / nervous friend",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_teaching"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "help_others_learn_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_teaching",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_small_try_together",
+     "role": "strong",
+     "feedback": "Trying one small, low-risk request together makes AI feel less scary and lets them learn by doing."
+    },
+    {
+     "answer_ref": "l02_a_share_everything",
+     "role": "incorrect",
+     "feedback": "Telling a beginner to share everything is unsafe. Good teaching includes keeping private details out."
+    },
+    {
+     "answer_ref": "l02_a_long_manual",
+     "role": "incorrect",
+     "feedback": "A long manual read alone can feel overwhelming. Practice with a friendly guide helps more."
+    },
+    {
+     "answer_ref": "l02_a_too_hard",
+     "role": "incorrect",
+     "feedback": "This makes your friend more nervous and is not true. Many people start with simple tasks."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_weekly_set",
+   "question_ref": "l02_q_weekly_list",
+   "label": "intro / adult beginner / weekly list",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_workflow"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "connect_ai_to_recurring_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_workflow",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_list_from_nothing",
+     "role": "incorrect",
+     "feedback": "With no notes from you, the list is a guess. Shopping from it unread risks missing what you need."
+    },
+    {
+     "answer_ref": "l02_a_sort_notes_check",
+     "role": "strong",
+     "feedback": "Giving AI your notes keeps the content yours, and the tool does the sorting. Comparing the list with your notes catches anything it dropped."
+    },
+    {
+     "answer_ref": "l02_a_family_meals",
+     "role": "incorrect",
+     "feedback": "The tool does not know your family's needs. Decisions about people should include them."
+    },
+    {
+     "answer_ref": "l02_a_use_list_as_is",
+     "role": "incorrect",
+     "feedback": "Using the list without comparing it to your notes means a missing item goes unnoticed."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_number_set",
+   "question_ref": "l02_q_classmate_number",
+   "label": "intro / student / classmate number",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_ask_classmate",
+     "role": "ambiguous",
+     "feedback": "Asking first is respectful. Once you have asked, you may still not need the number in the request at all, so leaving it out is simpler.",
+     "notes": "Ambiguous: courteous, but unnecessary if the number is simply left out."
+    },
+    {
+     "answer_ref": "l02_a_leave_number_out",
+     "role": "strong",
+     "feedback": "AI can help with the words, and you can add the number yourself at the end. That keeps another person's details out of the request."
+    },
+    {
+     "answer_ref": "l02_a_share_everything",
+     "role": "incorrect",
+     "feedback": "More detail about a person does not mean a better answer. Share only what the task needs, and keep others' details out."
+    },
+    {
+     "answer_ref": "l02_a_include_number",
+     "role": "incorrect",
+     "feedback": "The number is someone else's private detail. It does not make the message better, so leave it out."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_recipe_set",
+   "question_ref": "l02_q_recipe_time",
+   "label": "intro / adult beginner / recipe time",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_check_source",
+     "role": "strong",
+     "feedback": "Your doubt is a good signal. Compare the recipe with a trusted one before you cook, because AI can write steps that sound normal but are wrong."
+    },
+    {
+     "answer_ref": "l02_a_follow_as_written",
+     "role": "incorrect",
+     "feedback": "Following a step you doubt without checking could waste ingredients or spoil the dish. Look into it first."
+    },
+    {
+     "answer_ref": "l02_a_ask_same_again",
+     "role": "incorrect",
+     "feedback": "If the same tool gives the same time again, that is not proof. It may repeat the same mistake."
+    },
+    {
+     "answer_ref": "l02_a_trust_sure",
+     "role": "incorrect",
+     "feedback": "A clear, confident recipe can still contain a wrong time. When something looks odd, trust your doubt and check."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_sure_set",
+   "question_ref": "l02_q_sure_tone",
+   "label": "intro / student / sure tone",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_verification",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_looked_up_library",
+     "role": "incorrect",
+     "feedback": "A tool does not necessarily look things up. Many answers come from patterns in text it learned."
+    },
+    {
+     "answer_ref": "l02_a_probably_correct",
+     "role": "incorrect",
+     "feedback": "Confidence and correctness are different things. Wrong answers can sound just as sure."
+    },
+    {
+     "answer_ref": "l02_a_nothing_about_right",
+     "role": "strong",
+     "feedback": "A confident tone is just how the text is written. It says nothing about whether the content is true."
+    },
+    {
+     "answer_ref": "l02_a_others_confirmed",
+     "role": "incorrect",
+     "feedback": "Nobody has confirmed an answer just because it is written confidently. Confidence is a style, so look for real evidence."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_keep_out_st",
+   "question_ref": "l02_q_keep_out",
+   "label": "intro / student / keep out",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_privacy",
+     "format_concept",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_passwords",
+     "role": "strong",
+     "feedback": "Passwords protect your accounts and your work. Never type them into a request, even if the tool asks for them to help."
+    },
+    {
+     "answer_ref": "l02_a_home_address",
+     "role": "strong",
+     "feedback": "Your address and school say where to find you. Keep them out of requests to AI tools, and ask an adult you trust if you are unsure."
+    },
+    {
+     "answer_ref": "l02_a_kind_of_tone",
+     "role": "incorrect",
+     "feedback": "The tone you want is safe and useful to include. It helps the tool write in the right voice."
+    },
+    {
+     "answer_ref": "l02_a_topic_of_note",
+     "role": "incorrect",
+     "feedback": "The topic is the point of your request. It is safe to include and needed to get a useful answer."
+    }
+   ]
+  }
+ ]
+}
