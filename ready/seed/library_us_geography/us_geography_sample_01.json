@@ -1,0 +1,1935 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "g1_q_ocean_west",
+   "data": {
+    "question_text": "California has a long coast on the western edge of the country. Which ocean is it on?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_ocean_east",
+   "data": {
+    "question_text": "Georgia and Florida both have beaches on the eastern edge of the country. Which ocean do those beaches face?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_capital_wa",
+   "data": {
+    "question_text": "Washington is a state in the Pacific Northwest, not the same place as Washington, D.C. Which city is the capital of the state of Washington?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5",
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_borders_lower48",
+   "data": {
+    "question_text": "Which countries share a land border with the 48 connected states? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_region_texas",
+   "data": {
+    "question_text": "The U.S. Census Bureau sorts the states into four regions: Northeast, Midwest, South and West. Which region is Texas in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_time_pacific_eastern",
+   "data": {
+    "question_text": "A television show starts at 3:00 p.m. Pacific time. What time does it start in the Eastern time zone, if both places are using the same clock rules that day?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_rain_shadow",
+   "data": {
+    "question_text": "In Washington and Oregon, the land just west of the Cascade Range is wet, and the land just east of it is much drier. What best explains the difference?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_q_small_capitals",
+   "data": {
+    "question_text": "A state's capital is sometimes a smaller city than the state's best-known city. Which are real reasons this can happen? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_human_geography",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "g1_a_pacific_ocean",
+   "data": {
+    "answer_text": "Pacific Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_indian_ocean",
+   "data": {
+    "answer_text": "Indian Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_atlantic_ocean",
+   "data": {
+    "answer_text": "Atlantic Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_arctic_ocean",
+   "data": {
+    "answer_text": "Arctic Ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_spokane",
+   "data": {
+    "answer_text": "Spokane",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_tacoma",
+   "data": {
+    "answer_text": "Tacoma",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5",
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_seattle",
+   "data": {
+    "answer_text": "Seattle",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5",
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_olympia",
+   "data": {
+    "answer_text": "Olympia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_3_5",
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_portland",
+   "data": {
+    "answer_text": "Portland",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_canada",
+   "data": {
+    "answer_text": "Canada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_bahamas",
+   "data": {
+    "answer_text": "The Bahamas",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_cuba",
+   "data": {
+    "answer_text": "Cuba",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_mexico",
+   "data": {
+    "answer_text": "Mexico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_southwest",
+   "data": {
+    "answer_text": "Southwest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_south",
+   "data": {
+    "answer_text": "South",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_midwest",
+   "data": {
+    "answer_text": "Midwest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_west",
+   "data": {
+    "answer_text": "West",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_4_00_p_m",
+   "data": {
+    "answer_text": "4:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_12_00_noon",
+   "data": {
+    "answer_text": "12:00 noon",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_9_00_p_m",
+   "data": {
+    "answer_text": "9:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_6_00_p_m",
+   "data": {
+    "answer_text": "6:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_moist_ocean_air_rises_over_the_mountains_and_dro",
+   "data": {
+    "answer_text": "Moist ocean air rises over the mountains and drops its rain before it crosses to the far side",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_rivers_on_the_eastern_side_carry_most_of_the_rai",
+   "data": {
+    "answer_text": "Rivers on the eastern side carry most of the rainfall away before it can reach the ground",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_eastern_land_lies_much_closer_to_the_ocean_s",
+   "data": {
+    "answer_text": "The eastern land lies much closer to the ocean, so its moisture runs out sooner",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_eastern_soil_is_a_lighter_color_which_reflec",
+   "data": {
+    "answer_text": "The eastern soil is a lighter color, which reflects rain back up into the clouds",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_mountains_are_made_of_porous_rock_that_soaks",
+   "data": {
+    "answer_text": "The mountains are made of porous rock that soaks rain straight out of passing clouds",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_air_rises_over_the_mountains_cools_and_drops_its",
+   "data": {
+    "answer_text": "Air rises over the mountains, cools, and drops its moisture before reaching the far side",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_warm_ocean_currents_only_warm_the_western_side_o",
+   "data": {
+    "answer_text": "Warm ocean currents only warm the western side of the mountains, so rain stays there",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_pacific_winds_weaken_so_much_inland_that_clo",
+   "data": {
+    "answer_text": "The Pacific winds weaken so much inland that clouds rarely form in the eastern area",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_capital_was_chosen_early_before_larger_citie",
+   "data": {
+    "answer_text": "The capital was chosen early, before larger cities grew up elsewhere",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_capital_was_chosen_as_a_compromise_between_r",
+   "data": {
+    "answer_text": "The capital was chosen as a compromise between rival regions or cities",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_the_capital_was_picked_for_a_central_location_so",
+   "data": {
+    "answer_text": "The capital was picked for a central location, so people could travel to it more easily",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g1_a_state_law_says_a_capital_must_have_fewer_people",
+   "data": {
+    "answer_text": "State law says a capital must have fewer people than every other city",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_01",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "g1_s01_ocean_west",
+   "question_ref": "g1_q_ocean_west",
+   "label": "Ocean on California's coast (Grades 3-5, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_pacific_ocean",
+     "role": "strong",
+     "feedback": "Yes! California's coast faces west, and the Pacific Ocean is the big ocean on the western side of the country."
+    },
+    {
+     "answer_ref": "g1_a_indian_ocean",
+     "role": "incorrect",
+     "feedback": "The Indian Ocean is on the other side of the world, near Asia and Africa. California's ocean is the one to the west of North America."
+    },
+    {
+     "answer_ref": "g1_a_atlantic_ocean",
+     "role": "incorrect",
+     "feedback": "Not quite. The Atlantic Ocean is on the eastern side of the country. California is on the opposite side, in the west."
+    },
+    {
+     "answer_ref": "g1_a_arctic_ocean",
+     "role": "incorrect",
+     "feedback": "The Arctic Ocean is far to the north, near the top of the world. It does not touch California. Try the ocean on the western side."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s02_ocean_east",
+   "question_ref": "g1_q_ocean_east",
+   "label": "Ocean on the southeastern coast (Grades 3-5, introductory)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_arctic_ocean",
+     "role": "incorrect",
+     "feedback": "The Arctic Ocean is near the North Pole, much too far north for Georgia and Florida, which are in the warm southeast."
+    },
+    {
+     "answer_ref": "g1_a_atlantic_ocean",
+     "role": "strong",
+     "feedback": "Correct! The Atlantic Ocean lies along the eastern coast of the United States, including the beaches of Georgia and Florida."
+    },
+    {
+     "answer_ref": "g1_a_indian_ocean",
+     "role": "incorrect",
+     "feedback": "The Indian Ocean does not touch the United States mainland. The ocean on the eastern coast has a different name."
+    },
+    {
+     "answer_ref": "g1_a_pacific_ocean",
+     "role": "incorrect",
+     "feedback": "The Pacific Ocean is on the western side of the country. Georgia and Florida are in the east, so think of the other big ocean."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s03_capital_wa",
+   "question_ref": "g1_q_capital_wa",
+   "label": "Capital of Washington State (Grades 3-5, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_3_5"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_spokane",
+     "role": "incorrect",
+     "feedback": "Spokane is a city in the eastern part of the state. It is not where the state government meets."
+    },
+    {
+     "answer_ref": "g1_a_tacoma",
+     "role": "incorrect",
+     "feedback": "Tacoma is a city near Olympia, but it is not the capital. Look for the smaller city at the south end of Puget Sound."
+    },
+    {
+     "answer_ref": "g1_a_seattle",
+     "role": "incorrect",
+     "feedback": "Seattle is the best-known city in Washington, but it is not the capital. The state government meets in Olympia."
+    },
+    {
+     "answer_ref": "g1_a_olympia",
+     "role": "strong",
+     "feedback": "Yes! Olympia is the capital of Washington State. Many people guess Seattle, but the capital is a smaller city."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s04_capital_wa",
+   "question_ref": "g1_q_capital_wa",
+   "label": "Capital of Washington State (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_olympia",
+     "role": "strong",
+     "feedback": "Correct. Olympia is Washington's capital. Capitals are often not the best-known city in their state."
+    },
+    {
+     "answer_ref": "g1_a_portland",
+     "role": "incorrect",
+     "feedback": "Portland is a major city, but it is in Oregon, the state just south of Washington. It is not a capital of Washington."
+    },
+    {
+     "answer_ref": "g1_a_seattle",
+     "role": "incorrect",
+     "feedback": "Seattle is the state's most famous city, but the capital is Olympia. Do not assume a capital is the best-known city."
+    },
+    {
+     "answer_ref": "g1_a_tacoma",
+     "role": "incorrect",
+     "feedback": "Tacoma is a port city not far from the capital. It is a common mix-up, but the capital is Olympia."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s05_borders_lower48",
+   "question_ref": "g1_q_borders_lower48",
+   "label": "Land neighbors of the connected states (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_regions_borders",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_canada",
+     "role": "strong",
+     "feedback": "Yes. Canada lies along the northern border of the connected states, from the Atlantic side to the Pacific side."
+    },
+    {
+     "answer_ref": "g1_a_the_bahamas",
+     "role": "incorrect",
+     "feedback": "No. The Bahamas are islands in the Atlantic Ocean, off the coast of Florida. They are separated by water and share no land border."
+    },
+    {
+     "answer_ref": "g1_a_cuba",
+     "role": "incorrect",
+     "feedback": "No. Cuba is an island country in the Caribbean Sea. It has no land border with the United States."
+    },
+    {
+     "answer_ref": "g1_a_mexico",
+     "role": "strong",
+     "feedback": "Yes. Mexico lies along the southern border, next to California, Arizona, New Mexico and Texas."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s06_region_texas",
+   "question_ref": "g1_q_region_texas",
+   "label": "Census region of Texas (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_southwest",
+     "role": "ambiguous",
+     "feedback": "Many people do call Texas part of the Southwest, and that is a real way to talk about the area. But it is not one of the Census Bureau's four regions, so it does not answer this question as asked.",
+     "notes": "Common regional name, not a Census region. Marked ambiguous so the learner sees why the stem names the Census system."
+    },
+    {
+     "answer_ref": "g1_a_south",
+     "role": "strong",
+     "feedback": "Correct. In the Census Bureau's four-region system, Texas is part of the South region."
+    },
+    {
+     "answer_ref": "g1_a_midwest",
+     "role": "incorrect",
+     "feedback": "The Midwest region is the north-central group of states, such as Ohio, Iowa and Kansas. Texas is farther south."
+    },
+    {
+     "answer_ref": "g1_a_west",
+     "role": "incorrect",
+     "feedback": "The Census West region has the Rocky Mountain and Pacific states. Texas is not in that group, even though it is in the western half of the country."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s07_time_pacific_eastern",
+   "question_ref": "g1_q_time_pacific_eastern",
+   "label": "Convert Pacific to Eastern time (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_4_00_p_m",
+     "role": "incorrect",
+     "feedback": "That adds only one hour, which would be the gap between neighboring zones. Pacific and Eastern are three zones apart."
+    },
+    {
+     "answer_ref": "g1_a_12_00_noon",
+     "role": "incorrect",
+     "feedback": "That subtracts three hours. Going east, the clock is later, not earlier. Add three hours to a Pacific time to get Eastern."
+    },
+    {
+     "answer_ref": "g1_a_9_00_p_m",
+     "role": "incorrect",
+     "feedback": "That adds six hours, which is too much. Pacific and Eastern differ by three hours, not six."
+    },
+    {
+     "answer_ref": "g1_a_6_00_p_m",
+     "role": "strong",
+     "feedback": "Correct. Eastern time is three hours ahead of Pacific time, so 3:00 p.m. Pacific is 6:00 p.m. Eastern."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s08_rain_shadow",
+   "question_ref": "g1_q_rain_shadow",
+   "label": "Why the east side of the Cascades is dry (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_moist_ocean_air_rises_over_the_mountains_and_dro",
+     "role": "strong",
+     "feedback": "Correct. Air rising over a mountain cools and drops moisture on the side facing the wind. The far side, the rain shadow, gets much less."
+    },
+    {
+     "answer_ref": "g1_a_rivers_on_the_eastern_side_carry_most_of_the_rai",
+     "role": "incorrect",
+     "feedback": "Rivers do not remove rain from the sky. The difference comes from air moving over the mountains and losing its moisture."
+    },
+    {
+     "answer_ref": "g1_a_the_eastern_land_lies_much_closer_to_the_ocean_s",
+     "role": "incorrect",
+     "feedback": "The reverse is true. The western side is closer to the Pacific Ocean, which is why it gets the moist air first."
+    },
+    {
+     "answer_ref": "g1_a_the_eastern_soil_is_a_lighter_color_which_reflec",
+     "role": "incorrect",
+     "feedback": "Soil color does not stop rain from falling. Rainfall differs because of how the mountains force moist air to rise and cool."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s09_rain_shadow",
+   "question_ref": "g1_q_rain_shadow",
+   "label": "Why the east side of the Cascades is dry (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_the_mountains_are_made_of_porous_rock_that_soaks",
+     "role": "incorrect",
+     "feedback": "Rock does not soak rain out of the sky. The dryness comes from air cooling and losing moisture as it climbs the mountains."
+    },
+    {
+     "answer_ref": "g1_a_air_rises_over_the_mountains_cools_and_drops_its",
+     "role": "strong",
+     "feedback": "Correct. This is called a rain shadow. Rising air cools and sheds moisture, so the downwind side is left dry."
+    },
+    {
+     "answer_ref": "g1_a_warm_ocean_currents_only_warm_the_western_side_o",
+     "role": "incorrect",
+     "feedback": "Ocean currents affect coastal climate, but they do not explain the sharp dry line east of the Cascades. Mountains forcing air upward do."
+    },
+    {
+     "answer_ref": "g1_a_the_pacific_winds_weaken_so_much_inland_that_clo",
+     "role": "ambiguous",
+     "feedback": "Winds often are weaker inland, but the main cause is moisture lost over the mountains, not a lack of wind. This is a partial idea, not the best explanation.",
+     "notes": "Partly true that inland air patterns change, but it is not the main mechanism. Marked ambiguous so the feedback can redirect."
+    }
+   ]
+  },
+  {
+   "client_ref": "g1_s10_small_capitals",
+   "question_ref": "g1_q_small_capitals",
+   "label": "Why some capitals are smaller cities (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_01",
+     "us_geography",
+     "skill_human_geography",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g1_a_the_capital_was_chosen_early_before_larger_citie",
+     "role": "strong",
+     "feedback": "Yes. Cities grow and change over time. The capital stayed where it was chosen, while others later grew larger."
+    },
+    {
+     "answer_ref": "g1_a_the_capital_was_chosen_as_a_compromise_between_r",
+     "role": "strong",
+     "feedback": "Yes. Picking a smaller city could avoid giving one big rival an advantage, which is a common reason."
+    },
+    {
+     "answer_ref": "g1_a_the_capital_was_picked_for_a_central_location_so",
+     "role": "strong",
+     "feedback": "Yes. In many states, leaders wanted a capital near the middle, so people from all parts could reach it."
+    },
+    {
+     "answer_ref": "g1_a_state_law_says_a_capital_must_have_fewer_people",
+     "role": "incorrect",
+     "feedback": "No. No such rule exists. Capitals vary in size, and some are among their state's largest cities."
+    }
+   ]
+  }
+ ]
+}
