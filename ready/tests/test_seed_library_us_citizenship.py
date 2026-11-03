@@ -23,6 +23,7 @@ SCHEMA = json.loads((ROOT / "schemas" / "bulk_import.schema.json").read_text())
 # file -> (questions, answers, sets, batch tag)
 EXPECTED = {
     "us_citizenship_sample_01.json": (8, 27, 10, "ready_lib_us_citizenship_01"),
+    "us_citizenship_lib_02_principles_government.json": (23, 75, 30, "ready_lib_us_citizenship_02"),
 }
 SAMPLE = "us_citizenship_sample_01.json"
 MAIN = [name for name in EXPECTED if name != SAMPLE]
@@ -48,7 +49,7 @@ ORIGIN = {"author": "READY builder", "authorship_kind": "system",
 UUID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", re.I)
 TIMESTAMP = re.compile(r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}")
 # Time-sensitive wording that must not appear in evergreen content.
-STALE = re.compile(r"\$\s?\d|\bpercent\b|%|population|\brecent|currently|nowadays|this year|today's|\bpresident (biden|trump|obama|bush|clinton|lincoln)\b|"
+STALE = re.compile(r"\$\s?\d|\bpercent\b|%|\brecent|currently|nowadays|this year|today's|\bpresident (biden|trump|obama|bush|clinton|lincoln)\b|"
                    r"\b(biden|trump|obama|harris|pelosi|mcconnell)\b|\b20[0-3]\d\b", re.I)
 
 

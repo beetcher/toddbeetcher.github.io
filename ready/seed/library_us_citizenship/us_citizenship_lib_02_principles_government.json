@@ -1,0 +1,5117 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "c2_q_rule_of_law",
+   "data": {
+    "question_text": "What does 'rule of law' mean in the United States? (A law is a rule made by the government.)",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_separation",
+   "data": {
+    "question_text": "Why does the Constitution divide the national government into three branches?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_checks",
+   "data": {
+    "question_text": "Which of these are examples of one branch of government limiting another? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_veto",
+   "data": {
+    "question_text": "A bill passes both houses of Congress, and the President refuses to sign it. What can Congress do to make it a law anyway?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_jr",
+   "data": {
+    "question_text": "Which branch decides whether a law agrees with the Constitution?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_review_nuance",
+   "data": {
+    "question_text": "A tutor wants to explain judicial review accurately. Which statement is most accurate?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_amend_process",
+   "data": {
+    "question_text": "How can the Constitution be changed?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_hard_amend",
+   "data": {
+    "question_text": "Why did the framers make changing the Constitution require wide agreement?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_pop_sov",
+   "data": {
+    "question_text": "The idea that the power of government comes from the people is called what?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_preamble",
+   "data": {
+    "question_text": "The Constitution begins with the words 'We the People.' Which idea do these words support?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_two_parts",
+   "data": {
+    "question_text": "What are the two parts of Congress?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_senate_house",
+   "data": {
+    "question_text": "How is representation in the Senate different from representation in the House of Representatives?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_pres_roles",
+   "data": {
+    "question_text": "Which of these are jobs of the President? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_vp_role",
+   "data": {
+    "question_text": "What is one job of the Vice President?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_impeach",
+   "data": {
+    "question_text": "Which sentence correctly describes impeachment of a federal official?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_judge_tenure",
+   "data": {
+    "question_text": "How long do federal judges, including Supreme Court justices, usually serve?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_dem_rep",
+   "data": {
+    "question_text": "A learner asks a tutor, 'Is the United States a democracy or a republic?' Which reply is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_bill_start",
+   "data": {
+    "question_text": "What usually happens first when someone wants to turn an idea into a national law?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_branch_makes",
+   "data": {
+    "question_text": "Which branch of the national government makes laws?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_branch_enforces",
+   "data": {
+    "question_text": "Which branch of the national government carries out, or enforces, the laws?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_branch_courts",
+   "data": {
+    "question_text": "Which branch of the national government explains the laws and decides legal disputes?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_fed_def",
+   "data": {
+    "question_text": "What is the name for sharing power between the national government and the state governments?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_federalism_elections",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_q_sep_def",
+   "data": {
+    "question_text": "What is the name for dividing government power among separate branches?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "c2_a_rl_everyone",
+   "data": {
+    "answer_text": "Everyone must follow the law, even leaders",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rl_citizens",
+   "data": {
+    "answer_text": "Only citizens must follow the law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rl_leaders",
+   "data": {
+    "answer_text": "Leaders can ignore the law if they want",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rl_voters",
+   "data": {
+    "answer_text": "Only people who vote must follow the law",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "general_adult_learner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rl_judges",
+   "data": {
+    "answer_text": "Judges can make any rule they like",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sp_balance",
+   "data": {
+    "answer_text": "To keep any one person or group from having too much power",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sp_fast",
+   "data": {
+    "answer_text": "To make sure laws pass as quickly as possible",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sp_army",
+   "data": {
+    "answer_text": "To give each state its own army and its own president",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sp_pres",
+   "data": {
+    "answer_text": "To let the President control the courts and Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sp_judges",
+   "data": {
+    "answer_text": "To let voters choose every judge in the country directly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_veto",
+   "data": {
+    "answer_text": "The President vetoes a bill that Congress passed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_review",
+   "data": {
+    "answer_text": "Courts rule that a law goes against the Constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_treaty",
+   "data": {
+    "answer_text": "The Senate votes on whether to approve a treaty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_sign",
+   "data": {
+    "answer_text": "The President signs a bill that Congress passed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_impeach",
+   "data": {
+    "answer_text": "The House of Representatives votes to impeach an official",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ce_meet",
+   "data": {
+    "answer_text": "The Cabinet meets with the President to give advice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vo_two",
+   "data": {
+    "answer_text": "A two-thirds vote in both houses of Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vo_senate",
+   "data": {
+    "answer_text": "A simple majority vote in the Senate alone",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vo_vp",
+   "data": {
+    "answer_text": "A second signature from the Vice President",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vo_court",
+   "data": {
+    "answer_text": "Approval from the Supreme Court",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_br_judicial",
+   "data": {
+    "answer_text": "The judicial branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_br_legislative",
+   "data": {
+    "answer_text": "The legislative branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_br_executive",
+   "data": {
+    "answer_text": "The executive branch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_st_gov",
+   "data": {
+    "answer_text": "The state governments",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rn_s",
+   "data": {
+    "answer_text": "Courts may refuse to apply a law that conflicts with the Constitution, a power courts have used since early in the nation's history",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rn_clause",
+   "data": {
+    "answer_text": "The Constitution has a clause that says in plain words that courts may cancel any law they dislike, for any reason at all",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rn_pres",
+   "data": {
+    "answer_text": "Only the President may decide that a law breaks the Constitution, and the courts must always follow that decision",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_rn_any",
+   "data": {
+    "answer_text": "Courts may overturn any law at all, even a law that fully agrees with the Constitution, whenever judges prefer",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ap_amend",
+   "data": {
+    "answer_text": "By an amendment approved by Congress and the states",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ap_order",
+   "data": {
+    "answer_text": "By an order signed by the President alone",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ap_court",
+   "data": {
+    "answer_text": "By a ruling that the Supreme Court makes by itself",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ap_simple",
+   "data": {
+    "answer_text": "By a simple majority vote in one house of Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ha_broad",
+   "data": {
+    "answer_text": "So that lasting changes reflect broad support, not a passing mood",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ha_never",
+   "data": {
+    "answer_text": "So that the Constitution can never be changed under any circumstances",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ha_pres",
+   "data": {
+    "answer_text": "So that the President alone can decide which changes are allowed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ha_big",
+   "data": {
+    "answer_text": "So that only the largest states have a voice in lasting change",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ps_pop",
+   "data": {
+    "answer_text": "Popular sovereignty",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles",
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ps_fed",
+   "data": {
+    "answer_text": "Federalism",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles",
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ps_jr",
+   "data": {
+    "answer_text": "Judicial review",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles",
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ps_sep",
+   "data": {
+    "answer_text": "Separation of powers",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy",
+      "federalism_elections"
+     ],
+     "audiences": [
+      "general_adult_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "explain_democratic_principles",
+      "explain_federalism_and_elections"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy",
+      "skill_federalism_elections"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_ps_king",
+   "data": {
+    "answer_text": "Rule by a monarch",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_tp_both",
+   "data": {
+    "answer_text": "The Senate and the House of Representatives",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_tp_cab",
+   "data": {
+    "answer_text": "The Senate and the Cabinet",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_tp_sc",
+   "data": {
+    "answer_text": "The House of Representatives and the Supreme Court",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_tp_ec",
+   "data": {
+    "answer_text": "The Senate and the Electoral College",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sh_s",
+   "data": {
+    "answer_text": "Each state has two senators, but House seats depend on a state's population",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sh_rev",
+   "data": {
+    "answer_text": "Each state has two representatives, but Senate seats depend on a state's population",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sh_both",
+   "data": {
+    "answer_text": "Both houses give more seats to the states that have more people",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor",
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sh_pick",
+   "data": {
+    "answer_text": "The President picks the senators, and the voters pick the representatives",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_sh_terms",
+   "data": {
+    "answer_text": "Senators serve longer terms than representatives, and that is the only difference between them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_pr_sign",
+   "data": {
+    "answer_text": "Signing bills into law or vetoing them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_pr_cic",
+   "data": {
+    "answer_text": "Leading the armed forces as commander in chief",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_pr_appoint",
+   "data": {
+    "answer_text": "Nominating federal judges, who must be approved by the Senate",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_pr_write",
+   "data": {
+    "answer_text": "Writing all of the nation's laws",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "general_adult_learner"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vp_succeed",
+   "data": {
+    "answer_text": "Taking over if the President cannot serve",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vp_court",
+   "data": {
+    "answer_text": "Leading the Supreme Court as its top judge",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vp_budget",
+   "data": {
+    "answer_text": "Writing the national budget without Congress",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vp_house",
+   "data": {
+    "answer_text": "Leading the House of Representatives each day",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner",
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_vp_judges",
+   "data": {
+    "answer_text": "Choosing all of the judges in the country alone",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "adult_english_learner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_im_hs",
+   "data": {
+    "answer_text": "The House of Representatives brings charges, and the Senate holds the trial",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_im_sh",
+   "data": {
+    "answer_text": "The Senate brings charges, and the House of Representatives holds the trial",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_im_pres",
+   "data": {
+    "answer_text": "The President alone removes the official from office",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_im_court",
+   "data": {
+    "answer_text": "The Supreme Court brings the charges and then votes on them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_jt_life",
+   "data": {
+    "answer_text": "For life, unless they resign, retire or are removed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_jt_four",
+   "data": {
+    "answer_text": "For four years, the same as the President",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_jt_six",
+   "data": {
+    "answer_text": "For six years, the same as a senator",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_jt_next",
+   "data": {
+    "answer_text": "Until the next national election is held",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_dr_both",
+   "data": {
+    "answer_text": "Both words fit: the people choose leaders, and the Constitution limits what leaders can do",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_dr_rep",
+   "data": {
+    "answer_text": "Republic is the better word, because leaders are elected representatives who are bound by a constitution",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_dr_dem",
+   "data": {
+    "answer_text": "Democracy is the better word, because the people hold the power to choose their leaders",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_dr_neither",
+   "data": {
+    "answer_text": "Neither word fits, because the country has a president and not a king or queen",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "principles_democracy"
+     ],
+     "audiences": [
+      "civics_teacher_or_tutor"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "explain_democratic_principles"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_principles_democracy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_bs_intro",
+   "data": {
+    "answer_text": "A member of Congress introduces a bill in one house",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_bs_sign",
+   "data": {
+    "answer_text": "The President signs the idea into law right away",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_bs_court",
+   "data": {
+    "answer_text": "The Supreme Court reviews the idea and approves it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "c2_a_bs_states",
+   "data": {
+    "answer_text": "Every state votes on the idea before Congress sees it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_citizenship",
+      "system_government"
+     ],
+     "audiences": [
+      "naturalization_applicant"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "describe_branches_and_powers"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_citizenship_02",
+      "us_citizenship",
+      "skill_system_government"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "c2_s_rule_e",
+   "question_ref": "c2_q_rule_of_law",
+   "label": "Rule of law (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_rl_everyone",
+     "role": "strong",
+     "feedback": "Yes. Everyone must follow the law. This includes the President and other leaders."
+    },
+    {
+     "answer_ref": "c2_a_rl_citizens",
+     "role": "incorrect",
+     "feedback": "Not correct. The law is for everyone in the country, not only citizens."
+    },
+    {
+     "answer_ref": "c2_a_rl_leaders",
+     "role": "incorrect",
+     "feedback": "No. Leaders must follow the law too. This is the main idea of the rule of law."
+    },
+    {
+     "answer_ref": "c2_a_rl_voters",
+     "role": "incorrect",
+     "feedback": "No. People do not need to vote to be under the law. Everyone must follow it."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_rule_a",
+   "question_ref": "c2_q_rule_of_law",
+   "label": "Rule of law (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_rl_everyone",
+     "role": "strong",
+     "feedback": "Correct. Under the rule of law, no one is above the law, including the President and other government leaders."
+    },
+    {
+     "answer_ref": "c2_a_rl_citizens",
+     "role": "incorrect",
+     "feedback": "Laws apply to people in the country whether or not they are citizens. The rule of law is about who must obey, not about citizenship."
+    },
+    {
+     "answer_ref": "c2_a_rl_leaders",
+     "role": "incorrect",
+     "feedback": "This is the opposite of the rule of law. Leaders must also obey the law, and courts can hold them to it."
+    },
+    {
+     "answer_ref": "c2_a_rl_judges",
+     "role": "incorrect",
+     "feedback": "Judges decide cases using the law. They cannot make up any rule they like. That is also part of the rule of law."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_rule_g",
+   "question_ref": "c2_q_rule_of_law",
+   "label": "Rule of law (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_rl_everyone",
+     "role": "strong",
+     "feedback": "Yes. The rule of law means the same laws bind ordinary people and leaders alike. It protects people from arbitrary power."
+    },
+    {
+     "answer_ref": "c2_a_rl_voters",
+     "role": "incorrect",
+     "feedback": "Obeying the law does not depend on voting. Laws bind everyone in the country, and voting is a separate right and choice."
+    },
+    {
+     "answer_ref": "c2_a_rl_leaders",
+     "role": "incorrect",
+     "feedback": "If leaders could ignore the law, power would be arbitrary. The rule of law exists to prevent that."
+    },
+    {
+     "answer_ref": "c2_a_rl_judges",
+     "role": "incorrect",
+     "feedback": "Judges are bound by the Constitution and the laws, and their decisions can be reviewed. They do not create any rule they like."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_sep_a",
+   "question_ref": "c2_q_separation",
+   "label": "Why three branches (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_sp_balance",
+     "role": "strong",
+     "feedback": "Correct. Dividing power among three branches keeps any one person or group from holding too much of it."
+    },
+    {
+     "answer_ref": "c2_a_sp_fast",
+     "role": "incorrect",
+     "feedback": "The opposite is closer. Dividing power can make lawmaking slower, on purpose, so that laws are considered carefully."
+    },
+    {
+     "answer_ref": "c2_a_sp_army",
+     "role": "incorrect",
+     "feedback": "The branches are not about states or armies. They divide the work of the national government itself: making, carrying out and judging laws."
+    },
+    {
+     "answer_ref": "c2_a_sp_pres",
+     "role": "incorrect",
+     "feedback": "The framers wanted to prevent this. No single branch is meant to control the others."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_sep_g",
+   "question_ref": "c2_q_separation",
+   "label": "Why three branches (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_sp_balance",
+     "role": "strong",
+     "feedback": "Yes. The framers feared concentrated power. Splitting it among three branches limits abuse."
+    },
+    {
+     "answer_ref": "c2_a_sp_judges",
+     "role": "incorrect",
+     "feedback": "Federal judges are nominated by the President and approved by the Senate, not elected directly. Direct voting is not the reason for the three branches."
+    },
+    {
+     "answer_ref": "c2_a_sp_fast",
+     "role": "incorrect",
+     "feedback": "Speed was not the goal. Several branches must often agree, which tends to slow things down and encourage careful decisions."
+    },
+    {
+     "answer_ref": "c2_a_sp_pres",
+     "role": "incorrect",
+     "feedback": "No branch is meant to control the others. Each has its own role and can limit the others."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_checks_g",
+   "question_ref": "c2_q_checks",
+   "label": "Checks and balances (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ce_veto",
+     "role": "strong",
+     "feedback": "Yes. A veto lets the executive branch check the legislative branch."
+    },
+    {
+     "answer_ref": "c2_a_ce_review",
+     "role": "strong",
+     "feedback": "Yes. When courts rule that a law is unconstitutional, the judicial branch checks the legislative and executive branches."
+    },
+    {
+     "answer_ref": "c2_a_ce_treaty",
+     "role": "strong",
+     "feedback": "Yes. The Senate's vote on treaties is a check on the President's power to make agreements with other countries."
+    },
+    {
+     "answer_ref": "c2_a_ce_sign",
+     "role": "incorrect",
+     "feedback": "Signing a bill is cooperation between branches, not a limit on one. A check is when one branch stops or reviews what another does."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_checks_t",
+   "question_ref": "c2_q_checks",
+   "label": "Checks and balances (tutor, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ce_veto",
+     "role": "strong",
+     "feedback": "Yes. A veto is a check by the executive on the legislature, and Congress can answer it with an override. Use it to show checks working in both directions."
+    },
+    {
+     "answer_ref": "c2_a_ce_impeach",
+     "role": "strong",
+     "feedback": "Yes. The House's power to impeach is a legislative check on executive and judicial officials."
+    },
+    {
+     "answer_ref": "c2_a_ce_sign",
+     "role": "incorrect",
+     "feedback": "Signing a bill is the ordinary end of the lawmaking process. Learners often mistake any contact between branches for a check; stress that a check restrains or reviews."
+    },
+    {
+     "answer_ref": "c2_a_ce_meet",
+     "role": "incorrect",
+     "feedback": "Advice from the Cabinet is part of running the executive branch. It does not restrain another branch."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_veto_a",
+   "question_ref": "c2_q_veto",
+   "label": "Overriding a veto (applicant, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_vo_two",
+     "role": "strong",
+     "feedback": "Correct. Congress can override a veto if two-thirds of the members in each house vote to do so."
+    },
+    {
+     "answer_ref": "c2_a_vo_senate",
+     "role": "incorrect",
+     "feedback": "A majority is enough to pass a bill at first, but overriding a veto needs more. It also needs both houses, not one."
+    },
+    {
+     "answer_ref": "c2_a_vo_vp",
+     "role": "incorrect",
+     "feedback": "The Vice President has no power to sign a bill into law in the President's place against the President's veto."
+    },
+    {
+     "answer_ref": "c2_a_vo_court",
+     "role": "incorrect",
+     "feedback": "The Supreme Court does not approve bills. It decides cases, and it only reviews laws after they exist."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_jr_a",
+   "question_ref": "c2_q_jr",
+   "label": "Who reviews laws (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_br_judicial",
+     "role": "strong",
+     "feedback": "Correct. The courts, led by the Supreme Court, decide whether a law agrees with the Constitution."
+    },
+    {
+     "answer_ref": "c2_a_br_legislative",
+     "role": "incorrect",
+     "feedback": "Congress writes laws. It is not the branch that decides whether a law agrees with the Constitution."
+    },
+    {
+     "answer_ref": "c2_a_br_executive",
+     "role": "incorrect",
+     "feedback": "The executive branch carries out laws. It does not make the final decision about whether a law is constitutional."
+    },
+    {
+     "answer_ref": "c2_a_st_gov",
+     "role": "incorrect",
+     "feedback": "State governments have their own constitutions and courts, but the question here is about the national government's branches."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_nuance_t",
+   "question_ref": "c2_q_review_nuance",
+   "label": "Judicial review (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_rn_s",
+     "role": "strong",
+     "feedback": "Yes. The Constitution does not use the words 'judicial review'; courts have exercised the power since early in the nation's history, reasoning that a supreme Constitution must prevail over conflicting laws."
+    },
+    {
+     "answer_ref": "c2_a_rn_clause",
+     "role": "incorrect",
+     "feedback": "The Constitution does not contain such a clause. The power developed through court decisions and is limited by the need for an actual case."
+    },
+    {
+     "answer_ref": "c2_a_rn_pres",
+     "role": "incorrect",
+     "feedback": "No single official decides this for everyone. Courts decide in cases, and their rulings can be answered by amendment or new legislation."
+    },
+    {
+     "answer_ref": "c2_a_rn_any",
+     "role": "incorrect",
+     "feedback": "Courts do not review laws that agree with the Constitution as invalid. Review is about conflict with the Constitution, not preference."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_amend_a",
+   "question_ref": "c2_q_amend_process",
+   "label": "Changing the Constitution (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ap_amend",
+     "role": "strong",
+     "feedback": "Correct. Amendments need broad support: Congress proposes them, and the states approve them."
+    },
+    {
+     "answer_ref": "c2_a_ap_order",
+     "role": "incorrect",
+     "feedback": "The President cannot change the Constitution by order. An order can only direct the executive branch within the law."
+    },
+    {
+     "answer_ref": "c2_a_ap_court",
+     "role": "incorrect",
+     "feedback": "Courts interpret the Constitution, but they do not change its written text. Changing the text is done by amendment."
+    },
+    {
+     "answer_ref": "c2_a_ap_simple",
+     "role": "incorrect",
+     "feedback": "A simple majority in Congress is not enough. Amendments need much wider agreement, including the states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_hard_t",
+   "question_ref": "c2_q_hard_amend",
+   "label": "Why amendment is hard (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ha_broad",
+     "role": "strong",
+     "feedback": "Yes. A high bar means lasting changes need broad agreement, which protects the Constitution from short-lived swings."
+    },
+    {
+     "answer_ref": "c2_a_ha_never",
+     "role": "incorrect",
+     "feedback": "The framers wanted change to be possible. The Constitution has been amended many times; it is hard, not forbidden."
+    },
+    {
+     "answer_ref": "c2_a_ha_pres",
+     "role": "incorrect",
+     "feedback": "The President has no formal role in approving an amendment. The process runs through Congress or a convention, and the states."
+    },
+    {
+     "answer_ref": "c2_a_ha_big",
+     "role": "incorrect",
+     "feedback": "The process involves the states, large and small, and requires wide agreement among them. It does not favor only large states."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_pop_a",
+   "question_ref": "c2_q_pop_sov",
+   "label": "Popular sovereignty (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ps_pop",
+     "role": "strong",
+     "feedback": "Correct. Popular sovereignty means the people are the source of the government's power."
+    },
+    {
+     "answer_ref": "c2_a_ps_fed",
+     "role": "incorrect",
+     "feedback": "Federalism describes the sharing of power between the national government and the states, not where power comes from."
+    },
+    {
+     "answer_ref": "c2_a_ps_jr",
+     "role": "incorrect",
+     "feedback": "Judicial review is the power of courts to decide whether laws agree with the Constitution."
+    },
+    {
+     "answer_ref": "c2_a_ps_sep",
+     "role": "incorrect",
+     "feedback": "Separation of powers divides government into branches. It describes how power is divided, not where it comes from."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_preamble_g",
+   "question_ref": "c2_q_preamble",
+   "label": "We the People (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ps_pop",
+     "role": "strong",
+     "feedback": "Yes. 'We the People' shows that the Constitution claims its authority from the people, an idea called popular sovereignty."
+    },
+    {
+     "answer_ref": "c2_a_ps_fed",
+     "role": "incorrect",
+     "feedback": "Federalism is about sharing power between national and state governments. The phrase 'We the People' is about the source of power."
+    },
+    {
+     "answer_ref": "c2_a_ps_king",
+     "role": "incorrect",
+     "feedback": "The phrase points the other way. The people, not a monarch, are named as the source of the government's authority."
+    },
+    {
+     "answer_ref": "c2_a_ps_sep",
+     "role": "incorrect",
+     "feedback": "Separation of powers is about dividing power among branches, which comes later in the text. This phrase is about the source of power."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_parts_e",
+   "question_ref": "c2_q_two_parts",
+   "label": "Two parts of Congress (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_tp_both",
+     "role": "strong",
+     "feedback": "Yes. Congress has two parts: the Senate and the House of Representatives."
+    },
+    {
+     "answer_ref": "c2_a_tp_cab",
+     "role": "incorrect",
+     "feedback": "No. The Cabinet is not part of Congress. It is a group that advises the President."
+    },
+    {
+     "answer_ref": "c2_a_tp_sc",
+     "role": "incorrect",
+     "feedback": "Not quite. The Supreme Court is a court. It is not a part of Congress."
+    },
+    {
+     "answer_ref": "c2_a_tp_ec",
+     "role": "incorrect",
+     "feedback": "No. The Electoral College is a group of electors who vote for President. It is not a part of Congress."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_parts_a",
+   "question_ref": "c2_q_two_parts",
+   "label": "Two parts of Congress (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_tp_both",
+     "role": "strong",
+     "feedback": "Correct. Congress is made up of the Senate and the House of Representatives. Together they are the legislative branch."
+    },
+    {
+     "answer_ref": "c2_a_tp_cab",
+     "role": "incorrect",
+     "feedback": "The Cabinet advises the President and belongs to the executive branch. Congress is the legislative branch."
+    },
+    {
+     "answer_ref": "c2_a_tp_sc",
+     "role": "incorrect",
+     "feedback": "The Supreme Court is part of the judicial branch. Only the House is part of Congress in this pair."
+    },
+    {
+     "answer_ref": "c2_a_tp_ec",
+     "role": "incorrect",
+     "feedback": "The Electoral College is a process of electors who vote for President. It is not part of Congress."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_sh_a",
+   "question_ref": "c2_q_senate_house",
+   "label": "Senate and House (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_sh_s",
+     "role": "strong",
+     "feedback": "Correct. Every state has two senators, so states are equal in the Senate. House seats are shared by population, so larger states have more representatives."
+    },
+    {
+     "answer_ref": "c2_a_sh_rev",
+     "role": "incorrect",
+     "feedback": "You have the two houses reversed. The Senate gives each state two seats; the House uses population."
+    },
+    {
+     "answer_ref": "c2_a_sh_both",
+     "role": "incorrect",
+     "feedback": "Only the House works this way. In the Senate every state has two senators, whatever its size."
+    },
+    {
+     "answer_ref": "c2_a_sh_pick",
+     "role": "incorrect",
+     "feedback": "The President does not pick senators. Voters in each state choose both senators and representatives."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_sh_t",
+   "question_ref": "c2_q_senate_house",
+   "label": "Senate and House (tutor, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_sh_s",
+     "role": "strong",
+     "feedback": "Yes. The Senate gives states equal weight and the House gives weight by population. This pairing came from a compromise between large and small states."
+    },
+    {
+     "answer_ref": "c2_a_sh_rev",
+     "role": "incorrect",
+     "feedback": "This reverses the two houses. A mnemonic: the Senate has Two senators per state."
+    },
+    {
+     "answer_ref": "c2_a_sh_terms",
+     "role": "incorrect",
+     "feedback": "Terms do differ, but this is not the only difference. The main contrast is how seats are shared among the states."
+    },
+    {
+     "answer_ref": "c2_a_sh_both",
+     "role": "incorrect",
+     "feedback": "This describes only the House. Learners may forget that the Senate gives each state the same number of seats."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_pres_g",
+   "question_ref": "c2_q_pres_roles",
+   "label": "Jobs of the President (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "general_adult_learner"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_pr_sign",
+     "role": "strong",
+     "feedback": "Yes. The President signs bills into law or vetoes them."
+    },
+    {
+     "answer_ref": "c2_a_pr_cic",
+     "role": "strong",
+     "feedback": "Yes. The President is commander in chief of the armed forces."
+    },
+    {
+     "answer_ref": "c2_a_pr_appoint",
+     "role": "strong",
+     "feedback": "Yes. The President nominates federal judges, and the Senate must approve them."
+    },
+    {
+     "answer_ref": "c2_a_pr_write",
+     "role": "incorrect",
+     "feedback": "Congress writes the laws. The President can propose ideas and sign or veto bills, but does not write them alone."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_vp_a",
+   "question_ref": "c2_q_vp_role",
+   "label": "Vice President (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_vp_succeed",
+     "role": "strong",
+     "feedback": "Correct. The Vice President takes over as President if the President can no longer serve. The Vice President also leads the Senate and votes when there is a tie."
+    },
+    {
+     "answer_ref": "c2_a_vp_court",
+     "role": "incorrect",
+     "feedback": "The Chief Justice leads the Supreme Court. The Vice President's work is in the executive branch and in the Senate."
+    },
+    {
+     "answer_ref": "c2_a_vp_budget",
+     "role": "incorrect",
+     "feedback": "Writing the national budget is not the Vice President's job alone. Congress passes spending laws, and the President proposes a budget."
+    },
+    {
+     "answer_ref": "c2_a_vp_house",
+     "role": "incorrect",
+     "feedback": "The House chooses its own leader, the Speaker. The Vice President leads the Senate, not the House."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_vp_e",
+   "question_ref": "c2_q_vp_role",
+   "label": "Vice President (English learner, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_vp_succeed",
+     "role": "strong",
+     "feedback": "Yes. The Vice President becomes President if the President cannot serve."
+    },
+    {
+     "answer_ref": "c2_a_vp_court",
+     "role": "incorrect",
+     "feedback": "No. The Vice President does not lead the Supreme Court. A judge called the Chief Justice does."
+    },
+    {
+     "answer_ref": "c2_a_vp_judges",
+     "role": "incorrect",
+     "feedback": "No. The President nominates judges. The Senate must approve them. The Vice President does not choose them."
+    },
+    {
+     "answer_ref": "c2_a_vp_house",
+     "role": "incorrect",
+     "feedback": "No. The Vice President does not lead the House of Representatives. The Vice President can lead the Senate."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_impeach_a",
+   "question_ref": "c2_q_impeach",
+   "label": "Impeachment (applicant, advanced)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_im_hs",
+     "role": "strong",
+     "feedback": "Correct. The House brings the charges, which is called impeachment, and the Senate holds the trial."
+    },
+    {
+     "answer_ref": "c2_a_im_sh",
+     "role": "incorrect",
+     "feedback": "The two houses are reversed here. The House impeaches, and the Senate holds the trial."
+    },
+    {
+     "answer_ref": "c2_a_im_pres",
+     "role": "incorrect",
+     "feedback": "The President cannot remove an official this way. Impeachment is a power given to Congress as a check on officials."
+    },
+    {
+     "answer_ref": "c2_a_im_court",
+     "role": "incorrect",
+     "feedback": "The Supreme Court does not bring charges in an impeachment. Congress carries out the process."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_tenure_a",
+   "question_ref": "c2_q_judge_tenure",
+   "label": "Judges' terms (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_jt_life",
+     "role": "strong",
+     "feedback": "Correct. Federal judges serve during good behavior, which usually means for life. This helps them decide without fear of losing their jobs."
+    },
+    {
+     "answer_ref": "c2_a_jt_four",
+     "role": "incorrect",
+     "feedback": "Presidents serve four-year terms. Federal judges do not have fixed terms of that kind."
+    },
+    {
+     "answer_ref": "c2_a_jt_six",
+     "role": "incorrect",
+     "feedback": "Senators serve six-year terms. Federal judges are different, and are not elected to fixed terms."
+    },
+    {
+     "answer_ref": "c2_a_jt_next",
+     "role": "incorrect",
+     "feedback": "Judges are not chosen by voters in a national election. They keep their positions after they are approved."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_demrep_t",
+   "question_ref": "c2_q_dem_rep",
+   "label": "Democracy or republic (tutor, expert)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "civics_teacher_or_tutor"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_dr_both",
+     "role": "strong",
+     "feedback": "Yes. The words overlap. Citizens choose leaders (democratic), and the Constitution limits leaders and protects rights (republican)."
+    },
+    {
+     "answer_ref": "c2_a_dr_rep",
+     "role": "ambiguous",
+     "feedback": "Defensible. Many teachers prefer 'republic' to stress limits and representation. It is not wrong, but it is incomplete without noting that the people choose their leaders.",
+     "notes": "People differ on which word to emphasize; both are widely used by scholars, so this is marked ambiguous, not wrong."
+    },
+    {
+     "answer_ref": "c2_a_dr_dem",
+     "role": "ambiguous",
+     "feedback": "Defensible. 'Democracy' is common in everyday use for a system where people choose leaders. It is incomplete without noting constitutional limits.",
+     "notes": "Same reason as the republic option: a widely used everyday term that is correct but leaves out constitutional limits."
+    },
+    {
+     "answer_ref": "c2_a_dr_neither",
+     "role": "incorrect",
+     "feedback": "Having a president does not change the type of government. A president can lead a republic or a democracy."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_bill_a",
+   "question_ref": "c2_q_bill_start",
+   "label": "Start of a law (applicant, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_bs_intro",
+     "role": "strong",
+     "feedback": "Correct. A bill begins when a member of Congress introduces it. It must then pass both houses before it goes to the President."
+    },
+    {
+     "answer_ref": "c2_a_bs_sign",
+     "role": "incorrect",
+     "feedback": "The President signs a bill only after Congress has passed it. That comes near the end of the process, not the start."
+    },
+    {
+     "answer_ref": "c2_a_bs_court",
+     "role": "incorrect",
+     "feedback": "The Supreme Court does not approve ideas for laws. Courts review laws only after they exist."
+    },
+    {
+     "answer_ref": "c2_a_bs_states",
+     "role": "incorrect",
+     "feedback": "States do not vote on ordinary national laws. Congress passes them, and the President signs or vetoes."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_makes_e",
+   "question_ref": "c2_q_branch_makes",
+   "label": "Branch that makes laws (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_br_legislative",
+     "role": "strong",
+     "feedback": "Yes. The legislative branch is Congress. It makes the laws."
+    },
+    {
+     "answer_ref": "c2_a_br_executive",
+     "role": "incorrect",
+     "feedback": "No. The executive branch carries out the laws. The President leads it."
+    },
+    {
+     "answer_ref": "c2_a_br_judicial",
+     "role": "incorrect",
+     "feedback": "No. The judicial branch is the courts. The courts decide what laws mean."
+    },
+    {
+     "answer_ref": "c2_a_st_gov",
+     "role": "incorrect",
+     "feedback": "No. State governments make state laws. This question is about the national government."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_enforces_e",
+   "question_ref": "c2_q_branch_enforces",
+   "label": "Branch that carries out laws (English learner, introductory)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "adult_english_learner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_br_executive",
+     "role": "strong",
+     "feedback": "Yes. The executive branch carries out the laws. The President leads this branch."
+    },
+    {
+     "answer_ref": "c2_a_br_legislative",
+     "role": "incorrect",
+     "feedback": "No. The legislative branch makes the laws. It is Congress."
+    },
+    {
+     "answer_ref": "c2_a_br_judicial",
+     "role": "incorrect",
+     "feedback": "No. The judicial branch is the courts. The courts decide cases about the law."
+    },
+    {
+     "answer_ref": "c2_a_st_gov",
+     "role": "incorrect",
+     "feedback": "No. State governments carry out state laws. This question is about the national government."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_courts_a",
+   "question_ref": "c2_q_branch_courts",
+   "label": "Branch that decides disputes (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "system_government"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "describe_branches_and_powers"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_system_government",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_br_judicial",
+     "role": "strong",
+     "feedback": "Correct. The judicial branch, the courts, explains the laws and decides legal disputes."
+    },
+    {
+     "answer_ref": "c2_a_br_legislative",
+     "role": "incorrect",
+     "feedback": "The legislative branch, Congress, writes laws. It does not decide legal disputes between people."
+    },
+    {
+     "answer_ref": "c2_a_br_executive",
+     "role": "incorrect",
+     "feedback": "The executive branch carries out laws. It does not act as the final judge of legal disputes."
+    },
+    {
+     "answer_ref": "c2_a_st_gov",
+     "role": "incorrect",
+     "feedback": "State governments have courts for state law, but the question asks about a branch of the national government."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_fed_def_a",
+   "question_ref": "c2_q_fed_def",
+   "label": "Federalism (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "federalism_elections"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "explain_federalism_and_elections"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_federalism_elections",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ps_fed",
+     "role": "strong",
+     "feedback": "Correct. In federalism, power is shared between the national government and the states."
+    },
+    {
+     "answer_ref": "c2_a_ps_pop",
+     "role": "incorrect",
+     "feedback": "Popular sovereignty means power comes from the people. It is not about sharing power between levels of government."
+    },
+    {
+     "answer_ref": "c2_a_ps_jr",
+     "role": "incorrect",
+     "feedback": "Judicial review is the power of courts to check laws against the Constitution."
+    },
+    {
+     "answer_ref": "c2_a_ps_sep",
+     "role": "incorrect",
+     "feedback": "Separation of powers divides power among branches in one government. Federalism divides it between national and state levels."
+    }
+   ]
+  },
+  {
+   "client_ref": "c2_s_sep_def_a",
+   "question_ref": "c2_q_sep_def",
+   "label": "Separation of powers (applicant, basic)",
+   "metadata": {
+    "topics": [
+     "us_citizenship",
+     "principles_democracy"
+    ],
+    "audiences": [
+     "naturalization_applicant"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "explain_democratic_principles"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_citizenship_02",
+     "us_citizenship",
+     "skill_principles_democracy",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Study practice only; not the official naturalization test, not affiliated with or endorsed by USCIS, and not legal or immigration advice."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "c2_a_ps_sep",
+     "role": "strong",
+     "feedback": "Correct. Separation of powers divides government among the legislative, executive and judicial branches."
+    },
+    {
+     "answer_ref": "c2_a_ps_fed",
+     "role": "incorrect",
+     "feedback": "Federalism shares power between the national government and the states. It is not about dividing one government into branches."
+    },
+    {
+     "answer_ref": "c2_a_ps_jr",
+     "role": "incorrect",
+     "feedback": "Judicial review is one power of the courts. It is not the name for dividing the government into branches."
+    },
+    {
+     "answer_ref": "c2_a_ps_pop",
+     "role": "incorrect",
+     "feedback": "Popular sovereignty is about where power comes from, the people. It does not describe the branches."
+    }
+   ]
+  }
+ ]
+}
