@@ -1,0 +1,2027 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "l01_q_thaw_plan",
+   "data": {
+    "question_text": "It is Wednesday evening. You want to smoke a frozen pork shoulder on Saturday morning. What is the best plan for thawing it?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_probe_spot",
+   "data": {
+    "question_text": "You are checking whether a thick cut of meat has reached its target temperature. Where should the tip of the probe end up?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner",
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_white_smoke",
+   "data": {
+    "question_text": "You are about to load meat on your offset smoker when thick, billowing white smoke starts pouring from the chimney. What should you do first?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_smoke",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_leftovers",
+   "data": {
+    "question_text": "After a family cookout, which habits keep smoked leftovers safe? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_stall_hour_six",
+   "data": {
+    "question_text": "Your brisket has sat at the same probe temperature for over an hour at hour six, and guests arrive in a few hours. What is the best response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_rainy_charcoal",
+   "data": {
+    "question_text": "A light rain starts just as you are about to light a charcoal smoker. Where is the safest place to run it?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_fire_safety",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_holding_brisket",
+   "data": {
+    "question_text": "Your brisket is probe-tender at 2 pm, but dinner is at 6 pm. What is the best plan?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_chicken_pull",
+   "data": {
+    "question_text": "You are smoking bone-in chicken breasts. When should you take them off the cooker?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_q_pork_pull",
+   "data": {
+    "question_text": "A pork shoulder you plan to pull has long since passed the safe minimum temperature. How do you decide it is done?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l01_a_thaw_fridge",
+   "data": {
+    "answer_text": "Move it to the refrigerator now, on a tray, so it thaws slowly while staying cold.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_thaw_counter",
+   "data": {
+    "answer_text": "Leave it on the kitchen counter overnight so it is soft by morning.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_thaw_warm_water",
+   "data": {
+    "answer_text": "Run warm tap water over it until the outside is soft.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_thaw_in_smoker",
+   "data": {
+    "answer_text": "Put it on the smoker still frozen and let the cooker's heat thaw it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_probe_thickest",
+   "data": {
+    "answer_text": "In the thickest part of the meat, away from bone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner",
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_probe_bone",
+   "data": {
+    "answer_text": "Pushed in until it touches the bone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner",
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_probe_surface",
+   "data": {
+    "answer_text": "Just under the surface, where it is easy to reach.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_probe_lowest_of_several",
+   "data": {
+    "answer_text": "In a few different spots, and go by the coolest reading.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_probe_nearest_fire",
+   "data": {
+    "answer_text": "On the side nearest the fire, because that part cooks first.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner",
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_smoke_wait_thin",
+   "data": {
+    "answer_text": "Hold off loading the meat. Open the intake a little and let the fire burn cleaner until the smoke runs thin and pale.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_smoke_load_now",
+   "data": {
+    "answer_text": "Load the meat right away, because heavy smoke means more flavor.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_smoke_close_intake",
+   "data": {
+    "answer_text": "Close the intake almost all the way to calm the fire down.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_smoke_wet_wood",
+   "data": {
+    "answer_text": "Splash a little water on the wood so it stops smoking so hard.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_left_two_hours",
+   "data": {
+    "answer_text": "Get the leftovers into the refrigerator within about two hours of coming off the heat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_left_shallow",
+   "data": {
+    "answer_text": "Divide a big batch into shallow containers so it cools quickly.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_left_steam_stops",
+   "data": {
+    "answer_text": "Leave the pan on the counter until it stops steaming, then put it in the refrigerator.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_left_smoke_preserves",
+   "data": {
+    "answer_text": "Leave it out on the table for the whole evening, since smoke preserves meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_stall_stay_steady",
+   "data": {
+    "answer_text": "Keep the cooker steady and keep cooking. A long pause at this stage is normal.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_stall_wrap",
+   "data": {
+    "answer_text": "Wrap the brisket tightly in foil or butcher paper to push through the pause.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_stall_raise_temp",
+   "data": {
+    "answer_text": "Raise the cooker temperature moderately to speed it along.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_stall_open_lid",
+   "data": {
+    "answer_text": "Open the lid every few minutes to see what is going on.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_co_open_air",
+   "data": {
+    "answer_text": "Outside in the open, well away from walls, eaves and anything that can burn, even if you have to put up with the rain.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_co_garage_open",
+   "data": {
+    "answer_text": "Inside the garage with the big door propped open.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_co_porch",
+   "data": {
+    "answer_text": "Under the covered porch that is attached to the house.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_co_against_wall",
+   "data": {
+    "answer_text": "Right beside the house wall, so the siding blocks the wind and rain.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_hold_cooler",
+   "data": {
+    "answer_text": "Wrap it and hold it in a preheated insulated cooler, checking now and then that it stays safely hot.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_hold_counter",
+   "data": {
+    "answer_text": "Leave it on the counter, uncovered, until dinner.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_hold_chill_reheat",
+   "data": {
+    "answer_text": "Chill it quickly in the refrigerator, then reheat it gently before slicing.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_hold_back_in_smoker",
+   "data": {
+    "answer_text": "Put it back in the smoker at cooking temperature until dinner.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pull_at_safe_min",
+   "data": {
+    "answer_text": "Take it off as soon as the thermometer shows the safe minimum for that meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner",
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pull_clear_juices",
+   "data": {
+    "answer_text": "Take it off when the juices run clear.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pull_deep_brown",
+   "data": {
+    "answer_text": "Take it off when the skin is a deep brown.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pull_by_clock",
+   "data": {
+    "answer_text": "Take it off after the time in the recipe, whatever the thermometer says.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pork_probe_tender",
+   "data": {
+    "answer_text": "Keep cooking until the probe slides in with little resistance.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pork_number_only",
+   "data": {
+    "answer_text": "Take it off at a set target number, whatever the probe feels like.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l01_a_pork_dark_bark",
+   "data": {
+    "answer_text": "Take it off once the bark is dark, because color shows it is done.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_01",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "l01_s_thaw_plan_intro",
+   "question_ref": "l01_q_thaw_plan",
+   "label": "introductory / hobbyist beginner / thaw plan",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner know that thawing happens cold and takes planning?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_thaw_fridge",
+     "role": "strong",
+     "feedback": "A big cut thaws safely in the refrigerator because the whole piece stays cold the entire time. It takes days for a large shoulder, so starting early matters. If you run short on time, a cold-water bath with the water changed often is the other safe way."
+    },
+    {
+     "answer_ref": "l01_a_thaw_counter",
+     "role": "incorrect",
+     "feedback": "On the counter, the outside warms into the temperature range where bacteria multiply quickly while the middle is still frozen. Thaw in the refrigerator instead, and start several days ahead."
+    },
+    {
+     "answer_ref": "l01_a_thaw_warm_water",
+     "role": "incorrect",
+     "feedback": "Warm water brings the outside of the meat into the danger zone long before the center thaws. If you need a faster method, use cold water in a sealed bag and change the water regularly."
+    },
+    {
+     "answer_ref": "l01_a_thaw_in_smoker",
+     "role": "incorrect",
+     "feedback": "A frozen center takes a very long time to warm up in a low-temperature cooker, while the surface sits in the danger zone. Plan ahead and thaw the meat completely, in the refrigerator, before it goes on."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_probe_spot_basic",
+   "question_ref": "l01_q_probe_spot",
+   "label": "basic / hobbyist beginner / probe spot",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner know the standard probe position?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_probe_thickest",
+     "role": "strong",
+     "feedback": "The thickest part is the last place to come up to temperature, so that reading tells you the whole piece is there. Keeping the tip off the bone matters because bone can read hotter or cooler than the meat around it."
+    },
+    {
+     "answer_ref": "l01_a_probe_bone",
+     "role": "incorrect",
+     "feedback": "Bone conducts heat differently from meat and can give a false reading. Keep the tip in the meat, in the thickest part, clear of bone."
+    },
+    {
+     "answer_ref": "l01_a_probe_surface",
+     "role": "incorrect",
+     "feedback": "The surface heats first, so a shallow reading runs well ahead of the center. Push the tip into the thickest part of the cut."
+    },
+    {
+     "answer_ref": "l01_a_probe_nearest_fire",
+     "role": "incorrect",
+     "feedback": "The side nearest the fire is the part that is ahead, so it tells you the least about the slowest part. Check the thickest part, where the meat lags."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_probe_spot_intermediate",
+   "question_ref": "l01_q_probe_spot",
+   "label": "intermediate / home enthusiast / probe spot",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner go beyond one reading when the cut is uneven?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_probe_lowest_of_several",
+     "role": "strong",
+     "feedback": "Large or irregular cuts have cooler pockets, and a single reading can miss them. Several readings with the coolest one counting gives you a more honest picture, which matters most for safety."
+    },
+    {
+     "answer_ref": "l01_a_probe_thickest",
+     "role": "ambiguous",
+     "feedback": "This is the standard habit and usually works. On an uneven or very large cut one reading can miss a cooler pocket, so it is a good start rather than the full check.",
+     "notes": "Ambiguous on purpose: sound single-point practice, but the question asks for the most reliable approach on a thick, uneven cut."
+    },
+    {
+     "answer_ref": "l01_a_probe_bone",
+     "role": "incorrect",
+     "feedback": "Bone can read hotter or cooler than the meat beside it, so a reading against bone does not describe the meat. Keep the tip in meat, clear of bone."
+    },
+    {
+     "answer_ref": "l01_a_probe_nearest_fire",
+     "role": "incorrect",
+     "feedback": "The fire side is the part that is ahead, so it hides the slowest part of the cut. Read where the meat lags, not where it leads."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_white_smoke_intermediate",
+   "question_ref": "l01_q_white_smoke",
+   "label": "intermediate / home enthusiast / white smoke",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "wood_smoke"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "produce_clean_smoke"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_smoke",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner treat thick white smoke as a fire problem, not a flavor bonus?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_smoke_wait_thin",
+     "role": "strong",
+     "feedback": "Thick white smoke usually means the fire is starved of air and smoldering, and that smoke can taste harsh and bitter on the meat. More air lets the wood burn cleanly, and the smoke thins to a pale, almost blue wisp. Load the meat when it does."
+    },
+    {
+     "answer_ref": "l01_a_smoke_load_now",
+     "role": "incorrect",
+     "feedback": "Heavy white smoke is not more flavor. It tends to deposit a harsh, bitter coating on the meat. Wait for thin, pale smoke before loading."
+    },
+    {
+     "answer_ref": "l01_a_smoke_close_intake",
+     "role": "incorrect",
+     "feedback": "Choking the air supply is what makes a fire smolder and smoke heavily. Do the opposite: give the fire more air so the wood burns cleaner."
+    },
+    {
+     "answer_ref": "l01_a_smoke_wet_wood",
+     "role": "incorrect",
+     "feedback": "Wet wood adds steam and cools the fire, so it tends to smolder more, not less. The fix is airflow and a hot, established fire."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_leftovers_basic",
+   "question_ref": "l01_q_leftovers",
+   "label": "basic / backyard host for a crowd / leftovers",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_food_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the host know the two-hour rule and quick cooling?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_left_two_hours",
+     "role": "strong",
+     "feedback": "Bacteria multiply quickly in the danger zone, so cooked food should not sit out longer than about two hours. Setting a timer when the food comes off helps."
+    },
+    {
+     "answer_ref": "l01_a_left_shallow",
+     "role": "strong",
+     "feedback": "A shallow layer cools much faster than a deep pot, so the middle spends less time in the danger zone. Split big batches before chilling."
+    },
+    {
+     "answer_ref": "l01_a_left_steam_stops",
+     "role": "incorrect",
+     "feedback": "Waiting for steam to stop can eat the whole safe window, and a deep pan stays warm in the middle for hours. Portion into shallow containers and refrigerate promptly."
+    },
+    {
+     "answer_ref": "l01_a_left_smoke_preserves",
+     "role": "incorrect",
+     "feedback": "Light home smoking does not make cooked meat safe to leave out. Smoked meat is held to the same time limits as any other cooked food."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_stall_hour_six_intermediate",
+   "question_ref": "l01_q_stall_hour_six",
+   "label": "intermediate / home enthusiast / stall hour six",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_timing",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner recognise a stall as normal and know the common choices?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_stall_stay_steady",
+     "role": "strong",
+     "feedback": "A pause like this is normal. Moisture evaporating from the surface cools the meat about as fast as the cooker heats it, so the number sits still for a while. Steady heat gets you through it without risking the cook."
+    },
+    {
+     "answer_ref": "l01_a_stall_wrap",
+     "role": "ambiguous",
+     "feedback": "Wrapping traps moisture and usually shortens the stall. Foil is the fastest and softens the bark, while butcher paper breathes and keeps more of it. Both are accepted methods and the right pick depends on your schedule and the bark you want.",
+     "notes": "Ambiguous on purpose: wrapping is a widely used, legitimate technique with a bark trade-off. Not wrong, but not the only sound answer."
+    },
+    {
+     "answer_ref": "l01_a_stall_raise_temp",
+     "role": "ambiguous",
+     "feedback": "A moderate increase can shorten the stall, and many cooks do it when time is tight. The trade-off is a faster, drier finish and less margin for error, so it suits a recipe you know well.",
+     "notes": "Ambiguous on purpose: hot-and-faster is a real school of thought with a texture trade-off."
+    },
+    {
+     "answer_ref": "l01_a_stall_open_lid",
+     "role": "incorrect",
+     "feedback": "Each peek lets heat and smoke escape and lengthens the cook, which is the opposite of what you want. Trust the probe and leave the lid down."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_rainy_charcoal_intro",
+   "question_ref": "l01_q_rainy_charcoal",
+   "label": "introductory / hobbyist beginner / rainy charcoal",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "fire_safety"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "stay_safe_around_fire_and_smoke"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_fire_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner keep a charcoal fire outdoors and clear of buildings?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_co_open_air",
+     "role": "strong",
+     "feedback": "Burning charcoal makes carbon monoxide, which you cannot see or smell and which can build up fast in a covered space. Run the cooker outside in the open, clear of buildings and anything that can catch fire. A little rain is the lesser problem."
+    },
+    {
+     "answer_ref": "l01_a_co_garage_open",
+     "role": "incorrect",
+     "feedback": "An open garage door does not move enough air to be safe, and carbon monoxide can drift into the house. Charcoal cookers belong outdoors, in the open."
+    },
+    {
+     "answer_ref": "l01_a_co_porch",
+     "role": "incorrect",
+     "feedback": "A roof traps heat and fumes, and an attached porch lets carbon monoxide drift indoors. Heat and sparks can also damage the structure. Move out into the open."
+    },
+    {
+     "answer_ref": "l01_a_co_against_wall",
+     "role": "incorrect",
+     "feedback": "Heat, sparks and flare-ups can ignite siding and eaves, and fumes can find their way inside. Keep the cooker well clear of the house."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_holding_brisket_intermediate",
+   "question_ref": "l01_q_holding_brisket",
+   "label": "intermediate / backyard host for a crowd / holding brisket",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_timing",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host know how to hold finished meat safely?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_hold_cooler",
+     "role": "strong",
+     "feedback": "A wrapped brisket in a preheated insulated cooler stays hot and moist for hours. Keep it above the safe hot-holding temperature, and check it with a thermometer when you are unsure."
+    },
+    {
+     "answer_ref": "l01_a_hold_counter",
+     "role": "incorrect",
+     "feedback": "Left out, the brisket cools into the danger zone within a short time, and the surface dries out. Hold it hot in an insulated cooler or a low oven."
+    },
+    {
+     "answer_ref": "l01_a_hold_chill_reheat",
+     "role": "ambiguous",
+     "feedback": "Chilling and reheating is safe if the cooling is quick and the reheating is thorough, and caterers rely on it. You usually lose some texture and juiciness compared with a hot hold, so it suits cases where you cannot hold hot.",
+     "notes": "Ambiguous on purpose: a legitimate safe method with a quality trade-off, not the best fit for a four-hour wait."
+    },
+    {
+     "answer_ref": "l01_a_hold_back_in_smoker",
+     "role": "incorrect",
+     "feedback": "Four more hours at cooking temperature will dry the meat out and turn the bark leathery. Hold it hot at a lower temperature, wrapped, instead."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_chicken_pull_basic",
+   "question_ref": "l01_q_chicken_pull",
+   "label": "basic / hobbyist beginner / chicken pull",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner judge chicken by temperature and not color or time?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_pull_at_safe_min",
+     "role": "strong",
+     "feedback": "For poultry, the safe minimum is the line that matters, and every extra degree dries out lean breast meat. Check the thickest part, away from bone, and take it off when it gets there."
+    },
+    {
+     "answer_ref": "l01_a_pull_clear_juices",
+     "role": "incorrect",
+     "feedback": "Color and clear juices are not reliable signs that poultry is safe. Use a thermometer in the thickest part."
+    },
+    {
+     "answer_ref": "l01_a_pull_deep_brown",
+     "role": "incorrect",
+     "feedback": "Skin color depends on sugar in the rub and on the cooker, and tells you nothing about the inside. Check the temperature instead."
+    },
+    {
+     "answer_ref": "l01_a_pull_by_clock",
+     "role": "incorrect",
+     "feedback": "Cook times vary with the cooker, the weather and the size of the pieces. A recipe time says when to start checking, not when to stop."
+    }
+   ]
+  },
+  {
+   "client_ref": "l01_s_pork_pull_intermediate",
+   "question_ref": "l01_q_pork_pull",
+   "label": "intermediate / home enthusiast / pork pull",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_01",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner understand that safe is not the same as tender?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l01_a_pork_probe_tender",
+     "role": "strong",
+     "feedback": "A shoulder is safe long before it is tender. The tough connective tissue needs time and heat to soften, and the probe sliding in with little resistance tells you that has happened. Use the number to know when to start checking."
+    },
+    {
+     "answer_ref": "l01_a_pork_number_only",
+     "role": "ambiguous",
+     "feedback": "Many cooks use a number in the low 200s as the signal to start probing, and it often lines up with tender meat. Pieces vary, so the feel of the probe is the deciding check.",
+     "notes": "Ambiguous on purpose: a target number is a useful guide, but it should be confirmed by feel."
+    },
+    {
+     "answer_ref": "l01_a_pork_dark_bark",
+     "role": "incorrect",
+     "feedback": "Bark color depends on sugar, spice and the fire, not on whether the connective tissue has softened. A dark shoulder can still be tough inside. Probe it."
+    },
+    {
+     "answer_ref": "l01_a_pull_at_safe_min",
+     "role": "incorrect",
+     "feedback": "The safe minimum is far below the temperature at which a shoulder turns tender, so pulling it there gives you a tough, chewy result. Safe is not the same as done for a pulled cut."
+    }
+   ]
+  }
+ ]
+}
