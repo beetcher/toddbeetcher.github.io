@@ -20,7 +20,7 @@ Ambiguous connections carry a short editor's note (`notes`) saying why. Learners
 
 ## Three ideas to look for
 
-1. **One answer, different meanings.** *"Check the important facts against a source you trust before relying on them."* appears in three sets. It is **strong** for the statistic question, **incorrect** for the customer-spreadsheet question (a good habit, but it does not fix a privacy problem), and **ambiguous** for the bake-sale names question (names are not facts, but a quick search is still sensible). Search the file for `l01_a_check_source`.
+1. **One answer, different meanings.** *"Check the important facts against a source you trust first."* appears in three sets. It is **strong** for the statistic question, **incorrect** for the customer-spreadsheet question (a good habit, but it does not fix a privacy problem), and **ambiguous** for the bake-sale names question (names are not facts, but a quick search is still sensible). Search the file for `l01_a_check_source`.
 2. **One question, two sets.** *"AI writes a clear summary... What should you do before you quote it?"* is used for an adult beginner at basic level and for a workplace reader at intermediate level. Same question, different choices and feedback. Look at `l01_s_quote_statistic_basic` and `l01_s_quote_statistic_work`.
 3. **Feedback on every choice.** Each of the 36 choices explains why it works or fails and what to do instead.
 
