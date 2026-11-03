@@ -60,6 +60,27 @@ class ServicesTests(unittest.TestCase):
             service.import_content(bad)
         self.assertEqual(service.list("answers")["records"], [])
 
+    def test_pool_above_1000_answers_lists_and_selects(self):
+        template = self.seed["answers"][0]["data"]
+        for number in range(1100):
+            data = deepcopy(template)
+            data["answer_text"] = f"Bulk answer {number}"
+            self.service.create("answers", data, str(uuid4()))
+        page = self.service.list("answers", limit=100, cursor=1000)
+        self.assertEqual(page["count"], 100)
+        picked = self.service.select({"target": "answers", "mode": "random", "count": 5})
+        self.assertEqual(picked["found_count"], 5)
+
+    def test_pool_above_cap_still_refused(self):
+        from ready import services
+        old, services.MAX_POOL = services.MAX_POOL, 5
+        try:
+            with self.assertRaises(ServiceError) as ctx:
+                self.service.list("answers")
+            self.assertEqual(ctx.exception.issue, "candidate_pool_too_large")
+        finally:
+            services.MAX_POOL = old
+
     def test_shortage_returns_and_preserves_found_items(self):
         result = self.service.select({"target": "sets", "mode": "random", "count": 15})
         self.assertEqual(result["found_count"], 10)

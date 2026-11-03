@@ -20,7 +20,7 @@ from .crud import question_answer_sets_crud as S, tests_crud as T, attempts_crud
 
 HANDLERS = {"questions": Q, "answers": A, "sets": S, "tests": T, "attempts": R}
 CONTRACTS = {"questions": "question", "answers": "answer", "sets": "question_answer_set"}
-MAX_POOL = 1000
+MAX_POOL = 10000
 POLICY = "strong_soft_fraction_v1"
 
 
