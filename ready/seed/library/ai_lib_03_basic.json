@@ -1,0 +1,3195 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "l03_q_email_request",
+   "data": {
+    "question_text": "You need an email asking your landlord to fix a leaking tap. Which request will most likely give you a usable draft?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_summary_check",
+   "data": {
+    "question_text": "AI summarizes a report you have not read. You will repeat its main points in a meeting. What is the best way to protect yourself from errors?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_pasted_notes",
+   "data": {
+    "question_text": "You want AI to tidy notes from a meeting that mention a coworker's health leave and a client's contract price. What is the best approach?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_who_owns",
+   "data": {
+    "question_text": "A colleague finds a wrong figure in a table an AI tool built for you, and you shared it. Who owns the correction?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_accountability",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_too_formal",
+   "data": {
+    "question_text": "The AI draft of your message sounds stiff and too formal. What is the most productive next step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_iteration",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_translation_check",
+   "data": {
+    "question_text": "You use AI to translate a short notice into another language for neighbors. What is a sensible extra step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_bias_pattern",
+   "data": {
+    "question_text": "You ask an AI tool for a picture of 'a typical nurse' and notice it keeps showing the same kind of person. What does this suggest?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_limits",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_quick_math",
+   "data": {
+    "question_text": "You ask AI to add up a long list of expenses. The total looks a little low. What should you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_study_plan",
+   "data": {
+    "question_text": "A student asks AI for a study plan for a test. Which use of the plan is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_opportunity",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_when_human",
+   "data": {
+    "question_text": "Which task is best handled by a person rather than left to AI?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_judgment",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_saved_prompt",
+   "data": {
+    "question_text": "You ask AI to format the same weekly report each Monday. Which habit saves the most effort without lowering quality?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_workflow",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_show_new_hire",
+   "data": {
+    "question_text": "A new colleague wants to start using AI. Which first piece of advice is most useful?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_teaching",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_info_sort",
+   "data": {
+    "question_text": "Which of these are safe to include in a request to an AI tool at work? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy",
+      "format_concept",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_sources_ask",
+   "data": {
+    "question_text": "You ask AI to explain a topic and want to confirm it. Which actions would give you a stronger check? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification",
+      "format_concept",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l03_a_trust_polished",
+   "data": {
+    "answer_text": "Use it as it is, because it reads as polished and professional.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output",
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_iteration",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_ai_sure",
+   "data": {
+    "answer_text": "Ask the tool whether it is sure, and rely on it if it says yes.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_paste_it_all",
+   "data": {
+    "answer_text": "Paste it all in, since the tool needs the full picture to help.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_you_own_it",
+   "data": {
+    "answer_text": "You do, because you are the one who shares and acts on it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_tool_owns_it",
+   "data": {
+    "answer_text": "The tool does, because it produced the words.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_finder_owns_it",
+   "data": {
+    "answer_text": "Your colleague does, because they were the one who noticed it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_software_owns_it",
+   "data": {
+    "answer_text": "Nobody does, because the figure came out of software.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_add_goal_context",
+   "data": {
+    "answer_text": "State your goal, who it is for, and the shape you want, such as length and tone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_one_word_ask",
+   "data": {
+    "answer_text": "Give it a short topic and let it work out the rest by itself.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_to_revise",
+   "data": {
+    "answer_text": "Tell it what to change, such as warmer or shorter, and ask again.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_start_fresh_every",
+   "data": {
+    "answer_text": "Delete everything and start from a blank request again every time.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_accept_first",
+   "data": {
+    "answer_text": "Accept the first answer, since a second try would give the same result.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_iteration"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "improve_results_by_iterating"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_iteration"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_email_full",
+   "data": {
+    "answer_text": "Write a polite email asking my landlord to fix the kitchen tap that has leaked for three days.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_email_rude",
+   "data": {
+    "answer_text": "Write an email to my landlord that threatens to take action unless the tap is fixed today.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_email_leaky",
+   "data": {
+    "answer_text": "Write an email about my tap that is leaking in the kitchen.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_email_let_ai_pick",
+   "data": {
+    "answer_text": "Write an email to my landlord about whatever problem seems most urgent.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_prompting"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "write_a_clear_request"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_prompting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_read_original",
+   "data": {
+    "answer_text": "Read the sections that back up the main points in the original report.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_skim_title",
+   "data": {
+    "answer_text": "Skim the title and the first line of the summary.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_for_longer",
+   "data": {
+    "answer_text": "Ask the tool for a longer summary and trust that more words means more accuracy.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_generalize_notes",
+   "data": {
+    "answer_text": "Remove the names, health details and prices, then ask the tool to tidy the structure.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_to_forget",
+   "data": {
+    "answer_text": "Paste the notes and ask the tool to forget the private parts after tidying.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_check_policy_first",
+   "data": {
+    "answer_text": "Check what your workplace allows for client and staff information before using any outside tool.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_native_review",
+   "data": {
+    "answer_text": "Ask someone who speaks the language to read it before you hand it out.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_trust_translation",
+   "data": {
+    "answer_text": "Hand it out, because the translation is probably perfect.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_translate_back_ai",
+   "data": {
+    "answer_text": "Ask the tool to translate it back and hand it out if it matches your original.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_reflect_patterns",
+   "data": {
+    "answer_text": "Tools can repeat patterns in the data they learned from, favoring some kinds of people.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_random_picture",
+   "data": {
+    "answer_text": "It is only random chance and says nothing about how the tool works.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_fixed_truth",
+   "data": {
+    "answer_text": "It shows who nurses really are in every country and workplace.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_fault_of_you",
+   "data": {
+    "answer_text": "It means your request was written wrongly and should be rewritten.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_recompute_other",
+   "data": {
+    "answer_text": "Add the numbers again with a calculator or spreadsheet.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_trust_total",
+   "data": {
+    "answer_text": "Use the total, since computers are good with numbers.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_to_show_work",
+   "data": {
+    "answer_text": "Ask the tool to show each step, then spot-check a few of them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_use_as_start",
+   "data": {
+    "answer_text": "Use it as a starting point, adjust it to your schedule, and follow it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_follow_blind",
+   "data": {
+    "answer_text": "Follow it exactly as written, since it was made by a very capable tool.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ignore_for_ai",
+   "data": {
+    "answer_text": "Skip the studying itself, since the plan already covers all of the topics.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_plan_and_check",
+   "data": {
+    "answer_text": "Share it with a teacher to see if it matches what the test covers.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_deliver_hard_news",
+   "data": {
+    "answer_text": "Telling a team member face to face that their job role is changing.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_draft_agenda",
+   "data": {
+    "answer_text": "Drafting an agenda for a team meeting that you will then review.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_list_questions",
+   "data": {
+    "answer_text": "Listing questions to ask when visiting a supplier next week.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_reformat_table",
+   "data": {
+    "answer_text": "Reformatting a table of dates into a calendar view for the team.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_save_and_edit",
+   "data": {
+    "answer_text": "Save a request that works; change only the details each week.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_retype_new",
+   "data": {
+    "answer_text": "Write a new request from scratch each time, so it stays fresh.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_give_it_less",
+   "data": {
+    "answer_text": "Make each request a little shorter every week to save typing.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_never_check",
+   "data": {
+    "answer_text": "After the first good result, stop checking the weekly output.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_start_small_check",
+   "data": {
+    "answer_text": "Start with small, low-risk tasks and check what comes back.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_skip_rules",
+   "data": {
+    "answer_text": "Skip the workplace rules, since the tool is only for drafts.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_trust_everything",
+   "data": {
+    "answer_text": "Trust what it writes, because it was trained on huge amounts of text.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_only_experts",
+   "data": {
+    "answer_text": "Wait until you are an expert; beginners should not try.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_generic_task",
+   "data": {
+    "answer_text": "A general description of the task, such as 'summarize this policy'.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_public_text",
+   "data": {
+    "answer_text": "Public text from your organization's own website.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_client_list",
+   "data": {
+    "answer_text": "A client list with names and contact numbers.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_login_codes",
+   "data": {
+    "answer_text": "Passwords or login codes for work systems.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_two_sources",
+   "data": {
+    "answer_text": "Look up the main claims in two reliable sources.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_expert_ask",
+   "data": {
+    "answer_text": "Ask someone who knows the topic whether it sounds right.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_again_wording",
+   "data": {
+    "answer_text": "Ask the same tool the same thing in different words and see if the answer matches.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_read_more_confident",
+   "data": {
+    "answer_text": "Read the answer again slowly and pay attention to how confident it sounds.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_short_notice_ok",
+   "data": {
+    "answer_text": "Hand it out without a check if the notice is short and not important.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "l03_s_email",
+   "question_ref": "l03_q_email_request",
+   "label": "basic / adult beginner / email request",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_prompting"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "write_a_clear_request"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_prompting",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_email_leaky",
+     "role": "incorrect",
+     "feedback": "The tool does not know who the email is for or what you want. You will get something generic."
+    },
+    {
+     "answer_ref": "l03_a_email_full",
+     "role": "strong",
+     "feedback": "It names the reader, the problem, how long it has lasted and what you want. A request with this detail leads to a draft you can send with small edits."
+    },
+    {
+     "answer_ref": "l03_a_email_let_ai_pick",
+     "role": "incorrect",
+     "feedback": "The tool does not know your situation, so it would invent a problem. Tell it the real one."
+    },
+    {
+     "answer_ref": "l03_a_email_rude",
+     "role": "incorrect",
+     "feedback": "A threatening tone can make the problem harder to solve. Ask for a polite, clear message about the repair."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_email_ctx",
+   "question_ref": "l03_q_email_request",
+   "label": "basic / student / email request",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_prompting"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "write_a_clear_request"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_prompting",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_email_full",
+     "role": "strong",
+     "feedback": "The reader, problem, timing and the action you want are all there, so the tool can write a message to fit."
+    },
+    {
+     "answer_ref": "l03_a_add_goal_context",
+     "role": "incorrect",
+     "feedback": "This is good advice about how to ask, but it is not itself a request. The tool would still not know the reader, the problem or what you want."
+    },
+    {
+     "answer_ref": "l03_a_email_leaky",
+     "role": "incorrect",
+     "feedback": "This leaves out the reader, what you want them to do and the tone, so the tool has to guess. Add those three things and the draft improves."
+    },
+    {
+     "answer_ref": "l03_a_one_word_ask",
+     "role": "incorrect",
+     "feedback": "Giving only a short topic leaves the tool to guess your goal, who it is for, and the tone."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_summary",
+   "question_ref": "l03_q_summary_check",
+   "label": "basic / workplace / summary check",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_ask_for_longer",
+     "role": "incorrect",
+     "feedback": "A longer summary is not a checked one. It can repeat the same misreading at greater length."
+    },
+    {
+     "answer_ref": "l03_a_skim_title",
+     "role": "incorrect",
+     "feedback": "A glance at the title and first line will not catch a changed number or a missing condition."
+    },
+    {
+     "answer_ref": "l03_a_trust_polished",
+     "role": "incorrect",
+     "feedback": "A polished summary can still be inaccurate. Others will hear the points from you, so you need to confirm them."
+    },
+    {
+     "answer_ref": "l03_a_read_original",
+     "role": "strong",
+     "feedback": "You will speak for those points, so check them against the original. A summary may drop a condition or change an emphasis."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_pasted",
+   "question_ref": "l03_q_pasted_notes",
+   "label": "basic / workplace / pasted notes",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_generalize_notes",
+     "role": "strong",
+     "feedback": "Taking out the private details lets you get the tidying help without sharing sensitive information."
+    },
+    {
+     "answer_ref": "l03_a_check_policy_first",
+     "role": "ambiguous",
+     "feedback": "Checking your workplace rules is wise and often required. But on its own it does not tidy the notes. Many people would do this and also remove the details.",
+     "notes": "Ambiguous: a necessary step but not the whole answer."
+    },
+    {
+     "answer_ref": "l03_a_ask_to_forget",
+     "role": "incorrect",
+     "feedback": "Telling a tool to forget does not undo what you have already shared. Keep the private details out in the first place."
+    },
+    {
+     "answer_ref": "l03_a_paste_it_all",
+     "role": "incorrect",
+     "feedback": "Health leave and contract prices are sensitive. Putting them in a request hands them to a service you may not control."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_who_owns_set",
+   "question_ref": "l03_q_who_owns",
+   "label": "basic / workplace / who owns",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_accountability"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "take_responsibility_for_results"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_accountability",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_finder_owns_it",
+     "role": "incorrect",
+     "feedback": "Spotting an error does not make someone responsible for fixing it. The person who shared the table should correct it and thank the colleague."
+    },
+    {
+     "answer_ref": "l03_a_tool_owns_it",
+     "role": "incorrect",
+     "feedback": "A tool cannot fix or own anything. The person who shared the table owns the correction, so tell those who relied on it."
+    },
+    {
+     "answer_ref": "l03_a_software_owns_it",
+     "role": "incorrect",
+     "feedback": "An error does not become nobody's because software produced it. The person who shared the figure answers for it."
+    },
+    {
+     "answer_ref": "l03_a_you_own_it",
+     "role": "strong",
+     "feedback": "You shared the table, so you correct it and tell people who relied on it. The tool cannot take responsibility."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_too_formal_set",
+   "question_ref": "l03_q_too_formal",
+   "label": "basic / adult beginner / too formal",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_iteration"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "improve_results_by_iterating"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_iteration",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_ask_to_revise",
+     "role": "strong",
+     "feedback": "Tell the tool what to change, such as 'warmer and shorter', and ask again. Small instructions often fix tone."
+    },
+    {
+     "answer_ref": "l03_a_accept_first",
+     "role": "incorrect",
+     "feedback": "A second try often gives a different draft, and you can steer it. Do not accept a result you are not happy with."
+    },
+    {
+     "answer_ref": "l03_a_start_fresh_every",
+     "role": "incorrect",
+     "feedback": "You do not need to start over. The tool can adjust the draft you already have."
+    },
+    {
+     "answer_ref": "l03_a_trust_polished",
+     "role": "incorrect",
+     "feedback": "Formal is not the same as good. If it does not sound like you, tell the tool what to change, such as 'warmer and shorter'."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_translation",
+   "question_ref": "l03_q_translation_check",
+   "label": "basic / adult beginner / translation check",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_ask_ai_sure",
+     "role": "incorrect",
+     "feedback": "The tool will usually say it is sure, which is not independent evidence. Ask a fluent person to read the translation."
+    },
+    {
+     "answer_ref": "l03_a_translate_back_ai",
+     "role": "ambiguous",
+     "feedback": "Translating back can reveal big errors, so it is a useful quick test. But the same tool may make matching mistakes both ways, so a fluent reader is a stronger check.",
+     "notes": "Ambiguous: a reasonable partial check; a fluent reader is better."
+    },
+    {
+     "answer_ref": "l03_a_trust_translation",
+     "role": "incorrect",
+     "feedback": "Translations can be good yet include subtle errors, especially with local terms. Hand-outs need a check."
+    },
+    {
+     "answer_ref": "l03_a_native_review",
+     "role": "strong",
+     "feedback": "A fluent reader can catch wrong words, awkward phrasing or a changed meaning that you cannot see."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_bias",
+   "question_ref": "l03_q_bias_pattern",
+   "label": "basic / adult beginner / bias pattern",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_limits_and_bias"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "understand_limits_and_bias"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_limits",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_fixed_truth",
+     "role": "incorrect",
+     "feedback": "The pictures reflect patterns in the data the tool learned from, not a fact about the real world. Ask for varied results if you need them."
+    },
+    {
+     "answer_ref": "l03_a_fault_of_you",
+     "role": "incorrect",
+     "feedback": "The wording of your request may matter, but a repeated pattern comes from how the tool was built and trained."
+    },
+    {
+     "answer_ref": "l03_a_reflect_patterns",
+     "role": "strong",
+     "feedback": "AI learns from large amounts of existing material, so it can repeat patterns in it, including unfair ones. Asking for variety helps."
+    },
+    {
+     "answer_ref": "l03_a_random_picture",
+     "role": "incorrect",
+     "feedback": "A repeated pattern is not random. It points to something in the tool's training or setup."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_math",
+   "question_ref": "l03_q_quick_math",
+   "label": "basic / workplace / quick math",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_ask_to_show_work",
+     "role": "ambiguous",
+     "feedback": "Seeing the steps can reveal a mistake and is a good start. But the steps can also contain errors that look fine, so recomputing with a calculator is the firmer check.",
+     "notes": "Ambiguous: helpful, but not independent."
+    },
+    {
+     "answer_ref": "l03_a_ask_ai_sure",
+     "role": "incorrect",
+     "feedback": "The same tool will often say yes, even when a sum is off. A calculator or spreadsheet gives an independent answer."
+    },
+    {
+     "answer_ref": "l03_a_trust_total",
+     "role": "incorrect",
+     "feedback": "Text-based AI is not a calculator, and long sums are where it can slip. Your sense that it looks low is a good signal."
+    },
+    {
+     "answer_ref": "l03_a_recompute_other",
+     "role": "strong",
+     "feedback": "A calculator or spreadsheet does arithmetic reliably. AI text tools can slip on long sums, so check with one."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_studyplan",
+   "question_ref": "l03_q_study_plan",
+   "label": "basic / student / study plan",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_opportunities"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_when_ai_can_help"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_opportunity",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_follow_blind",
+     "role": "incorrect",
+     "feedback": "The tool does not know your test or your time. A plan you have not checked may miss important topics."
+    },
+    {
+     "answer_ref": "l03_a_plan_and_check",
+     "role": "ambiguous",
+     "feedback": "Checking with a teacher is smart and may improve the plan. But it assumes the plan is worth sharing first; adjusting it yourself is the more basic step.",
+     "notes": "Ambiguous: a good addition but a heavier step."
+    },
+    {
+     "answer_ref": "l03_a_use_as_start",
+     "role": "strong",
+     "feedback": "A plan is a helpful draft. Adjust it to your time and the course material, then follow it."
+    },
+    {
+     "answer_ref": "l03_a_ignore_for_ai",
+     "role": "incorrect",
+     "feedback": "A plan cannot replace studying. It only organizes the work you do, so use it as a guide and still do the learning."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_human",
+   "question_ref": "l03_q_when_human",
+   "label": "basic / workplace / when human",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_judgment"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "choose_when_not_to_use_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_judgment",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_draft_agenda",
+     "role": "incorrect",
+     "feedback": "An agenda is a good draft task for AI. A person then reviews and adjusts it, so it is not the best example of work for people alone."
+    },
+    {
+     "answer_ref": "l03_a_reformat_table",
+     "role": "incorrect",
+     "feedback": "Reformatting is a common, low-risk use for AI, as long as you check the result. It is not the best example of work for people alone."
+    },
+    {
+     "answer_ref": "l03_a_deliver_hard_news",
+     "role": "strong",
+     "feedback": "Hard conversations need honesty, care and accountability. AI may help you prepare, but the person should deliver the news."
+    },
+    {
+     "answer_ref": "l03_a_list_questions",
+     "role": "incorrect",
+     "feedback": "A list of questions is a good use of AI as a first draft. Review it for fit."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_savedprompt",
+   "question_ref": "l03_q_saved_prompt",
+   "label": "basic / workplace / saved prompt",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_workflow"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "connect_ai_to_recurring_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_workflow",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_save_and_edit",
+     "role": "strong",
+     "feedback": "A saved request gives consistent results and saves time. Keep checking the output, because the details change."
+    },
+    {
+     "answer_ref": "l03_a_never_check",
+     "role": "incorrect",
+     "feedback": "Even a good routine can produce a wrong output when the inputs change. Keep a quick check."
+    },
+    {
+     "answer_ref": "l03_a_give_it_less",
+     "role": "incorrect",
+     "feedback": "Trimming the request each week can remove the instructions that made it work."
+    },
+    {
+     "answer_ref": "l03_a_retype_new",
+     "role": "incorrect",
+     "feedback": "Retyping wastes effort and makes results vary from week to week. Save a request that works and change only the details."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_newhire",
+   "question_ref": "l03_q_show_new_hire",
+   "label": "basic / workplace / show new hire",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_teaching"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "help_others_learn_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_teaching",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_skip_rules",
+     "role": "incorrect",
+     "feedback": "Workplace rules about data and tools apply to drafts too. Check what is allowed first, then start with a small task."
+    },
+    {
+     "answer_ref": "l03_a_trust_everything",
+     "role": "incorrect",
+     "feedback": "Large training data does not make output correct. Check what matters, and keep tasks small while you learn."
+    },
+    {
+     "answer_ref": "l03_a_start_small_check",
+     "role": "strong",
+     "feedback": "Small tasks with a check build skill and confidence while keeping risk low."
+    },
+    {
+     "answer_ref": "l03_a_only_experts",
+     "role": "incorrect",
+     "feedback": "You learn by trying small things with care. Waiting for expertise is not required."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_infosort",
+   "question_ref": "l03_q_info_sort",
+   "label": "basic / workplace / info sort",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_privacy",
+     "format_concept",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_generic_task",
+     "role": "strong",
+     "feedback": "A description of the task shares no sensitive information. It is a safe thing to include."
+    },
+    {
+     "answer_ref": "l03_a_public_text",
+     "role": "strong",
+     "feedback": "Text that is already public carries little privacy risk. Still follow any workplace rules about outside tools."
+    },
+    {
+     "answer_ref": "l03_a_client_list",
+     "role": "incorrect",
+     "feedback": "Names and numbers are personal information about other people. Do not paste them into a request."
+    },
+    {
+     "answer_ref": "l03_a_login_codes",
+     "role": "incorrect",
+     "feedback": "Login codes protect systems. Typing them into a request could expose them, so never include them, even to get help."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_sourcesask",
+   "question_ref": "l03_q_sources_ask",
+   "label": "basic / student / sources ask",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_concept",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_two_sources",
+     "role": "strong",
+     "feedback": "Reliable outside sources are independent evidence, which a repeated answer from the same tool is not."
+    },
+    {
+     "answer_ref": "l03_a_read_more_confident",
+     "role": "incorrect",
+     "feedback": "Reading for confidence tells you about tone, not truth. Confident writing can be wrong, so look for outside evidence instead."
+    },
+    {
+     "answer_ref": "l03_a_expert_ask",
+     "role": "strong",
+     "feedback": "A person who knows the topic can spot errors quickly and tell you what is missing."
+    },
+    {
+     "answer_ref": "l03_a_ask_again_wording",
+     "role": "incorrect",
+     "feedback": "The same tool may repeat the same mistake in different words. It is not an independent check."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_translation_wk",
+   "question_ref": "l03_q_translation_check",
+   "label": "basic / workplace / translation check",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_native_review",
+     "role": "strong",
+     "feedback": "People may act on what the notice says. A fluent reader can spot wrong words or a changed meaning before it is handed out."
+    },
+    {
+     "answer_ref": "l03_a_translate_back_ai",
+     "role": "ambiguous",
+     "feedback": "Translating back is a quick test that can reveal big errors. The same tool may make matching mistakes both ways, so a fluent reader is a stronger check.",
+     "notes": "Ambiguous: a reasonable partial check; a fluent reader is better."
+    },
+    {
+     "answer_ref": "l03_a_short_notice_ok",
+     "role": "ambiguous",
+     "feedback": "Short, low-stakes notices carry less risk, so skipping the check can be defensible. But a wrong word on a notice people rely on can still cause confusion.",
+     "notes": "Ambiguous: depends on how much people rely on the notice."
+    },
+    {
+     "answer_ref": "l03_a_trust_translation",
+     "role": "incorrect",
+     "feedback": "Translations can be good yet include subtle errors, especially with local terms. Notices people rely on need a check."
+    }
+   ]
+  }
+ ]
+}
