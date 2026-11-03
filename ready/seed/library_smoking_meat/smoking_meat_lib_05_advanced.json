@@ -2565,7 +2565,7 @@
     {
      "answer_ref": "l05_a_ev_probe_log",
      "role": "strong",
-     "feedback": "Temperatures can be measured, and food that cannot be kept at or above 140°F cannot be served safely. A log shows you caught a problem and when you did."
+     "feedback": "Temperatures can be measured, and hot food that cannot be kept at or above 140°F cannot be served safely. A log shows you caught a problem and when you did."
     },
     {
      "answer_ref": "l05_a_ev_separate_tools",

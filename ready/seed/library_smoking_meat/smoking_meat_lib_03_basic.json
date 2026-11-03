@@ -2695,7 +2695,7 @@
     {
      "answer_ref": "l03_a_wood_few_early",
      "role": "strong",
-     "feedback": "Meat takes up the most smoke early, and too much wood makes heavy, bitter smoke. A few small pieces on a clean fire give plenty of flavor. Adjust to taste next time."
+     "feedback": "Meat tends to take up smoke most readily early in the cook, and too much wood makes heavy, bitter smoke. A few small pieces on a clean fire give plenty of flavor. Adjust to taste next time."
     },
     {
      "answer_ref": "l03_a_wood_bury",
@@ -2709,8 +2709,9 @@
     },
     {
      "answer_ref": "l03_a_wood_keep_adding",
-     "role": "incorrect",
-     "feedback": "Smoke is mostly absorbed early in the cook, so a steady stream of wood through the whole cook adds little and risks bitter smoke. Add wood early and let the cook run."
+     "role": "ambiguous",
+     "feedback": "Many cooks find most of the smoke flavor goes on early, so a steady stream of wood adds less than it seems to and risks heavy smoke. Others keep feeding the fire for the whole cook. For a first cook, add wood early and let it run.",
+     "notes": "Ambiguous on purpose: when smoke is taken up, and whether to keep adding wood, is a matter of school and cooker. The beginner version nudges toward the simple approach."
     }
    ]
   },
@@ -2750,7 +2751,7 @@
     {
      "answer_ref": "l03_a_wood_few_early",
      "role": "strong",
-     "feedback": "Meat takes up the most smoke early, and too much wood makes heavy, bitter smoke. A few small pieces on a clean fire give plenty of flavor, and you can tune the amount to taste."
+     "feedback": "Meat tends to take up smoke most readily early in the cook, and too much wood makes heavy, bitter smoke. A few small pieces on a clean fire give plenty of flavor, and you can tune the amount to taste."
     },
     {
      "answer_ref": "l03_a_wood_keep_adding",
