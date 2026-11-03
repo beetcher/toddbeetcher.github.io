@@ -1,0 +1,3399 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "g4_q_region_disagree",
+   "data": {
+    "question_text": "The Census Bureau places Oklahoma in the South, but some maps and writers place it in the Southwest or on the Great Plains. What best explains why sources disagree?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_lat_long",
+   "data": {
+    "question_text": "Which statement about latitude and longitude is correct?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_coords_south",
+   "data": {
+    "question_text": "Town A is at 40 degrees north, 100 degrees west. Town B is at 35 degrees north, 100 degrees west. Where is Town B compared with Town A?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_forty_ninth",
+   "data": {
+    "question_text": "Much of the border between Canada and the states from Minnesota west to the Pacific coast follows a line of latitude. Which line is it?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_highest_range",
+   "data": {
+    "question_text": "Which mountain range holds the highest point in the 48 connected states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_lowest_point",
+   "data": {
+    "question_text": "Which location holds the lowest point in the United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_lake_effect",
+   "data": {
+    "question_text": "Cities on the downwind shores of the Great Lakes often get heavy snow in late fall and winter. What best explains this?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_erie_canal",
+   "data": {
+    "question_text": "The Erie Canal linked the Hudson River to Lake Erie. How did it help New York City grow into a major port?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_confluence",
+   "data": {
+    "question_text": "Pittsburgh grew where two rivers join to form the Ohio River. How could that location help a city grow?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_territories_multi",
+   "data": {
+    "question_text": "Which of these are inhabited U.S. territories? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_flight_time",
+   "data": {
+    "question_text": "A flight leaves New York at 10:00 a.m. Eastern time and lasts 6 hours. If both places use the same clock rules that day, what is the local time in Los Angeles when it lands?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_smokies",
+   "data": {
+    "question_text": "The Great Smoky Mountains National Park lies along the border between which two states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_canyon_river",
+   "data": {
+    "question_text": "Which river carved the Grand Canyon over a very long time?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_q_meeting_time",
+   "data": {
+    "question_text": "Three coworkers work in the Pacific, Mountain and Eastern time zones. Each is free from 9:00 a.m. to 5:00 p.m. local time. A one-hour meeting must fit inside everyone's hours. Which start time, in Eastern time, works?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "g4_a_the_census_bureau_changes_each_state_s_region_ev",
+   "data": {
+    "answer_text": "The Census Bureau changes each state's region every year, so many older maps are now out of date",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_federal_law_allows_only_one_official_set_of_regi",
+   "data": {
+    "answer_text": "Federal law allows only one official set of regions, and other maps that differ are simply mistakes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_a_state_can_carry_more_than_one_regional_label_a",
+   "data": {
+    "answer_text": "A state can carry more than one regional label at once, depending on which source is used",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_regions_are_drawn_for_different_purposes_such_as",
+   "data": {
+    "answer_text": "Regions are drawn for different purposes, such as statistics or culture, so no grouping is the only right one",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_federal_rules_require_one_official_set_of_region",
+   "data": {
+    "answer_text": "Federal rules require one official set of regions and treat every other grouping as an error",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_regions_are_drawn_for_different_purposes_so_each",
+   "data": {
+    "answer_text": "Regions are drawn for different purposes, so each grouping fits its own use and none is the only correct one",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_census_bureau_regroups_the_states_regularly",
+   "data": {
+    "answer_text": "The Census Bureau regroups the states regularly, which leaves many older maps out of date",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "adult_enthusiast"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_latitude_measures_how_far_a_place_is_east_or_wes",
+   "data": {
+    "answer_text": "Latitude measures how far a place is east or west of the Prime Meridian",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_latitude_and_longitude_both_measure_a_place_s_he",
+   "data": {
+    "answer_text": "Latitude and longitude both measure a place's height above sea level",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_lines_of_longitude_run_east_west_and_measure_dis",
+   "data": {
+    "answer_text": "Lines of longitude run east-west and measure distance north or south of the equator",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_lines_of_latitude_run_east_west_and_measure_dist",
+   "data": {
+    "answer_text": "Lines of latitude run east-west and measure distance north or south of the equator",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_directly_east_of_it",
+   "data": {
+    "answer_text": "Directly east of it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_directly_south_of_it",
+   "data": {
+    "answer_text": "Directly south of it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_directly_north_of_it",
+   "data": {
+    "answer_text": "Directly north of it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_directly_west_of_it",
+   "data": {
+    "answer_text": "Directly west of it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_49th_parallel_north",
+   "data": {
+    "answer_text": "The 49th parallel north",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_prime_meridian",
+   "data": {
+    "answer_text": "The Prime Meridian",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_mason_dixon_line",
+   "data": {
+    "answer_text": "The Mason-Dixon line",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_tropic_of_capricorn",
+   "data": {
+    "answer_text": "The Tropic of Capricorn",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_sierra_nevada",
+   "data": {
+    "answer_text": "The Sierra Nevada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_cascade_range",
+   "data": {
+    "answer_text": "The Cascade Range",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_appalachians",
+   "data": {
+    "answer_text": "The Appalachians",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_rocky_mountains",
+   "data": {
+    "answer_text": "The Rocky Mountains",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_great_salt_lake_basin_utah",
+   "data": {
+    "answer_text": "The Great Salt Lake basin, Utah",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_death_valley_california",
+   "data": {
+    "answer_text": "Death Valley, California",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_salton_sea_area_california",
+   "data": {
+    "answer_text": "The Salton Sea area, California",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_mississippi_river_delta_louisiana",
+   "data": {
+    "answer_text": "The Mississippi River delta, Louisiana",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_salt_in_the_lake_water_lifts_snow_into_the_air_w",
+   "data": {
+    "answer_text": "Salt in the lake water lifts snow into the air, where wind carries it ashore",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_cold_air_crossing_warmer_open_lake_water_picks_u",
+   "data": {
+    "answer_text": "Cold air crossing warmer open lake water picks up moisture, then drops it as snow",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_lake_water_is_colder_than_the_air_above_it_s",
+   "data": {
+    "answer_text": "The lake water is colder than the air above it, so it freezes the clouds",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_mountains_next_to_the_lake_force_clouds_upward_s",
+   "data": {
+    "answer_text": "Mountains next to the lake force clouds upward, so all the snow comes from them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_it_gave_goods_from_the_great_lakes_region_a_wate",
+   "data": {
+    "answer_text": "It gave goods from the Great Lakes region a water route to the Atlantic through New York",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_it_carried_only_passengers_which_mainly_helped_i",
+   "data": {
+    "answer_text": "It carried only passengers, which mainly helped inns along its route",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_it_replaced_the_harbor_so_ships_no_longer_needed",
+   "data": {
+    "answer_text": "It replaced the harbor, so ships no longer needed a port in the city",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_it_joined_the_atlantic_and_pacific_oceans_so_shi",
+   "data": {
+    "answer_text": "It joined the Atlantic and Pacific oceans, so ships could reach California quickly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_rivers_that_meet_always_create_flat_land_that_ca",
+   "data": {
+    "answer_text": "Rivers that meet always create flat land that can never flood, so cities there stay safe",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_river_routes_met_there_so_goods_and_travelers_co",
+   "data": {
+    "answer_text": "River routes met there, so goods and travelers could be gathered and sent in several directions",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_federal_law_says_large_cities_must_be_built_only",
+   "data": {
+    "answer_text": "Federal law says large cities must be built only where two rivers join",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_two_rivers_mix_so_completely_that_the_water",
+   "data": {
+    "answer_text": "The two rivers mix so completely that the water at the junction is always salty, which suits factories",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "human_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "explain_why_places_developed"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_human_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_american_samoa",
+   "data": {
+    "answer_text": "American Samoa",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_puerto_rico",
+   "data": {
+    "answer_text": "Puerto Rico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_hawaii",
+   "data": {
+    "answer_text": "Hawaii",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_guam",
+   "data": {
+    "answer_text": "Guam",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_4_00_p_m",
+   "data": {
+    "answer_text": "4:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_1_00_p_m",
+   "data": {
+    "answer_text": "1:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_10_00_a_m",
+   "data": {
+    "answer_text": "10:00 a.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_7_00_p_m",
+   "data": {
+    "answer_text": "7:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_virginia_and_west_virginia",
+   "data": {
+    "answer_text": "Virginia and West Virginia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_north_carolina_and_tennessee",
+   "data": {
+    "answer_text": "North Carolina and Tennessee",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_georgia_and_alabama",
+   "data": {
+    "answer_text": "Georgia and Alabama",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_kentucky_and_ohio",
+   "data": {
+    "answer_text": "Kentucky and Ohio",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_rio_grande",
+   "data": {
+    "answer_text": "The Rio Grande",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_missouri_river",
+   "data": {
+    "answer_text": "The Missouri River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_columbia_river",
+   "data": {
+    "answer_text": "The Columbia River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_the_colorado_river",
+   "data": {
+    "answer_text": "The Colorado River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_10_00_a_m_eastern",
+   "data": {
+    "answer_text": "10:00 a.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_1_00_p_m_eastern",
+   "data": {
+    "answer_text": "1:00 p.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_4_30_p_m_eastern",
+   "data": {
+    "answer_text": "4:30 p.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12",
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_6_00_p_m_eastern",
+   "data": {
+    "answer_text": "6:00 p.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_8_00_a_m_eastern",
+   "data": {
+    "answer_text": "8:00 a.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g4_a_5_00_p_m_eastern",
+   "data": {
+    "answer_text": "5:00 p.m. Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_04",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "g4_s01_region_disagree",
+   "question_ref": "g4_q_region_disagree",
+   "label": "Why regional labels differ (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_regions_borders",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_census_bureau_changes_each_state_s_region_ev",
+     "role": "incorrect",
+     "feedback": "The Census regions are stable. They do not change every year. The disagreement comes from other sources using other definitions."
+    },
+    {
+     "answer_ref": "g4_a_federal_law_allows_only_one_official_set_of_regi",
+     "role": "incorrect",
+     "feedback": "No law restricts regional naming. Other maps use different, legitimate definitions that serve other purposes."
+    },
+    {
+     "answer_ref": "g4_a_a_state_can_carry_more_than_one_regional_label_a",
+     "role": "ambiguous",
+     "feedback": "This is partly right: people do use overlapping labels. But it describes the result more than the cause. The better answer says why the labels differ: different purposes.",
+     "notes": "Overlapping labels are real, but the choice describes the effect, not the reason. Marked ambiguous so the feedback can point to the better answer."
+    },
+    {
+     "answer_ref": "g4_a_regions_are_drawn_for_different_purposes_such_as",
+     "role": "strong",
+     "feedback": "Correct. A region is a human grouping. The Census Bureau groups states for statistics, while others group by landscape, history or culture."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s02_region_disagree",
+   "question_ref": "g4_q_region_disagree",
+   "label": "Why regional labels differ (Adult enthusiast, expert)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "adult_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_regions_borders",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_federal_rules_require_one_official_set_of_region",
+     "role": "incorrect",
+     "feedback": "No such requirement exists for general use. Other definitions are legitimate, though a test should say which one it uses."
+    },
+    {
+     "answer_ref": "g4_a_regions_are_drawn_for_different_purposes_so_each",
+     "role": "strong",
+     "feedback": "Correct. Statistical, cultural, economic and physical regions overlap. A good test writer names the convention being used."
+    },
+    {
+     "answer_ref": "g4_a_a_state_can_carry_more_than_one_regional_label_a",
+     "role": "ambiguous",
+     "feedback": "This is true as a description, since overlap is common. It does not yet explain why sources differ, so it is a weaker answer than the one that points to purpose.",
+     "notes": "Real usage, but a description of the outcome, not its cause. Keep as ambiguous for expert level so a candidate must decide between description and explanation."
+    },
+    {
+     "answer_ref": "g4_a_the_census_bureau_regroups_the_states_regularly",
+     "role": "incorrect",
+     "feedback": "Census regions have stayed fixed for long periods. Differences between maps do not come from regular regrouping."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s03_lat_long",
+   "question_ref": "g4_q_lat_long",
+   "label": "Latitude versus longitude (Grades 9-12, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_map_skills",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_latitude_measures_how_far_a_place_is_east_or_wes",
+     "role": "incorrect",
+     "feedback": "That describes longitude. Latitude measures distance north or south of the equator."
+    },
+    {
+     "answer_ref": "g4_a_latitude_and_longitude_both_measure_a_place_s_he",
+     "role": "incorrect",
+     "feedback": "Neither does. Height above sea level is elevation. Latitude and longitude give position on the surface."
+    },
+    {
+     "answer_ref": "g4_a_lines_of_longitude_run_east_west_and_measure_dis",
+     "role": "incorrect",
+     "feedback": "This swaps the two. Lines of longitude run north-south and measure east or west of the Prime Meridian."
+    },
+    {
+     "answer_ref": "g4_a_lines_of_latitude_run_east_west_and_measure_dist",
+     "role": "strong",
+     "feedback": "Correct. Latitude measures north and south from the equator, and its lines run east to west."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s04_coords_south",
+   "question_ref": "g4_q_coords_south",
+   "label": "Compare two coordinates (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_map_skills",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_directly_east_of_it",
+     "role": "incorrect",
+     "feedback": "The longitude is the same, so Town B is not east or west of Town A. The difference is in latitude."
+    },
+    {
+     "answer_ref": "g4_a_directly_south_of_it",
+     "role": "strong",
+     "feedback": "Correct. The longitude is the same, so the towns are on the same north-south line. A smaller north latitude means farther south."
+    },
+    {
+     "answer_ref": "g4_a_directly_north_of_it",
+     "role": "incorrect",
+     "feedback": "A smaller north latitude means closer to the equator, which is south, not north."
+    },
+    {
+     "answer_ref": "g4_a_directly_west_of_it",
+     "role": "incorrect",
+     "feedback": "The longitude is the same, so Town B is not east or west of Town A. The difference is in latitude."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s05_forty_ninth",
+   "question_ref": "g4_q_forty_ninth",
+   "label": "A border that follows a parallel (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_49th_parallel_north",
+     "role": "strong",
+     "feedback": "Correct. Much of the western border of the United States and Canada follows the 49th parallel north."
+    },
+    {
+     "answer_ref": "g4_a_the_prime_meridian",
+     "role": "incorrect",
+     "feedback": "The Prime Meridian is a line of longitude, running north-south through Greenwich, not a latitude line."
+    },
+    {
+     "answer_ref": "g4_a_the_mason_dixon_line",
+     "role": "incorrect",
+     "feedback": "The Mason-Dixon line is the Pennsylvania-Maryland boundary, far from the Canadian border."
+    },
+    {
+     "answer_ref": "g4_a_the_tropic_of_capricorn",
+     "role": "incorrect",
+     "feedback": "The Tropic of Capricorn is far south of the equator and does not pass through North America."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s06_highest_range",
+   "question_ref": "g4_q_highest_range",
+   "label": "Range with the highest connected-states peak (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_sierra_nevada",
+     "role": "strong",
+     "feedback": "Correct. Mount Whitney, in California's Sierra Nevada, is the highest point in the 48 connected states."
+    },
+    {
+     "answer_ref": "g4_a_the_cascade_range",
+     "role": "incorrect",
+     "feedback": "The Cascades have tall volcanoes such as Mount Rainier, but none is as high as Mount Whitney."
+    },
+    {
+     "answer_ref": "g4_a_the_appalachians",
+     "role": "incorrect",
+     "feedback": "The Appalachians are much lower than the western ranges. Their peaks are well below the highest western mountains."
+    },
+    {
+     "answer_ref": "g4_a_the_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rockies have many very high peaks, so this is a common guess. But Mount Whitney in the Sierra Nevada is higher than any Rocky peak."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s07_lowest_point",
+   "question_ref": "g4_q_lowest_point",
+   "label": "Lowest point in the country (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_great_salt_lake_basin_utah",
+     "role": "incorrect",
+     "feedback": "This basin lies high above sea level, in the elevated Great Basin region. It is not close to the lowest point."
+    },
+    {
+     "answer_ref": "g4_a_death_valley_california",
+     "role": "strong",
+     "feedback": "Correct. Death Valley, at Badwater Basin, is the lowest point in the United States and well below sea level."
+    },
+    {
+     "answer_ref": "g4_a_the_salton_sea_area_california",
+     "role": "incorrect",
+     "feedback": "This area is also below sea level, which makes it a good guess, but it is not as low as Death Valley."
+    },
+    {
+     "answer_ref": "g4_a_the_mississippi_river_delta_louisiana",
+     "role": "incorrect",
+     "feedback": "The delta is very close to sea level and parts are slightly below it, but it is much higher than Death Valley."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s08_lake_effect",
+   "question_ref": "g4_q_lake_effect",
+   "label": "Lake-effect snow (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_salt_in_the_lake_water_lifts_snow_into_the_air_w",
+     "role": "incorrect",
+     "feedback": "The Great Lakes are fresh water, not salt water. Snow forms from moisture that rises out of the lake."
+    },
+    {
+     "answer_ref": "g4_a_cold_air_crossing_warmer_open_lake_water_picks_u",
+     "role": "strong",
+     "feedback": "Correct. This is lake-effect snow. Cold air gains heat and moisture over the lake, then releases snow when it reaches land."
+    },
+    {
+     "answer_ref": "g4_a_the_lake_water_is_colder_than_the_air_above_it_s",
+     "role": "incorrect",
+     "feedback": "In early winter the lake is usually warmer than the air. That temperature gap is what drives the snow."
+    },
+    {
+     "answer_ref": "g4_a_mountains_next_to_the_lake_force_clouds_upward_s",
+     "role": "incorrect",
+     "feedback": "Hills can add to the snow, but flat shores also get lake-effect snow. The lake's moisture is the key cause."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s09_erie_canal",
+   "question_ref": "g4_q_erie_canal",
+   "label": "How a canal built a port (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_human_geography",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_it_gave_goods_from_the_great_lakes_region_a_wate",
+     "role": "strong",
+     "feedback": "Correct. Farm goods and passengers could travel by water from the interior to New York's harbor, which raised trade through the city."
+    },
+    {
+     "answer_ref": "g4_a_it_carried_only_passengers_which_mainly_helped_i",
+     "role": "incorrect",
+     "feedback": "The canal moved a great deal of freight, not only passengers. That freight is what boosted the port."
+    },
+    {
+     "answer_ref": "g4_a_it_replaced_the_harbor_so_ships_no_longer_needed",
+     "role": "incorrect",
+     "feedback": "Ships still needed the harbor. The canal fed more goods to the port instead of replacing it."
+    },
+    {
+     "answer_ref": "g4_a_it_joined_the_atlantic_and_pacific_oceans_so_shi",
+     "role": "incorrect",
+     "feedback": "The canal did not reach the Pacific. It connected the Hudson River with Lake Erie in the interior."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s10_confluence",
+   "question_ref": "g4_q_confluence",
+   "label": "A city at a river junction (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "human_geography"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "explain_why_places_developed"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_human_geography",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_rivers_that_meet_always_create_flat_land_that_ca",
+     "role": "incorrect",
+     "feedback": "Junctions often flood. The advantage is the transportation routes, not safety from floods."
+    },
+    {
+     "answer_ref": "g4_a_river_routes_met_there_so_goods_and_travelers_co",
+     "role": "strong",
+     "feedback": "Correct. A river junction is a natural meeting point for travel and trade, which helps a settlement become a hub."
+    },
+    {
+     "answer_ref": "g4_a_federal_law_says_large_cities_must_be_built_only",
+     "role": "incorrect",
+     "feedback": "No such law exists. Cities grew at junctions because people saw that location was useful."
+    },
+    {
+     "answer_ref": "g4_a_the_two_rivers_mix_so_completely_that_the_water",
+     "role": "incorrect",
+     "feedback": "River water is fresh. Joining rivers do not make salt water."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s11_territories_multi",
+   "question_ref": "g4_q_territories_multi",
+   "label": "Which are U.S. territories (Grades 9-12, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_territories_dc",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_american_samoa",
+     "role": "strong",
+     "feedback": "Yes. American Samoa is an inhabited U.S. territory in the South Pacific."
+    },
+    {
+     "answer_ref": "g4_a_puerto_rico",
+     "role": "strong",
+     "feedback": "Yes. Puerto Rico is an inhabited U.S. territory in the Caribbean."
+    },
+    {
+     "answer_ref": "g4_a_hawaii",
+     "role": "incorrect",
+     "feedback": "No. Hawaii is one of the 50 states, even though it is an island chain far from the mainland."
+    },
+    {
+     "answer_ref": "g4_a_guam",
+     "role": "strong",
+     "feedback": "Yes. Guam is an inhabited U.S. territory in the western Pacific Ocean."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s12_flight_time",
+   "question_ref": "g4_q_flight_time",
+   "label": "Flight across time zones (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "everyday_geography"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "use_geography_in_everyday_decisions"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_everyday_geography",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_4_00_p_m",
+     "role": "incorrect",
+     "feedback": "This adds 6 hours but forgets the time difference. Los Angeles is three hours behind New York."
+    },
+    {
+     "answer_ref": "g4_a_1_00_p_m",
+     "role": "strong",
+     "feedback": "Correct. Landing is at 4:00 p.m. Eastern, and Los Angeles is three hours behind Eastern time, so the local time is 1:00 p.m."
+    },
+    {
+     "answer_ref": "g4_a_10_00_a_m",
+     "role": "incorrect",
+     "feedback": "This ignores the trip itself. The flight takes 6 hours, so the plane lands in the afternoon, not at the starting time."
+    },
+    {
+     "answer_ref": "g4_a_7_00_p_m",
+     "role": "incorrect",
+     "feedback": "This adds the time difference instead of subtracting it. Going west, local clocks are earlier."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s13_smokies",
+   "question_ref": "g4_q_smokies",
+   "label": "Smokies border states (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_virginia_and_west_virginia",
+     "role": "incorrect",
+     "feedback": "These states are also Appalachian, but the Smokies are farther south."
+    },
+    {
+     "answer_ref": "g4_a_north_carolina_and_tennessee",
+     "role": "strong",
+     "feedback": "Correct. The Great Smoky Mountains straddle the North Carolina-Tennessee border in the southern Appalachians."
+    },
+    {
+     "answer_ref": "g4_a_georgia_and_alabama",
+     "role": "incorrect",
+     "feedback": "These states touch the southern end of the Appalachians, but the Smokies lie farther north."
+    },
+    {
+     "answer_ref": "g4_a_kentucky_and_ohio",
+     "role": "incorrect",
+     "feedback": "These states are north of the Smokies and share a river border instead."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s14_canyon_river",
+   "question_ref": "g4_q_canyon_river",
+   "label": "River of the Grand Canyon (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_the_rio_grande",
+     "role": "incorrect",
+     "feedback": "The Rio Grande forms part of the Texas-Mexico border and does not run through the Grand Canyon."
+    },
+    {
+     "answer_ref": "g4_a_the_missouri_river",
+     "role": "incorrect",
+     "feedback": "The Missouri River flows across the Great Plains, far from the Grand Canyon."
+    },
+    {
+     "answer_ref": "g4_a_the_columbia_river",
+     "role": "incorrect",
+     "feedback": "The Columbia flows through the Pacific Northwest, not through Arizona."
+    },
+    {
+     "answer_ref": "g4_a_the_colorado_river",
+     "role": "strong",
+     "feedback": "Correct. The Colorado River cut the Grand Canyon through layers of rock over a very long time."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s15_meeting_time",
+   "question_ref": "g4_q_meeting_time",
+   "label": "Meeting across three zones (Grades 9-12, advanced)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "everyday_geography"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "use_geography_in_everyday_decisions"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_everyday_geography",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_10_00_a_m_eastern",
+     "role": "incorrect",
+     "feedback": "That is 7:00 a.m. Pacific, before the Pacific coworker starts."
+    },
+    {
+     "answer_ref": "g4_a_1_00_p_m_eastern",
+     "role": "strong",
+     "feedback": "Correct. That is 11:00 a.m. Mountain and 10:00 a.m. Pacific, inside everyone's hours. Eastern workers are free until 5:00 p.m."
+    },
+    {
+     "answer_ref": "g4_a_4_30_p_m_eastern",
+     "role": "incorrect",
+     "feedback": "The meeting would run past 5:00 p.m. Eastern."
+    },
+    {
+     "answer_ref": "g4_a_6_00_p_m_eastern",
+     "role": "incorrect",
+     "feedback": "That is after 5:00 p.m. Eastern, so the Eastern coworker is done for the day."
+    }
+   ]
+  },
+  {
+   "client_ref": "g4_s16_meeting_time",
+   "question_ref": "g4_q_meeting_time",
+   "label": "Meeting across three zones (General adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "everyday_geography"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "use_geography_in_everyday_decisions"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_04",
+     "us_geography",
+     "skill_everyday_geography",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g4_a_8_00_a_m_eastern",
+     "role": "incorrect",
+     "feedback": "That is 5:00 a.m. Pacific and 6:00 a.m. Mountain, well before work hours."
+    },
+    {
+     "answer_ref": "g4_a_4_30_p_m_eastern",
+     "role": "incorrect",
+     "feedback": "The meeting would run to 5:30 p.m. Eastern, past that coworker's hours."
+    },
+    {
+     "answer_ref": "g4_a_1_00_p_m_eastern",
+     "role": "strong",
+     "feedback": "Correct. It is 11:00 a.m. Mountain and 10:00 a.m. Pacific, and everyone can attend."
+    },
+    {
+     "answer_ref": "g4_a_5_00_p_m_eastern",
+     "role": "incorrect",
+     "feedback": "That is the end of the Eastern workday, and the one-hour meeting would run over."
+    }
+   ]
+  }
+ ]
+}
