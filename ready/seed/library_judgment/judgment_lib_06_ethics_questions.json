@@ -1,0 +1,2402 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "j06_q_groupwork",
+   "data": {
+    "question_text": "In a group project, one member has not done their part and the deadline is close. What is the most defensible first step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_invoice",
+   "data": {
+    "question_text": "A supplier's invoice undercharges your company by a large amount. It looks like a plain mistake. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_friend",
+   "data": {
+    "question_text": "A friend who works at another company asks about your employer's unannounced product plans and promises to keep it quiet. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_rounding",
+   "data": {
+    "question_text": "Your director asks you to present this quarter's figures rounded up. The change is small but would push them over a target. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_confide",
+   "data": {
+    "question_text": "A colleague tells you in confidence that they plan to leave in a few months. You are about to assign them to a six-month project. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_trip",
+   "data": {
+    "question_text": "A teacher says, \"Bring what you need for the trip on Friday.\" You are not sure what that includes. What is the most defensible step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_numbers",
+   "data": {
+    "question_text": "Your boss emails, \"Can you pull together the numbers for the meeting?\" There is no other detail. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_quote",
+   "data": {
+    "question_text": "You are asked to approve a purchase. The vendor's quote shows only a total price. What is the most useful thing to do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_survey",
+   "data": {
+    "question_text": "A report says 9 out of 10 survey respondents were satisfied. The methods section shows the survey went to 200 people and 30 replied. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_q_exposure",
+   "data": {
+    "question_text": "A customer's data may have been exposed. You have a vague report from one employee and no logs yet, and you meet the executives in an hour. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "j06_a_ask_privately",
+   "data": {
+    "answer_text": "Ask them privately what is getting in the way, and offer to help",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_do_their_part",
+   "data": {
+    "answer_text": "Quietly do their part so the group gets a good grade",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_shame_class",
+   "data": {
+    "answer_text": "Tell the rest of the class they are lazy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_drop_from_chat",
+   "data": {
+    "answer_text": "Leave them out of the group chat from now on",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_tell_manager_error",
+   "data": {
+    "answer_text": "Tell your manager, so the company can correct the invoice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_tell_supplier_self",
+   "data": {
+    "answer_text": "Contact the supplier yourself and offer to pay the difference",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_say_nothing_their_error",
+   "data": {
+    "answer_text": "Say nothing, because the mistake is theirs",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_wait_notice",
+   "data": {
+    "answer_text": "Wait and see whether they notice the mistake first",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_decline_kindly",
+   "data": {
+    "answer_text": "Kindly decline to share anything that is not yet public",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_share_vague",
+   "data": {
+    "answer_text": "Share only the vague parts that sound harmless",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_share_promise",
+   "data": {
+    "answer_text": "Share it all, since your friend promised to keep it quiet",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_share_soon_public",
+   "data": {
+    "answer_text": "Share it, because it will be public soon anyway",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_raise_then_accurate",
+   "data": {
+    "answer_text": "Raise it privately with the director, then present accurate figures",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_accurate_no_warning",
+   "data": {
+    "answer_text": "Present accurate figures without telling the director first",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_round_as_asked",
+   "data": {
+    "answer_text": "Round up as asked, since the difference is small",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_round_footnote",
+   "data": {
+    "answer_text": "Round up, with the exact figures in a small footnote",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_cant_plan_hidden",
+   "data": {
+    "answer_text": "Explain you cannot plan six months blind, and ask them to share their timing",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_keep_secret_assign",
+   "data": {
+    "answer_text": "Keep the secret, assign them anyway, and deal with it when they leave",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_tell_own_manager",
+   "data": {
+    "answer_text": "Tell your own manager what your colleague told you in confidence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_assume_bluffing",
+   "data": {
+    "answer_text": "Assume they are not serious and assign them anyway",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_teacher_bring",
+   "data": {
+    "answer_text": "Ask the teacher exactly what you need to bring",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_bring_everything",
+   "data": {
+    "answer_text": "Bring everything you own, to be safe",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_friend_bring",
+   "data": {
+    "answer_text": "Ask a friend what they are planning to bring",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_bring_nothing",
+   "data": {
+    "answer_text": "Bring nothing and hope for the best",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_which_what_when",
+   "data": {
+    "answer_text": "Ask which numbers are wanted, for what purpose, and by what time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_prepare_likely",
+   "data": {
+    "answer_text": "Prepare the numbers you think are most likely and send them early",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_wait_told",
+   "data": {
+    "answer_text": "Wait until someone tells you more",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_send_everything",
+   "data": {
+    "answer_text": "Send every number you have available, just to be on the safe side",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_send_labeled_assumptions",
+   "data": {
+    "answer_text": "Send the likely numbers, labeled with your assumptions, and invite fixes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_included_excluded",
+   "data": {
+    "answer_text": "Ask what is included, what is left out, and what changes the price",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_other_quotes",
+   "data": {
+    "answer_text": "Ask for two other quotes to compare",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_approve_within_budget",
+   "data": {
+    "answer_text": "Approve it, since the total price is comfortably within the budget",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_sure_price",
+   "data": {
+    "answer_text": "Ask whether they are sure about the price",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_who_responded",
+   "data": {
+    "answer_text": "Ask who responded and who did not before relying on the result",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_use_note_replies",
+   "data": {
+    "answer_text": "Use the result, and mention that only 30 people replied",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_use_high",
+   "data": {
+    "answer_text": "Use the result, since 9 out of 10 is a high score",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_throw_out",
+   "data": {
+    "answer_text": "Throw the result out, because only 30 people replied",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_known_unknown_next",
+   "data": {
+    "answer_text": "Say what is known, what is not, and when you expect to know more",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_ask_delay_meeting",
+   "data": {
+    "answer_text": "Ask to move the meeting until the logs are in",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_say_nothing_happened",
+   "data": {
+    "answer_text": "Say nothing has happened until the logs prove otherwise",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j06_a_announce_breach",
+   "data": {
+    "answer_text": "Tell them that a breach has happened",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "questions_missing_info"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "ask_questions_and_notice_missing_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_06",
+      "judgment",
+      "skill_questions_missing_info"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "j06_s_group_teen",
+   "question_ref": "j06_q_groupwork",
+   "label": "A group member has not done their part (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_ask_privately",
+     "role": "strong",
+     "feedback": "Yes. There may be a reason you do not know about, and a private, friendly question gives them a chance to fix it. It treats them with respect and is the fairest first step."
+    },
+    {
+     "answer_ref": "j06_a_do_their_part",
+     "role": "ambiguous",
+     "feedback": "Doing their part rescues the grade and is kind in the moment. The cost is that the real problem stays hidden, and you may feel resentful if it keeps happening.",
+     "notes": "Kind and practical; hides the problem and may build resentment."
+    },
+    {
+     "answer_ref": "j06_a_shame_class",
+     "role": "incorrect",
+     "feedback": "Calling someone lazy in front of others is unfair and may be wrong. It turns a work problem into a social one."
+    },
+    {
+     "answer_ref": "j06_a_drop_from_chat",
+     "role": "incorrect",
+     "feedback": "Leaving someone out punishes them without telling them why. It makes the work harder to finish and the group less fair."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_invoice_early",
+   "question_ref": "j06_q_invoice",
+   "label": "An invoice that undercharges (early career, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_tell_manager_error",
+     "role": "strong",
+     "feedback": "Yes. A mistake in the company's favor is still a mistake. Telling your manager lets the company correct it in the proper way and keeps you out of a decision that is not yours to make."
+    },
+    {
+     "answer_ref": "j06_a_tell_supplier_self",
+     "role": "ambiguous",
+     "feedback": "Being honest with the supplier is a good instinct. But offering to pay on the company's behalf goes beyond your role, and your manager may have reasons to handle it differently.",
+     "notes": "Honest instinct; may overstep your authority."
+    },
+    {
+     "answer_ref": "j06_a_say_nothing_their_error",
+     "role": "incorrect",
+     "feedback": "The error is theirs, but benefiting from it knowingly is not neutral. If it came to light later, the company's name and yours would be on the silence."
+    },
+    {
+     "answer_ref": "j06_a_wait_notice",
+     "role": "incorrect",
+     "feedback": "Waiting to see if they notice makes the company a bystander to a mistake it already knows about."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_friend_adult",
+   "question_ref": "j06_q_friend",
+   "label": "A friend asks about unannounced plans (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_decline_kindly",
+     "role": "strong",
+     "feedback": "Yes. You can be friendly and still say that it is not yours to share. A promise from your friend does not change who it belongs to, and a short, warm answer keeps the friendship intact."
+    },
+    {
+     "answer_ref": "j06_a_share_vague",
+     "role": "ambiguous",
+     "feedback": "Sharing only vague parts feels harmless. But vague hints can still reveal enough to matter, and you are the one deciding what counts as harmless.",
+     "notes": "Seems small; you are deciding what is safe to reveal."
+    },
+    {
+     "answer_ref": "j06_a_share_promise",
+     "role": "incorrect",
+     "feedback": "A promise to keep it quiet depends on your friend, not on you or your employer. The information stays out of your control the moment it is shared."
+    },
+    {
+     "answer_ref": "j06_a_share_soon_public",
+     "role": "incorrect",
+     "feedback": "Until it is announced, it is not yours to share. \"Soon\" is also a guess that you cannot be sure of."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_rounding_lead",
+   "question_ref": "j06_q_rounding",
+   "label": "Rounding figures up at a director's request (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_raise_then_accurate",
+     "role": "strong",
+     "feedback": "Yes. Talking first gives the director a chance to see the problem and respect for the relationship. Accurate figures are not negotiable because others will rely on them."
+    },
+    {
+     "answer_ref": "j06_a_accurate_no_warning",
+     "role": "ambiguous",
+     "feedback": "Accurate figures are the right content. But surprising your director in a meeting costs trust you might not need to spend, since a private conversation could have solved it.",
+     "notes": "Right content; avoidable cost to the working relationship."
+    },
+    {
+     "answer_ref": "j06_a_round_footnote",
+     "role": "incorrect",
+     "feedback": "A small footnote may be technically honest, but most readers will not see it. The message people take away is still the inflated one."
+    },
+    {
+     "answer_ref": "j06_a_round_as_asked",
+     "role": "incorrect",
+     "feedback": "Small changes that cross a target still mislead the people relying on the number. Following the request leaves you responsible for it."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_confide_lead",
+   "question_ref": "j06_q_confide",
+   "label": "A confidence that affects planning (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_cant_plan_hidden",
+     "role": "strong",
+     "feedback": "Yes. You owe the colleague discretion, and you owe your team honest planning. Explaining the bind and asking them to share their timing, or tell others themselves, respects both duties."
+    },
+    {
+     "answer_ref": "j06_a_keep_secret_assign",
+     "role": "ambiguous",
+     "feedback": "Keeping their trust has real value. But the project and the people depending on it carry the cost when the colleague leaves, and you knew it.",
+     "notes": "Honors the confidence; the project bears the risk."
+    },
+    {
+     "answer_ref": "j06_a_tell_own_manager",
+     "role": "ambiguous",
+     "feedback": "Passing it on protects the project, but it breaks the confidence your colleague gave you, which may cost trust across the team.",
+     "notes": "Protects the project; breaks a confidence."
+    },
+    {
+     "answer_ref": "j06_a_assume_bluffing",
+     "role": "incorrect",
+     "feedback": "Treating a plain statement as a bluff is a guess made to avoid a hard conversation. It leaves the project at risk."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_trip_teen",
+   "question_ref": "j06_q_trip",
+   "label": "Bring what you need (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_ask_teacher_bring",
+     "role": "strong",
+     "feedback": "Yes. The teacher knows what the trip needs, and asking costs one sentence. Guessing is how people end up without the one thing they needed."
+    },
+    {
+     "answer_ref": "j06_a_ask_friend_bring",
+     "role": "ambiguous",
+     "feedback": "A friend may know, and it is quick. But they may be guessing too, so you could both be wrong in the same way.",
+     "notes": "Quick, but second-hand and possibly equally unsure."
+    },
+    {
+     "answer_ref": "j06_a_bring_everything",
+     "role": "incorrect",
+     "feedback": "This is a guess that costs effort and may still miss something. A short question would be simpler."
+    },
+    {
+     "answer_ref": "j06_a_bring_nothing",
+     "role": "incorrect",
+     "feedback": "Hoping that nothing is needed ignores the fact that the teacher asked you to bring something."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_numbers_early",
+   "question_ref": "j06_q_numbers",
+   "label": "A vague request for numbers (early career, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_ask_which_what_when",
+     "role": "strong",
+     "feedback": "Yes. \"The numbers\" could mean many things. A short question about which numbers, for what purpose, and by when saves you and your boss from wasted effort."
+    },
+    {
+     "answer_ref": "j06_a_prepare_likely",
+     "role": "ambiguous",
+     "feedback": "Guessing and sending early shows initiative and gives your boss something to react to. The risk is that you spend time on the wrong numbers.",
+     "notes": "Shows initiative; risks wasted effort on a wrong guess."
+    },
+    {
+     "answer_ref": "j06_a_send_everything",
+     "role": "incorrect",
+     "feedback": "Sending everything leaves your boss to dig out what they need. It looks thorough but passes the work back."
+    },
+    {
+     "answer_ref": "j06_a_wait_told",
+     "role": "incorrect",
+     "feedback": "Waiting leaves the request unclear, and the deadline keeps coming."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_numbers_lead",
+   "question_ref": "j06_q_numbers",
+   "label": "A vague request with the boss unreachable (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_send_labeled_assumptions",
+     "role": "strong",
+     "feedback": "Yes. If you cannot reach the person and the deadline is close, a best guess with your assumptions stated lets them correct you fast. Asking would have been best but is not possible here."
+    },
+    {
+     "answer_ref": "j06_a_ask_which_what_when",
+     "role": "ambiguous",
+     "feedback": "Asking is the usual right move. If the boss cannot be reached, the question may sit unanswered while the time passes, so a question alone may leave you with nothing to send.",
+     "notes": "Right habit, but may leave you with nothing if no answer comes."
+    },
+    {
+     "answer_ref": "j06_a_send_everything",
+     "role": "incorrect",
+     "feedback": "Sending everything shifts the work to the reader and still might miss the point."
+    },
+    {
+     "answer_ref": "j06_a_wait_told",
+     "role": "incorrect",
+     "feedback": "Waiting for a reply that may not come leaves the meeting without any numbers."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_quote_adult",
+   "question_ref": "j06_q_quote",
+   "label": "A quote with only a total price (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_ask_included_excluded",
+     "role": "strong",
+     "feedback": "Yes. A total hides what the price covers. Asking what is included, what is left out, and what happens if needs change shows the real cost and risk."
+    },
+    {
+     "answer_ref": "j06_a_ask_other_quotes",
+     "role": "ambiguous",
+     "feedback": "Other quotes help judge the price. But they may be built on different assumptions, so without knowing what each includes, they may not be comparable.",
+     "notes": "Useful comparison, if you know what each covers."
+    },
+    {
+     "answer_ref": "j06_a_approve_within_budget",
+     "role": "incorrect",
+     "feedback": "Being within budget says the price is affordable, not that it is complete. Extras may appear later."
+    },
+    {
+     "answer_ref": "j06_a_ask_sure_price",
+     "role": "incorrect",
+     "feedback": "Asking whether they are sure invites a \"yes\" and teaches you little. A more specific question would get you actual information."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_survey_lead",
+   "question_ref": "j06_q_survey",
+   "label": "Nine in ten satisfied, thirty replies (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_ask_who_responded",
+     "role": "strong",
+     "feedback": "Yes. Thirty of two hundred is a small share, and people who reply may feel strongly one way. Knowing who answered and who did not tells you how far 9 in 10 can be trusted."
+    },
+    {
+     "answer_ref": "j06_a_use_note_replies",
+     "role": "ambiguous",
+     "feedback": "Noting the number of replies is honest and lets readers judge. But it still presents the result as meaningful before you know who answered.",
+     "notes": "Transparent, yet still leans on a result of unknown quality."
+    },
+    {
+     "answer_ref": "j06_a_use_high",
+     "role": "incorrect",
+     "feedback": "A high score from a few repliers can be very misleading. The missing 170 people may feel differently."
+    },
+    {
+     "answer_ref": "j06_a_throw_out",
+     "role": "incorrect",
+     "feedback": "Thirty replies is a weak basis but not useless. Throwing it out loses information you could use with the right caveats."
+    }
+   ]
+  },
+  {
+   "client_ref": "j06_s_exposure_lead",
+   "question_ref": "j06_q_exposure",
+   "label": "A possible data exposure and an hour to prepare (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "questions_missing_info"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "ask_questions_and_notice_missing_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_06",
+     "judgment",
+     "skill_questions_missing_info",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j06_a_known_unknown_next",
+     "role": "strong",
+     "feedback": "Yes. Executives need to know what you know, what you do not, and when you will know more. That is honest about the uncertainty and lets them decide what to do while you wait for the logs."
+    },
+    {
+     "answer_ref": "j06_a_ask_delay_meeting",
+     "role": "ambiguous",
+     "feedback": "More facts would be better. But holding back a possible exposure from the people who must decide on response costs time they may not have.",
+     "notes": "Waits for facts; costs response time."
+    },
+    {
+     "answer_ref": "j06_a_say_nothing_happened",
+     "role": "incorrect",
+     "feedback": "Saying nothing has happened claims certainty you do not have. If the logs show otherwise, trust will fall."
+    },
+    {
+     "answer_ref": "j06_a_announce_breach",
+     "role": "incorrect",
+     "feedback": "Declaring a breach claims certainty in the other direction. One vague report is not yet evidence that one occurred."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,2263 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "j08_q_height",
+   "data": {
+    "question_text": "Two classmates give different heights for a famous tower. Choose the TWO most defensible ways to settle it.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "evidence_sources"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "evaluate_sources_and_evidence"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_evidence_sources",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_everyone",
+   "data": {
+    "question_text": "A friend says, \"Everyone at school thinks the new rule is unfair.\" Choose the TWO most defensible ways to test this.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "claim_evidence_assumption"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "separate_claim_evidence_assumption"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_claim_evidence_assumption",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_breakfast",
+   "data": {
+    "question_text": "A study reports that students who eat breakfast get higher test scores. Choose the TWO most useful next steps for judging whether breakfast raises scores.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_tuesday",
+   "data": {
+    "question_text": "Three of your team's five biggest sales landed on a Tuesday. A colleague says Tuesday is a lucky day. Choose the TWO most defensible responses.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_debate",
+   "data": {
+    "question_text": "You have read three articles that agree with your view and you are preparing to argue it. Choose the TWO most defensible next steps.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_wash",
+   "data": {
+    "question_text": "Someone notices that it seems to rain soon after they wash their car. He wonders whether washing causes rain. What is the most defensible view?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_vouch",
+   "data": {
+    "question_text": "A trusted colleague asks you to vouch for a contractor in a meeting. You worked with the contractor once, years ago, and it went well. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_workplace_ethics",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_feedback",
+   "data": {
+    "question_text": "An AI tool summarizes customer feedback for a leadership meeting tomorrow. You know of a theme from your own reading that the summary does not mention. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "ai_persuasive_content"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "evaluate_ai_and_persuasive_content"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_ai_persuasive_content",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_q_speed",
+   "data": {
+    "question_text": "Two team members disagree: one wants to ship fast, the other wants to polish first. Both have good reasons. What is the most defensible way to decide?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "j08_a_look_up_official",
+   "data": {
+    "answer_text": "Look it up on an official or encyclopedia page",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "evidence_sources"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "evaluate_sources_and_evidence"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_evidence_sources"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_second_reliable",
+   "data": {
+    "answer_text": "Check a second reliable source and compare the two",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "evidence_sources"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "evaluate_sources_and_evidence"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_evidence_sources"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_ask_trivia_kid",
+   "data": {
+    "answer_text": "Go with whichever classmate is better at trivia",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "evidence_sources"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "evaluate_sources_and_evidence"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_evidence_sources"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_pick_first",
+   "data": {
+    "answer_text": "Go with the answer that was given first",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "evidence_sources"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "evaluate_sources_and_evidence"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_evidence_sources"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_ask_how_many_everyone",
+   "data": {
+    "answer_text": "Ask how many people they actually spoke to",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "claim_evidence_assumption"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "separate_claim_evidence_assumption"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_claim_evidence_assumption"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_ask_different_groups",
+   "data": {
+    "answer_text": "Ask a few students from different groups what they think",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "claim_evidence_assumption"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "separate_claim_evidence_assumption"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_claim_evidence_assumption"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_count_chat",
+   "data": {
+    "answer_text": "Count how many people agree in the group chat",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "claim_evidence_assumption"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "separate_claim_evidence_assumption"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_claim_evidence_assumption"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_agree_feels_right",
+   "data": {
+    "answer_text": "Agree, because it feels right",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "claim_evidence_assumption"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "separate_claim_evidence_assumption"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_claim_evidence_assumption"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_ask_other_differences",
+   "data": {
+    "answer_text": "Ask whether students who eat breakfast also differ in sleep and routines",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_compare_same_students",
+   "data": {
+    "answer_text": "Look for a study that compares the same students with and without breakfast",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_tell_eat_anyway",
+   "data": {
+    "answer_text": "Tell students to eat breakfast anyway, since it does no harm",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_breakfast_causes",
+   "data": {
+    "answer_text": "Conclude that breakfast raises test scores",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_t_overall",
+   "data": {
+    "answer_text": "Ask how many sales happen on each day of the week overall",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_t_more_weeks",
+   "data": {
+    "answer_text": "Treat it as a pattern to test with more weeks of data",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_t_schedule",
+   "data": {
+    "answer_text": "Schedule key calls on Tuesdays anyway, since it costs nothing",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_t_lucky",
+   "data": {
+    "answer_text": "Conclude that Tuesdays are lucky",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_t_ignore",
+   "data": {
+    "answer_text": "Ignore it, since five sales is far too few to mean anything",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_d_strongest_other",
+   "data": {
+    "answer_text": "Look for the strongest articles on the other side",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_d_ask_classmate",
+   "data": {
+    "answer_text": "Ask someone to argue the other side as well as they can",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_d_weak_rebut",
+   "data": {
+    "answer_text": "Find the weakest versions of the other side so you can rebut them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_d_stop",
+   "data": {
+    "answer_text": "Stop reading, since you already have plenty that agrees",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_d_list_change",
+   "data": {
+    "answer_text": "Write down in advance what evidence would change your mind",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_wash_record",
+   "data": {
+    "answer_text": "Keep a record of washes and weather for a couple of months",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_wash_coincidence",
+   "data": {
+    "answer_text": "It is probably coincidence, since rainy washes are the ones you remember",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_wash_causes",
+   "data": {
+    "answer_text": "Washing the car makes it rain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_wash_night",
+   "data": {
+    "answer_text": "Wash the car only at night so the weather does not notice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_vouch_exact",
+   "data": {
+    "answer_text": "Say exactly what you know: one project, long ago, and how it went",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_vouch_strong",
+   "data": {
+    "answer_text": "Vouch for them strongly, because that one project went well",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_vouch_decline",
+   "data": {
+    "answer_text": "Decline to say anything at all",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_vouch_forget",
+   "data": {
+    "answer_text": "Say you do not remember them, to avoid being asked any more",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "workplace_ethics"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "apply_ethical_judgment_at_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_workplace_ethics"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_feedback_sample",
+   "data": {
+    "answer_text": "Compare the summary with a sample of the raw comments, and add the theme",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "ai_persuasive_content"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "evaluate_ai_and_persuasive_content"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_ai_persuasive_content"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_feedback_memory",
+   "data": {
+    "answer_text": "Present the AI summary and add the missing theme from memory",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "ai_persuasive_content"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "evaluate_ai_and_persuasive_content"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_ai_persuasive_content"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_feedback_present",
+   "data": {
+    "answer_text": "Present the AI summary as it is, since it covers most themes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "ai_persuasive_content"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "evaluate_ai_and_persuasive_content"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_ai_persuasive_content"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_feedback_ask_ai",
+   "data": {
+    "answer_text": "Ask the AI to find the missing theme and present its answer",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "ai_persuasive_content"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "evaluate_ai_and_persuasive_content"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_ai_persuasive_content"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_speed_clarify",
+   "data": {
+    "answer_text": "Ask what the client needs, then decide where speed or quality matters",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_speed_split",
+   "data": {
+    "answer_text": "Split the difference between the two views, and move on quickly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_speed_senior",
+   "data": {
+    "answer_text": "Go with whichever person is more senior in the team",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j08_a_speed_loudest",
+   "data": {
+    "answer_text": "Go with whoever argues most strongly in the meeting",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_08",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "j08_s_height_teen",
+   "question_ref": "j08_q_height",
+   "label": "Two answers about a tower's height (teen, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "evidence_sources"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "evaluate_sources_and_evidence"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_evidence_sources",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_look_up_official",
+     "role": "strong",
+     "feedback": "Yes. An encyclopedia or official page is a source that is in the business of getting this right. It gives you something better than a classmate's memory."
+    },
+    {
+     "answer_ref": "j08_a_second_reliable",
+     "role": "strong",
+     "feedback": "Yes. If two reliable sources agree, you can be much more sure. If they disagree, you have found something interesting to look into."
+    },
+    {
+     "answer_ref": "j08_a_ask_trivia_kid",
+     "role": "ambiguous",
+     "feedback": "Someone good at trivia is more likely to be right. But being likely is not the same as being checked, and even good memories slip.",
+     "notes": "Better odds, but still unchecked memory."
+    },
+    {
+     "answer_ref": "j08_a_pick_first",
+     "role": "incorrect",
+     "feedback": "Who spoke first has nothing to do with who is right."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_everyone_teen",
+   "question_ref": "j08_q_everyone",
+   "label": "\"Everyone\" thinks the rule is unfair (teen, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "claim_evidence_assumption"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "separate_claim_evidence_assumption"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_claim_evidence_assumption",
+     "format_choose_two",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_ask_how_many_everyone",
+     "role": "strong",
+     "feedback": "Yes. \"Everyone\" is often three people in the same lunch group. Asking how many your friend spoke to shows how strong the claim is."
+    },
+    {
+     "answer_ref": "j08_a_ask_different_groups",
+     "role": "strong",
+     "feedback": "Yes. If you hear from students in different groups, you get a fairer picture than from one circle of friends."
+    },
+    {
+     "answer_ref": "j08_a_count_chat",
+     "role": "ambiguous",
+     "feedback": "A group chat is easy to check, but people who join it share a lot, and those who disagree may stay silent. It tells you something about the chat, not the school.",
+     "notes": "Quick, but the chat is a self-selected group."
+    },
+    {
+     "answer_ref": "j08_a_agree_feels_right",
+     "role": "incorrect",
+     "feedback": "Something can feel true because we hear it often. Feeling right is not evidence."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_breakfast_college",
+   "question_ref": "j08_q_breakfast",
+   "label": "Breakfast and test scores (college, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_cause_correlation",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_ask_other_differences",
+     "role": "strong",
+     "feedback": "Yes. Students who eat breakfast may also sleep more or have steadier routines. Those things could raise scores on their own."
+    },
+    {
+     "answer_ref": "j08_a_compare_same_students",
+     "role": "strong",
+     "feedback": "Yes. Comparing the same students with and without breakfast takes out many differences between people, and gets closer to the question of cause."
+    },
+    {
+     "answer_ref": "j08_a_tell_eat_anyway",
+     "role": "ambiguous",
+     "feedback": "Eating breakfast is harmless for most people, so advising it is low-risk. But the advice is not evidence that breakfast raises scores, and it should not be presented as if it were.",
+     "notes": "Harmless advice, not a test of the claim."
+    },
+    {
+     "answer_ref": "j08_a_breakfast_causes",
+     "role": "incorrect",
+     "feedback": "The study shows that two things go together, not why. Jumping to cause skips other explanations."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_tuesday_college",
+   "question_ref": "j08_q_tuesday",
+   "label": "Lucky Tuesdays (college, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_t_overall",
+     "role": "strong",
+     "feedback": "Yes. Without knowing how many sales happen on each day, three of five on Tuesday means little. If Tuesdays are busy days anyway, it is expected."
+    },
+    {
+     "answer_ref": "j08_a_t_more_weeks",
+     "role": "strong",
+     "feedback": "Yes. A small run can look like a pattern by chance. More weeks of data would show whether it holds."
+    },
+    {
+     "answer_ref": "j08_a_t_schedule",
+     "role": "ambiguous",
+     "feedback": "Scheduling calls on Tuesdays costs little and doubles as a test. But it can also lock in a habit before the pattern is shown, and you may miss better days.",
+     "notes": "Cheap and testable; may lock in a habit too early."
+    },
+    {
+     "answer_ref": "j08_a_t_lucky",
+     "role": "incorrect",
+     "feedback": "With a handful of cases, chance can easily cluster. Calling the day lucky explains something that may not need explaining."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_tuesday_adult",
+   "question_ref": "j08_q_tuesday",
+   "label": "Lucky Tuesdays (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_t_overall",
+     "role": "strong",
+     "feedback": "Yes. Check how many sales fall on each day before reading anything into the biggest ones. If Tuesday is the busiest day, the pattern is just volume."
+    },
+    {
+     "answer_ref": "j08_a_t_more_weeks",
+     "role": "strong",
+     "feedback": "Yes. Five cases is a small sample. More weeks would show whether Tuesday really stands out."
+    },
+    {
+     "answer_ref": "j08_a_t_lucky",
+     "role": "incorrect",
+     "feedback": "Luck is the explanation of last resort. With so few cases, a cluster can happen by chance."
+    },
+    {
+     "answer_ref": "j08_a_t_ignore",
+     "role": "incorrect",
+     "feedback": "Five sales is too few to prove a pattern, but not too few to ask about one. Ignoring it throws away a cheap question."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_debate_college",
+   "question_ref": "j08_q_debate",
+   "label": "Three agreeing articles (college, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_d_strongest_other",
+     "role": "strong",
+     "feedback": "Yes. If you only read what agrees with you, you will not see the best objections. Finding the strongest case against your view makes your own argument stronger."
+    },
+    {
+     "answer_ref": "j08_a_d_ask_classmate",
+     "role": "strong",
+     "feedback": "Yes. Someone arguing the other side as well as they can will raise the objections you may have missed."
+    },
+    {
+     "answer_ref": "j08_a_d_weak_rebut",
+     "role": "ambiguous",
+     "feedback": "Rebutting weak versions is easy and feels good. It gives you practice but not a real test, because the strongest objections go unanswered.",
+     "notes": "Easy practice; avoids the real test."
+    },
+    {
+     "answer_ref": "j08_a_d_stop",
+     "role": "incorrect",
+     "feedback": "Three articles that agree with you feel like plenty, but agreement is what you already believed. It does not test the view."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_debate_adult",
+   "question_ref": "j08_q_debate",
+   "label": "Three agreeing articles (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_d_strongest_other",
+     "role": "strong",
+     "feedback": "Yes. A view that has only met friendly evidence has not been tested. The strongest opposing case is the one worth reading."
+    },
+    {
+     "answer_ref": "j08_a_d_list_change",
+     "role": "strong",
+     "feedback": "Yes. Writing down in advance what would change your mind makes it harder to explain away evidence later."
+    },
+    {
+     "answer_ref": "j08_a_d_ask_classmate",
+     "role": "ambiguous",
+     "feedback": "A friend or colleague can raise objections, but they may be gentle or share your views. The practice helps most when the other person really tries to win.",
+     "notes": "Helpful if the other person pushes hard; weaker if they go easy."
+    },
+    {
+     "answer_ref": "j08_a_d_stop",
+     "role": "incorrect",
+     "feedback": "Enough agreeing sources do not make a view tested. The aim is to find where it might be wrong."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_wash_adult",
+   "question_ref": "j08_q_wash",
+   "label": "Washing the car and rain (general adult, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_wash_coincidence",
+     "role": "strong",
+     "feedback": "Yes. Rainy washes are annoying and memorable, and dry washes are forgotten. Remembering the odd ones makes a coincidence feel like a pattern."
+    },
+    {
+     "answer_ref": "j08_a_wash_record",
+     "role": "ambiguous",
+     "feedback": "A record would settle it, which is a good habit. For this question the answer is already likely, so it takes effort for a small gain.",
+     "notes": "A fair test, but more effort than the question deserves."
+    },
+    {
+     "answer_ref": "j08_a_wash_causes",
+     "role": "incorrect",
+     "feedback": "Washing a car cannot change the weather. The two events are linked only in memory."
+    },
+    {
+     "answer_ref": "j08_a_wash_night",
+     "role": "incorrect",
+     "feedback": "Washing at night treats the weather as if it were watching you. It also leaves the explanation as it was."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_vouch_adult",
+   "question_ref": "j08_q_vouch",
+   "label": "Vouching from limited knowledge (general adult, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "workplace_ethics"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "apply_ethical_judgment_at_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_workplace_ethics",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_vouch_exact",
+     "role": "strong",
+     "feedback": "Yes. You owe the listener an honest picture of how much you know. Saying what you saw, how long ago, and how it went lets them weigh it and does not claim more than you have."
+    },
+    {
+     "answer_ref": "j08_a_vouch_decline",
+     "role": "ambiguous",
+     "feedback": "Saying nothing avoids overclaiming. It also withholds a real piece of positive information, and leaves your colleague without a fair hearing.",
+     "notes": "Avoids overclaiming; withholds useful information."
+    },
+    {
+     "answer_ref": "j08_a_vouch_strong",
+     "role": "incorrect",
+     "feedback": "One good project long ago is not a basis for a strong recommendation. People will rely on your word, so overclaiming can cost them."
+    },
+    {
+     "answer_ref": "j08_a_vouch_forget",
+     "role": "incorrect",
+     "feedback": "Saying you do not remember is untrue. It dodges the question rather than answering it honestly."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_feedback_early",
+   "question_ref": "j08_q_feedback",
+   "label": "AI summary misses a theme (early career, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "ai_persuasive_content"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "evaluate_ai_and_persuasive_content"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_ai_persuasive_content",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_feedback_sample",
+     "role": "strong",
+     "feedback": "Yes. A missing theme tells you the summary is incomplete in at least one way, and there may be others. Checking against a sample of the raw comments tells you how far to trust it before leadership acts on it."
+    },
+    {
+     "answer_ref": "j08_a_feedback_memory",
+     "role": "ambiguous",
+     "feedback": "Adding what you know is useful and quick. But you cannot tell how many other themes are missing, so the whole summary stays unchecked.",
+     "notes": "Fixes the one gap you know about; leaves others unseen."
+    },
+    {
+     "answer_ref": "j08_a_feedback_ask_ai",
+     "role": "ambiguous",
+     "feedback": "Asking the tool to look again may find the theme. It is the same tool, and you would be trusting its second answer for the same reason you trusted the first.",
+     "notes": "May find it; not an independent check."
+    },
+    {
+     "answer_ref": "j08_a_feedback_present",
+     "role": "incorrect",
+     "feedback": "You already know the summary has a gap. Presenting it as complete would pass that gap on to the people making decisions."
+    }
+   ]
+  },
+  {
+   "client_ref": "j08_s_speed_lead",
+   "question_ref": "j08_q_speed",
+   "label": "Ship fast or polish first (manager, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_08",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j08_a_speed_clarify",
+     "role": "strong",
+     "feedback": "Yes. Both people are right about something. What the client needs decides whether speed or polish matters more for this piece, and it can differ part by part."
+    },
+    {
+     "answer_ref": "j08_a_speed_split",
+     "role": "ambiguous",
+     "feedback": "Splitting the difference feels fair and ends the dispute quickly. It may give you something that is neither fast nor polished, and it does not use what the client needs.",
+     "notes": "Fair-looking compromise; may fail both goals."
+    },
+    {
+     "answer_ref": "j08_a_speed_senior",
+     "role": "incorrect",
+     "feedback": "Seniority is not evidence about what the client needs. It also teaches the team that rank settles arguments."
+    },
+    {
+     "answer_ref": "j08_a_speed_loudest",
+     "role": "incorrect",
+     "feedback": "The loudest voice is not the best-informed. This rewards volume over reasoning."
+    }
+   ]
+  }
+ ]
+}

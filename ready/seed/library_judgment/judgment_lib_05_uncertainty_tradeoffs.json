@@ -1,0 +1,2278 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "j05_q_picnic",
+   "data": {
+    "question_text": "A class picnic is planned outdoors for tomorrow. The forecast shows a fair chance of rain. You must decide what to do by tonight. What is the most defensible choice?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_launch",
+   "data": {
+    "question_text": "A new feature is due to launch on Friday. Testing found a bug that appears in rare cases, and the fix will take two more days. What is the most defensible choice?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "decide_under_uncertainty",
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_hire",
+   "data": {
+    "question_text": "You manage a team and want to replace a departing member. You have heard the budget may be cut, but nothing is confirmed. You must make an offer within a week. What is the most defensible choice?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_expand",
+   "data": {
+    "question_text": "A business can lease a second site, but only this month. Demand is uncertain. The only evidence is a survey of 40 people who were positive. A failed expansion would be costly. What is the most defensible choice?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_snacks",
+   "data": {
+    "question_text": "A club has limited funds. Members want more snacks at meetings, but spending on them would leave less for a trip later. What is the most defensible way to decide?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_course",
+   "data": {
+    "question_text": "A student can take an extra course for more credits, but it would cut sleep and time to study the other courses. What is the most defensible way to decide?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_reply",
+   "data": {
+    "question_text": "A manager asks a support team to reply to every customer within one hour. It is possible, but staff would have to rush. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_metric",
+   "data": {
+    "question_text": "A director plans to reward support staff by the number of tickets they close each day. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_q_maint",
+   "data": {
+    "question_text": "Cutting routine maintenance would save money this quarter but may cause failures later. Past records are incomplete. What is the most defensible approach?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "j05_a_backup_plan",
+   "data": {
+    "answer_text": "Prepare a backup plan so that either outcome still works",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_hope_best",
+   "data": {
+    "answer_text": "Go ahead with the first plan and hope for the best",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_cancel_all",
+   "data": {
+    "answer_text": "Cancel the whole event to avoid any risk",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_book_indoor",
+   "data": {
+    "answer_text": "Book the indoor space and drop the outdoor idea",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_wait_update",
+   "data": {
+    "answer_text": "Wait for the forecast update, then decide before the deadline",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_limited_rollout",
+   "data": {
+    "answer_text": "Release to a small group first, with a rollback ready",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "decide_under_uncertainty",
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_delay_fix",
+   "data": {
+    "answer_text": "Delay the whole release until the fix has been finished and tested",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "decide_under_uncertainty",
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_release_all_fix_later",
+   "data": {
+    "answer_text": "Release to everyone and fix the bug afterward",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "team_lead_or_manager"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "decide_under_uncertainty",
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_ignore_rare",
+   "data": {
+    "answer_text": "Ignore the bug, since it only shows up rarely",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_ask_finance",
+   "data": {
+    "answer_text": "Ask finance what is known and when it will be decided; hold the offer briefly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_hire_now_cut",
+   "data": {
+    "answer_text": "Make the hire now, and cut back later if the budget does shrink",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_wait_forever",
+   "data": {
+    "answer_text": "Wait for complete certainty before doing anything",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_hire_rumor_false",
+   "data": {
+    "answer_text": "Hire now, assuming the rumor is false and the budget is safe",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_smaller_version",
+   "data": {
+    "answer_text": "Look for a smaller, easier-to-undo version, such as a short lease",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_take_lease",
+   "data": {
+    "answer_text": "Take the lease, because a chance like this may not come back",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_decline_unproven",
+   "data": {
+    "answer_text": "Decline, because demand has not been proven",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_survey_proof",
+   "data": {
+    "answer_text": "Treat the survey of 40 people as proof of demand",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "uncertainty_decisions"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "decide_under_uncertainty"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_uncertainty_decisions"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_weigh_what_given_up",
+   "data": {
+    "answer_text": "Decide what matters most, and see what each choice gives up",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_snacks_now",
+   "data": {
+    "answer_text": "Buy more snacks, since members want them right now",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_save_trip",
+   "data": {
+    "answer_text": "Save for the trip, since trips matter more than snacks",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_majority_vote",
+   "data": {
+    "answer_text": "Hold a vote and go with the majority",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_list_costs",
+   "data": {
+    "answer_text": "List what each option costs in time, sleep and later results",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_take_course_only_credit",
+   "data": {
+    "answer_text": "Take the extra course, since credits are what counts",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_skip_course_rest",
+   "data": {
+    "answer_text": "Skip the course, since rest is more important than anything",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_ask_friends_pick",
+   "data": {
+    "answer_text": "Pick whatever most of your friends picked",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_name_side_effects",
+   "data": {
+    "answer_text": "Name the likely side effects, such as errors, and run a pilot that tracks them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_agree_and_fix",
+   "data": {
+    "answer_text": "Agree to the target and deal with any problems as they come up later",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_refuse_rushing",
+   "data": {
+    "answer_text": "Refuse the target, because rushing people is always a bad idea",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_work_harder",
+   "data": {
+    "answer_text": "Agree to the target and tell staff they will just have to work harder",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_pair_measure",
+   "data": {
+    "answer_text": "Pair the measure with one that shows whether problems stay solved",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_keep_metric_alone",
+   "data": {
+    "answer_text": "Keep the metric as it is; people will adapt sensibly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_drop_measures",
+   "data": {
+    "answer_text": "Drop all measures, since any measure can be gamed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_team_level",
+   "data": {
+    "answer_text": "Track it for the team, not for each person",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_estimate_later_costs",
+   "data": {
+    "answer_text": "Estimate later costs from past incidents, and set a review point",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_cut_riskiest_spared",
+   "data": {
+    "answer_text": "Cut some maintenance but protect the riskiest equipment",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_cut_all",
+   "data": {
+    "answer_text": "Cut it all, since later problems belong to whoever is in charge then",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_never_cut",
+   "data": {
+    "answer_text": "Never cut it, since a failure could be costly",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j05_a_weigh_bug_cost",
+   "data": {
+    "answer_text": "Ask how bad the rare bug is, and weigh that against the cost of delay",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "tradeoffs_second_order"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "weigh_tradeoffs_and_second_order_effects"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_05",
+      "judgment",
+      "skill_tradeoffs_second_order"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "j05_s_picnic_teen",
+   "question_ref": "j05_q_picnic",
+   "label": "Picnic and a chance of rain (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "uncertainty_decisions"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "decide_under_uncertainty"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_uncertainty_decisions",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_backup_plan",
+     "role": "strong",
+     "feedback": "Yes. You cannot know the weather, but you can make a plan that works either way. A backup turns an uncertain day into a manageable one."
+    },
+    {
+     "answer_ref": "j05_a_hope_best",
+     "role": "incorrect",
+     "feedback": "Hoping is not a plan. If it rains, everyone is wet and there is no place to go."
+    },
+    {
+     "answer_ref": "j05_a_cancel_all",
+     "role": "incorrect",
+     "feedback": "Cancelling avoids the risk by giving up everything. A fair chance of rain does not mean it will rain, and a backup would keep the picnic alive."
+    },
+    {
+     "answer_ref": "j05_a_book_indoor",
+     "role": "ambiguous",
+     "feedback": "The indoor space is certain to work. The cost is that you lose the outdoor picnic, which may be the main reason for the event, even though the weather might be fine.",
+     "notes": "Safe, but gives up what people wanted."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_picnic_adult",
+   "question_ref": "j05_q_picnic",
+   "label": "Picnic with a refundable deposit (adult, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "uncertainty_decisions"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "decide_under_uncertainty"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_uncertainty_decisions",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_wait_update",
+     "role": "strong",
+     "feedback": "Yes. If the deposit is refundable until noon and a new forecast arrives before then, waiting costs nothing and gives better information. Decide before the deadline."
+    },
+    {
+     "answer_ref": "j05_a_backup_plan",
+     "role": "ambiguous",
+     "feedback": "A backup plan is good in general, but it costs money or effort here and the update may make it unnecessary. It is reasonable if the update may arrive too late.",
+     "notes": "Sound but possibly unnecessary effort when a cheap wait is available."
+    },
+    {
+     "answer_ref": "j05_a_hope_best",
+     "role": "incorrect",
+     "feedback": "Going ahead without a plan ignores a forecast you already have."
+    },
+    {
+     "answer_ref": "j05_a_cancel_all",
+     "role": "incorrect",
+     "feedback": "Cancelling now gives up the picnic and any refund options, before the better information arrives."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_launch_early",
+   "question_ref": "j05_q_launch",
+   "label": "Rare bug before a launch (early career, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "uncertainty_decisions"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "decide_under_uncertainty"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_uncertainty_decisions",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_limited_rollout",
+     "role": "strong",
+     "feedback": "Yes. A small release limits the harm if the bug appears, and the rollback lets you undo it. You learn how often it really happens while the fix is built."
+    },
+    {
+     "answer_ref": "j05_a_delay_fix",
+     "role": "ambiguous",
+     "feedback": "Waiting for the fix removes the bug risk. The cost is two days, and a missed date may cost more than a rare bug, so it depends on how bad the bug is.",
+     "notes": "Safe on the bug, costly on the date."
+    },
+    {
+     "answer_ref": "j05_a_release_all_fix_later",
+     "role": "incorrect",
+     "feedback": "If the bug is serious, many people meet it before the fix is ready, and a rollback may not exist."
+    },
+    {
+     "answer_ref": "j05_a_ignore_rare",
+     "role": "incorrect",
+     "feedback": "Rare is not the same as harmless. How bad the bug is matters as much as how often it happens."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_hire_lead",
+   "question_ref": "j05_q_hire",
+   "label": "Hiring while budget news is unclear (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "uncertainty_decisions"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "decide_under_uncertainty"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_uncertainty_decisions",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_ask_finance",
+     "role": "strong",
+     "feedback": "Yes. The rumor is the missing information, and finance can say what is known and when it will be settled. A short hold costs little if the answer comes within your week."
+    },
+    {
+     "answer_ref": "j05_a_hire_now_cut",
+     "role": "ambiguous",
+     "feedback": "Hiring fills the gap and keeps the team working. But a hire is hard to reverse, and cutting later can hurt a new colleague and the team.",
+     "notes": "Practical now; hard to reverse if the budget shrinks."
+    },
+    {
+     "answer_ref": "j05_a_hire_rumor_false",
+     "role": "incorrect",
+     "feedback": "Assuming the rumor is false is a bet with someone else's job as the stake. It treats a possibility as settled."
+    },
+    {
+     "answer_ref": "j05_a_wait_forever",
+     "role": "incorrect",
+     "feedback": "Certainty may never come. You have a week, so ask what can be learned and then decide."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_expand_lead",
+   "question_ref": "j05_q_expand",
+   "label": "Lease offer with unproven demand (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "uncertainty_decisions"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "decide_under_uncertainty"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_uncertainty_decisions",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_smaller_version",
+     "role": "strong",
+     "feedback": "Yes. When the downside is large and the evidence thin, the best move is often a smaller step that keeps options open, such as a short lease or shared space. It keeps the chance without betting everything."
+    },
+    {
+     "answer_ref": "j05_a_take_lease",
+     "role": "ambiguous",
+     "feedback": "The offer may not come back, which is a real consideration. But \"it may not return\" is a pressure to commit, and the evidence for demand is thin.",
+     "notes": "Real scarcity; pressure to commit on thin evidence."
+    },
+    {
+     "answer_ref": "j05_a_decline_unproven",
+     "role": "ambiguous",
+     "feedback": "Declining protects you from a costly failure. The cost is a lost chance, and unproven is not the same as disproven.",
+     "notes": "Cautious; may forgo a good opportunity."
+    },
+    {
+     "answer_ref": "j05_a_survey_proof",
+     "role": "incorrect",
+     "feedback": "Forty positive answers from a survey are a start, not proof. People say yes in a survey more easily than they pay."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_snacks_teen",
+   "question_ref": "j05_q_snacks",
+   "label": "Snacks now or a trip later (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_weigh_what_given_up",
+     "role": "strong",
+     "feedback": "Yes. Every choice gives up something. Naming what the club loses with each option, and what matters most, makes the decision fair."
+    },
+    {
+     "answer_ref": "j05_a_snacks_now",
+     "role": "incorrect",
+     "feedback": "People want snacks now, but this ignores what the trip will lose. Wanting something quickly is not the same as it being the better choice."
+    },
+    {
+     "answer_ref": "j05_a_save_trip",
+     "role": "incorrect",
+     "feedback": "This ignores what members want at meetings. Both sides lose something, and it should be looked at."
+    },
+    {
+     "answer_ref": "j05_a_majority_vote",
+     "role": "ambiguous",
+     "feedback": "A vote is fair and quick. But if members have not heard what each choice costs, the vote is only a count of first reactions.",
+     "notes": "Fair, but only as good as the information behind it."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_course_college",
+   "question_ref": "j05_q_course",
+   "label": "An extra course and less sleep (college, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_list_costs",
+     "role": "strong",
+     "feedback": "Yes. The extra course has effects later: less sleep and less study time can lower grades in the other courses. Listing what each path costs shows the whole picture."
+    },
+    {
+     "answer_ref": "j05_a_take_course_only_credit",
+     "role": "incorrect",
+     "feedback": "More credits are attractive, but they can come at the price of weaker results elsewhere. This looks only at the benefit."
+    },
+    {
+     "answer_ref": "j05_a_skip_course_rest",
+     "role": "incorrect",
+     "feedback": "Rest matters, but this ignores that the course may help a lot. One consideration should not settle the question alone."
+    },
+    {
+     "answer_ref": "j05_a_ask_friends_pick",
+     "role": "ambiguous",
+     "feedback": "What friends chose is a bit of information about what is doable. But their time, sleep and courses differ from yours, so it does not answer your question.",
+     "notes": "Some information, weak fit."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_reply_early",
+   "question_ref": "j05_q_reply",
+   "label": "Reply to every customer within an hour (early career, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_name_side_effects",
+     "role": "strong",
+     "feedback": "Yes. Faster replies help customers, but rushing may cause mistakes and burnout, which cause more work later. A pilot that tracks these effects gives real evidence."
+    },
+    {
+     "answer_ref": "j05_a_agree_and_fix",
+     "role": "ambiguous",
+     "feedback": "Agreeing quickly helps the working relationship, and problems can be fixed as they show up. The cost is that staff and customers may suffer before anyone connects the problems to the change.",
+     "notes": "Cooperative; problems may be found late."
+    },
+    {
+     "answer_ref": "j05_a_refuse_rushing",
+     "role": "incorrect",
+     "feedback": "Rushing can cause trouble, but \"always bad\" ignores the benefit of fast replies. A refusal ends the talk instead of testing the idea."
+    },
+    {
+     "answer_ref": "j05_a_work_harder",
+     "role": "incorrect",
+     "feedback": "Telling people to work harder treats the trade-off as if it did not exist. It is how errors and exhaustion get built into a plan."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_metric_lead",
+   "question_ref": "j05_q_metric",
+   "label": "Rewarding tickets closed per day (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_pair_measure",
+     "role": "strong",
+     "feedback": "Yes. A measure changes behavior. Closing tickets fast can mean closing them without solving them. Pairing it with a measure of whether problems stay solved keeps both goals visible."
+    },
+    {
+     "answer_ref": "j05_a_team_level",
+     "role": "ambiguous",
+     "feedback": "Team-level tracking reduces rivalry and gaming between individuals. It does not fix the main problem, because the team can still close tickets quickly without solving them.",
+     "notes": "Reduces rivalry; leaves the main side effect."
+    },
+    {
+     "answer_ref": "j05_a_keep_metric_alone",
+     "role": "incorrect",
+     "feedback": "People adapt to what is measured and rewarded, not always sensibly. Fast closing is the easy way to win this one."
+    },
+    {
+     "answer_ref": "j05_a_drop_measures",
+     "role": "incorrect",
+     "feedback": "Any measure can be gamed, but having none leaves leaders blind. The answer is to choose measures carefully and check for side effects."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_maint_lead",
+   "question_ref": "j05_q_maint",
+   "label": "Cutting maintenance to save money (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_estimate_later_costs",
+     "role": "strong",
+     "feedback": "Yes. Past incidents, even incomplete ones, can give a rough range for how often failures happen and what they cost. A review point means the decision can be corrected if the picture changes."
+    },
+    {
+     "answer_ref": "j05_a_cut_riskiest_spared",
+     "role": "ambiguous",
+     "feedback": "Protecting the riskiest equipment is a common compromise. But without good records you may be wrong about which items are riskiest, so it needs a review point too.",
+     "notes": "A reasonable compromise based on a guess about risk."
+    },
+    {
+     "answer_ref": "j05_a_cut_all",
+     "role": "incorrect",
+     "feedback": "Pushing costs onto whoever comes later is the second-order effect in plain view. The savings now may be much smaller than the later cost."
+    },
+    {
+     "answer_ref": "j05_a_never_cut",
+     "role": "incorrect",
+     "feedback": "Refusing every cut ignores that money has other uses. The question is how much risk the saving buys."
+    }
+   ]
+  },
+  {
+   "client_ref": "j05_s_launch_lead",
+   "question_ref": "j05_q_launch",
+   "label": "Rare bug before a launch (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "tradeoffs_second_order"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "weigh_tradeoffs_and_second_order_effects"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_05",
+     "judgment",
+     "skill_tradeoffs_second_order",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j05_a_weigh_bug_cost",
+     "role": "strong",
+     "feedback": "Yes. A rare bug and a missed date both have costs. How bad the bug is, and what the delay costs, decide which is smaller. Asking for those two facts first makes the trade-off visible."
+    },
+    {
+     "answer_ref": "j05_a_limited_rollout",
+     "role": "ambiguous",
+     "feedback": "A small release is a good risk reducer. It does not remove the trade-off, since you still need to know how bad the bug is and what a partial release costs in confusion and support.",
+     "notes": "Reduces risk; leaves the trade-off unexamined."
+    },
+    {
+     "answer_ref": "j05_a_delay_fix",
+     "role": "ambiguous",
+     "feedback": "Delay avoids the bug entirely. If the date matters to customers or other teams, the delay has costs of its own, so it needs weighing too.",
+     "notes": "Avoids the bug; costs the date."
+    },
+    {
+     "answer_ref": "j05_a_release_all_fix_later",
+     "role": "incorrect",
+     "feedback": "Releasing to everyone puts the cost on users who meet the bug, and may be hard to undo."
+    }
+   ]
+  }
+ ]
+}
