@@ -309,13 +309,81 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l05_q_event_safety",
+   "data": {
+    "question_text": "Which practices belong in a caterer's food-safety routine for a smoked-meat event? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_bitter_causes",
+   "data": {
+    "question_text": "Which of these can make smoked meat taste bitter or acrid? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
   {
    "client_ref": "l05_a_mus_each_grain",
    "data": {
-    "answer_text": "Separate them, or turn the meat as you go, so each muscle is cut across its own grain.",
+    "answer_text": "Separate them or turn the meat, so each muscle is cut across its own grain.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -347,7 +415,7 @@
   {
    "client_ref": "l05_a_mus_one_pass",
    "data": {
-    "answer_text": "Cut the whole brisket in one direction from end to end.",
+    "answer_text": "Cut the whole brisket in one direction, from one end to the other, for neat slices.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -379,7 +447,7 @@
   {
    "client_ref": "l05_a_mus_with_grain",
    "data": {
-    "answer_text": "Cut along the fibers for thicker, neater slices.",
+    "answer_text": "Cut along the fibers for thicker, neater slices that hold together well on the plate.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -443,7 +511,7 @@
   {
    "client_ref": "l05_a_plan_buffer_hold",
    "data": {
-    "answer_text": "Work back from serving time, start early, and build in a long, monitored hold in a preheated insulated cooler as a buffer.",
+    "answer_text": "Work back from serving time, start early, and build in a long, monitored hold in a preheated cooler.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -476,7 +544,7 @@
   {
    "client_ref": "l05_a_plan_exact",
    "data": {
-    "answer_text": "Time the start so the brisket comes off the cooker at exactly 6:00.",
+    "answer_text": "Time the start of the cook so that the brisket comes off the cooker at exactly 6:00.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -606,7 +674,7 @@
   {
    "client_ref": "l05_a_drop_discard",
    "data": {
-    "answer_text": "Discard it, because when the time in the danger zone is unknown it cannot be judged safe.",
+    "answer_text": "Discard it, because with an unknown time in the danger zone it cannot be judged safe.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -638,7 +706,7 @@
   {
    "client_ref": "l05_a_drop_reheat",
    "data": {
-    "answer_text": "Reheat it to 165°F and serve it.",
+    "answer_text": "Reheat it to 165°F in the center, then serve it to the guests as planned.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -670,7 +738,7 @@
   {
    "client_ref": "l05_a_drop_serve_cooked",
    "data": {
-    "answer_text": "Serve it as it is, because it was fully cooked earlier.",
+    "answer_text": "Serve it as it is, because it was fully cooked earlier and has only been resting.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -702,7 +770,7 @@
   {
    "client_ref": "l05_a_drop_slice_thin",
    "data": {
-    "answer_text": "Slice it thin so the heat of the room warms it through.",
+    "answer_text": "Slice it thin, so that the warmth of the room and the plates heats it through.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -734,7 +802,7 @@
   {
    "client_ref": "l05_a_swing_overcorrect",
    "data": {
-    "answer_text": "You are overcorrecting. Make smaller changes, less often, and let the fire settle between them.",
+    "answer_text": "You are overcorrecting. Make smaller changes, less often, and let the fire settle.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -766,7 +834,7 @@
   {
    "client_ref": "l05_a_swing_thermal_mass",
    "data": {
-    "answer_text": "Add thermal mass, such as a water pan, to smooth out the swings.",
+    "answer_text": "Add thermal mass, such as a water pan, to smooth out the swings in the cooker.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -830,7 +898,7 @@
   {
    "client_ref": "l05_a_swing_more_fuel",
    "data": {
-    "answer_text": "The fire is too small, so keep dropping in unlit coals.",
+    "answer_text": "The fire is too small, so keep dropping in unlit coals whenever the reading falls.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -862,7 +930,7 @@
   {
    "client_ref": "l05_a_hf_tradeoff",
    "data": {
-    "answer_text": "Hot-and-fast saves time and can work well on forgiving cuts, while low-and-slow gives longer smoke exposure and gentler rendering but takes much more time. Both can give good results.",
+    "answer_text": "Hot-and-fast saves time and suits forgiving cuts; low-and-slow gives more smoke time and gentler rendering but takes hours. Both can work.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -895,7 +963,7 @@
   {
    "client_ref": "l05_a_hf_unsafe",
    "data": {
-    "answer_text": "Hot-and-fast is unsafe, because the outside cooks before the inside.",
+    "answer_text": "Hot-and-fast is unsafe, because the outside of the meat cooks well before the inside, so the center never reaches a safe temperature.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -927,7 +995,7 @@
   {
    "client_ref": "l05_a_hf_required",
    "data": {
-    "answer_text": "Only low-and-slow can make tough cuts tender.",
+    "answer_text": "Only low-and-slow can make a tough cut tender, so hot-and-fast cooking can never work properly on brisket or shoulder.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -960,7 +1028,7 @@
   {
    "client_ref": "l05_a_hf_no_difference",
    "data": {
-    "answer_text": "They give identical results, so the only difference is the clock.",
+    "answer_text": "They give identical results in every way, so the only real difference between them is how long the cook takes.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -993,7 +1061,7 @@
   {
    "client_ref": "l05_a_hf_judges",
    "data": {
-    "answer_text": "Competition judges always prefer low-and-slow, so competitors should never use anything else.",
+    "answer_text": "Competition judges always prefer low-and-slow results, so competitors should never use anything else, whatever the cut.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1157,7 +1225,7 @@
   {
    "client_ref": "l05_a_can_open_clear",
    "data": {
-    "answer_text": "In the open, well clear of the canopy and anything flammable, with a barrier keeping guests back.",
+    "answer_text": "In the open, well clear of the canopy and anything flammable, with a guest barrier.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1189,7 +1257,7 @@
   {
    "client_ref": "l05_a_can_under_sides_up",
    "data": {
-    "answer_text": "Under the canopy, with the sides rolled up for ventilation.",
+    "answer_text": "Under the canopy, with all of its sides rolled up high for plenty of ventilation.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1221,7 +1289,7 @@
   {
    "client_ref": "l05_a_can_edge",
    "data": {
-    "answer_text": "Just beside the canopy's edge so the roof keeps the rain off.",
+    "answer_text": "Just beside the canopy's edge, so the roof overhead keeps the rain off the cooker.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1253,7 +1321,7 @@
   {
    "client_ref": "l05_a_can_between_tents",
    "data": {
-    "answer_text": "Between two canopies, so each shelters one side.",
+    "answer_text": "Between two canopies, so each one shelters one side of the cooker from the weather.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1285,7 +1353,7 @@
   {
    "client_ref": "l05_a_soot_buildup",
    "data": {
-    "answer_text": "Soot and old grease have built up inside the cooker and are flaking and dripping onto the meat, so it needs a thorough cleaning.",
+    "answer_text": "Soot and old grease inside the cooker are flaking onto the meat, so it needs cleaning.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1317,7 +1385,7 @@
   {
    "client_ref": "l05_a_soot_dry_wood",
    "data": {
-    "answer_text": "The wood is too dry.",
+    "answer_text": "The wood is too dry, and it is burning too fast and too hot for clean smoke to form.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1349,7 +1417,7 @@
   {
    "client_ref": "l05_a_soot_rub",
    "data": {
-    "answer_text": "There is too much rub on the meat.",
+    "answer_text": "There is too much rub on the surface of the meat, which is scorching under the smoke.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1381,7 +1449,7 @@
   {
    "client_ref": "l05_a_soot_hot",
    "data": {
-    "answer_text": "The cooker is running too cool.",
+    "answer_text": "The cooker is running too cool, so the smoke is condensing on the cold meat surface.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1413,7 +1481,7 @@
   {
    "client_ref": "l05_a_sugar_less_or_late",
    "data": {
-    "answer_text": "Cut back the sugar in the rub, or add sugary glaze only near the end.",
+    "answer_text": "Cut back the sugar in the rub, or add any sugary glaze only near the end of the cook.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1445,7 +1513,7 @@
   {
    "client_ref": "l05_a_sugar_more",
    "data": {
-    "answer_text": "Add more sugar, which will build a thicker bark.",
+    "answer_text": "Add more sugar to the rub, which will build a thicker and darker bark on the ribs.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1477,7 +1545,7 @@
   {
    "client_ref": "l05_a_sugar_wrap_early",
    "data": {
-    "answer_text": "Leave the rub as it is and take the ribs off early.",
+    "answer_text": "Leave the rub as it is, and take the ribs off the cooker early before they blacken.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1509,7 +1577,7 @@
   {
    "client_ref": "l05_a_sugar_more_smoke",
    "data": {
-    "answer_text": "Add more wood, so the smoke covers the burnt taste.",
+    "answer_text": "Add more wood to the fire, so that the extra smoke covers up the burnt taste.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1533,6 +1601,262 @@
       "needs_owner_review",
       "ready_lib_smoking_meat_05",
       "skill_prep"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_ev_probe_log",
+   "data": {
+    "answer_text": "A probe thermometer in the held meat, with readings logged at set times.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_ev_separate_tools",
+   "data": {
+    "answer_text": "Separate boards, knives and trays for raw and cooked meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_ev_smell_test",
+   "data": {
+    "answer_text": "Judging whether held food is safe by how it looks and smells.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_ev_top_up",
+   "data": {
+    "answer_text": "Topping up half-empty serving pans with fresh meat to keep them full.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_bc_smolder",
+   "data": {
+    "answer_text": "A fire that is starved of air and smolders.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_bc_old_buildup",
+   "data": {
+    "answer_text": "Soot and old grease inside the cooker that flake onto the meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_bc_dry_fruitwood",
+   "data": {
+    "answer_text": "Burning dry, seasoned fruitwood on a clean fire.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_bc_enough_air",
+   "data": {
+    "answer_text": "A fire with plenty of air and thin, pale smoke.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "troubleshooting"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "diagnose_and_fix_problems"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_05",
+      "skill_troubleshooting"
      ],
      "attributes": {}
     }
@@ -2202,6 +2526,116 @@
      "answer_ref": "l05_a_sugar_more_smoke",
      "role": "incorrect",
      "feedback": "Extra smoke makes bitterness worse, not better. Fix the cause, which is the sugar burning."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_event_safety_pro",
+   "question_ref": "l05_q_event_safety",
+   "label": "advanced / aspiring competitor or caterer / event safety",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_food_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the caterer build a routine around measurement and separation?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_ev_probe_log",
+     "role": "strong",
+     "feedback": "Temperatures can be measured, and food that cannot be kept at or above 140°F cannot be served safely. A log shows you caught a problem and when you did."
+    },
+    {
+     "answer_ref": "l05_a_ev_separate_tools",
+     "role": "strong",
+     "feedback": "Raw and cooked meat must not share tools or surfaces without washing, or the cooked food picks up the bacteria that cooking removed."
+    },
+    {
+     "answer_ref": "l05_a_ev_smell_test",
+     "role": "incorrect",
+     "feedback": "Food that is unsafe can look and smell fine, because the bacteria that cause illness often do not change either. Rely on temperature and time records."
+    },
+    {
+     "answer_ref": "l05_a_ev_top_up",
+     "role": "incorrect",
+     "feedback": "Fresh meat added to an old pan takes on its time on the table. Replace pans, and do not top them up."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_bitter_causes_enth",
+   "question_ref": "l05_q_bitter_causes",
+   "label": "advanced / home enthusiast / bitter causes",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "troubleshooting"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "diagnose_and_fix_problems"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_05",
+     "skill_troubleshooting",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner list the real causes of bitterness?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_bc_smolder",
+     "role": "strong",
+     "feedback": "A smoldering fire makes thick, heavy smoke that coats the meat with a harsh film. Giving the fire more air, and a hotter, cleaner burn, usually fixes it."
+    },
+    {
+     "answer_ref": "l05_a_bc_old_buildup",
+     "role": "strong",
+     "feedback": "Old soot and grease can bake onto the lid and stack and flake off onto the meat even when the fire is clean. A thorough cleaning is the answer."
+    },
+    {
+     "answer_ref": "l05_a_bc_dry_fruitwood",
+     "role": "incorrect",
+     "feedback": "Dry, seasoned fruitwood on a clean fire is a classic recipe for mild, clean smoke, not bitterness."
+    },
+    {
+     "answer_ref": "l05_a_bc_enough_air",
+     "role": "incorrect",
+     "feedback": "A fire with plenty of air burns cleanly and gives thin, pale smoke. That is the opposite of what causes bitterness."
     }
    ]
   }

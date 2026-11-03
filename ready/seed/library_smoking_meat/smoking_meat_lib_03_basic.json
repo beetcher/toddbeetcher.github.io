@@ -52,6 +52,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -86,6 +87,7 @@
       "temps_doneness"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -443,13 +445,81 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l03_q_probe_habits",
+   "data": {
+    "question_text": "Which habits give you thermometer readings you can trust? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_doneness",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_raw_handling",
+   "data": {
+    "question_text": "Which habits keep raw meat from making people ill during prep? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_food_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
   {
    "client_ref": "l03_a_buf_small_batches",
    "data": {
-    "answer_text": "Put out small pans, keep the rest hot, and replace pans before they have sat out long, no more than about an hour on a very hot day.",
+    "answer_text": "Put out small pans, keep the rest hot, and swap pans often, within about an hour on a hot day.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -481,7 +551,7 @@
   {
    "client_ref": "l03_a_buf_two_hours_always",
    "data": {
-    "answer_text": "Leave each pan out for two hours, whatever the weather.",
+    "answer_text": "Leave each pan out for two hours, whatever the weather, then replace it with a fresh pan.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -513,7 +583,7 @@
   {
    "client_ref": "l03_a_buf_top_up",
    "data": {
-    "answer_text": "Top up a half-empty pan with fresh meat to keep it looking full.",
+    "answer_text": "Top up a half-empty pan with fresh meat from the kitchen so it always looks full and ready.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -545,7 +615,7 @@
   {
    "client_ref": "l03_a_buf_reheat_fixes",
    "data": {
-    "answer_text": "Let it sit as long as it takes, since reheating it later will make it safe.",
+    "answer_text": "Let pans sit out as long as it takes, since reheating the meat later will make it safe.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -577,7 +647,7 @@
   {
    "client_ref": "l03_a_store_bottom_sealed",
    "data": {
-    "answer_text": "On the bottom shelf, sealed in a container or bag, so its juices cannot drip onto other food.",
+    "answer_text": "On the bottom shelf, sealed in a container or bag, so its juices cannot drip on other food.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -590,6 +660,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -609,7 +680,7 @@
   {
    "client_ref": "l03_a_store_top_shelf",
    "data": {
-    "answer_text": "On the top shelf, where it is easy to reach.",
+    "answer_text": "On the top shelf, in its store packaging, where it is easy to reach when you need it.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -622,6 +693,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -641,7 +713,7 @@
   {
    "client_ref": "l03_a_store_open_tray",
    "data": {
-    "answer_text": "In an open tray next to cooked leftovers.",
+    "answer_text": "In an open tray on the middle shelf, next to cooked leftovers from earlier in the week.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -654,6 +726,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -673,7 +746,7 @@
   {
    "client_ref": "l03_a_store_rinsed",
    "data": {
-    "answer_text": "Rinsed under the tap first, then left uncovered.",
+    "answer_text": "Rinsed under the tap first, then left uncovered on a plate to dry out in the fridge.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -686,6 +759,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -718,6 +792,7 @@
       "temps_doneness"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -750,6 +825,7 @@
       "temps_doneness"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -782,6 +858,7 @@
       "temps_doneness"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -814,6 +891,7 @@
       "temps_doneness"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
@@ -875,20 +953,24 @@
     "metadata": {
      "topics": [
       "smoking_meat",
-      "meat_prep"
+      "meat_prep",
+      "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "basic",
      "learning_objectives": [
-      "select_and_prepare_meat"
+      "select_and_prepare_meat",
+      "keep_food_safe_start_to_finish"
      ],
      "tags": [
       "builder_created",
       "needs_owner_review",
       "ready_lib_smoking_meat_03",
-      "skill_prep"
+      "skill_prep",
+      "skill_food_safety"
      ],
      "attributes": {}
     }
@@ -961,7 +1043,7 @@
   {
    "client_ref": "l03_a_brine_fridge",
    "data": {
-    "answer_text": "In the refrigerator, covered.",
+    "answer_text": "In the refrigerator, in a covered container, so it stays cold the whole time.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -993,7 +1075,7 @@
   {
    "client_ref": "l03_a_brine_counter",
    "data": {
-    "answer_text": "On the counter, since salt keeps bacteria away.",
+    "answer_text": "On the counter, since the salt in the brine keeps bacteria away overnight.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1025,7 +1107,7 @@
   {
    "client_ref": "l03_a_brine_garage",
    "data": {
-    "answer_text": "In an unheated garage, if it is a cool night.",
+    "answer_text": "In an unheated garage or shed, provided it is a cool night.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1057,7 +1139,7 @@
   {
    "client_ref": "l03_a_brine_warm",
    "data": {
-    "answer_text": "In warm water, so the salt dissolves and soaks in faster.",
+    "answer_text": "In warm water, so the salt dissolves and soaks into the meat faster.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1102,7 +1184,8 @@
       "temps_doneness"
      ],
      "audiences": [
-      "hobbyist_beginner"
+      "hobbyist_beginner",
+      "home_enthusiast"
      ],
      "difficulty": "basic",
      "learning_objectives": [
@@ -1166,7 +1249,8 @@
       "temps_doneness"
      ],
      "audiences": [
-      "hobbyist_beginner"
+      "hobbyist_beginner",
+      "home_enthusiast"
      ],
      "difficulty": "basic",
      "learning_objectives": [
@@ -1217,7 +1301,7 @@
   {
    "client_ref": "l03_a_wood_few_early",
    "data": {
-    "answer_text": "Add a few small pieces to an established fire early in the cook, rather than piling on a lot.",
+    "answer_text": "Add a few small pieces to an established fire early on, rather than piling on a lot.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1250,7 +1334,7 @@
   {
    "client_ref": "l03_a_wood_bury",
    "data": {
-    "answer_text": "Keep the meat buried in thick smoke from start to finish.",
+    "answer_text": "Keep the meat buried in thick, heavy smoke from the first minute until the very end.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1283,7 +1367,7 @@
   {
    "client_ref": "l03_a_wood_green",
    "data": {
-    "answer_text": "Add plenty of freshly cut, green wood.",
+    "answer_text": "Add plenty of freshly cut, green wood so that the fire makes lots of smoke.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1316,7 +1400,7 @@
   {
    "client_ref": "l03_a_wood_keep_adding",
    "data": {
-    "answer_text": "Keep adding a little wood at regular intervals through the whole cook.",
+    "answer_text": "Keep adding a little wood at regular intervals all the way through the cook.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1509,7 +1593,7 @@
   {
    "client_ref": "l03_a_flare_water",
    "data": {
-    "answer_text": "Pour water over the grease and flames.",
+    "answer_text": "Pour a pitcher of water over the grease and flames to put them out quickly.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1541,7 +1625,7 @@
   {
    "client_ref": "l03_a_flare_open",
    "data": {
-    "answer_text": "Open the lid wide so the flames can die down.",
+    "answer_text": "Throw the lid open wide so that the flames can die down while you stand back.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1573,7 +1657,7 @@
   {
    "client_ref": "l03_a_flare_towel",
    "data": {
-    "answer_text": "Smother the flames with a kitchen towel.",
+    "answer_text": "Smother the flames by dropping a damp kitchen towel over the grate and the meat.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1893,7 +1977,7 @@
   {
    "client_ref": "l03_a_minion_fast",
    "data": {
-    "answer_text": "The cooker heats up much faster.",
+    "answer_text": "The cooker heats up much faster than it would with a full chimney of lit coals.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1925,7 +2009,7 @@
   {
    "client_ref": "l03_a_minion_thick_smoke",
    "data": {
-    "answer_text": "Thicker smoke, because the unlit coals smolder.",
+    "answer_text": "Thicker, heavier smoke, because the unlit coals smolder on the way to catching.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1957,7 +2041,7 @@
   {
    "client_ref": "l03_a_minion_hotter",
    "data": {
-    "answer_text": "A much hotter fire for searing.",
+    "answer_text": "A much hotter fire, which is ideal for searing steaks at the end of the cook.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1989,7 +2073,7 @@
   {
    "client_ref": "l03_a_lb_accurate",
    "data": {
-    "answer_text": "Briquettes are uniform and burn steadily; lump is irregular and tends to burn hotter and faster.",
+    "answer_text": "Briquettes are uniform and burn steadily; lump is irregular and burns hotter and faster.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2021,7 +2105,7 @@
   {
    "client_ref": "l03_a_lb_swap",
    "data": {
-    "answer_text": "Lump is pressed from sawdust and binder, and briquettes are plain charred wood.",
+    "answer_text": "Lump is pressed from sawdust and binder, while briquettes are plain pieces of charred wood.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2053,7 +2137,7 @@
   {
    "client_ref": "l03_a_lb_always_cleaner",
    "data": {
-    "answer_text": "Briquettes always give cleaner smoke, whatever the brand or how they are lit.",
+    "answer_text": "Briquettes always give cleaner smoke, whatever the brand and however they are lit.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2085,7 +2169,7 @@
   {
    "client_ref": "l03_a_lb_no_difference",
    "data": {
-    "answer_text": "There is no practical difference, so they are interchangeable in every setup.",
+    "answer_text": "There is no practical difference, so the two can be swapped freely in any cooker or setup.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2109,6 +2193,134 @@
       "needs_owner_review",
       "ready_lib_smoking_meat_03",
       "skill_equipment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ph_thick_no_bone",
+   "data": {
+    "answer_text": "Keep the tip in the thickest part of the meat, clear of bone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ph_lid_over_probe",
+   "data": {
+    "answer_text": "Trust the dial on the lid over the probe for the meat's temperature.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_doneness"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_rh_wash_hands",
+   "data": {
+    "answer_text": "Wash hands with soap after touching raw meat.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_rh_same_plate",
+   "data": {
+    "answer_text": "Carry the cooked meat back on the same plate that held it raw.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_03",
+      "skill_food_safety"
      ],
      "attributes": {}
     }
@@ -2887,6 +3099,226 @@
      "answer_ref": "l03_a_lb_no_difference",
      "role": "incorrect",
      "feedback": "They burn differently. Briquettes are steadier and more even, and lump is hotter and quicker. Each cooks differently, so adjust the airflow and the amount."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_probe_habits_basic",
+   "question_ref": "l03_q_probe_habits",
+   "label": "basic / home enthusiast / probe habits",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_03",
+     "skill_doneness",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner know the habits of a reliable reading?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_cal_ice",
+     "role": "strong",
+     "feedback": "A slushy ice-water bath is a dependable, quick check, and it should read about freezing. A thermometer that has drifted can lead you to under- or overcook."
+    },
+    {
+     "answer_ref": "l03_a_ph_thick_no_bone",
+     "role": "strong",
+     "feedback": "The thickest part is the last to come up to temperature, and bone gives false readings. Keeping the tip clear of bone gets you a reading you can use."
+    },
+    {
+     "answer_ref": "l03_a_cal_air",
+     "role": "incorrect",
+     "feedback": "Room air is not a reliable reference and changes through the day. Check against ice water instead."
+    },
+    {
+     "answer_ref": "l03_a_ph_lid_over_probe",
+     "role": "incorrect",
+     "feedback": "The lid dial reads the air near the dome, not the meat. A probe placed in the meat is the reading that tells you about the meat."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_raw_handling_host",
+   "question_ref": "l03_q_raw_handling",
+   "label": "basic / backyard host for a crowd / raw handling",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_03",
+     "skill_food_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the host keep raw and cooked apart?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_rh_wash_hands",
+     "role": "strong",
+     "feedback": "Hands carry bacteria from raw meat to everything else they touch. Soap and water after handling raw meat keeps it from spreading to the food and the guests."
+    },
+    {
+     "answer_ref": "l03_a_store_bottom_sealed",
+     "role": "strong",
+     "feedback": "Raw juices stay put when the meat is sealed on the bottom shelf. This keeps them from dripping on ready-to-eat food."
+    },
+    {
+     "answer_ref": "l03_a_prep_rinse",
+     "role": "incorrect",
+     "feedback": "Rinsing raw meat splashes bacteria around the sink and counter, and does not make the meat safer. Cooking it to the right temperature does that."
+    },
+    {
+     "answer_ref": "l03_a_rh_same_plate",
+     "role": "incorrect",
+     "feedback": "A plate that held raw meat carries its bacteria, and cooked meat has no more cooking step to kill them. Use a clean plate."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_raw_storage_basic_host",
+   "question_ref": "l03_q_raw_storage",
+   "label": "basic / backyard host for a crowd / raw storage",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_03",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host store a larger quantity safely?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_store_bottom_sealed",
+     "role": "strong",
+     "feedback": "With a lot of meat, one leak can reach everything below. Sealed containers on the bottom shelf contain the juices."
+    },
+    {
+     "answer_ref": "l03_a_store_top_shelf",
+     "role": "incorrect",
+     "feedback": "Anything that drips from a top-shelf package lands on all the food below it. Keep raw meat on the bottom shelf, in a container."
+    },
+    {
+     "answer_ref": "l03_a_store_open_tray",
+     "role": "incorrect",
+     "feedback": "Raw and cooked food side by side, with the raw uncovered, is a classic way to spread bacteria. Keep raw meat sealed and below other food."
+    },
+    {
+     "answer_ref": "l03_a_store_rinsed",
+     "role": "incorrect",
+     "feedback": "Rinsing raw meat splashes bacteria around the sink and does not make the meat safer. Leave it unrinsed and wrapped."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_ground_temp_basic_host",
+   "question_ref": "l03_q_ground_temp",
+   "label": "basic / backyard host for a crowd / ground temp",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_03",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host know the minimum for burgers?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_ground_160",
+     "role": "strong",
+     "feedback": "Burgers for a crowd are ground meat, with surface bacteria mixed all the way through, so each patty needs 160°F in the center. Check several, since they cook unevenly."
+    },
+    {
+     "answer_ref": "l03_a_ground_145",
+     "role": "incorrect",
+     "feedback": "145°F is for whole cuts of beef. Ground beef needs 160°F, because the bacteria are mixed in."
+    },
+    {
+     "answer_ref": "l03_a_ground_130",
+     "role": "incorrect",
+     "feedback": "Smoking at home does not preserve meat, so this does not make lower temperatures safe. Take burgers to 160°F."
+    },
+    {
+     "answer_ref": "l03_a_ground_brown",
+     "role": "incorrect",
+     "feedback": "A patty can look brown and still be undercooked inside. Color is not a reliable guide, so use a thermometer."
     }
    ]
   }

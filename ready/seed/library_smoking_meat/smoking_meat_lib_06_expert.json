@@ -88,6 +88,7 @@
       "food_safety"
      ],
      "audiences": [
+      "aspiring_competitor_or_caterer",
       "home_enthusiast"
      ],
      "difficulty": "expert",
@@ -122,7 +123,8 @@
       "troubleshooting"
      ],
      "audiences": [
-      "aspiring_competitor_or_caterer"
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -240,13 +242,47 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l06_q_crew_briefing",
+   "data": {
+    "question_text": "What should a new crew member be told about food safety at an event? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_06",
+      "skill_food_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
   {
    "client_ref": "l06_a_tp_number_and_feel",
    "data": {
-    "answer_text": "Show them to use the number as a cue to start probing in several spots, and explain that the feel of the probe decides.",
+    "answer_text": "Show them to use the number as a cue to start probing in several spots, then judge by feel.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -279,7 +315,7 @@
   {
    "client_ref": "l06_a_tp_memorize",
    "data": {
-    "answer_text": "Have them memorize one target number for every brisket.",
+    "answer_text": "Have them memorize one target number that works for every brisket they will ever cook.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -312,7 +348,7 @@
   {
    "client_ref": "l06_a_tp_clock",
    "data": {
-    "answer_text": "Tell them to go by the clock, since the thermometer can mislead.",
+    "answer_text": "Tell them to go by the clock alone, since the thermometer can so easily mislead.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -344,7 +380,7 @@
   {
    "client_ref": "l06_a_tp_watch",
    "data": {
-    "answer_text": "Let them shadow you for several cooks and pick it up by watching.",
+    "answer_text": "Let them shadow you for several cooks and pick up the judgment simply by watching.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -377,7 +413,7 @@
   {
    "client_ref": "l06_a_tp_ban_probe",
    "data": {
-    "answer_text": "Take the thermometer away so they learn to judge by feel alone.",
+    "answer_text": "Take the thermometer away so that they are forced to learn to judge by feel alone.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -409,7 +445,7 @@
   {
    "client_ref": "l06_a_wl_match",
    "data": {
-    "answer_text": "Match the strength of the wood to the meat and the length of the cook, use dry, well-seasoned wood, and adjust by taste.",
+    "answer_text": "Match wood strength to the meat and cook length, use dry, seasoned wood, and adjust by taste.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -442,7 +478,7 @@
   {
    "client_ref": "l06_a_wl_strongest",
    "data": {
-    "answer_text": "Use the strongest wood available, because more flavor is always better.",
+    "answer_text": "Use the strongest wood available, because more smoke flavor is always better for the meat.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -475,7 +511,7 @@
   {
    "client_ref": "l06_a_wl_species_only",
    "data": {
-    "answer_text": "Pick by species alone, since the cleanliness of the fire matters little.",
+    "answer_text": "Pick by species alone, since how cleanly the fire burns makes little difference to the taste.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -508,7 +544,7 @@
   {
    "client_ref": "l06_a_wl_tradition",
    "data": {
-    "answer_text": "Follow the traditional pairing for each meat, whatever the results.",
+    "answer_text": "Follow the traditional pairing for each kind of meat, whatever results it gives you.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -540,7 +576,7 @@
   {
    "client_ref": "l06_a_wl_blend",
    "data": {
-    "answer_text": "Blend a stronger wood with a milder one to tune the flavor.",
+    "answer_text": "Blend a stronger wood with a milder one, so that you can tune the final flavor.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -572,7 +608,7 @@
   {
    "client_ref": "l06_a_cure_tested",
    "data": {
-    "answer_text": "Cured meat needs exact, tested recipes with measured amounts, so use a recipe from a reliable source or skip it.",
+    "answer_text": "Cured meat needs exact, tested recipes with measured amounts, so use a reliable one or skip it.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -585,6 +621,7 @@
       "food_safety"
      ],
      "audiences": [
+      "aspiring_competitor_or_caterer",
       "home_enthusiast"
      ],
      "difficulty": "expert",
@@ -604,7 +641,7 @@
   {
    "client_ref": "l06_a_cure_extra",
    "data": {
-    "answer_text": "Add a bit extra to be safe.",
+    "answer_text": "Add a little extra to be on the safe side, since too little cure is the real danger here.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -617,6 +654,7 @@
       "food_safety"
      ],
      "audiences": [
+      "aspiring_competitor_or_caterer",
       "home_enthusiast"
      ],
      "difficulty": "expert",
@@ -636,7 +674,7 @@
   {
    "client_ref": "l06_a_cure_smoke_enough",
    "data": {
-    "answer_text": "Skip the curing salt, because smoking alone makes the meat safe.",
+    "answer_text": "Skip the curing salt altogether, because the smoking alone will make the meat safe.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -649,6 +687,7 @@
       "food_safety"
      ],
      "audiences": [
+      "aspiring_competitor_or_caterer",
       "home_enthusiast"
      ],
      "difficulty": "expert",
@@ -668,7 +707,7 @@
   {
    "client_ref": "l06_a_cure_eyeball_small",
    "data": {
-    "answer_text": "Eyeballing is fine for a small batch.",
+    "answer_text": "Eyeballing the amount is fine for a small batch that you plan to eat fairly quickly.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -681,6 +720,7 @@
       "food_safety"
      ],
      "audiences": [
+      "aspiring_competitor_or_caterer",
       "home_enthusiast"
      ],
      "difficulty": "expert",
@@ -700,7 +740,7 @@
   {
    "client_ref": "l06_a_rep_one_change",
    "data": {
-    "answer_text": "Write down times, temperatures and settings, check results with probes, and change one thing at a time.",
+    "answer_text": "Keep written notes and probe readings, and change just one thing at a time.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -713,7 +753,8 @@
       "troubleshooting"
      ],
      "audiences": [
-      "aspiring_competitor_or_caterer"
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -732,7 +773,7 @@
   {
    "client_ref": "l06_a_rep_many_changes",
    "data": {
-    "answer_text": "Change several things each cook, so you find the best combination faster.",
+    "answer_text": "Change several things each cook, so that you find the best combination much faster.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -745,7 +786,8 @@
       "troubleshooting"
      ],
      "audiences": [
-      "aspiring_competitor_or_caterer"
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -764,7 +806,7 @@
   {
    "client_ref": "l06_a_rep_memory",
    "data": {
-    "answer_text": "Trust your memory of what worked last time.",
+    "answer_text": "Trust your memory of what worked the last time you cooked a similar job.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -777,7 +819,8 @@
       "troubleshooting"
      ],
      "audiences": [
-      "aspiring_competitor_or_caterer"
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -796,7 +839,7 @@
   {
    "client_ref": "l06_a_rep_copy_famous",
    "data": {
-    "answer_text": "Copy a famous cook's method exactly.",
+    "answer_text": "Copy a famous cook's method exactly, down to the same times and temperatures.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -809,7 +852,8 @@
       "troubleshooting"
      ],
      "audiences": [
-      "aspiring_competitor_or_caterer"
+      "aspiring_competitor_or_caterer",
+      "home_enthusiast"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -828,7 +872,7 @@
   {
    "client_ref": "l06_a_rd_both",
    "data": {
-    "answer_text": "Both are workable. A longer hold suits timing and keeps the meat hot, as long as it stays at a safe temperature, and the right length depends on the size of the cut and the schedule.",
+    "answer_text": "Both work: a longer hold suits the schedule and keeps the meat hot, as long as it stays at a safe temperature.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -860,7 +904,7 @@
   {
    "client_ref": "l06_a_rd_short_unsafe",
    "data": {
-    "answer_text": "The short rest is unsafe, because the meat cools too fast.",
+    "answer_text": "The short rest is unsafe, because the meat cools too fast on the board and spends too long in the danger zone.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -892,7 +936,7 @@
   {
    "client_ref": "l06_a_rd_no_effect",
    "data": {
-    "answer_text": "Resting has no effect on the meat, so the length does not matter.",
+    "answer_text": "Resting has no effect on the meat at all, so how long you rest it does not matter in any way.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -924,7 +968,7 @@
   {
    "client_ref": "l06_a_rd_pull_early",
    "data": {
-    "answer_text": "A long hold keeps cooking the meat so much that you must always pull it twenty degrees early.",
+    "answer_text": "A long hold keeps cooking the meat so much that you must always pull it about twenty degrees early.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1084,7 +1128,7 @@
   {
    "client_ref": "l06_a_cb_fit",
    "data": {
-    "answer_text": "The controller-driven cooker gives repeatability with less labor, while the wood-fired one gives more control and smoke character but needs skill and tending, so fit the choice to the product and the staff.",
+    "answer_text": "A controller-driven cooker repeats results with less labor, a wood-fired one gives more smoke character but needs skill, so fit the choice to the product and staff.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1116,7 +1160,7 @@
   {
    "client_ref": "l06_a_cb_wood_always",
    "data": {
-    "answer_text": "A wood-fired cooker is always better, because real barbecue needs a real fire.",
+    "answer_text": "A wood-fired cooker is always the better choice, because real barbecue needs a real fire and a skilled person tending it for the whole length of every cook.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1148,7 +1192,7 @@
   {
    "client_ref": "l06_a_cb_auto_always",
    "data": {
-    "answer_text": "A controller-driven cooker is always better, because it removes human error.",
+    "answer_text": "A controller-driven cooker is always the better choice, because taking the person out of the process removes human error from the results and the schedule.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1180,7 +1224,7 @@
   {
    "client_ref": "l06_a_cb_customers",
    "data": {
-    "answer_text": "Choose whichever one customers ask about most.",
+    "answer_text": "Choose whichever type customers ask about most often, since the customers are the ones who pay for the food.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1204,6 +1248,134 @@
       "needs_owner_review",
       "ready_lib_smoking_meat_06",
       "skill_equipment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_cb_throw_out",
+   "data": {
+    "answer_text": "When no one can say how long held food has been in the danger zone, it is thrown out.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_06",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_cb_probe_always",
+   "data": {
+    "answer_text": "Held meat is checked with a probe thermometer, whatever it looks like.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_06",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_cb_smoke_preserves",
+   "data": {
+    "answer_text": "Smoked meat is preserved, so the usual time limits do not apply.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_06",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_cb_looks_done",
+   "data": {
+    "answer_text": "A probe check can be skipped when the meat looks done.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "aspiring_competitor_or_caterer"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_06",
+      "skill_food_safety"
      ],
      "attributes": {}
     }
@@ -1709,6 +1881,171 @@
      "answer_ref": "l06_a_cb_auto_always",
      "role": "incorrect",
      "feedback": "Controllers cut some errors and labor, but they do not remove all human error, and they give a different smoke character. They are a trade-off, not a universal answer."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_crew_briefing_pro",
+   "question_ref": "l06_q_crew_briefing",
+   "label": "expert / aspiring competitor or caterer / crew briefing",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_06",
+     "skill_food_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner brief a crew on the firm rules?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_cb_throw_out",
+     "role": "strong",
+     "feedback": "When the history is unknown, there is no safe way to judge. Making it a rule removes the pressure to gamble when the event is busy."
+    },
+    {
+     "answer_ref": "l06_a_cb_probe_always",
+     "role": "strong",
+     "feedback": "Looks do not show temperature. A probe check is the only reliable test, and making it routine keeps it from being skipped."
+    },
+    {
+     "answer_ref": "l06_a_cb_smoke_preserves",
+     "role": "incorrect",
+     "feedback": "Light home smoking does not preserve cooked meat, and the time limits apply in full. This is a common misunderstanding to correct early."
+    },
+    {
+     "answer_ref": "l06_a_cb_looks_done",
+     "role": "incorrect",
+     "feedback": "Food can look done and be unsafe, and held food can look fine and sit in the danger zone. The probe check cannot be skipped."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_one_variable_enth",
+   "question_ref": "l06_q_one_variable",
+   "label": "expert / home enthusiast / one variable",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "troubleshooting"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "diagnose_and_fix_problems"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_06",
+     "skill_troubleshooting",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the enthusiast improve by controlled change?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_rep_one_change",
+     "role": "strong",
+     "feedback": "Notes and probe readings show what happened, and changing one thing at a time lets you see which change mattered. That is how a home cook gets repeatable results."
+    },
+    {
+     "answer_ref": "l06_a_rep_many_changes",
+     "role": "incorrect",
+     "feedback": "If you change the rub, the wood and the temperature together, you cannot say which one helped. Change one thing at a time."
+    },
+    {
+     "answer_ref": "l06_a_rep_memory",
+     "role": "incorrect",
+     "feedback": "Memory drops the details, such as the weather and how much fuel you used. A written note is what lets you repeat a good result."
+    },
+    {
+     "answer_ref": "l06_a_rep_copy_famous",
+     "role": "incorrect",
+     "feedback": "A famous cook's method was tuned to their cooker, their meat and their taste. Treat it as a starting point and test it, not as a promise."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_cure_guess_pro",
+   "question_ref": "l06_q_cure_guess",
+   "label": "expert / aspiring competitor or caterer / cure guess",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "aspiring_competitor_or_caterer"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_06",
+     "skill_food_safety",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the pro hold the line on curing?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_cure_tested",
+     "role": "strong",
+     "feedback": "In a business, a cure is a food-safety control. It needs a tested recipe with measured amounts, and a record, and not a guess."
+    },
+    {
+     "answer_ref": "l06_a_cure_extra",
+     "role": "incorrect",
+     "feedback": "Extra is not safer, and curing ingredients are used in tested amounts. Guessing is the problem."
+    },
+    {
+     "answer_ref": "l06_a_cure_smoke_enough",
+     "role": "incorrect",
+     "feedback": "Smoking does not replace a cure, and a cure is not a flavor choice. Use a tested recipe, or leave it out."
+    },
+    {
+     "answer_ref": "l06_a_cure_eyeball_small",
+     "role": "incorrect",
+     "feedback": "The size of the batch does not change the need for the right amount. Measure."
     }
    ]
   }

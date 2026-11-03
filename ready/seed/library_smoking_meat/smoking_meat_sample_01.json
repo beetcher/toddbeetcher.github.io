@@ -313,7 +313,7 @@
   {
    "client_ref": "l01_a_thaw_fridge",
    "data": {
-    "answer_text": "Move it to the refrigerator now, on a tray, so it thaws slowly while staying cold.",
+    "answer_text": "Move it to the refrigerator now, on a tray, so it thaws slowly and stays cold.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -345,7 +345,7 @@
   {
    "client_ref": "l01_a_thaw_counter",
    "data": {
-    "answer_text": "Leave it on the kitchen counter overnight so it is soft by morning.",
+    "answer_text": "Leave it on the kitchen counter overnight so it is soft and ready by morning.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -377,7 +377,7 @@
   {
    "client_ref": "l01_a_thaw_warm_water",
    "data": {
-    "answer_text": "Run warm tap water over it until the outside is soft.",
+    "answer_text": "Run warm tap water over it until the outside of the meat is soft enough to handle.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -604,7 +604,7 @@
   {
    "client_ref": "l01_a_smoke_wait_thin",
    "data": {
-    "answer_text": "Hold off loading the meat. Open the intake a little and let the fire burn cleaner until the smoke runs thin and pale.",
+    "answer_text": "Hold off loading the meat. Open the intake a little and let the fire burn cleaner until the smoke runs thin.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -636,7 +636,7 @@
   {
    "client_ref": "l01_a_smoke_load_now",
    "data": {
-    "answer_text": "Load the meat right away, because heavy smoke means more flavor.",
+    "answer_text": "Load the meat right away, because thick smoke is a sign of lots of flavor going onto the meat.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -668,7 +668,7 @@
   {
    "client_ref": "l01_a_smoke_close_intake",
    "data": {
-    "answer_text": "Close the intake almost all the way to calm the fire down.",
+    "answer_text": "Close the intake almost all the way to calm the fire down and slow the smoke, and keep the lid shut.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -700,7 +700,7 @@
   {
    "client_ref": "l01_a_smoke_wet_wood",
    "data": {
-    "answer_text": "Splash a little water on the wood so it stops smoking so hard.",
+    "answer_text": "Splash some water on the wood in the firebox so it stops smoking so hard and calms down.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -988,7 +988,7 @@
   {
    "client_ref": "l01_a_co_open_air",
    "data": {
-    "answer_text": "Outside in the open, well away from walls, eaves and anything that can burn, even if you have to put up with the rain.",
+    "answer_text": "Outside in the open, well away from walls, eaves and anything that can burn, even if it rains.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1020,7 +1020,7 @@
   {
    "client_ref": "l01_a_co_garage_open",
    "data": {
-    "answer_text": "Inside the garage with the big door propped open.",
+    "answer_text": "Inside the garage with the big door propped wide open, so that plenty of fresh air gets in.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1052,7 +1052,7 @@
   {
    "client_ref": "l01_a_co_porch",
    "data": {
-    "answer_text": "Under the covered porch that is attached to the house.",
+    "answer_text": "Under the covered porch attached to the house, where the roof will keep the rain off.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1084,7 +1084,7 @@
   {
    "client_ref": "l01_a_co_against_wall",
    "data": {
-    "answer_text": "Right beside the house wall, so the siding blocks the wind and rain.",
+    "answer_text": "Right beside the house wall, so the siding blocks the wind and the rain.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1116,7 +1116,7 @@
   {
    "client_ref": "l01_a_hold_cooler",
    "data": {
-    "answer_text": "Wrap it and hold it in a preheated insulated cooler, checking now and then that it stays safely hot.",
+    "answer_text": "Wrap it and hold it in a preheated insulated cooler, checking it stays safely hot.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1148,7 +1148,7 @@
   {
    "client_ref": "l01_a_hold_counter",
    "data": {
-    "answer_text": "Leave it on the counter, uncovered, until dinner.",
+    "answer_text": "Leave it on the kitchen counter, uncovered, until it is time to serve dinner.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1212,7 +1212,7 @@
   {
    "client_ref": "l01_a_hold_back_in_smoker",
    "data": {
-    "answer_text": "Put it back in the smoker at cooking temperature until dinner.",
+    "answer_text": "Put it back in the smoker at cooking temperature to keep it warm until dinner.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",

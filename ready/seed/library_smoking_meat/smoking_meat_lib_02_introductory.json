@@ -18,6 +18,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "introductory",
@@ -409,13 +410,12 @@
      "attributes": {}
     }
    }
-  }
- ],
- "answers": [
+  },
   {
-   "client_ref": "l02_a_dz_range",
+   "client_ref": "l02_q_thaw_ways",
    "data": {
-    "answer_text": "The range from about 40°F to 140°F (4°C to 60°C), where bacteria multiply fastest.",
+    "question_text": "Which are safe ways to thaw a large frozen cut before it goes on the smoker? Select all that apply.",
+    "question_type": "multiple_choice",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -428,6 +428,110 @@
       "food_safety"
      ],
      "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_food_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_clean_smoke_signs",
+   "data": {
+    "question_text": "Which of these describe clean smoke coming from a well-run fire? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_smoke",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_q_pork_loin_temp",
+   "data": {
+    "question_text": "You smoke a whole pork loin roast. What is the safe minimum internal temperature, followed by a short rest?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "temps_doneness"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "judge_doneness_by_temperature_and_feel"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_doneness",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l02_a_dz_range",
+   "data": {
+    "answer_text": "About 40°F to 140°F (4°C to 60°C), where bacteria multiply fastest.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "introductory",
@@ -460,6 +564,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "introductory",
@@ -492,6 +597,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "introductory",
@@ -524,6 +630,7 @@
       "food_safety"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "hobbyist_beginner"
      ],
      "difficulty": "introductory",
@@ -543,7 +650,7 @@
   {
    "client_ref": "l02_a_board_wash",
    "data": {
-    "answer_text": "Wash the board and knife in hot, soapy water, or switch to a clean board and knife.",
+    "answer_text": "Wash the board and knife in hot, soapy water, or use a clean board and knife.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -575,7 +682,7 @@
   {
    "client_ref": "l02_a_board_wipe_dry",
    "data": {
-    "answer_text": "Wipe the board with a dry paper towel.",
+    "answer_text": "Wipe the board and knife with a dry paper towel and carry on slicing.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -607,7 +714,7 @@
   {
    "client_ref": "l02_a_board_rinse_cold",
    "data": {
-    "answer_text": "Rinse the board under cold water.",
+    "answer_text": "Rinse the board and knife under cold running water and shake them dry.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -639,7 +746,7 @@
   {
    "client_ref": "l02_a_board_flip",
    "data": {
-    "answer_text": "Flip the board over and use the clean side.",
+    "answer_text": "Flip the board over and use the clean side, with the same knife.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -799,7 +906,7 @@
   {
    "client_ref": "l02_a_light_chimney",
    "data": {
-    "answer_text": "Light it in a chimney starter with paper, and wait until the coals are covered in gray ash before the meat goes on.",
+    "answer_text": "Light it in a chimney starter with paper, and wait for gray ash on the coals before the meat goes on.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -863,7 +970,7 @@
   {
    "client_ref": "l02_a_light_gasoline",
    "data": {
-    "answer_text": "Splash a little gasoline on the coals to get them going quickly.",
+    "answer_text": "Splash a little gasoline on the coals to get them going faster and more easily.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -895,7 +1002,7 @@
   {
    "client_ref": "l02_a_light_meat_early",
    "data": {
-    "answer_text": "Put the meat on first so it picks up smoke from the very first flame.",
+    "answer_text": "Put the meat on before lighting, so it picks up smoke from the very first flames.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -959,7 +1066,7 @@
   {
    "client_ref": "l02_a_wood_treated_deck",
    "data": {
-    "answer_text": "Offcuts from a pressure-treated deck board.",
+    "answer_text": "Offcuts from a pressure-treated deck board left over from a project.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -991,7 +1098,7 @@
   {
    "client_ref": "l02_a_wood_pine",
    "data": {
-    "answer_text": "Pine kindling, because it lights easily.",
+    "answer_text": "Pine kindling from the woodpile, because it lights so easily.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1023,7 +1130,7 @@
   {
    "client_ref": "l02_a_wood_painted_pallet",
    "data": {
-    "answer_text": "Boards from an old painted pallet.",
+    "answer_text": "Boards cut from an old painted pallet found behind a shop.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1055,7 +1162,7 @@
   {
    "client_ref": "l02_a_cut_shoulder",
    "data": {
-    "answer_text": "A bone-in pork shoulder, which has plenty of fat and connective tissue and forgives small mistakes.",
+    "answer_text": "A bone-in pork shoulder, with plenty of fat and connective tissue to forgive small mistakes.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1087,7 +1194,7 @@
   {
    "client_ref": "l02_a_cut_tenderloin",
    "data": {
-    "answer_text": "A pork tenderloin, because it is lean and cooks quickly.",
+    "answer_text": "A pork tenderloin, since it is lean, mild, and cooks through in a fairly short time.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1119,7 +1226,7 @@
   {
    "client_ref": "l02_a_cut_thin_steak",
    "data": {
-    "answer_text": "Thin steaks, because they are easy to portion.",
+    "answer_text": "Thin steaks, since they are easy to portion and cook through quickly on the grates.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1151,7 +1258,7 @@
   {
    "client_ref": "l02_a_cut_lean_turkey",
    "data": {
-    "answer_text": "A lean boneless turkey breast, because it is mild.",
+    "answer_text": "A lean boneless turkey breast, since it is mild and cooks more evenly than a big cut.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1279,7 +1386,7 @@
   {
    "client_ref": "l02_a_temp_200",
    "data": {
-    "answer_text": "200°F (93°C), because poultry is only safe when it is falling apart.",
+    "answer_text": "200°F (93°C), since poultry is only safe when it falls apart.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1343,7 +1450,7 @@
   {
    "client_ref": "l02_a_rest_cut_now",
    "data": {
-    "answer_text": "Slice it right away, so none of the heat is lost.",
+    "answer_text": "Slice it right away while it is steaming, so that none of the heat is lost.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1375,7 +1482,7 @@
   {
    "client_ref": "l02_a_rest_ice",
    "data": {
-    "answer_text": "Put it on ice so it stops cooking quickly.",
+    "answer_text": "Put it on ice for a while so that it stops cooking as quickly as possible.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1407,7 +1514,7 @@
   {
    "client_ref": "l02_a_rest_rinse",
    "data": {
-    "answer_text": "Rinse it to wash off the loose bark.",
+    "answer_text": "Rinse it under the tap to wash off the loose bark and any extra rub.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1471,7 +1578,7 @@
   {
    "client_ref": "l02_a_grain_with",
    "data": {
-    "answer_text": "Along the muscle fibers, which keeps the slices long.",
+    "answer_text": "Along the muscle fibers, which keeps each slice long and gives a neat look.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1503,7 +1610,7 @@
   {
    "client_ref": "l02_a_grain_any",
    "data": {
-    "answer_text": "In whatever direction looks neatest.",
+    "answer_text": "In whichever direction looks neatest, since the direction of the cut does not matter.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1535,7 +1642,7 @@
   {
    "client_ref": "l02_a_grain_diagonal",
    "data": {
-    "answer_text": "At a shallow diagonal to the board, so the slices come out thin.",
+    "answer_text": "At a shallow diagonal to the board, so the slices come out thin and wide.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1695,7 +1802,7 @@
   {
    "client_ref": "l02_a_ash_cool_metal",
    "data": {
-    "answer_text": "Let them cool completely in the closed cooker or in a metal container, and only then dispose of them.",
+    "answer_text": "Let them cool completely in the closed cooker or a metal container before disposing of them.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1728,7 +1835,7 @@
   {
    "client_ref": "l02_a_ash_trash",
    "data": {
-    "answer_text": "Tip them into the trash can right away so the cooker is clear.",
+    "answer_text": "Tip them into the trash can right away so the cooker is empty and ready for next time.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1761,7 +1868,7 @@
   {
    "client_ref": "l02_a_ash_plastic_bag",
    "data": {
-    "answer_text": "Bag them in a plastic bag once the smoke stops.",
+    "answer_text": "Bag them in a heavy plastic bag as soon as the smoke stops, then put the bag by the bin.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1794,7 +1901,7 @@
   {
    "client_ref": "l02_a_ash_mulch",
    "data": {
-    "answer_text": "Tip them onto the mulch bed beside the house, where they will not be in the way.",
+    "answer_text": "Tip them onto the mulch bed beside the house, where they will not be in anyone's way.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1978,6 +2085,262 @@
       "needs_owner_review",
       "ready_lib_smoking_meat_02",
       "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_thaw_ways_fridge",
+   "data": {
+    "answer_text": "In the refrigerator, on a tray, left for as many days as the cut needs.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_thaw_ways_cold_water",
+   "data": {
+    "answer_text": "In a sealed bag in cold water, changing the water regularly.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_thaw_ways_counter",
+   "data": {
+    "answer_text": "On the kitchen counter overnight, until it is soft all the way through.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_thaw_ways_warm",
+   "data": {
+    "answer_text": "In a sink of warm water, to get it done in an hour or two.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "food_safety"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "keep_food_safe_start_to_finish"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_food_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cs_thin_pale",
+   "data": {
+    "answer_text": "Thin and pale, almost see-through, as it leaves the chimney.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cs_sweet_smell",
+   "data": {
+    "answer_text": "A light, pleasant smell of sweet burning wood.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cs_thick_white",
+   "data": {
+    "answer_text": "Thick, white and billowing, filling the air around the cooker.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_smoke"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_cs_harsh_sting",
+   "data": {
+    "answer_text": "A harsh smell that stings the nose and eyes.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "wood_smoke"
+     ],
+     "audiences": [
+      "hobbyist_beginner"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "produce_clean_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_02",
+      "skill_smoke"
      ],
      "attributes": {}
     }
@@ -2698,6 +3061,227 @@
      "answer_ref": "l02_a_setup_lid_tied",
      "role": "incorrect",
      "feedback": "A cooker must be able to open and vent. Tying the lid shut can trap heat and fumes and makes it hard to deal with a flare-up."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_thaw_ways_intro",
+   "question_ref": "l02_q_thaw_ways",
+   "label": "introductory / hobbyist beginner / thaw ways",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_02",
+     "skill_food_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner know the safe ways to thaw?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_thaw_ways_fridge",
+     "role": "strong",
+     "feedback": "The refrigerator keeps the whole cut cold while it thaws. It is slow, so a large cut needs days, which is why planning ahead matters."
+    },
+    {
+     "answer_ref": "l02_a_thaw_ways_cold_water",
+     "role": "strong",
+     "feedback": "Cold water thaws faster than the refrigerator and the cut stays cold, as long as the bag is sealed and the water is changed often so it stays cold."
+    },
+    {
+     "answer_ref": "l02_a_thaw_ways_counter",
+     "role": "incorrect",
+     "feedback": "The outside of the cut warms into the danger zone for hours while the middle is still frozen. Thaw in the refrigerator or in cold water."
+    },
+    {
+     "answer_ref": "l02_a_thaw_ways_warm",
+     "role": "incorrect",
+     "feedback": "Warm water brings the outside of the meat into the danger zone long before the center thaws. Use cold water, changed often."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_clean_smoke_signs_intro",
+   "question_ref": "l02_q_clean_smoke_signs",
+   "label": "introductory / hobbyist beginner / clean smoke signs",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "wood_smoke"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "produce_clean_smoke"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_02",
+     "skill_smoke",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner know what clean smoke looks and smells like?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_cs_thin_pale",
+     "role": "strong",
+     "feedback": "A fire with enough air burns the wood fully, so the smoke is thin and pale and sometimes looks bluish. This is the smoke you want on the meat."
+    },
+    {
+     "answer_ref": "l02_a_cs_sweet_smell",
+     "role": "strong",
+     "feedback": "Clean smoke smells pleasant, like a campfire made with good wood. If it smells sweet and light, the fire is burning well."
+    },
+    {
+     "answer_ref": "l02_a_cs_thick_white",
+     "role": "incorrect",
+     "feedback": "Thick, white smoke usually means the wood is smoldering without enough air. It can leave a bitter coating on the meat."
+    },
+    {
+     "answer_ref": "l02_a_cs_harsh_sting",
+     "role": "incorrect",
+     "feedback": "A harsh, stinging smoke is a sign of smoldering or burning something that should not be in the fire. Fix the fire before the meat goes on."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_pork_loin_temp_intro",
+   "question_ref": "l02_q_pork_loin_temp",
+   "label": "introductory / hobbyist beginner / pork loin temp",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "temps_doneness"
+    ],
+    "audiences": [
+     "hobbyist_beginner"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "judge_doneness_by_temperature_and_feel"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_02",
+     "skill_doneness",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the learner know the minimum for whole cuts of pork?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_temp_145",
+     "role": "strong",
+     "feedback": "For whole cuts of pork, the safe minimum is 145°F measured in the thickest part, followed by a short rest. A thermometer is the only way to be sure."
+    },
+    {
+     "answer_ref": "l02_a_temp_165",
+     "role": "ambiguous",
+     "feedback": "165°F is safe, and well past the minimum, and a lean loin will dry out if cooked that far. Many cooks would pull earlier, at 145°F, and let it rest.",
+     "notes": "Ambiguous on purpose: safe but higher than needed, with a texture cost, so it is not wrong in terms of safety."
+    },
+    {
+     "answer_ref": "l02_a_temp_125",
+     "role": "incorrect",
+     "feedback": "That is well below the safe minimum for pork, whatever the color of the meat. Use a thermometer and take it to 145°F."
+    },
+    {
+     "answer_ref": "l02_a_temp_200",
+     "role": "incorrect",
+     "feedback": "That temperature is meant for tough cuts being cooked to tenderness, not a lean loin, which would be dry and stringy. The safe minimum is 145°F."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_danger_zone_intro_host",
+   "question_ref": "l02_q_danger_zone",
+   "label": "introductory / backyard host for a crowd / danger zone",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "food_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "keep_food_safe_start_to_finish"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_02",
+     "skill_food_safety",
+     "format_concept"
+    ],
+    "attributes": {},
+    "description": "Does the host know what the danger zone is?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_dz_range",
+     "role": "strong",
+     "feedback": "Food safety comes down to time spent between cold and hot. For guests, the goal is to keep cold food cold and hot food hot, and not let anything sit in between."
+    },
+    {
+     "answer_ref": "l02_a_dz_raw_only",
+     "role": "incorrect",
+     "feedback": "Cooked food is at risk as well as raw. Keep it cold or hot, and not warm in between."
+    },
+    {
+     "answer_ref": "l02_a_dz_frozen",
+     "role": "incorrect",
+     "feedback": "Freezing stops bacteria from growing, so it is not the danger zone. The danger zone is the warm middle, roughly 40°F to 140°F."
+    },
+    {
+     "answer_ref": "l02_a_dz_hot",
+     "role": "incorrect",
+     "feedback": "Very high heat is a burning concern. The danger zone is the middle range where bacteria multiply quickly, roughly 40°F to 140°F."
     }
    ]
   }

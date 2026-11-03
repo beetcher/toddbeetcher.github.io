@@ -154,6 +154,7 @@
       "fire_airflow"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "home_enthusiast"
      ],
      "difficulty": "intermediate",
@@ -476,6 +477,74 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l04_q_stall_facts",
+   "data": {
+    "question_text": "Which statements about the stall are accurate? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_timing",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_q_step_away",
+   "data": {
+    "question_text": "You need to step away from a lit smoker for a short time while guests are around. Which steps are sound? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_fire_safety",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -709,7 +778,7 @@
   {
    "client_ref": "l04_a_fire_garage",
    "data": {
-    "answer_text": "Move the cooker into the garage out of the wind.",
+    "answer_text": "Move the cooker into the garage, out of the wind and the cold, until the fire settles.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -882,6 +951,7 @@
       "fire_airflow"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "home_enthusiast"
      ],
      "difficulty": "intermediate",
@@ -901,7 +971,7 @@
   {
    "client_ref": "l04_a_dial_lid",
    "data": {
-    "answer_text": "The lid dial, since it is built into the cooker.",
+    "answer_text": "The lid dial, since it is built into the cooker by the maker.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -914,6 +984,7 @@
       "fire_airflow"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "home_enthusiast"
      ],
      "difficulty": "intermediate",
@@ -933,7 +1004,7 @@
   {
    "client_ref": "l04_a_dial_average",
    "data": {
-    "answer_text": "The average of the two.",
+    "answer_text": "The average of the two readings, to split the difference between them.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -946,6 +1017,7 @@
       "fire_airflow"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "home_enthusiast"
      ],
      "difficulty": "intermediate",
@@ -965,7 +1037,7 @@
   {
    "client_ref": "l04_a_dial_neither",
    "data": {
-    "answer_text": "Neither, since neither reading can be trusted.",
+    "answer_text": "Neither one, since neither reading can really be trusted for anything.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -978,6 +1050,7 @@
       "fire_airflow"
      ],
      "audiences": [
+      "backyard_host_for_a_crowd",
       "home_enthusiast"
      ],
      "difficulty": "intermediate",
@@ -997,7 +1070,7 @@
   {
    "client_ref": "l04_a_spritz_tradeoff",
    "data": {
-    "answer_text": "Both are workable. Spritzing can add surface moisture and help the bark, but it opens the lid and cools the cooker, so judge it by your results.",
+    "answer_text": "Both are workable: spritzing adds surface moisture but cools the cooker, so judge by results.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1029,7 +1102,7 @@
   {
    "client_ref": "l04_a_spritz_cooks_inside",
    "data": {
-    "answer_text": "Spritzing moisture soaks into the meat and cooks the middle faster.",
+    "answer_text": "The moisture soaks deep into the meat and cooks the middle of the cut faster.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1061,7 +1134,7 @@
   {
    "client_ref": "l04_a_spritz_required",
    "data": {
-    "answer_text": "Spritzing is required, or the inside of the meat will dry out.",
+    "answer_text": "Spritzing is required, because otherwise the inside of the meat will dry out and toughen.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1093,7 +1166,7 @@
   {
    "client_ref": "l04_a_spritz_unsafe",
    "data": {
-    "answer_text": "Spritzing is unsafe, because it spreads bacteria.",
+    "answer_text": "Spritzing is unsafe, because the spray spreads bacteria all across the meat and the cooker.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1125,7 +1198,7 @@
   {
    "client_ref": "l04_a_inj_pushes_in",
    "data": {
-    "answer_text": "The needle can carry bacteria from the surface into the middle, so keep the tools clean and make sure the center reaches a safe temperature.",
+    "answer_text": "The needle can carry surface bacteria inward, so keep tools clean and cook to a safe center temperature.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1157,7 +1230,7 @@
   {
    "client_ref": "l04_a_inj_kills",
    "data": {
-    "answer_text": "The liquid kills bacteria on the surface, so the cook is safer than usual.",
+    "answer_text": "The marinade kills the bacteria on the surface, so the cook is safer than it would be otherwise.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1189,7 +1262,7 @@
   {
    "client_ref": "l04_a_inj_lower",
    "data": {
-    "answer_text": "Injected meat is safe at lower temperatures, since it stays wet.",
+    "answer_text": "Injected meat is safe at lower temperatures, since the extra liquid keeps it wet and cool inside.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1221,7 +1294,7 @@
   {
    "client_ref": "l04_a_inj_never",
    "data": {
-    "answer_text": "Injecting is never safe, so no one should do it.",
+    "answer_text": "Injecting is never safe, so no cook should ever do it, however careful they are.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1381,7 +1454,7 @@
   {
    "client_ref": "l04_a_uneven_rotate",
    "data": {
-    "answer_text": "Rotate the meat or swap pieces end for end during the cook, and shield the hot end if needed.",
+    "answer_text": "Rotate or swap the pieces during the cook, and shield the end nearest the firebox.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1445,7 +1518,7 @@
   {
    "client_ref": "l04_a_uneven_hotter",
    "data": {
-    "answer_text": "Raise the temperature so the far end catches up.",
+    "answer_text": "Raise the temperature of the cooker so that the far end can catch up more quickly.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1477,7 +1550,7 @@
   {
    "client_ref": "l04_a_uneven_door",
    "data": {
-    "answer_text": "Open the firebox door often to even things out.",
+    "answer_text": "Open the firebox door every so often to let the heat even out across the chamber.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1509,7 +1582,7 @@
   {
    "client_ref": "l04_a_ribs_feel",
    "data": {
-    "answer_text": "A probe slides easily between the bones, and the meat has pulled back a little from the bone ends.",
+    "answer_text": "A probe slides easily between the bones, and the meat has pulled back from the bones.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1541,7 +1614,7 @@
   {
    "client_ref": "l04_a_ribs_145",
    "data": {
-    "answer_text": "The meat reaches 145°F (63°C), the safe minimum for pork.",
+    "answer_text": "The meat reaches 145°F (63°C), the safe minimum for pork, in the thickest part.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1573,7 +1646,7 @@
   {
    "client_ref": "l04_a_ribs_clock",
    "data": {
-    "answer_text": "A fixed number of hours from the recipe.",
+    "answer_text": "A fixed number of hours, taken from the recipe, whatever the rack looks like.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1605,7 +1678,7 @@
   {
    "client_ref": "l04_a_ribs_sauce",
    "data": {
-    "answer_text": "The sauce has turned dark and sticky.",
+    "answer_text": "The sauce on top has turned dark and sticky, with a good shine on the surface.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1637,7 +1710,7 @@
   {
    "client_ref": "l04_a_night_monitor",
    "data": {
-    "answer_text": "Use a setup that holds steady, put an alarm on a remote thermometer, and have a responsible adult ready to check at set times.",
+    "answer_text": "Use a steady setup, put an alarm on a remote thermometer, and have an adult ready to check at set times.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1669,7 +1742,7 @@
   {
    "client_ref": "l04_a_night_bed",
    "data": {
-    "answer_text": "Set the fire and go to bed, trusting that it will take care of itself.",
+    "answer_text": "Set the fire, go to bed, and trust that it will look after itself until morning, as it did last time.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1701,7 +1774,7 @@
   {
    "client_ref": "l04_a_night_garage",
    "data": {
-    "answer_text": "Move the smoker into the garage overnight so the weather does not affect it.",
+    "answer_text": "Move the smoker into the garage overnight, with the door open a crack, so the weather cannot affect it.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1733,7 +1806,7 @@
   {
    "client_ref": "l04_a_night_big_pile",
    "data": {
-    "answer_text": "Load a huge pile of fuel so there is no need to check on it.",
+    "answer_text": "Load a huge pile of fuel before bed so there is really no need to check on it at all.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1893,7 +1966,7 @@
   {
    "client_ref": "l04_a_trim_render",
    "data": {
-    "answer_text": "Thick, hard fat will not render fully, and rub and smoke cannot reach the meat beneath it, so a thin even layer works better.",
+    "answer_text": "Thick, hard fat will not render and blocks rub and smoke, so a thin layer works better.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1925,7 +1998,7 @@
   {
    "client_ref": "l04_a_trim_all",
    "data": {
-    "answer_text": "All the fat should come off, because fat never helps the meat.",
+    "answer_text": "All the fat should come off, because fat never helps the meat and only adds grease.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -1957,7 +2030,7 @@
   {
    "client_ref": "l04_a_trim_none",
    "data": {
-    "answer_text": "Trimming makes no difference to the cook.",
+    "answer_text": "Trimming makes no difference at all to how the cut cooks or how it tastes later.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2021,7 +2094,7 @@
   {
    "client_ref": "l04_a_kam_slow",
    "data": {
-    "answer_text": "The thick walls hold a lot of heat, so an overshoot is slow to correct and small early changes avoid it.",
+    "answer_text": "The thick walls hold heat, so an overshoot is slow to fix and small early changes avoid it.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2053,7 +2126,7 @@
   {
    "client_ref": "l04_a_kam_fast",
    "data": {
-    "answer_text": "Ceramic cools instantly, so large changes are safe and quick.",
+    "answer_text": "Ceramic cools down almost instantly, so large vent changes are safe and quick to undo.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2085,7 +2158,7 @@
   {
    "client_ref": "l04_a_kam_no_vents",
    "data": {
-    "answer_text": "The vents have no effect on the temperature.",
+    "answer_text": "The vents have no real effect on the temperature, so the adjustments make no difference.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2117,7 +2190,7 @@
   {
    "client_ref": "l04_a_kam_open",
    "data": {
-    "answer_text": "Leaving the vents wide open always gives the best smoke.",
+    "answer_text": "Leaving the vents wide open at all times always gives the cleanest and best smoke.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2141,6 +2214,262 @@
       "needs_owner_review",
       "ready_lib_smoking_meat_04",
       "skill_equipment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sf_evaporation",
+   "data": {
+    "answer_text": "It happens because moisture evaporating from the surface cools the meat about as fast as the cooker heats it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sf_wrap_shortens",
+   "data": {
+    "answer_text": "Wrapping the meat usually shortens it, at some cost to the bark.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sf_fire_out",
+   "data": {
+    "answer_text": "It means the fire has gone out or the cooker has failed.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sf_only_max",
+   "data": {
+    "answer_text": "It can only be fixed by turning the cooker up as high as it will go.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "timing_stall_rest"
+     ],
+     "audiences": [
+      "home_enthusiast"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "plan_timing_stall_and_rest"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_timing"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sa_named_adult",
+   "data": {
+    "answer_text": "Hand it over to a named, responsible adult who knows what to do.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sa_kids_clear",
+   "data": {
+    "answer_text": "Make sure children and pets are kept clear of the cooker.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sa_close_all",
+   "data": {
+    "answer_text": "Shut every vent fully so the fire cannot burn.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_fire_safety"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_sa_prop_lid",
+   "data": {
+    "answer_text": "Prop the lid open so the cooker cools down while you are gone.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "smoking_meat",
+      "fire_safety"
+     ],
+     "audiences": [
+      "backyard_host_for_a_crowd"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "stay_safe_around_fire_and_smoke"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_smoking_meat_04",
+      "skill_fire_safety"
      ],
      "attributes": {}
     }
@@ -2926,6 +3255,172 @@
      "answer_ref": "l04_a_kam_open",
      "role": "incorrect",
      "feedback": "Wide-open vents feed a hot fire, which is the wrong direction for a low-and-slow cook, and more air is not the same as better smoke."
+    }
+   ]
+  },
+  {
+   "client_ref": "l04_s_stall_facts_i",
+   "question_ref": "l04_q_stall_facts",
+   "label": "intermediate / home enthusiast / stall facts",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "timing_stall_rest"
+    ],
+    "audiences": [
+     "home_enthusiast"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "plan_timing_stall_and_rest"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_04",
+     "skill_timing",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the learner understand what a stall is and what changes it?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l04_a_sf_evaporation",
+     "role": "strong",
+     "feedback": "As water leaves the surface, it carries heat away, which holds the temperature for a while. The stall passes when the surface dries out, which is why it is normal and not a fault."
+    },
+    {
+     "answer_ref": "l04_a_sf_wrap_shortens",
+     "role": "strong",
+     "feedback": "A wrap holds moisture against the meat, which cuts down evaporative cooling and shortens the stall. The trade-off is a softer bark."
+    },
+    {
+     "answer_ref": "l04_a_sf_fire_out",
+     "role": "incorrect",
+     "feedback": "A stall happens with the cooker running steadily. If the cooker temperature is on target, nothing is wrong."
+    },
+    {
+     "answer_ref": "l04_a_sf_only_max",
+     "role": "incorrect",
+     "feedback": "Turning the cooker up as high as it will go risks drying and scorching, and it is not the only option. Waiting or wrapping are the usual approaches."
+    }
+   ]
+  },
+  {
+   "client_ref": "l04_s_step_away_host",
+   "question_ref": "l04_q_step_away",
+   "label": "intermediate / backyard host for a crowd / step away",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "fire_safety"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "stay_safe_around_fire_and_smoke"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_04",
+     "skill_fire_safety",
+     "format_select_all"
+    ],
+    "attributes": {},
+    "description": "Does the host keep the fire supervised?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l04_a_sa_named_adult",
+     "role": "strong",
+     "feedback": "A lit cooker should always have someone responsible for it. Naming a person, and making sure they know what to do, means the job does not fall between guests."
+    },
+    {
+     "answer_ref": "l04_a_sa_kids_clear",
+     "role": "strong",
+     "feedback": "Hot surfaces and flames are burn hazards, and children and pets move quickly. Keeping them clear of the cooker is part of leaving it safely."
+    },
+    {
+     "answer_ref": "l04_a_sa_close_all",
+     "role": "incorrect",
+     "feedback": "Shutting every vent can leave the fire smoldering, which makes carbon monoxide and heavy smoke. It can also flare up when the vent is opened again."
+    },
+    {
+     "answer_ref": "l04_a_sa_prop_lid",
+     "role": "incorrect",
+     "feedback": "An open lid feeds the fire air and can make a fire run hotter, with flames and sparks out in the open. Leaving it unattended makes it worse."
+    }
+   ]
+  },
+  {
+   "client_ref": "l04_s_lid_dial_i_host",
+   "question_ref": "l04_q_lid_dial",
+   "label": "intermediate / backyard host for a crowd / lid dial",
+   "metadata": {
+    "topics": [
+     "smoking_meat",
+     "fire_airflow"
+    ],
+    "audiences": [
+     "backyard_host_for_a_crowd"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "manage_fire_and_airflow"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_smoking_meat_04",
+     "skill_fire",
+     "format_scenario"
+    ],
+    "attributes": {},
+    "description": "Does the host trust the reading at the meat?"
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l04_a_dial_grate",
+     "role": "strong",
+     "feedback": "Managing a cook for guests means knowing what the meat is feeling. A grate-level probe gives you that, and the lid dial reads the hotter air near the dome."
+    },
+    {
+     "answer_ref": "l04_a_dial_lid",
+     "role": "incorrect",
+     "feedback": "The lid dial reads near the dome, usually hotter than the meat's surroundings, and cheap dials can be wrong. Go by a probe near the meat."
+    },
+    {
+     "answer_ref": "l04_a_dial_average",
+     "role": "ambiguous",
+     "feedback": "Averaging is a rough compromise and some cooks use it, but it blends a reading at the meat with one at the dome. The grate reading is cleaner.",
+     "notes": "Ambiguous on purpose: a practical shortcut, but less precise than using the reading at the meat."
+    },
+    {
+     "answer_ref": "l04_a_dial_neither",
+     "role": "incorrect",
+     "feedback": "Both readings are useful once you know what they show. A probe that has been checked in ice water, and placed near the meat, can be trusted."
     }
    ]
   }
