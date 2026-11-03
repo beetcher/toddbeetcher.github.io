@@ -2261,7 +2261,7 @@
     {
      "answer_ref": "j03_a_coin_unfair",
      "role": "incorrect",
-     "feedback": "Five in a row happens by chance fairly often. It is a reason to look, not proof that the coin is unfair."
+     "feedback": "Five heads in five flips happens by chance about once in every 32 tries. That is unusual but not impossible, so it is a reason to look and not proof that the coin is unfair."
     },
     {
      "answer_ref": "j03_a_coin_check",
