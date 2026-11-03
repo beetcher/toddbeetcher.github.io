@@ -479,6 +479,40 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l02_q_fair_slogan",
+   "data": {
+    "question_text": "You ask an AI tool for ten slogan ideas for a school fair poster. What is a sensible way to use the list?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -495,19 +529,23 @@
     "metadata": {
      "topics": [
       "ai_readiness",
+      "ai_opportunities",
       "ai_verification"
      ],
      "audiences": [
-      "adult_beginner"
+      "adult_beginner",
+      "student"
      ],
      "difficulty": "introductory",
      "learning_objectives": [
-      "check_and_verify_output"
+      "check_and_verify_output",
+      "recognize_when_ai_can_help"
      ],
      "tags": [
       "builder_created",
       "needs_owner_review",
       "ready_lib_ai_02",
+      "skill_opportunity",
       "skill_verification"
      ],
      "attributes": {}
@@ -2251,6 +2289,102 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l02_a_slogan_pick_adapt",
+   "data": {
+    "answer_text": "Treat them as ideas: pick a few, change the words, and choose yourself.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_slogan_use_first",
+   "data": {
+    "answer_text": "Print the first slogan, because the tool listed it first.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l02_a_slogan_use_all",
+   "data": {
+    "answer_text": "Print all ten slogans, so that nobody has to choose.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "student"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_02",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -3122,6 +3256,61 @@
      "answer_ref": "l02_a_topic_of_note",
      "role": "incorrect",
      "feedback": "The topic is the point of your request. It is safe to include and needed to get a useful answer."
+    }
+   ]
+  },
+  {
+   "client_ref": "l02_s_slogan_set",
+   "question_ref": "l02_q_fair_slogan",
+   "label": "intro / student / fair slogan",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_opportunities"
+    ],
+    "audiences": [
+     "student"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_when_ai_can_help"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_02",
+     "skill_opportunity",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l02_a_slogan_use_all",
+     "role": "incorrect",
+     "feedback": "Ten slogans on one poster would be confusing. The point of ideas is that you choose one."
+    },
+    {
+     "answer_ref": "l02_a_check_source",
+     "role": "ambiguous",
+     "feedback": "A slogan is not a fact, so there is little to check. A quick look to see that nobody else uses the same slogan is sensible, though, so this is partly right.",
+     "notes": "Ambiguous: the same answer is strong elsewhere; here it only partly applies."
+    },
+    {
+     "answer_ref": "l02_a_slogan_pick_adapt",
+     "role": "strong",
+     "feedback": "Slogans are ideas, and a mistake costs little. Pick, change and decide yourself, because that is a good use of AI."
+    },
+    {
+     "answer_ref": "l02_a_slogan_use_first",
+     "role": "incorrect",
+     "feedback": "The order of a list does not show which idea is best. Look at several before you choose."
     }
    ]
   }

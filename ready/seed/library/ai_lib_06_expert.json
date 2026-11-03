@@ -274,6 +274,40 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l06_q_small_team",
+   "data": {
+    "question_text": "A team of three sends about ten AI-drafted replies a week, all low-stakes. Which review fits best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -357,7 +391,8 @@
       "ai_accountability"
      ],
      "audiences": [
-      "educator"
+      "educator",
+      "workplace"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -421,7 +456,8 @@
       "ai_accountability"
      ],
      "audiences": [
-      "educator"
+      "educator",
+      "workplace"
      ],
      "difficulty": "expert",
      "learning_objectives": [
@@ -1948,6 +1984,61 @@
      "role": "ambiguous",
      "feedback": "Sampling is a fair ongoing check, but when the input type changes you want a deliberate test on the new material.",
      "notes": "Ambiguous: good in general, but weaker than a targeted retest."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_smallteam",
+   "question_ref": "l06_q_small_team",
+   "label": "expert / workplace / small team",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_accountability"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "take_responsibility_for_results"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_accountability",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_review_none",
+     "role": "incorrect",
+     "feedback": "Even low-stakes replies can contain mistakes or an unhelpful tone. At this volume, reading them is cheap."
+    },
+    {
+     "answer_ref": "l06_a_ask_tool_self_review",
+     "role": "incorrect",
+     "feedback": "A tool cannot give independent review of its own output. At this volume, a person can read everything."
+    },
+    {
+     "answer_ref": "l06_a_tiered_review",
+     "role": "ambiguous",
+     "feedback": "A risk-based plan also works and scales if volume grows. For ten low-stakes replies a week, though, it adds more process than the situation needs.",
+     "notes": "Ambiguous: sound in general; heavier than needed at this size."
+    },
+    {
+     "answer_ref": "l06_a_check_every_output",
+     "role": "strong",
+     "feedback": "At this volume and risk, reading every reply is cheap and leaves no gaps. Tiered systems are for larger volumes."
     }
    ]
   }

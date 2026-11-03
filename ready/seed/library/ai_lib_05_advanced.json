@@ -347,6 +347,74 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l05_q_client_emails",
+   "data": {
+    "question_text": "You want AI to sort a batch of client emails by topic. Which setup is best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_q_routine_handover",
+   "data": {
+    "question_text": "The colleague who built your team's AI routine is leaving. What protects the routine best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_workflow",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -429,6 +497,7 @@
       "ai_readiness",
       "ai_accountability",
       "ai_limits_and_bias",
+      "ai_privacy",
       "ai_workflow"
      ],
      "audiences": [
@@ -437,6 +506,7 @@
      "difficulty": "advanced",
      "learning_objectives": [
       "connect_ai_to_recurring_work",
+      "protect_private_information",
       "take_responsibility_for_results",
       "understand_limits_and_bias"
      ],
@@ -446,6 +516,7 @@
       "ready_lib_ai_05",
       "skill_accountability",
       "skill_limits",
+      "skill_privacy",
       "skill_workflow"
      ],
      "attributes": {}
@@ -498,20 +569,88 @@
     "metadata": {
      "topics": [
       "ai_readiness",
-      "ai_teaching"
+      "ai_teaching",
+      "ai_workflow"
      ],
      "audiences": [
-      "educator"
+      "educator",
+      "workplace"
      ],
      "difficulty": "advanced",
      "learning_objectives": [
+      "connect_ai_to_recurring_work",
       "help_others_learn_ai"
      ],
      "tags": [
       "builder_created",
       "needs_owner_review",
       "ready_lib_ai_05",
-      "skill_teaching"
+      "skill_teaching",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_strip_identifiers",
+   "data": {
+    "answer_text": "Remove names and identifying details before anything is entered.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_approved_tool_only",
+   "data": {
+    "answer_text": "Use only a tool approved for that kind of information.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_privacy"
      ],
      "attributes": {}
     }
@@ -1657,6 +1796,70 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l05_a_rely_on_memory",
+   "data": {
+    "answer_text": "Rely on your colleague's memory and ask them questions if something breaks.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l05_a_tool_remembers",
+   "data": {
+    "answer_text": "Assume the tool will remember how the routine worked.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_05",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -2366,6 +2569,115 @@
      "answer_ref": "l05_a_ask_tool_confidence",
      "role": "incorrect",
      "feedback": "A tool's stated confidence is not a measure of accuracy. It can sound highly confident when it is wrong."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_emails",
+   "question_ref": "l05_q_client_emails",
+   "label": "adv / workplace / client emails",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_05",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_approved_tool_only",
+     "role": "ambiguous",
+     "feedback": "An approved tool is part of a safe setup, and some workplaces require it. But approval alone does not limit what you put in, so many experts would also remove the identifiers.",
+     "notes": "Ambiguous: necessary in many workplaces, but not sufficient alone."
+    },
+    {
+     "answer_ref": "l05_a_whole_set_in",
+     "role": "incorrect",
+     "feedback": "Entering the whole batch with names multiplies the exposure if something goes wrong. Clean first and start small."
+    },
+    {
+     "answer_ref": "l05_a_strip_identifiers",
+     "role": "strong",
+     "feedback": "Sorting by topic does not need names. Removing identifying details limits what could be exposed if something goes wrong."
+    },
+    {
+     "answer_ref": "l05_a_trust_past_success",
+     "role": "incorrect",
+     "feedback": "A tool working well before says nothing about whether client details are safe in it. Limit what you enter."
+    }
+   ]
+  },
+  {
+   "client_ref": "l05_s_handover",
+   "question_ref": "l05_q_routine_handover",
+   "label": "adv / workplace / routine handover",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_workflow"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "connect_ai_to_recurring_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_05",
+     "skill_workflow",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l05_a_tool_remembers",
+     "role": "incorrect",
+     "feedback": "The tool does not keep a reliable record of your team's routine. Keep your own written version."
+    },
+    {
+     "answer_ref": "l05_a_write_it_down",
+     "role": "strong",
+     "feedback": "A written routine, with its checks and who owns them, survives people leaving and lets others run and fix it."
+    },
+    {
+     "answer_ref": "l05_a_rely_on_memory",
+     "role": "incorrect",
+     "feedback": "Once your colleague has left, nobody can ask them. Write the routine down while they are still here."
+    },
+    {
+     "answer_ref": "l05_a_trust_past_success",
+     "role": "incorrect",
+     "feedback": "A routine that has worked can still fail when the person who understood it is gone. Document it."
     }
    ]
   }

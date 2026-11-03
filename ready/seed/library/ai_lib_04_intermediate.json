@@ -479,6 +479,74 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l04_q_rule_changed",
+   "data": {
+    "question_text": "AI says a rule in your industry \"was changed last year.\" You plan to tell a client. What is the best step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_04",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_q_screenshot_table",
+   "data": {
+    "question_text": "A colleague suggests running a screenshot of an internal customer table through an AI tool to read it faster. What is the best response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_04",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
@@ -495,19 +563,23 @@
     "metadata": {
      "topics": [
       "ai_readiness",
+      "ai_privacy",
       "ai_verification"
      ],
      "audiences": [
-      "educator"
+      "educator",
+      "workplace"
      ],
      "difficulty": "intermediate",
      "learning_objectives": [
-      "check_and_verify_output"
+      "check_and_verify_output",
+      "protect_private_information"
      ],
      "tags": [
       "builder_created",
       "needs_owner_review",
       "ready_lib_ai_04",
+      "skill_privacy",
       "skill_verification"
      ],
      "attributes": {}
@@ -575,6 +647,38 @@
       "needs_owner_review",
       "ready_lib_ai_04",
       "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l04_a_strip_then_use",
+   "data": {
+    "answer_text": "Remove names and identifying details, then use the tool with the cleaned version.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_04",
+      "skill_privacy"
      ],
      "attributes": {}
     }
@@ -2349,6 +2453,38 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l04_a_hedge_wording",
+   "data": {
+    "answer_text": "Tell the client the rule \"may\" have changed, and leave it there.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_04",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -3277,6 +3413,116 @@
      "answer_ref": "l04_a_mistyped_title",
      "role": "incorrect",
      "feedback": "A mistyped title is possible, but repeated searching can hide the real problem, which is that the reference may be invented."
+    }
+   ]
+  },
+  {
+   "client_ref": "l04_s_rule",
+   "question_ref": "l04_q_rule_changed",
+   "label": "inter / workplace / rule changed",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_04",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l04_a_hedge_wording",
+     "role": "ambiguous",
+     "feedback": "Hedging is more honest than stating it as fact, and it may do for casual chat. But a client may act on it, so a check is better than leaving the doubt with them.",
+     "notes": "Ambiguous: honest hedging, though it hands the checking to the client."
+    },
+    {
+     "answer_ref": "l04_a_second_source",
+     "role": "strong",
+     "feedback": "Confirm the change in an official or other independent source before you pass it on. A client may act on what you say."
+    },
+    {
+     "answer_ref": "l04_a_trust_fluent",
+     "role": "incorrect",
+     "feedback": "A fluent, detailed answer can still be out of date or wrong. Check before you pass it on."
+    },
+    {
+     "answer_ref": "l04_a_ask_same_tool",
+     "role": "incorrect",
+     "feedback": "The same tool can repeat the same error. Use an independent source."
+    }
+   ]
+  },
+  {
+   "client_ref": "l04_s_screenshot",
+   "question_ref": "l04_q_screenshot_table",
+   "label": "inter / workplace / screenshot table",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_04",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l04_a_second_source",
+     "role": "incorrect",
+     "feedback": "Confirming claims in a second source is a good habit, but it does not deal with the problem here, which is sharing customer details."
+    },
+    {
+     "answer_ref": "l04_a_rules_first",
+     "role": "ambiguous",
+     "feedback": "Finding out your workplace rules is necessary and may rule the tool out altogether. But on its own it does not give your colleague a way to get the task done safely.",
+     "notes": "Ambiguous: a necessary step, though the strong answer is the action."
+    },
+    {
+     "answer_ref": "l04_a_paste_real",
+     "role": "incorrect",
+     "feedback": "Accuracy of help does not justify sharing customers' details. Clean the data first."
+    },
+    {
+     "answer_ref": "l04_a_strip_then_use",
+     "role": "strong",
+     "feedback": "A screenshot carries every name and number in it. Remove or replace the identifying details first, and use the tool with the cleaned version."
     }
    ]
   }

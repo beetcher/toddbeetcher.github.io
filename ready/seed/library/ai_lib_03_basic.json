@@ -73,7 +73,7 @@
   {
    "client_ref": "l03_q_pasted_notes",
    "data": {
-    "question_text": "You want AI to tidy notes from a meeting that mention a coworker's health leave and a client's contract price. What is the best approach?",
+    "question_text": "You want AI to tidy notes from a meeting that mention a coworker's home phone number and a client's contract price. What is the best approach?",
     "question_type": "single_choice",
     "origin": {
      "author": "READY builder",
@@ -480,9 +480,113 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l03_q_gadget_claim",
+   "data": {
+    "question_text": "AI writes a product description saying a gadget \"works for 30 hours on one charge.\" You are about to post it on your shop page. What is the best step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_q_council_letter",
+   "data": {
+    "question_text": "You want AI to improve a letter to the local council that includes a neighbor's address and phone number. What is the best approach?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "answers": [
+  {
+   "client_ref": "l03_a_check_source",
+   "data": {
+    "answer_text": "Check the key facts against a source you trust before you rely on them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy",
+      "ai_verification"
+     ],
+     "audiences": [
+      "adult_beginner",
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output",
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
   {
    "client_ref": "l03_a_trust_polished",
    "data": {
@@ -553,6 +657,38 @@
    }
   },
   {
+   "client_ref": "l03_a_remove_private",
+   "data": {
+    "answer_text": "Remove or replace the private details first, then make the request.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
    "client_ref": "l03_a_paste_it_all",
    "data": {
     "answer_text": "Paste it all in, since the tool needs the full picture to help.",
@@ -568,6 +704,7 @@
       "ai_privacy"
      ],
      "audiences": [
+      "adult_beginner",
       "workplace"
      ],
      "difficulty": "basic",
@@ -1101,7 +1238,7 @@
   {
    "client_ref": "l03_a_generalize_notes",
    "data": {
-    "answer_text": "Remove the names, health details and prices, then ask the tool to tidy the structure.",
+    "answer_text": "Remove the names, phone numbers and prices, then ask the tool to tidy the structure.",
     "origin": {
      "author": "READY builder",
      "authorship_kind": "system",
@@ -2316,6 +2453,102 @@
      "attributes": {}
     }
    }
+  },
+  {
+   "client_ref": "l03_a_shorten_claim",
+   "data": {
+    "answer_text": "Drop the number and say the gadget lasts \"a long time.\"",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_trust_maker_blurb",
+   "data": {
+    "answer_text": "Post it, because AI descriptions are based on what manufacturers say.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l03_a_ask_neighbor",
+   "data": {
+    "answer_text": "Ask your neighbor whether they agree to you sharing their details with the tool.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "adult_beginner"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_03",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
   }
  ],
  "sets": [
@@ -2532,7 +2765,7 @@
     {
      "answer_ref": "l03_a_paste_it_all",
      "role": "incorrect",
-     "feedback": "Health leave and contract prices are sensitive. Putting them in a request hands them to a service you may not control."
+     "feedback": "Home phone numbers and contract prices are sensitive. Putting them in a request hands them to a service you may not control."
     }
    ]
   },
@@ -3188,6 +3421,116 @@
      "answer_ref": "l03_a_trust_translation",
      "role": "incorrect",
      "feedback": "Translations can be good yet include subtle errors, especially with local terms. Notices people rely on need a check."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_gadget",
+   "question_ref": "l03_q_gadget_claim",
+   "label": "basic / workplace / gadget claim",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_verification",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_check_source",
+     "role": "strong",
+     "feedback": "A specific claim like this can mislead customers if it is wrong. Check it against the maker's own information or a test before you post it."
+    },
+    {
+     "answer_ref": "l03_a_ask_ai_sure",
+     "role": "incorrect",
+     "feedback": "The same tool will usually say yes, which is not independent evidence. Look at the maker's own information."
+    },
+    {
+     "answer_ref": "l03_a_trust_maker_blurb",
+     "role": "incorrect",
+     "feedback": "The tool does not necessarily draw on the maker's information, and even if it did, the figure may be out of date. Check it."
+    },
+    {
+     "answer_ref": "l03_a_shorten_claim",
+     "role": "ambiguous",
+     "feedback": "Leaving out the number avoids a false claim, which is safer. Customers like facts, though, and a quick check would let you keep the figure.",
+     "notes": "Ambiguous: safe, but gives up useful information instead of checking."
+    }
+   ]
+  },
+  {
+   "client_ref": "l03_s_council",
+   "question_ref": "l03_q_council_letter",
+   "label": "basic / adult beginner / council letter",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "adult_beginner"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_03",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l03_a_paste_it_all",
+     "role": "incorrect",
+     "feedback": "Needing the full picture does not justify sharing someone else's address and phone number. Remove them first."
+    },
+    {
+     "answer_ref": "l03_a_check_source",
+     "role": "incorrect",
+     "feedback": "Checking facts is a good habit, but it does not solve this problem. The risk is sharing a neighbor's private details, not accuracy."
+    },
+    {
+     "answer_ref": "l03_a_remove_private",
+     "role": "strong",
+     "feedback": "The letter can be improved without the neighbor's details. Take them out or replace them, and add them back yourself after."
+    },
+    {
+     "answer_ref": "l03_a_ask_neighbor",
+     "role": "ambiguous",
+     "feedback": "Asking permission is respectful and may be enough in some cases. But the details are not needed for the tool's help, so leaving them out is simpler and safer.",
+     "notes": "Ambiguous: courteous, though unnecessary if the details are removed."
     }
    ]
   }
