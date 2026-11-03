@@ -1,0 +1,1955 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "l06_q_oversight_design",
+   "data": {
+    "question_text": "A team uses AI to draft replies to complaints. Which oversight design is strongest?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_automation_bias",
+   "data": {
+    "question_text": "Over several months, reviewers start approving AI drafts almost without reading them. What is the most useful response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_limits",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_chain_errors",
+   "data": {
+    "question_text": "A process has AI summarize documents, then another AI step drafts decisions from those summaries. Where is the greatest risk?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_verification",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_risk_triage",
+   "data": {
+    "question_text": "You are deciding which tasks to give to AI first. Which factor should weigh most?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_judgment",
+      "format_concept"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_claims_eval",
+   "data": {
+    "question_text": "A vendor says their AI tool is highly accurate. Which question best tests that claim for your needs?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_opportunity",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_lead_adoption",
+   "data": {
+    "question_text": "You are leading a team's move to AI tools. Which sequence is most likely to lead to careful, lasting use?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_teaching",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_shared_prompts",
+   "data": {
+    "question_text": "A teammate proposes a shared library of saved requests, some containing real client data, so everyone can reuse them. What is the best response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_privacy",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_q_drift",
+   "data": {
+    "question_text": "A saved AI routine has worked well for months, and then the type of documents it receives changes. What should you do?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "l06_a_review_outputs_only",
+   "data": {
+    "answer_text": "Keep a trained person reviewing every output, and leave the shared library as it is.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_trust_past_success",
+   "data": {
+    "answer_text": "Rely on it fully, because it has worked well so far and the team is trained.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_ask_tool_self_review",
+   "data": {
+    "answer_text": "Ask the tool to review its own work and treat a clean result as a pass.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_write_it_down",
+   "data": {
+    "answer_text": "Write down the steps, checks and owners so that others can follow them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_check_every_output",
+   "data": {
+    "answer_text": "Check every output in full, whatever the stakes, so that nothing slips through.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_sample_check",
+   "data": {
+    "answer_text": "Check a random sample of the outputs against the source each time.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_tiered_review",
+   "data": {
+    "answer_text": "Review high-harm drafts in full, sample the rest, and track the errors found.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_review_all_same",
+   "data": {
+    "answer_text": "Have one person review every draft in the same way, however routine it is.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_review_none",
+   "data": {
+    "answer_text": "Skip review, since replies are short and customers can write back if something is wrong.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_accountability"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "take_responsibility_for_results"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_accountability"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_rotate_and_seed",
+   "data": {
+    "answer_text": "Add occasional known errors for reviewers to find, and rotate who reviews.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_tell_try_harder",
+   "data": {
+    "answer_text": "Tell reviewers to try harder and to read every draft more carefully.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_replace_reviewers",
+   "data": {
+    "answer_text": "Replace the human reviewers with a second AI check to remove human fatigue.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_limits_and_bias"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "understand_limits_and_bias"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_limits"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_compounding",
+   "data": {
+    "answer_text": "Errors from step one pass unseen into step two and grow into a wrong decision.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_slow_pipeline",
+   "data": {
+    "answer_text": "The process will be slower than a person doing the whole job from start to finish.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_too_many_tools",
+   "data": {
+    "answer_text": "Using two steps will cost more than using one step, and cost is the main risk.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_summary_always_short",
+   "data": {
+    "answer_text": "The summaries will always be too short to give the next step enough to work with.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_verification"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "check_and_verify_output"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_verification"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_consequence_reversibility",
+   "data": {
+    "answer_text": "How serious and how reversible the consequences are if the output is wrong.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_how_fun",
+   "data": {
+    "answer_text": "How enjoyable the task is, since people do better work they enjoy.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_how_long",
+   "data": {
+    "answer_text": "How long the task takes to do by hand, since long tasks have the most to gain.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_how_new_tool",
+   "data": {
+    "answer_text": "How new the tool is, since newer tools tend to be more capable.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_judgment"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "choose_when_not_to_use_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_judgment"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_same_as_mine",
+   "data": {
+    "answer_text": "What kind of tasks was that measured on, and how close are they to my work?",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_how_many_users",
+   "data": {
+    "answer_text": "How many people already use the tool, since wide use suggests it works?",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_looks_polished",
+   "data": {
+    "answer_text": "Does the demonstration look polished and run smoothly when the vendor presents it?",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_number_high",
+   "data": {
+    "answer_text": "Is the number higher than the figure the competing products claim?",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_opportunities"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_when_ai_can_help"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_opportunity"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_pilot_then_habits",
+   "data": {
+    "answer_text": "Pilot on low-risk tasks, learn what works, write simple habits, then widen use.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_mandate_all",
+   "data": {
+    "answer_text": "Require everyone to use the tools for everything right away to build skill fast.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_leave_to_chance",
+   "data": {
+    "answer_text": "Let each person work it out alone and share tips if they happen to discover any.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_rules_without_trial",
+   "data": {
+    "answer_text": "Write detailed rules first, before anyone has been allowed to try the tools.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_teaching"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "help_others_learn_ai"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_teaching"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_separate_template_data",
+   "data": {
+    "answer_text": "Keep saved requests as templates with placeholders, and keep real data out of them.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_share_all_with_data",
+   "data": {
+    "answer_text": "Share them as they are, since everyone on the team is already trusted with that data.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_no_library_at_all",
+   "data": {
+    "answer_text": "Reject the idea, since a shared library of requests can never be made safe.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_privacy"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "protect_private_information"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_privacy"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_recheck_on_new_input",
+   "data": {
+    "answer_text": "Test the routine on samples of the new documents before relying on it.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_keep_running",
+   "data": {
+    "answer_text": "Keep running it as it is, since it has worked well for months without complaint.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "educator",
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_abandon_routine",
+   "data": {
+    "answer_text": "Abandon the routine for good, since the documents it was built for have changed.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "workplace"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "l06_a_ask_tool_still_fine",
+   "data": {
+    "answer_text": "Ask the tool whether it is still working well on the new documents.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "ai_readiness",
+      "ai_workflow"
+     ],
+     "audiences": [
+      "educator"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "connect_ai_to_recurring_work"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_ai_06",
+      "skill_workflow"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "l06_s_oversight",
+   "question_ref": "l06_q_oversight_design",
+   "label": "expert / workplace / oversight design",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_accountability"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "take_responsibility_for_results"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_accountability",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_tiered_review",
+     "role": "strong",
+     "feedback": "Oversight works best when it matches risk: full review where harm is likely, sampling elsewhere, and error tracking to improve over time."
+    },
+    {
+     "answer_ref": "l06_a_review_all_same",
+     "role": "ambiguous",
+     "feedback": "Reviewing everything equally is safe and may be right for a small team, but it can lead to tired, shallow reviews. Many experts prefer a tiered approach.",
+     "notes": "Ambiguous: safe but can cause the review fatigue that weakens the check."
+    },
+    {
+     "answer_ref": "l06_a_trust_past_success",
+     "role": "incorrect",
+     "feedback": "Past performance does not remove the need for oversight where the stakes are high."
+    },
+    {
+     "answer_ref": "l06_a_review_none",
+     "role": "incorrect",
+     "feedback": "A short reply can still cause harm, and customers should not have to correct mistakes."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_autobias",
+   "question_ref": "l06_q_automation_bias",
+   "label": "expert / workplace / automation bias",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_limits_and_bias"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "understand_limits_and_bias"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_limits",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_tell_try_harder",
+     "role": "incorrect",
+     "feedback": "Reminders rarely fix a habit that comes from how the work is set up. Change the process so attention is rewarded and measured."
+    },
+    {
+     "answer_ref": "l06_a_write_it_down",
+     "role": "ambiguous",
+     "feedback": "Clearer written steps may help a bit, but they do not address why reviewers have stopped reading closely.",
+     "notes": "Ambiguous: addresses process but not the cause."
+    },
+    {
+     "answer_ref": "l06_a_replace_reviewers",
+     "role": "incorrect",
+     "feedback": "A second AI step can share the first one's blind spots and removes the human check."
+    },
+    {
+     "answer_ref": "l06_a_rotate_and_seed",
+     "role": "strong",
+     "feedback": "People trust fluent output over time. Seeded errors and rotation make attention measurable and keep it up."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_chain",
+   "question_ref": "l06_q_chain_errors",
+   "label": "expert / workplace / chain errors",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_verification"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "check_and_verify_output"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_verification",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_summary_always_short",
+     "role": "incorrect",
+     "feedback": "Length is not the main danger. What matters is whether the summary keeps the facts the next step depends on."
+    },
+    {
+     "answer_ref": "l06_a_slow_pipeline",
+     "role": "incorrect",
+     "feedback": "Speed is usually the benefit of automation, not the risk. The danger lies in errors passing unseen from one step to the next."
+    },
+    {
+     "answer_ref": "l06_a_compounding",
+     "role": "strong",
+     "feedback": "In a chain, each step trusts the last. A small distortion can grow, and by the end nobody sees where it started."
+    },
+    {
+     "answer_ref": "l06_a_too_many_tools",
+     "role": "incorrect",
+     "feedback": "Cost may matter, but the central danger is that errors compound unseen from one step to the next. Add a check between the steps."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_triage",
+   "question_ref": "l06_q_risk_triage",
+   "label": "expert / workplace / risk triage",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_judgment"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "choose_when_not_to_use_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_judgment",
+     "format_concept"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_how_long",
+     "role": "ambiguous",
+     "feedback": "Time saved is a real reason to automate, and long tasks have the most to gain. But it does not tell you how risky a mistake would be.",
+     "notes": "Ambiguous: a real factor but not the one that should weigh most."
+    },
+    {
+     "answer_ref": "l06_a_consequence_reversibility",
+     "role": "strong",
+     "feedback": "Start where a mistake is cheap and easy to undo. Move toward higher-stakes work only as checks and confidence grow."
+    },
+    {
+     "answer_ref": "l06_a_how_new_tool",
+     "role": "incorrect",
+     "feedback": "How new a tool is says nothing about whether a task suits it. Weigh how serious and reversible a mistake would be instead."
+    },
+    {
+     "answer_ref": "l06_a_how_fun",
+     "role": "incorrect",
+     "feedback": "Enjoyment is not a sound basis for deciding where AI is safe. Weigh how serious and reversible a mistake would be instead."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_claims",
+   "question_ref": "l06_q_claims_eval",
+   "label": "expert / workplace / claims eval",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_opportunities"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "recognize_when_ai_can_help"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_opportunity",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_how_many_users",
+     "role": "incorrect",
+     "feedback": "Popularity is not evidence of accuracy for your use. Ask what the claim was measured on and whether that matches your work."
+    },
+    {
+     "answer_ref": "l06_a_looks_polished",
+     "role": "incorrect",
+     "feedback": "A polished demo usually shows the best case, not typical results. Ask what it was measured on and test it on your own examples."
+    },
+    {
+     "answer_ref": "l06_a_same_as_mine",
+     "role": "strong",
+     "feedback": "A measured accuracy only applies to the kind of work it was measured on. Ask whether that matches yours, then test on your own examples."
+    },
+    {
+     "answer_ref": "l06_a_number_high",
+     "role": "incorrect",
+     "feedback": "A higher number only matters if it was measured on comparable material in a comparable way."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_lead",
+   "question_ref": "l06_q_lead_adoption",
+   "label": "expert / educator / lead adoption",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_teaching"
+    ],
+    "audiences": [
+     "educator"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "help_others_learn_ai"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_teaching",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_rules_without_trial",
+     "role": "ambiguous",
+     "feedback": "Some rules are needed before anyone starts, such as what data may not be entered. But detailed rules written without experience tend to miss real problems.",
+     "notes": "Ambiguous: some upfront rules are essential; detailed ones are premature."
+    },
+    {
+     "answer_ref": "l06_a_pilot_then_habits",
+     "role": "strong",
+     "feedback": "Real experience on low-risk tasks produces habits grounded in what actually happens, and spreading gradually builds trust."
+    },
+    {
+     "answer_ref": "l06_a_mandate_all",
+     "role": "incorrect",
+     "feedback": "Forcing broad use before habits exist spreads mistakes quickly. Start small, learn what works, and then widen use."
+    },
+    {
+     "answer_ref": "l06_a_leave_to_chance",
+     "role": "incorrect",
+     "feedback": "People repeat the same avoidable errors when nothing is shared. Gather what works and what fails, and turn it into simple team habits."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_shared",
+   "question_ref": "l06_q_shared_prompts",
+   "label": "expert / workplace / shared prompts",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_privacy"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "protect_private_information"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_privacy",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_separate_template_data",
+     "role": "strong",
+     "feedback": "Reuse is valuable, and templates do the job without the client data. Sensitive details stay out of anything widely shared."
+    },
+    {
+     "answer_ref": "l06_a_share_all_with_data",
+     "role": "incorrect",
+     "feedback": "Being trusted does not make wide sharing of client data appropriate. Fewer people should hold it."
+    },
+    {
+     "answer_ref": "l06_a_review_outputs_only",
+     "role": "incorrect",
+     "feedback": "Reviewing outputs is good practice, but it does not address client data stored in the library itself. Keep real data out of what is shared."
+    },
+    {
+     "answer_ref": "l06_a_no_library_at_all",
+     "role": "incorrect",
+     "feedback": "A shared library of clean templates is a good practice. The risk is the data in it, not the sharing."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_drift_set",
+   "question_ref": "l06_q_drift",
+   "label": "expert / workplace / drift",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_workflow"
+    ],
+    "audiences": [
+     "workplace"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "connect_ai_to_recurring_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_workflow",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_abandon_routine",
+     "role": "incorrect",
+     "feedback": "Abandoning it is an overreaction, because the routine may work fine on the new input. Test it first and decide from the results."
+    },
+    {
+     "answer_ref": "l06_a_sample_check",
+     "role": "ambiguous",
+     "feedback": "Sampling outputs is a fair ongoing check, but when the input type changes you want a deliberate test on the new material, not just routine sampling.",
+     "notes": "Ambiguous: good in general, but weaker than a targeted retest."
+    },
+    {
+     "answer_ref": "l06_a_keep_running",
+     "role": "incorrect",
+     "feedback": "Months of success do not cover new kinds of input. Test the routine on the new documents before relying on it."
+    },
+    {
+     "answer_ref": "l06_a_recheck_on_new_input",
+     "role": "strong",
+     "feedback": "A routine that worked on one kind of input is not proven on another. Test it again whenever the input changes."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_oversight_edu",
+   "question_ref": "l06_q_oversight_design",
+   "label": "expert / educator / oversight design",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_accountability"
+    ],
+    "audiences": [
+     "educator"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "take_responsibility_for_results"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_accountability",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_check_every_output",
+     "role": "ambiguous",
+     "feedback": "Full review is the safest and may suit small volumes. At scale it tends to become shallow, so most experts prefer a risk-based approach.",
+     "notes": "Ambiguous: safe but can lose effectiveness at volume."
+    },
+    {
+     "answer_ref": "l06_a_ask_tool_self_review",
+     "role": "incorrect",
+     "feedback": "A tool cannot provide independent oversight of its own output, because it can repeat its own errors. Oversight needs a person."
+    },
+    {
+     "answer_ref": "l06_a_review_none",
+     "role": "incorrect",
+     "feedback": "Skipping review leaves errors for customers and colleagues to find. Review where harm is likely and sample the rest."
+    },
+    {
+     "answer_ref": "l06_a_tiered_review",
+     "role": "strong",
+     "feedback": "Match oversight to risk and track the errors you find, so the checking improves over time."
+    }
+   ]
+  },
+  {
+   "client_ref": "l06_s_drift_edu",
+   "question_ref": "l06_q_drift",
+   "label": "expert / educator / drift",
+   "metadata": {
+    "topics": [
+     "ai_readiness",
+     "ai_workflow"
+    ],
+    "audiences": [
+     "educator"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "connect_ai_to_recurring_work"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_ai_06",
+     "skill_workflow",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "l06_a_keep_running",
+     "role": "incorrect",
+     "feedback": "Months of success do not cover new kinds of input."
+    },
+    {
+     "answer_ref": "l06_a_recheck_on_new_input",
+     "role": "strong",
+     "feedback": "A routine proven on one kind of input is not proven on another. Test it on the new material and compare with earlier results."
+    },
+    {
+     "answer_ref": "l06_a_ask_tool_still_fine",
+     "role": "incorrect",
+     "feedback": "A tool cannot reliably judge its own performance on new material, and it may simply say yes. Test it with samples you can check."
+    },
+    {
+     "answer_ref": "l06_a_sample_check",
+     "role": "ambiguous",
+     "feedback": "Sampling is a fair ongoing check, but when the input type changes you want a deliberate test on the new material.",
+     "notes": "Ambiguous: good in general, but weaker than a targeted retest."
+    }
+   ]
+  }
+ ]
+}
