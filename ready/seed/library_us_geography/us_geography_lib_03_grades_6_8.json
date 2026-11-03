@@ -1,0 +1,4533 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "g3_q_capital_ny",
+   "data": {
+    "question_text": "New York City is the best-known city in New York State. Which city is the state's capital?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_presidents_capitals",
+   "data": {
+    "question_text": "Some state capitals are named for U.S. presidents. Which of these capitals are? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_ohio_region",
+   "data": {
+    "question_text": "Using the Census Bureau's four regions (Northeast, Midwest, South and West), which region is Ohio in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_pa_region",
+   "data": {
+    "question_text": "Which region does the Census Bureau place Pennsylvania in?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_lake_michigan_not",
+   "data": {
+    "question_text": "Lake Michigan touches several states. Which of these states does NOT touch Lake Michigan?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_one_neighbor",
+   "data": {
+    "question_text": "Which of these states shares a land border with exactly one other state?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_rio_grande",
+   "data": {
+    "question_text": "Which river forms much of the border between Texas and Mexico?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_appalachians",
+   "data": {
+    "question_text": "Which mountain range runs along much of the eastern United States?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_great_lakes_multi",
+   "data": {
+    "question_text": "Which of these are among the five Great Lakes? Select all that apply.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features",
+      "format_select_all"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_hemispheres",
+   "data": {
+    "question_text": "The 48 connected states lie north of the equator and west of the Prime Meridian. In which two hemispheres are they?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_map_scale",
+   "data": {
+    "question_text": "A map's scale says that 1 inch stands for 20 miles. Two towns are 3 inches apart on the map. About how far apart are the towns in real life?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_game_time",
+   "data": {
+    "question_text": "A baseball game starts at 7:00 p.m. Eastern time. If both places use the same clock rules that day, what time does it start in the Central time zone?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_four_zones",
+   "data": {
+    "question_text": "How many time zones cover the 48 connected states?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_elevation_cold",
+   "data": {
+    "question_text": "Two towns are close together. One is in a valley and one is high on a mountain. Why is the mountain town usually colder?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_reasoning"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_climate_weather",
+   "data": {
+    "question_text": "Which of these statements describes climate, not weather?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_territory_status",
+   "data": {
+    "question_text": "Guam is part of the United States, but it is not one of the 50 states. What is Guam called?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_territories_dc",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_yellowstone",
+   "data": {
+    "question_text": "Yellowstone National Park is famous for its geysers. Which state holds most of the park?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_parks_landmarks",
+      "format_fact"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_drive_east_clock",
+   "data": {
+    "question_text": "A family drives east from Denver to Chicago. Along the way they cross into a new time zone. What should they do with their watches?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_everyday_geography",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_q_contour_close",
+   "data": {
+    "question_text": "On a hiking map, contour lines show the height of the land. What does it mean when the contour lines are very close together?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "grades_9_12"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "g3_a_new_york_city",
+   "data": {
+    "answer_text": "New York City",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_albany",
+   "data": {
+    "answer_text": "Albany",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_buffalo",
+   "data": {
+    "answer_text": "Buffalo",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_syracuse",
+   "data": {
+    "answer_text": "Syracuse",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_boise_idaho",
+   "data": {
+    "answer_text": "Boise, Idaho",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_madison_wisconsin",
+   "data": {
+    "answer_text": "Madison, Wisconsin",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_santa_fe_new_mexico",
+   "data": {
+    "answer_text": "Santa Fe, New Mexico",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_lincoln_nebraska",
+   "data": {
+    "answer_text": "Lincoln, Nebraska",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "states_capitals"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "locate_states_and_capitals"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_states_capitals"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_midwest",
+   "data": {
+    "answer_text": "Midwest",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_northeast",
+   "data": {
+    "answer_text": "Northeast",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_south",
+   "data": {
+    "answer_text": "South",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_west",
+   "data": {
+    "answer_text": "West",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_mid_atlantic",
+   "data": {
+    "answer_text": "Mid-Atlantic",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_indiana",
+   "data": {
+    "answer_text": "Indiana",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_illinois",
+   "data": {
+    "answer_text": "Illinois",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_ohio",
+   "data": {
+    "answer_text": "Ohio",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_wisconsin",
+   "data": {
+    "answer_text": "Wisconsin",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_vermont",
+   "data": {
+    "answer_text": "Vermont",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_maine",
+   "data": {
+    "answer_text": "Maine",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_florida",
+   "data": {
+    "answer_text": "Florida",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_missouri",
+   "data": {
+    "answer_text": "Missouri",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_rhode_island",
+   "data": {
+    "answer_text": "Rhode Island",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_nevada",
+   "data": {
+    "answer_text": "Nevada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "regions_borders"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "name_regions_and_neighbors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_regions_borders"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_columbia_river",
+   "data": {
+    "answer_text": "Columbia River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_rio_grande",
+   "data": {
+    "answer_text": "Rio Grande",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_mississippi_river",
+   "data": {
+    "answer_text": "Mississippi River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_ohio_river",
+   "data": {
+    "answer_text": "Ohio River",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_rocky_mountains",
+   "data": {
+    "answer_text": "The Rocky Mountains",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_appalachians",
+   "data": {
+    "answer_text": "The Appalachians",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_cascade_range",
+   "data": {
+    "answer_text": "The Cascade Range",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_sierra_nevada",
+   "data": {
+    "answer_text": "The Sierra Nevada",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_lake_ontario",
+   "data": {
+    "answer_text": "Lake Ontario",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_great_salt_lake",
+   "data": {
+    "answer_text": "Great Salt Lake",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_lake_erie",
+   "data": {
+    "answer_text": "Lake Erie",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_lake_tahoe",
+   "data": {
+    "answer_text": "Lake Tahoe",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "physical_features"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "identify_physical_features"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_physical_features"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_southern_and_western",
+   "data": {
+    "answer_text": "Southern and Western",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_northern_and_western",
+   "data": {
+    "answer_text": "Northern and Western",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_northern_and_eastern",
+   "data": {
+    "answer_text": "Northern and Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_southern_and_eastern",
+   "data": {
+    "answer_text": "Southern and Eastern",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_60_miles",
+   "data": {
+    "answer_text": "60 miles",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_17_miles",
+   "data": {
+    "answer_text": "17 miles",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_23_miles",
+   "data": {
+    "answer_text": "23 miles",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_7_miles",
+   "data": {
+    "answer_text": "7 miles",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_6_00_p_m",
+   "data": {
+    "answer_text": "6:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_7_00_p_m",
+   "data": {
+    "answer_text": "7:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_5_00_p_m",
+   "data": {
+    "answer_text": "5:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_8_00_p_m",
+   "data": {
+    "answer_text": "8:00 p.m.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_six",
+   "data": {
+    "answer_text": "Six",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_two",
+   "data": {
+    "answer_text": "Two",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_three",
+   "data": {
+    "answer_text": "Three",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_four",
+   "data": {
+    "answer_text": "Four",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "grades_6_8",
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_five",
+   "data": {
+    "answer_text": "Five",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "time_zones"
+     ],
+     "audiences": [
+      "adult_general"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "work_with_time_zones"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_time_zones"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_valleys_are_always_closer_to_the_ocean",
+   "data": {
+    "answer_text": "Valleys are always closer to the ocean",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_sun_s_rays_cannot_reach_high_places",
+   "data": {
+    "answer_text": "The sun's rays cannot reach high places",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_mountain_towns_are_always_farther_north",
+   "data": {
+    "answer_text": "Mountain towns are always farther north",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_air_tends_to_be_cooler_at_higher_elevations",
+   "data": {
+    "answer_text": "Air tends to be cooler at higher elevations",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_a_snowstorm_closed_schools_yesterday",
+   "data": {
+    "answer_text": "A snowstorm closed schools yesterday.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_phoenix_usually_has_hot_dry_summers",
+   "data": {
+    "answer_text": "Phoenix usually has hot, dry summers.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_it_is_windy_in_chicago_this_afternoon",
+   "data": {
+    "answer_text": "It is windy in Chicago this afternoon.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_it_rained_in_seattle_this_morning",
+   "data": {
+    "answer_text": "It rained in Seattle this morning.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "climate_biomes"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "link_climate_and_biomes_to_place"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_climate_biomes"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_51st_state",
+   "data": {
+    "answer_text": "The 51st state",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_a_federal_district_like_washington_d_c",
+   "data": {
+    "answer_text": "A federal district like Washington, D.C.",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_a_u_s_territory",
+   "data": {
+    "answer_text": "A U.S. territory",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_an_independent_country",
+   "data": {
+    "answer_text": "An independent country",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "territories_dc"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "tell_states_territories_and_dc_apart"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_territories_dc"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_montana",
+   "data": {
+    "answer_text": "Montana",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_utah",
+   "data": {
+    "answer_text": "Utah",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_wyoming",
+   "data": {
+    "answer_text": "Wyoming",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_colorado",
+   "data": {
+    "answer_text": "Colorado",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "parks_landmarks"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_parks_and_landmarks"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_parks_landmarks"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_set_them_back_one_hour",
+   "data": {
+    "answer_text": "Set them back one hour",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_set_them_ahead_two_hours",
+   "data": {
+    "answer_text": "Set them ahead two hours",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_set_them_ahead_one_hour",
+   "data": {
+    "answer_text": "Set them ahead one hour",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_leave_them_alone",
+   "data": {
+    "answer_text": "Leave them alone",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "everyday_geography"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "use_geography_in_everyday_decisions"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_everyday_geography"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_there_is_a_lake",
+   "data": {
+    "answer_text": "There is a lake",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_ground_is_steep",
+   "data": {
+    "answer_text": "The ground is steep",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_there_is_a_road",
+   "data": {
+    "answer_text": "There is a road",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_ground_is_flat",
+   "data": {
+    "answer_text": "The ground is flat",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_6_8"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_area_is_a_wetland",
+   "data": {
+    "answer_text": "The area is a wetland",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_trail_is_closed",
+   "data": {
+    "answer_text": "The trail is closed",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_slope_is_steep",
+   "data": {
+    "answer_text": "The slope is steep",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "g3_a_the_slope_is_gentle",
+   "data": {
+    "answer_text": "The slope is gentle",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "us_geography",
+      "map_skills"
+     ],
+     "audiences": [
+      "grades_9_12"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "read_maps_and_coordinates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_us_geography_03",
+      "us_geography",
+      "skill_map_skills"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "g3_s01_capital_ny",
+   "question_ref": "g3_q_capital_ny",
+   "label": "Capital of New York State (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_states_capitals",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_new_york_city",
+     "role": "incorrect",
+     "feedback": "New York City is the largest and best-known city in the state, but the capital is Albany. Capitals are often not the most famous city."
+    },
+    {
+     "answer_ref": "g3_a_albany",
+     "role": "strong",
+     "feedback": "Correct. Albany is the capital of New York State. It sits on the Hudson River north of New York City."
+    },
+    {
+     "answer_ref": "g3_a_buffalo",
+     "role": "incorrect",
+     "feedback": "Buffalo is a large city on Lake Erie in western New York, but it is not the capital."
+    },
+    {
+     "answer_ref": "g3_a_syracuse",
+     "role": "incorrect",
+     "feedback": "Syracuse is a city in central New York. The state government meets in Albany instead."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s02_presidents_capitals",
+   "question_ref": "g3_q_presidents_capitals",
+   "label": "Capitals named for presidents (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "states_capitals"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "locate_states_and_capitals"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_states_capitals",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_boise_idaho",
+     "role": "incorrect",
+     "feedback": "No. Boise's name comes from a French word for wooded, not from a President."
+    },
+    {
+     "answer_ref": "g3_a_madison_wisconsin",
+     "role": "strong",
+     "feedback": "Yes. Madison is named for James Madison, the fourth President."
+    },
+    {
+     "answer_ref": "g3_a_santa_fe_new_mexico",
+     "role": "incorrect",
+     "feedback": "No. Santa Fe is Spanish for holy faith. It is not named for a President."
+    },
+    {
+     "answer_ref": "g3_a_lincoln_nebraska",
+     "role": "strong",
+     "feedback": "Yes. Lincoln is named for Abraham Lincoln, the sixteenth President."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s03_ohio_region",
+   "question_ref": "g3_q_ohio_region",
+   "label": "Census region of Ohio (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_midwest",
+     "role": "strong",
+     "feedback": "Correct. The Census Bureau puts Ohio in the Midwest, along with its Great Lakes neighbors such as Michigan and Indiana."
+    },
+    {
+     "answer_ref": "g3_a_northeast",
+     "role": "incorrect",
+     "feedback": "Ohio is east of many Midwest states, but the Census Northeast region includes New York, Pennsylvania and New England, not Ohio."
+    },
+    {
+     "answer_ref": "g3_a_south",
+     "role": "incorrect",
+     "feedback": "Ohio's southern edge is the Ohio River, but the Census South region begins on the other side of that river."
+    },
+    {
+     "answer_ref": "g3_a_west",
+     "role": "incorrect",
+     "feedback": "The West region has the Rocky Mountain and Pacific states. Ohio is far from them."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s04_pa_region",
+   "question_ref": "g3_q_pa_region",
+   "label": "Census region of Pennsylvania (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_mid_atlantic",
+     "role": "ambiguous",
+     "feedback": "Mid-Atlantic is a real and common name for New York, New Jersey and Pennsylvania. It is a smaller area inside the Census Northeast, not one of the four Census regions.",
+     "notes": "Common subregion name. The Census Bureau uses Mid-Atlantic only as a division within the Northeast. Marked ambiguous so feedback can explain regions versus divisions."
+    },
+    {
+     "answer_ref": "g3_a_south",
+     "role": "incorrect",
+     "feedback": "Pennsylvania is north of the Mason-Dixon line and in the Northeast region, not the South."
+    },
+    {
+     "answer_ref": "g3_a_midwest",
+     "role": "incorrect",
+     "feedback": "The Midwest region is to the west of Pennsylvania, around the Great Lakes and Great Plains."
+    },
+    {
+     "answer_ref": "g3_a_northeast",
+     "role": "strong",
+     "feedback": "Correct. The Census Bureau's Northeast region includes New England plus New York, New Jersey and Pennsylvania."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s05_lake_michigan_not",
+   "question_ref": "g3_q_lake_michigan_not",
+   "label": "State that does not touch Lake Michigan (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_indiana",
+     "role": "incorrect",
+     "feedback": "Indiana does touch Lake Michigan, along the southern tip of the lake."
+    },
+    {
+     "answer_ref": "g3_a_illinois",
+     "role": "incorrect",
+     "feedback": "Illinois does touch Lake Michigan. Chicago is on its shore."
+    },
+    {
+     "answer_ref": "g3_a_ohio",
+     "role": "strong",
+     "feedback": "Correct. Ohio borders Lake Erie, not Lake Michigan."
+    },
+    {
+     "answer_ref": "g3_a_wisconsin",
+     "role": "incorrect",
+     "feedback": "Wisconsin does touch Lake Michigan, along its eastern shore."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s06_one_neighbor",
+   "question_ref": "g3_q_one_neighbor",
+   "label": "State with one neighboring state (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_vermont",
+     "role": "incorrect",
+     "feedback": "Vermont touches three states: New Hampshire, Massachusetts and New York."
+    },
+    {
+     "answer_ref": "g3_a_maine",
+     "role": "strong",
+     "feedback": "Correct. Maine touches only New Hampshire by land. Its other borders are Canada and the Atlantic Ocean."
+    },
+    {
+     "answer_ref": "g3_a_florida",
+     "role": "incorrect",
+     "feedback": "Florida touches two states, Georgia and Alabama, so it is not the one."
+    },
+    {
+     "answer_ref": "g3_a_missouri",
+     "role": "incorrect",
+     "feedback": "Missouri touches eight states, more than almost any other."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s07_one_neighbor",
+   "question_ref": "g3_q_one_neighbor",
+   "label": "State with one neighboring state (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "regions_borders"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "name_regions_and_neighbors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_regions_borders",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_vermont",
+     "role": "incorrect",
+     "feedback": "Vermont touches New Hampshire, Massachusetts and New York, so it has three state neighbors."
+    },
+    {
+     "answer_ref": "g3_a_maine",
+     "role": "strong",
+     "feedback": "Correct. Maine's only land neighbor among the states is New Hampshire. Its other land border is with Canada."
+    },
+    {
+     "answer_ref": "g3_a_rhode_island",
+     "role": "incorrect",
+     "feedback": "Rhode Island shares land borders with two states, Massachusetts and Connecticut."
+    },
+    {
+     "answer_ref": "g3_a_nevada",
+     "role": "incorrect",
+     "feedback": "Nevada shares land borders with five states: California, Oregon, Idaho, Utah and Arizona."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s08_rio_grande",
+   "question_ref": "g3_q_rio_grande",
+   "label": "River on the Texas-Mexico border (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_columbia_river",
+     "role": "incorrect",
+     "feedback": "The Columbia River is in the Pacific Northwest, far to the northwest of Texas."
+    },
+    {
+     "answer_ref": "g3_a_rio_grande",
+     "role": "strong",
+     "feedback": "Correct. The Rio Grande forms much of the border between Texas and Mexico."
+    },
+    {
+     "answer_ref": "g3_a_mississippi_river",
+     "role": "incorrect",
+     "feedback": "The Mississippi River flows through the middle of the country, far from the Mexican border."
+    },
+    {
+     "answer_ref": "g3_a_ohio_river",
+     "role": "incorrect",
+     "feedback": "The Ohio River flows across the eastern part of the country, far from Mexico."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s09_appalachians",
+   "question_ref": "g3_q_appalachians",
+   "label": "Mountains of the East (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_physical_features",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_the_rocky_mountains",
+     "role": "incorrect",
+     "feedback": "The Rockies are in the western half of the country, not the east."
+    },
+    {
+     "answer_ref": "g3_a_the_appalachians",
+     "role": "strong",
+     "feedback": "Correct. The Appalachians run from the Northeast down toward the Southeast. They are older and lower than western ranges."
+    },
+    {
+     "answer_ref": "g3_a_the_cascade_range",
+     "role": "incorrect",
+     "feedback": "The Cascades are in the Pacific Northwest, far from the East Coast."
+    },
+    {
+     "answer_ref": "g3_a_the_sierra_nevada",
+     "role": "incorrect",
+     "feedback": "The Sierra Nevada is in California, on the Pacific side of the country."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s10_great_lakes_multi",
+   "question_ref": "g3_q_great_lakes_multi",
+   "label": "Which are Great Lakes (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "physical_features"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "identify_physical_features"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_physical_features",
+     "format_select_all"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_lake_ontario",
+     "role": "strong",
+     "feedback": "Yes. Lake Ontario is the easternmost Great Lake."
+    },
+    {
+     "answer_ref": "g3_a_great_salt_lake",
+     "role": "incorrect",
+     "feedback": "No. The Great Salt Lake in Utah is a large lake, but it is not one of the Great Lakes."
+    },
+    {
+     "answer_ref": "g3_a_lake_erie",
+     "role": "strong",
+     "feedback": "Yes. Lake Erie is one of the five Great Lakes."
+    },
+    {
+     "answer_ref": "g3_a_lake_tahoe",
+     "role": "incorrect",
+     "feedback": "No. Lake Tahoe is a famous mountain lake on the California-Nevada line, not one of the Great Lakes."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s11_hemispheres",
+   "question_ref": "g3_q_hemispheres",
+   "label": "Hemispheres of the connected states (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_map_skills",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_southern_and_western",
+     "role": "incorrect",
+     "feedback": "The connected states are north of the equator, so they are in the Northern Hemisphere."
+    },
+    {
+     "answer_ref": "g3_a_northern_and_western",
+     "role": "strong",
+     "feedback": "Correct. North of the equator means the Northern Hemisphere, and west of the Prime Meridian means the Western Hemisphere."
+    },
+    {
+     "answer_ref": "g3_a_northern_and_eastern",
+     "role": "incorrect",
+     "feedback": "The connected states are west of the Prime Meridian, so they are in the Western Hemisphere."
+    },
+    {
+     "answer_ref": "g3_a_southern_and_eastern",
+     "role": "incorrect",
+     "feedback": "This gets both wrong. The connected states are north of the equator and west of the Prime Meridian."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s12_map_scale",
+   "question_ref": "g3_q_map_scale",
+   "label": "Using a map scale (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_map_skills",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_60_miles",
+     "role": "strong",
+     "feedback": "Correct. Each inch is 20 miles, so 3 inches is 3 times 20, which is 60 miles."
+    },
+    {
+     "answer_ref": "g3_a_17_miles",
+     "role": "incorrect",
+     "feedback": "That subtracts 3 from 20. A scale is a ratio, so multiply the inches by the miles per inch."
+    },
+    {
+     "answer_ref": "g3_a_23_miles",
+     "role": "incorrect",
+     "feedback": "That adds 20 and 3. A scale is a ratio, so multiply: 3 inches times 20 miles per inch."
+    },
+    {
+     "answer_ref": "g3_a_7_miles",
+     "role": "incorrect",
+     "feedback": "That divides 20 by 3. To find real distance, multiply the map distance by the scale."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s13_game_time",
+   "question_ref": "g3_q_game_time",
+   "label": "Eastern to Central time (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_time_zones",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_6_00_p_m",
+     "role": "strong",
+     "feedback": "Correct. Central time is one hour behind Eastern time, so 7:00 p.m. Eastern is 6:00 p.m. Central."
+    },
+    {
+     "answer_ref": "g3_a_7_00_p_m",
+     "role": "incorrect",
+     "feedback": "The two zones have different clock times. Central is one hour behind Eastern."
+    },
+    {
+     "answer_ref": "g3_a_5_00_p_m",
+     "role": "incorrect",
+     "feedback": "That subtracts two hours, which would be Mountain time. Central is only one hour behind Eastern."
+    },
+    {
+     "answer_ref": "g3_a_8_00_p_m",
+     "role": "incorrect",
+     "feedback": "That adds an hour. Going west, clocks show an earlier time, so subtract one hour."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s14_four_zones",
+   "question_ref": "g3_q_four_zones",
+   "label": "Zones of the connected states (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_time_zones",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_six",
+     "role": "incorrect",
+     "feedback": "Six is too many for the connected states. Alaska and Hawaii add zones, but the connected states have four."
+    },
+    {
+     "answer_ref": "g3_a_two",
+     "role": "incorrect",
+     "feedback": "Two is too few. The country is wide enough that it needs four zones."
+    },
+    {
+     "answer_ref": "g3_a_three",
+     "role": "incorrect",
+     "feedback": "Three leaves one out. Eastern, Central, Mountain and Pacific make four."
+    },
+    {
+     "answer_ref": "g3_a_four",
+     "role": "strong",
+     "feedback": "Correct. The connected states use Eastern, Central, Mountain and Pacific time."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s15_four_zones",
+   "question_ref": "g3_q_four_zones",
+   "label": "Zones of the connected states (General adult, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "time_zones"
+    ],
+    "audiences": [
+     "adult_general"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "work_with_time_zones"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_time_zones",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_two",
+     "role": "incorrect",
+     "feedback": "Two would be too few for a country this wide. Four zones cover it."
+    },
+    {
+     "answer_ref": "g3_a_three",
+     "role": "incorrect",
+     "feedback": "Three is a common guess, but Mountain time is a fourth zone between Central and Pacific."
+    },
+    {
+     "answer_ref": "g3_a_five",
+     "role": "incorrect",
+     "feedback": "Five would count Alaska or Hawaii too. For the connected states alone, the count is four."
+    },
+    {
+     "answer_ref": "g3_a_four",
+     "role": "strong",
+     "feedback": "Correct. Eastern, Central, Mountain and Pacific cover the connected states. Alaska and Hawaii use others."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s16_elevation_cold",
+   "question_ref": "g3_q_elevation_cold",
+   "label": "Why mountains are colder (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_reasoning"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_valleys_are_always_closer_to_the_ocean",
+     "role": "incorrect",
+     "feedback": "Valleys are not always near an ocean. The difference is height, not distance to water."
+    },
+    {
+     "answer_ref": "g3_a_the_sun_s_rays_cannot_reach_high_places",
+     "role": "incorrect",
+     "feedback": "High places get plenty of sunlight. The air there is cooler because of the elevation."
+    },
+    {
+     "answer_ref": "g3_a_mountain_towns_are_always_farther_north",
+     "role": "incorrect",
+     "feedback": "Two close towns have almost the same latitude. The difference comes from height."
+    },
+    {
+     "answer_ref": "g3_a_air_tends_to_be_cooler_at_higher_elevations",
+     "role": "strong",
+     "feedback": "Correct. The higher you go above sea level, the cooler the air usually gets."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s17_climate_weather",
+   "question_ref": "g3_q_climate_weather",
+   "label": "Climate versus weather (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "climate_biomes"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "link_climate_and_biomes_to_place"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_climate_biomes",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_a_snowstorm_closed_schools_yesterday",
+     "role": "incorrect",
+     "feedback": "This is weather. It describes one event on one day."
+    },
+    {
+     "answer_ref": "g3_a_phoenix_usually_has_hot_dry_summers",
+     "role": "strong",
+     "feedback": "Correct. Climate is the usual pattern over many years. Weather is what happens on a given day."
+    },
+    {
+     "answer_ref": "g3_a_it_is_windy_in_chicago_this_afternoon",
+     "role": "incorrect",
+     "feedback": "This is weather. It describes conditions at one time. Climate describes long-term patterns."
+    },
+    {
+     "answer_ref": "g3_a_it_rained_in_seattle_this_morning",
+     "role": "incorrect",
+     "feedback": "This is weather. It describes one morning, not the usual pattern."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s18_territory_status",
+   "question_ref": "g3_q_territory_status",
+   "label": "Status of Guam (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "territories_dc"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "tell_states_territories_and_dc_apart"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_territories_dc",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_the_51st_state",
+     "role": "incorrect",
+     "feedback": "No. The country has 50 states, and Guam is not one of them."
+    },
+    {
+     "answer_ref": "g3_a_a_federal_district_like_washington_d_c",
+     "role": "incorrect",
+     "feedback": "No. Washington, D.C. is the capital's federal district. Guam is an island territory."
+    },
+    {
+     "answer_ref": "g3_a_a_u_s_territory",
+     "role": "strong",
+     "feedback": "Correct. Guam is a U.S. territory in the western Pacific Ocean."
+    },
+    {
+     "answer_ref": "g3_a_an_independent_country",
+     "role": "incorrect",
+     "feedback": "No. Guam is part of the United States, not a separate country."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s19_yellowstone",
+   "question_ref": "g3_q_yellowstone",
+   "label": "State of Yellowstone (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "parks_landmarks"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_parks_and_landmarks"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_parks_landmarks",
+     "format_fact"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_montana",
+     "role": "incorrect",
+     "feedback": "A small part of the park is in Montana, but most of it is in Wyoming."
+    },
+    {
+     "answer_ref": "g3_a_utah",
+     "role": "incorrect",
+     "feedback": "Utah has parks such as Arches and Zion. Yellowstone is farther north, mostly in Wyoming."
+    },
+    {
+     "answer_ref": "g3_a_wyoming",
+     "role": "strong",
+     "feedback": "Correct. Most of Yellowstone is in Wyoming. Small parts reach into Montana and Idaho."
+    },
+    {
+     "answer_ref": "g3_a_colorado",
+     "role": "incorrect",
+     "feedback": "Colorado has other famous parks, but Yellowstone is not there."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s20_drive_east_clock",
+   "question_ref": "g3_q_drive_east_clock",
+   "label": "Clock change driving east (Grades 6-8, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "everyday_geography"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "use_geography_in_everyday_decisions"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_everyday_geography",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_set_them_back_one_hour",
+     "role": "incorrect",
+     "feedback": "That is the change when driving west. Going east, clocks move later."
+    },
+    {
+     "answer_ref": "g3_a_set_them_ahead_two_hours",
+     "role": "incorrect",
+     "feedback": "Mountain and Central time differ by only one hour, not two."
+    },
+    {
+     "answer_ref": "g3_a_set_them_ahead_one_hour",
+     "role": "strong",
+     "feedback": "Correct. Chicago is on Central time, one hour ahead of Denver's Mountain time."
+    },
+    {
+     "answer_ref": "g3_a_leave_them_alone",
+     "role": "incorrect",
+     "feedback": "Watches should match local time, so they need a change at the zone line."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s21_contour_close",
+   "question_ref": "g3_q_contour_close",
+   "label": "Close contour lines (Grades 6-8, basic)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_6_8"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_map_skills",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_there_is_a_lake",
+     "role": "incorrect",
+     "feedback": "Lakes have their own symbol. Contour lines show height."
+    },
+    {
+     "answer_ref": "g3_a_the_ground_is_steep",
+     "role": "strong",
+     "feedback": "Correct. Close contour lines mean the land rises or falls quickly, so the slope is steep."
+    },
+    {
+     "answer_ref": "g3_a_there_is_a_road",
+     "role": "incorrect",
+     "feedback": "Roads have their own symbol. Contour lines show height."
+    },
+    {
+     "answer_ref": "g3_a_the_ground_is_flat",
+     "role": "incorrect",
+     "feedback": "Flat ground has lines spread far apart, or very few of them."
+    }
+   ]
+  },
+  {
+   "client_ref": "g3_s22_contour_close",
+   "question_ref": "g3_q_contour_close",
+   "label": "Close contour lines (Grades 9-12, intermediate)",
+   "metadata": {
+    "topics": [
+     "us_geography",
+     "map_skills"
+    ],
+    "audiences": [
+     "grades_9_12"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "read_maps_and_coordinates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_us_geography_03",
+     "us_geography",
+     "skill_map_skills",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review"
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "g3_a_the_area_is_a_wetland",
+     "role": "incorrect",
+     "feedback": "Wetlands have their own symbol. Contour spacing shows how steep the land is."
+    },
+    {
+     "answer_ref": "g3_a_the_trail_is_closed",
+     "role": "incorrect",
+     "feedback": "Trail closures are not shown by contour spacing. Contours show elevation."
+    },
+    {
+     "answer_ref": "g3_a_the_slope_is_steep",
+     "role": "strong",
+     "feedback": "Correct. Lines close together mean the elevation changes over a short distance."
+    },
+    {
+     "answer_ref": "g3_a_the_slope_is_gentle",
+     "role": "incorrect",
+     "feedback": "A gentle slope has lines far apart, because elevation changes slowly."
+    }
+   ]
+  }
+ ]
+}
