@@ -1,0 +1,2563 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "j03_q_umbrella",
+   "data": {
+    "question_text": "Kai notices that on days when many people carry umbrellas, the streets are wet. Kai says, \"Umbrellas make streets wet.\" Which explanation fits best?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_tutoring",
+   "data": {
+    "question_text": "A school finds that students who attend optional tutoring have lower average grades than those who do not. A department head says, \"Tutoring hurts grades.\" What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student",
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_training",
+   "data": {
+    "question_text": "A sales team's results rose in the quarter after a training course. The manager credits the training. The quarter is also normally a busy one for the business. What is the most defensible step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_remote",
+   "data": {
+    "question_text": "Teams that chose a remote-Friday option have higher performance ratings than teams that did not. A director wants to extend it to everyone. Choose the TWO most defensible responses.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_complaints",
+   "data": {
+    "question_text": "After a new returns policy, customer complaints fell. At the same time, one product line was withdrawn and the complaint form moved to a page that is harder to find. You must report to leadership. What is the most defensible approach?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_coin",
+   "data": {
+    "question_text": "Mia flips a fair-looking coin and gets heads five times in a row. She says, \"Tails is due.\" What is the most defensible view?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_forecast",
+   "data": {
+    "question_text": "A forecast said there was a 30-in-100 chance of rain today. It stayed dry. A friend says the forecast was wrong. What is the most defensible view?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_spam",
+   "data": {
+    "question_text": "An email filter flags about 1 email in 10 as suspicious. Real scam emails are very rare, about 1 in 500. A flagged message arrives that appears to be from a known client. Choose the TWO most defensible responses.",
+    "question_type": "multiple_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_choose_two"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_survivor",
+   "data": {
+    "question_text": "A business magazine profiles five fast-growing companies. All five took big risks. A reader concludes that taking big risks leads to fast growth. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_q_screen",
+   "data": {
+    "question_text": "A hiring screen passes about 1 applicant in 4. Among past hires who passed it, most did well. A colleague proposes using it as the only filter. As the manager, what is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "j03_a_assume_causes",
+   "data": {
+    "answer_text": "Conclude that the first thing causes the second",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_ignore_pattern",
+   "data": {
+    "answer_text": "Ignore the pattern, since a pattern proves nothing",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student",
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_reverse_order",
+   "data": {
+    "answer_text": "Ask whether the cause might run the other way round",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_wait_more_data",
+   "data": {
+    "answer_text": "Hold back until many more cases and days have been collected",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "college_student",
+      "early_career_professional"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation",
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_compare_group",
+   "data": {
+    "answer_text": "Compare with a similar group that did not get the change",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_same_period_before",
+   "data": {
+    "answer_text": "Look at the same period in earlier years before crediting the change",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_rain_both",
+   "data": {
+    "answer_text": "Rain probably explains both: people carry umbrellas and streets get wet",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_umbrella_drip",
+   "data": {
+    "answer_text": "Umbrellas drip onto the street and make it wet",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_wet_first",
+   "data": {
+    "answer_text": "Wet streets make people decide to carry umbrellas",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_tutor_hurts",
+   "data": {
+    "answer_text": "Conclude the tutoring is hurting grades and stop offering it",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_tutor_struggle",
+   "data": {
+    "answer_text": "Students who are already struggling may be the ones who sign up",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_tutor_survey",
+   "data": {
+    "answer_text": "Ask both groups about their grades before they started tutoring",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "college_student",
+      "early_career_professional"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_train_repeat",
+   "data": {
+    "answer_text": "Run the training again next quarter and see whether sales rise again",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_train_partial",
+   "data": {
+    "answer_text": "Credit the training for part of the rise, since it happened right after",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_remote_before",
+   "data": {
+    "answer_text": "Check how those teams were rated before they had remote Fridays",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_remote_selected",
+   "data": {
+    "answer_text": "Ask whether stronger teams were the ones likely to ask for remote Fridays",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_remote_random",
+   "data": {
+    "answer_text": "Offer remote Fridays to randomly chosen teams and compare them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_remote_extend",
+   "data": {
+    "answer_text": "Extend remote Fridays to every team, since high performers use them",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_compl_list",
+   "data": {
+    "answer_text": "Report the drop, list the other changes that could explain it, and say what you will check",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_compl_hold",
+   "data": {
+    "answer_text": "Hold the report until a clean before-and-after comparison can be made",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_compl_success",
+   "data": {
+    "answer_text": "Report that the new returns policy worked and reduced customer complaints",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_compl_none",
+   "data": {
+    "answer_text": "Report that the policy had no effect at all, since other things changed too",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cause_correlation"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_cause_and_correlation"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_cause_correlation"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_tails_due",
+   "data": {
+    "answer_text": "Tails is due, because the flips must even out soon",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_coin_independent",
+   "data": {
+    "answer_text": "Each flip is separate, so the next one is still about even",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_coin_unfair",
+   "data": {
+    "answer_text": "Five heads proves the coin is unfair",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_coin_check",
+   "data": {
+    "answer_text": "Look at the coin and flip it many more times to see whether it is fair",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_fc_wrong",
+   "data": {
+    "answer_text": "The forecast was wrong, because it did not rain",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_fc_fine",
+   "data": {
+    "answer_text": "One dry day does not show the forecast was wrong; most such days are dry",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_fc_useless",
+   "data": {
+    "answer_text": "Forecasts like this are meaningless, since they never say yes or no",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_check_many",
+   "data": {
+    "answer_text": "Judge the forecaster by tracking many forecasts over time",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "college_student",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_spam_most_fine",
+   "data": {
+    "answer_text": "Most flagged emails are harmless, because real scams are very rare",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_spam_verify",
+   "data": {
+    "answer_text": "Check with the client through another channel before clicking anything",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_spam_delete",
+   "data": {
+    "answer_text": "Delete it unread, to be completely safe",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_spam_reply",
+   "data": {
+    "answer_text": "Reply at once, because filters make mistakes",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_surv_ask_fail",
+   "data": {
+    "answer_text": "Ask how many risk-takers failed, since the profiles show only the survivors",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_surv_concl",
+   "data": {
+    "answer_text": "Conclude that taking big risks leads to fast growth",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_surv_none",
+   "data": {
+    "answer_text": "Conclude that risk is useless, because five companies is too few",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_surv_partial",
+   "data": {
+    "answer_text": "Accept that risk probably helps a little, with the small sample noted",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_scr_one_input",
+   "data": {
+    "answer_text": "Keep it as one input among several, and seek evidence on people it screened out",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_scr_sole",
+   "data": {
+    "answer_text": "Adopt it as the only filter, because past hires who passed it did well",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_scr_drop",
+   "data": {
+    "answer_text": "Drop it, because it rejects three of every four applicants",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j03_a_scr_wait_validation",
+   "data": {
+    "answer_text": "Ask the test maker for its validation data and wait to decide",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "probability_base_rates"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "reason_about_probability_and_base_rates"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_03",
+      "judgment",
+      "skill_probability_base_rates"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "j03_s_umbrella_teen",
+   "question_ref": "j03_q_umbrella",
+   "label": "Umbrellas and wet streets (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_rain_both",
+     "role": "strong",
+     "feedback": "Yes. Rain makes the streets wet and also makes people carry umbrellas. When one hidden cause produces two things, the two things move together without one causing the other."
+    },
+    {
+     "answer_ref": "j03_a_umbrella_drip",
+     "role": "incorrect",
+     "feedback": "A few drips from umbrellas cannot wet a whole street. Look at what else happens on those days instead."
+    },
+    {
+     "answer_ref": "j03_a_wet_first",
+     "role": "incorrect",
+     "feedback": "The streets are wet because of the weather, not because people decided on umbrellas first. The order of events does not fit."
+    },
+    {
+     "answer_ref": "j03_a_wait_more_data",
+     "role": "ambiguous",
+     "feedback": "More days of data are never a bad idea, but here a likely third cause is already sitting in plain sight. Waiting skips the easiest explanation.",
+     "notes": "Cautious about the data, but passes over an obvious third factor."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_tutor_college",
+   "question_ref": "j03_q_tutoring",
+   "label": "Tutoring and lower grades (college, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_tutor_struggle",
+     "role": "strong",
+     "feedback": "Yes. The students who sign up may already be struggling. Then low grades lead to tutoring, not the other way round. The pattern could even hide that tutoring helps."
+    },
+    {
+     "answer_ref": "j03_a_tutor_hurts",
+     "role": "incorrect",
+     "feedback": "This takes \"tutored students score lower\" to mean \"tutoring lowers scores\". If the weakest students sign up, the numbers would look this way even if tutoring helps a lot."
+    },
+    {
+     "answer_ref": "j03_a_ignore_pattern",
+     "role": "incorrect",
+     "feedback": "The pattern is worth understanding, not ignoring. It points to who signs up for tutoring, which matters for the program."
+    },
+    {
+     "answer_ref": "j03_a_tutor_survey",
+     "role": "ambiguous",
+     "feedback": "Comparing starting grades would test the idea directly, which is a strength. It takes effort, and it answers the question only if the records exist.",
+     "notes": "A good way to test it; costs effort and may not be possible."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_tutor_early",
+   "question_ref": "j03_q_tutoring",
+   "label": "Tutoring and lower grades (early career, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_tutor_survey",
+     "role": "strong",
+     "feedback": "Yes. Grades before tutoring started would show whether tutored students were already behind. It is the missing piece, and it can be found in existing records."
+    },
+    {
+     "answer_ref": "j03_a_reverse_order",
+     "role": "ambiguous",
+     "feedback": "Asking whether the cause runs the other way is exactly right in spirit, but it is a question rather than a step. You still need to find the data that can answer it.",
+     "notes": "Right question, but not yet a plan to answer it."
+    },
+    {
+     "answer_ref": "j03_a_assume_causes",
+     "role": "incorrect",
+     "feedback": "\"Tutored students have lower grades\" does not show that tutoring lowers grades. Treating them as the same ends the inquiry too early."
+    },
+    {
+     "answer_ref": "j03_a_compare_group",
+     "role": "ambiguous",
+     "feedback": "Comparing similar students who did and did not get tutoring is a good test. It only works if the groups really are alike, which is the hard part here.",
+     "notes": "Sound idea, but depends on finding truly similar students."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_training_adult",
+   "question_ref": "j03_q_training",
+   "label": "Sales rise after training (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_same_period_before",
+     "role": "strong",
+     "feedback": "Yes. If this quarter is busy every year, last year's results from the same quarter show how much of the rise to expect anyway. It is cheap and uses data you already have."
+    },
+    {
+     "answer_ref": "j03_a_train_partial",
+     "role": "ambiguous",
+     "feedback": "Crediting part of it feels fair, since the timing fits. But without a comparison there is no way to know whether the share is large, small or zero.",
+     "notes": "Plausible and balanced, but the share is a guess."
+    },
+    {
+     "answer_ref": "j03_a_train_repeat",
+     "role": "ambiguous",
+     "feedback": "Repeating the training is a real test of whether it works. It takes a whole quarter and may confuse things again if the season changes.",
+     "notes": "A test, but slow and seasonally confounded."
+    },
+    {
+     "answer_ref": "j03_a_assume_causes",
+     "role": "incorrect",
+     "feedback": "The sales rose after the training, which does not prove the training made them rise. This quarter is busy anyway."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_training_early",
+   "question_ref": "j03_q_training",
+   "label": "Sales rise after training (early career, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_compare_group",
+     "role": "strong",
+     "feedback": "Yes. Comparing with a similar team that did not receive the training removes the effect of the busy season, because both teams went through it together."
+    },
+    {
+     "answer_ref": "j03_a_same_period_before",
+     "role": "ambiguous",
+     "feedback": "Comparing with last year handles the season but not other changes, such as new prices or staff. It is quick and useful, and weaker than a side-by-side comparison.",
+     "notes": "Quick and useful, yet other things may differ from last year."
+    },
+    {
+     "answer_ref": "j03_a_wait_more_data",
+     "role": "ambiguous",
+     "feedback": "Waiting for more quarters can show whether the effect lasts. It delays a decision that a simple comparison could inform now.",
+     "notes": "Reasonable patience; the cost is a decision made in the dark."
+    },
+    {
+     "answer_ref": "j03_a_ignore_pattern",
+     "role": "incorrect",
+     "feedback": "Sales rose right after training, which is worth testing, not ignoring. The aim is to find out how much was the training."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_remote_lead",
+   "question_ref": "j03_q_remote",
+   "label": "Remote Fridays and ratings (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_choose_two",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_remote_before",
+     "role": "strong",
+     "feedback": "Yes. If those teams were already rated higher before remote Fridays, the option did not cause the gap. A before-and-after look is quick and uses records you have."
+    },
+    {
+     "answer_ref": "j03_a_remote_selected",
+     "role": "strong",
+     "feedback": "Yes. Strong teams may be the ones trusted to ask for flexibility. Then high ratings lead to the option rather than the reverse."
+    },
+    {
+     "answer_ref": "j03_a_remote_random",
+     "role": "ambiguous",
+     "feedback": "Random assignment is the cleanest test, and it is worth considering. It takes time and may be unfair to teams who want the option, so it is a later step, not a first check.",
+     "notes": "Best test, but slow and raises fairness questions."
+    },
+    {
+     "answer_ref": "j03_a_remote_extend",
+     "role": "incorrect",
+     "feedback": "Extending the option to everyone assumes it caused the better ratings. The pattern may simply show that strong teams get flexibility."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_complaints_lead",
+   "question_ref": "j03_q_complaints",
+   "label": "Complaints fall after a policy change (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cause_correlation"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "reason_about_cause_and_correlation"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_cause_correlation",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_compl_list",
+     "role": "strong",
+     "feedback": "Yes. It reports the true headline, shows the other changes that could explain it, and says what you would check. Leaders can then decide with the uncertainty in view."
+    },
+    {
+     "answer_ref": "j03_a_compl_hold",
+     "role": "ambiguous",
+     "feedback": "Waiting for a clean comparison protects accuracy, but leadership may decide without any information. Reporting with the caveats usually serves them better.",
+     "notes": "Careful, but leaves leadership without the facts you do have."
+    },
+    {
+     "answer_ref": "j03_a_compl_success",
+     "role": "incorrect",
+     "feedback": "Complaints fell, but a withdrawn product and a harder-to-find form could each explain it. Crediting the policy alone claims more than the data supports."
+    },
+    {
+     "answer_ref": "j03_a_compl_none",
+     "role": "incorrect",
+     "feedback": "The other changes make the policy's effect uncertain, not zero. Declaring no effect is as unsupported as declaring success."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_coin_teen",
+   "question_ref": "j03_q_coin",
+   "label": "Five heads in a row (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_coin_independent",
+     "role": "strong",
+     "feedback": "Yes. A fair coin has no memory. Each flip is a fresh start, so the next flip is still about even, even after five heads."
+    },
+    {
+     "answer_ref": "j03_a_tails_due",
+     "role": "incorrect",
+     "feedback": "This is the idea that results must balance out soon. The coin does not remember earlier flips, so tails is not owed."
+    },
+    {
+     "answer_ref": "j03_a_coin_unfair",
+     "role": "incorrect",
+     "feedback": "Five in a row happens by chance fairly often. It is a reason to look, not proof that the coin is unfair."
+    },
+    {
+     "answer_ref": "j03_a_coin_check",
+     "role": "ambiguous",
+     "feedback": "Checking the coin and flipping more times is a sensible way to settle it. Five heads alone is weak evidence, so it is more a curiosity than a concern.",
+     "notes": "Reasonable to check; five flips is thin evidence."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_forecast_adult",
+   "question_ref": "j03_q_forecast",
+   "label": "Dry day after a 30-in-100 forecast (adult, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_fc_fine",
+     "role": "strong",
+     "feedback": "Yes. A 30-in-100 chance means rain on about 3 of 10 such days and dry on about 7 of 10. A dry day is the usual result and tells you very little."
+    },
+    {
+     "answer_ref": "j03_a_check_many",
+     "role": "ambiguous",
+     "feedback": "Tracking many forecasts is exactly how to judge a forecaster: of all the 30-in-100 days, about 30 in 100 should be wet. But it answers a bigger question than the one about today.",
+     "notes": "Right method for judging the forecaster; does not address today alone."
+    },
+    {
+     "answer_ref": "j03_a_fc_wrong",
+     "role": "incorrect",
+     "feedback": "The forecast did not say it would rain. It said rain was less likely than not, so a dry day fits it."
+    },
+    {
+     "answer_ref": "j03_a_fc_useless",
+     "role": "incorrect",
+     "feedback": "A forecast that gives odds is doing its job. It tells you how much to prepare without pretending to be certain."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_forecast_college",
+   "question_ref": "j03_q_forecast",
+   "label": "Dry day after a 30-in-100 forecast (college, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_check_many",
+     "role": "strong",
+     "feedback": "Yes. A single day cannot show whether a 30-in-100 forecast is good. Across many such days, about 30 in 100 should be wet, and that is how to judge it."
+    },
+    {
+     "answer_ref": "j03_a_fc_fine",
+     "role": "ambiguous",
+     "feedback": "Correct that one dry day is not surprising. But it leaves the real question, whether the forecaster is any good, unanswered.",
+     "notes": "True, but stops short of how to judge the forecaster."
+    },
+    {
+     "answer_ref": "j03_a_fc_wrong",
+     "role": "incorrect",
+     "feedback": "A forecast of 30 in 100 does not promise rain, so a dry day does not contradict it."
+    },
+    {
+     "answer_ref": "j03_a_wait_more_data",
+     "role": "ambiguous",
+     "feedback": "Collecting more cases is the right instinct. As worded it is vague, and it does not say what to compare them with.",
+     "notes": "Right instinct, vague plan."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_spam_early",
+   "question_ref": "j03_q_spam",
+   "label": "Flagged email from a client (early career, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_choose_two"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_spam_most_fine",
+     "role": "strong",
+     "feedback": "Yes. Flags are common and real scams are rare, so most flagged emails are harmless. That does not make this one safe, only unlikely to be a scam."
+    },
+    {
+     "answer_ref": "j03_a_spam_verify",
+     "role": "strong",
+     "feedback": "Yes. A quick message to the client by phone or a known address settles it. It is cheap and handles the small chance that this one is real trouble."
+    },
+    {
+     "answer_ref": "j03_a_spam_delete",
+     "role": "ambiguous",
+     "feedback": "Deleting is safe from scams, but with so few real scams, you lose a message from a client that is probably fine. The cost is lost work and an annoyed client.",
+     "notes": "Safe from scams; costs a likely-fine message."
+    },
+    {
+     "answer_ref": "j03_a_spam_reply",
+     "role": "incorrect",
+     "feedback": "Replying right away, or clicking, takes the risk without a check. The filter being imperfect is a reason to verify, not to skip checking."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_survivor_adult",
+   "question_ref": "j03_q_survivor",
+   "label": "Five risk-taking success stories (general adult, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_surv_ask_fail",
+     "role": "strong",
+     "feedback": "Yes. The profiles only show companies that grew. Many risk-takers may have failed and are not in the article. Without that denominator, the pattern cannot show risk leads to growth."
+    },
+    {
+     "answer_ref": "j03_a_surv_partial",
+     "role": "ambiguous",
+     "feedback": "Accepting a small effect with a caveat sounds balanced. But it still reads a conclusion from five winners and no losers, so even the small effect is a guess.",
+     "notes": "Modest in tone, yet still concludes from survivors only."
+    },
+    {
+     "answer_ref": "j03_a_surv_concl",
+     "role": "incorrect",
+     "feedback": "Five winners who all took risks does not show that risk helped. Companies that took big risks and failed are not in the story."
+    },
+    {
+     "answer_ref": "j03_a_surv_none",
+     "role": "incorrect",
+     "feedback": "Five cases are too few to prove risk works, but also too few to prove it is useless. The right step is to ask for the missing cases."
+    }
+   ]
+  },
+  {
+   "client_ref": "j03_s_screen_lead",
+   "question_ref": "j03_q_screen",
+   "label": "A hiring screen as the only filter (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "probability_base_rates"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "reason_about_probability_and_base_rates"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_03",
+     "judgment",
+     "skill_probability_base_rates",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j03_a_scr_one_input",
+     "role": "strong",
+     "feedback": "Yes. You only know how hired people did, and the test kept out three of four applicants, so you do not know how they would have done. Using it as one input while gathering that evidence respects what you do not know."
+    },
+    {
+     "answer_ref": "j03_a_scr_wait_validation",
+     "role": "ambiguous",
+     "feedback": "Asking for the maker's evidence is sensible and may be needed. It delays the decision, and the maker has a reason to present the test well.",
+     "notes": "Sound, but slow and from an interested source."
+    },
+    {
+     "answer_ref": "j03_a_scr_sole",
+     "role": "incorrect",
+     "feedback": "Past hires who passed did well, but those are the only ones who were hired. This cannot show that the people screened out would have done worse."
+    },
+    {
+     "answer_ref": "j03_a_scr_drop",
+     "role": "incorrect",
+     "feedback": "Rejecting many applicants is what a filter does, so the rate alone is no reason to drop it. The question is whether it picks the right ones."
+    }
+   ]
+  }
+ ]
+}

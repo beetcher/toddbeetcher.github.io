@@ -1,0 +1,2369 @@
+{
+ "dry_run": true,
+ "questions": [
+  {
+   "client_ref": "j04_q_circular",
+   "data": {
+    "question_text": "Jo says, \"This band is the best, because it is simply the greatest band there is.\" You want to respond helpfully. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_forum",
+   "data": {
+    "question_text": "A friend recommends a diet plan, citing three success stories from an online forum that has hundreds of posts. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_dilemma",
+   "data": {
+    "question_text": "Your manager says, \"We have two choices: cut the training budget or lay off two people. There is no third way.\" What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_senior",
+   "data": {
+    "question_text": "A senior engineer says a new tool is safe, \"because I have done this for twenty years.\" A junior colleague has found a test that fails. You are in the meeting. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_slope",
+   "data": {
+    "question_text": "In a policy discussion someone says, \"If we allow flexible start times, soon nobody will turn up on time at all.\" You are asked to help the group decide. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_anchor",
+   "data": {
+    "question_text": "At a school sale a seller says a used game costs 40, then adds, \"For you, 25.\" You are not sure what it is worth. What is the most defensible next step?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_coworker",
+   "data": {
+    "question_text": "You have a feeling a new coworker is unreliable. You notice each detail they miss, but you cannot remember their good work. What is the most defensible way to test your view?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_estimate",
+   "data": {
+    "question_text": "You think a task will take three days. Similar tasks you have done before took about twice as long. Your manager asks for an estimate. What is the most defensible answer?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_extension",
+   "data": {
+    "question_text": "A project is six months in and over budget. The team asks for an extension because \"we have come so far\". New information suggests the need for the product has shifted. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_q_champion",
+   "data": {
+    "question_text": "You championed a plan. Early results are mixed. A trusted deputy suggests a review by someone outside the team. What is the most defensible response?",
+    "question_type": "single_choice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases",
+      "format_scenario"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "answers": [
+  {
+   "client_ref": "j04_a_attack_person",
+   "data": {
+    "answer_text": "Say the other person is biased and leave it there",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_agree_sounds_sure",
+   "data": {
+    "answer_text": "Agree, because the speaker sounds so sure",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_what_makes",
+   "data": {
+    "answer_text": "Point out the reason repeats the claim, and ask for a real one",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_all_opinion",
+   "data": {
+    "answer_text": "Say it is all a matter of opinion, so there is nothing to discuss",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_how_picked",
+   "data": {
+    "answer_text": "Ask how the three stories were picked and what the other posts say",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_three_enough",
+   "data": {
+    "answer_text": "Believe it, because three success stories is quite a lot of evidence",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_forums_unreliable",
+   "data": {
+    "answer_text": "Reject it, because online forums are not a reliable place for advice",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_try_short_test",
+   "data": {
+    "answer_text": "Try the plan for a short while and see how you do",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "college_student"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_other_options",
+   "data": {
+    "answer_text": "Ask what other options exist before choosing between the two",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_pick_lesser",
+   "data": {
+    "answer_text": "Pick whichever of the two options hurts less",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_cut_training",
+   "data": {
+    "answer_text": "Cut the training budget, because people matter more than programs",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_numbers_two",
+   "data": {
+    "answer_text": "Ask for the numbers behind each of the two options first",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_respect_look_test",
+   "data": {
+    "answer_text": "Respect the experience, and ask to look at the failing test together",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_defer_seniority",
+   "data": {
+    "answer_text": "Defer, because the senior engineer has done this for years",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_rerun_quietly",
+   "data": {
+    "answer_text": "Quietly rerun the test yourself first, then decide whether to speak up",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_dismiss_ego",
+   "data": {
+    "answer_text": "Say the senior engineer is too proud to listen",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_chain_trial",
+   "data": {
+    "answer_text": "Ask what would link the steps, and agree a short trial with a check point",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_dismiss_slope",
+   "data": {
+    "answer_text": "Dismiss the worry as a slippery-slope argument and move straight ahead",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_refuse_change",
+   "data": {
+    "answer_text": "Agree with the worry and refuse any change",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_attack_chaos",
+   "data": {
+    "answer_text": "Say the other side simply wants chaos in the office",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "reasoning_errors"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "recognize_reasoning_errors"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_reasoning_errors"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_check_comparables",
+   "data": {
+    "answer_text": "Look up what comparable cases have actually turned out like",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "teen_9_12",
+      "general_adult"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_big_drop_good",
+   "data": {
+    "answer_text": "Take it, because 25 is such a big drop from the price of 40",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_sellers_lie",
+   "data": {
+    "answer_text": "Refuse, because sellers always exaggerate what things are worth",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_offer_low",
+   "data": {
+    "answer_text": "Offer 15 and see how the seller reacts",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "teen_9_12"
+     ],
+     "difficulty": "introductory",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_keep_list",
+   "data": {
+    "answer_text": "Keep a short list of their misses and their hits for a few weeks",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_trust_first",
+   "data": {
+    "answer_text": "Trust your first impression, because it is usually right",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_assume_wrong",
+   "data": {
+    "answer_text": "Assume you are wrong and stop forming views of people",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_ask_prior_team",
+   "data": {
+    "answer_text": "Ask their previous team what they were like to work with",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_say_three_days",
+   "data": {
+    "answer_text": "Say three days, since that is your best case",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_double_gut",
+   "data": {
+    "answer_text": "Say six days, which is double your gut feeling",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_hidden_buffer",
+   "data": {
+    "answer_text": "Say three days and quietly add a buffer in your own plan",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "early_career_professional",
+      "general_adult"
+     ],
+     "difficulty": "basic",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_past_range",
+   "data": {
+    "answer_text": "Base the estimate on what similar tasks took, and give a range",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "early_career_professional"
+     ],
+     "difficulty": "intermediate",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_approve_effort",
+   "data": {
+    "answer_text": "Approve it, so that six months of effort are not thrown away",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_cancel_discipline",
+   "data": {
+    "answer_text": "Cancel it, to show the team that discipline matters more than pride",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_case_from_today",
+   "data": {
+    "answer_text": "Ask the team to make the case for the remaining work as if starting today",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_short_extension",
+   "data": {
+    "answer_text": "Approve a short extension with a firm review point",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "advanced",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_outside_review_criteria",
+   "data": {
+    "answer_text": "Welcome an outside review, and decide first what results would change your mind",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_wait_noisy",
+   "data": {
+    "answer_text": "Wait for more data first, because early numbers are noisy",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_reassure_team",
+   "data": {
+    "answer_text": "Reassure the team and point to the numbers that support the plan",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  },
+  {
+   "client_ref": "j04_a_friendly_reviewer",
+   "data": {
+    "answer_text": "Accept a review, but pick a reviewer who knows the plan well",
+    "origin": {
+     "author": "READY builder",
+     "authorship_kind": "system",
+     "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+     "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+    },
+    "status": "draft",
+    "metadata": {
+     "topics": [
+      "judgment",
+      "cognitive_biases"
+     ],
+     "audiences": [
+      "team_lead_or_manager"
+     ],
+     "difficulty": "expert",
+     "learning_objectives": [
+      "notice_cognitive_biases"
+     ],
+     "tags": [
+      "builder_created",
+      "needs_owner_review",
+      "ready_lib_judgment_04",
+      "judgment",
+      "skill_cognitive_biases"
+     ],
+     "attributes": {}
+    }
+   }
+  }
+ ],
+ "sets": [
+  {
+   "client_ref": "j04_s_circular_teen",
+   "question_ref": "j04_q_circular",
+   "label": "Circular reason about a band (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "reasoning_errors"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "recognize_reasoning_errors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_reasoning_errors",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_ask_what_makes",
+     "role": "strong",
+     "feedback": "Yes. \"Best because it's the greatest\" says the same thing twice and gives no reason. Asking what makes it the best invites a real reason, and keeps the chat friendly."
+    },
+    {
+     "answer_ref": "j04_a_agree_sounds_sure",
+     "role": "incorrect",
+     "feedback": "Sounding sure is not a reason. The statement went round in a circle, so nothing was actually shown."
+    },
+    {
+     "answer_ref": "j04_a_attack_person",
+     "role": "incorrect",
+     "feedback": "Calling Jo biased skips the argument and starts a fight. The problem is in the reasoning, and you can say so politely."
+    },
+    {
+     "answer_ref": "j04_a_all_opinion",
+     "role": "ambiguous",
+     "feedback": "Taste does vary, so \"it's all opinion\" has some truth. But Jo made a claim about being the best, and you can still ask what they mean by it, which keeps the talk going.",
+     "notes": "Partly true for taste; ends a conversation that a question could continue."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_forum_college",
+   "question_ref": "j04_q_forum",
+   "label": "Cherry-picked success stories (college, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "reasoning_errors"
+    ],
+    "audiences": [
+     "college_student"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "recognize_reasoning_errors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_reasoning_errors",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_ask_how_picked",
+     "role": "strong",
+     "feedback": "Yes. Three stories picked out of hundreds may be the best ones. You need to know how they were chosen and what the rest say before they mean anything."
+    },
+    {
+     "answer_ref": "j04_a_three_enough",
+     "role": "incorrect",
+     "feedback": "Three is a small number out of hundreds, and success stories are the ones that get shared. The stories alone do not show typical results."
+    },
+    {
+     "answer_ref": "j04_a_forums_unreliable",
+     "role": "incorrect",
+     "feedback": "A forum can be wrong, but \"unreliable\" is too broad a reason to reject. Asking how the stories were picked is fairer and more useful."
+    },
+    {
+     "answer_ref": "j04_a_try_short_test",
+     "role": "ambiguous",
+     "feedback": "Trying it is a form of testing, and you learn about your own case. But one person's short trial says little about whether it generally works, and a diet can carry its own risks.",
+     "notes": "Personal trial is real evidence for you, weak in general, and may carry costs."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_dilemma_adult",
+   "question_ref": "j04_q_dilemma",
+   "label": "Only two choices offered (general adult, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "reasoning_errors"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "recognize_reasoning_errors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_reasoning_errors",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_ask_other_options",
+     "role": "strong",
+     "feedback": "Yes. Offering only two options hides others, such as smaller cuts, delays or new income. Asking what else exists is the quickest way to test the \"no third way\" claim."
+    },
+    {
+     "answer_ref": "j04_a_ask_numbers_two",
+     "role": "ambiguous",
+     "feedback": "Looking at the numbers is useful and shows what each option really costs. But it accepts the manager's frame that only these two exist, so better options might never be considered.",
+     "notes": "Good facts, but works inside a possibly false choice."
+    },
+    {
+     "answer_ref": "j04_a_pick_lesser",
+     "role": "incorrect",
+     "feedback": "Picking the lesser harm of two sounds sensible, but only if the two really are the only choices. Here that is the thing in doubt."
+    },
+    {
+     "answer_ref": "j04_a_cut_training",
+     "role": "incorrect",
+     "feedback": "This accepts the either-or and then decides on a value judgment. The first question is whether there are other ways forward."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_senior_early",
+   "question_ref": "j04_q_senior",
+   "label": "Years of experience versus a failing test (early career, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "reasoning_errors"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "recognize_reasoning_errors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_reasoning_errors",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_respect_look_test",
+     "role": "strong",
+     "feedback": "Yes. Experience is worth respecting, but it is not proof about this tool. A failing test is concrete evidence, and inviting the engineer to look at it together keeps the meeting constructive."
+    },
+    {
+     "answer_ref": "j04_a_rerun_quietly",
+     "role": "ambiguous",
+     "feedback": "Rerunning first avoids a false alarm and spares embarrassment. The cost is time, and if the test is real the group is already moving ahead on the wrong assumption.",
+     "notes": "Careful and polite; can delay a safety concern."
+    },
+    {
+     "answer_ref": "j04_a_defer_seniority",
+     "role": "incorrect",
+     "feedback": "Years of experience make a claim more likely to be right, but they do not answer a failing test. Deferring skips the evidence."
+    },
+    {
+     "answer_ref": "j04_a_dismiss_ego",
+     "role": "incorrect",
+     "feedback": "Guessing at motives turns a question about a test into a fight about a person. It also makes the evidence harder to discuss."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_slope_lead",
+   "question_ref": "j04_q_slope",
+   "label": "Flexible start times and a feared slide (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "reasoning_errors"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "recognize_reasoning_errors"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_reasoning_errors",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_ask_chain_trial",
+     "role": "strong",
+     "feedback": "Yes. Some feared chains of events are real and some are not. Asking what would link the steps tests the worry, and a short trial with a check point lets evidence decide."
+    },
+    {
+     "answer_ref": "j04_a_dismiss_slope",
+     "role": "ambiguous",
+     "feedback": "Many slippery-slope arguments are weak, and this one has no evidence offered. But sometimes a chain is real, and brushing the worry aside can lose a chance to watch for it.",
+     "notes": "Often right about the argument; may ignore a real risk worth monitoring."
+    },
+    {
+     "answer_ref": "j04_a_refuse_change",
+     "role": "incorrect",
+     "feedback": "Agreeing to the worry without any reason treats a fear as a fact. Nothing in the claim shows that the chain would happen."
+    },
+    {
+     "answer_ref": "j04_a_attack_chaos",
+     "role": "incorrect",
+     "feedback": "Describing the other side as wanting chaos replaces the argument with a caricature. It makes a calm trial harder to agree on."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_anchor_teen",
+   "question_ref": "j04_q_anchor",
+   "label": "A price that drops to 25 (teen, introductory)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "teen_9_12"
+    ],
+    "difficulty": "introductory",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_check_comparables",
+     "role": "strong",
+     "feedback": "Yes. \"40\" was just the first number you heard, and it can make 25 look like a bargain. Checking what similar games really sell for gives you a fair yardstick."
+    },
+    {
+     "answer_ref": "j04_a_big_drop_good",
+     "role": "incorrect",
+     "feedback": "A big drop from the first price sounds like a gift, but the first price may have been inflated. The drop tells you what the seller started at, not what the game is worth."
+    },
+    {
+     "answer_ref": "j04_a_sellers_lie",
+     "role": "incorrect",
+     "feedback": "Some sellers are fair. Refusing on a rule about all sellers skips finding out whether 25 is a good price."
+    },
+    {
+     "answer_ref": "j04_a_offer_low",
+     "role": "ambiguous",
+     "feedback": "Haggling can work and it shows you are not accepting the first number. But you are still using the seller's prices to steer your counter-offer, and you do not yet know the real value.",
+     "notes": "Reasonable tactic; still anchored to the seller's numbers."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_coworker_adult",
+   "question_ref": "j04_q_coworker",
+   "label": "A first impression of a coworker (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_keep_list",
+     "role": "strong",
+     "feedback": "Yes. A feeling tends to collect examples that fit it. Writing down both misses and hits for a few weeks gives you a fair record to judge by."
+    },
+    {
+     "answer_ref": "j04_a_trust_first",
+     "role": "incorrect",
+     "feedback": "First impressions can be right, but they are also where bias begins. Trusting it means you stop collecting evidence that could change your mind."
+    },
+    {
+     "answer_ref": "j04_a_ask_prior_team",
+     "role": "ambiguous",
+     "feedback": "Hearing from people who worked with them adds information. It is second-hand, may carry others' biases, and does not fix your own way of noticing.",
+     "notes": "Extra information, but second-hand and does not address your own noticing."
+    },
+    {
+     "answer_ref": "j04_a_assume_wrong",
+     "role": "incorrect",
+     "feedback": "Doubting your impression is healthy, but giving up on forming views is not. The aim is to test it, not to discard judgment."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_estimate_early",
+   "question_ref": "j04_q_estimate",
+   "label": "A three-day estimate (early career, intermediate)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "early_career_professional"
+    ],
+    "difficulty": "intermediate",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_past_range",
+     "role": "strong",
+     "feedback": "Yes. People tend to be too optimistic about their own tasks. Using what similar tasks actually took, and giving a range, is more honest than a single hopeful number."
+    },
+    {
+     "answer_ref": "j04_a_double_gut",
+     "role": "ambiguous",
+     "feedback": "Doubling a gut feeling is a known rule of thumb and often works. It is crude, gives no range, and hides the reasoning, so a manager cannot judge it.",
+     "notes": "A useful rule of thumb that hides its reasoning."
+    },
+    {
+     "answer_ref": "j04_a_hidden_buffer",
+     "role": "ambiguous",
+     "feedback": "A private buffer protects you, but your manager plans around the number you gave. The cost is an estimate that is not honest to them.",
+     "notes": "Protects you; the manager plans with a figure you do not believe."
+    },
+    {
+     "answer_ref": "j04_a_say_three_days",
+     "role": "incorrect",
+     "feedback": "Three days is the best case, not the likely case. Your own history says tasks like this take longer."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_estimate_adult",
+   "question_ref": "j04_q_estimate",
+   "label": "A three-day estimate (general adult, basic)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "general_adult"
+    ],
+    "difficulty": "basic",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_check_comparables",
+     "role": "strong",
+     "feedback": "Yes. Looking at how similar jobs actually went beats trusting a hopeful guess. It pulls you back from the optimism that most of us bring to our own plans."
+    },
+    {
+     "answer_ref": "j04_a_say_three_days",
+     "role": "incorrect",
+     "feedback": "This uses the best case as if it were the usual case. Past jobs like this took about twice as long."
+    },
+    {
+     "answer_ref": "j04_a_double_gut",
+     "role": "ambiguous",
+     "feedback": "A doubling rule corrects for optimism roughly. It is better than three days but gives no reason and no range, so it is hard to defend if challenged.",
+     "notes": "A crude correction without reasoning."
+    },
+    {
+     "answer_ref": "j04_a_hidden_buffer",
+     "role": "ambiguous",
+     "feedback": "A private buffer protects you, but your manager plans around the number you gave. It also trains you to keep an optimistic gut feeling instead of correcting it.",
+     "notes": "Protects you; the estimate is not honest to the person relying on it."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_extension_lead",
+   "question_ref": "j04_q_extension",
+   "label": "We have come so far (manager, advanced)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "advanced",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_case_from_today",
+     "role": "strong",
+     "feedback": "Yes. The six months are spent either way. Asking the team to argue for the remaining work as if starting today keeps the decision about future value, with the new market information included."
+    },
+    {
+     "answer_ref": "j04_a_short_extension",
+     "role": "ambiguous",
+     "feedback": "A short extension with a firm review gives time to gather facts and limits the exposure. The risk is that a short extension becomes a long one, and the review point must be real.",
+     "notes": "Reasonable hedge; needs a review point that is actually enforced."
+    },
+    {
+     "answer_ref": "j04_a_approve_effort",
+     "role": "incorrect",
+     "feedback": "This is the sunk-cost trap: past effort is spent whichever way you go. It adds more cost to a project whose need has shifted."
+    },
+    {
+     "answer_ref": "j04_a_cancel_discipline",
+     "role": "incorrect",
+     "feedback": "Cancelling to send a message is also a decision about the past. The question is whether the remaining work is worth it now."
+    }
+   ]
+  },
+  {
+   "client_ref": "j04_s_champion_lead",
+   "question_ref": "j04_q_champion",
+   "label": "Early mixed results on your own plan (manager, expert)",
+   "metadata": {
+    "topics": [
+     "judgment",
+     "cognitive_biases"
+    ],
+    "audiences": [
+     "team_lead_or_manager"
+    ],
+    "difficulty": "expert",
+    "learning_objectives": [
+     "notice_cognitive_biases"
+    ],
+    "tags": [
+     "builder_created",
+     "needs_owner_review",
+     "ready_lib_judgment_04",
+     "judgment",
+     "skill_cognitive_biases",
+     "format_scenario",
+     "move_ask_or_delay"
+    ],
+    "attributes": {}
+   },
+   "origin": {
+    "author": "READY builder",
+    "authorship_kind": "system",
+    "source_reference": "Original draft material; not an official assessment; awaiting owner review",
+    "notes": "Practice and discussion material only; not a validated psychometric instrument and does not measure intelligence, honesty or job performance."
+   },
+   "status": "draft",
+   "connections": [
+    {
+     "answer_ref": "j04_a_outside_review_criteria",
+     "role": "strong",
+     "feedback": "Yes. Your investment in the plan makes it hard to read mixed data fairly. Naming in advance what would change your mind makes the review harder to argue away afterward."
+    },
+    {
+     "answer_ref": "j04_a_wait_noisy",
+     "role": "ambiguous",
+     "feedback": "Early results really are noisy, so waiting has a basis. The risk is that waiting becomes a way to avoid being challenged, with the team and money committed in the meantime.",
+     "notes": "True about noisy data; may become a way to avoid challenge."
+    },
+    {
+     "answer_ref": "j04_a_friendly_reviewer",
+     "role": "ambiguous",
+     "feedback": "A reviewer who understands the plan can give informed comments. A reviewer chosen for knowing the plan may also share your assumptions, so the review is less independent.",
+     "notes": "Informed but less independent."
+    },
+    {
+     "answer_ref": "j04_a_reassure_team",
+     "role": "incorrect",
+     "feedback": "Pointing to supportive numbers while skipping the rest is confirmation bias in action. The team deserves the whole picture."
+    }
+   ]
+  }
+ ]
+}
