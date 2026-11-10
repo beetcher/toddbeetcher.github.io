@@ -78,28 +78,71 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
   if (dialog && openButton && typeof dialog.showModal === 'function') {
     openButton.hidden = false;
     const isEmployer = profile?.audience === 'employer';
-    document.getElementById('generic-welcome').hidden = isEmployer;
-    document.getElementById('employer-welcome').hidden = !isEmployer;
-    document.getElementById('welcome-document-links').hidden = !isEmployer;
-    document.getElementById('welcome-conversation').hidden = isEmployer;
-    document.getElementById('welcome-audience').textContent = isEmployer ? profile.label : 'A letter from Todd';
-    dialog.setAttribute('aria-labelledby', isEmployer ? 'employer-welcome-title' : 'welcome-title');
-    dialog.setAttribute('aria-describedby', isEmployer ? 'employer-welcome-intro' : 'welcome-intro');
-    openButton.textContent = isEmployer ? 'Welcome & documents ↗' : 'Read Todd’s letter ↗';
+    const defaultKind = isEmployer ? 'employer' : 'tour';
+    let activeKind = defaultKind;
+    let openingSource = null;
+    const letterScroll = dialog.querySelector('.welcome-letter-scroll');
+    const choices = document.getElementById('letter-choices');
+    const floaters = [...document.querySelectorAll('[data-letter-floater]')];
+    const letterNav = [...document.querySelectorAll('[data-letter-nav]')];
+    const serviceKey = kind => `masthead-floater-serviced:${kind}-v1`;
+    for (const floater of floaters) {
+      try { floater.hidden = sessionStorage.getItem(serviceKey(floater.dataset.letterFloater)) === 'true'; } catch { /* Optional storage. */ }
+    }
+    if (choices) choices.hidden = false;
+    for (const button of letterNav) button.hidden = false;
+    function serviceFloater(kind) {
+      const floater = floaters.find(item => item.dataset.letterFloater === kind);
+      if (!floater) return;
+      const hadFocus = floater.contains(document.activeElement);
+      floater.hidden = true;
+      try { sessionStorage.setItem(serviceKey(kind), 'true'); } catch { /* Optional storage. */ }
+      const nav = letterNav.find(button => button.dataset.letterNav === kind);
+      if (floater.contains(nextFocus)) nextFocus = nav || openButton;
+      if (hadFocus) (nav || openButton).focus({preventScroll: true});
+    }
+    for (const button of document.querySelectorAll('[data-close-floater]')) {
+      button.addEventListener('click', () => serviceFloater(button.dataset.closeFloater));
+    }
+    openButton.textContent = isEmployer ? 'Welcome & documents ↗' : 'Take a quick tour ↗';
+    function selectLetter(kind) {
+      activeKind = kind;
+      const employer = kind === 'employer';
+      const meet = kind === 'meet';
+      document.getElementById('generic-welcome').hidden = kind !== 'tour';
+      document.getElementById('employer-welcome').hidden = !employer;
+      document.getElementById('meet-todd-letter').hidden = !meet;
+      document.getElementById('welcome-document-links').hidden = !employer;
+      document.getElementById('welcome-conversation').hidden = employer;
+      document.getElementById('welcome-audience').textContent = employer ? profile.label : meet ? 'Meet Todd' : 'A letter from Todd';
+      dialog.setAttribute('aria-labelledby', employer ? 'employer-welcome-title' : meet ? 'welcome-audience' : 'welcome-title');
+      dialog.setAttribute('aria-describedby', employer ? 'employer-welcome-intro' : meet ? 'meet-todd-intro' : 'welcome-intro');
+      letterScroll.setAttribute('aria-label', employer ? 'Employer welcome letter' : meet ? 'Meet Todd letter' : 'Quick tour letter');
+    }
     const welcomeKey = `masthead-welcome-dismissed:${isEmployer ? id : 'general-letter-v1'}`;
     let nextFocus = openButton;
     let dismissed = false;
     try { dismissed = sessionStorage.getItem(welcomeKey) === 'true'; } catch { /* Optional storage. */ }
-    function showWelcome() {
+    let pagePosition = {left: 0, top: 0};
+    function recordDismissal() {
+      if (openingSource === 'floater') serviceFloater(activeKind);
+      if (activeKind !== defaultKind) return;
+      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+    }
+    function showWelcome(kind = defaultKind, source = 'navigation') {
       if (dialog.open) return;
       nextFocus = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : openButton;
+      pagePosition = {left: window.scrollX, top: window.scrollY};
+      openingSource = source;
+      selectLetter(kind);
       dialog.showModal();
+      letterScroll.scrollTop = 0;
       document.documentElement.classList.add('welcome-open');
       document.getElementById('close-welcome').focus({preventScroll: true});
     }
     function dismissWelcome(explore = false) {
       if (explore) nextFocus = document.getElementById('hero-title');
-      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+      recordDismissal();
       if (dialog.open) dialog.close();
     }
     dialog.addEventListener('keydown', event => {
@@ -112,30 +155,39 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
         event.preventDefault(); first.focus();
       }
     });
-    dialog.addEventListener('cancel', () => {
-      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
-    });
+    dialog.addEventListener('cancel', recordDismissal);
     dialog.addEventListener('close', () => {
       document.documentElement.classList.remove('welcome-open');
-      try { sessionStorage.setItem(welcomeKey, 'true'); } catch { /* Optional storage. */ }
+      recordDismissal();
       if (nextFocus && nextFocus.isConnected) nextFocus.focus({preventScroll: true});
       if (nextFocus && nextFocus.id === 'hero-title') nextFocus.scrollIntoView({block: 'start'});
+      else window.scrollTo({...pagePosition, behavior: 'instant'});
     });
     document.getElementById('close-welcome').addEventListener('click', () => dismissWelcome());
     document.getElementById('explore-welcome').addEventListener('click', () => dismissWelcome(true));
     for (const link of dialog.querySelectorAll('a[href]')) link.addEventListener('click', () => dismissWelcome());
-    openButton.addEventListener('click', showWelcome);
+    openButton.addEventListener('click', () => showWelcome());
+    document.getElementById('open-meet-todd')?.addEventListener('click', () => showWelcome('meet', 'floater'));
+    document.getElementById('open-tour')?.addEventListener('click', () => showWelcome('tour', 'floater'));
+    for (const button of letterNav) button.addEventListener('click', () => showWelcome(button.dataset.letterNav));
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const bounds = dialog.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dismissWelcome();
+    });
     // Use the browser's multi-click timing; ordinary logo navigation stays intact.
     const headerLogo = document.querySelector('.site-header .brand .monogram');
     headerLogo?.addEventListener('click', event => {
       if (event.detail !== 3 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      try { sessionStorage.removeItem(welcomeKey); } catch { /* Optional storage. */ }
-      dialog.querySelector('.welcome-letter-scroll').scrollTop = 0;
-      showWelcome();
+      for (const floater of floaters) {
+        try { sessionStorage.removeItem(serviceKey(floater.dataset.letterFloater)); } catch { /* Optional storage. */ }
+        floater.hidden = false;
+      }
+      choices?.scrollIntoView({block: 'center', behavior: 'instant'});
     });
     window.addEventListener('pagehide', () => { if (dialog.open) dialog.close(); });
-    if (!dismissed) showWelcome();
+    if (isEmployer && !dismissed) showWelcome(defaultKind, 'personalized');
   }
 
   if (!id) return;
