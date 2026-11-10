@@ -30,10 +30,17 @@
 .site-header .letter-nav{border:0;background:transparent;color:inherit;font:inherit;padding:10px 0;min-height:44px;cursor:pointer;text-align:left}.site-header .letter-nav:hover{color:var(--accent)}
 .letter-choices{position:absolute;z-index:16;top:44px;left:50%;transform:translateX(-50%);width:min(900px,calc(100% - 48px));display:flex;align-items:flex-start;justify-content:center;gap:22px;pointer-events:none}
 .letter-floater{position:relative;flex:1;min-width:0;max-width:440px;background:var(--paper);border:1px solid #819786;border-radius:8px;box-shadow:0 18px 65px #10271b55;pointer-events:auto}
-.letter-floater-meet{flex:1.08;background:#e7ece3;border:2px solid var(--green)}
+.letter-floater-meet{flex:1.08;background:var(--green);border:2px solid #819786}
 .letter-choice{display:flex;width:100%;flex-direction:column;align-items:flex-start;text-align:left;gap:16px;padding:62px 30px 32px;border:0;border-radius:8px;background:transparent;color:var(--ink);font:inherit;cursor:pointer;min-width:0;min-height:300px}
 .letter-choice:hover{background:#203a3108}.letter-choice:focus-visible{outline:3px solid var(--accent);outline-offset:-7px}
 .letter-floater-close{position:absolute;right:10px;top:8px;width:44px;height:44px;border:1px solid #819786;border-radius:50%;background:var(--white);color:var(--ink);font-size:26px;line-height:1;cursor:pointer;z-index:1}.letter-floater-close:hover{background:var(--pale)}
 .letter-choice-title{font:400 30px/1.2 var(--serif);letter-spacing:-.025em}.letter-choice-description{font-size:16px;line-height:1.6;max-width:470px}.letter-choice-action{font-size:13px;font-weight:650;margin-top:auto;padding-top:4px;text-decoration:underline;text-underline-offset:4px}
+/* Keep the primary invitation treatment isolated from the quick tour. */
+.letter-floater-meet .letter-choice{color:var(--white)}
+.letter-floater-meet .letter-choice-action{align-self:center;display:flex;align-items:center;justify-content:center;gap:.35em;max-width:100%;min-height:54px;padding:16px 26px;border-radius:8px;background:var(--white);color:var(--green);font-size:16px;line-height:1.4;text-align:center;text-decoration:none}
+.letter-floater-meet .letter-choice:hover{background:transparent}
+.letter-floater-meet .letter-choice:hover .letter-choice-action{background:var(--pale)}
+.letter-floater-meet .letter-choice:focus-visible{outline-color:var(--white)}
+.letter-floater-meet .letter-choice:focus-visible .letter-choice-action{background:var(--pale);outline:3px solid var(--white);outline-offset:4px}
 @media(max-width:760px){.site-header nav{width:100%;gap:4px 18px}.letter-choices{top:24px;width:calc(100% - 32px);flex-direction:column;align-items:center;gap:16px}.letter-floater{width:100%;max-width:440px;flex:auto}.letter-choice{padding:48px 22px 24px;min-height:0;gap:10px}.letter-choice-title{font-size:26px}.letter-choice-description{font-size:14px}}
 @media print{.letter-choices{display:none!important}}
