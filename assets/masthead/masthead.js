@@ -125,6 +125,15 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
     document.getElementById('explore-welcome').addEventListener('click', () => dismissWelcome(true));
     for (const link of dialog.querySelectorAll('a[href]')) link.addEventListener('click', () => dismissWelcome());
     openButton.addEventListener('click', showWelcome);
+    // Use the browser's multi-click timing; ordinary logo navigation stays intact.
+    const headerLogo = document.querySelector('.site-header .brand .monogram');
+    headerLogo?.addEventListener('click', event => {
+      if (event.detail !== 3 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      try { sessionStorage.removeItem(welcomeKey); } catch { /* Optional storage. */ }
+      dialog.querySelector('.welcome-letter-scroll').scrollTop = 0;
+      showWelcome();
+    });
     window.addEventListener('pagehide', () => { if (dialog.open) dialog.close(); });
     if (!dismissed) showWelcome();
   }
