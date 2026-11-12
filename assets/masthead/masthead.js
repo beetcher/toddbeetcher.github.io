@@ -13,6 +13,17 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
   });
 }
 
+// The review-draft notice stays hidden. The first plain click on the tb. monogram reveals it once;
+// later clicks and the triple-click letter reset keep their normal behavior.
+const reviewBanner = document.querySelector('.review-banner');
+document.querySelector('.site-header .brand .monogram')?.addEventListener('click', event => {
+  if (!reviewBanner || !reviewBanner.hidden) return;
+  if (event.detail > 1 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  reviewBanner.hidden = false;
+  window.scrollTo({top: 0, behavior: 'instant'});
+});
+
 // Authored opportunity profiles. Current messages and documents are review placeholders.
 // The current URL alone activates a profile; dismissal does not retain identity.
 (() => {
