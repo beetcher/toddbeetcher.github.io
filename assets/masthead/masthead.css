@@ -37,7 +37,7 @@
 .letter-choice-title{font:400 30px/1.2 var(--serif);letter-spacing:-.025em}.letter-choice-description{font-size:16px;line-height:1.6;max-width:470px}.letter-choice-action{font-size:13px;font-weight:650;margin-top:auto;padding-top:4px;text-decoration:underline;text-underline-offset:4px}
 /* Keep the primary invitation treatment isolated from the quick tour. */
 .letter-floater-meet .letter-choice{color:var(--white)}
-.letter-floater-meet .letter-choice-action{align-self:center;display:flex;align-items:center;justify-content:center;gap:.35em;max-width:100%;min-height:54px;padding:16px 26px;border-radius:8px;background:var(--white);color:var(--green);font-size:16px;line-height:1.4;text-align:center;text-decoration:none}
+.letter-floater-meet .letter-choice-action{align-self:center;margin:auto 0;display:flex;align-items:center;justify-content:center;gap:.35em;max-width:100%;min-height:54px;padding:16px 26px;border-radius:8px;background:var(--white);color:var(--green);font-size:16px;line-height:1.4;text-align:center;text-decoration:none}
 .letter-floater-meet .letter-choice:hover{background:transparent}
 .letter-floater-meet .letter-choice:hover .letter-choice-action{background:var(--pale)}
 .letter-floater-meet .letter-choice:focus-visible{outline-color:var(--white)}
