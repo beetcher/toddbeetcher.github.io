@@ -80,4 +80,11 @@
 .holding .hold-ring circle{stroke-dashoffset:0;transition:stroke-dashoffset 3s linear}
 @media(pointer:coarse){.site-header .brand .monogram{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.site-header .brand{-webkit-touch-callout:none}}
 @media(prefers-reduced-motion:reduce){.holding .hold-ring circle{transition-timing-function:steps(6,end)}}
-.reset-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;background:var(--green);color:var(--white);padding:12px 22px;border-radius:999px;font-size:15px;font-weight:600;box-shadow:0 8px 30px #10271b55;pointer-events:none}
+.hold-panel{position:fixed;top:33vh;left:50%;transform:translateX(-50%);z-index:2000;width:min(86vw,360px);box-sizing:border-box;padding:22px 24px;border-radius:14px;background:var(--green);color:var(--white);text-align:center;box-shadow:0 14px 50px #10271b88;border:2px solid var(--white);pointer-events:none;opacity:1;transition:opacity .4s ease}
+.hold-panel-text{margin:0 0 16px;font-size:24px;font-weight:700;line-height:1.2}
+.hold-panel-track{height:12px;border-radius:999px;background:#ffffff33;overflow:hidden}
+.hold-panel-fill{height:100%;width:0;border-radius:999px;background:var(--white)}
+.hold-panel.filling .hold-panel-fill{width:100%;transition:width 2.75s linear}
+.hold-panel.done .hold-panel-fill{width:100%;transition:none}
+.hold-panel.fade{opacity:0}
+@media(prefers-reduced-motion:reduce){.hold-panel.filling .hold-panel-fill{transition:width 2.75s steps(6,end)}.hold-panel{transition:none}}

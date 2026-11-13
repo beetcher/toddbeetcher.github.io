@@ -13,16 +13,7 @@ if (copyButton && navigator.clipboard && window.isSecureContext) {
   });
 }
 
-// The review-draft notice stays hidden. The first plain click on the tb. monogram reveals it once;
-// later clicks and the triple-click letter reset keep their normal behavior.
-const reviewBanner = document.querySelector('.review-banner');
-document.querySelector('.site-header .brand .monogram')?.addEventListener('click', event => {
-  if (!reviewBanner || !reviewBanner.hidden) return;
-  if (event.detail > 1 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-  event.preventDefault();
-  reviewBanner.hidden = false;
-  window.scrollTo({top: 0, behavior: 'instant'});
-});
+// The review-draft notice (aside.review-banner) stays hidden; nothing reveals it.
 
 // Authored opportunity profiles. Current messages and documents are review placeholders.
 // The current URL alone activates a profile; dismissal does not retain identity.
@@ -210,30 +201,50 @@ document.querySelector('.site-header .brand .monogram')?.addEventListener('click
       ring.setAttribute('aria-hidden', 'true');
       ring.innerHTML = '<svg viewBox="0 0 100 100" focusable="false"><circle cx="50" cy="50" r="46"></circle></svg>';
       headerLogo.append(ring);
-      let holdTimer = null, startX = 0, startY = 0, swallowUntil = 0;
+      let holdTimer = null, showTimer = null, startX = 0, startY = 0, swallowUntil = 0;
+      let panel = null, panelDone = false;
+      const removePanel = () => { panel?.remove(); panel = null; panelDone = false; };
       const cancelHold = () => {
         clearTimeout(holdTimer); holdTimer = null;
+        clearTimeout(showTimer); showTimer = null;
         headerLogo.classList.remove('holding');
+        if (!panelDone) removePanel(); // a finished "Letters reset" panel stays until it fades
       };
-      function showToast(text) {
-        const toast = document.createElement('div');
-        toast.className = 'reset-toast';
-        toast.setAttribute('role', 'status');
-        toast.textContent = text;
-        document.body.append(toast);
-        setTimeout(() => toast.remove(), 2000);
+      function showPanel() {
+        removePanel();
+        panel = document.createElement('div');
+        panel.className = 'hold-panel';
+        panel.setAttribute('role', 'status');
+        panel.setAttribute('aria-live', 'polite');
+        panel.innerHTML = '<p class="hold-panel-text">Keep holding\u2026</p><div class="hold-panel-track"><div class="hold-panel-fill"></div></div>';
+        document.body.append(panel);
+        void panel.getBoundingClientRect(); // start the fill from empty
+        panel.classList.add('filling');
+      }
+      function finishPanel() {
+        if (!panel) showPanel();
+        const done = panel;
+        panelDone = true;
+        done.classList.add('done');
+        done.querySelector('.hold-panel-text').textContent = 'Letters reset \u2713';
+        setTimeout(() => done.classList.add('fade'), 2000);
+        setTimeout(() => { done.remove(); if (panel === done) { panel = null; panelDone = false; } }, 2400);
       }
       headerLogo.addEventListener('pointerdown', event => {
         if (event.pointerType !== 'touch' || !touchOnly.matches) return;
         startX = event.clientX; startY = event.clientY;
         cancelHold();
+        removePanel();
         void ring.getBoundingClientRect(); // restart the ring animation
         headerLogo.classList.add('holding');
+        showTimer = setTimeout(showPanel, 250);
         holdTimer = setTimeout(() => {
-          cancelHold();
+          clearTimeout(showTimer); showTimer = null;
+          headerLogo.classList.remove('holding');
+          holdTimer = null;
           swallowUntil = Date.now() + 1500; // ignore the click that follows release
           resetLetters();
-          showToast('Letters reset');
+          finishPanel();
         }, HOLD_MS);
       });
       headerLogo.addEventListener('pointermove', event => {
