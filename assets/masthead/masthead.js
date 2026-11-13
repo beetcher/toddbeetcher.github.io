@@ -188,15 +188,64 @@ document.querySelector('.site-header .brand .monogram')?.addEventListener('click
     });
     // Use the browser's multi-click timing; ordinary logo navigation stays intact.
     const headerLogo = document.querySelector('.site-header .brand .monogram');
-    headerLogo?.addEventListener('click', event => {
-      if (event.detail !== 3 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
+    const touchOnly = window.matchMedia('(pointer: coarse)');
+    function resetLetters() {
       for (const floater of floaters) {
         try { sessionStorage.removeItem(serviceKey(floater.dataset.letterFloater)); } catch { /* Optional storage. */ }
         floater.hidden = false;
       }
       choices?.scrollIntoView({block: 'center', behavior: 'instant'});
+    }
+    headerLogo?.addEventListener('click', event => {
+      if (touchOnly.matches) return; // Touch devices use press-and-hold instead.
+      if (event.detail !== 3 || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      resetLetters();
     });
+    // Touch devices: press and hold the mark for 3 seconds to reset the letters.
+    if (headerLogo) {
+      const HOLD_MS = 3000;
+      const ring = document.createElement('span');
+      ring.className = 'hold-ring';
+      ring.setAttribute('aria-hidden', 'true');
+      ring.innerHTML = '<svg viewBox="0 0 100 100" focusable="false"><circle cx="50" cy="50" r="46"></circle></svg>';
+      headerLogo.append(ring);
+      let holdTimer = null, startX = 0, startY = 0, swallowUntil = 0;
+      const cancelHold = () => {
+        clearTimeout(holdTimer); holdTimer = null;
+        headerLogo.classList.remove('holding');
+      };
+      function showToast(text) {
+        const toast = document.createElement('div');
+        toast.className = 'reset-toast';
+        toast.setAttribute('role', 'status');
+        toast.textContent = text;
+        document.body.append(toast);
+        setTimeout(() => toast.remove(), 2000);
+      }
+      headerLogo.addEventListener('pointerdown', event => {
+        if (event.pointerType !== 'touch' || !touchOnly.matches) return;
+        startX = event.clientX; startY = event.clientY;
+        cancelHold();
+        void ring.getBoundingClientRect(); // restart the ring animation
+        headerLogo.classList.add('holding');
+        holdTimer = setTimeout(() => {
+          cancelHold();
+          swallowUntil = Date.now() + 1500; // ignore the click that follows release
+          resetLetters();
+          showToast('Letters reset');
+        }, HOLD_MS);
+      });
+      headerLogo.addEventListener('pointermove', event => {
+        if (holdTimer && Math.hypot(event.clientX - startX, event.clientY - startY) > 10) cancelHold();
+      });
+      for (const type of ['pointerup', 'pointercancel', 'pointerleave']) headerLogo.addEventListener(type, cancelHold);
+      window.addEventListener('scroll', cancelHold, {passive: true});
+      headerLogo.addEventListener('contextmenu', event => { if (touchOnly.matches) event.preventDefault(); });
+      headerLogo.addEventListener('click', event => {
+        if (Date.now() < swallowUntil) { event.preventDefault(); event.stopImmediatePropagation(); }
+      }, true);
+    }
     window.addEventListener('pagehide', () => { if (dialog.open) dialog.close(); });
     if (isEmployer && !dismissed) showWelcome(defaultKind, 'personalized');
   }

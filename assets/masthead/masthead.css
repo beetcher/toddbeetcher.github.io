@@ -70,3 +70,14 @@
 
 /* Plan 3: tour letter is reached only from the nav link, not as a floating card */
 .letter-floater[data-letter-floater="tour"]{display:none}
+
+/* Plan 4: press-and-hold reset ring and toast (touch devices) */
+.site-header .brand .monogram{position:relative}
+.hold-ring{position:absolute;inset:-8px -6px -8px -10px;pointer-events:none;opacity:0}
+.hold-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.hold-ring circle{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-dasharray:289;stroke-dashoffset:289}
+.holding .hold-ring{opacity:1}
+.holding .hold-ring circle{stroke-dashoffset:0;transition:stroke-dashoffset 3s linear}
+@media(pointer:coarse){.site-header .brand .monogram{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.site-header .brand{-webkit-touch-callout:none}}
+@media(prefers-reduced-motion:reduce){.holding .hold-ring circle{transition-timing-function:steps(6,end)}}
+.reset-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;background:var(--green);color:var(--white);padding:12px 22px;border-radius:999px;font-size:15px;font-weight:600;box-shadow:0 8px 30px #10271b55;pointer-events:none}
