@@ -88,3 +88,11 @@
 .hold-panel.done .hold-panel-fill{width:100%;transition:none}
 .hold-panel.fade{opacity:0}
 @media(prefers-reduced-motion:reduce){.hold-panel.filling .hold-panel-fill{transition:width 2.75s steps(6,end)}.hold-panel{transition:none}}
+
+/* Plan 6: LinkedIn link on the header row (sibling of .brand, outside the tb. wrapper) */
+.header-linkedin{order:3;display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:inherit;text-decoration:none}
+.header-linkedin>span{border-bottom:1px solid var(--ink)}
+.header-linkedin:hover{color:var(--accent)}
+@media(max-width:1100px){.site-header .brand{order:0}.header-linkedin{order:1;margin-left:auto}.site-header nav{order:2}}
+@media(max-width:760px){.header-linkedin{font-size:13px}}
+@media(min-width:1101px){.site-header .brand+.header-linkedin+nav{margin-left:auto}}
